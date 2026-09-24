@@ -13,12 +13,15 @@ dependencies = ["gramlot"]
 
 [project.optional-dependencies]
 python-hosts = [
+    "Django>=5.2,<6.1",
     "fastapi>=0.115",
     "flask>=3.1,<4",
     "genro-asgi",
+    "gramlot-django",
     "gramlot-fastapi",
     "gramlot-flask",
-    "gramlot-genro-asgi",
+    "gramlot-kajenn",
+    "gramlot-minimal",
     "uvicorn>=0.30",
 ]
 

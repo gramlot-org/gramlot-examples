@@ -2,13 +2,14 @@
 
 One Hello World page authored equivalently in Python and JavaScript. The example
 uses Gramlot typed Source and neutral host contracts; it does not import, connect
-or query a database. Install the locally prepared native core and adapter
-artifacts before running package commands. The complete artifact order and
-clean-consumer installation are in [GC-135](https://github.com/gramlot-org/gramlot/blob/main/docs/internal/135-release-handoff.md).
+or query a database. Install the Gramlot core 0.1.0 archive and the current local integration packages
+before running package commands. The published 0.1.0 archive list is in
+[GC-135](https://github.com/gramlot-org/gramlot/blob/main/docs/internal/135-release-handoff.md);
+Minimal, Kajenn and Django native alignment here remains development work.
 
 ## Python package
 
-With the local Gramlot 0.1.0 wheel already installed:
+With the Gramlot 0.1.0 wheel already installed:
 
 ```sh
 python -m pip install .
@@ -16,9 +17,9 @@ python -m unittest discover -s tests
 ```
 
 Distribution: `gramlot-example-app`; import package: `gramlot_example_app`.
-Install the locally built FastAPI, Flask and Genro ASGI wheels together before
+Install the locally built Django, FastAPI, Flask, Kajenn and Minimal wheels together before
 installing this application's `python-hosts` extra. Then launch any one of the
-four executable configurations:
+five executable configurations:
 
 ```sh
 python -m pip install '.[python-hosts]'
@@ -26,9 +27,10 @@ python -m gramlot_example_app.server.uvicorn
 python -m gramlot_example_app.server.fastapi
 python -m gramlot_example_app.server.kajenn
 python -m gramlot_example_app.server.flask
+python -m gramlot_example_app.server.django
 ```
 
-All four use the same installed Python page and packaged Gramlot browser runtime.
+All five use the same installed Python page and packaged Gramlot browser runtime.
 They do not configure or import a database adapter.
 
 For a real-browser check, start one profile and run:
@@ -37,8 +39,7 @@ For a real-browser check, start one profile and run:
 node scripts/verify_python_browser.mjs URL PLAYWRIGHT_ENTRY CHROMIUM
 ```
 
-Use the server root as `URL` for Uvicorn, FastAPI and Flask, and `/page/` for
-Kajenn. The verifier asserts one Hello World heading, no browser page errors and
+Use the server root as `URL` for Uvicorn, FastAPI and Flask, and `/page/` for Kajenn. Use `/hello/` for Django. The verifier asserts one Hello World heading, no browser page errors and
 an empty renderer/root after disposal.
 
 ## JavaScript package
@@ -52,15 +53,15 @@ bun run test:bun
 ```
 
 These checks exercise the neutral host and DOM lifecycle. The Python launchers
-above provide raw ASGI/Uvicorn, FastAPI, actual Kajenn and Flask profiles.
+above provide Minimal ASGI/Uvicorn, FastAPI, actual Kajenn, Flask and Django profiles.
 
 ## Current local dependency verification
 
-The native core 0.1.0 wheel and npm archive have been locally prepared. Build or
-obtain the exact local package archives for the current first-party graph, then
-install them before the commands above; ordinary registry installation has not
-been verified or published. Do not save local paths or version pins into manifests.
-No application source imports a sibling checkout.
+The Gramlot 0.1.0 archives are published on GitHub. Build local wheels and npm
+archives for this developing integration graph, then install them before the
+commands above. The new Minimal and Kajenn package names are not published
+registries or GitHub releases. Do not save local paths or first-party version pins
+into manifests. No application source imports a sibling checkout.
 
 ## Deferred work
 
@@ -97,10 +98,16 @@ npm run build:standalone
 ```
 
 Open `dist/hello-world.html` from disk. Node is used for packaging; no server is
-needed to open the result. `@gramlot/standalone` owns packaging; Gramlot owns Page,
+needed to open the result. `@gramlot/minimal` owns packaging; Gramlot owns Page,
 WorkerHost and live Source. Python pages continue to require a Python server.
 The old Python standalone compiler and project TOML format are not used.
 
 Verified locally with the installed exporter tarball and Chrome: Hello World,
 Source updates/insertion/deletion and Worker termination, with HTTP(S) blocked.
 No database or reactive Data binding is included.
+
+Local verification, 2026-09-24: the installed Minimal/Uvicorn and Django profiles
+serve Hello World and the runtime asset; the Django development server passes
+the Chromium browser check with one heading and clean disposal. The standalone
+Worker HTML built from locally installed npm archives passes Chromium with live
+Source, no HTTP(S) and clean Worker disposal.
