@@ -20,19 +20,15 @@ EXAMPLES = ROOT / "examples"
 RUNNER = EXAMPLES / "00-runner"
 HTML_SVG = EXAMPLES / "html_svg"
 THEME = ROOT / "themes" / "gramlot-base" / "theme.css"
-FOLDER_NAMES = (
-    "01_hello_world", "02_text_and_links", "03_lists", "04_semantic_page",
-    "05_tables", "06_forms", "07_native_disclosure", "08_svg_shapes",
-    "09_svg_composition", "10_cards_with_icons", "11_static_report", "12_complete_page", "13_live_source",
-)
 
 
 def page_files():
     """Explicit route registry; numbering and hyphens stay in source paths."""
     pages = [("index", RUNNER / "page.py", RUNNER / "page.js")]
-    folders = [HTML_SVG / name for name in FOLDER_NAMES]
-    for number, folder in enumerate(folders, start=1):
-        pages.append((f"e{number:02d}", folder / "page.py", folder / "page.js"))
+    catalog = json.loads((RUNNER / "catalog.json").read_text())
+    folders = [HTML_SVG / entry["folder"] for entry in catalog]
+    for entry, folder in zip(catalog, folders):
+        pages.append((entry["key"], folder / "page.py", folder / "page.js"))
     for _, py_file, js_file in pages:
         if not py_file.is_file() or not js_file.is_file():
             raise FileNotFoundError(f"Missing paired Page: {py_file} / {js_file}")
