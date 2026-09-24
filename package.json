@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@gramlot/native-html": "file:../js",
+    "gramlot-nodejs": "file:../../gramlot-nodejs"
+  }
+}

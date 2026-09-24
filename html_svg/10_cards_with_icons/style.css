@@ -1,0 +1,2 @@
+.icon-cards { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+.icon-cards article { min-width: 0; }

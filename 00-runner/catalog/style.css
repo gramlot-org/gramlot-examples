@@ -1,0 +1,6 @@
+/* Keep the open, nonmodal specimen in normal document flow. */
+.catalog-dialog[open] {
+  position: static;
+  max-inline-size: 100%;
+  margin: 0;
+}
