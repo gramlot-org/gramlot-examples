@@ -1,0 +1,93 @@
+[
+  {
+    "key": "catalog",
+    "title": "HTML catalogue",
+    "folder": "catalog",
+    "description": "The Gramlot Base theme applied to native HTML.",
+    "explanation": "Explore typography, lists, tables and native controls. The catalogue documents which grammar entries can be demonstrated here and which require another context."
+  },
+  {
+    "key": "e01",
+    "title": "Hello World",
+    "folder": "01_hello_world",
+    "description": "A heading and a paragraph: the smallest Gramlot page.",
+    "explanation": "The Page class defines main(root). Each builder call adds a typed Source node; the integration hosts the page and Gramlot renders it."
+  },
+  {
+    "key": "e02",
+    "title": "Text and links",
+    "folder": "02_text_and_links",
+    "description": "Headings, inline text, quotations, code and links.",
+    "explanation": "Follow the nested builder calls to see how text and child elements coexist. The example includes an internal anchor and literal text that is escaped rather than interpreted as markup."
+  },
+  {
+    "key": "e03",
+    "title": "Lists",
+    "folder": "03_lists",
+    "description": "Ordered, unordered and nested lists, plus a glossary.",
+    "explanation": "Local sequences supply the content. Loops create the repeated list items, while nesting expresses the document hierarchy."
+  },
+  {
+    "key": "e04",
+    "title": "Semantic page",
+    "folder": "04_semantic_page",
+    "description": "A page composed from meaningful HTML landmarks.",
+    "explanation": "Header, navigation, article, aside and footer give the content structure. Ordinary page methods divide construction into readable sections."
+  },
+  {
+    "key": "e05",
+    "title": "Tables",
+    "folder": "05_tables",
+    "description": "A catalogue with headings, rows and totals.",
+    "explanation": "A row helper and a loop build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the calculated total."
+  },
+  {
+    "key": "e06",
+    "title": "Forms",
+    "folder": "06_forms",
+    "description": "Native fields, choices, buttons and a slider.",
+    "explanation": "Try typing, selecting options and moving the slider. Reset restores defaults. The submit button is disabled: this example has no save endpoint or application event handlers."
+  },
+  {
+    "key": "e07",
+    "title": "Native disclosure",
+    "folder": "07_native_disclosure",
+    "description": "Expandable questions and native progress indicators.",
+    "explanation": "The browser supplies details/summary interaction. Progress and meter values are static; the example introduces no bindings or controllers."
+  },
+  {
+    "key": "e08",
+    "title": "SVG shapes",
+    "folder": "08_svg_shapes",
+    "description": "The basic SVG vocabulary inside an HTML page.",
+    "explanation": "The SVG builder creates shapes within a viewBox. Coordinates determine geometry, while the shared theme supplies colors through semantic CSS variables."
+  },
+  {
+    "key": "e09",
+    "title": "SVG composition",
+    "folder": "09_svg_composition",
+    "description": "A scene assembled with groups, paths and repeated objects.",
+    "explanation": "Helper methods build houses, trees and flowers. Loops place repeated elements, and group transformations position their local coordinates."
+  },
+  {
+    "key": "e10",
+    "title": "Cards with icons",
+    "folder": "10_cards_with_icons",
+    "description": "HTML cards with SVG icons and feature lists.",
+    "explanation": "A helper composes each card, while loops populate cards and their features. The common theme owns the appearance; local CSS handles only the example layout."
+  },
+  {
+    "key": "e11",
+    "title": "Static report",
+    "folder": "11_static_report",
+    "description": "A summary, chart, legend and table from the same data.",
+    "explanation": "Separate methods build each section. SVG bar lengths and table cells use one local dataset, making the connection between values and geometry explicit."
+  },
+  {
+    "key": "e12",
+    "title": "Complete page",
+    "folder": "12_complete_page",
+    "description": "An event page with a programme, speakers, map and FAQ.",
+    "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
+  }
+]

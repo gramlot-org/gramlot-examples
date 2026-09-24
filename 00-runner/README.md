@@ -1,8 +1,14 @@
 # Local example runner
 
-The runner is a Gramlot Page with a sidebar and two native HTML iframe views.
-Choose **Python** or **JavaScript**, then select an example. The source links
-open the original modules. The default page is the [HTML grammar catalogue](catalog/README.md).
+A compact title list sits on the left. Selecting a title opens or reactivates its
+own tab on the right. The panel contains a description and explanation above the
+example iframe. Previously opened examples remain mounted, preserving native input
+state. Only the catalogue starts open; other iframes load on their first opening.
+
+The serving integration determines the source language. `/py/index` hosts Python
+examples; `/js/index` hosts JavaScript examples. Relative iframe URLs stay under
+the same integration. There is no language picker. Each panel links its current
+language source and the full README. The default is the [HTML catalogue](catalog/README.md).
 
 ## Run locally
 
@@ -39,3 +45,17 @@ An in-page Inspector launcher awaits a shared Gramlot component and is not
 emulated by this runner. Python pages run only through the Python host; JavaScript
 pages run through the Node host. The catalogue classifies elements that belong
 only in a document head or would execute or embed external content.
+
+## Tab behavior ownership
+
+Pages declare ordinary HTML through Source. Gramlot's shared HTML tab behavior
+owns activation, open tabs and keyboard interaction; no event wiring is embedded
+in either runner page. Active/open state is held in a component-owned Bag, and
+Source attribute updates control tab/panel visibility and first iframe loading.
+The renderer releases listeners when the component is removed or disposed.
+Arrow keys, Home and End move among opened tabs. Closing/reordering tabs and
+restoring them after a whole-page reload are outside this increment.
+
+`catalog.json` contains titles and teaching summaries shared by both runner pages;
+it is content metadata, not a second UI representation. Full examples stay in
+their own directories with their READMEs.
