@@ -11,12 +11,14 @@ export class Page extends BasePage {
     static css = ['/themes/gramlot-base/theme.css', '/examples/html_svg/10_cards_with_icons/style.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
+        const page = root.main({node_label: 'page', class: 'example-page stack'});
         page.h1('Three ideas, three icons');
-        page.p('The cards are ordinary articles. Each icon is nested native SVG.');
-        const cards = page.section({class: 'grid icon-cards', aria_label: 'Gramlot concepts'});
+        page.p('Click × to remove a card from Source. Gramlot updates the DOM without reloading.');
+        const cards = page.section({node_label: 'cards', class: 'grid icon-cards', aria_label: 'Gramlot concepts'});
         for (const [title, description, kind] of CARDS) {
-            const card = cards.article({class: 'card stack'});
+            const card = cards.article({node_label: kind, class: 'card stack'});
+            card.button('×', {type: 'button', class: 'card-remove', aria_label: `Remove ${title}`,
+                onclick: `window.gramlot.builder.source.getItem('main.page.cards').popNode('${kind}')`});
             const icon = card.svg({viewBox: '0 0 64 64', width: 64, height: 64, aria_hidden: 'true'});
             this.icon(icon, kind);
             card.h2(title);

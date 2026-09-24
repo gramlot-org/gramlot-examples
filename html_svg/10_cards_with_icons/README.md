@@ -1,19 +1,20 @@
-# 10 · Cards with icons
+# 10 · Cards with icons and live Source
 
-Responsive HTML cards with native SVG icon drawings.
+Responsive HTML cards with SVG drawings. Click a card's × button to remove it
+without reloading the page.
 
-## Run and files
+The Builder gives the page, card container and each card a stable `node_label`.
+The button's short JavaScript action finds `main.page.cards` in the browser
+Builder's Source and calls `popNode` with the card label. Gramlot observes the
+Source deletion and removes the corresponding DOM branch, including its SVG.
+The action never removes a DOM element directly.
 
-From the repository root, run `.venv/bin/python examples/00-runner/serve.py` after the [runner prerequisites](../../00-runner/README.md). Open `http://127.0.0.1:8080/` and select **Cards with icons** and choose Python or JavaScript. Prerequisites: a local Python environment with Gramlot installed, the repository JavaScript dependencies and the runner adapter setup. `page.py` is the primary example; `page.js` builds the equivalent Source. Both load `/themes/gramlot-base/theme.css`, plus local `style.css` for layout. The direct routes are `/py/e10` and `/js/e10`. The runner provides source links beside the rendered page.
+Python and JavaScript declare the same page and browser action. It also works
+in the generated standalone directory opened directly from disk, offline.
 
-## How it works
+**Try it:** Remove the middle card, then the others. Reload to restore all three.
+Add a fourth card to the local dataset and give it a matching icon branch.
 
-A local dataset drives articles. A helper creates one of three icon compositions inside each card. Python uses `root.tag(..., attr=value)` and JavaScript uses `root.tag(value, {attr: value})`; both build Gramlot Source with the same visible result. Helper methods, where used, are ordinary page methods and are not exposed as remote endpoints.
-
-## Try it
-
-Add a fourth card and icon branch.
-
-## Limits
-
-The icons are decorative; card text carries the meaning. This example uses the native HTML/SVG Source increment only; Data bindings, controllers and resolvers are outside this teaching slice.
+**Limit:** This is a small, explicit JavaScript action demonstrating live Source,
+not Data binding, persistence or server synchronization. The icons are decorative;
+card text and the labelled remove buttons carry the meaning.

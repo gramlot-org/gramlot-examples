@@ -3,6 +3,20 @@
   "type": "module",
   "dependencies": {
     "@gramlot/native-html": "file:../js",
-    "gramlot-nodejs": "file:../../gramlot-nodejs"
+    "gramlot-js-server": "file:../../gramlot-js-server",
+    "@gramlot/minimal": "file:../../gramlot-minimal",
+    "dompurify": "3.4.16",
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.14",
+    "@jsr/genro__bag": "^0.5.3"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "jsdom": "27.0.1"
+  },
+  "scripts": {
+    "build:runner": "node 00-runner/build-browser.mjs",
+    "test": "node --test 00-runner/tests/*.test.js",
+    "build:standalone": "node 00-runner/build-standalone.mjs"
   }
 }

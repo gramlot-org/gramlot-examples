@@ -13,12 +13,14 @@ class Page(BasePage):
     css = ("/themes/gramlot-base/theme.css", "/examples/html_svg/10_cards_with_icons/style.css")
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
+        page = root.main(node_label="page", class_="example-page stack")
         page.h1("Three ideas, three icons")
-        page.p("The cards are ordinary articles. Each icon is nested native SVG.")
-        cards = page.section(class_="grid icon-cards", aria_label="Gramlot concepts")
+        page.p("Click × to remove a card from Source. Gramlot updates the DOM without reloading.")
+        cards = page.section(node_label="cards", class_="grid icon-cards", aria_label="Gramlot concepts")
         for title, description, kind in CARDS:
-            card = cards.article(class_="card stack")
+            card = cards.article(node_label=kind, class_="card stack")
+            card.button("×", type="button", class_="card-remove", aria_label=f"Remove {title}",
+                        onclick=f"window.gramlot.builder.source.getItem('main.page.cards').popNode('{kind}')")
             icon = card.svg(viewBox="0 0 64 64", width=64, height=64, aria_hidden="true")
             self.icon(icon, kind)
             card.h2(title)

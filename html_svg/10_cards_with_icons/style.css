@@ -1,2 +1,6 @@
 .icon-cards { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
 .icon-cards article { min-width: 0; }
+
+.icon-cards article { position: relative; }
+.card-remove { position: absolute; inset-block-start: .5rem; inset-inline-end: .5rem;
+    padding: .1rem .45rem; line-height: 1.2; font-size: 1rem; }

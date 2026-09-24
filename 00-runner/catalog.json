@@ -1,12 +1,5 @@
 [
   {
-    "key": "catalog",
-    "title": "HTML catalogue",
-    "folder": "catalog",
-    "description": "The Gramlot Base theme applied to native HTML.",
-    "explanation": "Explore typography, lists, tables and native controls. The catalogue documents which grammar entries can be demonstrated here and which require another context."
-  },
-  {
     "key": "e01",
     "title": "Hello World",
     "folder": "01_hello_world",
@@ -73,8 +66,8 @@
     "key": "e10",
     "title": "Cards with icons",
     "folder": "10_cards_with_icons",
-    "description": "HTML cards with SVG icons and feature lists.",
-    "explanation": "A helper composes each card, while loops populate cards and their features. The common theme owns the appearance; local CSS handles only the example layout."
+    "description": "HTML cards with SVG icons and live Source removal.",
+    "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
   },
   {
     "key": "e11",
@@ -89,5 +82,12 @@
     "folder": "12_complete_page",
     "description": "An event page with a programme, speakers, map and FAQ.",
     "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
+  },
+  {
+    "key": "e13",
+    "title": "Live Source playground",
+    "folder": "13_live_source",
+    "description": "Create, update and remove Source nodes, with a small SVG animation.",
+    "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in hosted profiles and the standalone directory."
   }
 ]

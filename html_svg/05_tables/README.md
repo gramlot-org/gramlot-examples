@@ -1,19 +1,9 @@
 # 05 · Tables
 
-A data table with caption, scoped headers and computed totals.
+A data table with a caption, scoped headings and a calculated total.
 
-## Run and files
+One local row set feeds the table body and footer arithmetic.
 
-From the repository root, run `.venv/bin/python examples/00-runner/serve.py` after the [runner prerequisites](../../00-runner/README.md). Open `http://127.0.0.1:8080/` and select **Tables** and choose Python or JavaScript. Prerequisites: a local Python environment with Gramlot installed, the repository JavaScript dependencies and the runner adapter setup. `page.py` is the primary example; `page.js` builds the equivalent Source. Both load `/themes/gramlot-base/theme.css`. The direct routes are `/py/e05` and `/js/e05`. The runner provides source links beside the rendered page.
+**Try it:** Add a region and confirm the total changes in both languages.
 
-## How it works
-
-The same local rows feed tbody and the footer arithmetic. Python uses `root.tag(..., attr=value)` and JavaScript uses `root.tag(value, {attr: value})`; both build Gramlot Source with the same visible result. Helper methods, where used, are ordinary page methods and are not exposed as remote endpoints.
-
-## Try it
-
-Add a region and confirm the footer changes in both languages.
-
-## Limits
-
-The values are fixed when Source is built; no live data is implied. This example uses the native HTML/SVG Source increment only; Data bindings, controllers and resolvers are outside this teaching slice.
+**Limit:** Values are fixed when Source is built.
