@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+build/
+.env
+dist/
+*.egg-info/
+package-lock.json
+npm-shrinkwrap.json
+bun.lock
+bun.lockb

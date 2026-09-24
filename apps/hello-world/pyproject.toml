@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gramlot-example-app"
+version = "0.0.0.dev1"
+description = "A minimal reference application built with Gramlot"
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["gramlot"]
+
+[project.optional-dependencies]
+python-hosts = [
+    "fastapi>=0.115",
+    "flask>=3.1,<4",
+    "genro-asgi",
+    "gramlot-fastapi",
+    "gramlot-flask",
+    "gramlot-genro-asgi",
+    "uvicorn>=0.30",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["gramlot_example_app*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+gramlot_example_app = ["server/*.md", "server/*/*.md", "db/*.md", "db/*/*.md"]
