@@ -21,7 +21,7 @@ python-hosts = [
     "gramlot-fastapi",
     "gramlot-flask",
     "gramlot-kajenn",
-    "gramlot-minimal",
+    "gramlot-uvicorn",
     "uvicorn>=0.30",
 ]
 

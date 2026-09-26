@@ -5,7 +5,7 @@ uses Gramlot typed Source and neutral host contracts; it does not import, connec
 or query a database. Install the Gramlot core 0.1.0 archive and the current local integration packages
 before running package commands. The published 0.1.0 archive list is in
 [GC-135](https://github.com/gramlot-org/gramlot/blob/main/docs/internal/135-release-handoff.md);
-Minimal, Kajenn and Django native alignment here remains development work.
+Serverless, Uvicorn, Kajenn and Django native alignment here remains development work.
 
 ## Python package
 
@@ -17,7 +17,7 @@ python -m unittest discover -s tests
 ```
 
 Distribution: `gramlot-example-app`; import package: `gramlot_example_app`.
-Install the locally built Django, FastAPI, Flask, Kajenn and Minimal wheels together before
+Install the locally built Django, FastAPI, Flask, Kajenn and Uvicorn wheels together before
 installing this application's `python-hosts` extra. Then launch any one of the
 five executable configurations:
 
@@ -53,13 +53,13 @@ bun run test:bun
 ```
 
 These checks exercise the neutral host and DOM lifecycle. The Python launchers
-above provide Minimal ASGI/Uvicorn, FastAPI, actual Kajenn, Flask and Django profiles.
+above provide Uvicorn ASGI, FastAPI, actual Kajenn, Flask and Django profiles.
 
 ## Current local dependency verification
 
 The Gramlot 0.1.0 archives are published on GitHub. Build local wheels and npm
 archives for this developing integration graph, then install them before the
-commands above. The new Minimal and Kajenn package names are not published
+commands above. The new Serverless, Uvicorn and Kajenn package names are not published
 registries or GitHub releases. Do not save local paths or first-party version pins
 into manifests. No application source imports a sibling checkout.
 
@@ -98,7 +98,7 @@ npm run build:standalone
 ```
 
 Open `dist/hello-world.html` from disk. Node is used for packaging; no server is
-needed to open the result. `@gramlot/minimal` owns packaging; Gramlot owns Page,
+needed to open the result. `@gramlot/serverless` owns packaging; Gramlot owns Page,
 WorkerHost and live Source. Python pages continue to require a Python server.
 The old Python standalone compiler and project TOML format are not used.
 
