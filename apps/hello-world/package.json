@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@gramlot/native-html": "*",
-    "gramlot-nodejs": "*"
+    "gramlot-js-server": "*"
   },
   "devDependencies": {
     "jsdom": "27.0.1",

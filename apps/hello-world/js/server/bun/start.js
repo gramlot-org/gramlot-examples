@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import {fileURLToPath} from 'node:url';
-import {startNativeServer} from 'gramlot-nodejs/bun';
+import {startNativeServer} from 'gramlot-js-server/bun';
 
 const app = await startNativeServer({
     pages: fileURLToPath(new URL('../../pages/', import.meta.url)),

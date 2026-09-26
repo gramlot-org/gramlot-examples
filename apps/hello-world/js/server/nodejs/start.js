@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {fileURLToPath} from 'node:url';
-import {startNativeServer} from 'gramlot-nodejs/native';
+import {startNativeServer} from 'gramlot-js-server/native';
 
 const app = await startNativeServer({
     pages: fileURLToPath(new URL('../../pages/', import.meta.url)),

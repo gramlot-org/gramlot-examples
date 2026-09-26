@@ -75,7 +75,7 @@ implementations, connections, migrations, tables or queries.
 After installing the local package graph, run `npm run start:node` or
 `npm run start:bun` from this application directory. Installed package commands
 are `gramlot-hello-node` and `gramlot-hello-bun`. Both use the same JS page and
-reusable `gramlot-nodejs` adapter, with `HOST`/`PORT` configuration (defaults
+reusable `gramlot-js-server` adapter, with `HOST`/`PORT` configuration (defaults
 127.0.0.1:8080). No Python worker or database is required.
 
 The browser verification command is:
