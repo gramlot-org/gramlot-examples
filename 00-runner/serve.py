@@ -12,7 +12,7 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from gramlot_minimal import create_asgi_application
+from gramlot_uvicorn import create_asgi_application
 
 
 ROOT = Path(__file__).resolve().parents[2]

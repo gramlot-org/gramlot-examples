@@ -14,12 +14,12 @@ opens its own README; its thirteen examples are nested below it in the sidebar.
 ## Run locally
 
 Use Python 3.11 or newer and Node.js 22 or newer. From the Gramlot repository
-root, with the current sibling `gramlot-minimal` (Minimal) and
+root, with the current sibling `gramlot-uvicorn`, `gramlot-serverless` and
 `gramlot-js-server` checkouts present:
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install -e . -e '../gramlot-minimal[uvicorn]'
+.venv/bin/python -m pip install -e . -e '../gramlot-uvicorn[uvicorn]'
 npm --prefix js install --no-package-lock
 npm --prefix js run build
 npm --prefix examples install --install-links --no-package-lock
@@ -28,7 +28,7 @@ npm --prefix examples install --install-links --no-package-lock
 
 Open <http://127.0.0.1:8080/>. Set `PORT` to use another local port. The
 launcher starts one public Uvicorn address and an internal Node.js listener.
-The local Node adapter and Python Minimal adapter keep their own normal Page,
+The local Node adapter and Python Uvicorn adapter keep their own normal Page,
 main and Source contracts; the launcher supplies only static files and local
 request forwarding. The theme is served from `/themes/gramlot-base/theme.css`.
 
@@ -133,6 +133,6 @@ The standalone runner shares `runner-page.js` with the Node/Bun integration;
 README and original source text are supplied when packaging, without executing
 the Page at build time. Python examples remain hosted Python pages.
 
-Standalone startup and Worker communication belong to gramlot-minimal. The export
-requires matching development core and Minimal packages; published 0.1.0 archives
+Standalone startup and Worker communication belong to gramlot-serverless. The export
+requires matching development core and Serverless packages; published 0.1.0 archives
 are unchanged. The runner owns only its provisional UI behavior.

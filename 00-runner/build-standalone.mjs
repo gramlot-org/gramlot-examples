@@ -2,7 +2,7 @@
 import {mkdtemp, readFile, readdir, rm, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {buildDirectory} from '@gramlot/minimal/directory';
+import {buildDirectory} from '@gramlot/serverless/directory';
 import './build-browser.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
