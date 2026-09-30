@@ -1,17 +1,21 @@
 /** Node integration: provide original example text to the browser-safe runner UI. */
-import {readFileSync} from 'node:fs';
-import examples from './catalog.json' with {type: 'json'};
+import {existsSync, readFileSync} from 'node:fs';
+import catalog from './catalog.json' with {type: 'json'};
 import {RunnerPage} from './runner-page.js';
 
 export class Page extends RunnerPage {
     static logoUrl = '/assets/branding/gramlot-logo-dark.svg';
-    static categoryReadme = readFileSync(new URL('../html_svg/README.md', import.meta.url), 'utf8');
-    static exampleContent = examples.map(({key, title, folder}) => {
-        const directory = new URL(`../html_svg/${folder}/`, import.meta.url);
+    static families = catalog.map(({key, title, examples}) => {
+        const folder = new URL(`../${key}/`, import.meta.url);
+        const read = name => readFileSync(new URL(name, folder), 'utf8');
         return {
-            key, title, folder, frameUrl: key,
-            readme: readFileSync(new URL('README.md', directory), 'utf8'),
-            source: readFileSync(new URL('page.js', directory), 'utf8'),
+            key, title, readme: read('README.md'),
+            examples: examples.map(example => ({
+                key: example.key, title: example.title, folder: example.folder, frameUrl: example.key,
+                readme: read(`${example.folder}.md`),
+                source: read(`${example.folder}.js`),
+                logic: existsSync(new URL(`${example.folder}_aux.js`, folder)) ? read(`${example.folder}_aux.js`) : null,
+            })),
         };
     });
 }

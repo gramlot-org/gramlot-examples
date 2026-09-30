@@ -1,93 +1,251 @@
 [
   {
-    "key": "e01",
-    "title": "Hello World",
-    "folder": "01_hello_world",
-    "description": "A heading and a paragraph: the smallest Gramlot page.",
-    "explanation": "The Page class defines main(root). Each builder call adds a typed Source node; the integration hosts the page and Gramlot renders it."
+    "key": "html_svg",
+    "title": "HTML / SVG",
+    "examples": [
+      {
+        "key": "e01",
+        "title": "Hello World",
+        "folder": "01_hello_world",
+        "description": "A heading and a paragraph: the smallest Gramlot page.",
+        "explanation": "The Page class defines main(root). Each builder call adds a typed Source node; the integration hosts the page and Gramlot renders it."
+      },
+      {
+        "key": "e02",
+        "title": "Text and links",
+        "folder": "02_text_and_links",
+        "description": "Headings, inline text, quotations, code and links.",
+        "explanation": "Follow the nested builder calls to see how text and child elements coexist. The example includes an internal anchor and literal text that is escaped rather than interpreted as markup."
+      },
+      {
+        "key": "e03",
+        "title": "Lists",
+        "folder": "03_lists",
+        "description": "Ordered, unordered and nested lists, plus a glossary.",
+        "explanation": "Local sequences supply the content. Loops create the repeated list items, while nesting expresses the document hierarchy."
+      },
+      {
+        "key": "e04",
+        "title": "Semantic page",
+        "folder": "04_semantic_page",
+        "description": "A page composed from meaningful HTML landmarks.",
+        "explanation": "Header, navigation, article, aside and footer give the content structure. Ordinary page methods divide construction into readable sections."
+      },
+      {
+        "key": "e05",
+        "title": "Tables",
+        "folder": "05_tables",
+        "description": "A catalogue with headings, rows and totals.",
+        "explanation": "A row helper and a loop build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the calculated total."
+      },
+      {
+        "key": "e06",
+        "title": "Forms",
+        "folder": "06_forms",
+        "description": "Native fields, choices, buttons and a slider.",
+        "explanation": "Try typing, selecting options and moving the slider. Reset restores defaults. The submit button is disabled: this example has no save endpoint or application event handlers."
+      },
+      {
+        "key": "e07",
+        "title": "Native disclosure",
+        "folder": "07_native_disclosure",
+        "description": "Expandable questions and native progress indicators.",
+        "explanation": "The browser supplies details/summary interaction. Progress and meter values are static; the example introduces no bindings or controllers."
+      },
+      {
+        "key": "e08",
+        "title": "SVG shapes",
+        "folder": "08_svg_shapes",
+        "description": "The basic SVG vocabulary inside an HTML page.",
+        "explanation": "The SVG builder creates shapes within a viewBox. Coordinates determine geometry, while the shared theme supplies colors through semantic CSS variables."
+      },
+      {
+        "key": "e09",
+        "title": "SVG composition",
+        "folder": "09_svg_composition",
+        "description": "A scene assembled with groups, paths and repeated objects.",
+        "explanation": "Helper methods build houses, trees and flowers. Loops place repeated elements, and group transformations position their local coordinates."
+      },
+      {
+        "key": "e10",
+        "title": "Cards with icons",
+        "folder": "10_cards_with_icons",
+        "description": "HTML cards with SVG icons and live Source removal.",
+        "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+      },
+      {
+        "key": "e11",
+        "title": "Static report",
+        "folder": "11_static_report",
+        "description": "A summary, chart, legend and table from the same data.",
+        "explanation": "Separate methods build each section. SVG bar lengths and table cells use one local dataset, making the connection between values and geometry explicit."
+      },
+      {
+        "key": "e12",
+        "title": "Complete page",
+        "folder": "12_complete_page",
+        "description": "An event page with a programme, speakers, map and FAQ.",
+        "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
+      },
+      {
+        "key": "e13",
+        "title": "Live Source playground",
+        "folder": "13_live_source",
+        "description": "Create, update and remove Source nodes, with a small SVG animation.",
+        "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in hosted profiles and the standalone directory."
+      }
+    ]
   },
   {
-    "key": "e02",
-    "title": "Text and links",
-    "folder": "02_text_and_links",
-    "description": "Headings, inline text, quotations, code and links.",
-    "explanation": "Follow the nested builder calls to see how text and child elements coexist. The example includes an internal anchor and literal text that is escaped rather than interpreted as markup."
+    "key": "binding",
+    "title": "Binding",
+    "examples": [
+      {
+        "key": "b01",
+        "title": "Pointers",
+        "folder": "01_pointers",
+        "description": "Read Data with ^, =, relative, symbolic and ?attr pointers.",
+        "explanation": "Each ^ pointer subscribes its attribute or text to a Data path; = reads once. A datapath makes .paths relative, #node_id reaches the context of a named node, and ?attr reads an attribute of a Data node."
+      },
+      {
+        "key": "b02",
+        "title": "Variable datapath",
+        "folder": "02_variable_datapath",
+        "description": "One card follows the record chosen in a select.",
+        "explanation": "The card's datapath is itself a pointer. Choosing another record changes the context of every relative pointer below it; the DOM follows without rebuilding the page."
+      },
+      {
+        "key": "b03",
+        "title": "Setters and defaults",
+        "folder": "03_setters_and_defaults",
+        "description": "dataSetter values and control defaults, all in place at the first render.",
+        "explanation": "dataSetter nodes sit after the controls and in a later branch, yet the first DOM already shows their values. Controls fill an empty path with default or default_value; attr_ writes an attribute on the Data node."
+      },
+      {
+        "key": "b04",
+        "title": "Native editing",
+        "folder": "04_native_editing",
+        "description": "Text, number, range, select, date and color fields bound both ways.",
+        "explanation": "Each control's value is a ^ pointer. Editing writes the Data at change, or at every input when live is true; here live itself follows a checkbox."
+      },
+      {
+        "key": "b05",
+        "title": "Checkbox and radio",
+        "folder": "05_checkbox_radio",
+        "description": "Booleans in the Data, one per checkbox and radio button.",
+        "explanation": "A checkbox writes true or false. Radio buttons of one group each own a boolean: choosing one writes true there and false in the others."
+      },
+      {
+        "key": "b06",
+        "title": "Style and visibility",
+        "folder": "06_style_and_visibility",
+        "description": "visible, class, style and reactive style shortcuts.",
+        "explanation": "Attributes such as color, background_color, font_size and rounded compose one style attribute and follow the Data. visible hides an element and keeps its space; hidden removes it from the layout."
+      },
+      {
+        "key": "b07",
+        "title": "Bound SVG",
+        "folder": "07_bound_svg",
+        "description": "SVG geometry and paint follow range and color fields.",
+        "explanation": "SVG presentation attributes take ^ pointers like HTML attributes. The circle's radius, the bar's width and both fills are Data values edited by native controls."
+      },
+      {
+        "key": "b08",
+        "title": "Freeze",
+        "folder": "08_freeze",
+        "description": "Freeze a branch, change its Data and Source, then thaw once.",
+        "explanation": "A frozen branch keeps reacting to Data but defers structural DOM work. Removing a child under freeze takes effect at the thaw, which builds the current Source once."
+      },
+      {
+        "key": "b09",
+        "title": "Forms with binding",
+        "folder": "09_forms",
+        "description": "The native form of example 06, bound to a record.",
+        "explanation": "The same fieldsets as HTML / SVG example 06, with every value bound to one Data record. The summary beside the form shows the record while you type."
+      },
+      {
+        "key": "b10",
+        "title": "SVG shapes with binding",
+        "folder": "10_svg_shapes",
+        "description": "The six shapes of example 08, resized and recolored by controls.",
+        "explanation": "The shapes of HTML / SVG example 08 read their size and color from the Data; sliders and a color field change them."
+      },
+      {
+        "key": "b11",
+        "title": "Complete page with binding",
+        "folder": "11_complete_page",
+        "description": "The event page of example 12, with a bound heading, filter and map.",
+        "explanation": "The event page of HTML / SVG example 12 reads its heading from settings, filters the schedule by speaker through visible, and highlights the chosen map stop."
+      }
+    ]
   },
   {
-    "key": "e03",
-    "title": "Lists",
-    "folder": "03_lists",
-    "description": "Ordered, unordered and nested lists, plus a glossary.",
-    "explanation": "Local sequences supply the content. Loops create the repeated list items, while nesting expresses the document hierarchy."
-  },
-  {
-    "key": "e04",
-    "title": "Semantic page",
-    "folder": "04_semantic_page",
-    "description": "A page composed from meaningful HTML landmarks.",
-    "explanation": "Header, navigation, article, aside and footer give the content structure. Ordinary page methods divide construction into readable sections."
-  },
-  {
-    "key": "e05",
-    "title": "Tables",
-    "folder": "05_tables",
-    "description": "A catalogue with headings, rows and totals.",
-    "explanation": "A row helper and a loop build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the calculated total."
-  },
-  {
-    "key": "e06",
-    "title": "Forms",
-    "folder": "06_forms",
-    "description": "Native fields, choices, buttons and a slider.",
-    "explanation": "Try typing, selecting options and moving the slider. Reset restores defaults. The submit button is disabled: this example has no save endpoint or application event handlers."
-  },
-  {
-    "key": "e07",
-    "title": "Native disclosure",
-    "folder": "07_native_disclosure",
-    "description": "Expandable questions and native progress indicators.",
-    "explanation": "The browser supplies details/summary interaction. Progress and meter values are static; the example introduces no bindings or controllers."
-  },
-  {
-    "key": "e08",
-    "title": "SVG shapes",
-    "folder": "08_svg_shapes",
-    "description": "The basic SVG vocabulary inside an HTML page.",
-    "explanation": "The SVG builder creates shapes within a viewBox. Coordinates determine geometry, while the shared theme supplies colors through semantic CSS variables."
-  },
-  {
-    "key": "e09",
-    "title": "SVG composition",
-    "folder": "09_svg_composition",
-    "description": "A scene assembled with groups, paths and repeated objects.",
-    "explanation": "Helper methods build houses, trees and flowers. Loops place repeated elements, and group transformations position their local coordinates."
-  },
-  {
-    "key": "e10",
-    "title": "Cards with icons",
-    "folder": "10_cards_with_icons",
-    "description": "HTML cards with SVG icons and live Source removal.",
-    "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
-  },
-  {
-    "key": "e11",
-    "title": "Static report",
-    "folder": "11_static_report",
-    "description": "A summary, chart, legend and table from the same data.",
-    "explanation": "Separate methods build each section. SVG bar lengths and table cells use one local dataset, making the connection between values and geometry explicit."
-  },
-  {
-    "key": "e12",
-    "title": "Complete page",
-    "folder": "12_complete_page",
-    "description": "An event page with a programme, speakers, map and FAQ.",
-    "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
-  },
-  {
-    "key": "e13",
-    "title": "Live Source playground",
-    "folder": "13_live_source",
-    "description": "Create, update and remove Source nodes, with a small SVG animation.",
-    "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in hosted profiles and the standalone directory."
+    "key": "controllers",
+    "title": "Controllers",
+    "examples": [
+      {
+        "key": "c01",
+        "title": "Formula",
+        "folder": "01_formula",
+        "description": "dataFormula computes a result path from its parameters.",
+        "explanation": "The formula runs when a ^ parameter changes and writes its result; a = parameter is read without triggering. _if and _else choose between two results."
+      },
+      {
+        "key": "c02",
+        "title": "Controller",
+        "folder": "02_controller",
+        "description": "dataController reacts to Data, to a fired path and to time.",
+        "explanation": "A controller runs code for its effects: here it validates a value, counts fired requests, debounces with _delay and ticks a clock with _timing."
+      },
+      {
+        "key": "c03",
+        "title": "Named logic",
+        "folder": "03_named_logic",
+        "description": "Formula and controller bodies in the companion 03_named_logic_aux.js.",
+        "explanation": "The companion exports class Logic. func names one of its methods; the method receives the resolved parameters, and a controller also its node. Named logic runs under a strict CSP."
+      },
+      {
+        "key": "c04",
+        "title": "Inline expressions",
+        "folder": "04_inline_expressions",
+        "description": "== expressions in text and attributes, and inline scripts.",
+        "explanation": "An attribute starting with == is an expression over the other attributes of its node. It follows the pointers it reads, like a formula without a result path."
+      },
+      {
+        "key": "c05",
+        "title": "Node methods",
+        "folder": "05_node_methods",
+        "description": "SET, GET, PUT, FIRE and FIRE_AFTER from button actions.",
+        "explanation": "Each button action calls a method of its Source node. SET notifies observers, PUT writes silently, FIRE fires also with an equal value, FIRE_AFTER fires after a delay."
+      },
+      {
+        "key": "c06",
+        "title": "Button controller",
+        "folder": "06_button_controller",
+        "description": "A button with a nested controller, click counter, modifiers and fire.",
+        "explanation": "A dataController nested in a button runs once per click, with button_counter and the modifier keys. fire and fire_<name> write a Data path instead of running code."
+      },
+      {
+        "key": "c07",
+        "title": "Events",
+        "folder": "07_events",
+        "description": "connect_on<event> attributes for click, input, key and pointer events.",
+        "explanation": "connect_onclick, connect_oninput, connect_onkeydown and connect_onmouseover add one listener each. The handler runs with this set to the declaring node."
+      },
+      {
+        "key": "c08",
+        "title": "Remote Source",
+        "folder": "08_remote_source",
+        "description": "remoteSource replaces a branch with Source built on the server.",
+        "explanation": "The Page declares a Source method. A named controller asks for it; the new branch brings its own dataSetter values, visible at its first render."
+      },
+      {
+        "key": "c09",
+        "title": "End-to-end story",
+        "folder": "09_end_to_end",
+        "description": "Title, input, radios, checkbox, formula, SVG, button and remote Source together.",
+        "explanation": "The acceptance page of the 0.2.0 plan: setters after the controls, live editing, a radio pair, a formula and controller driving text and SVG, a counting button, a remote branch and freeze."
+      }
+    ]
   }
 ]

@@ -6,6 +6,7 @@ import asyncio
 import json
 import mimetypes
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -18,29 +19,40 @@ from gramlot_uvicorn import create_asgi_application
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLES = ROOT / "examples"
 RUNNER = EXAMPLES / "00-runner"
-HTML_SVG = EXAMPLES / "html_svg"
 THEME = ROOT / "themes" / "gramlot-base" / "theme.css"
 
 
 def page_files():
-    """Explicit route registry; numbering and hyphens stay in source paths."""
+    """Explicit route registry; catalog keys name the routes of the example file pages.
+
+    The catalog lists the families; each family key is its folder below ``examples/``.
+    """
     pages = [("index", RUNNER / "page.py", RUNNER / "page.js")]
     catalog = json.loads((RUNNER / "catalog.json").read_text())
-    folders = [HTML_SVG / entry["folder"] for entry in catalog]
-    for entry, folder in zip(catalog, folders):
-        pages.append((entry["key"], folder / "page.py", folder / "page.js"))
+    for family in catalog:
+        folder = EXAMPLES / family["key"]
+        for entry in family["examples"]:
+            pages.append((entry["key"], folder / f"{entry['folder']}.py", folder / f"{entry['folder']}.js"))
     for _, py_file, js_file in pages:
         if not py_file.is_file() or not js_file.is_file():
             raise FileNotFoundError(f"Missing paired Page: {py_file} / {js_file}")
-    return pages, folders
+    return pages, catalog
 
 
 def stage_pages(directory: Path, pages):
+    """Stage one pages folder per language with a file page for each route.
+
+    A route whose example has a same-name stylesheet receives a copy of it as its
+    companion, so the minimal FileHost links it. The returned map serves each
+    companion URL from its original file. A same-name ``_aux.js`` logic companion
+    is copied the same way and served by the integration from the pages folder.
+    """
     python_dir = directory / "python"
     javascript_dir = directory / "javascript" / "js"
     python_dir.mkdir(parents=True)
     javascript_dir.mkdir(parents=True)
     (directory / "javascript" / "package.json").write_text('{"type":"module"}\n')
+    companions = {}
     for route, py_file, js_file in pages:
         wrapper = (
             "import importlib.util\n"
@@ -68,16 +80,28 @@ def stage_pages(directory: Path, pages):
                 "    }\n}\n"
             )
         (javascript_dir / f"{route}.js").write_text(js_wrapper)
-    return python_dir, directory / "javascript"
+        stylesheet = py_file.with_suffix(".css")
+        if route != "index" and stylesheet.is_file():
+            for folder, prefix in ((python_dir, "/py"), (javascript_dir, "/js")):
+                shutil.copyfile(stylesheet, folder / f"{route}.css")
+                companions[f"{prefix}/{route}.css"] = stylesheet
+        logic = py_file.with_name(f"{py_file.stem}_aux.js")
+        if route != "index" and logic.is_file():
+            for folder in (python_dir, javascript_dir):
+                shutil.copyfile(logic, folder / f"{route}_aux.js")
+    return python_dir, directory / "javascript", companions
 
 
 class RunnerApplication:
-    def __init__(self, python_pages: Path, node_url: str, folders):
+    def __init__(self, python_pages: Path, node_url: str, catalog, companions):
         self.python_host = create_asgi_application(python_pages, mount_path="/py")
         self.node_url = node_url
         allowed = {
+            **companions,
             "/themes/gramlot-base/theme.css": THEME,
+            "/py/themes/gramlot-base/theme.css": THEME,
             "/examples/00-runner/runner.css": RUNNER / "runner.css",
+            "/py/examples/00-runner/runner.css": RUNNER / "runner.css",
             "/examples/00-runner/page.py": RUNNER / "page.py",
             "/examples/00-runner/page.js": RUNNER / "page.js",
             "/assets/branding/gramlot-mark.png": ROOT / "assets" / "branding" / "gramlot-mark.png",
@@ -87,9 +111,11 @@ class RunnerApplication:
         }
         for name in ("runner.js", "frame.js", "notices.json", "LICENSE", "NOTICE"):
             allowed[f"/examples/00-runner/dist/{name}"] = RUNNER / "dist" / name
-        for folder in folders:
-            for name in ("page.py", "page.js", "style.css", "README.md"):
-                allowed[f"/examples/html_svg/{folder.name}/{name}"] = folder / name
+        for family in catalog:
+            for entry in family["examples"]:
+                for suffix in (".py", ".js", ".css", ".md", "_aux.js"):
+                    name = f"{entry['folder']}{suffix}"
+                    allowed[f"/examples/{family['key']}/{name}"] = EXAMPLES / family["key"] / name
         self.assets = allowed
 
     async def __call__(self, scope, receive, send):
@@ -183,9 +209,9 @@ def main():
     import uvicorn
 
     subprocess.run(["node", str(RUNNER / "build-browser.mjs")], cwd=ROOT, check=True)
-    pages, folders = page_files()
+    pages, catalog = page_files()
     with tempfile.TemporaryDirectory(prefix="gramlot-runner-") as temporary:
-        python_pages, javascript_pages = stage_pages(Path(temporary), pages)
+        python_pages, javascript_pages, companions = stage_pages(Path(temporary), pages)
         env = {**os.environ, "GRAMLOT_RUNNER_PAGES": javascript_pages.as_uri()}
         runtime = os.getenv("JS_RUNTIME", "node")
         if runtime not in {"node", "bun"}:
@@ -198,7 +224,7 @@ def main():
                 raise RuntimeError(f"{runtime} example host did not start")
             port = int(os.getenv("PORT", "8080"))
             print(f"Gramlot examples: http://127.0.0.1:{port}", flush=True)
-            uvicorn.run(RunnerApplication(python_pages, node_url, folders), host="127.0.0.1", port=port)
+            uvicorn.run(RunnerApplication(python_pages, node_url, catalog, companions), host="127.0.0.1", port=port)
         finally:
             node.terminate()
             node.wait(timeout=5)

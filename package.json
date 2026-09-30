@@ -8,7 +8,7 @@
     "dompurify": "3.4.16",
     "highlight.js": "^11.11.1",
     "marked": "^18.0.14",
-    "@jsr/genro__bag": "^0.5.3"
+    "@jsr/genro__bag": ">=0.10.0"
   },
   "devDependencies": {
     "esbuild": "0.28.2",

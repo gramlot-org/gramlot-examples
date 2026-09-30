@@ -13,6 +13,7 @@ export function mountRunner(renderer, root) {
     const set = (element, attrs) => node(element).setAttr(attrs);
     const keyboard = byId('keyboard-navigation');
     const theme = byId('runner-theme');
+    const families = [...shell.querySelectorAll('.runner-sidebar details')];
     const state = new Bag();
     const opened = new Bag();
     state.setItem('opened', opened);
@@ -53,6 +54,7 @@ export function mountRunner(renderer, root) {
             set(entry.tab, {hidden: false});
             if (entry.frame) set(entry.frame, {src: entry.open.getAttribute('href')});
         }
+        if (entry.family) set(entry.family, {open: true});
         for (const [current, item] of entries) {
             const active = current === key;
             set(item.tab, {aria_selected: String(active), tabindex: active && state.getItem('keyboard') ? 0 : -1});
@@ -89,12 +91,15 @@ export function mountRunner(renderer, root) {
             });
             if (key === 'intro') continue;
             renderReadme(byId(`readme-${key}`));
-            if (key === 'html_svg') continue;
+            entry.family = entry.open.closest('details');
+            if (entry.panel.classList.contains('runner-category')) continue;
             entry.frame = byId(`frame-${key}`);
             entry.split = byId(`split-${key}`);
             entry.handle = byId(`divider-${key}`);
             state.setItem(`ratio.${key}`, Number(entry.handle.getAttribute('aria-valuenow')));
             highlightCode(byId(`code-${key}`));
+            const logic = byId(`logic-${key}`);
+            if (logic) highlightCode(logic);
             listen(entry.frame, 'load', () => send(entry.frame));
             listen(entry.handle, 'keydown', event => {
                 const current = state.getItem(`ratio.${key}`);
@@ -123,6 +128,7 @@ export function mountRunner(renderer, root) {
         for (const type of ['pointerup', 'pointercancel']) listen(document, type, event => {
             if (drag && event.pointerId === drag.pointerId) stopDrag();
         });
+        for (const family of families) listen(family, 'toggle', () => set(family, {open: family.open}));
         listen(keyboard, 'change', () => {
             state.setItem('keyboard', keyboard.checked);
             set(keyboard, {checked: keyboard.checked});

@@ -4,7 +4,7 @@ from pathlib import Path
 from gramlot import Page as GramlotPage
 
 RUNNER = Path(__file__).resolve().parent
-EXAMPLES = json.loads((RUNNER / "catalog.json").read_text())
+FAMILIES = json.loads((RUNNER / "catalog.json").read_text())
 
 
 class Page(GramlotPage):
@@ -19,21 +19,23 @@ class Page(GramlotPage):
                   class_="runner-logo")
         brand.h1("Examples")
         navigation = sidebar.nav(aria_label="Examples").ul(class_="runner-list")
-        category = navigation.li()
-        category.a("HTML / SVG", id="open-html_svg", href="#panel-html_svg",
-                   aria_current=None, tabindex=-1)
-        examples_list = category.ul(class_="runner-list")
-        for example in EXAMPLES:
-            examples_list.li().a(example["title"], id=f"open-{example['key']}",
-                                href=example["key"], aria_current=None,
-                                tabindex=-1)
+        for family in FAMILIES:
+            category = navigation.li().details(open=family is FAMILIES[0])
+            category.summary(tabindex=-1).a(
+                family["title"], id=f"open-{family['key']}", href=f"#panel-{family['key']}",
+                class_="runner-family", aria_current=None, tabindex=-1)
+            examples_list = category.ul(class_="runner-list")
+            for example in family["examples"]:
+                examples_list.li().a(example["title"], id=f"open-{example['key']}",
+                                    href=example["key"], aria_current=None,
+                                    tabindex=-1)
         footer = sidebar.footer(class_="runner-keyboard")
-        label = footer.gramlot_label(for_="keyboard-navigation")
+        label = footer.html_label(for_="keyboard-navigation")
         label.input(type="checkbox", id="keyboard-navigation",
                     checked=False)
         label.span("Keyboard navigation")
         theme = sidebar.footer(class_="runner-theme")
-        theme.gramlot_label("Theme", for_="runner-theme")
+        theme.html_label("Theme", for_="runner-theme")
         choices = theme.select(id="runner-theme", value="light")
         choices.option("Light", value="light", selected=True)
         choices.option("Dark", value="dark", selected=False)
@@ -43,14 +45,12 @@ class Page(GramlotPage):
         tabs.button("Introduction", type="button", role="tab", id="tab-intro",
                     aria_controls="panel-intro",
                     aria_selected="true", tabindex=-1, hidden=False)
-        tabs.button("HTML / SVG", type="button", role="tab", id="tab-html_svg",
-                    aria_controls="panel-html_svg",
-                    aria_selected="false", tabindex=-1, hidden=True)
-        for example in EXAMPLES:
-            key = example["key"]
-            tabs.button(example["title"], type="button", role="tab", id=f"tab-{key}",
-                        aria_controls=f"panel-{key}",
-                        aria_selected="false", tabindex=-1, hidden=True)
+        for family in FAMILIES:
+            for item in (family, *family["examples"]):
+                key = item["key"]
+                tabs.button(item["title"], type="button", role="tab", id=f"tab-{key}",
+                            aria_controls=f"panel-{key}",
+                            aria_selected="false", tabindex=-1, hidden=True)
 
         panels = content.div(class_="runner-panels")
         intro = panels.section(id="panel-intro", class_="runner-intro", role="tabpanel",
@@ -62,25 +62,25 @@ class Page(GramlotPage):
                 "Enable Keyboard navigation in the sidebar to move through tabs by keyboard. "
                 "The vertical divider resizes the preview and code.")
 
-        category_panel = panels.section(id="panel-html_svg", class_="runner-category",
-                                        role="tabpanel",
-                                        aria_labelledby="tab-html_svg", hidden=True)
-        category_panel.div((RUNNER.parent / "html_svg" / "README.md").read_text(),
-                           id="readme-html_svg")
-
-        for example in EXAMPLES:
-            self.panel(panels, example)
+        for family in FAMILIES:
+            key = family["key"]
+            category_panel = panels.section(id=f"panel-{key}", class_="runner-category",
+                                            role="tabpanel",
+                                            aria_labelledby=f"tab-{key}", hidden=True)
+            category_panel.div((RUNNER.parent / key / "README.md").read_text(),
+                               id=f"readme-{key}")
+            for example in family["examples"]:
+                self.panel(panels, example, RUNNER.parent / key)
         shell.script(src="/examples/00-runner/dist/runner.js")
 
-    def panel(self, parent, example):
+    def panel(self, parent, example, examples):
         key = example["key"]
         panel = parent.section(id=f"panel-{key}", class_="runner-panel", role="tabpanel",
                                aria_labelledby=f"tab-{key}", hidden=True)
-        folder = RUNNER.parent / "html_svg" / example["folder"]
         explanation = panel.header(class_="runner-explanation")
-        explanation.div((folder / "README.md").read_text(),
+        explanation.div((examples / f"{example['folder']}.md").read_text(),
                         id=f"readme-{key}")
-        source_path = folder / "page.py"
+        source_path = examples / f"{example['folder']}.py"
 
         split = panel.div(class_="runner-split", id=f"split-{key}",
                           style="--split-position: 65%")
@@ -92,6 +92,11 @@ class Page(GramlotPage):
                   aria_label="Resize preview and code", aria_valuemin=20,
                   aria_valuemax=80, aria_valuenow=65)
         codepane = split.div(class_="runner-codepane", id=f"codepane-{key}")
-        codepane.h3("Python · page.py")
+        codepane.h3(f"Python · {source_path.name}")
         codepane.pre().code(source_path.read_text(), class_="language-python",
                             id=f"code-{key}")
+        logic_path = examples / f"{example['folder']}_aux.js"
+        if logic_path.is_file():
+            codepane.h3(f"Companion · {logic_path.name}")
+            codepane.pre().code(logic_path.read_text(), class_="language-javascript",
+                                id=f"logic-{key}")

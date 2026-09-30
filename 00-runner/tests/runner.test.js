@@ -12,10 +12,13 @@ function fixture() {
     const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://runner.test/py/index'}).window.document;
     class Page extends RunnerPage {
         static logoUrl = '/logo.svg';
-        static categoryReadme = '# HTML / SVG';
-        static exampleContent = ['e01', 'e02'].map(key => ({key, title: key, frameUrl: key,
-            readme: '# Example\n\n**Description** <script>bad()</script><img onerror="bad()"> [bad](javascript:alert(3))',
-            source: 'def hello():\n    return "<script>bad()</script>"'}));
+        static families = [{key: 'html_svg', title: 'HTML / SVG', readme: '# HTML / SVG',
+            examples: ['e01', 'e02'].map(key => ({key, title: key, frameUrl: key,
+                readme: '# Example\n\n**Description** <script>bad()</script><img onerror="bad()"> [bad](javascript:alert(3))',
+                source: 'def hello():\n    return "<script>bad()</script>"', logic: null}))},
+        {key: 'controllers', title: 'Controllers', readme: '# Controllers',
+            examples: [{key: 'c01', title: 'c01', frameUrl: 'c01', readme: '# Named', source: 'x = 1',
+                logic: 'export class Logic { total(kwargs) { return "<b>"; } }'}]}];
     }
     const builder = new GramlotBuilder();
     new Page().main(builder.root);
@@ -53,6 +56,53 @@ test('ordinary IDs connect local tab events; Source owns selection and lazy fram
     f.app.dispose();
 });
 
+test('each family has its own category panel; a companion module is shown beside the page code', () => {
+    const f = fixture();
+    assert.deepEqual([...f.document.querySelectorAll('.runner-family')].map(link => link.id), ['open-html_svg', 'open-controllers']);
+    f.get('open-controllers').click();
+    assert.equal(f.get('panel-controllers').hidden, false);
+    assert.equal(f.get('panel-html_svg').hidden, true);
+    assert.equal(f.get('panel-controllers').querySelector('iframe'), null);
+    assert.equal(f.get('readme-controllers').querySelector('h1').textContent, 'Controllers');
+    assert.equal(f.get('logic-e01'), null);
+    assert.match(f.get('logic-c01').textContent, /return "<b>";/);
+    assert.equal(f.get('logic-c01').querySelector('b'), null);
+    assert.ok(f.get('logic-c01').classList.contains('hljs'));
+    f.get('open-c01').click();
+    assert.equal(f.get('frame-c01').getAttribute('src'), 'c01');
+    f.app.dispose();
+});
+
+test('each family is a native details; the first starts open and selecting an example opens its family', async () => {
+    const f = fixture();
+    const families = [...f.document.querySelectorAll('.runner-sidebar nav > .runner-list > li > details')];
+    const open = details => f.renderer.elements.get(details).node.getAttr('open');
+    const toggled = details => new Promise(resolve => details.addEventListener('toggle', resolve, {once: true}));
+    assert.deepEqual(families.map(details => details.querySelector(':scope > summary > .runner-family').id),
+        ['open-html_svg', 'open-controllers']);
+    assert.deepEqual(families.map(details => details.querySelectorAll(':scope > .runner-list > li > a').length), [2, 1]);
+    assert.deepEqual(families.map(details => details.open), [true, false]);
+    const opening = toggled(families[1]);
+    f.get('open-controllers').click();
+    await opening;
+    assert.equal(f.get('panel-controllers').hidden, false);
+    assert.equal(families[1].open, true, 'the family link opens its family');
+    const closingLinked = toggled(families[1]);
+    families[1].querySelector('summary').click();
+    await closingLinked;
+    assert.equal(families[1].open, false);
+    const closing = toggled(families[0]);
+    families[0].querySelector('summary').click();
+    await closing;
+    assert.equal(families[0].open, false);
+    assert.equal(open(families[0]), false);
+    f.get('open-c01').click();
+    assert.equal(families[1].open, true);
+    assert.equal(open(families[1]), true);
+    assert.equal(families[0].open, false, 'other families keep their state');
+    f.app.dispose();
+});
+
 test('local README and code views preserve literal code and sanitize Markdown', () => {
     const f = fixture();
     assert.equal(f.get('readme-e01').querySelector('h1').textContent, 'Example');
@@ -70,12 +120,14 @@ test('keyboard navigation is opt-in and cycles through opened tabs', () => {
     assert.equal(f.get('panel-e02').hidden, false);
     f.get('keyboard-navigation').click();
     assert.equal(f.source('keyboard-navigation').getAttr('checked'), true);
+    assert.deepEqual([...f.document.querySelectorAll('.runner-sidebar summary')].map(summary => summary.tabIndex), [-1, -1], 'the family link is the only tab stop of a family');
     key(f, 'tab-e02', 'Home');
     assert.equal(f.document.activeElement, f.get('tab-intro'));
     key(f, 'tab-intro', 'ArrowLeft');
     assert.equal(f.document.activeElement, f.get('tab-e02'));
     f.get('keyboard-navigation').click();
     assert.equal(f.get('open-e01').tabIndex, -1);
+    assert.deepEqual([...f.document.querySelectorAll('.runner-sidebar summary')].map(summary => summary.tabIndex), [-1, -1]);
     f.app.dispose();
 });
 

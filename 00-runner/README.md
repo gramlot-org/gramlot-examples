@@ -8,8 +8,9 @@ example iframes load on their first opening.
 
 The serving integration determines the source language. `/py/index` hosts Python
 examples; `/js/index` hosts JavaScript examples. Relative iframe URLs stay under
-the same integration. There is no language picker. The HTML / SVG category
-opens its own README; its thirteen examples are nested below it in the sidebar.
+the same integration. There is no language picker. The three families HTML / SVG,
+Binding and Controllers each open their own README; their examples are nested below
+them in the sidebar.
 
 ## Run locally
 
@@ -33,18 +34,24 @@ main and Source contracts; the launcher supplies only static files and local
 request forwarding. The theme is served from `/themes/gramlot-base/theme.css`.
 
 The launcher first builds the runner browser scripts, then creates a temporary
-registry of tiny modules named `index` and `e01`–`e13`. They import the original
-Page. Example wrappers append the runner-owned frame-theme script through an
+registry of tiny modules named `index`, `e01`–`e13` (HTML / SVG), `b01`–`b11`
+(Binding) and `c01`–`c09` (Controllers). They import the original Page. Example wrappers append the runner-owned frame-theme script through an
 ordinary Source `script` element; the teaching pages themselves are unchanged.
-The folders retain descriptive names even though the standard Host file loaders
-accept only identifier-like route segments. The temporary directory disappears
-when the runner stops.
+The example files keep their descriptive names (`06_forms.py`); the routes are the
+catalogue keys. An example with a same-name stylesheet (`06_forms.css`) gets a copy
+beside its wrapper, so the minimal `FileHost` links it as the page companion, and the
+launcher serves it at `/py/e06.css` and `/js/e06.css`. An example with a logic
+companion (`03_named_logic_aux.js`) gets a copy named after its route (`c03_aux.js`);
+the Uvicorn and Node.js integrations serve it from their pages folder, and the page
+bootstrap registers its `Logic` as the root group. The temporary directory
+disappears when the runner stops.
 
 ## Current limits
 
 The code pane shows the original Python or JavaScript module, read by the host and
-delivered as Gramlot Source text. The README is read from the example directory
-and rendered by the runner-local sanitized Markdown helper.
+delivered as Gramlot Source text, followed by the logic companion when the example
+has one. The README is the example's same-name `.md` file,
+rendered by the runner-local sanitized Markdown helper.
 The JavaScript UI lives in `runner-page.js` and accepts the category README and
 each example's title, README and source text from its Page subclass. The local
 Node host supplies those texts in `page.js` along with explicit frame and logo URLs;
@@ -87,15 +94,20 @@ npm --prefix examples test
 npm --prefix examples run build:runner
 ```
 
-`catalog.json` contains titles and teaching summaries shared by both runner pages;
-it is content metadata, not a second UI representation. Full examples stay in
-their own directories with their READMEs.
+`catalog.json` lists the families (`html_svg`, `binding`, `controllers`) and, for
+each, the titles and teaching summaries shared by both runner pages; it is content
+metadata, not a second UI representation. A family key is its folder below
+`examples/`, where the examples stay as file pages with their same-name README.
 
 The approved Gramlot logo heads the sidebar. The Light/Dark selector at its bottom
 applies to the runner and to all loaded or subsequently opened example iframes.
 
-Examples are nested under their HTML / SVG category. Selecting the category
-opens its folder README without an iframe. Example panels start with a 65/35
+Examples are nested under their family. Selecting a family opens its folder README
+without an iframe. Each family is a native `details`: its `summary` holds the family
+link, and the marker beside the link opens and closes the family. The page starts
+with the first family open. Selecting a family or one of its examples opens the family; the other
+families keep their state. With Keyboard navigation enabled the family link is the
+only tab stop of a family; the marker takes no focus. Example panels start with a 65/35
 preview/source split and preserve the adjusted proportion when switching tabs.
 
 To run the JavaScript host with Bun installed locally:
@@ -119,8 +131,8 @@ node examples/00-runner/build-standalone.mjs
 ```
 
 Open `build/examples-standalone/index.html` directly in the browser. Keep the
-whole exported directory together. It contains the runner, thirteen example
-HTML documents, bundled Worker text and all local styles and assets. Classic
+whole exported directory together. It contains the runner with the HTML / SVG
+family only, thirteen example HTML documents, bundled Worker text and all local styles and assets. Classic
 scripts start Blob Workers without fetching source: each JavaScript Page runs
 through Gramlot's ordinary Page/main path. No server or external CDN is required.
 Relative asset paths and an explicit export root preserve the Page.css declarations.
@@ -131,7 +143,9 @@ The exporter requires a new destination; choose another output path for a second
 build or remove only a previously generated export before rebuilding.
 The standalone runner shares `runner-page.js` with the Node/Bun integration;
 README and original source text are supplied when packaging, without executing
-the Page at build time. Python examples remain hosted Python pages.
+the Page at build time. Python examples remain hosted Python pages. The Binding and
+Controllers families stay out of the export: their pages need a host that serves
+the logic companion and answers `remoteSource`, which the standalone core does not.
 
 Standalone startup and Worker communication belong to gramlot-serverless. The export
 requires matching development core and Serverless packages; published 0.1.0 archives
