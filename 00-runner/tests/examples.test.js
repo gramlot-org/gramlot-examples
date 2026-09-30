@@ -1,9 +1,16 @@
 import assert from 'node:assert/strict';
 import {existsSync, readFileSync} from 'node:fs';
 import test from 'node:test';
+import {createRequire} from 'node:module';
+import {pathToFileURL} from 'node:url';
 import {JSDOM, VirtualConsole} from 'jsdom';
-import {Gramlot} from '../../../js/src/gramlot.js';
-import {sourceMethod} from '../../../js/src/adapters/page.js';
+
+// The core as the example pages resolve it (`examples/node_modules/@gramlot/native-html`: a symlink to
+// `js/` locally, a copy in CI with `--install-links`): one module instance, so the `@source` markers of
+// the pages are the ones `sourceMethod` reads.
+const fromExamples = createRequire(new URL('../../package.json', import.meta.url));
+const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/native-html')).href);
+const {sourceMethod} = await import(pathToFileURL(fromExamples.resolve('@gramlot/native-html/page')).href);
 
 const families = JSON.parse(readFileSync(new URL('../catalog.json', import.meta.url), 'utf8'));
 const folder = key => new URL(`../../${key}/`, import.meta.url);
