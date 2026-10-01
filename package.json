@@ -3,8 +3,8 @@
   "type": "module",
   "dependencies": {
     "@gramlot/gramlot": "file:../js",
-    "gramlot-js-server": "file:../../gramlot-js-server",
-    "@gramlot/serverless": "file:../../gramlot-serverless",
+    "@gramlot/gramlot-js-server": "file:../../gramlot-js-server/server",
+    "@gramlot/gramlot-serverless": "file:../../gramlot-js-server/serverless",
     "dompurify": "3.4.16",
     "highlight.js": "^11.11.1",
     "marked": "^18.0.14",
