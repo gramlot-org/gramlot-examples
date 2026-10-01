@@ -1,9 +1,9 @@
 /** Node host for the local runner; the Python launcher owns the public port. */
 import {fileURLToPath} from 'node:url';
-import {startNativeServer} from '@gramlot/gramlot-js-server/native';
+import {startServer} from '@gramlot/gramlot-js-server/node';
 
 const pages = fileURLToPath(new URL(process.env.GRAMLOT_RUNNER_PAGES));
-const app = await startNativeServer({
+const app = await startServer({
     pages,
     port: 0,
     runtimeUrl: '/js/assets/gramlot.js',

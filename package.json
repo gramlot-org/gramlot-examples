@@ -4,7 +4,7 @@
   "dependencies": {
     "@gramlot/gramlot": "file:../js",
     "@gramlot/gramlot-js-server": "file:../../gramlot-js-server/server",
-    "@gramlot/gramlot-serverless": "file:../../gramlot-js-server/serverless",
+    "@gramlot/gramlot-browser": "file:../../gramlot-js-server/browser",
     "dompurify": "3.4.16",
     "highlight.js": "^11.11.1",
     "marked": "^18.0.14",
