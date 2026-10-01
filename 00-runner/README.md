@@ -15,8 +15,8 @@ them in the sidebar.
 ## Run locally
 
 Use Python 3.11 or newer and Node.js 22 or newer. From the Gramlot repository
-root, with the current sibling `gramlot-uvicorn`, `gramlot-serverless` and
-`gramlot-js-server` checkouts present:
+root, with the current sibling `gramlot-uvicorn` and `gramlot-js-server` checkouts
+present:
 
 ```sh
 python3 -m venv .venv
@@ -147,6 +147,7 @@ the Page at build time. Python examples remain hosted Python pages. The Binding 
 Controllers families stay out of the export: their pages need a host that serves
 the logic companion and answers `remoteSource`, which the standalone core does not.
 
-Standalone startup and Worker communication belong to gramlot-serverless. The export
-requires matching development core and Serverless packages; published 0.1.0 archives
+Standalone startup and Worker communication belong to `@gramlot/gramlot-browser`
+(`gramlot-js-server/browser`). The export requires matching development core and
+browser packages; published 0.1.0 archives
 are unchanged. The runner owns only its provisional UI behavior.
