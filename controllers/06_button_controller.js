@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const KEYS = "[button_shift && 'Shift', button_ctrl && 'Ctrl', button_alt && 'Alt', button_meta && 'Meta']" +
     ".filter(Boolean).join('+') || 'none'";

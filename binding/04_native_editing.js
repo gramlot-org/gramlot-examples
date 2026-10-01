@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const FIELDS = [['Text', 'text', 'text'], ['Number', 'number', 'number'], ['Range', 'range', 'range'],
     ['Date', 'date', 'date'], ['Color', 'color', 'color']];

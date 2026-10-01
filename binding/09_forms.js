@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const RECORD = {name: 'Ada Lovelace', quantity: 3, accent: '#456bc4', intensity: 60,
     region: 'south', topics: ['html'], note: 'A native multiline field.', updates: true};

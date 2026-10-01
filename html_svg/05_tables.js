@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const ROWS = [['North', 12, 8], ['South', 9, 11], ['West', 15, 6]];
 

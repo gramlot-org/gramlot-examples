@@ -1,4 +1,4 @@
-import {Bag} from '@jsr/genro__bag';
+import {Bag} from '@genrojs/bag';
 import {highlightCode} from './code-highlight.js';
 import {renderReadme} from './markdown.js';
 import {THEME_READY, THEME_SET, THEMES} from './theme-messages.js';

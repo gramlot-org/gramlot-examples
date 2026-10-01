@@ -1,5 +1,5 @@
 /** A native HTML specimen built entirely with Gramlot Source. */
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Native HTML catalogue';

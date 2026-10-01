@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const REGIONS = [['North', 12, 'var(--gramlot-action)'], ['South', 9, 'var(--gramlot-warning)'], ['West', 15, 'var(--gramlot-success)']];
 

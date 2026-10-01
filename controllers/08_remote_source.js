@@ -1,4 +1,4 @@
-import {Page as BasePage, source} from '@gramlot/native-html/page';
+import {Page as BasePage, source} from '@gramlot/gramlot/page';
 
 const TOPICS = {
     binding: ['Binding', 'Pointers connect the DOM to the Data in both directions.'],

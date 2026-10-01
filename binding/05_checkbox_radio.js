@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const PLANS = [['basic', 'Basic'], ['plus', 'Plus'], ['team', 'Team']];
 

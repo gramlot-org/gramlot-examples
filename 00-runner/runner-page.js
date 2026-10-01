@@ -1,5 +1,5 @@
 /** Browser-safe runner UI authored with Gramlot Source. */
-import {Page as GramlotPage} from '@gramlot/native-html/page';
+import {Page as GramlotPage} from '@gramlot/gramlot/page';
 
 export class RunnerPage extends GramlotPage {
     static title = 'Gramlot examples';

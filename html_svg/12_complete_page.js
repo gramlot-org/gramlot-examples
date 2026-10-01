@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const SESSIONS = [
     ['09:00', 'A first Source tree', 'Mira', 'Describe a page with semantic HTML.'],

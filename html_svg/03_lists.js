@@ -1,4 +1,4 @@
-import {Page as BasePage} from '@gramlot/native-html/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const STEPS = ['Describe a page with Source', 'Add native HTML elements', 'Review the rendered document'];
 const TERMS = [['Source', 'The declared structure of a page.'], ['Data', 'A separate home for application state.']];
