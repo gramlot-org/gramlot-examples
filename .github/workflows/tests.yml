@@ -43,32 +43,6 @@ jobs:
         run: bun test js/tests
       - name: Build runner scripts
         run: npm run build:runner
-      - name: Build standalone runner
-        run: npm run build:standalone
-
-  python:
-    name: Python ${{ matrix.python-version }}
-    # Enable when gramlot-py-server is published on PyPI: serve.py imports gramlot_py_server.uvicorn.
-    if: false
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.11", "3.12"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Install runner dependencies
-        run: npm install --ignore-scripts --package-lock=false
-      - name: Install Python dependencies
-        run: python -m pip install '.[test]'
-      - name: Test the Python launcher
-        run: python -m pytest runner/tests
 
   core-main:
     name: JavaScript against gramlot main (informative)

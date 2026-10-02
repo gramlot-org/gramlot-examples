@@ -3,8 +3,6 @@
   "type": "module",
   "dependencies": {
     "@gramlot/gramlot": ">=0.2.2",
-    "@gramlot/gramlot-js-server": ">=0.2.1",
-    "@gramlot/gramlot-browser": ">=0.2.1",
     "dompurify": "3.4.16",
     "highlight.js": "^11.11.1",
     "marked": "^18.0.14",
@@ -16,7 +14,6 @@
   },
   "scripts": {
     "build:runner": "node runner/build-browser.mjs",
-    "test": "node --test runner/tests/*.test.js",
-    "build:standalone": "node runner/build-standalone.mjs"
+    "test": "node --test runner/tests/*.test.js"
   }
 }
