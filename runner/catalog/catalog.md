@@ -4,7 +4,7 @@
 
 The runner opens this catalogue first. `catalog.py` and `catalog.js` build equivalent Gramlot Source trees using the same HTML grammar and shared `/themes/gramlot-base/theme.css`. The same-name stylesheet `catalog.css` keeps the open, nonmodal dialog in the specimen card. The page contains static content and browser-native controls. It has no event handlers, direct DOM construction, fetch calls, or parallel state. Reset and `<details>` use built-in browser behavior; submission is disabled. The two page variants are separate authoring-language examples, not two scripts running on the same page.
 
-The catalogue is a specimen of the **current grammar**, not a claim that all elements are Gramlot components. The grammar source is [`src/gramlot/collections/html5.json`](../../../src/gramlot/collections/html5.json). Python and JavaScript Source nodes expose `label` as a node property, so the documented dialect-prefix method `html_label(...)` authors the HTML `<label>` element. The same prefix is used for `<data>`.
+The catalogue is a specimen of the **current grammar**, not a claim that all elements are Gramlot components. The grammar source is [`src/gramlot/collections/html5.json`](https://github.com/gramlot-org/gramlot/blob/main/src/gramlot/collections/html5.json). Python and JavaScript Source nodes expose `label` as a node property, so the documented dialect-prefix method `html_label(...)` authors the HTML `<label>` element. The same prefix is used for `<data>`.
 
 ## Coverage inventory
 

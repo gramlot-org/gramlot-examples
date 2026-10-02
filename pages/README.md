@@ -1,6 +1,6 @@
 # Local Gramlot examples
 
-The [runner](00-runner/README.md) presents the same examples in Python and
+The [runner](../docs/010-runner.md) presents the same examples in Python and
 JavaScript, in three families:
 
 - [`html_svg/`](html_svg/): thirteen HTML and SVG pages, without binding.
@@ -16,7 +16,7 @@ its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css` a
 logic companion `NN_name_aux.js`. The runner uses only what the minimal `FileHost`
 serves: `Page.css`, the same-name companions and the companion's root logic group.
 
-This directory is development material. It runs against the current Gramlot
-checkout and the local Uvicorn and Node.js integration checkouts; it is not a
-published application or a package release. Shared visual styling lives in
-[`../themes/gramlot-base/`](../themes/gramlot-base/).
+The pages run against the published packages `@gramlot/gramlot`,
+`@gramlot/gramlot-js-server` and `gramlot-py-server`. Shared visual styling is the
+`gramlot-base` theme shipped in `@gramlot/gramlot`, served by the runner at
+`/themes/gramlot-base/theme.css`.

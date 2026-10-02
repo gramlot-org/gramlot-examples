@@ -1,5 +1,8 @@
 # Local example runner
 
+<!-- Document ID: GE-010 -->
+<a id="ge-010-005"></a>
+
 A short introduction opens first, with no example frame. A compact title list sits
 on the left. Selecting a title opens or reactivates its own tab on the right. Each
 panel renders the example's README above a resizable preview and the actual source code.
@@ -12,26 +15,30 @@ the same integration. There is no language picker. The three families HTML / SVG
 Binding and Controllers each open their own README; their examples are nested below
 them in the sidebar.
 
-## Run locally
+<a id="ge-010-010"></a>
 
-Use Python 3.11 or newer and Node.js 22 or newer. From the Gramlot repository
-root, with the current sibling `gramlot-uvicorn` and `gramlot-js-server` checkouts
-present:
+## 010 · Run locally
+
+Use Python 3.11 or newer and Node.js 22 or newer. From the root of this repository:
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install -e . -e '../gramlot-uvicorn[uvicorn]'
-npm --prefix js install --no-package-lock
-npm --prefix js run build
-npm --prefix examples install --install-links --no-package-lock
-.venv/bin/python examples/00-runner/serve.py
+.venv/bin/python -m pip install -e '.[test]'
+npm install --no-package-lock
+.venv/bin/python runner/serve.py
 ```
+
+The Python dependencies are `gramlot` and `gramlot-py-server[uvicorn]`; the
+JavaScript dependencies are `@gramlot/gramlot`, `@gramlot/gramlot-js-server` and
+`@gramlot/gramlot-browser`, all from the public registries.
 
 Open <http://127.0.0.1:8080/>. Set `PORT` to use another local port. The
 launcher starts one public Uvicorn address and an internal Node.js listener.
-The local Node adapter and Python Uvicorn adapter keep their own normal Page,
+The Node adapter and Python Uvicorn adapter keep their own normal Page,
 main and Source contracts; the launcher supplies only static files and local
-request forwarding. The theme is served from `/themes/gramlot-base/theme.css`.
+request forwarding. The theme is served from `/themes/gramlot-base/theme.css` and
+the logo from `/assets/branding/`; both are read from the installed
+`@gramlot/gramlot` package (0.2.2 or later).
 
 The launcher first builds the runner browser scripts, then creates a temporary
 registry of tiny modules named `index`, `e01`–`e13` (HTML / SVG), `b01`–`b11`
@@ -46,25 +53,39 @@ the Uvicorn and Node.js integrations serve it from their pages folder, and the p
 bootstrap registers its `Logic` as the root group. The temporary directory
 disappears when the runner stops.
 
-## Current limits
+To run the JavaScript host with Bun installed locally:
+
+```sh
+JS_RUNTIME=bun PORT=8092 .venv/bin/python runner/serve.py
+```
+
+Open `http://127.0.0.1:8092/js/index`. Bun executes the JavaScript integration;
+the development launcher still serves shared assets and forwards requests through
+its public Uvicorn address. `JS_RUNTIME=node` is the default.
+
+<a id="ge-010-015"></a>
+
+## 015 · Current limits
 
 The code pane shows the original Python or JavaScript module, read by the host and
 delivered as Gramlot Source text, followed by the logic companion when the example
 has one. The README is the example's same-name `.md` file,
 rendered by the runner-local sanitized Markdown helper.
-The JavaScript UI lives in `runner-page.js` and accepts the category README and
-each example's title, README and source text from its Page subclass. The local
-Node host supplies those texts in `page.js` along with explicit frame and logo URLs;
+The JavaScript UI lives in `runner/runner-page.js` and accepts the category README and
+each example's title, README and source text from its Page subclass. The
+Node host supplies those texts in `runner/page.js` along with explicit frame and logo URLs;
 the UI module has no filesystem API.
 An in-page Inspector launcher awaits a shared Gramlot component and is not
 emulated by this runner. Python pages run only through the Python host; JavaScript
 pages run through the Node host.
 
-## Provisional runner behavior
+<a id="ge-010-020"></a>
+
+## 020 · Provisional runner behavior
 
 The runner uses ordinary Source-authored HTML and explicit element IDs, such as
 `open-e01`, `tab-e01`, `panel-e01`, `divider-e01` and `runner-theme`. Its own
-`browser/` JavaScript connects events to those IDs. There are no special tab,
+`runner/browser/` JavaScript connects events to those IDs. There are no special tab,
 split, Markdown or theme markers interpreted by Gramlot core.
 
 A page-local Bag holds active/open tabs, keyboard preference, theme and split
@@ -80,24 +101,18 @@ preview width and remain within 20–80%. The theme selector updates the runner 
 its owned example frames. Frame scripts accept only the parent window's light/dark
 messages, including direct-file exports. No theme listener is installed by core.
 
-`build-browser.mjs` bundles these helpers and their dependencies into `dist/`,
-alongside license notices. Both the launcher and standalone builder run it.
-The JSR core package excludes this provisional runner implementation. Future web
-components may replace it after their API is explicitly approved; no such API is
-introduced here. This bounded page-local exception is recorded in constitution
-11.44 and does not change the application authoring rules elsewhere.
+`runner/build-browser.mjs` bundles these helpers and their dependencies into
+`runner/dist/`, alongside license notices. Both the launcher and standalone builder
+run it. Future web components may replace it after their API is explicitly approved;
+no such API is introduced here. This bounded page-local exception is recorded in
+amendment 11.44 of the
+[Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md)
+and does not change the application authoring rules elsewhere.
 
-Run the runner checks separately from core:
-
-```sh
-npm --prefix examples test
-npm --prefix examples run build:runner
-```
-
-`catalog.json` lists the families (`html_svg`, `binding`, `controllers`) and, for
+`runner/catalog.json` lists the families (`html_svg`, `binding`, `controllers`) and, for
 each, the titles and teaching summaries shared by both runner pages; it is content
 metadata, not a second UI representation. A family key is its folder below
-`examples/`, where the examples stay as file pages with their same-name README.
+`pages/`, where the examples stay as file pages with their same-name README.
 
 The approved Gramlot logo heads the sidebar. The Light/Dark selector at its bottom
 applies to the runner and to all loaded or subsequently opened example iframes.
@@ -110,24 +125,40 @@ families keep their state. With Keyboard navigation enabled the family link is t
 only tab stop of a family; the marker takes no focus. Example panels start with a 65/35
 preview/source split and preserve the adjusted proportion when switching tabs.
 
-To run the JavaScript host with Bun installed locally:
+<a id="ge-010-025"></a>
+
+## 025 · Checks
 
 ```sh
-JS_RUNTIME=bun PORT=8092 .venv/bin/python examples/00-runner/serve.py
+npm test
+bun test runner/tests
+.venv/bin/python -m pytest runner/tests
+npm run build:runner
 ```
 
-Open `http://127.0.0.1:8092/js/index`. Bun executes the JavaScript integration;
-the development launcher still serves shared assets and forwards requests through
-its public Uvicorn address. `JS_RUNTIME=node` is the default.
+`runner/tests/examples.test.js` mounts every JavaScript page in jsdom and checks one
+behaviour of each; `runner/tests/runner.test.js` checks the runner UI;
+`runner/tests/server.test.js` starts `runner/server.mjs` and requests `/js/index` and
+`/js/e01`. `runner/tests/test_serve.py` starts `runner/serve.py` and requests `/py/e01`
+and `/js/e01`; it is skipped while `gramlot-py-server` is not installed.
 
-## Standalone directory
-
-Build the core runtime and refresh the example dependencies, then export:
+Two browser checks use an already installed Playwright and Chrome:
 
 ```sh
-npm --prefix js run build
-npm --prefix examples install --install-links --no-package-lock
-node examples/00-runner/build-standalone.mjs
+node scripts/verify_examples_browser.mjs http://127.0.0.1:8080 PLAYWRIGHT_ENTRY CHROME [OUTPUT]
+node scripts/verify_standalone_runner.mjs file:///path/to/examples-standalone/ PLAYWRIGHT_ENTRY CHROME
+```
+
+The first drives a running launcher through both integrations; the second opens a
+standalone export through direct file URLs with the browser offline.
+
+<a id="ge-010-030"></a>
+
+## 030 · Standalone directory
+
+```sh
+npm install --no-package-lock
+npm run build:standalone
 ```
 
 Open `build/examples-standalone/index.html` directly in the browser. Keep the
@@ -138,16 +169,15 @@ through Gramlot's ordinary Page/main path. No server or external CDN is required
 Relative asset paths and an explicit export root preserve the Page.css declarations.
 The directory may also be served by an ordinary static HTTP server.
 
-An optional argument to `build-standalone.mjs` selects the destination directory.
+An optional argument to `runner/build-standalone.mjs` selects the destination directory.
 The exporter requires a new destination; choose another output path for a second
 build or remove only a previously generated export before rebuilding.
-The standalone runner shares `runner-page.js` with the Node/Bun integration;
+The standalone runner shares `runner/runner-page.js` with the Node/Bun integration;
 README and original source text are supplied when packaging, without executing
 the Page at build time. Python examples remain hosted Python pages. The Binding and
 Controllers families stay out of the export: their pages need a host that serves
 the logic companion and answers `remoteSource`, which the standalone core does not.
 
-Standalone startup and Worker communication belong to `@gramlot/gramlot-browser`
-(`gramlot-js-server/browser`). The export requires matching development core and
-browser packages; published 0.1.0 archives
-are unchanged. The runner owns only its provisional UI behavior.
+Standalone startup and Worker communication belong to `@gramlot/gramlot-browser`,
+published from the `gramlot-js-server` repository. The runner owns only its
+provisional UI behavior.
