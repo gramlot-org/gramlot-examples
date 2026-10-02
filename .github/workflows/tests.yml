@@ -1,0 +1,96 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  javascript:
+    name: JavaScript (${{ matrix.runtime }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime: [node, bun]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - if: matrix.runtime == 'bun'
+        uses: oven-sh/setup-bun@v2
+      - name: Install runner dependencies
+        run: npm install --ignore-scripts --package-lock=false
+      - name: Install hello-world dependencies
+        run: npm --prefix apps/hello-world install --ignore-scripts --package-lock=false
+      - name: Test runner and pages with Node
+        if: matrix.runtime == 'node'
+        run: npm test
+      - name: Test hello-world with Node
+        if: matrix.runtime == 'node'
+        run: npm --prefix apps/hello-world test
+      - name: Test runner and pages with Bun
+        if: matrix.runtime == 'bun'
+        run: bun test runner/tests
+      - name: Test hello-world with Bun
+        if: matrix.runtime == 'bun'
+        working-directory: apps/hello-world
+        run: bun test js/tests
+      - name: Build runner scripts
+        run: npm run build:runner
+      - name: Build standalone runner
+        run: npm run build:standalone
+
+  python:
+    name: Python ${{ matrix.python-version }}
+    # Enable when gramlot-py-server is published on PyPI: serve.py imports gramlot_py_server.uvicorn.
+    if: false
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install runner dependencies
+        run: npm install --ignore-scripts --package-lock=false
+      - name: Install Python dependencies
+        run: python -m pip install '.[test]'
+      - name: Test the Python launcher
+        run: python -m pytest runner/tests
+
+  core-main:
+    name: JavaScript against gramlot main (informative)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out the gramlot core
+        uses: actions/checkout@v4
+        with:
+          repository: gramlot-org/gramlot
+          ref: main
+          path: core
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build the core
+        run: |
+          npm --prefix core/js install --ignore-scripts --package-lock=false
+          npm --prefix core/js run build
+      - name: Install runner dependencies with the core from main
+        run: npm install --ignore-scripts --package-lock=false --no-save --install-links ./core/js
+      - name: Test runner and pages
+        run: npm test
