@@ -154,5 +154,5 @@ jobs:
           if npm view "@gramlot/gramlot-examples@$version" version >/dev/null 2>&1; then
             echo "@gramlot/gramlot-examples@$version is already on npm"
           else
-            npm publish "$tarball" --access public
+            npm publish "./$tarball" --access public
           fi

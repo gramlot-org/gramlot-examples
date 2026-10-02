@@ -98,7 +98,7 @@ npm run build:standalone
 ```
 
 Open `dist/hello-world.html` from disk. Node is used for packaging; no server is
-needed to open the result. `@gramlot/gramlot-browser` owns packaging; Gramlot owns Page,
+needed to open the result. `@gramlot/gramlot-serverless` owns packaging; Gramlot owns Page,
 WorkerHost and live Source. Python pages continue to require a Python server.
 The old Python standalone compiler and project TOML format are not used.
 
