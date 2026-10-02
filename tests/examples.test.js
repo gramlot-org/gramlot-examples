@@ -11,7 +11,7 @@ const fromExamples = createRequire(new URL('../package.json', import.meta.url));
 const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot')).href);
 const {sourceMethod} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/page')).href);
 
-const families = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
+const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
 
 /**

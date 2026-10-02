@@ -29,6 +29,7 @@ packages = ["src/gramlot_examples"]
 exclude = [
     "src/gramlot_examples/pages/**/*.js",
     "!src/gramlot_examples/pages/**/*_aux.js",
+    "src/gramlot_examples/index.js",
     "src/gramlot_examples/gallery/browser",
     "src/gramlot_examples/gallery/page.js",
     "src/gramlot_examples/gallery/gallery-page.js",

@@ -25,6 +25,7 @@
     "marked": "^18.0.14"
   },
   "exports": {
+    ".": "./src/gramlot_examples/index.js",
     "./catalog.json": "./src/gramlot_examples/catalog.json",
     "./pages/*": "./src/gramlot_examples/pages/*",
     "./gallery/*": "./src/gramlot_examples/gallery/*"
@@ -32,6 +33,7 @@
   "files": [
     "LICENSE",
     "NOTICE",
+    "src/gramlot_examples/index.js",
     "src/gramlot_examples/catalog.json",
     "src/gramlot_examples/pages/**/*.js",
     "src/gramlot_examples/pages/**/*.md",

@@ -1,18 +1,21 @@
 """The Python integration's example gallery, authored with Gramlot Source."""
-import json
-from pathlib import Path
 from gramlot import Page as GramlotPage
-
-GALLERY = Path(__file__).resolve().parent
-PAGES = GALLERY.parent / "pages"
-FAMILIES = json.loads((GALLERY.parent / "catalog.json").read_text())
+from gramlot_examples import build_gallery
 
 
 class Page(GramlotPage):
+    """The gallery page; an environment subclass sets ``catalogs`` as for ``build_gallery``."""
+
     title = "Gramlot examples"
     css = ("/themes/gramlot-base/theme.css", "/gallery/gallery.css")
+    catalogs = ()
+
+    @property
+    def families(self):
+        return build_gallery(self.catalogs)["families"]
 
     def main(self, root):
+        families = self.families
         shell = root.div(class_="gallery", id="gallery")
         sidebar = shell.aside(class_="gallery-sidebar")
         brand = sidebar.header()
@@ -20,8 +23,8 @@ class Page(GramlotPage):
                   class_="gallery-logo")
         brand.h1("Examples")
         navigation = sidebar.nav(aria_label="Examples").ul(class_="gallery-list")
-        for family in FAMILIES:
-            category = navigation.li().details(open=family is FAMILIES[0])
+        for family in families:
+            category = navigation.li().details(open=family is families[0])
             category.summary(tabindex=-1).a(
                 family["title"], id=f"open-{family['key']}", href=f"#panel-{family['key']}",
                 class_="gallery-family", aria_current=None, tabindex=-1)
@@ -46,7 +49,7 @@ class Page(GramlotPage):
         tabs.button("Introduction", type="button", role="tab", id="tab-intro",
                     aria_controls="panel-intro",
                     aria_selected="true", tabindex=-1, hidden=False)
-        for family in FAMILIES:
+        for family in families:
             for item in (family, *family["examples"]):
                 key = item["key"]
                 tabs.button(item["title"], type="button", role="tab", id=f"tab-{key}",
@@ -63,15 +66,15 @@ class Page(GramlotPage):
                 "Enable Keyboard navigation in the sidebar to move through tabs by keyboard. "
                 "The vertical divider resizes the preview and code.")
 
-        for family in FAMILIES:
+        for family in families:
             key = family["key"]
             category_panel = panels.section(id=f"panel-{key}", class_="gallery-category",
                                             role="tabpanel",
                                             aria_labelledby=f"tab-{key}", hidden=True)
-            category_panel.div((PAGES / key / "README.md").read_text(),
+            category_panel.div((family["path"] / "README.md").read_text(),
                                id=f"readme-{key}")
             for example in family["examples"]:
-                self.panel(panels, example, PAGES / key)
+                self.panel(panels, example, family["path"])
         shell.script(src="/gallery/dist/gallery.js")
 
     def panel(self, parent, example, examples):
