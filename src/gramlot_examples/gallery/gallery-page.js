@@ -7,14 +7,15 @@ export class GalleryPage extends GramlotPage {
     static css = ['/themes/gramlot-base/theme.css', '/gallery/gallery.css'];
 
     main(root) {
+        const families = this.constructor.families;
         const shell = root.div({class: 'gallery', id: 'gallery'});
         const sidebar = shell.aside({class: 'gallery-sidebar'});
         const brand = sidebar.header();
         brand.img({src: this.constructor.logoUrl, alt: 'Gramlot', class: 'gallery-logo'});
         brand.h1('Examples');
         const navigation = sidebar.nav({'aria-label': 'Examples'}).ul({class: 'gallery-list'});
-        for (const family of this.constructor.families) {
-            const category = navigation.li().details({open: family === this.constructor.families[0]});
+        for (const family of families) {
+            const category = navigation.li().details({open: family === families[0]});
             category.summary({tabindex: -1}).a(family.title, {id: `open-${family.key}`, href: `#panel-${family.key}`,
                 class: 'gallery-family', aria_current: null, tabindex: -1});
             const examplesList = category.ul({class: 'gallery-list'});
@@ -39,7 +40,7 @@ export class GalleryPage extends GramlotPage {
         tabs.button('Introduction', {type: 'button', role: 'tab', id: 'tab-intro',
             aria_controls: 'panel-intro',
             aria_selected: 'true', tabindex: -1, hidden: false});
-        for (const family of this.constructor.families) {
+        for (const family of families) {
             for (const {key, title} of [family, ...family.examples]) {
                 tabs.button(title, {type: 'button', role: 'tab', id: `tab-${key}`,
                     aria_controls: `panel-${key}`,
@@ -57,7 +58,7 @@ export class GalleryPage extends GramlotPage {
             'Enable Keyboard navigation in the sidebar to move through tabs by keyboard. ' +
             'The vertical divider resizes the preview and code.');
 
-        for (const family of this.constructor.families) {
+        for (const family of families) {
             const categoryPanel = panels.section({id: `panel-${family.key}`, class: 'gallery-category',
                 role: 'tabpanel',
                 aria_labelledby: `tab-${family.key}`, hidden: true});

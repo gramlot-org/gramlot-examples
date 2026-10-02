@@ -109,7 +109,9 @@ An environment serves the gallery with its own host and static-file mechanism:
    (`e06.css`, `c03_aux.js`): the core `FileHost` links them as same-name companions.
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
    environment catalogues, so the gallery lists the common families and its own.
-4. It serves every URL of `assets` with its media type.
+4. It serves every URL of `assets` with its media type. A host mounted under a prefix
+   that links `Page.css` under that prefix (`/py/themes/gramlot-base/theme.css`) serves
+   the stylesheet assets under the prefix too.
 
 The gallery page links each example by its key relative to the page URL, so the
 examples stay under the same mount (`/py/e01`, `/js/e01`). The development launcher

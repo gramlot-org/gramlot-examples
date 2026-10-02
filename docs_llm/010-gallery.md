@@ -54,7 +54,8 @@ Nothing is written or served.
    `script(src="/gallery/dist/frame.js")`.
 2. Copy `stylesheet` / `logic` beside it as `<key>.css`, `<key>_aux.js`.
 3. Stage `index` as a gallery page subclass with `catalogs`.
-4. Serve `assets` with their media types.
+4. Serve `assets` with their media types; a host that links `Page.css` under its mount
+   (`/py/themes/…`) serves the stylesheets under the mount too.
 
 Earlier launcher and export (`runner/serve.py`, `server.mjs`, `build-standalone.mjs`):
 history of this repository and the core; starting point for the gallery commands of

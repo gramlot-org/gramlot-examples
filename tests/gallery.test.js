@@ -221,3 +221,21 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     app.dispose();
 });
+
+test('families read through a getter: the first family starts open', () => {
+    const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://gallery.test/js/index'}).window.document;
+    class Page extends GalleryPage {
+        static logoUrl = '/logo.svg';
+        // A new array at every access, as gallery/page.js builds them from buildGallery.
+        static get families() {
+            return ['html_svg', 'binding'].map(key => ({key, title: key, readme: `# ${key}`,
+                examples: [{key: `${key}-01`, title: 'x', frameUrl: `${key}-01`, readme: '# x', source: 'x', logic: null}]}));
+        }
+    }
+    const builder = new GramlotBuilder();
+    new Page().main(builder.root);
+    const app = new Gramlot({document, transport: false}).startSource(builder.source);
+    const families = [...document.querySelectorAll('.gallery-sidebar nav > .gallery-list > li > details')];
+    assert.deepEqual(families.map(details => details.open), [true, false]);
+    app.dispose();
+});
