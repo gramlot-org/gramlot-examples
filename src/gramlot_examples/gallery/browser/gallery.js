@@ -3,8 +3,8 @@ import {highlightCode} from './code-highlight.js';
 import {renderReadme} from './markdown.js';
 import {THEME_READY, THEME_SET, THEMES} from './theme-messages.js';
 
-/** Provisional page behavior. IDs belong to the runner HTML, not to Gramlot. */
-export function mountRunner(renderer, root) {
+/** Provisional page behavior. IDs belong to the gallery HTML, not to Gramlot. */
+export function mountGallery(renderer, root) {
     const shell = renderer.records.get(root).element;
     const document = shell.ownerDocument;
     const window = document.defaultView;
@@ -12,8 +12,8 @@ export function mountRunner(renderer, root) {
     const node = element => renderer.elements.get(element).node;
     const set = (element, attrs) => node(element).setAttr(attrs);
     const keyboard = byId('keyboard-navigation');
-    const theme = byId('runner-theme');
-    const families = [...shell.querySelectorAll('.runner-sidebar details')];
+    const theme = byId('gallery-theme');
+    const families = [...shell.querySelectorAll('.gallery-sidebar details')];
     const state = new Bag();
     const opened = new Bag();
     state.setItem('opened', opened);
@@ -70,7 +70,7 @@ export function mountRunner(renderer, root) {
         set(entry.handle, {aria_valuenow: ratio});
     }
     try {
-        for (const tab of shell.querySelectorAll('.runner-tabs button')) {
+        for (const tab of shell.querySelectorAll('.gallery-tabs button')) {
             const key = tab.id.slice('tab-'.length);
             const entry = {key, tab, panel: byId(`panel-${key}`),
                 open: key === 'intro' ? null : byId(`open-${key}`)};
@@ -92,7 +92,7 @@ export function mountRunner(renderer, root) {
             if (key === 'intro') continue;
             renderReadme(byId(`readme-${key}`));
             entry.family = entry.open.closest('details');
-            if (entry.panel.classList.contains('runner-category')) continue;
+            if (entry.panel.classList.contains('gallery-category')) continue;
             entry.frame = byId(`frame-${key}`);
             entry.split = byId(`split-${key}`);
             entry.handle = byId(`divider-${key}`);
@@ -138,7 +138,7 @@ export function mountRunner(renderer, root) {
             }
         });
         listen(theme, 'change', () => {
-            if (!THEMES.has(theme.value)) throw new Error('Runner theme must be light or dark');
+            if (!THEMES.has(theme.value)) throw new Error('Gallery theme must be light or dark');
             state.setItem('theme', theme.value);
             set(theme, {value: theme.value});
             for (const option of theme.options) set(option, {selected: option.value === theme.value});

@@ -37,8 +37,8 @@
     "src/gramlot_examples/pages/**/*.md",
     "src/gramlot_examples/pages/**/*.css",
     "src/gramlot_examples/gallery/page.js",
-    "src/gramlot_examples/gallery/runner-page.js",
-    "src/gramlot_examples/gallery/runner.css",
+    "src/gramlot_examples/gallery/gallery-page.js",
+    "src/gramlot_examples/gallery/gallery.css",
     "src/gramlot_examples/gallery/dist"
   ],
   "engines": {

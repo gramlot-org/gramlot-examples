@@ -1,6 +1,6 @@
 import {THEME_READY, THEME_SET, THEMES} from './theme-messages.js';
 
-/** Theme bridge injected by the runner's launch wrappers, never by Gramlot core. */
+/** Theme bridge injected by the gallery's launch wrappers, never by Gramlot core. */
 export function mountFrameTheme(renderer, node) {
     const window = renderer.destination.ownerDocument.defaultView;
     if (window.parent === window) return;

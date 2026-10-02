@@ -22,7 +22,7 @@ async function mount(family, example) {
     const errors = [];
     const virtualConsole = new VirtualConsole();
     virtualConsole.on('jsdomError', error => errors.push(error));
-    const dom = new JSDOM('<main id="gramlot-root"></main>', {url: `https://runner.test/js/${example.key}`,
+    const dom = new JSDOM('<main id="gramlot-root"></main>', {url: `https://gallery.test/js/${example.key}`,
         virtualConsole});
     const {Page} = await import(new URL(`${example.folder}.js`, folder(family.key)));
     const wire = async (method, params) => {

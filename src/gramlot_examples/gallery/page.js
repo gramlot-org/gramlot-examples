@@ -1,9 +1,9 @@
-/** Node integration: provide original example text to the browser-safe runner UI. */
+/** Node integration: provide original example text to the browser-safe gallery UI. */
 import {existsSync, readFileSync} from 'node:fs';
 import catalog from '../catalog.json' with {type: 'json'};
-import {RunnerPage} from './runner-page.js';
+import {GalleryPage} from './gallery-page.js';
 
-export class Page extends RunnerPage {
+export class Page extends GalleryPage {
     static logoUrl = '/assets/branding/gramlot-logo-dark.svg';
     static families = catalog.map(({key, title, examples}) => {
         const folder = new URL(`../pages/${key}/`, import.meta.url);

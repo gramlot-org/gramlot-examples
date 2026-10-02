@@ -1,15 +1,15 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {JSDOM} from 'jsdom';
-import {RunnerPage} from '../src/gramlot_examples/gallery/runner-page.js';
+import {GalleryPage} from '../src/gramlot_examples/gallery/gallery-page.js';
 import {Gramlot, GramlotBuilder} from '@gramlot/gramlot';
-import {mountRunner} from '../src/gramlot_examples/gallery/browser/runner.js';
+import {mountGallery} from '../src/gramlot_examples/gallery/browser/gallery.js';
 import {mountFrameTheme} from '../src/gramlot_examples/gallery/browser/frame-theme.js';
 import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/theme-messages.js';
 
 function fixture() {
-    const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://runner.test/py/index'}).window.document;
-    class Page extends RunnerPage {
+    const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://gallery.test/py/index'}).window.document;
+    class Page extends GalleryPage {
         static logoUrl = '/logo.svg';
         static families = [{key: 'html_svg', title: 'HTML / SVG', readme: '# HTML / SVG',
             examples: ['e01', 'e02'].map(key => ({key, title: key, frameUrl: key,
@@ -23,8 +23,8 @@ function fixture() {
     new Page().main(builder.root);
     const app = new Gramlot({document, transport: false}).startSource(builder.source);
     const renderer = app.renderer;
-    const root = renderer.elements.get(document.getElementById('runner')).node;
-    const behavior = mountRunner(renderer, root);
+    const root = renderer.elements.get(document.getElementById('gallery')).node;
+    const behavior = mountGallery(renderer, root);
     const get = id => document.getElementById(id);
     const source = id => renderer.elements.get(get(id)).node;
     return {app, renderer, document, get, source, root, behavior};
@@ -51,13 +51,13 @@ test('ordinary IDs connect local tab events; Source owns selection and lazy fram
     assert.equal(f.get('panel-e01').hidden, false);
     assert.equal(f.get('panel-e02').hidden, true);
     assert.equal(f.get('tab-e02').hidden, false);
-    assert.equal(f.document.querySelector('[data-gramlot-tabs], [data-runner-tabs]'), null);
+    assert.equal(f.document.querySelector('[data-gramlot-tabs], [data-gallery-tabs]'), null);
     f.app.dispose();
 });
 
 test('each family has its own category panel; a companion module is shown beside the page code', () => {
     const f = fixture();
-    assert.deepEqual([...f.document.querySelectorAll('.runner-family')].map(link => link.id), ['open-html_svg', 'open-controllers']);
+    assert.deepEqual([...f.document.querySelectorAll('.gallery-family')].map(link => link.id), ['open-html_svg', 'open-controllers']);
     f.get('open-controllers').click();
     assert.equal(f.get('panel-controllers').hidden, false);
     assert.equal(f.get('panel-html_svg').hidden, true);
@@ -74,12 +74,12 @@ test('each family has its own category panel; a companion module is shown beside
 
 test('each family is a native details; the first starts open and selecting an example opens its family', async () => {
     const f = fixture();
-    const families = [...f.document.querySelectorAll('.runner-sidebar nav > .runner-list > li > details')];
+    const families = [...f.document.querySelectorAll('.gallery-sidebar nav > .gallery-list > li > details')];
     const open = details => f.renderer.elements.get(details).node.getAttr('open');
     const toggled = details => new Promise(resolve => details.addEventListener('toggle', resolve, {once: true}));
-    assert.deepEqual(families.map(details => details.querySelector(':scope > summary > .runner-family').id),
+    assert.deepEqual(families.map(details => details.querySelector(':scope > summary > .gallery-family').id),
         ['open-html_svg', 'open-controllers']);
-    assert.deepEqual(families.map(details => details.querySelectorAll(':scope > .runner-list > li > a').length), [2, 1]);
+    assert.deepEqual(families.map(details => details.querySelectorAll(':scope > .gallery-list > li > a').length), [2, 1]);
     assert.deepEqual(families.map(details => details.open), [true, false]);
     const opening = toggled(families[1]);
     f.get('open-controllers').click();
@@ -119,14 +119,14 @@ test('keyboard navigation is opt-in and cycles through opened tabs', () => {
     assert.equal(f.get('panel-e02').hidden, false);
     f.get('keyboard-navigation').click();
     assert.equal(f.source('keyboard-navigation').getAttr('checked'), true);
-    assert.deepEqual([...f.document.querySelectorAll('.runner-sidebar summary')].map(summary => summary.tabIndex), [-1, -1], 'the family link is the only tab stop of a family');
+    assert.deepEqual([...f.document.querySelectorAll('.gallery-sidebar summary')].map(summary => summary.tabIndex), [-1, -1], 'the family link is the only tab stop of a family');
     key(f, 'tab-e02', 'Home');
     assert.equal(f.document.activeElement, f.get('tab-intro'));
     key(f, 'tab-intro', 'ArrowLeft');
     assert.equal(f.document.activeElement, f.get('tab-e02'));
     f.get('keyboard-navigation').click();
     assert.equal(f.get('open-e01').tabIndex, -1);
-    assert.deepEqual([...f.document.querySelectorAll('.runner-sidebar summary')].map(summary => summary.tabIndex), [-1, -1]);
+    assert.deepEqual([...f.document.querySelectorAll('.gallery-sidebar summary')].map(summary => summary.tabIndex), [-1, -1]);
     f.app.dispose();
 });
 
@@ -164,13 +164,13 @@ test('removal during pointer drag releases capture and all page listeners', () =
     f.app.dispose();
 });
 
-test('runner themes reach owned frames only; disposal restores the document theme', () => {
+test('gallery themes reach owned frames only; disposal restores the document theme', () => {
     const f = fixture();
     const messages = [];
     f.get('frame-e01').contentWindow.postMessage = (data, origin) => messages.push({data, origin});
-    change(f, 'runner-theme', 'dark');
+    change(f, 'gallery-theme', 'dark');
     assert.equal(f.document.documentElement.getAttribute('data-theme'), 'dark');
-    assert.equal(f.source('runner-theme').getAttr('value'), 'dark');
+    assert.equal(f.source('gallery-theme').getAttr('value'), 'dark');
     assert.deepEqual(messages.at(-1), {data: {type: THEME_SET, theme: 'dark'}, origin: '*'});
     const before = messages.length;
     f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message',
@@ -183,27 +183,27 @@ test('runner themes reach owned frames only; disposal restores the document them
     assert.equal(f.document.documentElement.hasAttribute('data-theme'), false);
 });
 
-test('a rebuilt runner can reattach page behavior without resetting Source state', () => {
+test('a rebuilt gallery can reattach page behavior without resetting Source state', () => {
     const f = fixture();
-    f.get('open-e01').click(); change(f, 'runner-theme', 'dark');
+    f.get('open-e01').click(); change(f, 'gallery-theme', 'dark');
     key(f, 'divider-e01', 'ArrowLeft');
     f.renderer.freeze(f.root); f.renderer.unfreeze(f.root);
     // In a browser the shell's script is reinserted and runs this same attachment.
-    mountRunner(f.renderer, f.root);
+    mountGallery(f.renderer, f.root);
     assert.equal(f.get('panel-e01').hidden, false);
-    assert.equal(f.get('runner-theme').value, 'dark');
+    assert.equal(f.get('gallery-theme').value, 'dark');
     assert.equal(f.get('divider-e01').getAttribute('aria-valuenow'), '60');
     f.get('open-e02').click(); f.get('tab-e01').click();
     assert.equal(f.get('panel-e01').hidden, false);
     f.app.dispose();
 });
 
-test('frame theme bridge is runner-owned and removed with its Source script', () => {
+test('frame theme bridge is gallery-owned and removed with its Source script', () => {
     const parent = new JSDOM('<iframe></iframe>').window;
     const child = parent.document.querySelector('iframe').contentWindow;
     child.document.body.innerHTML = '<main id="gramlot-root"></main>';
     const builder = new GramlotBuilder();
-    builder.root.script({id: 'runner-frame-theme'});
+    builder.root.script({id: 'gallery-frame-theme'});
     const app = new Gramlot({document: child.document, transport: false}).startSource(builder.source);
     const node = app.renderer.elements.get(child.document.querySelector('script')).node;
     const ready = [];

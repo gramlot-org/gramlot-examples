@@ -6,8 +6,8 @@ hljs.registerLanguage('python', python);
 hljs.registerLanguage('javascript', javascript);
 
 /**
- * Decorate the runner's static source listing without executing its text: the language comes from
- * the `language-*` class the runner page writes, and each line is its own span so the stylesheet
+ * Decorate the gallery's static source listing without executing its text: the language comes from
+ * the `language-*` class the gallery page writes, and each line is its own span so the stylesheet
  * can number it. The text content stays the file text.
  */
 export function highlightCode(element) {

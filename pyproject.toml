@@ -31,7 +31,7 @@ exclude = [
     "!src/gramlot_examples/pages/**/*_aux.js",
     "src/gramlot_examples/gallery/browser",
     "src/gramlot_examples/gallery/page.js",
-    "src/gramlot_examples/gallery/runner-page.js",
+    "src/gramlot_examples/gallery/gallery-page.js",
 ]
 
 [tool.hatch.build.targets.sdist]
