@@ -3,7 +3,7 @@ from gramlot import Page as BasePage
 
 SESSIONS = (
     ("09:00", "A first Source tree", "Mira", "mira", "Describe a page with semantic HTML."),
-    ("10:30", "Drawing with SVG", "Theo", "theo", "Build a small scene from native shapes."),
+    ("10:30", "Drawing with SVG", "Theo", "theo", "Build a small scene from SVG shapes."),
     ("13:00", "Putting it together", "Mira & Theo", None, "Compose cards, a schedule and a summary."),
 )
 SPEAKERS = (("mira", "Mira", "Page authoring"), ("theo", "Theo", "SVG composition"))

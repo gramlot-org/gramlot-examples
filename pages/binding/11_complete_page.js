@@ -2,7 +2,7 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const SESSIONS = [
     ['09:00', 'A first Source tree', 'Mira', 'mira', 'Describe a page with semantic HTML.'],
-    ['10:30', 'Drawing with SVG', 'Theo', 'theo', 'Build a small scene from native shapes.'],
+    ['10:30', 'Drawing with SVG', 'Theo', 'theo', 'Build a small scene from SVG shapes.'],
     ['13:00', 'Putting it together', 'Mira & Theo', null, 'Compose cards, a schedule and a summary.'],
 ];
 const SPEAKERS = [['mira', 'Mira', 'Page authoring'], ['theo', 'Theo', 'SVG composition']];

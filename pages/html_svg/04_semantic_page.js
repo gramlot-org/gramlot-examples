@@ -20,6 +20,6 @@ export class Page extends BasePage {
         const aside = main.aside({id: 'notes', class: 'card'});
         aside.h2('A side note');
         aside.p('The markup stays meaningful even without decoration.');
-        page.footer().small('Built with native Source elements.');
+        page.footer().small('Built with Gramlot Source.');
     }
 }

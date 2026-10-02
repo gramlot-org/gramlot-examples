@@ -1,8 +1,8 @@
-/** A native HTML specimen built entirely with Gramlot Source. */
+/** An HTML specimen built entirely with Gramlot Source. */
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Native HTML catalogue';
+    static title = 'HTML catalogue';
     static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
@@ -10,7 +10,7 @@ export class Page extends BasePage {
         const header = shell.header({class: 'stack'});
         header.p('GRAMLOT · ELEMENT CATALOGUE', {class: 'muted'});
         const heading = header.hgroup();
-        heading.h1('The native HTML canvas');
+        heading.h1('The HTML canvas');
         heading.p('A living sample of semantic elements and controls rendered from Source.');
         const nav = shell.nav({aria_label: 'Catalogue sections'});
         for (const [title, anchor] of [['Text', 'text'], ['Structure', 'structure'],
@@ -123,7 +123,7 @@ export class Page extends BasePage {
         const lists = cards.section({class: 'card stack'});
         lists.h3('Lists');
         const ordered = lists.ol();
-        for (const item of ['Declare Source', 'Render native HTML', 'Inspect the result']) ordered.li(item);
+        for (const item of ['Declare Source', 'Render HTML', 'Inspect the result']) ordered.li(item);
         const unordered = lists.ul();
         unordered.li('One item');
         unordered.li('Another item');

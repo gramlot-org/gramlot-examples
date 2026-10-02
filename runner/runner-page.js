@@ -51,7 +51,7 @@ export class RunnerPage extends GramlotPage {
         const intro = panels.section({id: 'panel-intro', class: 'runner-intro', role: 'tabpanel',
             aria_labelledby: 'tab-intro', hidden: false});
         intro.h2('Example runner');
-        intro.p('This runner shows each native HTML page beside the code that creates it. ' +
+        intro.p('This runner shows each example page beside the code that creates it. ' +
             'The Python and JavaScript integrations have the same examples.');
         intro.p('Choose an example from the list. Its tab stays open so you can return to it. ' +
             'Enable Keyboard navigation in the sidebar to move through tabs by keyboard. ' +

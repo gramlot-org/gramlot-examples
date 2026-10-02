@@ -1,10 +1,10 @@
-"""A native HTML specimen built entirely with Gramlot Source."""
+"""An HTML specimen built entirely with Gramlot Source."""
 
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Native HTML catalogue"
+    title = "HTML catalogue"
     css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
@@ -12,7 +12,7 @@ class Page(BasePage):
         header = shell.header(class_="stack")
         header.p("GRAMLOT · ELEMENT CATALOGUE", class_="muted")
         heading = header.hgroup()
-        heading.h1("The native HTML canvas")
+        heading.h1("The HTML canvas")
         heading.p("A living sample of semantic elements and controls rendered from Source.")
         nav = shell.nav(aria_label="Catalogue sections")
         for title, anchor in (("Text", "text"), ("Structure", "structure"),
@@ -123,7 +123,7 @@ class Page(BasePage):
         lists = cards.section(class_="card stack")
         lists.h3("Lists")
         ordered = lists.ol()
-        for item in ("Declare Source", "Render native HTML", "Inspect the result"):
+        for item in ("Declare Source", "Render HTML", "Inspect the result"):
             ordered.li(item)
         unordered = lists.ul()
         unordered.li("One item")

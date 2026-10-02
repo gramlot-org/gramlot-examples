@@ -2,7 +2,7 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const SESSIONS = [
     ['09:00', 'A first Source tree', 'Mira', 'Describe a page with semantic HTML.'],
-    ['10:30', 'Drawing with SVG', 'Theo', 'Build a small scene from native shapes.'],
+    ['10:30', 'Drawing with SVG', 'Theo', 'Build a small scene from SVG shapes.'],
     ['13:00', 'Putting it together', 'Mira & Theo', 'Compose cards, a schedule and a summary.'],
 ];
 const SPEAKERS = [['Mira', 'Page authoring'], ['Theo', 'SVG composition']];
@@ -23,14 +23,14 @@ export class Page extends BasePage {
         this.speakers(main);
         this.map(main);
         this.faq(main);
-        shell.footer().small('Gramlot native HTML/SVG examples · Static content');
+        shell.footer().small('Gramlot HTML/SVG examples · Static content');
     }
 
     header(shell) {
         const header = shell.header({class: 'complete-header'});
         header.p('GRAMLOT FIELD NOTES', {class: 'eyebrow'});
         header.h1('A day of small interfaces');
-        header.p('A composed page built from native HTML and SVG Source.');
+        header.p('A composed page built from HTML and SVG Source.');
         const nav = header.nav({aria_label: 'Page sections'});
         for (const [label, target] of [['Highlights', 'highlights'], ['Schedule', 'schedule'],
             ['Speakers', 'speakers'], ['Map', 'map'], ['FAQ', 'faq']]) nav.a(label, {href: `#${target}`});
@@ -57,7 +57,7 @@ export class Page extends BasePage {
         const cards = section.div({class: 'grid complete-grid'});
         for (const [number, title, description] of [
             ['01', 'Write', 'Use page methods to describe content.'],
-            ['02', 'Compose', 'Nest native elements and SVG.'],
+            ['02', 'Compose', 'Nest HTML elements and SVG.'],
             ['03', 'Review', 'Inspect the result in either language.'],
         ]) {
             const card = cards.article({class: 'card stack'});

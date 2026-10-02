@@ -3,7 +3,7 @@ from gramlot import Page as BasePage
 
 SESSIONS = (
     ("09:00", "A first Source tree", "Mira", "Describe a page with semantic HTML."),
-    ("10:30", "Drawing with SVG", "Theo", "Build a small scene from native shapes."),
+    ("10:30", "Drawing with SVG", "Theo", "Build a small scene from SVG shapes."),
     ("13:00", "Putting it together", "Mira & Theo", "Compose cards, a schedule and a summary."),
 )
 SPEAKERS = (("Mira", "Page authoring"), ("Theo", "SVG composition"))
@@ -25,13 +25,13 @@ class Page(BasePage):
         self.speakers(main)
         self.map(main)
         self.faq(main)
-        shell.footer().small("Gramlot native HTML/SVG examples · Static content")
+        shell.footer().small("Gramlot HTML/SVG examples · Static content")
 
     def header(self, shell):
         header = shell.header(class_="complete-header")
         header.p("GRAMLOT FIELD NOTES", class_="eyebrow")
         header.h1("A day of small interfaces")
-        header.p("A composed page built from native HTML and SVG Source.")
+        header.p("A composed page built from HTML and SVG Source.")
         nav = header.nav(aria_label="Page sections")
         for label, target in (("Highlights", "highlights"), ("Schedule", "schedule"),
                               ("Speakers", "speakers"), ("Map", "map"), ("FAQ", "faq")):
@@ -56,7 +56,7 @@ class Page(BasePage):
         section.h2("Highlights")
         cards = section.div(class_="grid complete-grid")
         for number, title, description in (("01", "Write", "Use page methods to describe content."),
-                                            ("02", "Compose", "Nest native elements and SVG."),
+                                            ("02", "Compose", "Nest HTML elements and SVG."),
                                             ("03", "Review", "Inspect the result in either language.")):
             card = cards.article(class_="card stack")
             card.p(number, class_="eyebrow")

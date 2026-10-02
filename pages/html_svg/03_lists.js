@@ -1,6 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
-const STEPS = ['Describe a page with Source', 'Add native HTML elements', 'Review the rendered document'];
+const STEPS = ['Describe a page with Source', 'Add HTML elements', 'Review the rendered document'];
 const TERMS = [['Source', 'The declared structure of a page.'], ['Data', 'A separate home for application state.']];
 
 export class Page extends BasePage {
@@ -21,9 +21,9 @@ export class Page extends BasePage {
         }
         page.h2('A nested list');
         const groups = page.ul();
-        const first = groups.li('Native elements');
+        const first = groups.li('HTML elements');
         const nested = first.ul();
         for (const item of ['headings', 'lists', 'links']) nested.li(item);
-        groups.li('Native SVG');
+        groups.li('SVG');
     }
 }

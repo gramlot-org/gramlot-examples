@@ -8,7 +8,7 @@ class Page(BasePage):
     def main(self, root):
         page = root.main(class_="example-page stack")
         page.h1("SVG shape vocabulary")
-        page.p("One SVG viewport contains six native shapes and a text label.")
+        page.p("One SVG viewport contains six shapes and a text label.")
         figure = page.figure(class_="card")
         art = figure.svg(viewBox="0 0 480 200", role="img", aria_labelledby="shapes-title", class_="example-art")
         art.title("Six geometric shapes", id="shapes-title")

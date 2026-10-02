@@ -3,7 +3,7 @@
 The [runner](00-runner/README.md) presents the same examples in Python and
 JavaScript, in three families:
 
-- [`html_svg/`](html_svg/): thirteen native HTML and SVG pages, without binding.
+- [`html_svg/`](html_svg/): thirteen HTML and SVG pages, without binding.
 - [`binding/`](binding/): eleven pages whose DOM follows the Data through pointers,
   editing, booleans, style, SVG and freeze. The last three take the content of
   `html_svg` examples 06, 08 and 12 and add the binding.

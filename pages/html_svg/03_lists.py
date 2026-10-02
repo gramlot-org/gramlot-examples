@@ -1,7 +1,7 @@
 from gramlot import Page as BasePage
 
 
-STEPS = ["Describe a page with Source", "Add native HTML elements", "Review the rendered document"]
+STEPS = ["Describe a page with Source", "Add HTML elements", "Review the rendered document"]
 TERMS = [("Source", "The declared structure of a page."), ("Data", "A separate home for application state.")]
 
 
@@ -23,8 +23,8 @@ class Page(BasePage):
             definitions.dd(description)
         page.h2("A nested list")
         groups = page.ul()
-        first = groups.li("Native elements")
+        first = groups.li("HTML elements")
         nested = first.ul()
         for item in ("headings", "lists", "links"):
             nested.li(item)
-        groups.li("Native SVG")
+        groups.li("SVG")
