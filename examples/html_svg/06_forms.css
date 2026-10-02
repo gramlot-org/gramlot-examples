@@ -1,0 +1,5 @@
+.form-grid, .form-options { display: grid; grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr); gap: .7rem 1.2rem; align-items: center; margin: 1.3rem 0; }
+.form-grid legend, .form-options legend { font-weight: 700; padding: 0 .45rem; }
+.form-grid input, .form-grid select, .form-grid textarea, .form-options input:not([type='checkbox']):not([type='radio']) { max-width: 28rem; }
+.form-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+@media (max-width: 38rem) { .form-grid, .form-options { grid-template-columns: 1fr; } }

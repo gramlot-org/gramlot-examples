@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@gramlot/gramlot": "file:../js",
+    "@gramlot/gramlot-js-server": "file:../../gramlot-js-server/server",
+    "@gramlot/gramlot-browser": "file:../../gramlot-js-server/browser",
+    "dompurify": "3.4.16",
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.14",
+    "@genrojs/bag": ">=0.10.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "jsdom": "27.0.1"
+  },
+  "scripts": {
+    "build:runner": "node 00-runner/build-browser.mjs",
+    "test": "node --test 00-runner/tests/*.test.js",
+    "build:standalone": "node 00-runner/build-standalone.mjs"
+  }
+}
