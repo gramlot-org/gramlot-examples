@@ -20,15 +20,15 @@
     "test:bun": "bun test js/tests",
     "start:node": "node js/server/nodejs/start.js",
     "start:bun": "bun js/server/bun/start.js",
-    "build:standalone": "gramlot-serverless build js/pages/index.js -o dist/hello-world.html"
+    "build:standalone": "gramlot-browser build js/pages/index.js -o dist/hello-world.html"
   },
   "dependencies": {
-    "@gramlot/native-html": "*",
-    "gramlot-js-server": "*"
+    "@gramlot/gramlot": ">=0.2.1",
+    "@gramlot/gramlot-js-server": ">=0.2.1"
   },
   "devDependencies": {
     "jsdom": "27.0.1",
-    "@gramlot/serverless": "*"
+    "@gramlot/gramlot-browser": ">=0.2.1"
   },
   "bin": {
     "gramlot-hello-node": "./js/server/nodejs/start.js",

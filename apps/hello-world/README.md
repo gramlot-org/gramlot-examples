@@ -44,7 +44,7 @@ an empty renderer/root after disposal.
 
 ## JavaScript package
 
-The JS page imports `Page` from `@gramlot/native-html/page` and has no Python
+The JS page imports `Page` from `@gramlot/gramlot/page` and has no Python
 process dependency. Once the required framework packages are available:
 
 ```sh
@@ -75,7 +75,7 @@ implementations, connections, migrations, tables or queries.
 After installing the local package graph, run `npm run start:node` or
 `npm run start:bun` from this application directory. Installed package commands
 are `gramlot-hello-node` and `gramlot-hello-bun`. Both use the same JS page and
-reusable `gramlot-js-server` adapter, with `HOST`/`PORT` configuration (defaults
+reusable `@gramlot/gramlot-js-server` adapter, with `HOST`/`PORT` configuration (defaults
 127.0.0.1:8080). No Python worker or database is required.
 
 The browser verification command is:
@@ -98,7 +98,7 @@ npm run build:standalone
 ```
 
 Open `dist/hello-world.html` from disk. Node is used for packaging; no server is
-needed to open the result. `@gramlot/serverless` owns packaging; Gramlot owns Page,
+needed to open the result. `@gramlot/gramlot-browser` owns packaging; Gramlot owns Page,
 WorkerHost and live Source. Python pages continue to require a Python server.
 The old Python standalone compiler and project TOML format are not used.
 

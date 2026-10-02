@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
-import {FileHost} from '@gramlot/native-html/server';
-import {Gramlot} from '@gramlot/native-html';
+import {FileHost} from '@gramlot/gramlot/server';
+import {Gramlot} from '@gramlot/gramlot';
 import {JSDOM} from 'jsdom';
 
 const pages = fileURLToPath(new URL('../pages/', import.meta.url));
@@ -17,7 +17,7 @@ test('JS host loads the Hello World page and returns one typed heading', async (
     const app = new Gramlot({document, pageId: opened.pageId, transport: {main: async () => wire}});
     await app.start();
     const tree = app.source.getItem('main');
-    assert.equal(tree.constructor.tytxSuffix, 'SOURCE');
+    assert.equal(tree.constructor.tytxSuffix, 'X');
     assert.equal(tree.getNodes().length, 1);
     const heading = tree.getNodes()[0];
     assert.equal(heading.nodeTag, 'h1');
