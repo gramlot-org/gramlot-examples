@@ -10,6 +10,9 @@ license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = ["gramlot>=0.2.1", "gramlot-py-server[uvicorn]"]
 
+[project.optional-dependencies]
+test = ["pytest"]
+
 [project.urls]
 Repository = "https://github.com/gramlot-org/gramlot-examples"
 
