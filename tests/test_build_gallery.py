@@ -33,7 +33,7 @@ class BuildGalleryTests(unittest.TestCase):
     def test_media_types(self):
         assets = build_gallery()["assets"]
         self.assertEqual(assets["/gallery/dist/gallery.js"]["type"], "application/javascript")
-        self.assertEqual(assets["/pages/html_svg/01_hello_world.js"]["type"], "text/plain")
+        self.assertEqual(assets["/pages/controllers/03_named_logic_aux.js"]["type"], "text/plain")
         self.assertEqual(assets["/gallery/gallery.css"]["type"], "text/css")
         self.assertEqual(assets["/gallery/dist/LICENSE"]["type"], "text/plain")
 

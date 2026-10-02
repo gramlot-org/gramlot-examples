@@ -30,7 +30,7 @@ test('common gallery', () => {
 test('media types', () => {
     const {assets} = buildGallery();
     assert.equal(assets['/gallery/dist/gallery.js'].type, 'application/javascript');
-    assert.equal(assets['/pages/html_svg/01_hello_world.js'].type, 'text/plain');
+    assert.equal(assets['/pages/controllers/03_named_logic_aux.js'].type, 'text/plain');
     assert.equal(assets['/gallery/gallery.css'].type, 'text/css');
     assert.equal(assets['/gallery/dist/LICENSE'].type, 'text/plain');
 });
