@@ -1,0 +1,18 @@
+{
+  "environment": "test",
+  "families": [
+    {
+      "key": "test_family",
+      "title": "Test family",
+      "examples": [
+        {
+          "key": "test-01",
+          "title": "Demo",
+          "folder": "01_demo",
+          "description": "An environment page for the build_gallery tests.",
+          "explanation": "The page has a same-name stylesheet and a logic companion."
+        }
+      ]
+    }
+  ]
+}
