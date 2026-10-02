@@ -6,7 +6,7 @@ import {RunnerPage} from './runner-page.js';
 export class Page extends RunnerPage {
     static logoUrl = '/assets/branding/gramlot-logo-dark.svg';
     static families = catalog.map(({key, title, examples}) => {
-        const folder = new URL(`../${key}/`, import.meta.url);
+        const folder = new URL(`../pages/${key}/`, import.meta.url);
         const read = name => readFileSync(new URL(name, folder), 'utf8');
         return {
             key, title, readme: read('README.md'),

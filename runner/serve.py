@@ -13,24 +13,26 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from gramlot_uvicorn import create_asgi_application
+from gramlot_py_server.uvicorn import create_application
 
 
-ROOT = Path(__file__).resolve().parents[2]
-EXAMPLES = ROOT / "examples"
-RUNNER = EXAMPLES / "00-runner"
-THEME = ROOT / "themes" / "gramlot-base" / "theme.css"
+ROOT = Path(__file__).resolve().parents[1]
+PAGES = ROOT / "pages"
+RUNNER = ROOT / "runner"
+CORE = ROOT / "node_modules" / "@gramlot" / "gramlot"
+THEME = CORE / "themes" / "gramlot-base" / "theme.css"
+BRANDING = CORE / "assets" / "branding"
 
 
 def page_files():
     """Explicit route registry; catalog keys name the routes of the example file pages.
 
-    The catalog lists the families; each family key is its folder below ``examples/``.
+    The catalog lists the families; each family key is its folder below ``pages/``.
     """
     pages = [("index", RUNNER / "page.py", RUNNER / "page.js")]
     catalog = json.loads((RUNNER / "catalog.json").read_text())
     for family in catalog:
-        folder = EXAMPLES / family["key"]
+        folder = PAGES / family["key"]
         for entry in family["examples"]:
             pages.append((entry["key"], folder / f"{entry['folder']}.py", folder / f"{entry['folder']}.js"))
     for _, py_file, js_file in pages:
@@ -66,7 +68,7 @@ def stage_pages(directory: Path, pages):
                 "class Page(module.Page):\n"
                 "    def main(self, root):\n"
                 "        super().main(root)\n"
-                "        root.script(src='/examples/00-runner/dist/frame.js')\n"
+                "        root.script(src='/runner/dist/frame.js')\n"
             )
         (python_dir / f"{route}.py").write_text(wrapper)
         js_wrapper = f"export {{Page}} from {json.dumps(js_file.as_uri())};\n"
@@ -76,7 +78,7 @@ def stage_pages(directory: Path, pages):
                 "export class Page extends ExamplePage {\n"
                 "    main(root) {\n"
                 "        super.main(root);\n"
-                "        root.script({src: '/examples/00-runner/dist/frame.js'});\n"
+                "        root.script({src: '/runner/dist/frame.js'});\n"
                 "    }\n}\n"
             )
         (javascript_dir / f"{route}.js").write_text(js_wrapper)
@@ -94,28 +96,28 @@ def stage_pages(directory: Path, pages):
 
 class RunnerApplication:
     def __init__(self, python_pages: Path, node_url: str, catalog, companions):
-        self.python_host = create_asgi_application(python_pages, mount_path="/py")
+        self.python_host = create_application(python_pages, mount_path="/py")
         self.node_url = node_url
         allowed = {
             **companions,
             "/themes/gramlot-base/theme.css": THEME,
             "/py/themes/gramlot-base/theme.css": THEME,
-            "/examples/00-runner/runner.css": RUNNER / "runner.css",
-            "/py/examples/00-runner/runner.css": RUNNER / "runner.css",
-            "/examples/00-runner/page.py": RUNNER / "page.py",
-            "/examples/00-runner/page.js": RUNNER / "page.js",
-            "/assets/branding/gramlot-mark.png": ROOT / "assets" / "branding" / "gramlot-mark.png",
-            "/assets/branding/gramlot-mark-dark.png": ROOT / "assets" / "branding" / "gramlot-mark-dark.png",
-            "/assets/branding/gramlot-logo.svg": ROOT / "assets" / "branding" / "gramlot-logo.svg",
-            "/assets/branding/gramlot-logo-dark.svg": ROOT / "assets" / "branding" / "gramlot-logo-dark.svg",
+            "/runner/runner.css": RUNNER / "runner.css",
+            "/py/runner/runner.css": RUNNER / "runner.css",
+            "/runner/page.py": RUNNER / "page.py",
+            "/runner/page.js": RUNNER / "page.js",
+            "/assets/branding/gramlot-mark.png": BRANDING / "gramlot-mark.png",
+            "/assets/branding/gramlot-mark-dark.png": BRANDING / "gramlot-mark-dark.png",
+            "/assets/branding/gramlot-logo.svg": BRANDING / "gramlot-logo.svg",
+            "/assets/branding/gramlot-logo-dark.svg": BRANDING / "gramlot-logo-dark.svg",
         }
         for name in ("runner.js", "frame.js", "notices.json", "LICENSE", "NOTICE"):
-            allowed[f"/examples/00-runner/dist/{name}"] = RUNNER / "dist" / name
+            allowed[f"/runner/dist/{name}"] = RUNNER / "dist" / name
         for family in catalog:
             for entry in family["examples"]:
                 for suffix in (".py", ".js", ".css", ".md", "_aux.js"):
                     name = f"{entry['folder']}{suffix}"
-                    allowed[f"/examples/{family['key']}/{name}"] = EXAMPLES / family["key"] / name
+                    allowed[f"/pages/{family['key']}/{name}"] = PAGES / family["key"] / name
         self.assets = allowed
 
     async def __call__(self, scope, receive, send):

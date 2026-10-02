@@ -3,8 +3,8 @@ import {Page as GramlotPage} from '@gramlot/gramlot/page';
 
 export class RunnerPage extends GramlotPage {
     static title = 'Gramlot examples';
-    static runnerScript = '/examples/00-runner/dist/runner.js';
-    static css = ['/themes/gramlot-base/theme.css', '/examples/00-runner/runner.css'];
+    static runnerScript = '/runner/dist/runner.js';
+    static css = ['/themes/gramlot-base/theme.css', '/runner/runner.css'];
 
     main(root) {
         const shell = root.div({class: 'runner', id: 'runner'});

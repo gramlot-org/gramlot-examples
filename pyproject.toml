@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gramlot-examples"
+version = "0.0.0"
+description = "Example pages and local runner for Gramlot"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = ["gramlot>=0.2.1", "gramlot-py-server[uvicorn]"]
+
+[project.urls]
+Repository = "https://github.com/gramlot-org/gramlot-examples"
+
+# The runner is started as a script; the project installs only its dependencies.
+[tool.hatch.build.targets.wheel]
+bypass-selection = true

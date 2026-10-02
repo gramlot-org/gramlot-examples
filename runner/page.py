@@ -4,12 +4,13 @@ from pathlib import Path
 from gramlot import Page as GramlotPage
 
 RUNNER = Path(__file__).resolve().parent
+PAGES = RUNNER.parent / "pages"
 FAMILIES = json.loads((RUNNER / "catalog.json").read_text())
 
 
 class Page(GramlotPage):
     title = "Gramlot examples"
-    css = ("/themes/gramlot-base/theme.css", "/examples/00-runner/runner.css")
+    css = ("/themes/gramlot-base/theme.css", "/runner/runner.css")
 
     def main(self, root):
         shell = root.div(class_="runner", id="runner")
@@ -67,11 +68,11 @@ class Page(GramlotPage):
             category_panel = panels.section(id=f"panel-{key}", class_="runner-category",
                                             role="tabpanel",
                                             aria_labelledby=f"tab-{key}", hidden=True)
-            category_panel.div((RUNNER.parent / key / "README.md").read_text(),
+            category_panel.div((PAGES / key / "README.md").read_text(),
                                id=f"readme-{key}")
             for example in family["examples"]:
-                self.panel(panels, example, RUNNER.parent / key)
-        shell.script(src="/examples/00-runner/dist/runner.js")
+                self.panel(panels, example, PAGES / key)
+        shell.script(src="/runner/dist/runner.js")
 
     def panel(self, parent, example, examples):
         key = example["key"]

@@ -33,6 +33,6 @@ for (const directory of [...packages].sort()) {
 }
 await writeFile(new URL('notices.json', output), JSON.stringify(notices, null, 2) + '\n');
 for (const name of ['LICENSE', 'NOTICE']) {
-    await copyFile(new URL(`../../${name}`, directory), new URL(name, output));
+    await copyFile(new URL(`../${name}`, directory), new URL(name, output));
 }
 console.log('Runner browser scripts built.');
