@@ -7,12 +7,12 @@ import {JSDOM, VirtualConsole} from 'jsdom';
 
 // The core as the example pages resolve it (`node_modules/@gramlot/gramlot`, installed from npm): one
 // module instance, so the `@source` markers of the pages are the ones `sourceMethod` reads.
-const fromExamples = createRequire(new URL('../../package.json', import.meta.url));
+const fromExamples = createRequire(new URL('../package.json', import.meta.url));
 const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot')).href);
 const {sourceMethod} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/page')).href);
 
-const families = JSON.parse(readFileSync(new URL('../catalog.json', import.meta.url), 'utf8'));
-const folder = key => new URL(`../../pages/${key}/`, import.meta.url);
+const families = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
+const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
 
 /**
  * Mount one JavaScript example as its host would: Source from `main`, companion Logic registered

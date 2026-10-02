@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {JSDOM} from 'jsdom';
-import {RunnerPage} from '../runner-page.js';
+import {RunnerPage} from '../src/gramlot_examples/gallery/runner-page.js';
 import {Gramlot, GramlotBuilder} from '@gramlot/gramlot';
-import {mountRunner} from '../browser/runner.js';
-import {mountFrameTheme} from '../browser/frame-theme.js';
-import {THEME_READY, THEME_SET} from '../browser/theme-messages.js';
+import {mountRunner} from '../src/gramlot_examples/gallery/browser/runner.js';
+import {mountFrameTheme} from '../src/gramlot_examples/gallery/browser/frame-theme.js';
+import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/theme-messages.js';
 
 function fixture() {
     const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://runner.test/py/index'}).window.document;

@@ -5,7 +5,7 @@ from gramlot import Page as GramlotPage
 
 RUNNER = Path(__file__).resolve().parent
 PAGES = RUNNER.parent / "pages"
-FAMILIES = json.loads((RUNNER / "catalog.json").read_text())
+FAMILIES = json.loads((RUNNER.parent / "catalog.json").read_text())
 
 
 class Page(GramlotPage):

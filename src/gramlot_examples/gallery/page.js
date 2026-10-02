@@ -1,6 +1,6 @@
 /** Node integration: provide original example text to the browser-safe runner UI. */
 import {existsSync, readFileSync} from 'node:fs';
-import catalog from './catalog.json' with {type: 'json'};
+import catalog from '../catalog.json' with {type: 'json'};
 import {RunnerPage} from './runner-page.js';
 
 export class Page extends RunnerPage {

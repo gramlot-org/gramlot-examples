@@ -1,19 +1,50 @@
 {
-  "private": true,
+  "name": "@gramlot/gramlot-examples",
+  "version": "0.2.2",
+  "description": "Gramlot example pages, the gallery page and its catalogue.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gramlot-org/gramlot-examples.git"
+  },
   "type": "module",
+  "scripts": {
+    "build": "node scripts/build-browser.mjs",
+    "test": "node --test tests/*.test.js",
+    "prepack": "node scripts/build-browser.mjs"
+  },
   "dependencies": {
-    "@gramlot/gramlot": ">=0.2.2",
-    "dompurify": "3.4.16",
-    "highlight.js": "^11.11.1",
-    "marked": "^18.0.14",
-    "@genrojs/bag": ">=0.10.1"
+    "@gramlot/gramlot": ">=0.2.2"
   },
   "devDependencies": {
+    "@genrojs/bag": ">=0.10.1",
+    "dompurify": "3.4.16",
     "esbuild": "0.28.2",
-    "jsdom": "27.0.1"
+    "highlight.js": "^11.11.1",
+    "jsdom": "27.0.1",
+    "marked": "^18.0.14"
   },
-  "scripts": {
-    "build:runner": "node runner/build-browser.mjs",
-    "test": "node --test runner/tests/*.test.js"
+  "exports": {
+    "./catalog.json": "./src/gramlot_examples/catalog.json",
+    "./pages/*": "./src/gramlot_examples/pages/*",
+    "./gallery/*": "./src/gramlot_examples/gallery/*"
+  },
+  "files": [
+    "LICENSE",
+    "NOTICE",
+    "src/gramlot_examples/catalog.json",
+    "src/gramlot_examples/pages/**/*.js",
+    "src/gramlot_examples/pages/**/*.md",
+    "src/gramlot_examples/pages/**/*.css",
+    "src/gramlot_examples/gallery/page.js",
+    "src/gramlot_examples/gallery/runner-page.js",
+    "src/gramlot_examples/gallery/runner.css",
+    "src/gramlot_examples/gallery/dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

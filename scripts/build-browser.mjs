@@ -4,7 +4,7 @@ import {copyFile, mkdir, readFile, readdir, writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 
-const directory = new URL('./', import.meta.url);
+const directory = new URL('../src/gramlot_examples/gallery/', import.meta.url);
 const output = new URL('dist/', directory);
 await mkdir(output, {recursive: true});
 const result = await build({
@@ -33,6 +33,6 @@ for (const directory of [...packages].sort()) {
 }
 await writeFile(new URL('notices.json', output), JSON.stringify(notices, null, 2) + '\n');
 for (const name of ['LICENSE', 'NOTICE']) {
-    await copyFile(new URL(`../${name}`, directory), new URL(name, output));
+    await copyFile(new URL(`../${name}`, import.meta.url), new URL(name, output));
 }
 console.log('Runner browser scripts built.');
