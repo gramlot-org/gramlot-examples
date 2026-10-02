@@ -1,0 +1,21 @@
+# Gramlot examples
+
+The [gallery](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md) presents the same examples in Python and
+JavaScript, in three families:
+
+- [`html_svg/`](html_svg/): thirteen HTML and SVG pages, without binding.
+- [`binding/`](binding/): eleven pages whose DOM follows the Data through pointers,
+  editing, booleans, style, SVG and freeze. The last three take the content of
+  `html_svg` examples 06, 08 and 12 and add the binding.
+- [`controllers/`](controllers/): nine pages with formulas, controllers, named
+  logic in a companion `NN_name_aux.js`, inline expressions, node methods, buttons,
+  events, remote Source and the end-to-end story of Gramlot 0.2.0.
+
+Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,
+its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css` and a
+logic companion `NN_name_aux.js`. The gallery uses only what the minimal `FileHost`
+serves: `Page.css`, the same-name companions and the companion's root logic group.
+
+The pages depend only on the Gramlot core. Shared visual styling is the
+`gramlot-base` theme shipped in the core package, served by each environment at
+`/themes/gramlot-base/theme.css`.
