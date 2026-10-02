@@ -1,74 +1,88 @@
-# Local example runner
+# The gallery package
 
 <!-- Document ID: GE-010 -->
 <a id="ge-010-005"></a>
 
-One runner page lists the three families (`html_svg`, `binding`, `controllers`) and
-opens each example in its own tab: README, resizable preview iframe, source code.
-`/py/index` hosts the Python pages, `/js/index` the JavaScript pages.
+## 005 · Contents
+
+- PyPI `gramlot-examples` (module `gramlot_examples`), npm `@gramlot/gramlot-examples`.
+  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.2 or later. No server code.
+- Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
+  language) with `.md`, `.css`, `_aux.js`; family READMEs; `catalog.json`.
+- Gallery page `gallery/page.py` / `gallery/page.js` + `gallery-page.js`,
+  `gallery.css`, built bundle `gallery/dist/`. `gallery/browser/` is not published.
+- Theme and logo from the core: wheel `gramlot/resources/{themes,assets/branding}/…`,
+  npm exports `@gramlot/gramlot/themes/*`, `@gramlot/gramlot/assets/branding/*`.
 
 <a id="ge-010-010"></a>
 
-## 010 · Run locally
+## 010 · `catalog.json`
 
-Python 3.11+, Node.js 22+, from the repository root:
-
-```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -e '.[test]'
-npm install --no-package-lock
-.venv/bin/python runner/serve.py
-```
-
-- Python: `gramlot`, `gramlot-py-server[uvicorn]`. JavaScript: `@gramlot/gramlot`,
-  `@gramlot/gramlot-js-server`, `@gramlot/gramlot-browser`.
-- `PORT` selects the port (default 8080); `JS_RUNTIME=bun` runs the JavaScript host with Bun.
-- One public Uvicorn address; an internal Node.js listener behind `/js/`.
-- Theme `/themes/gramlot-base/theme.css` and logo `/assets/branding/` come from the
-  installed `@gramlot/gramlot` (0.2.2 or later).
-- The launcher builds `runner/dist/`, then stages wrappers `index`, `e01`–`e13`,
-  `b01`–`b11`, `c01`–`c09` in a temporary directory. Same-name `.css` and `_aux.js`
-  companions are copied beside the wrappers.
+`{"environment"?, "families": [{key, title, examples: [{key, title, folder,
+description, explanation}]}]}`. Family folder = family `key`; `folder` = file stem.
+The common catalogue has no `environment`; an environment catalogue has one.
 
 <a id="ge-010-015"></a>
 
-## 015 · Current limits
+## 015 · Keys
 
-- The code pane shows the original module and its logic companion.
-- `runner/runner-page.js` has no filesystem API; `runner/page.js` and `runner/page.py` supply the texts.
-- No in-page Inspector.
+- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c09`. Environment: `<environment>-NN`.
+- Family keys, example keys and `index` share one namespace.
+- Errors: environment in the common catalogue; no environment in an environment
+  catalogue; key outside `<environment>-NN`; duplicate key; missing page file.
 
 <a id="ge-010-020"></a>
 
-## 020 · Provisional runner behavior
+## 020 · `build_gallery` and `buildGallery`
 
-- Source-authored HTML with explicit IDs (`open-e01`, `tab-e01`, `panel-e01`,
-  `divider-e01`, `runner-theme`); `runner/browser/` connects the events.
-- A page-local Bag holds tabs, keyboard preference, theme and split positions.
-- Recorded in amendment 11.44 of the
-  [Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md).
-- `runner/catalog.json`: families, titles, summaries. A family key is its folder below `pages/`.
+`build_gallery(catalogs=())`, `buildGallery({catalogs = []})`; `catalogs` = pairs
+(environment `catalog.json`, pages folder). Result:
+
+- `families`: all families, each with `path`;
+- `routes`: key → `page` (`.py` / `.js`), `stylesheet`, `logic`; `index` = gallery page;
+- `assets`: URL → `file`, `type` (theme, logo, `/gallery/gallery.css`,
+  `/gallery/dist/*`, `/pages/<family>/<file>`). Only `gallery/dist/*.js` is
+  `application/javascript`.
+
+Nothing is written or served.
 
 <a id="ge-010-025"></a>
 
-## 025 · Checks
+## 025 · Serving a gallery from an environment
 
-```sh
-npm test
-bun test runner/tests
-.venv/bin/python -m pytest runner/tests
-npm run build:runner
-node scripts/verify_examples_browser.mjs URL PLAYWRIGHT_ENTRY CHROME [OUTPUT]
-node scripts/verify_standalone_runner.mjs FILE_URL PLAYWRIGHT_ENTRY CHROME
-```
+1. Stage one module per example key: extend the Page, append
+   `script(src="/gallery/dist/frame.js")`.
+2. Copy `stylesheet` / `logic` beside it as `<key>.css`, `<key>_aux.js`.
+3. Stage `index` as a gallery page subclass with `catalogs`.
+4. Serve `assets` with their media types.
 
-`test_serve.py` is skipped while `gramlot-py-server` is not installed.
+Earlier launcher and export (`runner/serve.py`, `server.mjs`, `build-standalone.mjs`):
+history of this repository and the core; starting point for the gallery commands of
+`gramlot-py-server` and `gramlot-js-server`.
 
 <a id="ge-010-030"></a>
 
-## 030 · Standalone directory
+## 030 · Gallery page behavior
 
-`npm run build:standalone` writes `build/examples-standalone/` (or the directory given
-as argument, which must be new): the runner with the HTML / SVG family only, opened
-through direct file URLs. Binding and Controllers need a host with `remoteSource` and
-logic companions. Startup and Workers belong to `@gramlot/gramlot-browser`.
+- Introduction first; title list by family; one tab per opened example: README,
+  resizable preview, source, logic companion.
+- Explicit IDs (`open-e01`, `tab-e01`, `panel-e01`, `divider-e01`, `gallery-theme`);
+  `gallery/browser/` connects events; page-local Bag for tabs, keyboard, theme, split.
+  Amendment 11.44 of the
+  [Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md).
+- Keyboard navigation, 65% split within 20–80%, light/dark theme passed to frames.
+
+<a id="ge-010-035"></a>
+
+## 035 · Checks
+
+`npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
+Fixture catalogue: `tests/fixtures/environment/`.
+
+<a id="ge-010-040"></a>
+
+## 040 · Release
+
+Same version in `pyproject.toml` and `package.json`. `publish.yml` by hand on the tag
+on `main`: validate, `tests.yml`, build, bundle check, GitHub release with
+`SHA256SUMS`, PyPI and npm with trusted publishing (environment `release`).

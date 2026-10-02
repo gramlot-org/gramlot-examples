@@ -1,6 +1,6 @@
-# Local Gramlot examples
+# Gramlot examples
 
-The [runner](../docs/010-runner.md) presents the same examples in Python and
+The [gallery](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md) presents the same examples in Python and
 JavaScript, in three families:
 
 - [`html_svg/`](html_svg/): thirteen HTML and SVG pages, without binding.
@@ -13,10 +13,9 @@ JavaScript, in three families:
 
 Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,
 its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css` and a
-logic companion `NN_name_aux.js`. The runner uses only what the minimal `FileHost`
+logic companion `NN_name_aux.js`. The gallery uses only what the minimal `FileHost`
 serves: `Page.css`, the same-name companions and the companion's root logic group.
 
-The pages run against the published packages `@gramlot/gramlot`,
-`@gramlot/gramlot-js-server` and `gramlot-py-server`. Shared visual styling is the
-`gramlot-base` theme shipped in `@gramlot/gramlot`, served by the runner at
+The pages depend only on the Gramlot core. Shared visual styling is the
+`gramlot-base` theme shipped in the core package, served by each environment at
 `/themes/gramlot-base/theme.css`.

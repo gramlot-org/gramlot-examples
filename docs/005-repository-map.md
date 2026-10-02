@@ -1,37 +1,31 @@
-# Application map
+# Repository map
 
 <!-- Document ID: GE-005 -->
 <a id="ge-005-005"></a>
 
 ```text
 gramlot-examples/
-├── README.md                            Collection entry point
+├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── package.json                         Runner and pages · published JS packages
-├── pyproject.toml                       Runner Python dependencies
-├── pages/                               Example pages · Python and JS pairs
-│   ├── README.md                        The three families
-│   ├── html_svg/                        e01–e13 · HTML and SVG without binding
-│   ├── binding/                         b01–b11 · Data binding
-│   └── controllers/                     c01–c09 · Formulas, controllers, logic companions
-├── runner/                              Local example runner
-│   ├── serve.py                         Python launcher · one public address
-│   ├── server.mjs                       Node/Bun host behind /js/
-│   ├── page.py · page.js · runner-page.js   Runner page in both languages
-│   ├── catalog.json · catalog/          Families, titles · HTML catalogue page
-│   ├── browser/                         Runner UI scripts · build-browser.mjs → dist/
-│   ├── build-standalone.mjs             Static export of the HTML / SVG family
-│   └── tests/                           Pages, runner UI, Node host, Python launcher
-├── scripts/                             Browser checks with Playwright
-├── apps/
-│   └── hello-world/                     First self-contained application
-│       ├── README.md                    Usage, limits and verification
-│       ├── pyproject.toml               Python distribution
-│       ├── package.json                 JavaScript distribution · hosts · standalone build
-│       ├── src/gramlot_example_app/     Python page and five host launch profiles
-│       ├── js/                          JS page · Node/Bun launchers · DB placeholders
-│       └── tests/test_page.py           Python Host → Source
-├── .github/workflows/tests.yml          CI · Node, Bun, Python, core main
-├── docs/                                Collection documentation · GE-010 runner guide
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.2
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.2
+├── src/gramlot_examples/
+│   ├── __init__.py · py.typed           build_gallery
+│   ├── index.js                         buildGallery
+│   ├── catalog.json                     Common families
+│   ├── pages/                           README · html_svg (e) · binding (b) · controllers (c)
+│   └── gallery/                         Gallery page
+│       ├── page.py · page.js            Python and JavaScript pages
+│       ├── gallery-page.js · gallery.css    Browser-safe UI · stylesheet
+│       ├── browser/                     UI scripts, bundled into dist/ (not published)
+│       └── dist/                        Built bundle (npm run build)
+├── scripts/build-browser.mjs            Builds gallery/dist/
+├── tests/                               Pages, gallery, build_gallery · fixtures/environment
+├── apps/hello-world/                    Application, until its launchers move to the adapters
+├── .github/
+│   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · core main (informative)
+│   ├── workflows/publish.yml            Tag → GitHub release, PyPI, npm
+│   └── release-notes/                   One file per version
+├── docs/                                GE-005 · GE-010 gallery package
 └── docs_llm/                            Concise mirrors
 ```
