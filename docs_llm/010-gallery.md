@@ -6,7 +6,7 @@
 ## 005 · Contents
 
 - PyPI `gramlot-examples` (module `gramlot_examples`), npm `@gramlot/gramlot-examples`.
-  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.2 or later. No server code.
+  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.5 or later. No server code.
 - Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
   language; `NN_name.js` exports `Page` and `Logic`, in both packages) with `.md`,
   `.css`; family READMEs; `catalog.json`.

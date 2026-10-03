@@ -7,7 +7,7 @@
 
 `gramlot-examples` is published on PyPI as `gramlot-examples` (module
 `gramlot_examples`) and on npm as `@gramlot/gramlot-examples`. It depends only on the
-Gramlot core: `gramlot` 0.2.2 or later, `@gramlot/gramlot` 0.2.2 or later. It
+Gramlot core: `gramlot` 0.2.5 or later, `@gramlot/gramlot` 0.2.5 or later. It
 contains no server code.
 
 | Content | Source | PyPI | npm |

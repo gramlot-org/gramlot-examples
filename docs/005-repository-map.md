@@ -7,8 +7,8 @@
 gramlot-examples/
 ├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.2
-├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.2
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.5
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.5
 ├── src/gramlot_examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
