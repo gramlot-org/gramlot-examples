@@ -57,7 +57,8 @@ class BuildGalleryTests(unittest.TestCase):
         (pages / "aux_family").mkdir()
         for name in ("README.md", "01_page.py", "01_page.md", "01_page_aux.js"):
             (pages / "aux_family" / name).write_text("")
-        family = {"key": "aux_family", "title": "X", "examples": [{"key": "test-01", "title": "X", "folder": "01_page"}]}
+        family = {"key": "aux_family", "title": "X",
+                  "examples": [{"key": "test-01", "title": "X", "folder": "01_page"}]}
         gallery = build_gallery([(self.catalog(self.environment([family])), pages)])
         self.assertEqual(gallery["routes"]["test-01"]["logic"], pages / "aux_family" / "01_page_aux.js")
         self.assertEqual(gallery["assets"]["/pages/aux_family/01_page_aux.js"]["type"], "text/plain")
