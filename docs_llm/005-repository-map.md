@@ -19,11 +19,14 @@ gramlot-examples/
 │       ├── gallery-page.js · gallery.css    Browser-safe UI · stylesheet
 │       ├── browser/                     UI scripts, bundled into dist/ (not published)
 │       └── dist/                        Built bundle (npm run build)
-├── scripts/build-browser.mjs            Builds gallery/dist/
+├── scripts/
+│   ├── build-browser.mjs                Builds gallery/dist/
+│   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the published hosts
+│   └── verify_e10_e13_browser.mjs       e10 and e13 in Chromium
 ├── tests/                               Pages, gallery, build_gallery · fixtures/environment
 ├── apps/hello-world/                    Application, until its launchers move to the adapters
 ├── .github/
-│   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · core main (informative)
+│   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · browser e10/e13 · core main (informative)
 │   ├── workflows/publish.yml            Tag → GitHub release, PyPI, npm
 │   └── release-notes/                   One file per version
 ├── docs/                                GE-005 · GE-010 gallery package

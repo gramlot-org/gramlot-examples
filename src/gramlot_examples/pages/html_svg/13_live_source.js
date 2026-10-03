@@ -34,7 +34,7 @@ export class Page extends BasePage {
     }
 
     button(root, title, action) {
-        root.button(title, {type: 'button', onclick: ACTIONS[action]});
+        root.button(title, {type: 'button', connect_onclick: ACTIONS[action]});
     }
 
     workspace(page) {
