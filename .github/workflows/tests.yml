@@ -70,7 +70,7 @@ jobs:
         run: python -m unittest discover -s tests
 
   browser:
-    name: Browser check of e10 and e13 (Chromium)
+    name: Browser check of every page (Chromium)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,25 +80,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Install dependencies, the published JavaScript host and Playwright Chromium
+      - name: Install dependencies and Playwright Chromium
         run: |
-          npm install --ignore-scripts --package-lock=false --no-save @gramlot/gramlot-js-server playwright
+          npm install --ignore-scripts --package-lock=false --no-save playwright
           npx playwright install --with-deps chromium
-      - name: Install the package and the published Python host
-        run: python -m pip install . 'gramlot-py-server[uvicorn]'
-      - name: Show the core and host versions
+      - name: Install the package
+        run: python -m pip install .
+      - name: Show the core versions
         run: |
-          npm ls @gramlot/gramlot @gramlot/gramlot-js-server
-          python -m pip show gramlot gramlot-py-server | grep -E '^(Name|Version):'
-      - name: Open e10 and e13 through the Python and JavaScript hosts
+          npm ls @gramlot/gramlot
+          python -m pip show gramlot | grep -E '^(Name|Version):'
+      - name: Open every page through the core FileHost of Python and JavaScript
         run: |
-          pages=src/gramlot_examples/pages/html_svg
+          pages=src/gramlot_examples/pages
           python scripts/serve_pages.py "$pages" 8091 > "$RUNNER_TEMP/python-host.log" 2>&1 &
           node scripts/serve_pages.mjs "$pages" 8092 > "$RUNNER_TEMP/javascript-host.log" 2>&1 &
           for port in 8091 8092; do
-            for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/13_live_source" && break; sleep 1; done
+            for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/html_svg/01_hello_world" && break; sleep 1; done
           done
-          node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091 http://127.0.0.1:8092
+          node scripts/verify_pages_browser.mjs http://127.0.0.1:8091 http://127.0.0.1:8092
+          node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091/html_svg http://127.0.0.1:8092/html_svg
       - name: Host logs
         if: ${{ failure() }}
         run: cat "$RUNNER_TEMP/python-host.log" "$RUNNER_TEMP/javascript-host.log"

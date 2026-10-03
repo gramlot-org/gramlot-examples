@@ -1,7 +1,7 @@
 /**
  * Open examples e10 and e13 in Chromium through a hosted folder of `html_svg` pages:
  * `node scripts/verify_e10_e13_browser.mjs <base URL> [<base URL> ...]`, one base per host
- * (the Python pages through gramlot-py-server, the JavaScript pages through gramlot-js-server).
+ * (the Python and the JavaScript pages through the core FileHost of `serve_pages.py` and `serve_pages.mjs`).
  * The renderers run in the browser: a page they refuse stops in the state `failed`.
  */
 import assert from 'node:assert/strict';
