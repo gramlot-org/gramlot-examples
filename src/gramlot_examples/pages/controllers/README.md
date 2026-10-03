@@ -2,7 +2,7 @@
 
 The pages of this family run code when the Data changes.
 
-`dataFormula` computes a value and writes it to its result path. `dataController` runs code for its effects. A button runs a nested controller at every click; `connect_on<event>` attributes connect other DOM events. The code is inline in the page, or a method of the `Logic` class in the page companion `NN_name_aux.js`.
+`dataFormula` computes a value and writes it to its result path. `dataController` runs code for its effects. A button runs a nested controller at every click; `connect_on<event>` attributes connect other DOM events. The code is inline in the page, or a method of the `Logic` class that the page module `NN_name.js` exports; the Python page takes it from there.
 
 Inline code needs a Content Security Policy that allows it. Named logic in the companion also runs under a strict policy.
 

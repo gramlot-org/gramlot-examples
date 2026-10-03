@@ -202,8 +202,8 @@
           "key": "c03",
           "title": "Named logic",
           "folder": "03_named_logic",
-          "description": "Formula and controller bodies in the companion 03_named_logic_aux.js.",
-          "explanation": "The companion exports class Logic. func names one of its methods; the method receives the resolved parameters, and a controller also its node. Named logic runs under a strict CSP."
+          "description": "Formula and controller bodies in class Logic of 03_named_logic.js.",
+          "explanation": "The page module exports class Logic beside Page. func names one of its methods; the method receives the resolved parameters, and a controller also its node. Named logic runs under a strict CSP."
         },
         {
           "key": "c04",
