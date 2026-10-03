@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gramlot-examples"
-version = "0.2.3"
+version = "0.2.4"
 description = "Gramlot example pages, the gallery page and its catalogue."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
-dependencies = ["gramlot>=0.2.2"]
+dependencies = ["gramlot>=0.2.5"]
 
 [project.urls]
 Homepage = "https://github.com/gramlot-org/gramlot-examples"
@@ -22,10 +22,9 @@ artifacts = ["src/gramlot_examples/gallery/dist/*"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gramlot_examples"]
-# The wheel carries the Python pages; the JavaScript pages and gallery sources stay in npm.
+# The wheel carries the Python pages and the page modules NN_name.js, whose Logic the
+# Python pages take; the gallery JavaScript sources stay in npm.
 exclude = [
-    "src/gramlot_examples/pages/**/*.js",
-    "!src/gramlot_examples/pages/**/*_aux.js",
     "src/gramlot_examples/index.js",
     "src/gramlot_examples/gallery/browser",
     "src/gramlot_examples/gallery/page.js",

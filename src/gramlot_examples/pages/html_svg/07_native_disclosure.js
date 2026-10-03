@@ -25,3 +25,6 @@ export class Page extends BasePage {
         measures.p('These numbers are fixed page content; no live progress is implied.', {class: 'muted'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

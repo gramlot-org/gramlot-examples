@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {existsSync, readFileSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import test from 'node:test';
 import {createRequire} from 'node:module';
 import {pathToFileURL} from 'node:url';
@@ -15,7 +15,7 @@ const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/cata
 const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
 
 /**
- * Mount one JavaScript example as its host would: Source from `main`, companion Logic registered
+ * Mount one JavaScript example as its host would: Source from `main`, the module's Logic registered
  * as the root group, `remoteSource` answered by the Page's declared Source methods.
  */
 async function mount(family, example) {
@@ -24,7 +24,7 @@ async function mount(family, example) {
     virtualConsole.on('jsdomError', error => errors.push(error));
     const dom = new JSDOM('<main id="gramlot-root"></main>', {url: `https://gallery.test/js/${example.key}`,
         virtualConsole});
-    const {Page} = await import(new URL(`${example.folder}.js`, folder(family.key)));
+    const {Page, Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
     const wire = async (method, params) => {
         const page = new Page();
         const builder = new Page.sourceBuilder();
@@ -34,11 +34,7 @@ async function mount(family, example) {
     };
     const transport = {main: () => wire('main'), source: (_pageId, method, params) => wire(method, params)};
     const app = new Gramlot({document: dom.window.document, pageId: example.key, transport});
-    const companion = new URL(`${example.folder}_aux.js`, folder(family.key));
-    if (existsSync(companion)) {
-        const {Logic} = await import(companion);
-        app.logicRegistry.register(Logic, {group: null, resource: `/${example.key}_aux.js`});
-    }
+    app.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
     const data = path => app.data.getItem(path);
@@ -340,6 +336,17 @@ test('every family folder has a README and every example its Python, JavaScript 
                 assert.ok(existsSync(new URL(`${example.folder}${suffix}`, folder(family.key))),
                     `${family.key}/${example.folder}${suffix}`);
             }
+        }
+    }
+});
+
+test('every page module exports Page and Logic, and no page has a logic companion', async () => {
+    for (const family of families) {
+        assert.deepEqual(readdirSync(folder(family.key)).filter(name => name.endsWith('_aux.js')), [], family.key);
+        for (const example of family.examples) {
+            const module = await import(new URL(`${example.folder}.js`, folder(family.key)));
+            assert.equal(typeof module.Page, 'function', `${example.key} Page`);
+            assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
         }
     }
 });

@@ -40,3 +40,6 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.label', value: 'rectangle · circle · ellipse · line · polyline · polygon'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

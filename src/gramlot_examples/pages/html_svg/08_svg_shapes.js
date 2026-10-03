@@ -21,3 +21,6 @@ export class Page extends BasePage {
         figure.figcaption('The shape attributes are part of the Source tree.');
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

@@ -1,6 +1,6 @@
 # 03 · Named logic
 
-The code of this page lives in its companion `03_named_logic_aux.js`, a JavaScript module beside the page that exports `class Logic`. The minimal FileHost serves it for the Python page and for the JavaScript page alike.
+The code of this page lives in `class Logic`, which `03_named_logic.js` exports beside `Page`. The minimal FileHost serves that module as the page logic for the JavaScript page and for the Python page `03_named_logic.py` alike.
 
 - `func='finalPrice'` names a method of `Logic`. A formula method receives one object with the resolved parameters and returns the result: 10% off from the `threshold`.
 - A controller method receives its Source node and the parameters. `node.SET('.changes', …)` writes relative to the node's context.

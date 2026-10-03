@@ -7,3 +7,6 @@ export class Page extends BasePage {
         root.h1('Demo', {class: 'demo'});
     }
 }
+
+/** The page logic of 01_demo.py and 01_demo.js. */
+export class Logic {}

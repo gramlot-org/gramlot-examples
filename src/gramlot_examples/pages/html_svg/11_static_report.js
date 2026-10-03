@@ -66,3 +66,6 @@ export class Page extends BasePage {
         card.p(value, {class: 'report-number'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

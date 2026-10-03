@@ -40,3 +40,6 @@ export class Page extends BasePage {
         later.dataSetter({destination_path: '.shipping', value: {city: 'London', zone: 'EU'}});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

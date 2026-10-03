@@ -1,6 +1,6 @@
 # 09 · End-to-end story
 
-The acceptance page of Gramlot 0.2.0 (unified plan §8.1), in Python and JavaScript with one companion.
+The acceptance page of Gramlot 0.2.0 (unified plan §8.1), in Python and JavaScript with one `Logic` class in `09_end_to_end.js`.
 
 1. **First render.** The `dataSetter` nodes sit after some controls and in the later branch; `.settings.caption` is written twice and the later setter wins. The quantity has no setter and starts from its `default`. The first DOM already shows every final value.
 2. **Editing.** The caption field writes at `change`; after checking `live` it writes at every keystroke.

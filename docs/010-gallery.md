@@ -7,13 +7,14 @@
 
 `gramlot-examples` is published on PyPI as `gramlot-examples` (module
 `gramlot_examples`) and on npm as `@gramlot/gramlot-examples`. It depends only on the
-Gramlot core: `gramlot` 0.2.2 or later, `@gramlot/gramlot` 0.2.2 or later. It
+Gramlot core: `gramlot` 0.2.5 or later, `@gramlot/gramlot` 0.2.5 or later. It
 contains no server code.
 
 | Content | Source | PyPI | npm |
 | --- | --- | --- | --- |
 | Example pages | `src/gramlot_examples/pages/<family>/NN_name.{py,js}` | `.py` | `.js` |
-| README, stylesheet, logic companion | `NN_name.md`, `NN_name.css`, `NN_name_aux.js` | yes | yes |
+| Page modules (`Page` and `Logic`) | `NN_name.js` | yes | yes |
+| README, stylesheet | `NN_name.md`, `NN_name.css` | yes | yes |
 | Family README | `pages/<family>/README.md` | yes | yes |
 | Common catalogue | `src/gramlot_examples/catalog.json` | yes | yes |
 | Gallery page | `gallery/page.py`, `gallery/page.js` with `gallery/gallery-page.js` | `page.py` | `page.js`, `gallery-page.js` |
@@ -86,8 +87,12 @@ result has three parts:
 
 - `families`: the families of all catalogues, each with `path`, its pages folder;
 - `routes`: key → `page`, `stylesheet`, `logic`. `page` is the `.py` file in Python
-  and the `.js` file in JavaScript; `stylesheet` and `logic` are the same-name `.css`
-  and `_aux.js` files, or `None`/`null`. The `index` route is the gallery page;
+  and the `.js` file in JavaScript; `stylesheet` is the same-name `.css` file, or
+  `None`/`null`. `logic` is the module whose `Logic` export the host takes:
+  `NN_name_aux.js` when it exists, else `NN_name.js` (in JavaScript the page module
+  itself), else `None`. Every common example has `NN_name.js` and no `_aux.js`; an
+  environment page can still use `NN_name_aux.js`. The host reports a page with both.
+  The `index` route is the gallery page;
 - `assets`: URL → `file`, `type`. The theme, the logo, `/gallery/gallery.css`,
   `/gallery/dist/*` and the source files of every example under
   `/pages/<family>/<file>`. Only the built scripts in `gallery/dist/` are
@@ -105,8 +110,12 @@ An environment serves the gallery with its own host and static-file mechanism:
    extends the original Page and appends `script(src="/gallery/dist/frame.js")` to the
    root, so the example frame follows the gallery theme. The teaching pages are not
    changed.
-2. It copies `stylesheet` and `logic` beside the staged module, named after the key
-   (`e06.css`, `c03_aux.js`): the core `FileHost` links them as same-name companions.
+2. It copies `stylesheet` beside the staged module, named after the key (`e06.css`):
+   the core `FileHost` links it as the same-name stylesheet. It serves `logic` as
+   JavaScript at a URL of its own and stages a one-line `<key>_aux.js` that re-exports
+   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`), the model of
+   the core runner. The page module imports `@gramlot/gramlot/page`, which the import
+   map of the bootstrap resolves to the runtime (core 0.2.5).
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
    environment catalogues, so the gallery lists the common families and its own.
 4. It serves every URL of `assets` with its media type. A host mounted under a prefix
@@ -127,7 +136,9 @@ repository and in the core; they are the starting point of the gallery commands 
 A short introduction opens first, with no example frame. A compact title list sits on
 the left, with the examples nested below their family. Selecting a title opens or
 reactivates its own tab; each panel renders the example's README above a resizable
-preview and the source code, followed by the logic companion when there is one.
+preview and the source code. The Python panel follows the source with the logic module
+(`Logic · NN_name.js`); the JavaScript page module already shows its `Logic`, and an
+environment companion `NN_name_aux.js` gets a pane of its own.
 Previously opened examples remain mounted, preserving native input state. Example
 iframes load on their first opening.
 
@@ -163,13 +174,20 @@ python -m pip install -e .
 python -m unittest discover -s tests
 ```
 
-- `tests/examples.test.js`: every family folder and file pair; one behaviour of each
-  Binding and Controllers page, mounted in jsdom with the core.
+- `tests/examples.test.js`: every family folder and file pair; every page module exports
+  `Page` and `Logic`, and no common page has `_aux.js`; one behaviour of each Binding and
+  Controllers page, mounted in jsdom with the core and the module's `Logic`.
 - `tests/gallery.test.js`: the gallery UI in jsdom.
 - `tests/build-gallery.test.js` and `tests/test_build_gallery.py`: the same cases in
   both languages, with the environment catalogue in `tests/fixtures/environment/`.
-- `tests/test_pages.py`: every Python route opens through the core `FileHost` and
-  returns Source.
+- `tests/test_pages.py`: every Python route opens through the core `FileHost`, links its
+  page module as the logic and returns Source.
+- `scripts/verify_pages_browser.mjs` (CI job `browser`): `scripts/serve_pages.py` and
+  `scripts/serve_pages.mjs` serve the pages folder with the core `FileHost`; Chromium
+  opens every page in both languages and calls the `Logic` of b08, c03, c08 and c09.
+  `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The published adapters
+  `gramlot-py-server` 0.2.1 and `@gramlot/gramlot-js-server` 0.2.3 serve only `.css`
+  and `_aux.js` files below the pages folder, not the page modules.
 
 <a id="ge-010-040"></a>
 

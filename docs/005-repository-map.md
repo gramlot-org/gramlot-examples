@@ -7,8 +7,8 @@
 gramlot-examples/
 ├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.2
-├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.2
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.5
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.5
 ├── src/gramlot_examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
@@ -21,12 +21,13 @@ gramlot-examples/
 │       └── dist/                        Built bundle (npm run build)
 ├── scripts/
 │   ├── build-browser.mjs                Builds gallery/dist/
-│   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the published hosts
+│   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the core FileHost
+│   ├── verify_pages_browser.mjs         Every page in Chromium, Python and JavaScript
 │   └── verify_e10_e13_browser.mjs       e10 and e13 in Chromium
 ├── tests/                               Pages, gallery, build_gallery · fixtures/environment
 ├── apps/hello-world/                    Application, until its launchers move to the adapters
 ├── .github/
-│   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · browser e10/e13 · core main (informative)
+│   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · browser, every page · core main (informative)
 │   ├── workflows/publish.yml            Tag → GitHub release, PyPI, npm
 │   └── release-notes/                   One file per version
 ├── docs/                                GE-005 · GE-010 gallery package

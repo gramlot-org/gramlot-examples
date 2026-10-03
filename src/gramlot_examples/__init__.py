@@ -40,8 +40,10 @@ def build_gallery(catalogs=()):
     """Return the families, routes and static assets of the common gallery plus ``catalogs``.
 
     Each item of ``catalogs`` is a pair ``(catalog.json, pages folder)`` of one environment.
-    ``routes`` maps each key to its Python page and same-name companions; ``assets`` maps
-    each URL to its file and media type. Nothing is written or served here.
+    ``routes`` maps each key to its Python page, its same-name stylesheet and its logic
+    module: ``NN_name_aux.js``, else ``NN_name.js``, whose ``Logic`` export the host takes
+    (the host raises when both files exist). ``assets`` maps each URL to its file and media
+    type. Nothing is written or served here.
     """
     families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
     for catalog, pages in catalogs:
@@ -72,10 +74,11 @@ def build_gallery(catalogs=()):
             if not page.is_file():
                 raise FileNotFoundError(f"Missing page: {page}")
             stylesheet = folder / f"{example['folder']}.css"
-            logic = folder / f"{example['folder']}_aux.js"
+            logic = next((path for path in (folder / f"{example['folder']}_aux.js",
+                                            folder / f"{example['folder']}.js") if path.is_file()), None)
             routes[example["key"]] = {"page": page,
                                       "stylesheet": stylesheet if stylesheet.is_file() else None,
-                                      "logic": logic if logic.is_file() else None}
+                                      "logic": logic}
             for suffix in SUFFIXES:
                 source = folder / f"{example['folder']}{suffix}"
                 if source.is_file():

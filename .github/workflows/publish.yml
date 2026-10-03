@@ -80,7 +80,8 @@ jobs:
           npm=$(tar -xzOf dist/*.tgz "package/$bundle" | sha256sum | cut -d' ' -f1)
           test "$fresh" = "$wheel"
           test "$fresh" = "$npm"
-          unzip -l dist/*.whl gramlot_examples/py.typed gramlot_examples/catalog.json
+          unzip -l dist/*.whl gramlot_examples/py.typed gramlot_examples/catalog.json \
+            gramlot_examples/pages/controllers/03_named_logic.js
           echo "gallery bundle sha256 $fresh"
       - uses: actions/upload-artifact@v4
         with:

@@ -31,3 +31,6 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: 'current', value: 'people.ada'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}
