@@ -1,5 +1,5 @@
 /** Node integration: provide original example text to the browser-safe gallery UI. */
-import {existsSync, readFileSync} from 'node:fs';
+import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {buildGallery} from '../index.js';
 import {GalleryPage} from './gallery-page.js';
@@ -10,7 +10,8 @@ export class Page extends GalleryPage {
     static catalogs = [];
 
     static get families() {
-        return buildGallery({catalogs: this.catalogs}).families.map(({key, title, path, examples}) => {
+        const {families, routes} = buildGallery({catalogs: this.catalogs});
+        return families.map(({key, title, path, examples}) => {
             const read = name => readFileSync(join(path, name), 'utf8');
             return {
                 key, title, readme: read('README.md'),
@@ -18,7 +19,9 @@ export class Page extends GalleryPage {
                     key: example.key, title: example.title, folder: example.folder, frameUrl: example.key,
                     readme: read(`${example.folder}.md`),
                     source: read(`${example.folder}.js`),
-                    logic: existsSync(join(path, `${example.folder}_aux.js`)) ? read(`${example.folder}_aux.js`) : null,
+                    // The page module shows its own Logic; only a companion NN_name_aux.js is shown apart.
+                    logic: routes[example.key].logic === routes[example.key].page
+                        ? null : readFileSync(routes[example.key].logic, 'utf8'),
                 })),
             };
         });

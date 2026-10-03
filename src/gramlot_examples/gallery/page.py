@@ -11,11 +11,12 @@ class Page(GramlotPage):
     catalogs = ()
 
     @property
-    def families(self):
-        return build_gallery(self.catalogs)["families"]
+    def gallery(self):
+        return build_gallery(self.catalogs)
 
     def main(self, root):
-        families = self.families
+        gallery = self.gallery
+        families = gallery["families"]
         shell = root.div(class_="gallery", id="gallery")
         sidebar = shell.aside(class_="gallery-sidebar")
         brand = sidebar.header()
@@ -74,10 +75,10 @@ class Page(GramlotPage):
             category_panel.div((family["path"] / "README.md").read_text(),
                                id=f"readme-{key}")
             for example in family["examples"]:
-                self.panel(panels, example, family["path"])
+                self.panel(panels, example, family["path"], gallery["routes"][example["key"]]["logic"])
         shell.script(src="/gallery/dist/gallery.js")
 
-    def panel(self, parent, example, examples):
+    def panel(self, parent, example, examples, logic_path):
         key = example["key"]
         panel = parent.section(id=f"panel-{key}", class_="gallery-panel", role="tabpanel",
                                aria_labelledby=f"tab-{key}", hidden=True)
@@ -99,8 +100,8 @@ class Page(GramlotPage):
         codepane.h3(f"Python · {source_path.name}")
         codepane.pre().code(source_path.read_text(), class_="language-python",
                             id=f"code-{key}")
-        logic_path = examples / f"{example['folder']}_aux.js"
-        if logic_path.is_file():
-            codepane.h3(f"Companion · {logic_path.name}")
+        # The Python page takes its Logic from the JavaScript module beside it.
+        if logic_path is not None:
+            codepane.h3(f"Logic · {logic_path.name}")
             codepane.pre().code(logic_path.read_text(), class_="language-javascript",
                                 id=f"logic-{key}")
