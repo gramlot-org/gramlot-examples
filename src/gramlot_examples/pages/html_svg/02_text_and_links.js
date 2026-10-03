@@ -26,3 +26,6 @@ export class Page extends BasePage {
         page.a('Jump back to the heading', {href: '#destination'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

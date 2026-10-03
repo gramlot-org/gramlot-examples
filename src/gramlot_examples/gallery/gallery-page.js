@@ -89,7 +89,7 @@ export class GalleryPage extends GramlotPage {
         codepane.pre().code(example.source, {class: 'language-javascript',
             id: `code-${key}`});
         if (example.logic != null) {
-            codepane.h3(`Companion · ${example.folder}_aux.js`);
+            codepane.h3(`Logic · ${example.folder}_aux.js`);
             codepane.pre().code(example.logic, {class: 'language-javascript',
                 id: `logic-${key}`});
         }

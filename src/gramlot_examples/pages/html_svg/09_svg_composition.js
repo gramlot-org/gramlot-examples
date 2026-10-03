@@ -40,3 +40,6 @@ export class Page extends BasePage {
         group.circle({cx: 0, cy: 184, r: 4, fill: 'var(--gramlot-brand-yellow)'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

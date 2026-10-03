@@ -35,8 +35,10 @@ function readCatalog(catalog, pages, common) {
  * Return the families, routes and static assets of the common gallery plus `catalogs`.
  *
  * Each item of `catalogs` is a pair `[catalog.json, pages folder]` of one environment.
- * `routes` maps each key to its JavaScript page and same-name companions; `assets` maps
- * each URL to its file and media type. Nothing is written or served here.
+ * `routes` maps each key to its JavaScript page, its same-name stylesheet and its logic
+ * module: `NN_name_aux.js`, else `NN_name.js`, the page module itself, whose `Logic` export
+ * the host takes (the host throws when both hold a `Logic`). `assets` maps each URL to its
+ * file and media type. Nothing is written or served here.
  */
 export function buildGallery({catalogs = []} = {}) {
     const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
@@ -66,9 +68,8 @@ export function buildGallery({catalogs = []} = {}) {
             const page = join(folder, `${example.folder}.js`);
             if (!existsSync(page)) throw new Error(`Missing page: ${page}`);
             const stylesheet = join(folder, `${example.folder}.css`);
-            const logic = join(folder, `${example.folder}_aux.js`);
-            routes[example.key] = {page, stylesheet: existsSync(stylesheet) ? stylesheet : null,
-                logic: existsSync(logic) ? logic : null};
+            const logic = [join(folder, `${example.folder}_aux.js`), page].find(path => existsSync(path));
+            routes[example.key] = {page, stylesheet: existsSync(stylesheet) ? stylesheet : null, logic};
             for (const suffix of SUFFIXES) {
                 const source = join(folder, `${example.folder}${suffix}`);
                 if (existsSync(source)) assets[`/pages/${family.key}/${basename(source)}`] = {file: source, type: mediaType(source)};

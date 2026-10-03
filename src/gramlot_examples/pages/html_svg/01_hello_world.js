@@ -10,3 +10,6 @@ export class Page extends BasePage {
         page.p('This heading and paragraph come from a Source tree.');
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

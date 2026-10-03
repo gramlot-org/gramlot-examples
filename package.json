@@ -1,6 +1,6 @@
 {
   "name": "@gramlot/gramlot-examples",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Gramlot example pages, the gallery page and its catalogue.",
   "license": "Apache-2.0",
   "repository": {
@@ -14,7 +14,7 @@
     "prepack": "node scripts/build-browser.mjs"
   },
   "dependencies": {
-    "@gramlot/gramlot": ">=0.2.2"
+    "@gramlot/gramlot": ">=0.2.5"
   },
   "devDependencies": {
     "@genrojs/bag": ">=0.10.1",

@@ -1,4 +1,4 @@
-"""Every Python page of the package opens and returns its Source through the core FileHost."""
+"""Every Python page of the package opens, links its page module and returns its Source through the core FileHost."""
 
 import re
 import unittest
@@ -17,6 +17,9 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
                 host = FileHost(str(page.parent))
                 opened = await host.open_page(f"/{page.stem}")
                 self.assertRegex(opened.html, re.compile(r"<title>[^<]+</title>"))
+                if key != "index":
+                    # The Python page takes its Logic from the page module beside it.
+                    self.assertIn(f'{{"url":"/{page.stem}.js","group":null}}', opened.html)
                 tree = from_tytx(await host.main(opened.page_id))
                 self.assertGreater(len(tree.nodes), 0)
                 host.close_page(opened.page_id)

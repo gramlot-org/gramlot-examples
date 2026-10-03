@@ -62,3 +62,6 @@ export class Page extends BasePage {
         motion.p('Removing this section also clears its interval through renderer.onDispose.', {class: 'muted'});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

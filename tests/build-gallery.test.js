@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {existsSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -24,13 +24,14 @@ test('common gallery', () => {
     assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'binding', 'controllers']);
     assert.equal(Object.keys(gallery.routes).length, 34);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
+    assert.equal(gallery.routes.c03.logic, gallery.routes.c03.page, 'the page module holds the Logic');
     for (const [url, asset] of Object.entries(gallery.assets)) assert.ok(existsSync(asset.file), url);
 });
 
 test('media types', () => {
     const {assets} = buildGallery();
     assert.equal(assets['/gallery/dist/gallery.js'].type, 'application/javascript');
-    assert.equal(assets['/pages/controllers/03_named_logic_aux.js'].type, 'text/plain');
+    assert.equal(assets['/pages/controllers/03_named_logic.js'].type, 'text/plain');
     assert.equal(assets['/gallery/gallery.css'].type, 'text/css');
     assert.equal(assets['/gallery/dist/LICENSE'].type, 'text/plain');
 });
@@ -42,10 +43,21 @@ test('environment catalogue', () => {
     assert.deepEqual(gallery.routes['test-01'], {
         page: join(PAGES, 'test_family', '01_demo.js'),
         stylesheet: join(PAGES, 'test_family', '01_demo.css'),
-        logic: join(PAGES, 'test_family', '01_demo_aux.js'),
+        logic: join(PAGES, 'test_family', '01_demo.js'),
     });
     const urls = Object.keys(gallery.assets).filter(url => url.startsWith('/pages/test_family/')).sort();
-    assert.deepEqual(urls, ['.css', '.js', '.md', '.py', '_aux.js'].map(suffix => `/pages/test_family/01_demo${suffix}`));
+    assert.deepEqual(urls, ['.css', '.js', '.md', '.py'].map(suffix => `/pages/test_family/01_demo${suffix}`));
+});
+
+test('logic companion of an environment page', t => {
+    const pages = mkdtempSync(join(tmpdir(), 'gramlot-gallery-'));
+    t.after(() => rmSync(pages, {recursive: true, force: true}));
+    mkdirSync(join(pages, 'aux_family'));
+    for (const name of ['README.md', '01_page.js', '01_page.md', '01_page_aux.js']) writeFileSync(join(pages, 'aux_family', name), '');
+    const family = {key: 'aux_family', title: 'X', examples: [{key: 'test-01', title: 'X', folder: '01_page'}]};
+    const gallery = buildGallery({catalogs: [[catalog(t, environment([family])), pages]]});
+    assert.equal(gallery.routes['test-01'].logic, join(pages, 'aux_family', '01_page_aux.js'));
+    assert.equal(gallery.assets['/pages/aux_family/01_page_aux.js'].type, 'text/plain');
 });
 
 test('catalogue without environment', t => {

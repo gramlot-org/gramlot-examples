@@ -10,7 +10,7 @@
           "title": "Demo",
           "folder": "01_demo",
           "description": "An environment page for the build_gallery tests.",
-          "explanation": "The page has a same-name stylesheet and a logic companion."
+          "explanation": "The page has a same-name stylesheet and a page module that exports Logic."
         }
       ]
     }

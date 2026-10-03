@@ -27,3 +27,6 @@ export class Page extends BasePage {
         groups.li('SVG');
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

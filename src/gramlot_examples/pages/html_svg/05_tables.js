@@ -25,3 +25,6 @@ export class Page extends BasePage {
         for (const value of [ROWS.reduce((n, row) => n + row[1], 0), ROWS.reduce((n, row) => n + row[2], 0), ROWS.reduce((n, row) => n + row[1] + row[2], 0)]) total.td(String(value));
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

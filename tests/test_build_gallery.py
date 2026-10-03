@@ -27,13 +27,14 @@ class BuildGalleryTests(unittest.TestCase):
         self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "binding", "controllers"])
         self.assertEqual(len(gallery["routes"]), 34)
         self.assertEqual(gallery["routes"]["index"]["page"].name, "page.py")
+        self.assertEqual(gallery["routes"]["c03"]["logic"].name, "03_named_logic.js")
         for url, asset in gallery["assets"].items():
             self.assertTrue(asset["file"].is_file(), url)
 
     def test_media_types(self):
         assets = build_gallery()["assets"]
         self.assertEqual(assets["/gallery/dist/gallery.js"]["type"], "application/javascript")
-        self.assertEqual(assets["/pages/controllers/03_named_logic_aux.js"]["type"], "text/plain")
+        self.assertEqual(assets["/pages/controllers/03_named_logic.js"]["type"], "text/plain")
         self.assertEqual(assets["/gallery/gallery.css"]["type"], "text/css")
         self.assertEqual(assets["/gallery/dist/LICENSE"]["type"], "text/plain")
 
@@ -44,10 +45,23 @@ class BuildGalleryTests(unittest.TestCase):
         route = gallery["routes"]["test-01"]
         self.assertEqual(route["page"], PAGES / "test_family" / "01_demo.py")
         self.assertEqual(route["stylesheet"], PAGES / "test_family" / "01_demo.css")
-        self.assertEqual(route["logic"], PAGES / "test_family" / "01_demo_aux.js")
+        self.assertEqual(route["logic"], PAGES / "test_family" / "01_demo.js")
         urls = sorted(url for url in gallery["assets"] if url.startswith("/pages/test_family/"))
         self.assertEqual(urls, [f"/pages/test_family/01_demo{suffix}"
-                                for suffix in (".css", ".js", ".md", ".py", "_aux.js")])
+                                for suffix in (".css", ".js", ".md", ".py")])
+
+    def test_logic_companion_of_an_environment_page(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        pages = Path(directory.name)
+        (pages / "aux_family").mkdir()
+        for name in ("README.md", "01_page.py", "01_page.md", "01_page_aux.js"):
+            (pages / "aux_family" / name).write_text("")
+        family = {"key": "aux_family", "title": "X",
+                  "examples": [{"key": "test-01", "title": "X", "folder": "01_page"}]}
+        gallery = build_gallery([(self.catalog(self.environment([family])), pages)])
+        self.assertEqual(gallery["routes"]["test-01"]["logic"], pages / "aux_family" / "01_page_aux.js")
+        self.assertEqual(gallery["assets"]["/pages/aux_family/01_page_aux.js"]["type"], "text/plain")
 
     def test_catalogue_without_environment(self):
         with self.assertRaisesRegex(ValueError, "has no environment"):
