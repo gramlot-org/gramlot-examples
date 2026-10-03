@@ -20,7 +20,7 @@ class Page(BasePage):
         for title, description, kind in CARDS:
             card = cards.article(node_label=kind, class_="card stack")
             card.button("×", type="button", class_="card-remove", aria_label=f"Remove {title}",
-                        onclick=f"window.gramlot.builder.source.getItem('main.page.cards').popNode('{kind}')")
+                        connect_onclick=f"window.gramlot.builder.source.getItem('main.page.cards').popNode('{kind}')")
             icon = card.svg(viewBox="0 0 64 64", width=64, height=64, aria_hidden="true")
             self.icon(icon, kind)
             card.h2(title)

@@ -36,7 +36,7 @@ class Page(BasePage):
         page.script(ANIMATION)
 
     def button(self, root, title, action):
-        root.button(title, type="button", onclick=ACTIONS[action])
+        root.button(title, type="button", connect_onclick=ACTIONS[action])
 
     def workspace(self, page):
         work = page.section(node_label="work", class_="card stack")
