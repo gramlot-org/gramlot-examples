@@ -61,3 +61,6 @@ export class Page extends BasePage {
         parent.input({type: kind, id: key, name: key, ...attrs});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

@@ -38,3 +38,6 @@ export class Page extends BasePage {
         }
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}

@@ -36,3 +36,6 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.started', value: false});
     }
 }
+
+/** The page logic: this page names no methods. */
+export class Logic {}
