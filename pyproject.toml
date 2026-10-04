@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gramlot-examples"
-version = "0.2.4"
+version = "0.2.5"
 description = "Gramlot example pages, the gallery page and its catalogue."
 readme = "README.md"
 license = "Apache-2.0"
