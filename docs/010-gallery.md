@@ -117,7 +117,12 @@ An environment serves the gallery with its own host and static-file mechanism:
    the core runner. The page module imports `@gramlot/gramlot/page`, which the import
    map of the bootstrap resolves to the runtime (core 0.2.5).
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
-   environment catalogues, so the gallery lists the common families and its own.
+   environment catalogues, so the gallery lists the common families and its own. The
+   same subclass sets `logoUrl` and `galleryScript` when it serves the logo and the
+   gallery script at other URLs, for example under its mount
+   (`/py/assets/branding/gramlot-logo-dark.svg`, `/py/gallery/dist/gallery.js`). The
+   attributes have the same names and defaults (`/assets/branding/gramlot-logo-dark.svg`,
+   `/gallery/dist/gallery.js`) in `gallery/page.py` and `gallery/page.js`.
 4. It serves every URL of `assets` with its media type. A host mounted under a prefix
    that links `Page.css` under that prefix (`/py/themes/gramlot-base/theme.css`) serves
    the stylesheet assets under the prefix too.
@@ -177,7 +182,8 @@ python -m unittest discover -s tests
 - `tests/examples.test.js`: every family folder and file pair; every page module exports
   `Page` and `Logic`, and no common page has `_aux.js`; one behaviour of each Binding and
   Controllers page, mounted in jsdom with the core and the module's `Logic`.
-- `tests/gallery.test.js`: the gallery UI in jsdom.
+- `tests/gallery.test.js`: the gallery UI in jsdom; with `tests/test_gallery_page.py`, the
+  default and subclass values of `logoUrl` and `galleryScript` in both languages.
 - `tests/build-gallery.test.js` and `tests/test_build_gallery.py`: the same cases in
   both languages, with the environment catalogue in `tests/fixtures/environment/`.
 - `tests/test_pages.py`: every Python route opens through the core `FileHost`, links its
