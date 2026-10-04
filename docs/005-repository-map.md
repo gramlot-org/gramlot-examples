@@ -25,7 +25,6 @@ gramlot-examples/
 │   ├── verify_pages_browser.mjs         Every page in Chromium, Python and JavaScript
 │   └── verify_e10_e13_browser.mjs       e10 and e13 in Chromium
 ├── tests/                               Pages, gallery, build_gallery · fixtures/environment
-├── apps/hello-world/                    Application, until its launchers move to the adapters
 ├── .github/
 │   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · browser, every page · core main (informative)
 │   ├── workflows/publish.yml            Tag → GitHub release, PyPI, npm
