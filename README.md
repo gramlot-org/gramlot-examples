@@ -42,11 +42,4 @@ npm test
 python -m unittest discover -s tests
 ```
 
-## Applications
-
-[Hello World](apps/hello-world/README.md) stays here until its launchers move to the
-adapters as their quick-start examples. Its JavaScript launchers use
-`@gramlot/gramlot-js-server`; its Python launchers wait for `gramlot-py-server`.
-Database profiles remain placeholders.
-
 [Repository map](docs/005-repository-map.md) (GE-005).

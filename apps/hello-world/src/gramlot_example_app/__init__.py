@@ -1,1 +1,0 @@
-"""Reference application for Gramlot."""

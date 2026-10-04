@@ -35,15 +35,6 @@ jobs:
       - name: Test pages, gallery and buildGallery with Bun
         if: matrix.runtime == 'bun'
         run: bun test ./tests
-      - name: Install hello-world dependencies
-        run: npm --prefix apps/hello-world install --ignore-scripts --package-lock=false
-      - name: Test hello-world with Node
-        if: matrix.runtime == 'node'
-        run: npm --prefix apps/hello-world test
-      - name: Test hello-world with Bun
-        if: matrix.runtime == 'bun'
-        working-directory: apps/hello-world
-        run: bun test js/tests
 
   python:
     name: Python ${{ matrix.python-version }}
