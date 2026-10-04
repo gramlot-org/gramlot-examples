@@ -56,7 +56,9 @@ Nothing is written or served.
    `script(src="/gallery/dist/frame.js")`.
 2. Copy `stylesheet` beside it as `<key>.css`; serve `logic` as JavaScript and stage
    `<key>_aux.js` = `export {Logic} from "<its URL>";` (core runner model).
-3. Stage `index` as a gallery page subclass with `catalogs`.
+3. Stage `index` as a gallery page subclass with `catalogs`, and `logoUrl` /
+   `galleryScript` when served elsewhere (e.g. under the mount); same names and defaults
+   in `page.py` and `page.js`.
 4. Serve `assets` with their media types; a host that links `Page.css` under its mount
    (`/py/themes/…`) serves the stylesheets under the mount too.
 
