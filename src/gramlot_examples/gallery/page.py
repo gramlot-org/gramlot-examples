@@ -4,10 +4,13 @@ from gramlot_examples import build_gallery
 
 
 class Page(GramlotPage):
-    """The gallery page; an environment subclass sets ``catalogs`` as for ``build_gallery``."""
+    """The gallery page; an environment subclass sets ``catalogs`` as for ``build_gallery``,
+    and ``logoUrl`` and ``galleryScript`` when it serves them at other URLs."""
 
     title = "Gramlot examples"
     css = ("/themes/gramlot-base/theme.css", "/gallery/gallery.css")
+    logoUrl = "/assets/branding/gramlot-logo-dark.svg"
+    galleryScript = "/gallery/dist/gallery.js"
     catalogs = ()
 
     @property
@@ -20,8 +23,7 @@ class Page(GramlotPage):
         shell = root.div(class_="gallery", id="gallery")
         sidebar = shell.aside(class_="gallery-sidebar")
         brand = sidebar.header()
-        brand.img(src="/assets/branding/gramlot-logo-dark.svg", alt="Gramlot",
-                  class_="gallery-logo")
+        brand.img(src=self.logoUrl, alt="Gramlot", class_="gallery-logo")
         brand.h1("Examples")
         navigation = sidebar.nav(aria_label="Examples").ul(class_="gallery-list")
         for family in families:
@@ -76,7 +78,7 @@ class Page(GramlotPage):
                                id=f"readme-{key}")
             for example in family["examples"]:
                 self.panel(panels, example, family["path"], gallery["routes"][example["key"]]["logic"])
-        shell.script(src="/gallery/dist/gallery.js")
+        shell.script(src=self.galleryScript)
 
     def panel(self, parent, example, examples, logic_path):
         key = example["key"]
