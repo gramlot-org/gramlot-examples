@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {JSDOM} from 'jsdom';
 import {GalleryPage} from '../src/gramlot_examples/gallery/gallery-page.js';
+import {Page as NodeGalleryPage} from '../src/gramlot_examples/gallery/page.js';
 import {Gramlot, GramlotBuilder} from '@gramlot/gramlot';
 import {mountGallery} from '../src/gramlot_examples/gallery/browser/gallery.js';
 import {mountFrameTheme} from '../src/gramlot_examples/gallery/browser/frame-theme.js';
@@ -238,4 +239,29 @@ test('families read through a getter: the first family starts open', () => {
     const families = [...document.querySelectorAll('.gallery-sidebar nav > .gallery-list > li > details')];
     assert.deepEqual(families.map(details => details.open), [true, false]);
     app.dispose();
+});
+
+/** Build `main` as the host does and return the `src` of each Source node by tag. */
+function sources(PageClass) {
+    const builder = new PageClass.sourceBuilder();
+    new PageClass().main(builder.root);
+    const walk = function* (bag) {
+        for (const node of bag.getNodes()) {
+            yield node;
+            if (node.value?.getNodes) yield* walk(node.value);
+        }
+    };
+    return Object.fromEntries([...walk(builder.source)].filter(node => node.attr.src).map(node => [node.nodeTag, node.attr.src]));
+}
+
+test('gallery page: default URLs of the logo and of the gallery script', () => {
+    assert.deepEqual(sources(NodeGalleryPage), {img: '/assets/branding/gramlot-logo-dark.svg', script: '/gallery/dist/gallery.js'});
+});
+
+test('gallery page: a subclass sets the URLs of the logo and of the gallery script', () => {
+    class MountedPage extends NodeGalleryPage {
+        static logoUrl = '/js/assets/branding/gramlot-logo-dark.svg';
+        static galleryScript = '/js/gallery/dist/gallery.js';
+    }
+    assert.deepEqual(sources(MountedPage), {img: '/js/assets/branding/gramlot-logo-dark.svg', script: '/js/gallery/dist/gallery.js'});
 });
