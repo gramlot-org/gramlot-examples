@@ -199,9 +199,9 @@ python -m unittest discover -s tests
 - `scripts/verify_pages_browser.mjs` (CI job `browser`): `scripts/serve_pages.py` and
   `scripts/serve_pages.mjs` serve the pages folder with the core `FileHost`; Chromium
   opens every page in both languages and calls the `Logic` of b08, c03, c08 and c09.
-  `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The published adapters
-  `gramlot-py-server` 0.2.1 and `@gramlot/gramlot-js-server` 0.2.3 serve only `.css`
-  and `_aux.js` files below the pages folder, not the page modules.
+  `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The gallery commands of
+  `gramlot-py-server`, `@gramlot/gramlot-js-server` and `@gramlot/gramlot-serverless`
+  are checked in a browser in their own repositories.
 
 <a id="ge-010-040"></a>
 

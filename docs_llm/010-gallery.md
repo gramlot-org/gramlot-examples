@@ -89,7 +89,8 @@ of this repository.
 `npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
 Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `FileHost`) +
 `verify_pages_browser.mjs` (every page, both languages, `Logic` of b08, c03, c08, c09)
-+ `verify_e10_e13_browser.mjs`.
++ `verify_e10_e13_browser.mjs`. The gallery commands are checked in a browser in the
+server repositories.
 Fixture catalogue: `tests/fixtures/environment/`.
 
 <a id="ge-010-040"></a>
