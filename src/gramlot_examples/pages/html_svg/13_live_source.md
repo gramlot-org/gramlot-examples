@@ -14,5 +14,5 @@ Named Source paths make the target of each operation explicit. Methods divide
 the page into sections and loops construct the initial items and buttons.
 
 This example demonstrates live Source, not Data binding, persistence or server
-synchronization. Its scripts/actions run in the hosted profiles and in the regenerated standalone
-directory opened directly from disk, offline.
+synchronization. Its scripts and actions run in every gallery command, and in the
+static gallery of `gramlot-serverless gallery <folder>` opened from disk, offline.
