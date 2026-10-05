@@ -113,9 +113,9 @@ An environment serves the gallery with its own host and static-file mechanism:
 2. It copies `stylesheet` beside the staged module, named after the key (`e06.css`):
    the core `FileHost` links it as the same-name stylesheet. It serves `logic` as
    JavaScript at a URL of its own and stages a one-line `<key>_aux.js` that re-exports
-   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`), the model of
-   the core runner. The page module imports `@gramlot/gramlot/page`, which the import
-   map of the bootstrap resolves to the runtime (core 0.2.5).
+   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`). The page
+   module imports `@gramlot/gramlot/page`, which the import map of the bootstrap
+   resolves to the runtime (core 0.2.5).
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
    environment catalogues, so the gallery lists the common families and its own. The
    same subclass sets `logoUrl` and `galleryScript` when it serves the logo and the
@@ -128,11 +128,19 @@ An environment serves the gallery with its own host and static-file mechanism:
    the stylesheet assets under the prefix too.
 
 The gallery page links each example by its key relative to the page URL, so the
-examples stay under the same mount (`/py/e01`, `/js/e01`). The development launcher
-that did this before the package (`runner/serve.py`, `runner/server.mjs`) and the
-static export (`runner/build-standalone.mjs`) remain in the history of this
-repository and in the core; they are the starting point of the gallery commands of
-`gramlot-py-server` and `gramlot-js-server`.
+examples stay under the same mount (`/py/e01`, `/js/e01`).
+
+These gallery commands follow the steps above:
+
+- `gramlot <environment> gallery` of `gramlot-py-server` (extra `gallery`), for
+  example `gramlot django gallery`;
+- `gramlot node gallery` and `gramlot bun gallery` of `@gramlot/gramlot-js-server`;
+- `gramlot-serverless gallery <folder>` of `@gramlot/gramlot-serverless`: a static
+  folder that opens from disk (`<folder>/index.html`), with no server.
+
+The development runner that served the examples before this package
+(`runner/serve.py`, `runner/server.mjs`, `runner/build-standalone.mjs`) remains only in
+the history of this repository.
 
 <a id="ge-010-030"></a>
 

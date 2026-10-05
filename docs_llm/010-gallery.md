@@ -55,16 +55,19 @@ Nothing is written or served.
 1. Stage one module per example key: extend the Page, append
    `script(src="/gallery/dist/frame.js")`.
 2. Copy `stylesheet` beside it as `<key>.css`; serve `logic` as JavaScript and stage
-   `<key>_aux.js` = `export {Logic} from "<its URL>";` (core runner model).
+   `<key>_aux.js` = `export {Logic} from "<its URL>";`.
 3. Stage `index` as a gallery page subclass with `catalogs`, and `logoUrl` /
    `galleryScript` when served elsewhere (e.g. under the mount); same names and defaults
    in `page.py` and `page.js`.
 4. Serve `assets` with their media types; a host that links `Page.css` under its mount
    (`/py/themes/…`) serves the stylesheets under the mount too.
 
-Earlier launcher and export (`runner/serve.py`, `server.mjs`, `build-standalone.mjs`):
-history of this repository and the core; starting point for the gallery commands of
-`gramlot-py-server` and `gramlot-js-server`.
+Gallery commands that follow these steps: `gramlot <environment> gallery`
+(`gramlot-py-server`, extra `gallery`); `gramlot node|bun gallery`
+(`@gramlot/gramlot-js-server`); `gramlot-serverless gallery <folder>`
+(`@gramlot/gramlot-serverless`, a static folder opened from disk). The earlier runner
+(`runner/serve.py`, `server.mjs`, `build-standalone.mjs`) remains only in the history
+of this repository.
 
 <a id="ge-010-030"></a>
 
