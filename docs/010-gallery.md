@@ -209,8 +209,8 @@ python -m unittest discover -s tests
 
 ## 040 · Release
 
-The version is the same in `pyproject.toml` and `package.json`, aligned with the core
-release it requires. `.github/workflows/publish.yml` runs by hand on the version tag on
+The version is the same in `pyproject.toml` and `package.json`; the core version it
+requires is the dependency floor of section 005. `.github/workflows/publish.yml` runs by hand on the version tag on
 `main`: it checks versions and release notes (`.github/release-notes/vX.Y.Z.md`), runs
 `tests.yml`, builds the bundle, the wheel, the sdist and the npm tarball, checks that
 the packaged bundle is the fresh build, creates the GitHub release with `SHA256SUMS`,
