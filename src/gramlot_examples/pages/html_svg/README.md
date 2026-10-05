@@ -7,4 +7,4 @@ Start with **Hello World**, then explore text, lists, tables and form controls. 
 Compare each preview with its code, then try the small change suggested in the example's notes. Python and JavaScript express the same ideas.
 
 Finish with **Live Source playground**: change the page while it is running and
-watch a small SVG animation driven by Source attributes. The live examples also run in the regenerated standalone directory, offline.
+watch a small SVG animation driven by Source attributes. The live examples also run in the static gallery of `gramlot-serverless gallery <folder>`, opened from disk, offline.

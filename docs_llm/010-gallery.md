@@ -55,16 +55,19 @@ Nothing is written or served.
 1. Stage one module per example key: extend the Page, append
    `script(src="/gallery/dist/frame.js")`.
 2. Copy `stylesheet` beside it as `<key>.css`; serve `logic` as JavaScript and stage
-   `<key>_aux.js` = `export {Logic} from "<its URL>";` (core runner model).
+   `<key>_aux.js` = `export {Logic} from "<its URL>";`.
 3. Stage `index` as a gallery page subclass with `catalogs`, and `logoUrl` /
    `galleryScript` when served elsewhere (e.g. under the mount); same names and defaults
    in `page.py` and `page.js`.
 4. Serve `assets` with their media types; a host that links `Page.css` under its mount
    (`/py/themes/…`) serves the stylesheets under the mount too.
 
-Earlier launcher and export (`runner/serve.py`, `server.mjs`, `build-standalone.mjs`):
-history of this repository and the core; starting point for the gallery commands of
-`gramlot-py-server` and `gramlot-js-server`.
+Gallery commands that follow these steps: `gramlot <environment> gallery`
+(`gramlot-py-server`, extra `gallery`); `gramlot node|bun gallery`
+(`@gramlot/gramlot-js-server`); `gramlot-serverless gallery <folder>`
+(`@gramlot/gramlot-serverless`, a static folder opened from disk). The earlier runner
+(`runner/serve.py`, `server.mjs`, `build-standalone.mjs`) remains only in the history
+of this repository.
 
 <a id="ge-010-030"></a>
 
@@ -75,8 +78,9 @@ history of this repository and the core; starting point for the gallery commands
   for an `NN_name_aux.js`.
 - Explicit IDs (`open-e01`, `tab-e01`, `panel-e01`, `divider-e01`, `gallery-theme`);
   `gallery/browser/` connects events; page-local Bag for tabs, keyboard, theme, split.
-  Amendment 11.44 of the
-  [Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md).
+  [Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md):
+  exception recorded by 11.44 for the runner in the core; 11.56 supersedes it, the
+  gallery left the core for this repository.
 - Keyboard navigation, 65% split within 20–80%, light/dark theme passed to frames.
 
 <a id="ge-010-035"></a>
@@ -86,7 +90,8 @@ history of this repository and the core; starting point for the gallery commands
 `npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
 Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `FileHost`) +
 `verify_pages_browser.mjs` (every page, both languages, `Logic` of b08, c03, c08, c09)
-+ `verify_e10_e13_browser.mjs`.
++ `verify_e10_e13_browser.mjs`. The gallery commands are checked in a browser in the
+server repositories.
 Fixture catalogue: `tests/fixtures/environment/`.
 
 <a id="ge-010-040"></a>
