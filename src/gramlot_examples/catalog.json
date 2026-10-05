@@ -93,7 +93,7 @@
           "title": "Live Source playground",
           "folder": "13_live_source",
           "description": "Create, update and remove Source nodes, with a small SVG animation.",
-          "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in hosted profiles and the standalone directory."
+          "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in every gallery command and in the static gallery opened from disk."
         }
       ]
     },

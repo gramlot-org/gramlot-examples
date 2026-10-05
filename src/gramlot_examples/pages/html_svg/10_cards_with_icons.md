@@ -10,7 +10,8 @@ Source deletion and removes the corresponding DOM branch, including its SVG.
 The action never removes a DOM element directly.
 
 Python and JavaScript declare the same page and browser action. It also works
-in the generated standalone directory opened directly from disk, offline.
+in the static gallery of `gramlot-serverless gallery <folder>`, opened from disk,
+offline.
 
 **Try it:** Remove the middle card, then the others. Reload to restore all three.
 Add a fourth card to the local dataset and give it a matching icon branch.

@@ -113,9 +113,9 @@ An environment serves the gallery with its own host and static-file mechanism:
 2. It copies `stylesheet` beside the staged module, named after the key (`e06.css`):
    the core `FileHost` links it as the same-name stylesheet. It serves `logic` as
    JavaScript at a URL of its own and stages a one-line `<key>_aux.js` that re-exports
-   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`), the model of
-   the core runner. The page module imports `@gramlot/gramlot/page`, which the import
-   map of the bootstrap resolves to the runtime (core 0.2.5).
+   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`). The page
+   module imports `@gramlot/gramlot/page`, which the import map of the bootstrap
+   resolves to the runtime (core 0.2.5).
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
    environment catalogues, so the gallery lists the common families and its own. The
    same subclass sets `logoUrl` and `galleryScript` when it serves the logo and the
@@ -128,11 +128,19 @@ An environment serves the gallery with its own host and static-file mechanism:
    the stylesheet assets under the prefix too.
 
 The gallery page links each example by its key relative to the page URL, so the
-examples stay under the same mount (`/py/e01`, `/js/e01`). The development launcher
-that did this before the package (`runner/serve.py`, `runner/server.mjs`) and the
-static export (`runner/build-standalone.mjs`) remain in the history of this
-repository and in the core; they are the starting point of the gallery commands of
-`gramlot-py-server` and `gramlot-js-server`.
+examples stay under the same mount (`/py/e01`, `/js/e01`).
+
+These gallery commands follow the steps above:
+
+- `gramlot <environment> gallery` of `gramlot-py-server` (extra `gallery`), for
+  example `gramlot django gallery`;
+- `gramlot node gallery` and `gramlot bun gallery` of `@gramlot/gramlot-js-server`;
+- `gramlot-serverless gallery <folder>` of `@gramlot/gramlot-serverless`: a static
+  folder that opens from disk (`<folder>/index.html`), with no server.
+
+The development runner that served the examples before this package
+(`runner/serve.py`, `runner/server.mjs`, `runner/build-standalone.mjs`) remains only in
+the history of this repository.
 
 <a id="ge-010-030"></a>
 
@@ -151,9 +159,11 @@ The gallery uses ordinary Source-authored HTML and explicit element IDs, such as
 `open-e01`, `tab-e01`, `panel-e01`, `divider-e01` and `gallery-theme`. The bundled
 `gallery/browser/` JavaScript connects events to those IDs. A page-local Bag holds
 active and open tabs, keyboard preference, theme and split positions. There are no
-tab, split, Markdown or theme markers interpreted by the Gramlot core. This bounded
-page-local exception is recorded in amendment 11.44 of the
-[Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md).
+tab, split, Markdown or theme markers interpreted by the Gramlot core. Amendment 11.44
+of the
+[Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md)
+recorded this page-local exception for the runner in the core. Amendment 11.56
+supersedes it: the gallery left the core for this repository.
 
 The **Keyboard navigation** checkbox adds example links and the active tab to the tab
 order; arrows, Home and End move among opened tabs. Splitters start at 65% preview
@@ -191,16 +201,16 @@ python -m unittest discover -s tests
 - `scripts/verify_pages_browser.mjs` (CI job `browser`): `scripts/serve_pages.py` and
   `scripts/serve_pages.mjs` serve the pages folder with the core `FileHost`; Chromium
   opens every page in both languages and calls the `Logic` of b08, c03, c08 and c09.
-  `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The published adapters
-  `gramlot-py-server` 0.2.1 and `@gramlot/gramlot-js-server` 0.2.3 serve only `.css`
-  and `_aux.js` files below the pages folder, not the page modules.
+  `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The gallery commands of
+  `gramlot-py-server`, `@gramlot/gramlot-js-server` and `@gramlot/gramlot-serverless`
+  are checked in a browser in their own repositories.
 
 <a id="ge-010-040"></a>
 
 ## 040 · Release
 
-The version is the same in `pyproject.toml` and `package.json`, aligned with the core
-release it requires. `.github/workflows/publish.yml` runs by hand on the version tag on
+The version is the same in `pyproject.toml` and `package.json`; the core version it
+requires is the dependency floor of section 005. `.github/workflows/publish.yml` runs by hand on the version tag on
 `main`: it checks versions and release notes (`.github/release-notes/vX.Y.Z.md`), runs
 `tests.yml`, builds the bundle, the wheel, the sdist and the npm tarball, checks that
 the packaged bundle is the fresh build, creates the GitHub release with `SHA256SUMS`,
