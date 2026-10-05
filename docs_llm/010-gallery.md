@@ -78,8 +78,9 @@ of this repository.
   for an `NN_name_aux.js`.
 - Explicit IDs (`open-e01`, `tab-e01`, `panel-e01`, `divider-e01`, `gallery-theme`);
   `gallery/browser/` connects events; page-local Bag for tabs, keyboard, theme, split.
-  Amendment 11.44 of the
-  [Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md).
+  [Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md):
+  exception recorded by 11.44 for the runner in the core; 11.56 supersedes it, the
+  gallery left the core for this repository.
 - Keyboard navigation, 65% split within 20–80%, light/dark theme passed to frames.
 
 <a id="ge-010-035"></a>

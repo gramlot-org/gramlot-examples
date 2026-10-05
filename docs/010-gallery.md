@@ -159,9 +159,11 @@ The gallery uses ordinary Source-authored HTML and explicit element IDs, such as
 `open-e01`, `tab-e01`, `panel-e01`, `divider-e01` and `gallery-theme`. The bundled
 `gallery/browser/` JavaScript connects events to those IDs. A page-local Bag holds
 active and open tabs, keyboard preference, theme and split positions. There are no
-tab, split, Markdown or theme markers interpreted by the Gramlot core. This bounded
-page-local exception is recorded in amendment 11.44 of the
-[Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md).
+tab, split, Markdown or theme markers interpreted by the Gramlot core. Amendment 11.44
+of the
+[Gramlot constitution](https://github.com/gramlot-org/gramlot/blob/main/docs/00-constitution.md)
+recorded this page-local exception for the runner in the core. Amendment 11.56
+supersedes it: the gallery left the core for this repository.
 
 The **Keyboard navigation** checkbox adds example links and the active tab to the tab
 order; arrows, Home and End move among opened tabs. Splitters start at 65% preview
