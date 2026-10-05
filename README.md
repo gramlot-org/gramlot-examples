@@ -9,6 +9,9 @@ pip install gramlot-examples
 npm install @gramlot/gramlot-examples
 ```
 
+[![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
+[![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
+
 Current release: 0.2.6.
 
 The repositories of the family are described in
