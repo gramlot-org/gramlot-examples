@@ -9,6 +9,8 @@ pip install gramlot-examples
 npm install @gramlot/gramlot-examples
 ```
 
+Current release: 0.2.6.
+
 The repositories of the family are described in
 [The Gramlot family](https://github.com/gramlot-org/gramlot/blob/main/docs/public/055-family.md)
 (GC-055).
