@@ -26,8 +26,8 @@ same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: nine pages with formulas, controllers, named logic, events and
-  remote Source (`c01`–`c09`).
+- `controllers/`: eight pages with formulas, controllers, named logic, events and
+  the end-to-end story (`c01`–`c08`).
 
 Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
 `Logic` from the module beside it.

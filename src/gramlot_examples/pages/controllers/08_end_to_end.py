@@ -1,5 +1,4 @@
 from gramlot import Page as BasePage
-from gramlot import source
 
 
 class Page(BasePage):
@@ -47,19 +46,9 @@ class Page(BasePage):
         for text in ("Setters live here too", "This note can be removed under freeze"):
             notes.li(text)
         actions = later.div(class_="actions")
-        for label, method in (("Load extras", "loadExtras"), ("Freeze", "freeze"),
-                              ("Remove a note", "removeNote"), ("Thaw", "thaw")):
+        for label, method in (("Freeze", "freeze"), ("Remove a note", "removeNote"), ("Thaw", "thaw")):
             actions.button(label, id=method).dataController(func=method)
-        later.section(node_id="extras", id="extras").p("No extras yet.", class_="muted")
         later.dataSetter(".settings.caption", "The story of a page")
         later.dataSetter(".size", {"small": True, "large": False})
         later.dataSetter(".gift", False)
         later.dataSetter(".live", False)
-
-    @source
-    def extras(self, root):
-        branch = root.div(datapath="extras", class_="stack")
-        branch.h3("^.title", id="extras-title")
-        branch.p("^.items", id="extras-items")
-        branch.dataSetter(".title", "Extras from the server")
-        branch.dataSetter(".items", "Ribbon, card, envelope")

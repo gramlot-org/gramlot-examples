@@ -6,6 +6,6 @@ The pages of this family run code when the Data changes.
 
 Inline code needs a Content Security Policy that allows it. Named logic in the `Logic` class also runs under a strict policy.
 
-Start with **Formula** and **Controller**, then move the code to the `Logic` class with **Named logic**. The last page is the end-to-end story of Gramlot 0.2.0: every piece of the two families on one page.
+Start with **Formula** and **Controller**, then move the code to the `Logic` class with **Named logic**. The last page is the end-to-end story: every piece of the two families on one page.
 
 Each example has a Python page and its JavaScript equivalent. Both use the `Logic` class of the JavaScript module.

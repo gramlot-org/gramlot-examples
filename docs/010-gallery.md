@@ -56,7 +56,9 @@ environment (an adapter or a runtime) declares it.
 
 ## 015 · Keys
 
-- The common families keep the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c09`.
+- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c08`.
+  Keys are stable within a release. 0.2.8 renumbered the controllers after
+  removing the remote Source example.
 - An environment names its examples `<environment>-NN`: `django-01`, `flask-01`,
   `bun-01`, `serverless-01`.
 - Family keys and example keys are one namespace with `index`, the gallery route.
@@ -200,7 +202,7 @@ python -m unittest discover -s tests
   page module as the logic and returns Source.
 - `scripts/verify_pages_browser.mjs` (CI job `browser`): `scripts/serve_pages.py` and
   `scripts/serve_pages.mjs` serve the pages folder with the core `FileHost`; Chromium
-  opens every page in both languages and calls the `Logic` of b08, c03, c08 and c09.
+  opens every page in both languages and calls the `Logic` of b08, c03 and c08.
   `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The gallery commands of
   `gramlot-py-server`, `@gramlot/gramlot-js-server` and `@gramlot/gramlot-serverless`
   are checked in a browser in their own repositories.

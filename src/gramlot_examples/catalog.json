@@ -235,17 +235,10 @@
         },
         {
           "key": "c08",
-          "title": "Remote Source",
-          "folder": "08_remote_source",
-          "description": "remoteSource replaces a branch with Source built on the server.",
-          "explanation": "The Page declares a Source method. A named controller asks for it; the new branch brings its own dataSetter values, visible at its first render."
-        },
-        {
-          "key": "c09",
           "title": "End-to-end story",
-          "folder": "09_end_to_end",
-          "description": "Title, input, radios, checkbox, formula, SVG, button and remote Source together.",
-          "explanation": "The acceptance page of the 0.2.0 plan: setters after the controls, live editing, a radio pair, a formula and controller driving text and SVG, a counting button, a remote branch and freeze."
+          "folder": "08_end_to_end",
+          "description": "Title, input, radios, checkbox, formula, SVG, button and freeze together.",
+          "explanation": "Setters after the controls, live editing, a radio pair, a formula and controller driving text and SVG, a counting button and freeze."
         }
       ]
     }

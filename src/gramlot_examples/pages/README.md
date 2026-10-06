@@ -7,9 +7,9 @@ JavaScript, in three families:
 - [`binding/`](binding/): eleven pages whose DOM follows the Data through pointers,
   editing, booleans, style, SVG and freeze. The last three take the content of
   `html_svg` examples 06, 08 and 12 and add the binding.
-- [`controllers/`](controllers/): nine pages with formulas, controllers, named
+- [`controllers/`](controllers/): eight pages with formulas, controllers, named
   logic in the `Logic` class of the page module, inline expressions, node methods, buttons,
-  events, remote Source and the end-to-end story of Gramlot 0.2.0.
+  events and the end-to-end story.
 
 Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,
 its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css`.

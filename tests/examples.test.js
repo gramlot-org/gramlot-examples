@@ -5,18 +5,16 @@ import {createRequire} from 'node:module';
 import {pathToFileURL} from 'node:url';
 import {JSDOM, VirtualConsole} from 'jsdom';
 
-// The core as the example pages resolve it (`node_modules/@gramlot/gramlot`, installed from npm): one
-// module instance, so the `@source` markers of the pages are the ones `sourceMethod` reads.
+// The core as the example pages resolve it (`node_modules/@gramlot/gramlot`, installed from npm).
 const fromExamples = createRequire(new URL('../package.json', import.meta.url));
 const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot')).href);
-const {sourceMethod} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/page')).href);
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
 
 /**
  * Mount one JavaScript example as its host would: Source from `main`, the module's Logic registered
- * as the root group, `remoteSource` answered by the Page's declared Source methods.
+ * as the root group.
  */
 async function mount(family, example) {
     const errors = [];
@@ -25,14 +23,13 @@ async function mount(family, example) {
     const dom = new JSDOM('<main id="gramlot-root"></main>', {url: `https://gallery.test/js/${example.key}`,
         virtualConsole});
     const {Page, Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
-    const wire = async (method, params) => {
+    const main = async () => {
         const page = new Page();
         const builder = new Page.sourceBuilder();
-        if (method === 'main') await page.main(builder.root);
-        else await sourceMethod(page, method).call(page, builder.root, params);
+        await page.main(builder.root);
         return builder.toTytx();
     };
-    const transport = {main: () => wire('main'), source: (_pageId, method, params) => wire(method, params)};
+    const transport = {main};
     const app = new Gramlot({document: dom.window.document, pageId: example.key, transport});
     app.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
@@ -272,16 +269,7 @@ const CHECKS = {
         byId('hover-box').dispatchEvent(new window.MouseEvent('mouseout', {bubbles: true}));
         assert.equal(byId('hover-box').className, 'card');
     },
-    async c08({byId, click, edit, data}) {
-        assert.equal(byId('remote-title'), null);
-        edit('topic', 'svg');
-        click('load');
-        await tick(10);
-        assert.equal(byId('remote-title').textContent, 'SVG');
-        assert.match(byId('remote-summary').textContent, /SVG attributes/);
-        assert.equal(data('topics.svg.title'), 'SVG');
-    },
-    async c09({app, byId, edit, click, data}) {
+    c08({app, byId, edit, click, data}) {
         // 1. first render
         assert.equal(byId('caption').textContent, 'The story of a page');
         assert.equal(byId('quantity').value, '2');
@@ -306,11 +294,7 @@ const CHECKS = {
         click('press', {shiftKey: true});
         assert.equal(byId('presses').textContent, 'Pressed 1 times');
         assert.equal(byId('modifiers').textContent, 'with Shift');
-        // 6. remote Source
-        click('loadExtras');
-        await tick(10);
-        assert.equal(byId('extras-title').textContent, 'Extras from the server');
-        // 7. freeze, Data change, removal, one thaw
+        // 6. freeze, Data change, removal, one thaw
         click('freeze');
         click('removeNote');
         edit('quantity', '1');
@@ -318,7 +302,7 @@ const CHECKS = {
         click('thaw');
         assert.equal(byId('notes').children.length, 1);
         assert.equal(byId('total').textContent, '3');
-        // 8. close
+        // 7. close
         app.dispose();
         assert.equal(app.state, 'disposed');
     },
