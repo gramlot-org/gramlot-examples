@@ -2,7 +2,7 @@
  * Open every example page in Chromium through the core FileHost of each language:
  * `node scripts/verify_pages_browser.mjs <Python base URL> <JavaScript base URL>`, each a
  * `serve_pages` host on `src/gramlot_examples/pages` (`<base>/<family>/<NN_name>`).
- * Every page must start without errors or failed requests; b08, c03, c08 and c09 call methods
+ * Every page must start without errors or failed requests; b08, c03 and c08 call methods
  * of the Logic that the page module NN_name.js exports, the Python pages included.
  */
 import assert from 'node:assert/strict';
@@ -33,17 +33,9 @@ const LOGIC = {
         assert.equal(await text('#changes'), '1');
     },
     async c08(page, text) {
-        await page.selectOption('#topic', 'svg');
-        await page.click('#load');
-        await page.waitForSelector('#remote-title');
-        assert.equal(await text('#remote-title'), 'SVG');
-    },
-    async c09(page, text) {
         await page.click('#press', {modifiers: ['Shift']});
         assert.equal(await text('#presses'), 'Pressed 1 times');
         assert.equal(await text('#modifiers'), 'with Shift');
-        await page.click('#loadExtras');
-        await page.waitForSelector('#extras-title');
         await page.click('#freeze');
         await page.click('#removeNote');
         assert.equal(await page.locator('#notes > *').count(), 2);
@@ -80,7 +72,7 @@ try {
                 count += 1;
             }
         }
-        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03, c08 and c09`);
+        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03 and c08`);
     }
 } finally {
     await browser.close();

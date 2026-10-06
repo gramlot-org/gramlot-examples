@@ -27,7 +27,9 @@ The common catalogue has no `environment`; an environment catalogue has one.
 
 ## 015 · Keys
 
-- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c09`. Environment: `<environment>-NN`.
+- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c08`. Environment: `<environment>-NN`.
+- Keys are stable within a release; 0.2.8 renumbered the controllers after removing
+  the remote Source example.
 - Family keys, example keys and `index` share one namespace.
 - Errors: environment in the common catalogue; no environment in an environment
   catalogue; key outside `<environment>-NN`; duplicate key; missing page file.
@@ -89,7 +91,7 @@ of this repository.
 
 `npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
 Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `FileHost`) +
-`verify_pages_browser.mjs` (every page, both languages, `Logic` of b08, c03, c08, c09)
+`verify_pages_browser.mjs` (every page, both languages, `Logic` of b08, c03, c08)
 + `verify_e10_e13_browser.mjs`. The gallery commands are checked in a browser in the
 server repositories.
 Fixture catalogue: `tests/fixtures/environment/`.

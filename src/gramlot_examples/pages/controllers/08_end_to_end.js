@@ -1,4 +1,4 @@
-import {Page as BasePage, source} from '@gramlot/gramlot/page';
+import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'End-to-end story';
@@ -45,28 +45,17 @@ export class Page extends BasePage {
         const notes = later.ul({node_id: 'notes', id: 'notes'});
         for (const text of ['Setters live here too', 'This note can be removed under freeze']) notes.li(text);
         const actions = later.div({class: 'actions'});
-        for (const [label, method] of [['Load extras', 'loadExtras'], ['Freeze', 'freeze'],
-            ['Remove a note', 'removeNote'], ['Thaw', 'thaw']]) {
+        for (const [label, method] of [['Freeze', 'freeze'], ['Remove a note', 'removeNote'], ['Thaw', 'thaw']]) {
             actions.button(label, {id: method}).dataController({func: method});
         }
-        later.section({node_id: 'extras', id: 'extras'}).p('No extras yet.', {class: 'muted'});
         later.dataSetter({destination_path: '.settings.caption', value: 'The story of a page'});
         later.dataSetter({destination_path: '.size', value: {small: true, large: false}});
         later.dataSetter({destination_path: '.gift', value: false});
         later.dataSetter({destination_path: '.live', value: false});
     }
-
-    extras(root) {
-        const branch = root.div({datapath: 'extras', class: 'stack'});
-        branch.h3('^.title', {id: 'extras-title'});
-        branch.p('^.items', {id: 'extras-items'});
-        branch.dataSetter({destination_path: '.title', value: 'Extras from the server'});
-        branch.dataSetter({destination_path: '.items', value: 'Ribbon, card, envelope'});
-    }
 }
-source(Page.prototype.extras);
 
-/** Logic of 09_end_to_end.py and 09_end_to_end.js: the named logic of the story. */
+/** Logic of 08_end_to_end.py and 08_end_to_end.js: the named logic of the story. */
 export class Logic {
     sourceNode(nodeId) {
         return this.page.source.getNodeByAttr('node_id', nodeId);
@@ -81,10 +70,6 @@ export class Logic {
     press(node, kwargs) {
         node.SET('.presses', `Pressed ${kwargs.button_counter} times`);
         node.SET('.modifiers', kwargs.button_shift ? 'with Shift' : 'without modifiers');
-    }
-
-    loadExtras() {
-        return this.page.remoteSource(this.sourceNode('extras'), 'extras');
     }
 
     freeze() {
