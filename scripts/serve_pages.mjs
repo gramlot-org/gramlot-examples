@@ -3,15 +3,15 @@
  *
  * The counterpart of `serve_pages.py` on the same page protocol: the runtime at `runtimeUrl`, the
  * core themes under `/themes/`, the `.js` and `.css` files below the pages folder (the page
- * modules, whose `Logic` the browser imports), the pages, and `main`, `source` and `close` as
- * POST. No Content-Security-Policy, as with the default of the adapters: e13 puts an inline
+ * modules, whose `Logic` the browser imports), the pages, and `main` and `close` as POST.
+ * No Content-Security-Policy, as with the default of the adapters: e13 puts an inline
  * `script` in its Source, and the inline expressions of the pages need eval.
  */
 import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import {dirname, extname, join, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {FileHost, PageExpired, PageNotFound, SourceNotFound} from '@gramlot/gramlot/server';
+import {FileHost, PageExpired, PageNotFound} from '@gramlot/gramlot/server';
 
 const MEDIA_TYPES = {'.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8'};
 const RUNTIME = fileURLToPath(import.meta.resolve('@gramlot/gramlot/runtime'));
@@ -55,12 +55,9 @@ export function servePages(folder, port) {
                 return reply(200, '{}', 'application/json');
             }
             if (path === host.mainUrl) return reply(200, await host.main(payload.pageId), 'application/json');
-            if (path === host.sourceUrl) {
-                return reply(200, await host.source(payload.pageId, payload.method, payload.params ?? null), 'application/json');
-            }
             return reply(404, 'Not found', 'text/plain');
         } catch (error) {
-            if (error instanceof PageNotFound || error instanceof PageExpired || error instanceof SourceNotFound) {
+            if (error instanceof PageNotFound || error instanceof PageExpired) {
                 return reply(404, 'Not found', 'text/plain');
             }
             throw error;

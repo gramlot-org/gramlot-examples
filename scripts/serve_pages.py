@@ -2,8 +2,8 @@
 
 A loopback test host on the page protocol of the core: the runtime at ``runtime_url``, the
 core themes under ``/themes/``, the ``.js`` and ``.css`` files below the pages folder (the
-page modules, whose ``Logic`` the pages take), the pages, and ``main``, ``source`` and
-``close`` as POST. No Content-Security-Policy, as with the default of the adapters: e13
+page modules, whose ``Logic`` the pages take), the pages, and ``main`` and ``close``
+as POST. No Content-Security-Policy, as with the default of the adapters: e13
 puts an inline ``script`` in its Source, and the inline expressions of the pages need eval.
 """
 
@@ -14,7 +14,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from pathlib import Path
 
-from gramlot.server import FileHost, PageExpired, PageNotFound, SourceNotFound
+from gramlot.server import FileHost, PageExpired, PageNotFound
 
 MEDIA_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8"}
 RESOURCES = Path(files("gramlot")) / "resources"
@@ -75,10 +75,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.reply(200, "{}", "application/json")
             if self.path == host.main_url:
                 return self.reply(200, asyncio.run(host.main(payload["pageId"])), "application/json")
-            if self.path == host.source_url:
-                body = asyncio.run(host.source(payload["pageId"], payload["method"], payload.get("params")))
-                return self.reply(200, body, "application/json")
-        except (PageExpired, SourceNotFound):
+        except PageExpired:
             return self.reply(404, "Not found", "text/plain")
         self.reply(404, "Not found", "text/plain")
 
