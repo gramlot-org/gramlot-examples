@@ -3,22 +3,22 @@ from gramlot import Page as BasePage
 
 # These browser actions change Source, never DOM elements.
 ACTIONS = {
-    'add': "window.gramlot.builder.wrapSource(window.gramlot.source.getNode('main.page.work.items')).li('A new item', {class: 'card'})",
-    'remove': "const items = window.gramlot.source.getItem('main.page.work.items'); const last = items.getNodes().at(-1); if (last) items.popNode(last.label)",
-    'clear': "window.gramlot.source.getItem('main.page.work.items').clear()",
-    'rename': "window.gramlot.source.getNode('main.page.heading').setValue('Source is alive!')",
-    'color': "window.gramlot.source.getNode('main.page.motion.scene.ball').setAttr({fill: 'var(--gramlot-warning)'})",
-    'stop': "window.gramlot.source.getItem('main.page').popNode('motion')",
+    'add': "window.gramlot.src.builder.wrapSource(window.gramlot.src.source.getNode('main.page.work.items')).li('A new item', {class: 'card'})",
+    'remove': "const items = window.gramlot.src.source.getItem('main.page.work.items'); const last = items.getNodes().at(-1); if (last) items.popNode(last.label)",
+    'clear': "window.gramlot.src.source.getItem('main.page.work.items').clear()",
+    'rename': "window.gramlot.src.source.getNode('main.page.heading').setValue('Source is alive!')",
+    'color': "window.gramlot.src.source.getNode('main.page.motion.scene.ball').setAttr({fill: 'var(--gramlot-warning)'})",
+    'stop': "window.gramlot.src.source.getItem('main.page').popNode('motion')",
 }
 
 ANIMATION = """queueMicrotask(() => {
     const app = window.gramlot;
-    const motion = app.source.getNode('main.page.motion');
-    const ball = app.source.getNode('main.page.motion.scene.ball');
+    const motion = app.src.source.getNode('main.page.motion');
+    const ball = app.src.source.getNode('main.page.motion.scene.ball');
     const timer = setInterval(() => {
         ball.setAttr({cx: 160 + 110 * Math.sin(performance.now() / 700)});
     }, 50);
-    app.renderer.onDispose(motion, () => clearInterval(timer));
+    app.src.renderer.onDispose(motion, () => clearInterval(timer));
 });"""
 
 

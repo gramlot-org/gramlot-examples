@@ -14,7 +14,7 @@
     "prepack": "node scripts/build-browser.mjs"
   },
   "dependencies": {
-    "@gramlot/gramlot": ">=0.2.5"
+    "@gramlot/gramlot": ">=0.2.10"
   },
   "devDependencies": {
     "@genrojs/bag": ">=0.10.1",

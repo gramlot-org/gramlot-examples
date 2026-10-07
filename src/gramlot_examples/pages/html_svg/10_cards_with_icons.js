@@ -18,7 +18,7 @@ export class Page extends BasePage {
         for (const [title, description, kind] of CARDS) {
             const card = cards.article({node_label: kind, class: 'card stack'});
             card.button('×', {type: 'button', class: 'card-remove', aria_label: `Remove ${title}`,
-                connect_onclick: `window.gramlot.builder.source.getItem('main.page.cards').popNode('${kind}')`});
+                connect_onclick: `window.gramlot.src.builder.source.getItem('main.page.cards').popNode('${kind}')`});
             const icon = card.svg({viewBox: '0 0 64 64', width: 64, height: 64, aria_hidden: 'true'});
             this.icon(icon, kind);
             card.h2(title);

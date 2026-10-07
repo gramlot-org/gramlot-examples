@@ -4,7 +4,7 @@ import {mountGallery} from './gallery.js';
 // Wait until Source insertion completes before using the existing render records.
 const script = document.currentScript;
 queueMicrotask(() => {
-    const renderer = window.gramlot.renderer;
+    const renderer = window.gramlot.src.renderer;
     const record = renderer.elements.get(script.parentElement);
     if (!record || renderer.disposed || renderer.records.get(record.node) !== record) return; // Removed while the script was loading.
     mountGallery(renderer, record.node);

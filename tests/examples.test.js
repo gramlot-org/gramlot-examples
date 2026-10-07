@@ -31,7 +31,7 @@ async function mount(family, example) {
     };
     const transport = {main};
     const app = new Gramlot({document: dom.window.document, pageId: example.key, transport});
-    app.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
+    app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
     const data = path => app.data.getItem(path);
