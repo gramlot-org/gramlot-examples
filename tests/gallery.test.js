@@ -241,7 +241,7 @@ test('families read through a getter: the first family starts open', () => {
     app.dispose();
 });
 
-/** Build `main` as the host does and return the `src` of each Source node by tag. */
+/** Build `main` as the server does and return the `src` of each Source node by tag. */
 function sources(PageClass) {
     const builder = new PageClass.sourceBuilder();
     new PageClass().main(builder.root);
