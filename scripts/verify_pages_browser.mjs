@@ -1,7 +1,7 @@
 /**
- * Open every example page in Chromium through the core FileHost of each language:
+ * Open every example page in Chromium through the core GramlotFileServer of each language:
  * `node scripts/verify_pages_browser.mjs <Python base URL> <JavaScript base URL>`, each a
- * `serve_pages` host on `src/gramlot_examples/pages` (`<base>/<family>/<NN_name>`).
+ * `serve_pages` server on `src/gramlot_examples/pages` (`<base>/<family>/<NN_name>`).
  * Every page must start without errors or failed requests; b08, c03 and c08 call methods
  * of the Logic that the page module NN_name.js exports, the Python pages included.
  */

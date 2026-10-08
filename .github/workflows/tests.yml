@@ -81,19 +81,19 @@ jobs:
         run: |
           npm ls @gramlot/gramlot
           python -m pip show gramlot | grep -E '^(Name|Version):'
-      - name: Open every page through the core FileHost of Python and JavaScript
+      - name: Open every page through the core GramlotFileServer of Python and JavaScript
         run: |
           pages=src/gramlot_examples/pages
-          python scripts/serve_pages.py "$pages" 8091 > "$RUNNER_TEMP/python-host.log" 2>&1 &
-          node scripts/serve_pages.mjs "$pages" 8092 > "$RUNNER_TEMP/javascript-host.log" 2>&1 &
+          python scripts/serve_pages.py "$pages" 8091 > "$RUNNER_TEMP/python-server.log" 2>&1 &
+          node scripts/serve_pages.mjs "$pages" 8092 > "$RUNNER_TEMP/javascript-server.log" 2>&1 &
           for port in 8091 8092; do
             for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/html_svg/01_hello_world" && break; sleep 1; done
           done
           node scripts/verify_pages_browser.mjs http://127.0.0.1:8091 http://127.0.0.1:8092
           node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091/html_svg http://127.0.0.1:8092/html_svg
-      - name: Host logs
+      - name: Server logs
         if: ${{ failure() }}
-        run: cat "$RUNNER_TEMP/python-host.log" "$RUNNER_TEMP/javascript-host.log"
+        run: cat "$RUNNER_TEMP/python-server.log" "$RUNNER_TEMP/javascript-server.log"
 
   core-main:
     name: Against gramlot main (informative)

@@ -1,6 +1,6 @@
-"""Serve one folder of Python pages with the core FileHost: ``python scripts/serve_pages.py <folder> <port>``.
+"""Serve one folder of Python pages with the core GramlotFileServer: ``python scripts/serve_pages.py <folder> <port>``.
 
-A loopback test host on the page protocol of the core: the runtime at ``runtime_url``, the
+A loopback test server on the page protocol of the core: the runtime at ``runtime_url``, the
 core themes under ``/themes/``, the ``.js`` and ``.css`` files below the pages folder (the
 page modules, whose ``Logic`` the pages take), the pages, and ``main`` and ``close``
 as POST. No Content-Security-Policy, as with the default of the adapters: e13
@@ -14,23 +14,23 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from pathlib import Path
 
-from gramlot.server import FileHost, PageExpired, PageNotFound
+from gramlot.server import GramlotFileServer, PageExpired, PageNotFound, runtime_asset
 
 MEDIA_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8"}
 RESOURCES = Path(files("gramlot")) / "resources"
 
 
 class PagesServer(ThreadingHTTPServer):
-    """The loopback server of one pages folder and its FileHost."""
+    """The loopback server of one pages folder and its GramlotFileServer."""
 
     def __init__(self, folder, port):
         super().__init__(("127.0.0.1", port), Handler)
         self.pages = Path(folder)
-        self.host = FileHost(self.pages)
+        self.gramlot_server = GramlotFileServer(self.pages)
 
 
 class Handler(BaseHTTPRequestHandler):
-    """One request of the test host."""
+    """One request of the test server."""
 
     server: PagesServer
 
@@ -53,28 +53,28 @@ class Handler(BaseHTTPRequestHandler):
         return self.reply(404, "Not found", "text/plain")
 
     def do_GET(self):
-        host, path = self.server.host, self.path.split("?", 1)[0]
-        if path == host.runtime_url:
-            return self.reply(200, (RESOURCES / "gramlot.js").read_bytes(), MEDIA_TYPES[".js"])
+        server, path = self.server.gramlot_server, self.path.split("?", 1)[0]
+        if path == server.runtime_url:
+            return self.reply(200, runtime_asset().read_bytes(), MEDIA_TYPES[".js"])
         if path.startswith("/themes/"):
             return self.file(RESOURCES / "themes", path.removeprefix("/themes/"))
         if path.endswith((".js", ".css")):
             return self.file(self.server.pages, path.lstrip("/"))
         try:
-            opened = asyncio.run(host.open_page(path))
+            opened = asyncio.run(server.open_page(path))
         except PageNotFound:
             return self.reply(404, "Not found", "text/plain")
         self.reply(200, opened.html, "text/html; charset=utf-8")
 
     def do_POST(self):
-        host = self.server.host
+        server = self.server.gramlot_server
         payload = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         try:
-            if self.path == host.close_url:
-                host.close_page(payload["pageId"])
+            if self.path == server.close_url:
+                server.close_page(payload["pageId"])
                 return self.reply(200, "{}", "application/json")
-            if self.path == host.main_url:
-                return self.reply(200, asyncio.run(host.main(payload["pageId"])), "application/json")
+            if self.path == server.main_url:
+                return self.reply(200, asyncio.run(server.main(payload["pageId"])), "application/json")
         except PageExpired:
             return self.reply(404, "Not found", "text/plain")
         self.reply(404, "Not found", "text/plain")

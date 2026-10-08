@@ -7,8 +7,8 @@
 gramlot-examples/
 ├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.5
-├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.5
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.12
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.12
 ├── src/gramlot_examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
@@ -21,7 +21,7 @@ gramlot-examples/
 │       └── dist/                        Built bundle (npm run build)
 ├── scripts/
 │   ├── build-browser.mjs                Builds gallery/dist/
-│   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the core FileHost
+│   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the core GramlotFileServer
 │   ├── verify_pages_browser.mjs         Every page in Chromium, Python and JavaScript
 │   └── verify_e10_e13_browser.mjs       e10 and e13 in Chromium
 ├── tests/                               Pages, gallery, build_gallery · fixtures/environment

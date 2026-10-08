@@ -6,7 +6,7 @@ from gramlot_examples.gallery.page import Page
 
 
 def sources(page):
-    """Build ``main`` as the host does and return the ``src`` of each Source node by tag."""
+    """Build ``main`` as the server does and return the ``src`` of each Source node by tag."""
     builder = page.source_builder("main")
     page.main(builder.root)
 

@@ -14,7 +14,7 @@ JavaScript, in three families:
 Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,
 its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css`.
 `NN_name.js` exports `Page` and `Logic`: the JavaScript page uses both, the Python
-page takes `Logic` from it. The pages use only what the core `FileHost` serves:
+page takes `Logic` from it. The pages use only what the core `GramlotFileServer` serves:
 `Page.css`, the same-name stylesheet and the `Logic` of the page module. The gallery
 adds its own files: the frame script, a staged `<key>_aux.js` per example and its
 assets ([GE-010 §025](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md#ge-010-025)).
