@@ -22,8 +22,8 @@ function fixture() {
     }
     const builder = new GramlotBuilder();
     new Page().main(builder.root);
-    const app = new Gramlot({document, transport: false}).startSource(builder.source);
-    const renderer = app.renderer;
+    const app = new Gramlot({document, transport: false}).src.startSource(builder.source);
+    const renderer = app.src.renderer;
     const root = renderer.elements.get(document.getElementById('gallery')).node;
     const behavior = mountGallery(renderer, root);
     const get = id => document.getElementById(id);
@@ -205,11 +205,11 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     child.document.body.innerHTML = '<main id="gramlot-root"></main>';
     const builder = new GramlotBuilder();
     builder.root.script({id: 'gallery-frame-theme'});
-    const app = new Gramlot({document: child.document, transport: false}).startSource(builder.source);
-    const node = app.renderer.elements.get(child.document.querySelector('script')).node;
+    const app = new Gramlot({document: child.document, transport: false}).src.startSource(builder.source);
+    const node = app.src.renderer.elements.get(child.document.querySelector('script')).node;
     const ready = [];
     parent.postMessage = (data, target) => ready.push({data, target});
-    mountFrameTheme(app.renderer, node);
+    mountFrameTheme(app.src.renderer, node);
     assert.deepEqual(ready, [{data: {type: THEME_READY}, target: '*'}]);
     const message = (source, theme) => child.dispatchEvent(new child.MessageEvent('message',
         {source, data: {type: THEME_SET, theme}}));
@@ -235,7 +235,7 @@ test('families read through a getter: the first family starts open', () => {
     }
     const builder = new GramlotBuilder();
     new Page().main(builder.root);
-    const app = new Gramlot({document, transport: false}).startSource(builder.source);
+    const app = new Gramlot({document, transport: false}).src.startSource(builder.source);
     const families = [...document.querySelectorAll('.gallery-sidebar nav > .gallery-list > li > details')];
     assert.deepEqual(families.map(details => details.open), [true, false]);
     app.dispose();

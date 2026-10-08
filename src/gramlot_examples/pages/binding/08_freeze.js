@@ -28,11 +28,11 @@ export class Page extends BasePage {
 /** Logic of 08_freeze.py and 08_freeze.js: each button's nested controller calls one method. */
 export class Logic {
     sourceNode(nodeId) {
-        return this.page.source.getNodeByAttr('node_id', nodeId);
+        return this.page.src.source.getNodeByAttr('node_id', nodeId);
     }
 
     freeze(node) {
-        this.page.renderer.freeze(this.sourceNode('board'));
+        this.page.src.renderer.freeze(this.sourceNode('board'));
         node.SET('.frozen', true);
     }
 
@@ -47,7 +47,7 @@ export class Logic {
     }
 
     thaw(node) {
-        this.page.renderer.unfreeze(this.sourceNode('board'));
+        this.page.src.renderer.unfreeze(this.sourceNode('board'));
         node.SET('.frozen', false);
     }
 }
