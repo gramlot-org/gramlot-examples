@@ -28,7 +28,7 @@ export class Page extends BasePage {
 }
 
 /**
- * Logic of 03_named_logic.py and 03_named_logic.js. The minimal FileHost serves this module as the
+ * Logic of 03_named_logic.py and 03_named_logic.js. The core GramlotFileServer serves this module as the
  * root group of the page logic: `func='finalPrice'` names the method below.
  */
 export class Logic {

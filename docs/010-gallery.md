@@ -7,7 +7,7 @@
 
 `gramlot-examples` is published on PyPI as `gramlot-examples` (module
 `gramlot_examples`) and on npm as `@gramlot/gramlot-examples`. It depends only on the
-Gramlot core: `gramlot` 0.2.5 or later, `@gramlot/gramlot` 0.2.5 or later. It
+Gramlot core: `gramlot` 0.2.12 or later, `@gramlot/gramlot` 0.2.12 or later. It
 contains no server code.
 
 | Content | Source | PyPI | npm |
@@ -90,10 +90,10 @@ result has three parts:
 - `families`: the families of all catalogues, each with `path`, its pages folder;
 - `routes`: key → `page`, `stylesheet`, `logic`. `page` is the `.py` file in Python
   and the `.js` file in JavaScript; `stylesheet` is the same-name `.css` file, or
-  `None`/`null`. `logic` is the module whose `Logic` export the host takes:
+  `None`/`null`. `logic` is the module whose `Logic` export the server takes:
   `NN_name_aux.js` when it exists, else `NN_name.js` (in JavaScript the page module
   itself), else `None`. Every common example has `NN_name.js` and no `_aux.js`; an
-  environment page can still use `NN_name_aux.js`. The host reports a page with both.
+  environment page can still use `NN_name_aux.js`. The server reports a page with both.
   The `index` route is the gallery page;
 - `assets`: URL → `file`, `type`. The theme, the logo, `/gallery/gallery.css`,
   `/gallery/dist/*` and the source files of every example under
@@ -106,14 +106,14 @@ The functions read the catalogues and check files. They write and serve nothing.
 
 ## 025 · Serving a gallery from an environment
 
-An environment serves the gallery with its own host and static-file mechanism:
+An environment serves the gallery with its own server and static-file mechanism:
 
 1. For each example route it stages one page module named after the key. The module
    extends the original Page and appends `script(src="/gallery/dist/frame.js")` to the
    root, so the example frame follows the gallery theme. The teaching pages are not
    changed.
 2. It copies `stylesheet` beside the staged module, named after the key (`e06.css`):
-   the core `FileHost` links it as the same-name stylesheet. It serves `logic` as
+   the core `GramlotFileServer` links it as the same-name stylesheet. It serves `logic` as
    JavaScript at a URL of its own and stages a one-line `<key>_aux.js` that re-exports
    `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`). The page
    module imports `@gramlot/gramlot/page`, which the import map of the bootstrap
@@ -125,7 +125,7 @@ An environment serves the gallery with its own host and static-file mechanism:
    (`/py/assets/branding/gramlot-logo-dark.svg`, `/py/gallery/dist/gallery.js`). The
    attributes have the same names and defaults (`/assets/branding/gramlot-logo-dark.svg`,
    `/gallery/dist/gallery.js`) in `gallery/page.py` and `gallery/page.js`.
-4. It serves every URL of `assets` with its media type. A host mounted under a prefix
+4. It serves every URL of `assets` with its media type. A server mounted under a prefix
    that links `Page.css` under that prefix (`/py/themes/gramlot-base/theme.css`) serves
    the stylesheet assets under the prefix too.
 
@@ -198,12 +198,12 @@ python -m unittest discover -s tests
   default and subclass values of `logoUrl` and `galleryScript` in both languages.
 - `tests/build-gallery.test.js` and `tests/test_build_gallery.py`: the same cases in
   both languages, with the environment catalogue in `tests/fixtures/environment/`.
-- `tests/test_pages.py`: every Python route opens through the core `FileHost`, links its
+- `tests/test_pages.py`: every Python route opens through the core `GramlotFileServer`, links its
   page module as the logic and returns Source.
 - `scripts/verify_pages_browser.mjs` (CI job `browser`): `scripts/serve_pages.py` and
-  `scripts/serve_pages.mjs` serve the pages folder with the core `FileHost`; Chromium
+  `scripts/serve_pages.mjs` serve the pages folder with the core `GramlotFileServer`; Chromium
   opens every page in both languages and calls the `Logic` of b08, c03 and c08.
-  `scripts/verify_e10_e13_browser.mjs` runs on the same hosts. The gallery commands of
+  `scripts/verify_e10_e13_browser.mjs` runs on the same servers. The gallery commands of
   `gramlot-py-server`, `@gramlot/gramlot-js-server` and `@gramlot/gramlot-serverless`
   are checked in a browser in their own repositories.
 

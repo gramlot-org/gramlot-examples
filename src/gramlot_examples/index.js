@@ -37,7 +37,7 @@ function readCatalog(catalog, pages, common) {
  * Each item of `catalogs` is a pair `[catalog.json, pages folder]` of one environment.
  * `routes` maps each key to its JavaScript page, its same-name stylesheet and its logic
  * module: `NN_name_aux.js`, else `NN_name.js`, the page module itself, whose `Logic` export
- * the host takes (the host throws when both hold a `Logic`). `assets` maps each URL to its
+ * the server takes (the server throws when both hold a `Logic`). `assets` maps each URL to its
  * file and media type. Nothing is written or served here.
  */
 export function buildGallery({catalogs = []} = {}) {

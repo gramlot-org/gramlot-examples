@@ -6,7 +6,7 @@
 ## 005 · Contents
 
 - PyPI `gramlot-examples` (module `gramlot_examples`), npm `@gramlot/gramlot-examples`.
-  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.5 or later. No server code.
+  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.12 or later. No server code.
 - Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
   language; `NN_name.js` exports `Page` and `Logic`, in both packages) with `.md`,
   `.css`; family READMEs; `catalog.json`.
@@ -43,7 +43,7 @@ The common catalogue has no `environment`; an environment catalogue has one.
 
 - `families`: all families, each with `path`;
 - `routes`: key → `page` (`.py` / `.js`), `stylesheet`, `logic` (`NN_name_aux.js`, else
-  `NN_name.js`, else `None`; the host reports both); `index` = gallery page;
+  `NN_name.js`, else `None`; the server reports both); `index` = gallery page;
 - `assets`: URL → `file`, `type` (theme, logo, `/gallery/gallery.css`,
   `/gallery/dist/*`, `/pages/<family>/<file>`). Only `gallery/dist/*.js` is
   `application/javascript`.
@@ -61,7 +61,7 @@ Nothing is written or served.
 3. Stage `index` as a gallery page subclass with `catalogs`, and `logoUrl` /
    `galleryScript` when served elsewhere (e.g. under the mount); same names and defaults
    in `page.py` and `page.js`.
-4. Serve `assets` with their media types; a host that links `Page.css` under its mount
+4. Serve `assets` with their media types; a server that links `Page.css` under its mount
    (`/py/themes/…`) serves the stylesheets under the mount too.
 
 Gallery commands that follow these steps: `gramlot <environment> gallery`
@@ -90,7 +90,7 @@ of this repository.
 ## 035 · Checks
 
 `npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
-Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `FileHost`) +
+Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `GramlotFileServer`) +
 `verify_pages_browser.mjs` (every page, both languages, `Logic` of b08, c03, c08)
 + `verify_e10_e13_browser.mjs`. The gallery commands are checked in a browser in the
 server repositories.

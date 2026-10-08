@@ -1,6 +1,6 @@
 # 03 · Named logic
 
-The code of this page lives in `class Logic`, which `03_named_logic.js` exports beside `Page`. The minimal FileHost serves that module as the page logic for the JavaScript page and for the Python page `03_named_logic.py` alike.
+The code of this page lives in `class Logic`, which `03_named_logic.js` exports beside `Page`. The core GramlotFileServer serves that module as the page logic for the JavaScript page and for the Python page `03_named_logic.py` alike.
 
 - `func='finalPrice'` names a method of `Logic`. A formula method receives one object with the resolved parameters and returns the result: 10% off from the `threshold`.
 - A controller method receives its Source node and the parameters. `node.SET('.changes', …)` writes relative to the node's context.

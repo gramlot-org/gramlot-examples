@@ -37,7 +37,7 @@ Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes
 The gallery page lists the families and opens each example beside its README and
 source. `build_gallery` (Python) and `buildGallery` (JavaScript) return its routes and
 static assets; each environment (`gramlot-py-server`, `gramlot-js-server`) serves the
-gallery with its own host and can add its own catalogue. Guide:
+gallery with its own server and can add its own catalogue. Guide:
 [GE-010](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md).
 
 ```sh

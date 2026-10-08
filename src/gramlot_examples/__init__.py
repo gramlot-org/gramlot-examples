@@ -41,8 +41,8 @@ def build_gallery(catalogs=()):
 
     Each item of ``catalogs`` is a pair ``(catalog.json, pages folder)`` of one environment.
     ``routes`` maps each key to its Python page, its same-name stylesheet and its logic
-    module: ``NN_name_aux.js``, else ``NN_name.js``, whose ``Logic`` export the host takes
-    (the host raises when both files exist). ``assets`` maps each URL to its file and media
+    module: ``NN_name_aux.js``, else ``NN_name.js``, whose ``Logic`` export the server takes
+    (the server raises when both files exist). ``assets`` maps each URL to its file and media
     type. Nothing is written or served here.
     """
     families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)

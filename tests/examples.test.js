@@ -13,7 +13,7 @@ const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/cata
 const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
 
 /**
- * Mount one JavaScript example as its host would: Source from `main`, the module's Logic registered
+ * Mount one JavaScript example as its server would: Source from `main`, the module's Logic registered
  * as the root group.
  */
 async function mount(family, example) {
