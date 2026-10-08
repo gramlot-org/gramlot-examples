@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.2.7.
+Current release: 0.2.8.
 
 The repositories of the family are described in
 [The Gramlot family](https://github.com/gramlot-org/gramlot/blob/main/docs/public/055-family.md)
