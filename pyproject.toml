@@ -9,7 +9,7 @@ description = "Gramlot example pages, the gallery page and its catalogue."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
-dependencies = ["gramlot>=0.2.12"]
+dependencies = ["gramlot>=0.2.14"]
 
 [project.urls]
 Homepage = "https://github.com/gramlot-org/gramlot-examples"

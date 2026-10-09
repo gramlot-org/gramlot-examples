@@ -3,7 +3,8 @@
  * `node scripts/verify_pages_browser.mjs <Python base URL> <JavaScript base URL>`, each a
  * `serve_pages` server on `src/gramlot_examples/pages` (`<base>/<family>/<NN_name>`).
  * Every page must start without errors or failed requests; b08, c03 and c08 call methods
- * of the Logic that the page module NN_name.js exports, the Python pages included.
+ * of the Logic that the page module NN_name.js exports, the Python pages included; c09, c10
+ * and c11 call the endpoints of their page through `POST /gramlot/rpc`.
  */
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -44,6 +45,27 @@ const LOGIC = {
     },
 };
 
+// One behaviour per page with endpoints: each step waits for the answer of the server.
+const ENDPOINTS = {
+    async c09(page) {
+        await page.waitForFunction(() => document.getElementById('gross').textContent === '15.25');
+    },
+    async c10(page, text) {
+        await page.waitForFunction(() => document.getElementById('status').textContent === 'Answered 10 for 1');
+        await page.fill('#quantity', '12');
+        await page.waitForFunction(() => document.getElementById('status').textContent === 'Answered 96 for 12');
+        assert.equal(await text('#total'), '96');
+    },
+    async c11(page, text) {
+        await page.click('#reserve');
+        await page.waitForFunction(() => document.getElementById('error').textContent.startsWith('application_error'));
+        assert.equal(await text('#error'), 'application_error: Lamp is out of stock');
+        await page.click('#cancel');
+        await page.waitForFunction(() => document.getElementById('error').textContent.startsWith('not_authenticated'));
+        assert.equal(await text('#reserved'), '');
+    },
+};
+
 async function check(browser, base, family, example) {
     const url = `${base}/${family.key}/${example.folder}`;
     const page = await browser.newPage();
@@ -57,7 +79,9 @@ async function check(browser, base, family, example) {
     await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state));
     assert.equal(await page.evaluate(() => window.gramlot.state), 'started', `${url}: ${errors.join('; ')}`);
     assert.ok(await page.evaluate(() => document.getElementById('gramlot-root').childElementCount > 0), url);
-    await LOGIC[example.key]?.(page, selector => page.locator(selector).textContent());
+    const text = selector => page.locator(selector).textContent();
+    await LOGIC[example.key]?.(page, text);
+    await ENDPOINTS[example.key]?.(page, text);
     assert.deepEqual(errors, [], url);
     await page.close();
 }
@@ -72,7 +96,7 @@ try {
                 count += 1;
             }
         }
-        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03 and c08`);
+        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03 and c08, endpoints of c09–c11`);
     }
 } finally {
     await browser.close();

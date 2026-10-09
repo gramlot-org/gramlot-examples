@@ -2,8 +2,8 @@
 
 A loopback test server on the page protocol of the core: the runtime at ``runtime_url``, the
 core themes under ``/themes/``, the ``.js`` and ``.css`` files below the pages folder (the
-page modules, whose ``Logic`` the pages take), the pages, and ``main`` and ``close``
-as POST. No Content-Security-Policy, as with the default of the adapters: e13
+page modules, whose ``Logic`` the pages take), the pages, and ``rpc`` (the request
+envelope, answered by ``call``) and ``close`` as POST. No Content-Security-Policy, as with the default of the adapters: e13
 puts an inline ``script`` in its Source, and the inline expressions of the pages need eval.
 """
 
@@ -14,7 +14,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from pathlib import Path
 
-from gramlot.server import GramlotFileServer, PageExpired, PageNotFound, runtime_asset
+from gramlot.server import GramlotFileServer, InvalidRequest, PageNotFound, runtime_asset
 
 MEDIA_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8"}
 RESOURCES = Path(files("gramlot")) / "resources"
@@ -68,15 +68,15 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         server = self.server.gramlot_server
-        payload = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
-        try:
-            if self.path == server.close_url:
-                server.close_page(payload["pageId"])
-                return self.reply(200, "{}", "application/json")
-            if self.path == server.main_url:
-                return self.reply(200, asyncio.run(server.main(payload["pageId"])), "application/json")
-        except PageExpired:
-            return self.reply(404, "Not found", "text/plain")
+        body = self.rfile.read(int(self.headers["Content-Length"])).decode()
+        if self.path == server.close_url:
+            server.close_page(json.loads(body)["pageId"])
+            return self.reply(200, "{}", "application/json")
+        if self.path == server.rpc_url:
+            try:
+                return self.reply(200, asyncio.run(server.call(body)), "application/json")
+            except InvalidRequest:
+                return self.reply(400, "Invalid envelope", "text/plain")
         self.reply(404, "Not found", "text/plain")
 
 
