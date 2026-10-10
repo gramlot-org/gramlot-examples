@@ -2,19 +2,20 @@ import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import test from 'node:test';
 import {createRequire} from 'node:module';
-import {pathToFileURL} from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {JSDOM, VirtualConsole} from 'jsdom';
 
 // The core as the example pages resolve it (`node_modules/@gramlot/gramlot`, installed from npm).
 const fromExamples = createRequire(new URL('../package.json', import.meta.url));
 const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot')).href);
+const {GramlotFileServer} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/server')).href);
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
 
 /**
- * Mount one JavaScript example as its server would: Source from `main`, the module's Logic registered
- * as the root group.
+ * Mount one JavaScript example as its server would: the core GramlotFileServer of the family folder answers
+ * the request envelopes (`main` and the endpoints), the module's Logic is registered as the root group.
  */
 async function mount(family, example) {
     const errors = [];
@@ -22,15 +23,11 @@ async function mount(family, example) {
     virtualConsole.on('jsdomError', error => errors.push(error));
     const dom = new JSDOM('<main id="gramlot-root"></main>', {url: `https://gallery.test/js/${example.key}`,
         virtualConsole});
-    const {Page, Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
-    const main = async () => {
-        const page = new Page();
-        const builder = new Page.sourceBuilder();
-        await page.main(builder.root);
-        return builder.toTytx();
-    };
-    const transport = {main};
-    const app = new Gramlot({document: dom.window.document, pageId: example.key, transport});
+    const {Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
+    const server = new GramlotFileServer(fileURLToPath(folder(family.key)));
+    const {pageId} = await server.registerPage(`/${example.folder}`);
+    const transport = {call: text => server.call(text)};
+    const app = new Gramlot({document: dom.window.document, pageId, transport});
     app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
@@ -305,6 +302,35 @@ const CHECKS = {
         // 7. close
         app.dispose();
         assert.equal(app.state, 'disposed');
+    },
+    async c09({byId, data}) {
+        await tick(0);
+        assert.equal(byId('price').textContent, '12.5');
+        assert.equal(byId('rate').textContent, '22');
+        assert.equal(data('invoice.gross'), 15.25, 'the endpoint answered the _init call');
+        assert.equal(byId('gross').textContent, '15.25');
+    },
+    async c10({byId, edit}) {
+        await tick(550);
+        assert.equal(byId('total').textContent, '10');
+        assert.equal(byId('status').textContent, 'Answered 10 for 1');
+        edit('quantity', '1', 'input');
+        edit('quantity', '12', 'input');
+        await tick(0);
+        assert.equal(byId('total').textContent, '10', '_delay waits for a pause');
+        await tick(550);
+        assert.equal(byId('total').textContent, '96');
+        assert.equal(byId('status').textContent, 'Answered 96 for 12');
+    },
+    async c11({byId, click, data}) {
+        click('reserve');
+        await tick(0);
+        assert.equal(byId('error').textContent, 'application_error: Lamp is out of stock');
+        assert.equal(data('stock.reserved'), null, 'a failed call writes nothing');
+        click('cancel');
+        await tick(0);
+        assert.equal(byId('error').textContent, 'not_authenticated: Access refused: cancel');
+        assert.equal(data('stock.reserved'), null, 'the protected method did not run');
     },
 };
 
