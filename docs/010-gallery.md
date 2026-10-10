@@ -7,7 +7,7 @@
 
 `gramlot-examples` is published on PyPI as `gramlot-examples` (module
 `gramlot_examples`) and on npm as `@gramlot/gramlot-examples`. It depends only on the
-Gramlot core: `gramlot` 0.2.12 or later, `@gramlot/gramlot` 0.2.12 or later. It
+Gramlot core: `gramlot` 0.2.14 or later, `@gramlot/gramlot` 0.2.14 or later. It
 contains no server code.
 
 | Content | Source | PyPI | npm |
@@ -56,9 +56,9 @@ environment (an adapter or a runtime) declares it.
 
 ## 015 · Keys
 
-- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c08`.
+- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c11`.
   Keys are stable within a release. 0.2.8 renumbered the controllers after
-  removing the remote Source example.
+  removing the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`).
 - An environment names its examples `<environment>-NN`: `django-01`, `flask-01`,
   `bun-01`, `serverless-01`.
 - Family keys and example keys are one namespace with `index`, the gallery route.
@@ -193,16 +193,20 @@ python -m unittest discover -s tests
 
 - `tests/examples.test.js`: every family folder and file pair; every page module exports
   `Page` and `Logic`, and no common page has `_aux.js`; one behaviour of each Binding and
-  Controllers page, mounted in jsdom with the core and the module's `Logic`.
+  Controllers page, mounted in jsdom with the core and the module's `Logic`. The core
+  `GramlotFileServer` of the family folder answers the request envelopes in the same
+  process: `main` and the endpoints of c09–c11.
 - `tests/gallery.test.js`: the gallery UI in jsdom; with `tests/test_gallery_page.py`, the
   default and subclass values of `logoUrl` and `galleryScript` in both languages.
 - `tests/build-gallery.test.js` and `tests/test_build_gallery.py`: the same cases in
   both languages, with the environment catalogue in `tests/fixtures/environment/`.
 - `tests/test_pages.py`: every Python route opens through the core `GramlotFileServer`, links its
-  page module as the logic and returns Source.
+  page module as the logic and returns Source; the Python endpoints of c09–c11 answer
+  their values and outcomes.
 - `scripts/verify_pages_browser.mjs` (CI job `browser`): `scripts/serve_pages.py` and
   `scripts/serve_pages.mjs` serve the pages folder with the core `GramlotFileServer`; Chromium
-  opens every page in both languages and calls the `Logic` of b08, c03 and c08.
+  opens every page in both languages, calls the `Logic` of b08, c03 and c08 and the
+  endpoints of c09–c11 through `POST /gramlot/rpc`.
   `scripts/verify_e10_e13_browser.mjs` runs on the same servers. The gallery commands of
   `gramlot-py-server`, `@gramlot/gramlot-js-server` and `@gramlot/gramlot-serverless`
   are checked in a browser in their own repositories.

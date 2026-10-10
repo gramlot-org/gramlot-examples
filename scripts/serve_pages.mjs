@@ -3,7 +3,8 @@
  *
  * The counterpart of `serve_pages.py` on the same page protocol: the runtime at `runtimeUrl`, the
  * core themes under `/themes/`, the `.js` and `.css` files below the pages folder (the page
- * modules, whose `Logic` the browser imports), the pages, and `main` and `close` as POST.
+ * modules, whose `Logic` the browser imports), the pages, and `rpc` (the request envelope,
+ * answered by `call`) and `close` as POST.
  * No Content-Security-Policy, as with the default of the adapters: e13 puts an inline
  * `script` in its Source, and the inline expressions of the pages need eval.
  */
@@ -11,7 +12,7 @@ import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import {dirname, extname, join, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {GramlotFileServer, PageExpired, PageNotFound, runtimeAsset} from '@gramlot/gramlot/server';
+import {GramlotFileServer, InvalidRequest, PageNotFound, runtimeAsset} from '@gramlot/gramlot/server';
 
 const MEDIA_TYPES = {'.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8'};
 const THEMES = dirname(dirname(fileURLToPath(import.meta.resolve('@gramlot/gramlot/themes/gramlot-base/theme.css'))));
@@ -48,17 +49,16 @@ export function servePages(folder, port) {
             }
             const chunks = [];
             for await (const chunk of request) chunks.push(chunk);
-            const payload = JSON.parse(Buffer.concat(chunks).toString());
+            const body = Buffer.concat(chunks).toString();
             if (path === server.closeUrl) {
-                server.closePage(payload.pageId);
+                server.closePage(JSON.parse(body).pageId);
                 return reply(200, '{}', 'application/json');
             }
-            if (path === server.mainUrl) return reply(200, await server.main(payload.pageId), 'application/json');
+            if (path === server.rpcUrl) return reply(200, await server.call(body), 'application/json');
             return reply(404, 'Not found', 'text/plain');
         } catch (error) {
-            if (error instanceof PageNotFound || error instanceof PageExpired) {
-                return reply(404, 'Not found', 'text/plain');
-            }
+            if (error instanceof PageNotFound) return reply(404, 'Not found', 'text/plain');
+            if (error instanceof InvalidRequest) return reply(400, 'Invalid envelope', 'text/plain');
             throw error;
         }
     }).listen(port, '127.0.0.1');

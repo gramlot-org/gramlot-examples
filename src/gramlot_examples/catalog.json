@@ -239,6 +239,27 @@
           "folder": "08_end_to_end",
           "description": "Title, input, radios, checkbox, formula, SVG, button and freeze together.",
           "explanation": "Setters after the controls, live editing, a radio pair, a formula and controller driving text and SVG, a counting button and freeze."
+        },
+        {
+          "key": "c09",
+          "title": "Endpoint",
+          "folder": "09_endpoint",
+          "description": "dataRpc calls an endpoint of the page and writes the value at its result path.",
+          "explanation": "The page declares with_vat with @endpoint in Python and Page.registerEndpoint in JavaScript. The author attributes of the dataRpc are the arguments; _init=True makes the call when the page starts."
+        },
+        {
+          "key": "c10",
+          "title": "Call on change",
+          "folder": "10_call_on_change",
+          "description": "dataRpc follows a ^ argument, with _delay, _onCalling and _onResult.",
+          "explanation": "Each change of the quantity calls the endpoint 500 ms after the last edit. _onCalling and _onResult are inline code that write the status; the latest call wins."
+        },
+        {
+          "key": "c11",
+          "title": "Call on click",
+          "folder": "11_call_on_click",
+          "description": "A dataRpc nested in a button, with _onError for a failing and a protected endpoint.",
+          "explanation": "Each click calls the endpoint. An exception answers application_error; an endpoint with auth answers not_authenticated on a server that knows no identity. _onError receives the error."
         }
       ]
     }
