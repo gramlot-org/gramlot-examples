@@ -332,6 +332,38 @@ const CHECKS = {
         assert.equal(byId('error').textContent, 'not_authenticated: Access refused: cancel');
         assert.equal(data('stock.reserved'), null, 'the protected method did not run');
     },
+    async c12({byId, edit}) {
+        await tick(0);
+        assert.equal(byId('name').textContent, 'Lamp', 'the fragment requested at start');
+        assert.equal(byId('stock').textContent, '3 in stock');
+        edit('record', 'chair');
+        await tick(0);
+        assert.equal(byId('name').textContent, 'Chair', 'a ^ parameter change requests again');
+        assert.equal(byId('stock').textContent, '12 in stock');
+    },
+    async c13({byId, edit}) {
+        await tick(0);
+        assert.equal(byId('rule').textContent, 'Ships in two days, bulbs not included.');
+        assert.equal(byId('requests').textContent, '1');
+        assert.equal(byId('status').textContent, 'Mounted the lighting rules');
+        edit('product', 'products.spot');
+        await tick(0);
+        assert.equal(byId('name').textContent, 'Spotlight');
+        assert.equal(byId('requests').textContent, '1', '_cachedRemote: the same category makes no request');
+        edit('product', 'products.chair');
+        await tick(0);
+        assert.equal(byId('rule').textContent, 'Ships in a week, assembly required.');
+        assert.equal(byId('requests').textContent, '2');
+        assert.equal(byId('status').textContent, 'Mounted the seating rules');
+    },
+    async c14({byId, edit, app}) {
+        await tick(0);
+        assert.equal(byId('menu').textContent, 'Soup, Risotto, Fish', 'the read of ^.menu called the endpoint');
+        assert.equal(app.data.getResolver('kitchen.menu').cacheTime, 5);
+        edit('table', 'drinks');
+        await tick(0);
+        assert.equal(byId('menu').textContent, 'Water, Lemonade, Coffee', 'a ^ argument change loads again');
+    },
 };
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {

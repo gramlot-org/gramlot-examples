@@ -6,7 +6,7 @@
 ## 005 · Contents
 
 - PyPI `gramlot-examples` (module `gramlot_examples`), npm `@gramlot/gramlot-examples`.
-  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.14 or later. No server code.
+  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.16 or later. No server code.
 - Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
   language; `NN_name.js` exports `Page` and `Logic`, in both packages) with `.md`,
   `.css`; family READMEs; `catalog.json`.
@@ -27,9 +27,10 @@ The common catalogue has no `environment`; an environment catalogue has one.
 
 ## 015 · Keys
 
-- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c11`. Environment: `<environment>-NN`.
+- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c14`. Environment: `<environment>-NN`.
 - Keys are stable within a release; 0.2.8 renumbered the controllers after removing
-  the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`).
+  the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`), 0.2.11 added `c12`–`c14` (`remote`,
+  `dataRemote`).
 - Family keys, example keys and `index` share one namespace.
 - Errors: environment in the common catalogue; no environment in an environment
   catalogue; key outside `<environment>-NN`; duplicate key; missing page file.
@@ -92,7 +93,7 @@ of this repository.
 `npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
 Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `GramlotFileServer`) +
 `verify_pages_browser.mjs` (every page, both languages, `Logic` of b08, c03, c08,
-endpoints of c09–c11 through `POST /gramlot/rpc`)
+endpoints of c09–c11 and c14, fragments of c12 and c13 through `POST /gramlot/rpc`)
 + `verify_e10_e13_browser.mjs`. The gallery commands are checked in a browser in the
 server repositories.
 Fixture catalogue: `tests/fixtures/environment/`.
