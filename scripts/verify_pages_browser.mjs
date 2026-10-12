@@ -3,8 +3,9 @@
  * `node scripts/verify_pages_browser.mjs <Python base URL> <JavaScript base URL>`, each a
  * `serve_pages` server on `src/gramlot_examples/pages` (`<base>/<family>/<NN_name>`).
  * Every page must start without errors or failed requests; b08, c03 and c08 call methods
- * of the Logic that the page module NN_name.js exports, the Python pages included; c09, c10
- * and c11 call the endpoints of their page through `POST /gramlot/rpc`.
+ * of the Logic that the page module NN_name.js exports, the Python pages included; c09, c10,
+ * c11 and c14 call the endpoints of their page and c12 and c13 the fragments of their page
+ * through `POST /gramlot/rpc`.
  */
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -64,6 +65,28 @@ const ENDPOINTS = {
         await page.waitForFunction(() => document.getElementById('error').textContent.startsWith('not_authenticated'));
         assert.equal(await text('#reserved'), '');
     },
+    async c12(page, text) {
+        await page.waitForFunction(() => document.getElementById('stock')?.textContent === '3 in stock');
+        await page.selectOption('#record', 'chair');
+        await page.waitForFunction(() => document.getElementById('stock')?.textContent === '12 in stock');
+        assert.equal(await text('#name'), 'Chair');
+    },
+    async c13(page, text) {
+        await page.waitForFunction(() => document.getElementById('requests').textContent === '1');
+        await page.selectOption('#product', 'products.spot');
+        await page.waitForFunction(() => document.getElementById('name').textContent === 'Spotlight');
+        await page.waitForTimeout(300);
+        assert.equal(await text('#requests'), '1', 'the same category makes no request');
+        await page.selectOption('#product', 'products.chair');
+        await page.waitForFunction(() => document.getElementById('requests').textContent === '2');
+        assert.equal(await text('#status'), 'Mounted the seating rules');
+        assert.equal(await text('#rule'), 'Ships in a week, assembly required.');
+    },
+    async c14(page) {
+        await page.waitForFunction(() => document.getElementById('menu').textContent === 'Soup, Risotto, Fish');
+        await page.selectOption('#table', 'drinks');
+        await page.waitForFunction(() => document.getElementById('menu').textContent === 'Water, Lemonade, Coffee');
+    },
 };
 
 async function check(browser, base, family, example) {
@@ -96,7 +119,7 @@ try {
                 count += 1;
             }
         }
-        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03 and c08, endpoints of c09–c11`);
+        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03 and c08, endpoints of c09–c11 and c14, fragments of c12 and c13`);
     }
 } finally {
     await browser.close();

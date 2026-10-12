@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.2.10.
+Current release: 0.2.11.
 
 The repositories of the family are described in
 [The Gramlot family](https://github.com/gramlot-org/gramlot/blob/main/docs/public/055-family.md)
@@ -26,8 +26,9 @@ same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: eleven pages with formulas, controllers, named logic, events, the
-  end-to-end story and `dataRpc` calls to the endpoints of the page (`c01`–`c11`).
+- `controllers/`: fourteen pages with formulas, controllers, named logic, events, the
+  end-to-end story, `dataRpc` calls to the endpoints of the page, `remote` fragments and
+  `dataRemote` values (`c01`–`c14`).
 
 Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
 `Logic` from the module beside it.

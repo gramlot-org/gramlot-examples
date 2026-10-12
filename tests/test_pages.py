@@ -42,6 +42,7 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
             "c11 auth": ("cancel", {"item": "Lamp"},
                          {"error": {"code": "not_authenticated", "name": "NotAuthenticated",
                                     "message": "Access refused: cancel"}}),
+            "c14": ("load_menu", {"table": "drinks"}, {"value": "Water, Lemonade, Coffee"}),
         }
         routes = build_gallery()["routes"]
         for case, (name, params, expected) in cases.items():
@@ -51,6 +52,23 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
                 opened = await server.open_page(f"/{page.stem}")
                 response = await call(server, opened.page_id, "data", name, params)
                 self.assertEqual({key: response[key] for key in expected}, expected)
+                server.close_page(opened.page_id)
+
+    async def test_fragments_answer_as_their_readme_says(self):
+        # The parameters are the ones the remote of each page sends.
+        cases = {
+            "c12": ("details", {"record_id": "chair"}, ["Chair", "12 in stock"]),
+            "c13": ("rules", {"category": "seating"}, ["Ships in a week, assembly required."]),
+        }
+        routes = build_gallery()["routes"]
+        for case, (name, params, texts) in cases.items():
+            with self.subTest(case=case):
+                page = routes[case]["page"]
+                server = GramlotFileServer(str(page.parent))
+                opened = await server.open_page(f"/{page.stem}")
+                response = await call(server, opened.page_id, "source", name, params)
+                self.assertNotIn("error", response)
+                self.assertEqual([node.value for node in response["value"]], texts)
                 server.close_page(opened.page_id)
 
 
