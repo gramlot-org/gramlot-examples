@@ -260,6 +260,27 @@
           "folder": "11_call_on_click",
           "description": "A dataRpc nested in a button, with _onError for a failing and a protected endpoint.",
           "explanation": "Each click calls the endpoint. An exception answers application_error; an endpoint with auth answers not_authenticated on a server that knows no identity. _onError receives the error."
+        },
+        {
+          "key": "c12",
+          "title": "Remote",
+          "folder": "12_remote",
+          "description": "remote makes the content of an element a fragment built by the server.",
+          "explanation": "The section declares remote('details', record_id='^.record_id'). The page builds the fragment with @source in Python and Page.registerSource in JavaScript; each change of the record requests it again."
+        },
+        {
+          "key": "c13",
+          "title": "Cached remote",
+          "folder": "13_cached_remote",
+          "description": "remote with _cachedRemote and _onRemote, under a variable datapath.",
+          "explanation": "The rules fragment depends on the category of the product. _cachedRemote makes no request when the category is the same; _onRemote is inline code that counts the mounted fragments and writes the status."
+        },
+        {
+          "key": "c14",
+          "title": "Data remote",
+          "folder": "14_data_remote",
+          "description": "dataRemote computes a Data value with an endpoint when the value is read.",
+          "explanation": "The menu path holds a resolver of the endpoint load_menu with cacheTime 5. The ^.menu paragraph reads it: the answer arrives with the Data event. A change of the table loads the menu again."
         }
       ]
     }
