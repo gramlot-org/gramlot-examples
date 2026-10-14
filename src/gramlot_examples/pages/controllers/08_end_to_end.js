@@ -7,6 +7,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'story'});
         pane.h1('^.settings.caption', {id: 'caption'});
+        pane.h2('0.2.0 · Local page');
 
         const form = pane.form({class: 'card stack', node_id: 'form'});
         form.html_label('Caption', {for: 'caption-field'});
@@ -29,6 +30,7 @@ export class Page extends BasePage {
 
         const result = pane.section({class: 'card stack'});
         result.p('^.total', {id: 'total'});
+        // Optional: the same local total also drives an SVG projection.
         const drawing = result.svg({viewBox: '0 0 200 200', role: 'img', aria_label: 'Total as a circle', class: 'example-art'});
         drawing.circle({cx: 100, cy: 100, r: '^.radius', fill: '^.color', id: 'circle'});
         result.button('Press, also with Shift', {id: 'press'}).dataController({func: 'press'});
@@ -41,7 +43,7 @@ export class Page extends BasePage {
         pane.dataController({func: 'paint', total: '^.total', _init: true});
 
         const later = pane.section({class: 'card stack', node_id: 'later'});
-        later.h2('A later branch');
+        later.h2('0.2.0 · Optional freeze exercise');
         const notes = later.ul({node_id: 'notes', id: 'notes'});
         for (const text of ['Setters live here too', 'This note can be removed under freeze']) notes.li(text);
         const actions = later.div({class: 'actions'});
@@ -52,8 +54,31 @@ export class Page extends BasePage {
         later.dataSetter({destination_path: '.size', value: {small: true, large: false}});
         later.dataSetter({destination_path: '.gift', value: false});
         later.dataSetter({destination_path: '.live', value: false});
+
+        // Return here after c09/c11: the original local stage above remains independent.
+        const quotes = pane.section({class: 'card stack'});
+        quotes.h2('0.2.14 · Ask the server for a quote');
+        quotes.p('The local total follows edits. The server quote changes only after a request.');
+        quotes.button('Request quote', {type: 'button', id: 'request-quote'}).dataRpc({
+            method: 'quote', result_path: '.quote', quantity: '=.quantity',
+            large: '=.size.large', gift: '=.gift',
+            _onResult: "this.SET('.quote_error', null)",
+            _onError: "this.SET('.quote_error', error.code + ': ' + error.message)"});
+        const facts = quotes.dl();
+        for (const [label, key, elementId] of [['Server quote', 'quote', 'quote'],
+            ['Request error', 'quote_error', 'quote-error']]) {
+            facts.dt(label); facts.dd(`^.${key}`, {id: elementId});
+        }
+        quotes.p('Try quantity 0: the server refuses it and the previous quote remains. Then use 3 and request again.',
+            {class: 'muted'});
+    }
+
+    quote({quantity, large, gift}) {
+        if (quantity === null || quantity < 1) throw new RangeError('Choose at least one item');
+        return quantity * (large ? 3 : 1) + (gift ? 5 : 0);
     }
 }
+Page.registerEndpoint('quote');
 
 /** Logic of 08_end_to_end.py and 08_end_to_end.js: the named logic of the story. */
 export class Logic {

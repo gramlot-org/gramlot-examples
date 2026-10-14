@@ -39,6 +39,21 @@ class Page(BasePage):
         timed.dataController("this.SET('.ticks', (ticks ?? 0) + 1)", ticks="=.ticks", _timing="^.interval",
                              _onStart=True)
 
+        filtered = pane.section(class_="card stack")
+        filtered.h2("Advanced: _userChanges filters paths, not input origin")
+        filtered.html_label("Tracked name", for_="tracked-name")
+        filtered.input(value="^.filter.name", id="tracked-name")
+        for label, method in (("SET the name", "setName"), ("Replace containing Bag", "replaceFilter"),
+                              ("Change address child", "changeCity")):
+            filtered.button(label, id=method, type="button").dataController(func=method)
+        for key, path, exact in (("name_exact", ".filter.name", True), ("name_all", ".filter.name", False),
+                                 ("address_exact", ".filter.address", True), ("address_all", ".filter.address", False)):
+            filtered.p(f"^.{key}", mask=key + ": %s", id=key)
+            filtered.dataController(func="countPath", watched="^" + path, counter="." + key, _userChanges=exact)
+            pane.dataSetter("." + key, 0)
+        pane.dataSetter(".filter", {"name": "Ada", "address": {"city": "Rome"}})
+        pane.dataSetter(".replacement", {"name": "Container", "address": {"city": "Paris"}})
+
         pane.dataSetter(".name", "Ada")
         pane.dataSetter(".requests", 0)
         pane.dataSetter(".interval", "1")

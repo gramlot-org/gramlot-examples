@@ -154,7 +154,7 @@
           "key": "b08",
           "title": "Freeze",
           "folder": "08_freeze",
-          "description": "Freeze a branch, change its Data and Source, then thaw once.",
+          "description": "Freeze structural rendering while Data keeps updating; increment a counter, remove Source items, then thaw.",
           "explanation": "A frozen branch keeps reacting to Data but defers structural DOM work. Removing a child under freeze takes effect at the thaw, which builds the current Source once."
         },
         {
@@ -237,8 +237,26 @@
           "key": "c08",
           "title": "End-to-end story",
           "folder": "08_end_to_end",
-          "description": "Title, input, radios, checkbox, formula, SVG, button and freeze together.",
-          "explanation": "Setters after the controls, live editing, a radio pair, a formula and controller driving text and SVG, a counting button and freeze."
+          "description": "First the local 0.2.0 story; return after the endpoint lessons for a separate 0.2.14 quote, error and recovery step.",
+          "explanation": "First compare setters, live editing, radio flags, formulas, SVG and freeze. After c09/c11, revisit the same inputs with a click-only dataRpc: the server quote is a snapshot, errors retain it and a successful retry clears the error."
+        },
+        {
+          "key": "c15",
+          "title": "Lifecycle",
+          "folder": "15_lifecycle",
+          "description": "Core 0.2.0: observe hook order, freeze, removal and Source/DOM lookup."
+        },
+        {
+          "key": "c16",
+          "title": "Attribute projection",
+          "folder": "16_attribute_projection",
+          "description": "Core 0.2.0 templates/masks, then the 0.2.3 sandboxed Data preview."
+        },
+        {
+          "key": "c17",
+          "title": "Data exchange",
+          "folder": "17_data_exchange",
+          "description": "Core 0.2.5: save/restore typed Data and export JSON/XML; current utility path from 0.2.10."
         },
         {
           "key": "c09",
@@ -272,14 +290,14 @@
           "key": "c13",
           "title": "Cached remote",
           "folder": "13_cached_remote",
-          "description": "remote with _cachedRemote and _onRemote, under a variable datapath.",
+          "description": "Revisit remote with a last-result cache; distinguish mounted fragments from observed calls.",
           "explanation": "The rules fragment depends on the category of the product. _cachedRemote makes no request when the category is the same; _onRemote is inline code that counts the mounted fragments and writes the status."
         },
         {
           "key": "c14",
           "title": "Data remote",
           "folder": "14_data_remote",
-          "description": "dataRemote computes a Data value with an endpoint when the value is read.",
+          "description": "Revisit endpoint values with lazy Data; compare a bound read, an explicit snapshot and cache expiry.",
           "explanation": "The menu path holds a resolver of the endpoint load_menu with cacheTime 5. The ^.menu paragraph reads it: the answer arrives with the Data event. A change of the table loads the menu again."
         }
       ]

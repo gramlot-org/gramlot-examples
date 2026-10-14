@@ -23,6 +23,12 @@ class Page(BasePage):
             facts.dt(label)
             facts.dd(f"^.{key}", id=key)
 
+        auth = pane.section(class_="card stack")
+        auth.h2("0.2.15: Source authorization versus visibility")
+        auth.p("Source-auth marker", auth="admin", id="protected-source")
+        auth.p("Hidden marker is still delivered", hidden=True, id="hidden-source")
+        auth.p("Without an authorized identity, the protected paragraph is omitted from Source.")
+
         pane.dataSetter(".item", "Lamp")
 
     @endpoint

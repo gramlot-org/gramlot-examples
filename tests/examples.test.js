@@ -26,7 +26,11 @@ async function mount(family, example) {
     const {Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
     const server = new GramlotFileServer(fileURLToPath(folder(family.key)));
     const {pageId} = await server.registerPage(`/${example.folder}`);
-    const transport = {call: text => server.call(text)};
+    const calls = [];
+    const transport = {call(text) {
+        calls.push(JSON.parse(text));
+        return server.call(text);
+    }};
     const app = new Gramlot({document: dom.window.document, pageId, transport});
     app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
@@ -38,7 +42,7 @@ async function mount(family, example) {
     };
     const click = (id, options = {}) => byId(id).dispatchEvent(new dom.window.MouseEvent('click',
         {bubbles: true, cancelable: true, ...options}));
-    return {app, dom, window: dom.window, byId, data, edit, click, errors};
+    return {app, dom, window: dom.window, byId, data, edit, click, calls, errors};
 }
 
 const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
@@ -139,6 +143,10 @@ const CHECKS = {
         assert.equal(byId('frozen').textContent, 'false');
     },
     b09({byId, edit, click, data}) {
+        assert.deepEqual(data('form.topics'), ['html']);
+        assert.deepEqual([...byId('topics').selectedOptions].map(option => option.value), ['html']);
+        edit('topics', 'svg');
+        assert.deepEqual(data('form.topics'), ['svg']);
         assert.equal(byId('name').value, 'Ada Lovelace');
         assert.equal(byId('weekly').checked, true);
         assert.equal(byId('region').value, 'south');
@@ -266,7 +274,7 @@ const CHECKS = {
         byId('hover-box').dispatchEvent(new window.MouseEvent('mouseout', {bubbles: true}));
         assert.equal(byId('hover-box').className, 'card');
     },
-    c08({app, byId, edit, click, data}) {
+    async c08({app, byId, edit, click, data, calls}) {
         // 1. first render
         assert.equal(byId('caption').textContent, 'The story of a page');
         assert.equal(byId('quantity').value, '2');
@@ -299,7 +307,30 @@ const CHECKS = {
         click('thaw');
         assert.equal(byId('notes').children.length, 1);
         assert.equal(byId('total').textContent, '3');
-        // 7. close
+        // 7. later 0.2.14 stage: only explicit requests update the server quote.
+        const requests = () => calls.filter(({contentType, name}) => contentType === 'data' && name === 'quote');
+        assert.equal(requests().length, 0, 'the complete local trial needed no endpoint call');
+        assert.equal(byId('quote').textContent, '');
+        click('small'); edit('quantity', '2');
+        click('request-quote'); await tick(0);
+        assert.equal(data('story.quote'), 2);
+        click('large'); click('gift');
+        assert.equal(byId('total').textContent, '11');
+        assert.equal(byId('quote').textContent, '2');
+        assert.equal(requests().length, 1, 'editing does not trigger the click-only RPC');
+        click('request-quote'); await tick(0);
+        assert.equal(data('story.quote'), 11, 'the = arguments are read afresh on click');
+        edit('quantity', '0'); click('request-quote'); await tick(0);
+        assert.equal(byId('quote-error').textContent, 'application_error: Choose at least one item');
+        assert.equal(data('story.quote'), 11, 'failure preserves the last successful quote');
+        edit('quantity', ''); click('request-quote'); await tick(0);
+        assert.equal(byId('quote-error').textContent, 'application_error: Choose at least one item');
+        assert.equal(data('story.quote'), 11);
+        edit('quantity', '3'); click('request-quote'); await tick(0);
+        assert.equal(data('story.quote'), 14);
+        assert.equal(byId('quote-error').textContent, '', 'success clears the previous error');
+        assert.equal(requests().length, 5);
+        // 8. close
         app.dispose();
         assert.equal(app.state, 'disposed');
     },
@@ -341,29 +372,144 @@ const CHECKS = {
         assert.equal(byId('name').textContent, 'Chair', 'a ^ parameter change requests again');
         assert.equal(byId('stock').textContent, '12 in stock');
     },
-    async c13({byId, edit}) {
+    async c13({byId, edit, calls}) {
+        const requests = () => calls.filter(({contentType, name}) => contentType === 'source' && name === 'rules').length;
         await tick(0);
         assert.equal(byId('rule').textContent, 'Ships in two days, bulbs not included.');
-        assert.equal(byId('requests').textContent, '1');
+        assert.equal(byId('mounts').textContent, '1');
         assert.equal(byId('status').textContent, 'Mounted the lighting rules');
+        assert.equal(requests(), 1);
         edit('product', 'products.spot');
         await tick(0);
         assert.equal(byId('name').textContent, 'Spotlight');
-        assert.equal(byId('requests').textContent, '1', '_cachedRemote: the same category makes no request');
+        assert.equal(byId('mounts').textContent, '1', 'the existing fragment stays mounted');
+        assert.equal(requests(), 1, 'observe the transport independently: same category skips a call');
         edit('product', 'products.chair');
         await tick(0);
         assert.equal(byId('rule').textContent, 'Ships in a week, assembly required.');
-        assert.equal(byId('requests').textContent, '2');
+        assert.equal(byId('mounts').textContent, '2');
+        assert.equal(requests(), 2);
         assert.equal(byId('status').textContent, 'Mounted the seating rules');
-    },
-    async c14({byId, edit, app}) {
+        edit('product', 'products.lamp');
         await tick(0);
-        assert.equal(byId('menu').textContent, 'Soup, Risotto, Fish', 'the read of ^.menu called the endpoint');
+        assert.equal(requests(), 3, 'only the last mounted result is cached');
+        assert.equal(byId('mounts').textContent, '3');
+    },
+    async c14({byId, edit, click, calls, app}) {
+        const requests = () => calls.filter(({contentType, name}) => contentType === 'data' && name === 'load_menu').length;
+        await tick(0);
+        assert.equal(byId('menu').textContent, 'Soup, Risotto, Fish', 'the first bound read starts loading');
         assert.equal(app.data.getResolver('kitchen.menu').cacheTime, 5);
+        assert.equal(byId('read-value').textContent, '', 'a snapshot needs an explicit read');
+        click('read-menu');
+        assert.equal(byId('read-value').textContent, 'Soup, Risotto, Fish');
+        assert.equal(requests(), 1, 'reading a fresh cache sends nothing');
         edit('table', 'drinks');
         await tick(0);
-        assert.equal(byId('menu').textContent, 'Water, Lemonade, Coffee', 'a ^ argument change loads again');
+        assert.equal(byId('menu').textContent, 'Water, Lemonade, Coffee');
+        assert.equal(byId('read-value').textContent, 'Soup, Risotto, Fish', 'the copied snapshot does not subscribe to menu');
+        assert.equal(requests(), 2);
+        await tick(5100);
+        assert.equal(requests(), 2, 'expiry alone is not a refresh timer');
+        click('read-menu');
+        click('read-menu');
+        assert.equal(requests(), 3, 'explicit expired read starts one call; concurrent read coalesces');
+        assert.equal(byId('read-value').textContent, 'Water, Lemonade, Coffee');
+        await tick(0);
+        click('read-menu');
+        assert.equal(requests(), 3, 'response renews the cache window');
     },
+};
+
+const b01Basic = CHECKS.b01;
+CHECKS.b01 = async ctx => {
+    await b01Basic(ctx);
+    assert.equal(ctx.byId('local-name').textContent, 'Inner');
+    assert.equal(ctx.byId('anchor-name').textContent, 'Outer');
+    assert.equal(ctx.byId('parent-name').textContent, 'Outer');
+    ctx.app.data.setItem('contexts.name', 'Outside');
+    assert.equal(ctx.byId('anchor-name').textContent, 'Outside');
+    assert.equal(ctx.byId('local-name').textContent, 'Inner');
+};
+const c02Basic = CHECKS.c02;
+CHECKS.c02 = async ctx => {
+    await c02Basic(ctx);
+    const count = key => ctx.data(`demo.${key}`);
+    ctx.edit('tracked-name', 'Mira');
+    assert.equal(count('name_exact'), 1); assert.equal(count('name_all'), 1);
+    ctx.click('setName');
+    assert.equal(count('name_exact'), 2); assert.equal(count('name_all'), 2);
+    ctx.click('replaceFilter');
+    assert.equal(count('name_exact'), 2); assert.equal(count('name_all'), 3);
+    assert.equal(count('address_exact'), 0); assert.equal(count('address_all'), 1);
+    ctx.click('changeCity');
+    assert.equal(count('address_exact'), 0); assert.equal(count('address_all'), 2);
+};
+const c11Basic = CHECKS.c11;
+CHECKS.c11 = async ctx => {
+    await c11Basic(ctx);
+    assert.equal(ctx.byId('protected-source'), null);
+    assert.equal(ctx.app.src.source.getNodeByAttr('id', 'protected-source'), null);
+    assert.equal(ctx.byId('hidden-source').hidden, true);
+    assert.ok(ctx.app.src.source.getNodeByAttr('id', 'hidden-source'));
+};
+CHECKS.c15 = async ({byId, click, data}) => {
+    assert.equal(byId('trace').textContent, 'init → built → start');
+    assert.equal(data('lifecycle.ticks'), 1);
+    click('inspect'); assert.equal(byId('lookup').textContent, 'Source → DOM → same Source');
+    click('freeze'); const visible = byId('branch-ticks').textContent;
+    await tick(1100); assert.ok(data('lifecycle.ticks') > Number(visible));
+    assert.equal(byId('branch-ticks').textContent, String(data('lifecycle.ticks')));
+    click('thaw'); assert.equal(byId('branch-ticks').textContent, String(data('lifecycle.ticks')));
+    assert.equal(byId('trace').textContent, 'init → built → start');
+    click('remove'); const stopped = data('lifecycle.ticks');
+    await tick(1100); assert.equal(data('lifecycle.ticks'), stopped);
+    assert.equal(byId('observed'), null);
+    assert.equal(byId('trace').textContent, 'init → built → start');
+    click('inspect'); assert.equal(byId('lookup').textContent, 'Source branch absent');
+};
+CHECKS.c16 = async ({byId, edit}) => {
+    assert.equal(byId('greeting').textContent, 'Hello, Ada');
+    assert.equal(byId('card').title, 'Customer: Ada');
+    assert.equal(byId('card').hasAttribute('customer'), false);
+    edit('name', 'Grace', 'input');
+    assert.equal(byId('greeting').textContent, 'Hello, Grace');
+    assert.equal(byId('card').title, 'Customer: Grace');
+    edit('name', '', 'input'); assert.equal(byId('greeting').textContent, '');
+    assert.equal(byId('preview').getAttribute('sandbox'), '');
+    edit('html', '<h2>Preview two</h2>', 'input');
+    assert.equal(byId('preview').srcdoc, '<h2>Preview two</h2>');
+};
+CHECKS.c17 = async ({window, app, byId, edit, click, data}) => {
+    const blobs = new Map(), links = [];
+    window.URL.createObjectURL = blob => { const url = `blob:${blobs.size}`; blobs.set(url, blob); return url; };
+    window.URL.revokeObjectURL = () => {};
+    window.HTMLAnchorElement.prototype.click = function () { links.push({href: this.href, name: this.download}); };
+    const read = index => new Promise(resolve => { const reader = new window.FileReader();
+        reader.onload = () => resolve(reader.result); reader.readAsText(blobs.get(links[index].href)); });
+    click('inspect'); assert.match(byId('types').textContent, /note: null/);
+    edit('name', 'Grace'); edit('seats', '3'); click('save');
+    assert.equal(links[0].name, 'registration.tytx.json');
+    const saved = await read(0); edit('name', 'Changed');
+    let chosen = saved;
+    window.HTMLInputElement.prototype.click = function () {
+        Object.defineProperty(this, 'files', {value: [new File([chosen], 'chosen.json')]});
+        this.dispatchEvent(new window.Event('change'));
+    };
+    click('restore'); await tick(20);
+    assert.equal(data('exchange.record.name'), 'Grace');
+    assert.equal(data('exchange.record.seats'), 3);
+    assert.equal(data('exchange.record.confirmed'), true);
+    assert.equal(data('exchange.record.note'), null);
+    assert.equal(data('exchange.record.address.city'), 'Rome');
+    click('exportJson'); const exported = await read(1);
+    assert.equal(JSON.parse(exported).find(item => item.label === 'name').value, 'Grace');
+    click('exportXml'); assert.match(await read(2), /<record>/);
+    chosen = exported; click('restore'); await tick(20);
+    assert.match(byId('status').textContent, /not a saved Gramlot branch/);
+    assert.equal(data('exchange.record.name'), 'Grace');
+    click('previewMail'); assert.match(byId('mail').textContent, /address.city: Rome/);
+    assert.equal(links.length, 3, 'preview sends no mail');
 };
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
@@ -395,7 +541,8 @@ test('every page module exports Page and Logic, and no page has a logic companio
 
 for (const family of families.filter(({key}) => key !== 'html_svg')) {
     for (const example of family.examples) {
-        test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, async () => {
+        // c14 observes expiry of a five-second cache; Bun defaults to five seconds per test.
+        test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000}, async () => {
             for (const suffix of ['.py', '.js']) {
                 const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
                 assert.doesNotMatch(text, /\bpage\s*=/, 'never page for an element');

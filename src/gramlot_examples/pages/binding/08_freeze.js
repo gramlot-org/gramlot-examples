@@ -8,7 +8,7 @@ export class Page extends BasePage {
         const pane = root.div({class: 'example-page stack', datapath: 'board'});
         pane.h1('Freeze');
         const actions = pane.div({class: 'actions'});
-        for (const [label, method] of [['Freeze', 'freeze'], ['Add one', 'add'],
+        for (const [label, method] of [['Freeze', 'freeze'], ['Increment Data count', 'add'],
             ['Remove last item', 'removeLast'], ['Thaw', 'thaw']]) {
             actions.button(label, {id: method}).dataController({func: method});
         }

@@ -4,7 +4,7 @@ import {basename, extname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const PACKAGE = fileURLToPath(new URL('./', import.meta.url));
-const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.json': 'application/json'};
+const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json'};
 const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js'];
 const DIST = ['gallery.js', 'frame.js', 'notices.json', 'LICENSE', 'NOTICE'];
 
@@ -53,6 +53,7 @@ export function buildGallery({catalogs = []} = {}) {
     const filesByUrl = [
         ['/themes/gramlot-base/theme.css', resolve('@gramlot/gramlot/themes/gramlot-base/theme.css')],
         ['/assets/branding/gramlot-logo-dark.svg', resolve('@gramlot/gramlot/assets/branding/gramlot-logo-dark.svg')],
+        ['/assets/branding/app-icon.png', resolve('@gramlot/gramlot/assets/branding/app-icon.png')],
         ['/gallery/gallery.css', join(gallery, 'gallery.css')],
         ...['page.py', 'page.js'].filter(name => existsSync(join(gallery, name)))
             .map(name => [`/gallery/${name}`, join(gallery, name)]),

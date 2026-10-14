@@ -7,7 +7,7 @@ PRODUCTS = {
     "chair": {"name": "Chair", "category": "seating"},
 }
 RULES = {"lighting": "Ships in two days, bulbs not included.", "seating": "Ships in a week, assembly required."}
-ON_REMOTE = "this.SET('requests', (this.GET('requests') ?? 0) + 1); this.SET('status', 'Mounted the ' + category + ' rules')"
+ON_REMOTE = "this.SET('mounts', (this.GET('mounts') ?? 0) + 1); this.SET('status', 'Mounted the ' + category + ' rules')"
 
 
 class Page(BasePage):
@@ -28,7 +28,7 @@ class Page(BasePage):
         rules.remote("rules", category="^.category", _cachedRemote=True, _onRemote=ON_REMOTE)
 
         facts = pane.dl()
-        for label, key in (("Requests", "requests"), ("Status", "status")):
+        for label, key in (("Mounted fragments", "mounts"), ("Status", "status")):
             facts.dt(label)
             facts.dd(f"^{key}", id=key)
 

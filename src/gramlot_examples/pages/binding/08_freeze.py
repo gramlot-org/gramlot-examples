@@ -9,7 +9,7 @@ class Page(BasePage):
         pane = root.div(class_="example-page stack", datapath="board")
         pane.h1("Freeze")
         actions = pane.div(class_="actions")
-        for label, method in (("Freeze", "freeze"), ("Add one", "add"),
+        for label, method in (("Freeze", "freeze"), ("Increment Data count", "add"),
                               ("Remove last item", "removeLast"), ("Thaw", "thaw")):
             actions.button(label, id=method).dataController(func=method)
         pane.p("^.frozen", id="frozen", class_="muted")

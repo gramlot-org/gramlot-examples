@@ -1,12 +1,52 @@
 # 09 · Endpoint
 
-An endpoint is a method of the page that the browser calls for a value. `dataRpc(method, result_path, **parameters)` calls it and writes the answer at `result_path`.
+An endpoint receives parameters and returns a value that appears in the page. You learn how `dataRpc` puts the result in Data without writing request and response handling yourself.
 
-- **Declare the endpoint.** Python marks the method with `@endpoint`; JavaScript calls `Page.registerEndpoint('with_vat')` after the class.
-- **Arguments.** The other attributes of the `dataRpc` are the arguments of the call: `price` and `rate`, read here from the Data with `=`. Python receives them as keywords, JavaScript as one object.
-- **`**kwargs`.** `dataRpc` sends every attribute the author writes, and Python rejects a keyword the method does not declare. A Python endpoint called from `dataRpc` declares `**kwargs`.
-- **`_init=True`** calls the endpoint once when the page starts, after the setters. The total is Data: the `dd` shows it through `^.gross`.
+**Uses:** Data binding and `dataRpc` — core 0.2.14. The host runs the endpoint: Python, Node/Bun or the standalone Worker.
 
-The call travels as one envelope on `POST /gramlot/rpc`; the page writes no `fetch`.
+<details>
+<summary>More detail</summary>
 
-**Try it:** Open the browser network panel and reload: one call to `/gramlot/rpc` carries `with_vat` with price 12.5 and rate 22.
+
+**Release stage:** Endpoint calls (core 0.2.14), after the local 0.2.0 lessons.
+
+**Goal:** Follow a declarative endpoint call from parameters to Data.
+
+**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/01_formula.md), [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/08_end_to_end.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
+
+**Open and edit:** select **c09 · Endpoint** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+
+## Read the page
+
+An endpoint computes a **value**, not Source. Python marks `with_vat` with `@endpoint`; JavaScript calls `Page.registerEndpoint('with_vat')`. `dataRpc` supplies the call and result placement.
+
+```python
+pane.dataRpc("with_vat", result_path=".gross", price="=.price", rate="=.rate", _init=True)
+```
+
+`=` reads values for the initial call without making them triggers. `_init` runs after setters. Python receives keyword arguments and declares `**kwargs` for additional authored arguments; JS receives one object. Each server call creates a fresh Page, so its fields are not session storage.
+
+Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Endpoint/fragment methods execute there too; bindings and any Logic execute in the browser. A Worker is not a private server.
+
+## Try it and predict the result
+
+1. Expect Price 12.5, VAT rate 22 and, after the response, Total 15.25.
+2. On an HTTP environment, filter Network requests for RPC envelopes with `name: "with_vat"`; bootstrap/main is a separate call. In standalone this uses Worker messages, not HTTP.
+
+## Change it and check yourself
+
+Change the price setter to 20 and reload.
+
+**Answer:** total 24.4, from `round(20 * 122) / 100`. `result_path` directs the value into Data; the existing `^.gross` display then follows without a separate response-to-DOM handler.
+
+## The same example across stages
+
+Revisit c01’s computed gross. There the browser owns the formula; here the Page endpoint owns it and `dataRpc` declares transport/result handling. This adds a server boundary, so it is not a claim of fewer total lines than a local formula. The simplification is removing request-envelope and result-routing code from the application.
+
+## Limits and next step
+
+This lesson sends one initial call; it has no live price control or persistence. VAT is a percentage, unlike c01’s fractional rate. Do not infer login or database integration from an endpoint.
+
+Continue with [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/10_call_on_change.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+
+</details>

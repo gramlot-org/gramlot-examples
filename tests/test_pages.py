@@ -32,9 +32,27 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
                 self.assertGreater(len(tree.nodes), 0)
                 server.close_page(opened.page_id)
 
+    async def test_protected_source_is_omitted_while_hidden_source_is_delivered(self):
+        page = build_gallery()["routes"]["c11"]["page"]
+        server = GramlotFileServer(str(page.parent))
+        opened = await server.open_page(f"/{page.stem}")
+        response = await call(server, opened.page_id, "source", "main")
+        self.assertNotIn("error", response)
+        wire = to_tytx(response["value"])
+        self.assertNotIn("protected-source", wire)
+        self.assertNotIn("Source-auth marker", wire)
+        self.assertIn("hidden-source", wire)
+        server.close_page(opened.page_id)
+
     async def test_endpoints_answer_as_their_readme_says(self):
         # The arguments are the ones the dataRpc of each page sends, author attributes and extra keys included.
         cases = {
+            "c08": ("quote", {"quantity": 2, "large": False, "gift": False, "button_counter": 1}, {"value": 2}),
+            "c08 options": ("quote", {"quantity": 2, "large": True, "gift": True}, {"value": 11}),
+            "c08 invalid": ("quote", {"quantity": 0, "large": True, "gift": True},
+                            {"error": {"code": "application_error", "name": "ValueError", "message": "Choose at least one item"}}),
+            "c08 empty": ("quote", {"quantity": None, "large": False, "gift": False},
+                          {"error": {"code": "application_error", "name": "ValueError", "message": "Choose at least one item"}}),
             "c09": ("with_vat", {"price": 12.5, "rate": 22}, {"value": 15.25}),
             "c10": ("quote", {"quantity": 12}, {"value": 96}),
             "c11": ("reserve", {"item": "Lamp", "button_counter": 1},

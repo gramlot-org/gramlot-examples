@@ -28,6 +28,15 @@ export class Page extends BasePage {
         person.html_label('Role', {for: 'role-field'});
         person.input({value: '^.name?role', id: 'role-field'});
 
+        const anchor = pane.section({datapath: 'contexts', _anchor: true, class: 'card stack'});
+        anchor.h2('An anchor outside a nested context');
+        const child = anchor.div({datapath: '.child'});
+        child.p('^.name', {id: 'local-name'});
+        child.p('^#ANCHOR.name', {id: 'anchor-name'});
+        child.p('^.#parent.name', {id: 'parent-name'});
+        pane.dataSetter({destination_path: 'contexts.name', value: 'Outer'});
+        pane.dataSetter({destination_path: 'contexts.child.name', value: 'Inner'});
+
         pane.dataSetter({destination_path: 'settings.caption', value: 'Pointers'});
         pane.dataSetter({destination_path: 'settings.intro', value: 'Type in the fields: every ^ pointer follows the Data.'});
         pane.dataSetter({destination_path: 'person.name', value: 'Ada Lovelace', role: 'Mathematician'});

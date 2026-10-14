@@ -6,7 +6,7 @@ const PRODUCTS = {
     chair: {name: 'Chair', category: 'seating'},
 };
 const RULES = {lighting: 'Ships in two days, bulbs not included.', seating: 'Ships in a week, assembly required.'};
-const ON_REMOTE = "this.SET('requests', (this.GET('requests') ?? 0) + 1); this.SET('status', 'Mounted the ' + category + ' rules')";
+const ON_REMOTE = "this.SET('mounts', (this.GET('mounts') ?? 0) + 1); this.SET('status', 'Mounted the ' + category + ' rules')";
 
 export class Page extends BasePage {
     static title = 'Cached remote';
@@ -25,7 +25,7 @@ export class Page extends BasePage {
         rules.remote('rules', {category: '^.category', _cachedRemote: true, _onRemote: ON_REMOTE});
 
         const facts = pane.dl();
-        for (const [label, key] of [['Requests', 'requests'], ['Status', 'status']]) {
+        for (const [label, key] of [['Mounted fragments', 'mounts'], ['Status', 'status']]) {
             facts.dt(label);
             facts.dd(`^${key}`, {id: key});
         }

@@ -29,6 +29,15 @@ class Page(BasePage):
         person.html_label("Role", for_="role-field")
         person.input(value="^.name?role", id="role-field")
 
+        anchor = pane.section(datapath="contexts", _anchor=True, class_="card stack")
+        anchor.h2("An anchor outside a nested context")
+        child = anchor.div(datapath=".child")
+        child.p("^.name", id="local-name")
+        child.p("^#ANCHOR.name", id="anchor-name")
+        child.p("^.#parent.name", id="parent-name")
+        pane.dataSetter("contexts.name", "Outer")
+        pane.dataSetter("contexts.child.name", "Inner")
+
         pane.dataSetter("settings.caption", "Pointers")
         pane.dataSetter("settings.intro", "Type in the fields: every ^ pointer follows the Data.")
         pane.dataSetter("person.name", "Ada Lovelace", role="Mathematician")

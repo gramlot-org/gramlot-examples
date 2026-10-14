@@ -37,11 +37,33 @@ export class Page extends BasePage {
         timed.dataController({script: "this.SET('.ticks', (ticks ?? 0) + 1)", ticks: '=.ticks', _timing: '^.interval',
             _onStart: true});
 
+        const filtered = pane.section({class: 'card stack'});
+        filtered.h2('Advanced: _userChanges filters paths, not input origin');
+        filtered.html_label('Tracked name', {for: 'tracked-name'});
+        filtered.input({value: '^.filter.name', id: 'tracked-name'});
+        for (const [label, method] of [['SET the name', 'setName'], ['Replace containing Bag', 'replaceFilter'],
+            ['Change address child', 'changeCity']]) {
+            filtered.button(label, {id: method, type: 'button'}).dataController({func: method});
+        }
+        for (const [key, path, exact] of [['name_exact', '.filter.name', true], ['name_all', '.filter.name', false],
+            ['address_exact', '.filter.address', true], ['address_all', '.filter.address', false]]) {
+            filtered.p(`^.${key}`, {mask: `${key}: %s`, id: key});
+            filtered.dataController({func: 'countPath', watched: `^${path}`, counter: `.${key}`, _userChanges: exact});
+            pane.dataSetter({destination_path: `.${key}`, value: 0});
+        }
+        pane.dataSetter({destination_path: '.filter', value: {name: 'Ada', address: {city: 'Rome'}}});
+        pane.dataSetter({destination_path: '.replacement', value: {name: 'Container', address: {city: 'Paris'}}});
+
         pane.dataSetter({destination_path: '.name', value: 'Ada'});
         pane.dataSetter({destination_path: '.requests', value: 0});
         pane.dataSetter({destination_path: '.interval', value: '1'});
     }
 }
 
-/** The page logic: this page names no methods. */
-export class Logic {}
+/** Named methods for the optional path-filtering exercise. */
+export class Logic {
+    countPath(node, {counter}) { node.SET(counter, node.GET(counter) + 1); }
+    setName(node) { node.SET('.filter.name', 'Grace'); }
+    replaceFilter(node) { node.SET('.filter', node.GET('.replacement').deepcopy()); }
+    changeCity(node) { node.SET('.filter.address.city', 'Milan'); }
+}

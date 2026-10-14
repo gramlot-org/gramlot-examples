@@ -6,7 +6,7 @@ from importlib.resources import files
 from pathlib import Path
 
 PACKAGE = Path(__file__).resolve().parent
-MEDIA_TYPES = {".css": "text/css", ".svg": "image/svg+xml", ".json": "application/json"}
+MEDIA_TYPES = {".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".json": "application/json"}
 SUFFIXES = (".py", ".js", ".css", ".md", "_aux.js")
 DIST = ("gallery.js", "frame.js", "notices.json", "LICENSE", "NOTICE")
 
@@ -60,6 +60,7 @@ def build_gallery(catalogs=()):
     files_by_url = [
         ("/themes/gramlot-base/theme.css", resources / "themes" / "gramlot-base" / "theme.css"),
         ("/assets/branding/gramlot-logo-dark.svg", resources / "assets" / "branding" / "gramlot-logo-dark.svg"),
+        ("/assets/branding/app-icon.png", resources / "assets" / "branding" / "app-icon.png"),
         ("/gallery/gallery.css", gallery / "gallery.css"),
         *((f"/gallery/{name}", gallery / name) for name in ("page.py", "page.js") if (gallery / name).is_file()),
     ]

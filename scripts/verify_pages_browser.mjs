@@ -2,20 +2,19 @@
  * Open every example page in Chromium through the core GramlotFileServer of each language:
  * `node scripts/verify_pages_browser.mjs <Python base URL> <JavaScript base URL>`, each a
  * `serve_pages` server on `src/gramlot_examples/pages` (`<base>/<family>/<NN_name>`).
- * Every page must start without errors or failed requests; b08, c03 and c08 call methods
- * of the Logic that the page module NN_name.js exports, the Python pages included; c09, c10,
- * c11 and c14 call the endpoints of their page and c12 and c13 the fragments of their page
- * through `POST /gramlot/rpc`.
+ * Every catalogue entry must have an observable behavior check and start without errors
+ * or failed requests. Checks cover static content, bindings, named Logic, lifecycle,
+ * local file exchange, endpoints and fragments through `POST /gramlot/rpc`.
+ * Integration checks can reuse verifyExample with their page and recorded request envelopes.
  */
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 
-const bases = process.argv.slice(2);
-if (bases.length !== 2) throw new Error('Pass the Python and the JavaScript base URL');
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 
-// One behaviour per page with named logic: each step calls a method of its Logic class.
+// Local interactions and visible state, including named Logic where the lesson uses it.
 const LOGIC = {
     async b08(page, text) {
         await page.click('#freeze');
@@ -48,6 +47,27 @@ const LOGIC = {
 
 // One behaviour per page with endpoints: each step waits for the answer of the server.
 const ENDPOINTS = {
+    async c08(page, text, calls) {
+        const requests = () => calls.filter(({contentType, name}) => contentType === 'data' && name === 'quote').length;
+        assert.equal(requests(), 0, 'local stage runs without endpoint calls');
+        assert.equal(await text('#quote'), '');
+        await page.click('#request-quote');
+        await page.waitForFunction(() => document.getElementById('quote').textContent === '2');
+        await page.click('#large'); await page.click('#gift');
+        assert.equal(await text('#total'), '11'); assert.equal(await text('#quote'), '2');
+        assert.equal(requests(), 1);
+        await page.click('#request-quote');
+        await page.waitForFunction(() => document.getElementById('quote').textContent === '11');
+        await page.fill('#quantity', '0'); await page.locator('#quantity').blur();
+        await page.click('#request-quote');
+        await page.waitForFunction(() => document.getElementById('quote-error').textContent.startsWith('application_error'));
+        assert.equal(await text('#quote-error'), 'application_error: Choose at least one item');
+        assert.equal(await text('#quote'), '11');
+        await page.fill('#quantity', '3'); await page.locator('#quantity').blur();
+        await page.click('#request-quote');
+        await page.waitForFunction(() => document.getElementById('quote').textContent === '14');
+        assert.equal(await text('#quote-error'), ''); assert.equal(requests(), 4);
+    },
     async c09(page) {
         await page.waitForFunction(() => document.getElementById('gross').textContent === '15.25');
     },
@@ -71,28 +91,292 @@ const ENDPOINTS = {
         await page.waitForFunction(() => document.getElementById('stock')?.textContent === '12 in stock');
         assert.equal(await text('#name'), 'Chair');
     },
-    async c13(page, text) {
-        await page.waitForFunction(() => document.getElementById('requests').textContent === '1');
+    async c13(page, text, calls) {
+        const requests = () => calls.filter(({contentType, name}) => contentType === 'source' && name === 'rules').length;
+        await page.waitForFunction(() => document.getElementById('mounts').textContent === '1');
+        assert.equal(requests(), 1);
         await page.selectOption('#product', 'products.spot');
         await page.waitForFunction(() => document.getElementById('name').textContent === 'Spotlight');
         await page.waitForTimeout(300);
-        assert.equal(await text('#requests'), '1', 'the same category makes no request');
+        assert.equal(await text('#mounts'), '1', 'the existing fragment stays mounted');
+        assert.equal(requests(), 1, 'same category skips a transport call, independently of mounts');
         await page.selectOption('#product', 'products.chair');
-        await page.waitForFunction(() => document.getElementById('requests').textContent === '2');
+        await page.waitForFunction(() => document.getElementById('mounts').textContent === '2');
+        assert.equal(requests(), 2);
         assert.equal(await text('#status'), 'Mounted the seating rules');
         assert.equal(await text('#rule'), 'Ships in a week, assembly required.');
+        await page.selectOption('#product', 'products.lamp');
+        await page.waitForFunction(() => document.getElementById('mounts').textContent === '3');
+        assert.equal(requests(), 3, 'last-result cache, not all categories');
     },
-    async c14(page) {
+    async c14(page, text, calls) {
+        const requests = () => calls.filter(({contentType, name}) => contentType === 'data' && name === 'load_menu').length;
         await page.waitForFunction(() => document.getElementById('menu').textContent === 'Soup, Risotto, Fish');
+        await page.click('#read-menu');
+        assert.equal(await text('#read-value'), 'Soup, Risotto, Fish');
+        assert.equal(requests(), 1);
         await page.selectOption('#table', 'drinks');
         await page.waitForFunction(() => document.getElementById('menu').textContent === 'Water, Lemonade, Coffee');
+        assert.equal(await text('#read-value'), 'Soup, Risotto, Fish');
+        await page.click('#read-menu');
+        assert.equal(await text('#read-value'), 'Water, Lemonade, Coffee');
+        assert.equal(requests(), 2);
     },
 };
+
+LOGIC.b01 = async (page, text) => {
+    assert.equal(await text('#local-name'), 'Inner');
+    assert.equal(await text('#anchor-name'), 'Outer');
+    assert.equal(await text('#parent-name'), 'Outer');
+};
+LOGIC.c02 = async (page, text) => {
+    await page.fill('#tracked-name', 'Mira'); await page.locator('#tracked-name').blur();
+    assert.equal(await text('#name_exact'), 'name_exact: 1');
+    await page.click('#setName'); assert.equal(await text('#name_exact'), 'name_exact: 2');
+    await page.click('#replaceFilter'); assert.equal(await text('#name_exact'), 'name_exact: 2');
+    assert.equal(await text('#name_all'), 'name_all: 3');
+    await page.click('#changeCity'); assert.equal(await text('#address_exact'), 'address_exact: 0');
+    assert.equal(await text('#address_all'), 'address_all: 2');
+};
+LOGIC.c15 = async (page, text) => {
+    assert.equal(await text('#trace'), 'init → built → start');
+    await page.click('#inspect'); assert.equal(await text('#lookup'), 'Source → DOM → same Source');
+    await page.click('#freeze'); const initial = Number(await text('#ticks'));
+    await page.waitForFunction(n => Number(document.getElementById('ticks').textContent) > n, initial);
+    assert.equal(await text('#branch-ticks'), await text('#ticks'));
+    await page.click('#thaw'); assert.equal(await text('#trace'), 'init → built → start');
+    await page.click('#remove'); const stopped = await text('#ticks');
+    await page.waitForTimeout(1100); assert.equal(await text('#ticks'), stopped);
+    assert.equal(await page.locator('#observed').count(), 0);
+};
+LOGIC.c16 = async (page, text) => {
+    await page.fill('#name', 'Grace'); assert.equal(await text('#greeting'), 'Hello, Grace');
+    assert.equal(await page.locator('#card').getAttribute('title'), 'Customer: Grace');
+    assert.equal(await page.locator('#card').getAttribute('customer'), null);
+    assert.equal(await page.locator('#preview').getAttribute('sandbox'), '');
+    await page.fill('#html', '<h2>Preview two</h2><p>Only this frame changes.</p>');
+    await page.frameLocator('#preview').getByRole('heading', {name: 'Preview two'}).waitFor();
+};
+LOGIC.c17 = async (page, text) => {
+    await page.fill('#name', 'Grace'); await page.locator('#name').blur();
+    await page.fill('#seats', '3'); await page.locator('#seats').blur();
+    const [saved] = await Promise.all([page.waitForEvent('download'), page.click('#save')]);
+    const bytes = readFileSync(await saved.path()); assert.equal(saved.suggestedFilename(), 'registration.tytx.json');
+    await page.fill('#name', 'Changed'); await page.locator('#name').blur();
+    const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('#restore')]);
+    await chooser.setFiles({name: 'saved.json', mimeType: 'application/json', buffer: bytes});
+    await page.waitForFunction(() => document.getElementById('status').textContent === 'Restored typed Data');
+    assert.equal(await page.locator('#name').inputValue(), 'Grace');
+    assert.equal(await page.locator('#seats').inputValue(), '3');
+    assert.match(await text('#types'), /note: null/);
+    const [json] = await Promise.all([page.waitForEvent('download'), page.click('#exportJson')]);
+    const exported = readFileSync(await json.path());
+    assert.equal(JSON.parse(exported).find(item => item.label === 'name').value, 'Grace');
+    const [xml] = await Promise.all([page.waitForEvent('download'), page.click('#exportXml')]);
+    assert.match(readFileSync(await xml.path(), 'utf8'), /<record>/);
+    const [bad] = await Promise.all([page.waitForEvent('filechooser'), page.click('#restore')]);
+    await bad.setFiles({name: 'export.json', mimeType: 'application/json', buffer: exported});
+    await page.waitForFunction(() => document.getElementById('status').textContent.includes('not a saved Gramlot branch'));
+    assert.equal(await page.locator('#name').inputValue(), 'Grace');
+    await page.click('#previewMail'); assert.match(await text('#mail'), /address.city: Rome/);
+};
+
+// Observable lesson checks for the remaining catalogue entries, including static Source.
+const input = async (page, selector, value, event = 'input') => page.locator(selector).evaluate(
+    (element, args) => { element.value = args.value; element.dispatchEvent(new Event(args.event, {bubbles: true})); }, {value, event});
+Object.assign(LOGIC, {
+    async e01(page) {
+        assert.equal(await page.locator('main').count(), 1);
+        assert.equal(await page.locator('main > h1').count(), 1);
+        assert.equal(await page.locator('main > p').count(), 1);
+    },
+    async e02(page) {
+        assert.ok((await page.locator('main').textContent()).includes('<tag>'));
+        assert.equal(await page.locator('tag').count(), 0);
+        await page.getByRole('link', {name: 'Jump back to the heading'}).click();
+        assert.equal(new URL(page.url()).hash, '#destination');
+    },
+    async e03(page) {
+        assert.equal(await page.locator('ol > li').count(), 3);
+        assert.equal(await page.locator('dl dt').count(), 2);
+        assert.ok(await page.locator('ul ul li').count() > 0);
+    },
+    async e04(page) {
+        await page.getByRole('link', {name: 'Notes', exact: true}).click();
+        assert.equal(new URL(page.url()).hash, '#notes');
+        await page.getByRole('link', {name: 'Story', exact: true}).click();
+        assert.equal(new URL(page.url()).hash, '#story');
+        assert.equal(await page.locator('main article#story').count(), 1);
+    },
+    async e05(page) {
+        assert.deepEqual(await page.locator('tbody tr').evaluateAll(rows => rows.map(row => row.lastElementChild.textContent)), ['20','20','21']);
+        assert.deepEqual(await page.locator('tfoot td').allTextContents(), ['36','25','61']);
+    },
+    async e06(page) {
+        await page.fill('#name', 'Grace'); await page.uncheck('#updates');
+        await page.getByRole('button', {name: 'Reset values'}).click();
+        assert.equal(await page.inputValue('#name'), 'Ada Lovelace');
+        assert.equal(await page.isChecked('#updates'), true);
+        assert.equal(await page.getByRole('button', {name: 'Submit unavailable'}).isDisabled(), true);
+    },
+    async e07(page) {
+        const summary = page.getByText('What is Source?', {exact:true});
+        const details = summary.locator('..'); const original = await details.getAttribute('open');
+        await summary.click(); assert.notEqual(await details.getAttribute('open'), original);
+        await summary.click(); assert.equal(await details.getAttribute('open'), original);
+        assert.equal(await page.locator('progress').getAttribute('value'), '70');
+        assert.equal(await page.locator('meter').getAttribute('value'), '8');
+    },
+    async e08(page) {
+        assert.equal(await page.locator('svg circle').getAttribute('r'), '38');
+        assert.equal(await page.locator('svg ellipse').getAttribute('rx'), '26');
+        assert.equal(await page.locator('svg ellipse').getAttribute('ry'), '38');
+    },
+    async e09(page) {
+        assert.equal(await page.locator('svg > g').count(), 8);
+        assert.equal(await page.locator('svg > g > path').count(), 2);
+        assert.equal(await page.locator('svg > g > line').count(), 3);
+        assert.equal(await page.locator('svg > g > circle[r="22"]').count(), 9);
+    },
+    async e10(page) {
+        assert.equal(await page.locator('.icon-cards article').count(), 3);
+        await page.getByRole('button', {name:'Remove Drawing',exact:true}).click();
+        assert.equal(await page.locator('.icon-cards article').count(), 2);
+        assert.equal(await page.getByRole('heading', {name:'Drawing',exact:true}).count(), 0);
+    },
+    async e11(page) {
+        assert.deepEqual(await page.locator('.report-number').allTextContents(), ['36','3']);
+        assert.equal(await page.locator('svg rect').last().getAttribute('width'), '345');
+        assert.equal(await page.locator('tfoot td').textContent(), '36');
+    },
+    async e12(page) {
+        await page.getByRole('link', {name:'Schedule',exact:true}).click();
+        assert.equal(await page.locator('#schedule tbody tr').count(), 3);
+        assert.deepEqual(await page.locator('#speakers h3').allTextContents(), ['Mira','Theo']);
+        await page.getByText('Is the map interactive?', {exact:true}).click();
+        assert.equal(await page.getByText('No. It is a schematic SVG illustration.', {exact:true}).isVisible(), true);
+    },
+    async e13(page) {
+        assert.equal(await page.locator('.live-items li').count(), 2);
+        await page.getByRole('button', {name:'Add item',exact:true}).click();
+        assert.equal(await page.locator('.live-items li').count(), 3);
+        await page.getByRole('button', {name:'Clear list',exact:true}).click();
+        assert.equal(await page.locator('.live-items li').count(), 0);
+        await page.getByRole('button', {name:'Change heading',exact:true}).click();
+        assert.equal(await page.locator('h1').textContent(), 'Source is alive!');
+        await page.getByRole('button', {name:'Remove animation',exact:true}).click();
+        assert.equal(await page.locator('svg').count(), 0);
+    },
+    async b02(page,text) {
+        await page.selectOption('#record','people.alan');
+        assert.equal(await text('#field'), 'Computer science');
+        await page.fill('#name-field','A. M. Turing'); await page.locator('#name-field').blur();
+        await page.selectOption('#record','people.grace');
+        assert.equal(await text('#name'),'Grace Hopper');
+        await page.selectOption('#record','people.alan');
+        assert.equal(await page.inputValue('#name-field'),'A. M. Turing');
+    },
+    async b03(page,text) {
+        assert.equal(await page.inputValue('#customer'),'Grace Hopper');
+        assert.equal(await page.inputValue('#quantity'),'1');
+        assert.equal(await text('#out-note'),'No note');
+        assert.equal(await text('#out-price'),'12.5');
+    },
+    async b04(page,text) {
+        await page.fill('#text','Typed'); assert.equal(await text('#out-text'),'Edit me');
+        await page.locator('#text').blur(); assert.equal(await text('#out-text'),'Typed');
+        await page.click('#live'); await page.fill('#number','7');
+        assert.equal(await text('#out-number'),'7');
+    },
+    async b05(page,text) {
+        await page.click('#team'); assert.equal(await page.isChecked('#plus'),false);
+        await page.click('#basic'); assert.equal(await page.isChecked('#team'),false);
+        assert.equal(await text('#out-plan-plus'),'false');
+    },
+    async b06(page) {
+        await page.click('#show'); assert.equal(await page.locator('#box').evaluate(e=>e.style.visibility),'hidden');
+        await page.click('#hide'); assert.equal(await page.locator('#box').evaluate(e=>e.hidden),true);
+    },
+    async b07(page,text) {
+        await input(page,'#radius','65');
+        assert.equal(await page.locator('#circle').getAttribute('r'),'65');
+        assert.equal(await text('#radius-label'),'65');
+    },
+    async b09(page,text) {
+        assert.deepEqual(await page.locator('#topics').evaluate(node => [...node.selectedOptions].map(option => option.value)), ['html']);
+        await page.selectOption('#topics', ['svg', 'source']);
+        assert.deepEqual(await page.evaluate(() => window.gramlot.data.getItem('form.topics')), ['svg', 'source']);
+        await page.fill('#name','Grace Hopper'); await page.locator('#name').blur();
+        assert.equal(await text('#out-name'),'Grace Hopper');
+        await page.click('#daily'); assert.equal(await page.isChecked('#weekly'),false);
+    },
+    async b10(page,text) {
+        await input(page,'#stroke','12');
+        assert.equal(await page.locator('#polyline').getAttribute('stroke-width'),'12');
+        await page.fill('#label','Shapes'); assert.equal(await text('#caption'),'Shapes');
+    },
+    async b11(page,text) {
+        await page.fill('#title-field','Small interfaces'); assert.equal(await text('#title'),'Small interfaces');
+        await page.click('#show-theo');
+        assert.equal(await page.locator('#session-1').evaluate(e=>e.style.visibility),'hidden');
+        await page.click('#faq-open'); assert.equal(await page.locator('details').evaluateAll(nodes=>nodes.every(n=>n.open)),true);
+    },
+    async c01(page,text) {
+        await input(page,'#vat','0.1'); assert.equal(await text('#gross'),'60');
+        await input(page,'#quantity','10'); assert.equal(await text('#gross'),'137.5');
+    },
+    async c04(page,text) {
+        await input(page,'#score','70'); assert.equal(await text('#verdict'),'Passed');
+        await page.fill('#last','Byron'); assert.equal(await text('#full-name'),'Ada Byron');
+        await page.click('#accepted'); assert.equal(await page.isDisabled('#start'),false);
+    },
+    async c05(page,text) {
+        await page.click('#set'); assert.equal(await text('#value'),'1');
+        await page.click('#put'); assert.equal(await text('#value'),'1');
+        await page.click('#get'); assert.equal(await text('#read'),'11');
+        await page.click('#fire'); await page.click('#fire'); assert.equal(await text('#pings'),'2');
+        await page.click('#fire-after');
+        await page.waitForFunction(()=>document.getElementById('pings').textContent==='3');
+        assert.equal(await text('#last'),'later');
+    },
+    async c06(page,text) {
+        await page.click('#press'); await page.click('#press',{modifiers:['Shift']});
+        assert.equal(await text('#clicks'),'2'); assert.equal(await text('#keys'),'Shift');
+        await page.click('#save-close'); assert.equal(await text('#log'),'save, close');
+    },
+    async c07(page,text) {
+        await page.click('#chip-green'); assert.equal(await text('#clicked'),'chip-green');
+        await page.fill('#typing','abc'); assert.equal(await text('#length'),'3');
+        await page.locator('#typing').press('x'); assert.equal(await text('#key'),'x');
+    },
+});
+
+// An added catalogue entry must receive an observable check, not silently become startup-only.
+for (const family of families) for (const example of family.examples) {
+    assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);
+}
+
+export async function verifyExample(page, key, calls = []) {
+    assert.ok(LOGIC[key] || ENDPOINTS[key], `Missing behavioral check: ${key}`);
+    const text = selector => page.locator(selector).textContent();
+    await LOGIC[key]?.(page, text);
+    await ENDPOINTS[key]?.(page, text, calls);
+    if (key === 'c11') {
+        assert.equal(await page.locator('#protected-source').count(), 0);
+        assert.equal(await page.locator('#hidden-source').getAttribute('hidden'), '');
+    }
+}
 
 async function check(browser, base, family, example) {
     const url = `${base}/${family.key}/${example.folder}`;
     const page = await browser.newPage();
     const errors = [];
+    const calls = [];
+    page.on('request', request => {
+        if (request.method() === 'POST' && new URL(request.url()).pathname.endsWith('/gramlot/rpc')) {
+            calls.push(JSON.parse(request.postData()));
+        }
+    });
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     page.on('response', response => {
@@ -102,25 +386,27 @@ async function check(browser, base, family, example) {
     await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state));
     assert.equal(await page.evaluate(() => window.gramlot.state), 'started', `${url}: ${errors.join('; ')}`);
     assert.ok(await page.evaluate(() => document.getElementById('gramlot-root').childElementCount > 0), url);
-    const text = selector => page.locator(selector).textContent();
-    await LOGIC[example.key]?.(page, text);
-    await ENDPOINTS[example.key]?.(page, text);
+    await verifyExample(page, example.key, calls);
     assert.deepEqual(errors, [], url);
     await page.close();
 }
 
-const browser = await chromium.launch({headless: true});
-try {
-    for (const [language, base] of [['Python', bases[0]], ['JavaScript', bases[1]]]) {
-        let count = 0;
-        for (const family of families) {
-            for (const example of family.examples) {
-                await check(browser, base, family, example);
-                count += 1;
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+    const bases = process.argv.slice(2);
+    if (bases.length !== 2) throw new Error('Pass the Python and the JavaScript base URL');
+    const browser = await chromium.launch({headless: true});
+    try {
+        for (const [language, base] of [['Python', bases[0]], ['JavaScript', bases[1]]]) {
+            let count = 0;
+            for (const family of families) {
+                for (const example of family.examples) {
+                    await check(browser, base, family, example);
+                    count += 1;
+                }
             }
+            console.log(`PASS ${language} ${base}: ${count} pages, targeted bindings/Logic, endpoints, fragments and local file exchange`);
         }
-        console.log(`PASS ${language} ${base}: ${count} pages, Logic of b08, c03 and c08, endpoints of c09–c11 and c14, fragments of c12 and c13`);
+    } finally {
+        await browser.close();
     }
-} finally {
-    await browser.close();
 }

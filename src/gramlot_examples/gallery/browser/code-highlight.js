@@ -31,3 +31,11 @@ function lines(html) {
         return row + '</span>'.repeat(open.length);
     });
 }
+
+/** The shared teaching modules end with their exported Logic class; catalogue tests enforce this layout. */
+export function logicSource(source) {
+    const declarations = [...source.matchAll(/^export class Logic\b/gm)];
+    if (declarations.length !== 1) throw new Error('Expected one final exported Logic class in the example module');
+    const text = source.slice(declarations[0].index).trim();
+    return /^export class Logic\s*\{\s*\}$/.test(text) ? null : text;
+}

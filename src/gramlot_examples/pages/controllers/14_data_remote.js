@@ -19,6 +19,10 @@ export class Page extends BasePage {
         result.h2('Menu, loaded by the server when it is read');
         result.p('^.menu', {id: 'menu'});
 
+        result.button('Read current value', {id: 'read-menu'}).dataController({func: 'readMenu'});
+        result.p('Snapshot returned by the explicit read:', {class: 'muted'});
+        result.p('^.read_value', {id: 'read-value'});
+
         pane.dataRemote({destination_path: '.menu', method: 'load_menu', cacheTime: 5, table: '^.table'});
         pane.dataSetter({destination_path: '.table', value: 'dishes'});
     }
@@ -27,5 +31,9 @@ export class Page extends BasePage {
 }
 Page.registerEndpoint('load_menu');
 
-/** The page logic: this page names no methods. */
-export class Logic {}
+/** The explicit read returns the stored value and may start a resolver refresh. */
+export class Logic {
+    readMenu(node) {
+        node.SET('.read_value', node.GET('.menu'));
+    }
+}

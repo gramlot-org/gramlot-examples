@@ -22,6 +22,10 @@ class Page(BasePage):
         result.h2("Menu, loaded by the server when it is read")
         result.p("^.menu", id="menu")
 
+        result.button("Read current value", id="read-menu").dataController(func="readMenu")
+        result.p("Snapshot returned by the explicit read:", class_="muted")
+        result.p("^.read_value", id="read-value")
+
         pane.dataRemote(".menu", "load_menu", cacheTime=5, table="^.table")
         pane.dataSetter(".table", "dishes")
 
