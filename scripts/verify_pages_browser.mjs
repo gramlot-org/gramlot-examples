@@ -351,6 +351,35 @@ Object.assign(LOGIC, {
     },
 });
 
+LOGIC.c18 = async (page, text) => {
+    await page.locator('#message').fill('One');
+    await page.locator('#direct').click();
+    assert.equal(await text('#summary'), 'One (click)');
+    await page.locator('#publish').click();
+    assert.equal(await text('#summary'), 'One (saved)');
+    await page.locator('#send-left').click();
+    assert.equal(await text('#received-left'), 'Hello left');
+    assert.equal(await text('#received-right'), '');
+    await page.locator('#ask').click();
+    await page.locator('dialog input').fill('Two');
+    await page.getByRole('button', {name: 'Confirm', exact: true}).click();
+    await page.waitForFunction(() => document.querySelector('#summary').textContent === 'Two (saved)');
+    await page.locator('#ask').click();
+    await page.getByRole('button', {name: 'Cancel', exact: true}).click();
+    assert.equal(await text('#summary'), 'Two (saved)');
+};
+LOGIC.c19 = async (page, text) => {
+    const child = await (await page.locator('#detail').elementHandle()).contentFrame();
+    await child.waitForFunction(() => window.gramlot?.state === 'started');
+    await page.locator('#message').fill('Parent');
+    await page.locator('#send-child').click();
+    await child.waitForFunction(() => document.querySelector('#received').textContent === 'Parent');
+    assert.equal(await text('#received'), 'Parent');
+    await child.locator('#message').fill('Child');
+    await child.locator('#reply').click();
+    await page.waitForFunction(() => document.querySelector('#received').textContent === 'Child');
+};
+
 // An added catalogue entry must receive an observable check, not silently become startup-only.
 for (const family of families) for (const example of family.examples) {
     assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);
