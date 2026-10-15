@@ -29,7 +29,7 @@ try {
             assert.ok(bounds.height > 100 && bounds.width > 100, `${key}: source must have usable visible area`);
             const python = await page.locator(`#code-${key}`).evaluate(code => code.classList.contains('language-python'));
             assert.ok((await tabs.first().textContent()).startsWith(python ? 'Python' : 'JavaScript'));
-            if (python) assert.equal(await tabs.count(), ['b08', 'c02', 'c03', 'c08', 'c15', 'c17', 'c14'].includes(key) ? 2 : 1);
+            if (python) assert.equal(await tabs.count(), ['b08', 'c02', 'c03', 'c08', 'c15', 'c17', 'c14', 'c18', 'c19'].includes(key) ? 2 : 1);
             if (await tabs.count() > 1) {
                 assert.equal(await tabs.nth(1).textContent(), 'logic.js');
                 assert.match(await page.locator(`#logic-${key}`).textContent(), /^export class Logic/);

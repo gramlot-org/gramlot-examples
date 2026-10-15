@@ -72,7 +72,7 @@
           "title": "Cards with icons",
           "folder": "10_cards_with_icons",
           "description": "HTML cards with SVG icons and live Source removal.",
-          "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+          "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
         },
         {
           "key": "e11",
@@ -299,6 +299,18 @@
           "folder": "14_data_remote",
           "description": "Revisit endpoint values with lazy Data; compare a bound read, an explicit snapshot and cache expiry.",
           "explanation": "The menu path holds a resolver of the endpoint load_menu with cacheTime 5. The ^.menu paragraph reads it: the answer arrives with the Data event. A change of the table loads the menu again."
+        },
+        {
+          "key": "c18",
+          "title": "Publish and subscribe",
+          "folder": "18_publish_subscribe",
+          "description": "Development core 0.2.18: revisit button actions with page topics, self receivers, references and native ask."
+        },
+        {
+          "key": "c19",
+          "title": "Parent and child messages",
+          "folder": "19_frame_messages",
+          "description": "Development core 0.2.18: local-first publish and direct parent/child postMessage exchange."
         }
       ]
     }

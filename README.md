@@ -32,9 +32,11 @@ same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: seventeen pages with formulas, controllers, named logic, events, the
+- `controllers/`: nineteen pages with formulas, controllers, named logic, events, the
   end-to-end story, `dataRpc` calls to the endpoints of the page, `remote` fragments and
-  `dataRemote` values (`c01`–`c17`).
+  `dataRemote` values (`c01`–`c19`). The last two are development lessons for core 0.2.18: topics,
+  authored references, native ask and parent/child messages. They require the matching
+  development core; they are not yet part of a published release.
 
 Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
 `Logic` from the module beside it.

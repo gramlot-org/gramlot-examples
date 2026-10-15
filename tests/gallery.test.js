@@ -335,7 +335,7 @@ test('every shared example displays exactly its exported Logic class, never the 
             shown++;
         } else assert.equal(excerpt, null, example.key);
     }
-    assert.equal(shown, 7);
+    assert.equal(shown, 9);
 });
 
 test('source excerpt keeps method bodies intact and suppresses an empty Logic tab', () => {

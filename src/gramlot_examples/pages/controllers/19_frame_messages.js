@@ -1,0 +1,39 @@
+import {Page as BasePage} from '@gramlot/gramlot/page';
+
+export class Page extends BasePage {
+    static title = 'Parent and child messages';
+    static css = ['/themes/gramlot-base/theme.css'];
+    main(root) {
+        const pane = root.main({class: 'example-page stack', datapath: 'frames'});
+        pane.h1('Parent and child messages');
+        pane.dataSetter({destination_path: '.child', value: false});
+        pane.dataSetter({destination_path: '.text', value: 'Hello'});
+        pane.html_label('Message', {for: 'message'});
+        pane.input({id: 'message', value: '^.text', live: true});
+        const parent = pane.section({hidden: '^.child'});
+        const frame = parent.iframe({id: 'detail', title: 'Child page', style: 'width:100%;height:260px;border:1px solid #aab4c2'});
+        parent.button('Send to child', {id: 'send-child'}).dataController({func: 'sendChild', target: frame, text: '=.text'});
+        pane.button('Reply to parent', {id: 'reply'}).dataController({func: 'reply', text: '=.text', child: '=.child'});
+        pane.p('^.received', {id: 'received'});
+        pane.dataController({func: 'receive', subscribe_message: true});
+        pane.dataController({func: 'setup', frame, _onStart: true});
+    }
+}
+
+export class Logic {
+    setup(node, {frame}) {
+        const url = new URL(this.page.dom.getDomNode(node.parentNode).ownerDocument.location.href);
+        const child = url.hash === '#child';
+        node.SET('.child', child);
+        if (!child) { url.hash = 'child'; frame.setAttr({src: url.href}); }
+    }
+    sendChild(node, {target, text}) {
+        try { this.page.publish({topic: 'message', iframe: target}, {text}); }
+        catch (error) { node.SET('.received', error.message); }
+    }
+    reply(node, {text, child}) {
+        if (child) this.page.publish({topic: 'message', parent: true}, {text});
+        else node.SET('.received', 'Use Reply inside the child page.');
+    }
+    receive(node, {text}) { node.SET('.received', text); }
+}

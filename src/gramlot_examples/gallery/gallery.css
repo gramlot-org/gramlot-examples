@@ -33,6 +33,7 @@
 .gallery-source-tabs button:focus-visible { outline: 2px solid var(--gramlot-focus-ring); outline-offset: -2px; }
 .gallery-source-tabs button[hidden] { display: none; }
   .gallery-explanation { padding: .4rem; }
-.gallery-inspector { display: inline-flex; align-items: center; gap: .35rem; margin-inline-start: auto; padding: .15rem .5rem; min-block-size: 26px; font-size: inherit; }
-.gallery-inspector svg { flex: none; }
+.gallery-inspector { display: inline-flex; align-items: center; justify-content: center; flex: none; margin-inline-start: auto; padding: 0; inline-size: 28px; block-size: 28px; min-block-size: 28px; border: 0; background: transparent; box-shadow: none; font-size: 16px; line-height: 1; }
+.gallery-inspector:hover { background: var(--gramlot-surface); }
+.gallery-inspector:focus-visible { outline: 2px solid var(--gramlot-focus-ring); outline-offset: 2px; }
 .gallery-inspector[aria-pressed="true"] { background: var(--gramlot-action); color: var(--gramlot-navigation-text); }

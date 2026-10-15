@@ -44,12 +44,9 @@ class Page(IndexPage):
     def footer(self, footer):
         super().footer(footer)
         inspector = footer.button(type="button", id="gallery-inspector", class_="gallery-inspector",
-                                  title="Inspect the gallery or selected example", aria_label="Inspector",
+                                  title="Open inspector", aria_label="Inspector",
                                   aria_pressed="false", disabled=True)
-        icon = inspector.svg(viewBox="0 0 24 24", width="18", height="18", aria_hidden="true")
-        icon.rect(x="3", y="3", width="18", height="18", rx="2", fill="none", stroke="currentColor", stroke_width="1.5")
-        icon.path(d="M9 3v18M12 8h6M12 12h6M12 16h4", fill="none", stroke="currentColor", stroke_width="1.5")
-        inspector.span("Inspector")
+        inspector.span("🔍", aria_hidden="true")
 
     def behavior(self, shell):
         shell.script(src=self.galleryScript)

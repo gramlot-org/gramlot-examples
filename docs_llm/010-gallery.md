@@ -27,7 +27,7 @@ The common catalogue has no `environment`; an environment catalogue has one.
 
 ## 015 · Keys
 
-- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c17`. Environment: `<environment>-NN`.
+- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c19`. Environment: `<environment>-NN`.
 - Keys are stable within a release; 0.2.8 renumbered the controllers after removing
   the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`), 0.2.11 added `c12`–`c14` (`remote`,
   `dataRemote`).
@@ -98,11 +98,11 @@ project through the chosen environment and compare a predicted result after relo
 Page executes in the Python/JS host (or Worker); Logic executes in the browser.
 
 Check the installed catalogue before interpreting test counts: the current source
-lists 41 common pages, but older installed packages can have fewer. A startup
+lists 43 common pages, but older installed packages can have fewer. A startup
 check is not a check of every explained behavior. Follow the environment's setup
 instructions to update both examples and core, then restart or rebuild the export.
 
-The 41 lesson pages open with a brief description of what is on the page,
+The lesson pages open with a brief description of what is on the page,
 what it teaches and which library features it uses. Family introductions state
 the feature boundary of each release stage; later additions are explicitly labelled.
 The original guided trials, exercises, prerequisites and limits remain available
@@ -263,3 +263,9 @@ uses File → Add to Dock. Keep the Python/Node server available; for serverless
 serve the exported directory over HTTPS or localhost. Direct-file execution still
 works, but is not the installation route. No offline cache or service worker is
 added. Installation is a browser action chosen by the user.
+
+
+Development lessons c18/c19 (core target 0.2.18) revisit c06 with page/self topics,
+authored references, native ask and direct parent/child postMessage. They require
+the matching development core, not the published 0.2.17 package. Earlier release
+lessons remain unchanged. See their short introductions and More detail exercises.
