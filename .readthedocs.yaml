@@ -4,8 +4,11 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.12"
+    nodejs: "22"
   jobs:
     pre_build:
+      - npm install --ignore-scripts --package-lock=false --no-save @gramlot/gramlot-serverless
+      - npm run build
       - python scripts/prepare_docs.py
 
 sphinx:

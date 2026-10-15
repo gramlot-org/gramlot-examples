@@ -13,9 +13,12 @@ class Links(HTMLParser):
         super().__init__()
         self.ids = set()
         self.links = []
+        self.frames = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == 'iframe':
+            self.frames.append(attrs)
         if 'id' in attrs:
             self.ids.add(attrs['id'])
         for attr in ('href', 'src'):
@@ -29,20 +32,29 @@ def main():
     expected = {'index.html', 'lessons/index.html', 'search.html', 'genindex.html',
                 *(str(Path(p).with_suffix('.html')) for p in GUIDES)}
     count = 0
+    lessons = {}
     for family in catalog['families']:
         prefix = f"lessons/{family['key']}"
         expected.add(f'{prefix}/index.html')
         for example in family['examples']:
             expected.add(f"{prefix}/{example['folder']}.html")
+            lessons[f"{prefix}/{example['folder']}.html"] = example['key']
             count += 1
+    playground = {f'playgrounds/{key}/index.html' for key in lessons.values()}
     actual = {str(p.relative_to(site)) for p in site.rglob('*.html')}
-    assert actual == expected, f'Public page coverage differs: {actual ^ expected}'
+    assert actual == expected | playground, f'Public page coverage differs: {actual ^ (expected | playground)}'
     parsed = {}
     for relative in actual:
         p = site / relative
         links = Links()
         links.feed(p.read_text())
         parsed[p.resolve()] = links
+    for lesson, key in lessons.items():
+        frames = parsed[(site / lesson).resolve()].frames
+        assert len(frames) == 1, f'Expected one playground in {lesson}'
+        frame = frames[0]
+        assert frame['src'] == f'../../playgrounds/{key}/index.html', lesson
+        assert frame.get('title') and frame.get('loading') == 'lazy', lesson
     for p, links in parsed.items():
         for href in links.links:
             url = urlsplit(href)

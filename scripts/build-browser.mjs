@@ -17,6 +17,7 @@ await writeFile(new URL('theme-styles.js', output),
 const result = await build({
     entryPoints: {
         gallery: fileURLToPath(new URL('browser/entry.js', directory)),
+        inspector: fileURLToPath(new URL('browser/inspector-entry.js', directory)),
         frame: fileURLToPath(new URL('browser/frame-entry.js', directory)),
     },
     outdir: fileURLToPath(output), bundle: true, format: 'iife',

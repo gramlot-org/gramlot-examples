@@ -212,7 +212,32 @@ on `main`: validate, `tests.yml`, build, bundle check, GitHub release with
 `SHA256SUMS`, PyPI and npm with trusted publishing (environment `release`).
 
 
-The **Inspector** footer button opens one floating palette in the gallery shell.
+<a id="ge-010-042"></a>
+
+## 042 · Try the inspector here
+
+This playground runs the JavaScript **Pointers** example entirely in your browser.
+Read the Docs serves the page, its Worker and all Gramlot assets together with
+this manual; no external CDN or application server is needed. The block contains
+only the example and its small 🔍 Inspector button, with no gallery navigation or code pane.
+Every lesson in this manual has the same kind of block for its own example.
+Endpoint and remote-fragment lessons run their page methods in the browser Worker.
+
+1. Change **Caption**, then leave the field: the heading follows the Data.
+2. Open **Inspector** with 🔍 above the example. Select **Data**, expand
+   `settings` and select `caption` to see its value. Edit that value in the
+   Properties grid and press Enter: the example updates in the other direction.
+3. Switch to **Source** to inspect the declarations behind the rendered page.
+
+Reloading resets the playground. On a small screen, open it in a separate tab.
+
+```{raw} html
+<p><a href="../playgrounds/b01/index.html" target="_blank" rel="noopener">Open the inspector playground in a separate tab</a></p>
+<iframe src="../playgrounds/b01/index.html" title="Gramlot Pointers and inspector playground"
+        width="100%" height="620" loading="lazy" style="border: 1px solid #ddd;"></iframe>
+```
+
+In the full gallery, the **Inspector** footer button opens one floating palette in the gallery shell.
 Its selector offers the shell and the visible example; changing the gallery tab
 selects the new example. You can inspect the shell while an example remains open,
 and on Introduction. Close also clears the footer button.
