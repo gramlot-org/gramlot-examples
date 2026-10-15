@@ -333,24 +333,24 @@ and publishes to PyPI and npm with trusted publishing from the environment `rele
 
 This playground runs the JavaScript **Pointers** example entirely in your browser.
 Read the Docs serves the page, its Worker and all Gramlot assets together with
-this manual; no external CDN or application server is needed.
+this manual; no external CDN or application server is needed. The block contains
+only the example and its Inspector button, with no gallery navigation or code pane.
 
-1. Choose **Pointers** in the playground's sidebar.
-2. Change **Caption**, then leave the field: the heading follows the Data.
-3. Open **Inspector** in the playground footer. Select **Data**, expand
+1. Change **Caption**, then leave the field: the heading follows the Data.
+2. Open **Inspector** above the example. Select **Data**, expand
    `settings` and select `caption` to see its value. Edit that value in the
    Properties grid and press Enter: the example updates in the other direction.
-4. Switch to **Source** to inspect the declarations behind the rendered page.
+3. Switch to **Source** to inspect the declarations behind the rendered page.
 
 Reloading resets the playground. On a small screen, open it in a separate tab.
 
 ```{raw} html
 <p><a href="../inspector/index.html" target="_blank" rel="noopener">Open the inspector playground in a separate tab</a></p>
 <iframe src="../inspector/index.html" title="Gramlot Pointers and inspector playground"
-        width="100%" height="760" loading="lazy" style="border: 1px solid #ddd;"></iframe>
+        width="100%" height="620" loading="lazy" style="border: 1px solid #ddd;"></iframe>
 ```
 
-The **Inspector** footer button opens one floating palette in the gallery shell.
+In the full gallery, the **Inspector** footer button opens one floating palette in the gallery shell.
 Its selector offers the shell and the visible example; changing the gallery tab
 selects the new example. You can inspect the shell while an example remains open,
 and on Introduction. Close also clears the footer button.

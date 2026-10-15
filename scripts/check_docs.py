@@ -35,7 +35,7 @@ def main():
         for example in family['examples']:
             expected.add(f"{prefix}/{example['folder']}.html")
             count += 1
-    playground = {'inspector/index.html', 'inspector/b01/index.html'}
+    playground = {'inspector/index.html'}
     actual = {str(p.relative_to(site)) for p in site.rglob('*.html')}
     assert actual == expected | playground, f'Public page coverage differs: {actual ^ (expected | playground)}'
     parsed = {}
