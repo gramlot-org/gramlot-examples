@@ -48,7 +48,7 @@ The corrected identity is the method name plus the **TYTX snapshot of parameters
 
 ## Advanced practice
 
-**Development distinction:** the corrected cache identity is locally implemented in the core stabilization work; it is not a new published release. Check the runtime you are using before interpreting these advanced trials. Installed released packages may retain the earlier defects.
+**Release history:** core 0.2.17 includes the corrected cache identity and cancellation behavior. Update an older runtime before trying these advanced cases.
 
 Run these separately after the basic trial, using that core cache correction. Reload between source edits so each trial has a known starting state.
 

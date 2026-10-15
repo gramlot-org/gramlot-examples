@@ -33,8 +33,8 @@ c12 teaches Source replacement in the later 0.2.16 stage.
 The Page/Logic module arrangement is a 0.2.5 addition to the named-logic lesson. c08's first pass combines local binding/lifecycle. Return after c09/c11 for its
 0.2.14 quote/result/error section; it does not run automatically or add remote/lazy Data. After b02 and c12, use c13
 for a first cache trial; c14 needs the endpoint concepts of c09/c10. Advanced
-cache/lifecycle exercises are separate in c13/c14; development-only cache
-corrections and pending environment-wide qualification are explicitly labelled. See the [release-by-release route](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md#gc-025-015). Prerequisites support the
+cache/lifecycle exercises are separate in c13/c14; their corrected cache behavior
+is available from core 0.2.17. See the [release-by-release route](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md#gc-025-015). Prerequisites support the
 chronological sequence; they do not replace it. The maintained files may use
 later APIs, so they are not snapshots of the earliest release.
 

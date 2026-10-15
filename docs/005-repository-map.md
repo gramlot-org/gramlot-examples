@@ -7,8 +7,8 @@
 gramlot-examples/
 ├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.16
-├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.16
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.17
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.17
 ├── src/gramlot_examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
@@ -32,3 +32,30 @@ gramlot-examples/
 ├── docs/                                GE-005 · GE-010 gallery package
 └── docs_llm/                            Concise mirrors
 ```
+
+<a id="ge-005-010"></a>
+
+## 010 · Build and publish the manual
+
+The [Read the Docs manual](https://gramlot-examples.readthedocs.io/en/latest/)
+builds from `main` using `.readthedocs.yaml`. It uses the classic Read the Docs
+theme and the project logo. `scripts/prepare_docs.py` stages the README, the two
+GE guides and every common lesson in catalogue order, with its Python and
+JavaScript source (and CSS when present). The lesson text remains authored beside
+the runnable pages; no second copy is maintained. Internal notes and concise
+mirrors are not part of the site. The build imports no application runtime.
+
+```sh
+python -m pip install -r requirements-docs.txt
+python scripts/prepare_docs.py
+python -m sphinx -W --keep-going -b html build/docs-source build/docs-site
+python scripts/check_docs.py
+```
+
+CI runs the same build and verifies local links, anchors, paired guide anchors and
+coverage of all catalogue entries. To provision the hosted site, import the public
+GitHub repository `gramlot-org/gramlot-examples` into Read the Docs under the slug
+`gramlot-examples`, select `main` as the default branch and `latest` as the default
+version, then enable the GitHub integration for rebuilds on pushes. The repository
+configuration alone does not create the hosted project. Verify a successful build
+and the public manual after importing it.

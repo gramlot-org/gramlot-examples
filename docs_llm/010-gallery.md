@@ -6,7 +6,7 @@
 ## 005 · Contents
 
 - PyPI `gramlot-examples` (module `gramlot_examples`), npm `@gramlot/gramlot-examples`.
-  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.16 or later. No server code.
+  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.17 or later. No server code.
 - Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
   language; `NN_name.js` exports `Page` and `Logic`, in both packages) with `.md`,
   `.css`; family READMEs; `catalog.json`.
@@ -126,10 +126,11 @@ previous quote. Its independent exercise changes only the endpoint's delivery
 charge. The dated D6 qualification record in
 [GC-070 §775](https://github.com/gramlot-org/gramlot/blob/main/docs/internal/070-work-status.md#gc-070-775)
 distinguishes local candidate teaching packages, installed dependencies and owner
-teaching acceptance. It is not a release announcement. Do not present advanced
-development-cache trials as behavior of an unqualified installed release.
+teaching acceptance. It is historical qualification evidence. The later integrated release includes
+the cache corrections; see the repository README for the published version.
 
-The added c15–c17 pages are local development work, not a new published release.
+The c15–c17 lessons are included in the published package. Their stage labels
+refer to core features, not the independent version of the examples package.
 
 
 Source tabs follow the environment: Python servers show the Python Page;
@@ -246,7 +247,7 @@ the gallery browser assets when working from local checkouts.
 
 ## 045 · Reuse the index and install the gallery
 
-Development addition. The gallery now extends the core `IndexPage`: grouped
+The gallery extends the core `IndexPage`: grouped
 navigation, iframe tabs, the sidebar splitter and the standard footer are reusable
 without importing gramlot-examples. The gallery adds its README/source panels and
 inspector. See the [Python-first index guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-110).

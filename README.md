@@ -14,6 +14,12 @@ npm install @gramlot/gramlot-examples
 
 Current release: 0.2.12.
 
+[Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
+include every lesson, its Python and JavaScript source, and the gallery guide.
+To run the examples, choose the [Python server](https://gramlot-py-server.readthedocs.io/en/latest/),
+[Node.js/Bun server](https://gramlot-js-server.readthedocs.io/en/latest/010-tutorial.html)
+or [serverless exporter](https://gramlot-js-server.readthedocs.io/en/latest/135-serverless-tutorial.html).
+
 The repositories of the family are described in
 [The Gramlot family](https://github.com/gramlot-org/gramlot/blob/main/docs/public/055-family.md)
 (GC-055).
