@@ -1,5 +1,6 @@
 """Stage the public manual and lessons in catalogue order without importing Gramlot."""
 import json
+from html import escape
 import posixpath
 import re
 import shutil
@@ -16,12 +17,14 @@ def stage():
     catalog = json.loads((ROOT / "src/gramlot_examples/catalog.json").read_text())
     documents = {"README.md": "index.md", **{p: p for p in GUIDES},
                  f"{PAGES}/README.md": "lessons/index.md"}
+    lessons = {}
     for family in catalog["families"]:
         key = family["key"]
         documents[f"{PAGES}/{key}/README.md"] = f"lessons/{key}/index.md"
         for example in family["examples"]:
             name = example["folder"]
             documents[f"{PAGES}/{key}/{name}.md"] = f"lessons/{key}/{name}.md"
+            lessons[f"{PAGES}/{key}/{name}.md"] = example
     destination = ROOT / "build/docs-source"
     if destination.exists():
         shutil.rmtree(destination)
@@ -67,6 +70,16 @@ def stage():
                 if source == f'{PAGES}/{family["key"]}/README.md':
                     text = add_toc(text, [e["folder"] for e in family["examples"]], family["title"])
         if source.startswith(PAGES + "/") and not source.endswith("README.md"):
+            example = lessons[source]
+            url = f"../../playgrounds/{example['key']}/index.html"
+            title = escape(f"Gramlot {example['title']} and inspector playground", quote=True)
+            playground = ("\n\n```{raw} html\n"
+                          f'<p><a href="{url}" target="_blank" rel="noopener">Open this example in a separate tab</a>'
+                          ' · Use 🔍 to open the Inspector.</p>\n'
+                          f'<iframe src="{url}" title="{title}" width="100%" height="620"'
+                          ' loading="lazy" style="border: 1px solid #ddd;"></iframe>\n```\n\n')
+            position = text.index("<details>")
+            text = text[:position] + playground + text[position:]
             text += "\n\n## Complete source\n\nPython builds the page; the JavaScript module also supplies any browser Logic.\n"
             for extension, language in (("py", "python"), ("js", "javascript"), ("css", "css")):
                 original = (ROOT / source).with_suffix("." + extension)

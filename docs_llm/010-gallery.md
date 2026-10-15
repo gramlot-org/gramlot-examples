@@ -219,10 +219,12 @@ on `main`: validate, `tests.yml`, build, bundle check, GitHub release with
 This playground runs the JavaScript **Pointers** example entirely in your browser.
 Read the Docs serves the page, its Worker and all Gramlot assets together with
 this manual; no external CDN or application server is needed. The block contains
-only the example and its Inspector button, with no gallery navigation or code pane.
+only the example and its small 🔍 Inspector button, with no gallery navigation or code pane.
+Every lesson in this manual has the same kind of block for its own example.
+Endpoint and remote-fragment lessons run their page methods in the browser Worker.
 
 1. Change **Caption**, then leave the field: the heading follows the Data.
-2. Open **Inspector** above the example. Select **Data**, expand
+2. Open **Inspector** with 🔍 above the example. Select **Data**, expand
    `settings` and select `caption` to see its value. Edit that value in the
    Properties grid and press Enter: the example updates in the other direction.
 3. Switch to **Source** to inspect the declarations behind the rendered page.
