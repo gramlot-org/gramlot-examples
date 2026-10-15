@@ -43,10 +43,15 @@ theme and the project logo. `scripts/prepare_docs.py` stages the README, the two
 GE guides and every common lesson in catalogue order, with its Python and
 JavaScript source (and CSS when present). The lesson text remains authored beside
 the runnable pages; no second copy is maintained. Internal notes and concise
-mirrors are not part of the site. The build imports no application runtime.
+mirrors are not part of the site. The documentation build uses the serverless exporter as a build tool to package
+one existing example with the gallery inspector. It adds no serverless dependency
+to the examples package. Sphinx copies the complete export unchanged through
+`html_extra_path`; the iframe uses a relative URL within the manual version.
 
 ```sh
 python -m pip install -r requirements-docs.txt
+npm install --ignore-scripts --package-lock=false --no-save @gramlot/gramlot-serverless
+npm run build
 python scripts/prepare_docs.py
 python -m sphinx -W --keep-going -b html build/docs-source build/docs-site
 python scripts/check_docs.py

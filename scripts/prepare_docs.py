@@ -3,6 +3,7 @@ import json
 import posixpath
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,6 +78,7 @@ def stage():
         output = destination / target
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(text)
+    subprocess.run(["node", str(ROOT / "scripts/build-docs-example.mjs")], check=True)
     print(f"Staged {len(documents)} public pages, including {sum(len(f['examples']) for f in catalog['families'])} lessons.")
     return documents
 
