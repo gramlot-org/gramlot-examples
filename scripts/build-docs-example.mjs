@@ -27,5 +27,5 @@ const copied = Object.entries(assets)
 copied.push({source: join(root, 'src/gramlot_examples/gallery/dist/inspector.js'),
     target: 'gallery/dist/inspector.js'});
 await buildDirectory({pages: {index: join(stage, 'index.js')},
-    output: join(root, 'build/docs-source/_extra/inspector/b01'), assets: copied});
+    output: join(root, 'build/docs-source/_extra/playgrounds/b01'), assets: copied});
 console.log('Built the Pointers inspector playground for the manual.');

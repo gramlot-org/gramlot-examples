@@ -345,8 +345,8 @@ only the example and its Inspector button, with no gallery navigation or code pa
 Reloading resets the playground. On a small screen, open it in a separate tab.
 
 ```{raw} html
-<p><a href="../inspector/b01/index.html" target="_blank" rel="noopener">Open the inspector playground in a separate tab</a></p>
-<iframe src="../inspector/b01/index.html" title="Gramlot Pointers and inspector playground"
+<p><a href="../playgrounds/b01/index.html" target="_blank" rel="noopener">Open the inspector playground in a separate tab</a></p>
+<iframe src="../playgrounds/b01/index.html" title="Gramlot Pointers and inspector playground"
         width="100%" height="620" loading="lazy" style="border: 1px solid #ddd;"></iframe>
 ```
 
