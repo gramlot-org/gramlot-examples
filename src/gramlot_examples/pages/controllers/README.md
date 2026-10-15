@@ -9,7 +9,7 @@ Add calculations and actions to bound pages, then calls to their host. Each stag
 - **0.2.15:** the later part of **Call on click** adds Source authorization.
 - **0.2.16:** **Remote**, **Cached remote** and **Data remote** add Source fragments and values loaded on demand.
 
-- **0.2.18 (development):** revisit **Button controller** in **Publish and subscribe**, then use **Parent and child messages** for direct iframe exchange. These pages require the development core; they are not compatible with the published 0.2.17 runtime.
+- **0.2.18:** revisit **Button controller** in **Publish and subscribe**, then use **Parent and child messages** for direct iframe exchange. These pages require core 0.2.18 or later.
 
 The host is Python, Node/Bun or a standalone browser Worker. Local Logic runs in the browser. Stable example numbers identify pages; the menu follows release order.
 

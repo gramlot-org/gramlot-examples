@@ -2,7 +2,7 @@
 
 Revisit **Button controller**: one button calls a controller directly, another publishes a message to the same behavior. Then address two independent receivers without looking up their IDs, and collect a message in a dialog.
 
-**Uses:** Source, Data, named Logic, page/self subscriptions, authored references and native `ask` — development target core 0.2.18. No endpoint calls. Earlier lessons remain the 0.2.0 stage.
+**Uses:** Source, Data, named Logic, page/self subscriptions, authored references and native `ask` — core 0.2.18. No endpoint calls. Earlier lessons remain the 0.2.0 stage.
 
 **Try it:** edit Message, press Direct controller, then Publish. The summary is the same except for the trigger reason. Send to left: only the left receiver changes. Ask, then publish lets you edit the outgoing message; Cancel leaves the summary unchanged.
 

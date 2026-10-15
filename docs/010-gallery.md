@@ -405,7 +405,7 @@ works, but is not the installation route. No offline cache or service worker is
 added. Installation is a browser action chosen by the user.
 
 
-Development lessons c18/c19 (core target 0.2.18) revisit c06 with page/self topics,
+Lessons c18/c19 (introduced in core 0.2.18) revisit c06 with page/self topics,
 authored references, native ask and direct parent/child postMessage. They require
-the matching development core, not the published 0.2.17 package. Earlier release
+core 0.2.18 or later. Earlier release
 lessons remain unchanged. See their short introductions and More detail exercises.

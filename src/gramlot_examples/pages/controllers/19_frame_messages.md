@@ -2,7 +2,7 @@
 
 Send a message to the embedded page, then reply from that page. The example reuses the page-topic receiver from **Publish and subscribe** and adds a destination to `publish`.
 
-**Uses:** Source, Data, named Logic, authored iframe references and direct parent/child `postMessage` — development target core 0.2.18. No endpoint calls or server messaging.
+**Uses:** Source, Data, named Logic, authored iframe references and direct parent/child `postMessage` — core 0.2.18. No endpoint calls or server messaging.
 
 **Try it:** wait for the child field to appear, edit the outer Message and press Send to child. Both summaries change: publication is local first, then reaches the selected child. Edit the child's Message and press its Reply to parent. The child publishes locally first and the parent receives the reply.
 
