@@ -27,7 +27,7 @@ The common catalogue has no `environment`; an environment catalogue has one.
 
 ## 015 · Keys
 
-- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c19`. Environment: `<environment>-NN`.
+- Common: `e01`–`e13`, `b01`–`b11`, `c01`–`c21`. Environment: `<environment>-NN`.
 - Keys are stable within a release; 0.2.8 renumbered the controllers after removing
   the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`), 0.2.11 added `c12`–`c14` (`remote`,
   `dataRemote`).
@@ -98,7 +98,7 @@ project through the chosen environment and compare a predicted result after relo
 Page executes in the Python/JS host (or Worker); Logic executes in the browser.
 
 Check the installed catalogue before interpreting test counts: the current source
-lists 43 common pages, but older installed packages can have fewer. A startup
+lists 45 common pages, but older installed packages can have fewer. A startup
 check is not a check of every explained behavior. Follow the environment's setup
 instructions to update both examples and core, then restart or rebuild the export.
 
@@ -294,3 +294,17 @@ Lessons c18/c19 (introduced in core 0.2.18) revisit c06 with page/self topics,
 authored references, native ask and direct parent/child postMessage. They require
 core 0.2.18 or later. Earlier release
 lessons remain unchanged. See their short introductions and More detail exercises.
+
+
+c20 completes the core 0.2.18 action/ask/reference lesson: action + ask,
+`_ask_if`, dictionary `_if`, legacy `askIf`, and explicit local Source/DOM references.
+c21 follows it with the core 0.2.19 additions: plain `html_button` and
+button `_delay` with grouped click counts. It requires core 0.2.19 or later;
+0.2.18 does not provide these two additions. Both lessons have
+Python and JavaScript pages with a shared Logic companion and browser checks.
+
+
+Development verification (2026-10-15): c20/c21 passed in Chromium and WebKit
+against Python and Node pages and direct-file serverless exports. The updated
+manual covers 45 lessons, with strict Sphinx and local-link checks passing.
+These additions are included in core 0.2.19. No native Safari or Firefox result is claimed.

@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.2.14.
+Current release: 0.2.15.
 
 [Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
 include every lesson, its Python and JavaScript source, and the gallery guide.
@@ -32,10 +32,11 @@ same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: nineteen pages with formulas, controllers, named logic, events, the
+- `controllers/`: twenty-one pages with formulas, controllers, named logic, events, the
   end-to-end story, `dataRpc` calls to the endpoints of the page, `remote` fragments and
-  `dataRemote` values (`c01`–`c19`). The last two introduce: topics,
-  authored references, native ask and parent/child messages. They require core 0.2.18 or later.
+  `dataRemote` values (`c01`–`c21`). Later lessons introduce topics, authored references, native ask,
+  parent/child messages, plain HTML buttons and delayed Gramlot clicks. The package
+  requires core 0.2.19 or later; each lesson states which features it uses.
 
 Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
 `Logic` from the module beside it.

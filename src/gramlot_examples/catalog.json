@@ -304,13 +304,25 @@
           "key": "c18",
           "title": "Publish and subscribe",
           "folder": "18_publish_subscribe",
-          "description": "Development core 0.2.18: revisit button actions with page topics, self receivers, references and native ask."
+          "description": "Core 0.2.18: revisit button actions with page topics, self receivers, references and native ask."
         },
         {
           "key": "c19",
           "title": "Parent and child messages",
           "folder": "19_frame_messages",
-          "description": "Development core 0.2.18: local-first publish and direct parent/child postMessage exchange."
+          "description": "Core 0.2.18: local-first publish and direct parent/child postMessage exchange."
+        },
+        {
+          "key": "c20",
+          "title": "Actions, confirmations and references",
+          "folder": "20_actions_ask_references",
+          "description": "Core 0.2.18: action, conditional ask and explicit Source/DOM references."
+        },
+        {
+          "key": "c21",
+          "title": "Plain and delayed buttons",
+          "folder": "21_plain_and_delayed_buttons",
+          "description": "Core 0.2.19: native html_button and grouped clicks with _delay."
         }
       ]
     }

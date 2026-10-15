@@ -65,3 +65,9 @@ The date initialization issue in c17 and named-resource-host prerequisites remai
 explicit gaps; the local file lesson does not imply HTTP service or mail delivery.
 
 </details>
+
+
+After the messaging lessons, **c20 · Actions, confirmations and references**
+completes the 0.2.18 button examples. **c21 · Plain and delayed buttons** then
+shows the 0.2.19 additions, comparing the same action before
+and after adding `_delay`. It needs core 0.2.19 or later.

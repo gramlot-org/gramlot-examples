@@ -381,6 +381,61 @@ LOGIC.c19 = async (page, text) => {
 };
 
 // An added catalogue entry must receive an observable check, not silently become startup-only.
+LOGIC.c20 = async (page, text) => {
+    await page.locator('#action').click();
+    assert.equal(await text('#result'), 'Hello Ada');
+    await page.locator('#action-ask').click();
+    await page.locator('dialog input').fill('Grace');
+    await page.getByRole('button', {name: 'Confirm', exact: true}).click();
+    await page.waitForFunction(() => document.querySelector('#result').textContent === 'Hello Grace');
+    await page.locator('#action-ask').click();
+    await page.getByRole('button', {name: 'Cancel', exact: true}).click();
+    assert.equal(await text('#result'), 'Hello Grace');
+    await page.locator('#confirm-needed').uncheck();
+    for (const id of ['conditional-action', 'conditional-controller', 'conditional-fields']) {
+        await page.locator('#' + id).click();
+        assert.equal(await page.locator('dialog').count(), 0);
+        assert.equal(await text('#result'), 'Hello Ada');
+    }
+    await page.locator('#confirm-needed').check();
+    for (const id of ['conditional-action', 'conditional-controller', 'conditional-fields', 'legacy-askif']) {
+        await page.locator('#' + id).click();
+        await page.getByRole('dialog').waitFor();
+        await page.getByRole('button', {name: 'Cancel', exact: true}).click();
+    }
+    await page.locator('#source-reference').click();
+    assert.equal(await text('#reference-target'), 'Changed through Source');
+    await page.locator('#dom-reference').click();
+    assert.equal(await text('#reference-result'), 'DOM element: P');
+};
+LOGIC.c21 = async (page, text) => {
+    await page.locator('#native-value').fill('Edited');
+    await page.locator('#native-reset').click();
+    assert.equal(await page.locator('#native-value').inputValue(), 'Original');
+    await page.locator('#immediate').click();
+    assert.equal(await text('#runs'), '1');
+    for (const [id, runs] of [['delayed', 2], ['delayed-controller', 3]]) {
+        // Three actual clicks in one browser task, well within the declared 600 ms.
+        await page.locator('#' + id).evaluate(button => { button.click(); button.click(); button.click(); });
+        assert.equal(await text('#runs'), String(runs - 1));
+        await page.waitForFunction(n => document.querySelector('#runs').textContent === String(n), runs);
+        assert.equal(await text('#count'), '3');
+    }
+    await page.locator('#delayed').click();
+    await page.waitForFunction(() => document.querySelector('#runs').textContent === '4');
+    assert.equal(await text('#count'), '1');
+    await page.locator('#delayed-ask').evaluate(button => { button.click(); button.click(); });
+    assert.equal(await page.locator('dialog').count(), 0);
+    await page.getByRole('dialog').waitFor();
+    await page.getByRole('button', {name: 'Confirm', exact: true}).click();
+    await page.waitForFunction(() => document.querySelector('#runs').textContent === '5');
+    assert.equal(await text('#count'), '2');
+    await page.locator('#delayed-ask').click();
+    await page.getByRole('dialog').waitFor();
+    await page.getByRole('button', {name: 'Cancel', exact: true}).click();
+    assert.equal(await text('#runs'), '5');
+};
+
 for (const family of families) for (const example of family.examples) {
     assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);
 }
