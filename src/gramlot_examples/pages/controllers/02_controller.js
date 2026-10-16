@@ -47,7 +47,7 @@ export class Page extends BasePage {
         }
         for (const [key, path, exact] of [['name_exact', '.filter.name', true], ['name_all', '.filter.name', false],
             ['address_exact', '.filter.address', true], ['address_all', '.filter.address', false]]) {
-            filtered.p(`^.${key}`, {mask: `${key}: %s`, id: key});
+            filtered.p(`^.${key}`, {mask: `${key}: {}`, id: key});
             filtered.dataController({func: 'countPath', watched: `^${path}`, counter: `.${key}`, _userChanges: exact});
             pane.dataSetter({destination_path: `.${key}`, value: 0});
         }

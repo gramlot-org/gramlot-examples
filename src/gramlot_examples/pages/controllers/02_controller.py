@@ -48,7 +48,7 @@ class Page(BasePage):
             filtered.button(label, id=method, type="button").dataController(func=method)
         for key, path, exact in (("name_exact", ".filter.name", True), ("name_all", ".filter.name", False),
                                  ("address_exact", ".filter.address", True), ("address_all", ".filter.address", False)):
-            filtered.p(f"^.{key}", mask=key + ": %s", id=key)
+            filtered.p(f"^.{key}", mask=key + ": {}", id=key)
             filtered.dataController(func="countPath", watched="^" + path, counter="." + key, _userChanges=exact)
             pane.dataSetter("." + key, 0)
         pane.dataSetter(".filter", {"name": "Ada", "address": {"city": "Rome"}})

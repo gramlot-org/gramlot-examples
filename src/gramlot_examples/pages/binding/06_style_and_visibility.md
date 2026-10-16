@@ -16,29 +16,94 @@ Controls change an element’s appearance and visibility. You learn how Data dri
 
 **Open and edit:** select **b06 · Style and visibility** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
 
-## Read the page
+## From Python to Source to DOM
 
-The box binds class, style, color, background, size, radius and visibility to Data. Supported class/style values are strings or null. CSS shortcuts compose the style and take precedence over a duplicate property in `style`.
+The controls above change Data. The preview box reads that Data through its bindings.
+Follow three steps side by side; these are **excerpts of the existing page**, not
+additional declarations to paste into it. Source cells list attributes, not serialized
+Bags; DOM cells show only relevant CSS and omit other styles/classes. Browsers may
+normalize colors to `rgb(...)` and change declaration spacing/order.
 
-`visible=False` sets hidden visibility but retains space; native `hidden=True` removes the box from layout. Use CSS units such as `1.5rem` for font size.
+| Python declaration | Source attributes | DOM inline style at startup |
+| --- | --- | --- |
+| `color="^.color"` | `color: "^.color"` | `color: #ffffff` |
+| `background_color="^.background"` | `background_color: "^.background"` | `background-color: #456bc4` |
+| `font_size="^.size"` | `font_size: "^.size"` | `font-size: 1.5rem` |
+| `padding="1rem"` | `padding: "1rem"` | `padding: 1rem` |
+| `style="^.style"` | `style: "^.style"` | `border: 4px dashed #ffc400` |
 
-Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
+All these attributes belong to the **same** preview div. Its enclosing pane has
+`datapath="look"`, so `^.color` follows `look.color`. The renderer combines the
+resolved values into one HTML `style` attribute. It does not put a `color` HTML
+attribute on the div or replace the Source pointer with its current value.
 
-## Try it and predict the result
+For comparison, a literal declaration has no Data dependency:
 
-1. Expect a blue box, white text, dashed border, 1.5rem font and rounded corners.
-2. Replace the style field with `color: red` and leave it: the color shortcut still makes the text white; replacing the style string also removes its old border declaration.
-3. Uncheck visible: the space remains. Then check hidden: the space collapses.
+| Python | Source attributes | DOM |
+| --- | --- | --- |
+| `pane.div("Hello", color="red", font_size="18px")` | `color: "red"`, `font_size: "18px"` | `<div style="color: red; font-size: 18px;">Hello</div>` |
 
-## Change it and check yourself
+This comparison uses the literal styling foundation; the controls in this lesson
+add the core 0.2.0 Data binding layer. No later controller or component feature is needed.
 
-Restore visible, clear hidden and choose 2rem with 24px corners.
+## Try the binding
 
-**Answer:** the same box changes appearance from Data; its text and Source structure are unchanged. A null shortcut removes its own property, not every other style declaration.
+1. Choose a new **Text color**, for example `#ff0000`.
+2. The color input writes its value to `look.color`.
+3. The preview's `color="^.color"` reads that value and becomes red.
+4. Inspect its Source: `color` still contains `^.color`. Inspect the preview element
+   in browser DevTools: the inline style now has the resolved red color.
+
+The input writes Data; the div displays it. This is not the div's CSS writing back
+to Data. Python built the Source; these edits and projections execute in the browser.
+
+## Which style wins?
+
+Restore **Text color** to white, then replace the **style** field with
+`color: red; border: 4px dashed #ffc400` and leave the field to commit the edit.
+
+| Declaration retained in Source | Current Data | Resulting inline style (excerpt) |
+| --- | --- | --- |
+| `style="^.style"`, `color="^.color"` | `look.style = "color: red; border: 4px dashed #ffc400"`; `look.color = "#ffffff"` | `color: #ffffff; border: 4px dashed #ffc400` |
+
+**The text stays white:** the explicit `color` shortcut wins over the same property
+inside `style`. The border survives because it has no conflicting shortcut. Now
+replace the style field with only `color: red`: the border disappears, while text
+stays white. Replacing the style string removes its old declarations; other shortcut
+properties still compose into the result.
+
+This is Gramlot's composition of inline style. The browser then applies the CSS
+cascade: an applicable `!important` stylesheet rule can change the computed result.
+A resolved null shortcut removes its property; it does not restore an overwritten
+property from the style string. Class/style values accept strings or null, not objects.
+
+## What about the reverse direction?
+
+As a temporary debugging exercise, select the preview's `#box` element in browser
+DevTools and change its inline `color` to green. Source still has `^.color`, and
+Data still has the selected color: **editing CSS does not update either one**.
+Choose another Text color in the page: the Data-driven projection takes over again.
+Reloading also rebuilds the page from its declarations.
+
+Editing a literal Source attribute through the Gramlot inspector does project it to
+the DOM, but does not save it to the Python/JS source file. The inspector's **Styles**
+tab previews theme variables, not reverse conversion of element CSS into Source;
+use **Download CSS** there to export applied theme overrides. Computed CSS may come
+from classes, inheritance or variables, so there is no single reverse mapping.
+
+## Visibility and a small exercise
+
+Uncheck **visible**: the box keeps its space. Restore it and check **hidden**: the
+space collapses. Restore visible and clear hidden, then choose **2rem** font size
+and **24px** corners. The same box changes appearance; its Source structure stays
+unchanged. Use explicit CSS units for sizes.
+
+For the broader theme and cascade explanation, see
+[Python styles and a reactive example](https://github.com/gramlot-org/gramlot/blob/main/docs/public/096-themes-and-css.md#gc-096-040).
 
 ## Limits and next step
 
-Stay with the agreed string/null contract. The development review has a pending renderer-parity correction for rejection of unsupported class/style types; this lesson does not teach object coercions or rely on them.
+Stay with the agreed string/null contract. This lesson does not teach object coercions or rely on them.
 
 Continue with [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/07_bound_svg.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
 

@@ -71,3 +71,6 @@ After the messaging lessons, **c20 · Actions, confirmations and references**
 completes the 0.2.18 button examples. **c21 · Plain and delayed buttons** then
 shows the 0.2.19 additions, comparing the same action before
 and after adding `_delay`. It needs core 0.2.19 or later.
+
+**c22 · Pointer templates and expressions** follows c21 in core 0.2.20: repeat the CSS-width exercise with a shorter pointer, invert a boolean
+and reuse the page formatter for text and attributes. It does not use Web Components.

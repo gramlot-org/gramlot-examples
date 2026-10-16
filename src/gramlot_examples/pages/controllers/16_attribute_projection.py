@@ -11,7 +11,7 @@ class Page(BasePage):
         pane.h2("0.2.0: one value, several projections")
         pane.html_label("Name", for_="name")
         pane.input(value="^.name", live=True, id="name")
-        pane.p("^.name", mask="Hello, %s", id="greeting")
+        pane.p("^.name", mask="Hello, {}", id="greeting")
         pane.div("Hover to read the title", customer="^.name", title="Customer: ${customer}", id="card")
         pane.p("The template consumes customer; it is not a DOM attribute.")
         pane.h2("0.2.3: a separate HTML preview")

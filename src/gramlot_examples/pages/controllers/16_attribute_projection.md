@@ -23,10 +23,10 @@ A template reads another attribute of its own Source node **after pointer resolu
 ```python
 pane.div("Hover to read the title", customer="^.name",
          title="Customer: ${customer}")
-pane.p("^.name", mask="Hello, %s")
+pane.p("^.name", mask="Hello, {}")
 ```
 
-`${customer}` is Gramlot syntax, not Python interpolation. `customer` supplies the template and is consumed instead of becoming a DOM attribute. `mask` formats the projected text; it does not enable HTML.
+`${customer}` is Gramlot syntax, not Python interpolation. `customer` supplies the template and is consumed instead of becoming a DOM attribute. `mask` formats the projected text; it does not enable HTML. The maintained syntax uses `{}`; older releases used `%s`.
 
 The later section uses `pane.iframe(srcdoc="^.html", ...)`. Data-provided HTML gets `sandbox=""`: it is an isolated document, with scripts/forms/popups blocked by default. Ordinary `pane.p("^.html")` would show literal markup instead.
 
@@ -39,7 +39,7 @@ The later section uses `pane.iframe(srcdoc="^.html", ...)`. Data-provided HTML g
 
 ## Change it and check yourself
 
-Change the mask to `Welcome, %s` and the title to `Guest: ${customer}`. Leave the Data pointer alone.
+Change the mask to `Welcome, {}` and the title to `Guest: ${customer}`. Leave the Data pointer alone.
 
 **Answer:** one Name edit still updates both destinations with different formatting; no extra provider or shared formatted Data value is needed.
 

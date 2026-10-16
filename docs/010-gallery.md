@@ -56,7 +56,7 @@ environment (an adapter or a runtime) declares it.
 
 ## 015 · Keys
 
-- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c21`.
+- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c22`.
   Keys are stable within a release. 0.2.8 renumbered the controllers after
   removing the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`), 0.2.11 added `c12`–`c14`
   (`remote` and `dataRemote`).
@@ -510,3 +510,13 @@ reload the browser and verify a lesson's behavior and the inspector tabs using t
 [update checklist](https://github.com/gramlot-org/gramlot/blob/main/docs/public/018-quickstart.md#gc-018-025).
 If the check fails, include the exact commands, resolved paths and installed
 versions in the report; restarting the browser cannot correct an old bundle.
+
+
+<a id="ge-010-135"></a>
+## 135 · Pointer templates and expressions
+
+Lesson c22 follows c21 without changing earlier release stages. It
+revisits CSS width with `:{}px`, read-only state with `:=!{}`, and formatted text
+with `format`/`mask` before introducing expression-local `_F` for a title attribute.
+Python and JavaScript twins keep the same Data and interactions. This lesson
+requires core 0.2.20 or later.

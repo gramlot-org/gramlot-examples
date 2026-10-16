@@ -49,6 +49,22 @@ const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    c22({app, byId, edit, click, data}) {
+        assert.equal(byId('width-preview').style.width, '38px');
+        edit('width-input', '80', 'input');
+        assert.equal(byId('width-preview').style.width, '80px');
+        assert.equal(data('transforms.width'), 80);
+        edit('width-input', '', 'input');
+        assert.equal(byId('width-preview').style.width, '');
+        assert.equal(byId('name-input').readOnly, true);
+        click('draft-input');
+        assert.equal(byId('name-input').readOnly, false);
+        edit('amount-input', '45.5', 'input');
+        assert.equal(byId('amount-display').textContent, app.format(45.5, {pattern: '0.00', mask: 'Total: {} €'}));
+        assert.equal(byId('amount-title').title, app.format(45.5, {pattern: '0.00', mask: '{} €'}));
+        assert.equal(data('transforms.amount'), 45.5);
+    },
+
     b01({byId, edit}) {
         assert.equal(byId('caption').textContent, 'Pointers');
         assert.equal(byId('form-name').textContent, 'Ada Lovelace');

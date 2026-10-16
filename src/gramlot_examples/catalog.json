@@ -72,7 +72,7 @@
           "title": "Cards with icons",
           "folder": "10_cards_with_icons",
           "description": "HTML cards with SVG icons and live Source removal.",
-          "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+          "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
         },
         {
           "key": "e11",
@@ -323,6 +323,12 @@
           "title": "Plain and delayed buttons",
           "folder": "21_plain_and_delayed_buttons",
           "description": "Core 0.2.19: native html_button and grouped clicks with _delay."
+        },
+        {
+          "key": "c22",
+          "title": "Pointer templates and expressions",
+          "folder": "22_pointer_transforms",
+          "description": "Core 0.2.20: revisit CSS lengths, boolean state and formatted text with attribute pointer transforms."
         }
       ]
     }
