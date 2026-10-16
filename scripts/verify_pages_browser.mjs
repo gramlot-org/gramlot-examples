@@ -436,6 +436,24 @@ LOGIC.c21 = async (page, text) => {
     assert.equal(await text('#runs'), '5');
 };
 
+
+LOGIC.c22 = async (page, text) => {
+    const width = () => page.locator('#width-preview').evaluate(node => node.style.width);
+    assert.equal(await width(), '38px');
+    await page.locator('#width-input').fill('80');
+    assert.equal(await width(), '80px');
+    assert.equal(await page.evaluate(() => gramlot.data.getItem('transforms.width')), 80);
+    await page.locator('#width-input').fill('');
+    assert.equal(await width(), '');
+    assert.equal(await page.locator('#name-input').evaluate(node => node.readOnly), true);
+    await page.locator('#draft-input').check();
+    assert.equal(await page.locator('#name-input').evaluate(node => node.readOnly), false);
+    await page.locator('#amount-input').fill('45.5');
+    assert.equal(await text('#amount-display'), 'Total: 45,50 €');
+    assert.equal(await page.locator('#amount-title').getAttribute('title'), '45,50 €');
+    assert.equal(await page.evaluate(() => gramlot.data.getItem('transforms.amount')), 45.5);
+};
+
 for (const family of families) for (const example of family.examples) {
     assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);
 }
