@@ -24,6 +24,10 @@ The repositories of the family are described in
 [The Gramlot family](https://github.com/gramlot-org/gramlot/blob/main/docs/public/055-family.md)
 (GC-055).
 
+## Updating
+
+Choose [packaged or source-checkout updates](docs/010-gallery.md#ge-010-050). A Python gallery installed from source also needs its JavaScript bundles rebuilt; updating Python files alone does not update the footer inspector.
+
 ## Pages
 
 [`src/gramlot_examples/pages/`](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/README.md) holds three

@@ -423,3 +423,90 @@ Development verification (2026-10-15): c20/c21 passed in Chromium and WebKit
 against Python and Node pages and direct-file serverless exports. The updated
 manual covers 45 lessons, with strict Sphinx and local-link checks passing.
 These additions are included in core 0.2.19. No native Safari or Firefox result is claimed.
+
+<a id="ge-010-050"></a>
+
+## 050 · Updating packages versus rebuilding checkouts
+
+Block ID: **GE-010-050**.
+
+The gallery's browser bundles include the footer inspector. Its source is in the
+core, but the gallery builds it into `src/gramlot_examples/gallery/dist/`.
+Consequently, pulling Python files or the core alone does not refresh an already
+built inspector. This applies even when Python serves the gallery.
+
+For **registry installations**, use the
+[Python package update](https://github.com/gramlot-org/gramlot-py-server/blob/main/docs/020-command.md#gp-020-025)
+or [npm/serverless update](https://github.com/gramlot-org/gramlot-js-server/blob/main/docs/010-tutorial.md#gn-110-035).
+Those packages ship the build output; their users do not need to rebuild it.
+
+For **source development**, stop the server and update each checkout from its
+chosen branch (`git pull --ff-only` on a clean, already selected branch). Resolve
+local changes deliberately; do not reset them. The following assumes sibling
+`gramlot/`, `gramlot-examples/` and server repositories, and Node.js 22 or later.
+Run the blocks from the stated directories, in this order.
+
+**1. Core, from `gramlot/js/`:**
+
+```sh
+npm install --package-lock=false
+npm update --package-lock=false @genrojs/bag @genrojs/builders @genrojs/tytx
+npm run build
+```
+
+This builds the runtime and optional inspector artifacts, including browser
+resources used by the Python core. Stop on build failure before continuing.
+
+**2. Examples, from `gramlot-examples/`:**
+
+```sh
+npm install --package-lock=false
+npm install --no-save --package-lock=false --install-links=false @gramlot/gramlot@file:../gramlot/js
+npm run build
+node --input-type=module -e "console.log(import.meta.resolve('@gramlot/gramlot/page'))"
+```
+
+The local link is for development only; do not save a filesystem dependency in
+`package.json`. Run this step after a core inspector/theme change as well as after
+a gallery change. The build emits `gallery.js`, `frame.js` and `inspector.js`;
+`git pull`, `pip install -e` and a browser refresh do not run it for you.
+
+**3a. Python host:** in the virtual environment used by the Python server,
+from the directory containing the sibling repositories:
+
+```sh
+python -m pip install --upgrade "gramlot-py-server[uvicorn,gallery]"
+python -m pip install --upgrade -e ./gramlot -e ./gramlot-examples
+python -m pip check
+python -c "import sys, gramlot, gramlot_examples; print(sys.executable); print(gramlot.__file__); print(gramlot_examples.__file__)"
+python -m gramlot_py_server.cli uvicorn gallery --port 8080
+```
+
+This core/examples development setup updates the published Uvicorn adapter first.
+For another adapter, keep its extras and command, plus your port/mount options. The core
+build in step 1 is necessary for editable Python sources too.
+
+**3b. Node/Bun or serverless host, from `gramlot-js-server/`:**
+
+```sh
+npm install --package-lock=false
+npm install --no-save --package-lock=false --install-links=false @gramlot/gramlot@file:../gramlot/js @gramlot/gramlot-examples@file:../gramlot-examples
+node --input-type=module -e "console.log(import.meta.resolve('@gramlot/gramlot/page'))"
+node server/src/cli.mjs node gallery --port 8080
+```
+
+The core path printed here must be the same as in step 2. Different physical
+copies can fail a Page subclass identity check even if their version numbers
+match. Reapply the local links after npm operations that replace them; do not
+change runtime type checks to hide the mismatch. For Bun, select `bun` in the
+host command. For serverless, replace the host start with:
+
+```sh
+node serverless/src/cli.js gallery gallery-updated
+```
+
+Open the newly generated export; previous exports remain unchanged. Finally,
+reload the browser and verify a lesson's behavior and the inspector tabs using the
+[update checklist](https://github.com/gramlot-org/gramlot/blob/main/docs/public/018-quickstart.md#gc-018-025).
+If the check fails, include the exact commands, resolved paths and installed
+versions in the report; restarting the browser cannot correct an old bundle.
