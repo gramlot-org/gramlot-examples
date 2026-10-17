@@ -14,6 +14,8 @@ import {dirname, extname, join, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {GramlotFileServer, InvalidRequest, PageNotFound, runtimeAsset} from '@gramlot/gramlot/server';
 
+import {buildGallery} from '../src/gramlot_examples/index.js';
+
 const MEDIA_TYPES = {'.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8'};
 const THEMES = dirname(dirname(fileURLToPath(import.meta.resolve('@gramlot/gramlot/themes/gramlot-base/theme.css'))));
 
@@ -29,7 +31,8 @@ async function servedFile(root, relative) {
 
 export function servePages(folder, port) {
     const pages = resolve(folder);
-    const server = new GramlotFileServer(pages);
+    const {assets, collections} = buildGallery();
+    const server = new GramlotFileServer(pages, {collections});
     return createServer(async (request, response) => {
         const reply = (status, body, type) => {
             response.writeHead(status, {'Content-Type': type});
@@ -38,6 +41,7 @@ export function servePages(folder, port) {
         const path = request.url.split('?')[0];
         try {
             if (request.method === 'GET') {
+                if (assets[path]) return reply(200, await readFile(assets[path].file), assets[path].type);
                 if (path === server.runtimeUrl) return reply(200, await readFile(runtimeAsset()), MEDIA_TYPES['.js']);
                 if (path.startsWith('/themes/') || /\.(js|css)$/.test(path)) {
                     const file = path.startsWith('/themes/')

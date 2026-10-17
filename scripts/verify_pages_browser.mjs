@@ -11,6 +11,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
+import {componentBehaviors} from './component-behaviors.mjs';
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 
@@ -453,6 +454,8 @@ LOGIC.c22 = async (page, text) => {
     assert.equal(await page.locator('#amount-title').getAttribute('title'), '45,50 €');
     assert.equal(await page.evaluate(() => gramlot.data.getItem('transforms.amount')), 45.5);
 };
+
+Object.assign(LOGIC, componentBehaviors);
 
 for (const family of families) for (const example of family.examples) {
     assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);

@@ -73,6 +73,8 @@ jobs:
         run: |
           npm install --ignore-scripts --package-lock=false
           npm run build
+      - name: Build component browser modules
+        run: npm run build
       - name: Install the package
         run: python -m pip install .
       - name: Test pages and build_gallery
@@ -93,6 +95,8 @@ jobs:
         run: |
           npm install --ignore-scripts --package-lock=false --no-save playwright
           npx playwright install --with-deps chromium
+      - name: Build component browser modules
+        run: npm run build
       - name: Install the package
         run: python -m pip install .
       - name: Show the core versions

@@ -14,6 +14,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from pathlib import Path
 
+from gramlot_examples import build_gallery
+
 from gramlot.server import GramlotFileServer, InvalidRequest, PageNotFound, runtime_asset
 
 MEDIA_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8"}
@@ -26,7 +28,9 @@ class PagesServer(ThreadingHTTPServer):
     def __init__(self, folder, port):
         super().__init__(("127.0.0.1", port), Handler)
         self.pages = Path(folder)
-        self.gramlot_server = GramlotFileServer(self.pages)
+        gallery = build_gallery()
+        self.assets = gallery["assets"]
+        self.gramlot_server = GramlotFileServer(self.pages, collections=gallery["collections"])
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -54,6 +58,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         server, path = self.server.gramlot_server, self.path.split("?", 1)[0]
+        if path in self.server.assets:
+            asset = self.server.assets[path]
+            return self.reply(200, asset["file"].read_bytes(), asset["type"])
         if path == server.runtime_url:
             return self.reply(200, runtime_asset().read_bytes(), MEDIA_TYPES[".js"])
         if path.startswith("/themes/"):
