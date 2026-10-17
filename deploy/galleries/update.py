@@ -42,8 +42,10 @@ def releases(fetch=read_json):
     return result
 
 
-def ready(snapshot, fetch=read_json):
+def ready(snapshot, fetch=read_json, verified=None):
     for repo, release in snapshot.items():
+        if verified and verified.get(repo) == release:
+            continue
         runs = fetch(f'https://api.github.com/repos/gramlot-org/{repo}/actions/workflows/publish.yml/runs?branch={quote(release["tag"])}&event=workflow_dispatch&per_page=1')['workflow_runs']
         if not runs or runs[0]['status'] != 'completed' or runs[0]['conclusion'] != 'success':
             return False
@@ -145,7 +147,7 @@ def deploy(snapshot, current):
         run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', '-v', f'{offline}:/offline:ro',
             'gramlot-gallery-check:current', 'node', 'smoke.mjs',
             f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
-        if releases() != snapshot or not ready(snapshot):
+        if releases() != snapshot or not ready(snapshot, verified=snapshot):
             raise RuntimeError('Release set changed during build; retry after publication completes')
         def public_check():
             run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', 'gramlot-gallery-check:current',
@@ -200,7 +202,7 @@ def main():
         snapshot = releases()
         if snapshot == current.get('releases'):
             print('Published releases unchanged'); return
-        if not ready(snapshot):
+        if not ready(snapshot, verified=current.get('releases')):
             print('Waiting for all publication workflows and registries'); return
         if args.check:
             print(json.dumps(snapshot, indent=2)); return

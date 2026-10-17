@@ -29,6 +29,11 @@ class UpdaterTests(unittest.TestCase):
         self.assertFalse(u.ready(self.snapshot(), fetch))
     def test_completed_publications_ready(self):
         self.assertTrue(u.ready(self.snapshot(), self.fetch))
+    def test_successful_release_checks_are_reused(self):
+        def fetch(url):
+            self.assertNotIn('/runs?', url)
+            return self.fetch(url)
+        self.assertTrue(u.ready(self.snapshot(), fetch, verified=self.snapshot()))
     def test_excludes_prerelease(self):
         with self.assertRaises(RuntimeError):
             u.releases(lambda url: {'draft':False,'prerelease':True})
