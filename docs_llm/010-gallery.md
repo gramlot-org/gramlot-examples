@@ -561,9 +561,9 @@ for application CSS paths and shared tokens.
 
 Block ID: **GE-010-170**.
 
-Use **Normale / Mobile** above the running example. Mobile keeps the same iframe,
+Use **Normal / Mobile** above the running example. Mobile keeps the same iframe,
 constrains its width to 390 CSS pixels (or the available space), and activates
-Gramlot touch sizing. Normale restores the available width and automatic device touch sizing.
+Gramlot touch sizing. Normal restores the available width and automatic device touch sizing.
 Switching preserves accepted Data, rejected drafts and the running page; changing
 lesson tabs also retains each preview choice. Preview mode is session-only.
 The Mobile button's tooltip reports Page.devices when declared; unspecified does
@@ -672,7 +672,7 @@ The public [Python gallery](https://gallery-py.gramlot.dev/) and [Node gallery](
 
 Block ID: **GE-010-205**.
 
-Below 1024 CSS pixels, the gallery offers **Esempio**, **Codice** and
+Below 1024 CSS pixels, the gallery offers **Example**, **Code** and
 **Inspector** as separate views. The example and source each use the full width;
 Inspector fills the content area. The menu button opens navigation over the
 current view. Selecting a page, tapping the backdrop or pressing Escape closes
@@ -687,8 +687,8 @@ editor behavior still applies (leaving a property row commits it). Desktop
 navigation/code visibility preferences are restored when returning to a wider
 window. Open pages remain reachable through navigation on mobile.
 
-The **Normale / Mobile** preview controls are shown on desktop only. On a phone,
-the example already occupies the device width. Normale uses automatic device
+The **Normal / Mobile** preview controls are shown on desktop only. On a phone,
+the example already occupies the device width. Normal uses automatic device
 pointer detection for touch sizing; an explicit Mobile preview forces it on.
 This does not make every authored example responsive: its own component layout
 must also fit the available space. Python and Node share these behaviors and the

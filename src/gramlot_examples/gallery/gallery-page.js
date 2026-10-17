@@ -57,7 +57,7 @@ export class GalleryPage extends IndexPage {
         header.html_button('Code ⟨/⟩', {type: 'button', id: 'index-code-toggle',
             aria_controls: 'index-code', aria_expanded: 'false', disabled: true});
         const views = header.div({class: 'gallery-mobile-views gallery-mobile-only', role: 'group', aria_label: 'Gallery view'});
-        for (const [view, caption] of [['example', 'Esempio'], ['code', 'Codice'], ['inspector', 'Inspector']]) {
+        for (const [view, caption] of [['example', 'Example'], ['code', 'Code'], ['inspector', 'Inspector']]) {
             views.html_button(caption, {type: 'button', id: `gallery-view-${view}`, aria_pressed: String(view === 'example')});
         }
     }
@@ -85,7 +85,7 @@ export class GalleryPage extends IndexPage {
 
         const preview = panel.div({class: 'gallery-preview', id: `preview-${key}`});
         const modes = preview.div({class: 'gallery-preview-modes', role: 'group', aria_label: 'Preview mode'});
-        for (const [mode, caption] of [['normal', 'Normale'], ['mobile', 'Mobile']]) {
+        for (const [mode, caption] of [['normal', 'Normal'], ['mobile', 'Mobile']]) {
             modes.html_button(caption, {type: 'button', id: `preview-${mode}-${key}`, aria_pressed: mode === 'normal' ? 'true' : 'false'});
         }
         const stage = preview.div({class: 'gallery-preview-stage', id: `preview-stage-${key}`});

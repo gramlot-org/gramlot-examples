@@ -79,7 +79,7 @@ class Page(IndexPage):
                       aria_controls="index-code", aria_expanded="false", disabled=True)
 
         views = header.div(class_="gallery-mobile-views gallery-mobile-only", role="group", aria_label="Gallery view")
-        for view, caption in (("example", "Esempio"), ("code", "Codice"), ("inspector", "Inspector")):
+        for view, caption in (("example", "Example"), ("code", "Code"), ("inspector", "Inspector")):
             views.html_button(caption, type="button", id=f"gallery-view-{view}",
                               aria_pressed="true" if view == "example" else "false")
 
@@ -107,7 +107,7 @@ class Page(IndexPage):
                         id=f"readme-{key}")
         preview = panel.div(class_="gallery-preview", id=f"preview-{key}")
         modes = preview.div(class_="gallery-preview-modes", role="group", aria_label="Preview mode")
-        for mode, caption in (("normal", "Normale"), ("mobile", "Mobile")):
+        for mode, caption in (("normal", "Normal"), ("mobile", "Mobile")):
             modes.html_button(caption, type="button", id=f"preview-{mode}-{key}",
                          aria_pressed="true" if mode == "normal" else "false")
         stage = preview.div(class_="gallery-preview-stage", id=f"preview-stage-{key}")
