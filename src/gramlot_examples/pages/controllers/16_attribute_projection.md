@@ -2,13 +2,13 @@
 
 One name appears in a greeting and a tooltip with different formatting. You learn how templates and masks reuse a bound value without copying text. The later **0.2.3** section previews HTML in a separate sandboxed frame.
 
-**Uses:** Data binding, attribute templates and text masks (0.2.0); sandboxed Data `srcdoc` only in the later part (0.2.3).
+**Uses:** Data binding, explicit pointer templates and text masks; sandboxed Data `srcdoc` only in the later part (0.2.3).
 
 <details>
 <summary>More detail</summary>
 
 
-**Release stage:** core 0.2.0 templates/masks, followed by the separate 0.2.3 Data-srcdoc sandbox step.
+**Release stage:** maintained explicit pointer syntax; Data-srcdoc sandboxing was introduced in 0.2.3.
 
 **Goal:** Reuse one Data value in text and attributes, then distinguish text from a sandboxed HTML document.
 
@@ -22,28 +22,28 @@ A template reads another attribute of its own Source node **after pointer resolu
 
 ```python
 pane.div("Hover to read the title", customer="^.name",
-         title="Customer: ${customer}")
+         title="^.name:Customer: {customer}")
 pane.p("^.name", mask="Hello, {}")
 ```
 
-`${customer}` is Gramlot syntax, not Python interpolation. `customer` supplies the template and is consumed instead of becoming a DOM attribute. `mask` formats the projected text; it does not enable HTML. The maintained syntax uses `{}`; older releases used `%s`.
+`:` opens the pointer template. `{customer}` reads the current Source attribute; `customer` remains a normal projected DOM attribute. Ordinary `${customer}` is literal text. `mask` formats the projected text; it does not enable HTML. The maintained syntax uses `{}`; older releases used `%s`.
 
 The later section uses `pane.iframe(srcdoc="^.html", ...)`. Data-provided HTML gets `sandbox=""`: it is an isolated document, with scripts/forms/popups blocked by default. Ordinary `pane.p("^.html")` would show literal markup instead.
 
 ## Try it and predict the result
 
 1. Initially the greeting is “Hello, Ada”; hover the card and expect title “Customer: Ada”.
-2. Type Grace: both follow the same Data value. Inspect the card: it has `title`, but no `customer` attribute.
+2. Type Grace: both follow the same Data value. Inspect the card: it has both the formatted `title` and the resolved `customer` attribute.
 3. Clear Name: the greeting becomes empty; the title retains its authored prefix.
 4. Replace Preview HTML with `<h2>Preview two</h2><p>Only this frame changes.</p>`. The heading appears inside the frame; the outer page stays intact. Inspect the iframe's `sandbox` attribute: it is present with an empty value.
 
 ## Change it and check yourself
 
-Change the mask to `Welcome, {}` and the title to `Guest: ${customer}`. Leave the Data pointer alone.
+Change the mask to `Welcome, {}` and the title to `^.name:Guest: {customer}`. Leave the Data pointer alone.
 
 **Answer:** one Name edit still updates both destinations with different formatting; no extra provider or shared formatted Data value is needed.
 
-Separate invalid-edit exercise: rename only the template reference to `${missing}`, then reload. Expect an unknown-template-parameter error, not a blank substitute. Restore it. A preceding backslash escapes `${`; an `==` attribute cannot supply a template parameter, and `==` expressions cannot contain a template. See the reference for the permitted expression/template dependency order.
+Separate invalid-edit exercise: rename only the template slot to `{missing}`, then reload. Expect a missing Source-attribute error. Restore it. Use `:=` for an expression with typed slots; ordinary `${...}` text is not interpolated or consumed.
 
 ## The same example across stages
 

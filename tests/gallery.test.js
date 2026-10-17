@@ -8,6 +8,7 @@ import {mountGallery} from '../src/gramlot_examples/gallery/browser/gallery.js';
 import {logicSource} from '../src/gramlot_examples/gallery/browser/code-highlight.js';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
+import {mountFrameSettings, SETTINGS_SET} from '../src/gramlot_examples/gallery/browser/gallery-settings.js';
 import {mountFrameTheme} from '../src/gramlot_examples/gallery/browser/frame-theme.js';
 import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/theme-messages.js';
 
@@ -136,36 +137,70 @@ test('keyboard navigation is opt-in and cycles through opened tabs', () => {
     f.app.dispose();
 });
 
-test('split keyboard controls update native style and ARIA through Source', () => {
+test('right sidebar keyboard controls resize code through Source', () => {
     const f = fixture();
-    key(f, 'divider-e01', 'ArrowLeft');
-    assert.equal(f.source('split-e01').getAttr('style'), '--split-position: 60%');
-    key(f, 'divider-e01', 'End'); key(f, 'divider-e01', 'ArrowRight');
-    assert.equal(f.get('divider-e01').getAttribute('aria-valuenow'), '80');
-    key(f, 'divider-e01', 'Home'); key(f, 'divider-e01', 'ArrowLeft');
-    assert.equal(f.get('divider-e01').getAttribute('aria-valuenow'), '20');
+    f.get('open-e01').click();
+    key(f, 'index-code-divider', 'ArrowLeft');
+    assert.equal(f.get('index-code').parentElement.id, 'gallery');
+    assert.match(f.source('gallery').getAttr('style'), /--code-width: 430px/);
+    key(f, 'index-code-divider', 'Home'); key(f, 'index-code-divider', 'ArrowRight');
+    assert.equal(f.get('index-code-divider').getAttribute('aria-valuenow'), '200');
+    key(f, 'index-code-divider', 'End'); key(f, 'index-code-divider', 'ArrowLeft');
+    assert.equal(f.get('index-code-divider').getAttribute('aria-valuenow'), '614');
     f.app.dispose();
+});
+
+test('toolbar hides panels without replacing the frame or resetting source tabs; preferences restore', () => {
+    const f = fixture();
+    assert.equal(f.get('index-code-toggle').disabled, true);
+    f.get('open-c01').click();
+    const frame = f.get('frame-c01');
+    f.get('logic-tab-c01').click();
+    f.get('index-code-toggle').click();
+    f.get('index-navigation-toggle').click();
+    assert.equal(f.get('index-code').hidden, true);
+    assert.equal(f.get('index-sidebar').hidden, true);
+    assert.equal(f.get('index-sidebar-divider').hidden, true);
+    assert.equal(f.get('index-navigation-toggle').getAttribute('aria-expanded'), 'false');
+    const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.preferences:/py/index');
+    f.get('index-code-toggle').click();
+    assert.equal(f.get('index-code').hidden, false);
+    assert.equal(f.get('frame-c01'), frame);
+    assert.equal(f.get('logic-tab-c01').getAttribute('aria-selected'), 'true');
+    f.get('tab-intro').click();
+    assert.equal(f.get('index-code').hidden, true);
+    f.get('tab-c01').click();
+    assert.equal(f.get('index-code').hidden, false);
+    f.get('open-e01').click();
+    assert.equal(f.get('codepane-c01').hidden, true);
+    assert.equal(f.get('codepane-e01').hidden, false);
+    f.app.dispose();
+    const g = fixture(undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
+    g.get('open-e01').click();
+    assert.equal(g.get('index-code').hidden, true);
+    assert.equal(g.get('index-sidebar').hidden, true);
+    g.app.dispose();
 });
 
 test('removal during pointer drag releases capture and all page listeners', () => {
     const f = fixture();
-    const handle = f.get('divider-e01');
-    const split = f.source('split-e01');
+    const handle = f.get('index-code-divider');
+    const split = f.source('gallery');
     let captured = false;
     handle.setPointerCapture = () => { captured = true; };
     handle.hasPointerCapture = () => captured;
     handle.releasePointerCapture = () => { captured = false; };
-    f.get('split-e01').getBoundingClientRect = () => ({left: 0, width: 200});
+    f.get('gallery').getBoundingClientRect = () => ({left: 0, right: 700, width: 700});
     const pointer = (type, x) => new f.document.defaultView.MouseEvent(type, {button: 0, clientX: x, bubbles: true});
     handle.dispatchEvent(pointer('pointerdown', 100));
     f.document.dispatchEvent(pointer('pointermove', 140));
-    assert.equal(split.getAttr('style'), '--split-position: 70%');
+    assert.equal(split.getAttr('style'), '--sidebar-width: 240px; --code-width: 560px');
     const open = f.get('open-e02'), frame = f.source('frame-e02');
     f.root.parentBag.popNode(f.root.label);
     assert.equal(captured, false);
     f.document.dispatchEvent(pointer('pointermove', 40));
     open.dispatchEvent(new f.document.defaultView.Event('click', {bubbles: true}));
-    assert.equal(split.getAttr('style'), '--split-position: 70%');
+    assert.equal(split.getAttr('style'), '--sidebar-width: 240px; --code-width: 560px');
     assert.equal(frame.getAttr('src'), null);
     f.app.dispose();
 });
@@ -184,7 +219,8 @@ test('gallery themes reach owned frames only; disposal restores the document the
     assert.equal(messages.length, before);
     f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message',
         {data: {type: THEME_READY}, source: f.get('frame-e01').contentWindow}));
-    assert.equal(messages.length, before + 1);
+    assert.equal(messages.length, before + 2);
+    assert.equal(messages.at(-2).data.type, SETTINGS_SET);
     f.app.dispose();
     assert.equal(f.document.documentElement.hasAttribute('data-theme'), false);
 });
@@ -194,7 +230,7 @@ test('a rebuilt gallery can reattach page behavior without resetting Source stat
     f.get('open-e01').click(); change(f, 'index-theme', 'dark');
     change(f, 'index-appearance', 'base');
     key(f, 'index-sidebar-divider', 'ArrowRight');
-    key(f, 'divider-e01', 'ArrowLeft');
+    key(f, 'index-code-divider', 'ArrowLeft');
     f.renderer.freeze(f.root); f.renderer.unfreeze(f.root);
     // In a browser the shell's script is reinserted and runs this same attachment.
     mountGallery(f.renderer, f.root, () => {});
@@ -202,7 +238,7 @@ test('a rebuilt gallery can reattach page behavior without resetting Source stat
     assert.equal(f.get('index-theme').value, 'dark');
     assert.equal(f.get('index-appearance').value, 'base');
     assert.equal(f.get('index-sidebar-divider').getAttribute('aria-valuenow'), '250');
-    assert.equal(f.get('divider-e01').getAttribute('aria-valuenow'), '60');
+    assert.equal(f.get('index-code-divider').getAttribute('aria-valuenow'), '430');
     f.get('open-e02').click(); f.get('tab-e01').click();
     assert.equal(f.get('panel-e01').hidden, false);
     f.app.dispose();
@@ -222,7 +258,7 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     const style = child.document.querySelector('style');
     assert.ok(style.textContent.includes('font-size: 13px'));
     assert.ok(app.src.renderer.elements.get(style), 'preview CSS belongs to Source');
-    assert.deepEqual(ready, [{data: {type: THEME_READY}, target: '*'}]);
+    assert.deepEqual(ready, [{data: {type: THEME_READY, devices: []}, target: '*'}]);
     const message = (source, theme, appearance = 'compact') => child.dispatchEvent(new child.MessageEvent('message',
         {source, data: {type: THEME_SET, theme, appearance}}));
     message(new JSDOM('').window, 'dark'); message(parent, 'system');
@@ -230,11 +266,16 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     message(parent, 'dark');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'base');
-    assert.equal(style.media, 'not all');
+    assert.equal(style.textContent, '');
     message(parent, 'light', 'invalid');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'compact');
-    assert.equal(style.media, 'all');
+    assert.match(style.textContent, /font-size: 13px/);
+    message(parent, 'light', 'mimi');
+    assert.match(style.textContent, /--gramlot-field-height: 18px/);
+    message(parent, 'dark', 'joanna');
+    assert.match(style.textContent, /--gramlot-field-height: 20px/);
+    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 18px/);
     node.parentBag.popNode(node.label);
     assert.equal(child.document.querySelector('style'), null);
     message(parent, 'light');
@@ -335,7 +376,7 @@ test('every shared example displays exactly its exported Logic class, never the 
             shown++;
         } else assert.equal(excerpt, null, example.key);
     }
-    assert.equal(shown, 11);
+    assert.equal(shown, 13);
 });
 
 test('source excerpt keeps method bodies intact and suppresses an empty Logic tab', () => {
@@ -363,12 +404,12 @@ test('appearance and color are independent and update the existing frame without
     change(f, 'index-theme', 'dark');
     change(f, 'index-appearance', 'base');
     assert.equal(f.source('index-appearance').getAttr('value'), 'base');
-    assert.equal(f.document.querySelector('style').media, 'not all');
+    assert.equal(f.document.querySelector('style').textContent, '');
     assert.deepEqual(messages.at(-1), {type: THEME_SET, theme: 'dark', appearance: 'base'});
     assert.equal(f.get('frame-e01'), frame);
     assert.equal(frame.getAttribute('src'), 'e01');
     change(f, 'index-appearance', 'compact');
-    assert.equal(f.document.querySelector('style').media, 'all');
+    assert.match(f.document.querySelector('style').textContent, /font-size: 13px/);
     assert.equal(f.document.documentElement.getAttribute('data-theme'), 'dark');
     f.app.dispose();
     assert.equal(f.document.querySelector('style'), null);
@@ -378,7 +419,7 @@ test('sidebar separator uses Source, clamps keyboard changes and releases a remo
     const f = fixture();
     const handle = f.get('index-sidebar-divider');
     key(f, handle.id, 'ArrowRight');
-    assert.equal(f.source('gallery').getAttr('style'), '--sidebar-width: 250px');
+    assert.equal(f.source('gallery').getAttr('style'), '--sidebar-width: 250px; --code-width: 420px');
     key(f, handle.id, 'Home'); key(f, handle.id, 'ArrowLeft');
     assert.equal(handle.getAttribute('aria-valuenow'), '120');
     key(f, handle.id, 'End'); key(f, handle.id, 'ArrowRight');
@@ -395,7 +436,7 @@ test('sidebar separator uses Source, clamps keyboard changes and releases a remo
     f.root.parentBag.popNode(f.root.label);
     assert.equal(captured, false);
     f.document.dispatchEvent(pointer('pointermove', 200));
-    assert.equal(f.root.getAttr('style'), '--sidebar-width: 320px');
+    assert.equal(f.root.getAttr('style'), '--sidebar-width: 320px; --code-width: 420px');
     f.app.dispose();
 });
 
@@ -407,13 +448,13 @@ test('theme, color and sidebar preference survive a fresh gallery and reach new 
     change(f, 'index-theme', 'dark');
     key(f, 'index-sidebar-divider', 'End');
     const saved = f.document.defaultView.localStorage.getItem(storageKey);
-    assert.deepEqual(JSON.parse(saved), {theme: 'dark', appearance: 'base', sidebarWidth: 460});
+    assert.deepEqual(JSON.parse(saved), {theme: 'dark', appearance: 'base', sidebarWidth: 460, codeWidth: 420, navigationVisible: true, codeVisible: true});
     f.app.dispose();
     const restored = fixture(undefined, window => window.localStorage.setItem(storageKey, saved));
     assert.equal(restored.get('index-appearance').value, 'base');
     assert.equal(restored.get('index-theme').value, 'dark');
     assert.equal(restored.get('index-sidebar-divider').getAttribute('aria-valuenow'), '460');
-    assert.equal(restored.document.querySelector('style').media, 'not all');
+    assert.equal(restored.document.querySelector('style').textContent, '');
     const messages = [];
     restored.get('open-e01').click();
     restored.get('frame-e01').contentWindow.postMessage = data => messages.push(data);
@@ -496,4 +537,84 @@ test('built frame inspector uses the example runtime classes without another cor
         assert.equal(closed, true);
         assert.equal(inspector.isConnected, false);
     } finally { app.dispose(); window.close(); }
+});
+
+
+test('settings persist, accept owned frames only and release their listener', () => {
+    const f = fixture();
+    assert.equal(f.get('gallery-settings').getAttribute('popover'), 'auto');
+    assert.equal(f.get('index-appearance').closest('[popover]').id, 'gallery-settings');
+    const frame = f.get('frame-e01');
+    f.get('open-e01').click();
+    const messages = [];
+    frame.contentWindow.postMessage = data => messages.push(data);
+    change(f, 'gallery-label-position', 'R');
+    assert.deepEqual(messages.at(-1), {type: SETTINGS_SET, labelPosition: 'R', touchMode: 'off'});
+    assert.equal(f.source('gallery-label-position').getAttr('value'), 'R');
+    const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.settings:/py/index');
+    f.behavior.dispose();
+    change(f, 'gallery-label-position', 'L');
+    assert.equal(messages.at(-1).labelPosition, 'R');
+    const restored = fixture(undefined, win => win.localStorage.setItem('gramlot.gallery.settings:/py/index', saved));
+    assert.equal(restored.get('gallery-label-position').value, 'R');
+    restored.app.dispose(); f.app.dispose();
+});
+
+test('frame settings override Source label positions and restore authored pointers', () => {
+    const parent = new JSDOM('<iframe></iframe>').window;
+    const child = parent.document.querySelector('iframe').contentWindow;
+    child.document.body.innerHTML = '<main id="gramlot-root"></main>';
+    const builder = new GramlotBuilder();
+    builder.root.div({id: 'labelled', lbl: 'Example', lbl_position: '^position', lbl_width: '^labelWidth', box_padding: '8px', box_c_width: '^fieldWidth'});
+    builder.root.script({id: 'settings-owner'});
+    builder.data.setItem('position', 'TL');
+    const app = new Gramlot({document: child.document, transport: false}).src.startSource(builder.source);
+    const renderer = app.src.renderer;
+    const owner = renderer.elements.get(child.document.getElementById('settings-owner')).node;
+    const node = renderer.elements.get(child.document.getElementById('labelled')).node;
+    mountFrameSettings(renderer, owner);
+    const message = (source, labelPosition) => child.dispatchEvent(new child.MessageEvent('message', {source, data: {type: SETTINGS_SET, labelPosition}}));
+    message(new JSDOM('').window, 'R'); message(parent, 'bad');
+    assert.equal(node.getAttr('lbl_position'), '^position');
+    message(parent, 'R'); assert.equal(node.getAttr('lbl_position'), 'R');
+    message(parent, 'L');
+    assert.equal(node.getAttr('box_l_text_align'), null);
+    assert.equal(node.getAttr('lbl_width'), '^labelWidth');
+    assert.equal(node.getAttr('box_grid_template_columns'), null);
+    assert.equal(node.getAttr('box_padding'), '8px');
+    assert.equal(node.getAttr('box_c_width'), '^fieldWidth');
+    message(parent, 'L'); // Repeated settings must not replace the authored snapshot.
+    message(parent, 'BC');
+    assert.equal(node.getAttr('box_padding'), '8px');
+    assert.equal(node.getAttr('box_c_width'), '^fieldWidth');
+    assert.equal(node.getAttr('box_grid_template_columns'), null);
+    assert.equal(node.getAttr('lbl_width'), '^labelWidth');
+    assert.equal(node.getAttr('width'), null);
+    message(parent, 'L'); message(parent, 'example');
+    assert.equal(node.getAttr('box_padding'), '8px');
+    assert.equal(node.getAttr('box_c_width'), '^fieldWidth');
+    assert.equal(node.getAttr('lbl_position'), '^position');
+    message(parent, 'BC'); owner.parentBag.popNode(owner.label);
+    assert.equal(node.getAttr('lbl_position'), '^position');
+    message(parent, 'R'); assert.equal(node.getAttr('lbl_position'), '^position');
+    app.dispose();
+});
+
+
+test('preview modes retain the iframe, source URL and per-example choice', () => {
+    const f = fixture();
+    f.get('open-e01').click();
+    const frame = f.get('frame-e01'), source = frame.src, messages = [];
+    frame.contentWindow.postMessage = data => messages.push(data);
+    f.get('preview-mobile-e01').click();
+    assert.equal(f.get('preview-stage-e01').getAttribute('data-preview-mode'), 'mobile');
+    assert.equal(f.get('preview-mobile-e01').getAttribute('aria-pressed'), 'true');
+    assert.equal(messages.at(-1).touchMode, 'on');
+    f.get('open-e02').click(); f.get('tab-e01').click();
+    assert.equal(f.get('frame-e01'), frame); assert.equal(frame.src, source);
+    assert.equal(f.get('preview-mobile-e01').getAttribute('aria-pressed'), 'true');
+    f.get('preview-normal-e01').click();
+    assert.equal(messages.at(-1).touchMode, 'off');
+    assert.equal(f.get('frame-e01'), frame); assert.equal(frame.src, source);
+    f.app.dispose();
 });

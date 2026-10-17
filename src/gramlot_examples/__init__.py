@@ -4,11 +4,12 @@ import json
 import re
 from importlib.resources import files
 from pathlib import Path
+from .gallery.collections import collections as gallery_collections
 
 PACKAGE = Path(__file__).resolve().parent
 MEDIA_TYPES = {".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".json": "application/json"}
 SUFFIXES = (".py", ".js", ".css", ".md", "_aux.js")
-DIST = ("gallery.js", "frame.js", "notices.json", "LICENSE", "NOTICE")
+DIST = ("gallery.js", "frame.js", "inputs.js", "layout.js", "notices.json", "LICENSE", "NOTICE")
 
 
 def media_type(path, script=False):
@@ -84,7 +85,7 @@ def build_gallery(catalogs=()):
                 source = folder / f"{example['folder']}{suffix}"
                 if source.is_file():
                     assets[f"/pages/{family['key']}/{source.name}"] = {"file": source, "type": media_type(source)}
-    return {"families": families, "routes": routes, "assets": assets}
+    return {"families": families, "routes": routes, "assets": assets, "collections": gallery_collections()}
 
 
 __all__ = ["build_gallery"]

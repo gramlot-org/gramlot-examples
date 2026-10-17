@@ -42,7 +42,10 @@ class GalleryPageTests(unittest.TestCase):
         self.assertLess(nodes.index(appearance), nodes.index(color))
         self.assertEqual(appearance.attr["value"], "compact")
         self.assertEqual(color.attr["value"], "light")
-        self.assertEqual([node.attr["value"] for node in appearance.value.nodes], ["base", "compact"])
+        self.assertEqual([node.attr["value"] for node in appearance.value.nodes], ["base", "compact", "mimi", "joanna"])
+        self.assertEqual(controls["gallery-settings"].attr["popover"], "auto")
+        self.assertEqual(controls["gallery-settings-toggle"].attr["popovertarget"], "gallery-settings")
+        self.assertEqual(controls["gallery-label-position"].attr["value"], "example")
         divider = controls["index-sidebar-divider"]
         self.assertEqual(divider.attr["role"], "separator")
         self.assertEqual(divider.attr["aria_controls"], "index-sidebar")

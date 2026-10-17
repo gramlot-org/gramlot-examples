@@ -12,8 +12,12 @@ await mkdir(output, {recursive: true});
 // without extra runtime requests or a second authored copy of the theme rules.
 const require = createRequire(import.meta.url);
 const compactStyle = await readFile(require.resolve('@gramlot/gramlot/themes/gramlot-compact/theme.css'), 'utf8');
+const appearanceStyles = {base:'', compact:compactStyle};
+for (const name of ['mimi', 'joanna']) {
+    appearanceStyles[name] = compactStyle + '\n' + await readFile(require.resolve(`@gramlot/gramlot/themes/${name}/theme.css`), 'utf8');
+}
 await writeFile(new URL('theme-styles.js', output),
-    `// Generated from Gramlot Compact; edit the core theme, not this file.\nexport const compactStyle = ${JSON.stringify(compactStyle)};\n`);
+    `// Generated from canonical Gramlot themes.\nexport const appearanceStyles = ${JSON.stringify(appearanceStyles)};\n`);
 const result = await build({
     entryPoints: {
         gallery: fileURLToPath(new URL('browser/entry.js', directory)),
@@ -54,3 +58,8 @@ for (const name of ['LICENSE', 'NOTICE']) {
     await copyFile(new URL(`../${name}`, import.meta.url), new URL(name, output));
 }
 console.log('Gallery browser scripts built.');
+
+// Independent collection module: no second runtime, only descriptors and controls.
+for (const name of ['inputs', 'layout']) await build({entryPoints: [require.resolve(`@gramlot/gramlot/components/${name}`)],
+    outfile: fileURLToPath(new URL(`${name}.js`, output)), bundle: true, format: 'esm',
+    platform: 'browser', target: 'es2022', legalComments: 'inline'});

@@ -1,3 +1,4 @@
+import {mountFrameSettings} from './gallery-settings.js';
 import {mountFrameInspector} from './frame-inspector.js';
 import {mountFrameTheme} from './frame-theme.js';
 
@@ -7,5 +8,6 @@ queueMicrotask(() => {
     const record = renderer.elements.get(script);
     if (!record || renderer.disposed || renderer.records.get(record.node) !== record) return;
     mountFrameInspector(renderer, record.node);
+    mountFrameSettings(renderer, record.node);
     mountFrameTheme(renderer, record.node);
 });

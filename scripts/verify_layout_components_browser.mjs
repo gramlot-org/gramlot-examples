@@ -1,0 +1,67 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+const [entry,...urls]=process.argv.slice(2);
+const {chromium,webkit}=await import(pathToFileURL(entry));
+for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
+ const browser=await engine.launch({headless:true});
+ try { for(const url of urls) {
+  const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(url);
+  await page.locator('details').filter({has:page.locator('#open-w19')}).locator('summary').first().click();
+  const open=async key=>{await page.locator(`#open-${key}`).click();const f=await (await page.locator(`#frame-${key}`).elementHandle()).contentFrame();await f.waitForFunction(()=>window.gramlot?.state==='started');return f;};
+  let frame=await open('w19');
+  const input=frame.locator('#first-name input');await input.fill('Grace');
+  // Change layout through Data without blurring/committing the focused draft.
+  await frame.evaluate(()=>window.gramlot.data.setItem('columns','1'));
+  assert.equal(await input.inputValue(),'Grace');
+  assert.equal(await frame.evaluate(()=>window.gramlot.data.getItem('customer.name')),'Ada');
+  assert.equal(await input.evaluate(el=>el.getRootNode().activeElement===el),true);
+  await input.press('Tab');assert.equal(await frame.evaluate(()=>window.gramlot.data.getItem('customer.name')),'Grace');
+  await page.locator('#gallery-settings-toggle').click();
+  await page.locator('#index-appearance').selectOption('mimi');
+  await page.locator('#index-theme').selectOption('dark');
+  await page.locator('#gallery-label-position').selectOption('example');
+  await page.locator('[aria-label="Close settings"]').click();
+  await page.locator('#preview-mobile-w19').click();
+  await frame.locator('html[data-gramlot-touch=on]').waitFor();
+  assert.equal(await input.inputValue(),'Grace');
+  await page.locator('#preview-normal-w19').click();
+  frame=await open('w20');
+  await frame.evaluate(()=>{window.copies=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>window.copies.push(text)}});});
+  await frame.getByRole('button',{name:'Copy TYTX',exact:true}).click();
+  const wire=await frame.evaluate(()=>window.copies[0]);assert(wire.includes('::N'));assert(wire.includes('::D'));assert(!wire.includes('This text is not copied'));
+  await frame.getByRole('button',{name:'Choose copy format'}).click();
+  await frame.getByRole('button',{name:'Copy JSON',exact:true}).click();
+  const json=JSON.parse(await frame.evaluate(()=>window.copies[1]));assert.equal(json.name,'Ada');assert.equal(json.enabled,true);
+  await page.screenshot({path:`/tmp/groupbox-${name}-${new URL(url).port||'static'}.png`});
+  await page.locator('#preview-mobile-w20').click();
+  await frame.locator('html[data-gramlot-touch=on]').waitFor();
+  const group=frame.locator('#customer-group');
+  const fits=await group.evaluate(el=>({width:el.getBoundingClientRect().width,viewport:innerWidth,scroll:document.documentElement.scrollWidth}));
+  assert(fits.scroll<=fits.viewport+1,JSON.stringify(fits));
+  await page.screenshot({path:`/tmp/groupbox-mobile-${name}-${new URL(url).port||'static'}.png`});
+  frame=await open('w21');
+  const toggle=frame.getByRole('switch',{name:'Notifications'});
+  assert.equal(await toggle.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(128, 0, 128)');
+  await frame.evaluate(()=>window.gramlot.data.setItem('switch_color','#ff0000'));
+  assert.equal(await toggle.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(255, 0, 0)');
+  await toggle.focus();await page.keyboard.press('Space');
+  assert.equal(await frame.locator('#notifications-check input').isChecked(),false);
+  assert.equal(await frame.evaluate(()=>window.gramlot.data.getItem('enabled')),false);
+  const offColor=await toggle.evaluate(el=>getComputedStyle(el).backgroundColor);
+  await frame.evaluate(()=>window.gramlot.data.setItem('switch_color','purple'));
+  assert.equal(await toggle.evaluate(el=>getComputedStyle(el).backgroundColor),offColor);
+  await frame.evaluate(()=>window.gramlot.data.setItem('switch_color',null));
+  await toggle.check();
+  const themeColor=await toggle.evaluate(el=>getComputedStyle(el).backgroundColor);
+  await toggle.uncheck();
+  await frame.getByRole('switch',{name:'Read only',exact:true}).check();
+  assert.equal(themeColor,await frame.getByRole('switch',{name:'Read only',exact:true}).evaluate(el=>getComputedStyle(el).backgroundColor));
+  await toggle.click();assert.equal(await toggle.isChecked(),false);
+  assert.deepEqual(errors,[]);
+  await page.screenshot({path:`/tmp/switch-${name}-${new URL(url).port||'static'}.png`});
+  console.log(`PASS ${name} ${url}: shared labels, draft/focus retention, TYTX/JSON actions, responsive group, switch keyboard/binding/readonly`);
+  await page.close();
+ }} finally{await browser.close();}
+}

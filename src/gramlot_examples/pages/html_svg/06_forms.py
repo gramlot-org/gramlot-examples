@@ -53,9 +53,9 @@ class Page(BasePage):
         options.html_label("Attachment", for_="attachment")
         options.input(type="file", id="attachment", name="attachment")
         actions = form.div(class_="form-actions")
-        actions.button("Button without an action", type="button")
-        actions.button("Reset values", type="reset")
-        actions.button("Submit unavailable", type="submit", disabled=True)
+        actions.html_button("Button without an action", type="button")
+        actions.html_button("Reset values", type="reset")
+        actions.html_button("Submit unavailable", type="submit", disabled=True)
 
     def field(self, parent, label, key, kind, **attrs):
         parent.html_label(label, for_=key)

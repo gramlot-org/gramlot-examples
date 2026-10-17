@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.2.16.
+Current release: 0.3.0.
 
 [Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
 include every lesson, its Python and JavaScript source, and the gallery guide.
@@ -30,17 +30,20 @@ Choose [packaged or source-checkout updates](docs/010-gallery.md#ge-010-050). A 
 
 ## Pages
 
-[`src/gramlot_examples/pages/`](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/README.md) holds three
+[`src/gramlot_examples/pages/`](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/README.md) holds four
 families. Each example is a Python page and its JavaScript equivalent, with a
 same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: twenty-one pages with formulas, controllers, named logic, events, the
+- `controllers/`: twenty-two pages with formulas, controllers, named logic, events, the
   end-to-end story, `dataRpc` calls to the endpoints of the page, `remote` fragments and
-  `dataRemote` values (`c01`–`c21`). Later lessons introduce topics, authored references, native ask,
+  `dataRemote` values (`c01`–`c22`). Later lessons introduce topics, authored references, native ask,
   parent/child messages, plain HTML buttons and delayed Gramlot clicks. The package
-  requires core 0.2.20 or later; each lesson states which features it uses.
+  requires the current core release; each lesson states which features it uses.
+
+- `components/`: twenty-five lessons for inputs, labelbox, formlet, group copy,
+  command buttons and field validation (`w01`–`w25`), with compact touch previews.
 
 Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
 `Logic` from the module beside it.

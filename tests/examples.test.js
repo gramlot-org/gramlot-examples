@@ -1,3 +1,6 @@
+import inputs from '@gramlot/gramlot/components/inputs';
+import layout from '@gramlot/gramlot/components/layout';
+import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import test from 'node:test';
@@ -22,16 +25,23 @@ async function mount(family, example) {
     const virtualConsole = new VirtualConsole();
     virtualConsole.on('jsdomError', error => errors.push(error));
     const dom = new JSDOM('<main id="gramlot-root"></main>', {url: `https://gallery.test/js/${example.key}`,
-        virtualConsole});
+        virtualConsole, pretendToBeVisual:true});
+    // Geometry is qualified in real browsers; JSDOM needs these layout surfaces.
+    dom.window.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} };
+    Object.defineProperty(dom.window.document, 'fonts', {value:new dom.window.EventTarget()});
+    // jsdom has no native popover API; real positioning is covered in browser checks.
+    dom.window.HTMLElement.prototype.showPopover = function () {};
+    dom.window.HTMLElement.prototype.hidePopover = function () {};
+
     const {Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
-    const server = new GramlotFileServer(fileURLToPath(folder(family.key)));
+    const server = new GramlotFileServer(fileURLToPath(folder(family.key)), {collections:buildGallery().collections});
     const {pageId} = await server.registerPage(`/${example.folder}`);
     const calls = [];
     const transport = {call(text) {
         calls.push(JSON.parse(text));
         return server.call(text);
     }};
-    const app = new Gramlot({document: dom.window.document, pageId, transport});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout]});
     app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
@@ -49,6 +59,67 @@ const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    async w25({byId, data: pageData, window}) {
+        const data = path => pageData('profile.' + path);
+        const edit = (id, value) => {
+            const input = byId(id).control; input.value = value;
+            for (const type of ['input', 'change']) input.dispatchEvent(new window.Event(type, {bubbles:true}));
+        };
+        edit('code','abc'); assert.equal(data('code'),'ABC');
+        edit('code','123'); assert.equal(data('code'),'ABC');
+        edit('email','invalid'); assert.equal(data('email'),'invalid');
+        edit('nickname','admin'); assert.equal(data('nickname'),'Ada');
+        edit('nickname','Eve'); assert.equal(data('validation_status'),'Accepted: Eve');
+        edit('remote-name','taken'); await tick(30); assert.equal(data('remote_name'),'AVAILABLE');
+        edit('remote-name','new'); await tick(30); assert.equal(data('remote_name'),'NEW');
+    },
+    w18({byId, data, window}) {
+        const name=byId('name'), input=name.control;
+        input.value='A'; input.dispatchEvent(new window.Event('change',{bubbles:true}));
+        assert.equal(data('name'),'Ada'); assert.equal(name.message.hidden,false);
+        input.value='Grace'; input.dispatchEvent(new window.Event('change',{bubbles:true}));
+        assert.equal(data('name'),'Grace'); assert.equal(name.message.hidden,true);
+    },
+    w16({byId, data}) {
+        const box=(id,code)=>byId(id).control.querySelector(`input[value="${code}"]`);
+        assert.equal(data('channels'),'email,push');
+        box('channels','sms').click(); assert.equal(data('channels'),'email,push,sms');
+        assert.equal(box('channels-copy','sms').checked,true);
+        for(const code of ['email','push','sms']) box('channels-copy',code).click();
+        assert.equal(data('channels'),null);
+        assert.equal([...byId('channels').control.querySelectorAll('input')].some(box=>box.checked),false);
+    },
+    async w15({byId, data, app}) {
+        await tick();
+        assert.equal(byId('choice').control.value, 'Rome');
+        // No popup API exists in jsdom; browser tests cover the actual query gesture.
+        app.data.setItem('choice', 'New city');
+        assert.equal(data('choice'), 'New city');
+        assert.equal(byId('choice-copy').control.value, 'New city');
+    },
+    async w13({byId, data, app}) {
+        await tick();
+        assert.equal(byId('choice').control.value, 'Express');
+        assert.equal(data('choice'), 'express');
+        app.data.setItem('choice', 'pickup'); await tick();
+        assert.equal(byId('choice-copy').control.value, 'Pick up');
+    },
+    async w14({byId, data, app}) {
+        await tick();
+        const samples = data('samples');
+        assert.equal(samples.getNodes().length, 100);
+        const first = samples.getItem('item_001.name');
+        assert.match(first, /^Sample 001 — value \d+$/);
+        assert.equal(byId('choice').control.value, first);
+        // The callback uses ordinary Data access; repeated searches preserve the dataset.
+        const reader = {GET: path => app.data.getItem(path)};
+        const one = app.logic.searchChoices(reader, {_querystring: 'Sample 02'});
+        const two = app.logic.searchChoices(reader, {_querystring: 'Sample 02'});
+        assert.equal(one.rows.length, 10); assert.deepEqual(one, two);
+        app.data.setItem('choice', 'item_025'); await tick();
+        assert.equal(byId('choice-copy').control.value, samples.getItem('item_025.name'));
+        assert.equal(samples.getItem('item_001.name'), first);
+    },
     c22({app, byId, edit, click, data}) {
         assert.equal(byId('width-preview').style.width, '38px');
         edit('width-input', '80', 'input');
@@ -487,10 +558,11 @@ CHECKS.c15 = async ({byId, click, data}) => {
 CHECKS.c16 = async ({byId, edit}) => {
     assert.equal(byId('greeting').textContent, 'Hello, Ada');
     assert.equal(byId('card').title, 'Customer: Ada');
-    assert.equal(byId('card').hasAttribute('customer'), false);
+    assert.equal(byId('card').getAttribute('customer'), 'Ada');
     edit('name', 'Grace', 'input');
     assert.equal(byId('greeting').textContent, 'Hello, Grace');
     assert.equal(byId('card').title, 'Customer: Grace');
+    assert.equal(byId('card').getAttribute('customer'), 'Grace');
     edit('name', '', 'input'); assert.equal(byId('greeting').textContent, '');
     assert.equal(byId('preview').getAttribute('sandbox'), '');
     edit('html', '<h2>Preview two</h2>', 'input');
@@ -529,7 +601,7 @@ CHECKS.c17 = async ({window, app, byId, edit, click, data}) => {
 };
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);

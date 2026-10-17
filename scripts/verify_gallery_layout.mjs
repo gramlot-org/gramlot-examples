@@ -1,0 +1,57 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+const [playwrightEntry, ...urls] = process.argv.slice(2);
+if (!playwrightEntry || !urls.length) throw new Error('Usage: verify_gallery_layout.mjs PLAYWRIGHT_ENTRY URL...');
+const {chromium, webkit} = await import(pathToFileURL(playwrightEntry));
+for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]){
+ const browser=await engine.launch({headless:true});
+ try {for(const url of urls){
+  const page=await browser.newPage({viewport:{width:1400,height:900}}), errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(url);
+  await page.getByText('Input components',{exact:true}).first().click();
+  await page.getByRole('link',{name:'Textbox and labelbox',exact:true}).click();
+  const field=page.frameLocator('#frame-w01').locator('#customer input');
+  await field.fill('Retained value');
+  await page.locator('#index-code').waitFor({state:'visible'});
+  const handle=page.locator('#index-code-divider'),code=page.locator('#index-code');
+  const before=(await code.boundingBox()).width, h=await handle.boundingBox();
+  await page.mouse.move(h.x+h.width/2,h.y+100);await page.mouse.down();
+  await page.mouse.move(h.x-100,h.y+100,{steps:8});await page.mouse.up();
+  const wider=(await code.boundingBox()).width;assert.ok(wider>before+90,`${before} -> ${wider}`);
+  const moved=await handle.boundingBox();
+  await page.mouse.move(moved.x+4,moved.y+100);await page.mouse.down();
+  await page.mouse.move(moved.x+100,moved.y+100,{steps:8});await page.mouse.up();
+  assert.ok((await code.boundingBox()).width<wider-85);
+  const nav=await page.locator('#index-sidebar').boundingBox(), right=await code.boundingBox();
+  assert.equal(nav.y,right.y);assert.equal(nav.height,right.height);
+  assert.ok(Math.abs(right.y-(await page.locator('.gallery-toolbar').boundingBox()).height)<2);
+  const metrics=await page.locator('#code-panel-w01').evaluate(e=>{const s=getComputedStyle(e);return {font:parseFloat(s.fontSize),pad:parseFloat(s.paddingRight),left:parseFloat(s.paddingLeft)};});
+  assert.equal(metrics.font,11);assert.ok(metrics.pad>=12&&metrics.left>=10);
+  const preBounds=await page.locator('#code-panel-w01').boundingBox();
+  assert.ok(right.x+right.width-preBounds.x-preBounds.width>=8, 'scrolling code stays inset from the outer edge');
+  await page.locator('#index-code-toggle').click();await page.locator('#index-navigation-toggle').click();
+  assert.equal(await code.isVisible(),false);assert.equal(await page.locator('#index-sidebar').isVisible(),false);
+  assert.ok((await page.locator('.index-main').boundingBox()).width>=1399);
+  await page.locator('#index-code-toggle').click();await page.locator('#index-navigation-toggle').click();
+  assert.equal(await field.inputValue(),'Retained value');
+  await page.locator('#tab-intro').click();assert.equal(await code.isVisible(),false);
+  await page.locator('#tab-w01').click();assert.equal(await code.isVisible(),true);
+  assert.equal(await field.inputValue(),'Retained value');
+  await handle.focus();await page.keyboard.press('ArrowLeft');
+  const remembered=await handle.getAttribute('aria-valuenow');
+  await page.locator('#index-navigation-toggle').click();await page.locator('#index-code-toggle').click();
+  await page.reload();await page.waitForFunction(()=>document.getElementById('gallery')?.hasAttribute('data-code-visible'));
+  assert.equal(await page.locator('#index-sidebar').isVisible(),false);
+  await page.locator('#index-navigation-toggle').click();
+  await page.getByText('Input components',{exact:true}).first().click();
+  await page.getByRole('link',{name:'Textbox and labelbox',exact:true}).click();
+  assert.equal(await code.isVisible(),false);
+  await page.locator('#index-code-toggle').click();
+  assert.equal(await handle.getAttribute('aria-valuenow'),remembered);
+  await page.screenshot({path:`/tmp/gramlot-layout-${name}-${new URL(url).port||'static'}.png`});
+  assert.deepEqual(errors,[]);
+  console.log(`PASS ${name} ${url}: full-height sidebars, resize, toggles, retained frame, persisted widths/visibility, typography`);
+  await page.close();
+ }}finally{await browser.close();}
+}

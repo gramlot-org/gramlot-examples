@@ -20,7 +20,7 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
         for key, route in build_gallery()["routes"].items():
             with self.subTest(key=key):
                 page = route["page"]
-                server = GramlotFileServer(str(page.parent))
+                server = GramlotFileServer(str(page.parent), collections=build_gallery()["collections"])
                 opened = await server.open_page(f"/{page.stem}")
                 self.assertRegex(opened.html, re.compile(r"<title>[^<]+</title>"))
                 if key != "index":
@@ -34,7 +34,7 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_protected_source_is_omitted_while_hidden_source_is_delivered(self):
         page = build_gallery()["routes"]["c11"]["page"]
-        server = GramlotFileServer(str(page.parent))
+        server = GramlotFileServer(str(page.parent), collections=build_gallery()["collections"])
         opened = await server.open_page(f"/{page.stem}")
         response = await call(server, opened.page_id, "source", "main")
         self.assertNotIn("error", response)
@@ -47,6 +47,8 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
     async def test_endpoints_answer_as_their_readme_says(self):
         # The arguments are the ones the dataRpc of each page sends, author attributes and extra keys included.
         cases = {
+            "w25 accepted": ("check_name", {"value": "newname"}, {"value": {"value": "NEWNAME"}}),
+            "w25 rejected": ("check_name", {"value": "taken"}, {"value": {"errorcode": "reserved", "message": "That name is reserved."}}),
             "c08": ("quote", {"quantity": 2, "large": False, "gift": False, "button_counter": 1}, {"value": 2}),
             "c08 options": ("quote", {"quantity": 2, "large": True, "gift": True}, {"value": 11}),
             "c08 invalid": ("quote", {"quantity": 0, "large": True, "gift": True},
@@ -66,7 +68,7 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
         for case, (name, params, expected) in cases.items():
             with self.subTest(case=case):
                 page = routes[case.split()[0]]["page"]
-                server = GramlotFileServer(str(page.parent))
+                server = GramlotFileServer(str(page.parent), collections=build_gallery()["collections"])
                 opened = await server.open_page(f"/{page.stem}")
                 response = await call(server, opened.page_id, "data", name, params)
                 self.assertEqual({key: response[key] for key in expected}, expected)
@@ -82,7 +84,7 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
         for case, (name, params, texts) in cases.items():
             with self.subTest(case=case):
                 page = routes[case]["page"]
-                server = GramlotFileServer(str(page.parent))
+                server = GramlotFileServer(str(page.parent), collections=build_gallery()["collections"])
                 opened = await server.open_page(f"/{page.stem}")
                 response = await call(server, opened.page_id, "source", name, params)
                 self.assertNotIn("error", response)

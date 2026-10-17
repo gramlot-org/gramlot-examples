@@ -58,7 +58,7 @@ class Page(BasePage):
         options.input(type="text", id="unavailable", value="Disabled", disabled=True)
         options.html_label("Attachment", for_="attachment")
         options.input(type="file", id="attachment", name="attachment")
-        form.button("Submit unavailable", type="submit", disabled=True)
+        form.html_button("Submit unavailable", type="submit", disabled=True)
 
         record = layout.aside(class_="card stack")
         record.h2("The Data record")

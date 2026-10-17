@@ -51,9 +51,9 @@ export class Page extends BasePage {
         options.html_label('Attachment', {for: 'attachment'});
         options.input({type: 'file', id: 'attachment', name: 'attachment'});
         const actions = form.div({class: 'form-actions'});
-        actions.button('Button without an action', {type: 'button'});
-        actions.button('Reset values', {type: 'reset'});
-        actions.button('Submit unavailable', {type: 'submit', disabled: true});
+        actions.html_button('Button without an action', {type: 'button'});
+        actions.html_button('Reset values', {type: 'reset'});
+        actions.html_button('Submit unavailable', {type: 'submit', disabled: true});
     }
 
     field(parent, label, key, kind, attrs = {}) {

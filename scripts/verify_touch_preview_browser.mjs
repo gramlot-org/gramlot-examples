@@ -1,0 +1,67 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+const [entry,...urls]=process.argv.slice(2);
+const {chromium,webkit}=await import(pathToFileURL(entry));
+for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
+ const browser=await engine.launch({headless:true});
+ let autoUrl;
+ try {for(const url of urls) {
+  const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(url);await page.locator('#gallery-settings-toggle').click();
+  await page.locator('#index-appearance').selectOption('mimi');
+  await page.locator('[aria-label="Close settings"]').click();
+  await page.locator('details').filter({has:page.locator('#open-w18')}).locator('summary').first().click();
+  await page.locator('#open-w18').click();
+  const preview=page.frameLocator('#frame-w18'), input=preview.locator('#name input');
+  await input.fill('Grace');await input.press('Tab');
+  await preview.locator('#accepted-name').filter({hasText:'Grace'}).waitFor();
+  await input.fill('A');await input.press('Tab');
+  const iframe=await page.locator('#frame-w18').elementHandle(),frame=await iframe.contentFrame();
+  autoUrl ??= frame.url();
+  await frame.evaluate(()=>{window.previewSnapshot={app:window.gramlot,data:window.gramlot.data,source:window.gramlot.src.source,input:document.querySelector('#name gramlot-textbox')};});
+  const normalHeight=(await input.boundingBox()).height;
+  assert(normalHeight<44,`compact normal height ${normalHeight}`);
+  await page.locator('#preview-mobile-w18').click();
+  await preview.locator('html[data-gramlot-touch=on]').waitFor();
+  assert((await page.locator('#frame-w18').boundingBox()).width<=392);
+  assert((await input.boundingBox()).height>=44);
+  assert.equal(await input.evaluate(el=>getComputedStyle(el).fontSize),'16px');
+  assert.equal(await input.inputValue(),'A');
+  assert.equal(await frame.evaluate(()=>gramlot.data.getItem('name')),'Grace');
+  assert.deepEqual(await frame.evaluate(()=>[gramlot===previewSnapshot.app,gramlot.data===previewSnapshot.data,gramlot.src.source===previewSnapshot.source]),[true,true,true]);
+  assert.deepEqual(await frame.evaluate(()=>[...gramlot.devices]),['desktop','tablet','phone']);
+  await page.locator('#gallery-settings-toggle').click();await page.locator('#index-appearance').selectOption('joanna');
+  await page.locator('[aria-label="Close settings"]').click();
+  assert((await input.boundingBox()).height>=44);
+  await page.locator('#preview-normal-w18').click();await preview.locator('html[data-gramlot-touch=off]').waitFor();
+  assert((await input.boundingBox()).height<44);assert.equal(await input.inputValue(),'A');
+  assert.equal(await frame.evaluate(()=>gramlot.data.getItem('name')),'Grace');
+  await page.locator('#preview-mobile-w18').click();await page.screenshot({path:`/tmp/touch-${name}-${new URL(url).port||'static'}.png`});
+  await page.locator('#open-w17').click();const calendar=page.frameLocator('#frame-w17');
+  await calendar.locator('#calendar .calendar').waitFor();await page.locator('#preview-mobile-w17').click();
+  await calendar.locator('html[data-gramlot-touch=on]').waitFor();
+  assert((await calendar.locator('#calendar .calendar button').first().boundingBox()).height>=44);
+  const overflow=await calendar.locator('body').evaluate(el=>el.scrollWidth>el.ownerDocument.documentElement.clientWidth);
+  assert.equal(overflow,false,'calendar fits mobile width');
+  await page.locator('#tab-w18').click();assert.equal(await input.inputValue(),'A');
+  assert.equal(await page.locator('#preview-mobile-w18').getAttribute('aria-pressed'),'true');
+  await page.locator('#open-w09').click();const sliders=page.frameLocator('#frame-w09');
+  await sliders.locator('#level input').waitFor();await page.locator('#preview-mobile-w09').click();
+  await sliders.locator('html[data-gramlot-touch=on]').waitFor();
+  assert((await sliders.locator('#level input').boundingBox()).width>=44);
+  assert((await sliders.locator('#level-copy input').boundingBox()).height>=44);
+  assert.deepEqual(errors,[]);
+  console.log(`PASS ${name} ${url}: same iframe/Data/draft, touch sizes, themes, metadata, calendar, per-example view`);
+  await page.close();
+ }
+ const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const page=await context.newPage();await page.goto(autoUrl);
+ const input=page.locator('#name input');await input.waitFor();
+ assert.equal(await page.locator('html').getAttribute('data-gramlot-touch'),null);
+ assert.equal(await input.evaluate(el=>getComputedStyle(el).getPropertyValue('--gramlot-touch-target').trim()),'44px');
+ await page.evaluate(()=>gramlot.dom.setTouchMode('off'));
+ assert.equal(await input.evaluate(el=>getComputedStyle(el).getPropertyValue('--gramlot-touch-target').trim()),'');
+ console.log(`PASS ${name}: automatic coarse-pointer touch and explicit override`);await context.close();
+ }finally{await browser.close();}
+}

@@ -331,6 +331,162 @@
           "description": "Core 0.2.20: revisit CSS lengths, boolean state and formatted text with attribute pointer transforms."
         }
       ]
+    },
+    {
+      "key": "components",
+      "title": "Input components",
+      "examples": [
+        {
+          "key": "w01",
+          "title": "Textbox and labelbox",
+          "folder": "01_textbox",
+          "description": "Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field."
+        },
+        {
+          "key": "w02",
+          "title": "Checkbox and labelbox",
+          "folder": "02_checkbox",
+          "description": "Two checkboxes share one boolean preference. Click either caption, then disable both using the State checkbox."
+        },
+        {
+          "key": "w03",
+          "title": "RadioButtonText and labelbox",
+          "folder": "03_radio_button_text",
+          "description": "Choose one delivery option in each group. Change the column count and label position, and try the arrow keys inside a group."
+        },
+        {
+          "key": "w04",
+          "title": "Multiline text and labelbox",
+          "folder": "04_text_box_area",
+          "description": "Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection."
+        },
+        {
+          "key": "w05",
+          "title": "Password and labelbox",
+          "folder": "05_passwordbox",
+          "description": "Two password fields share a sample value. The browser masks the characters; changing either field updates the other."
+        },
+        {
+          "key": "w06",
+          "title": "Single radio buttons",
+          "folder": "06_radio_button",
+          "description": "Each radio binds its own boolean. A shared group makes the choices exclusive; a separate group stays independent."
+        },
+        {
+          "key": "w07",
+          "title": "Color and labelbox",
+          "folder": "07_colorpicker",
+          "description": "Choose a color in either picker. Both controls and the swatch follow the same Data value."
+        },
+        {
+          "key": "w08",
+          "title": "Horizontal slider",
+          "folder": "08_horizontal_slider",
+          "description": "Two horizontal sliders share a numeric level. Drag or use the arrow keys; switch live editing to compare immediate and committed updates."
+        },
+        {
+          "key": "w09",
+          "title": "Vertical slider",
+          "folder": "09_vertical_slider",
+          "description": "Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top."
+        },
+        {
+          "key": "w10",
+          "title": "Number editing",
+          "folder": "10_number_textbox",
+          "description": "Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data."
+        },
+        {
+          "key": "w11",
+          "title": "Date editing",
+          "folder": "11_date_textbox",
+          "description": "Enter a calendar date or a word such as oggi or domani. Two fields share one civil date."
+        },
+        {
+          "key": "w12",
+          "title": "Time editing",
+          "folder": "12_time_textbox",
+          "description": "Edit a civil time with hours, minutes and optional seconds. The two fields keep the same typed value."
+        },
+        {
+          "key": "w13",
+          "title": "Filtering select",
+          "folder": "13_filtering_select",
+          "description": "Search a caption, store its code. Two fields share the same choice and the same list."
+        },
+        {
+          "key": "w14",
+          "title": "Callback select",
+          "folder": "14_callback_select",
+          "description": "Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request."
+        },
+        {
+          "key": "w15",
+          "title": "Combo box",
+          "folder": "15_combo_box",
+          "description": "Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write."
+        },
+        {
+          "key": "w16",
+          "title": "Checkbox group",
+          "folder": "16_checkbox_text",
+          "description": "Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null."
+        },
+        {
+          "key": "w17",
+          "title": "Date calendar",
+          "folder": "17_date_calendar",
+          "description": "Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value."
+        },
+        {
+          "key": "w18",
+          "title": "Required values and length",
+          "folder": "18_validation",
+          "description": "Invalid drafts remain visible with a message while Data keeps the last accepted value."
+        },
+        {
+          "key": "w19",
+          "folder": "19_formlet",
+          "title": "Formlet and shared labels",
+          "description": "Arrange fields in columns and share label settings. Changing the layout preserves each field and its draft."
+        },
+        {
+          "key": "w20",
+          "folder": "20_group_box",
+          "title": "GroupBox and typed copy",
+          "description": "Group customer data under a heading. Copy TYTX with its types or choose plain JSON from the copy menu."
+        },
+        {
+          "key": "w21",
+          "folder": "21_switch",
+          "title": "Checkbox as a switch",
+          "description": "A switch and a checkbox share one boolean. Compare their appearance, captions and read-only state."
+        },
+        {
+          "key": "w22",
+          "folder": "22_button",
+          "title": "Button commands",
+          "description": "Compare the Gramlot command button with plain HTML. Try confirmation and a delayed command."
+        },
+        {
+          "key": "w23",
+          "folder": "23_toggle_button",
+          "title": "Toggle button with LED",
+          "description": "A command button and a checkbox share a boolean. The LED and aria-pressed follow Data."
+        },
+        {
+          "key": "w24",
+          "folder": "24_dropdown_button",
+          "title": "Dropdown commands and persistence",
+          "description": "The main surface executes; the arrow opens the menu. Shift-select a command to run it and make it the default."
+        },
+        {
+          "key": "w25",
+          "folder": "25_validation_engine",
+          "title": "Validation rules and callbacks",
+          "description": "Transformations, conditions, warnings, local callbacks and remote validation."
+        }
+      ]
     }
   ]
 }

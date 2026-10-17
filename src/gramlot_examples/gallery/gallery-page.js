@@ -16,20 +16,50 @@ export class GalleryPage extends IndexPage {
         intro.p('This gallery shows each example page beside the code that creates it. ' +
             'The Python and JavaScript integrations have the same examples.');
         intro.p('Choose an example from the list. Its tab stays open so you can return to it. ' +
-            'Enable Keyboard navigation in the footer to move through tabs by keyboard. ' +
-            'Drag the dividers to resize the sidebar or the preview and code. ' +
-            'Choose Base or Compact independently of the color mode.');
+            'Open Settings (⚙) in the footer and enable Keyboard navigation to move through tabs by keyboard. ' +
+            'Use the top bar to show or hide Navigation and Code; drag their dividers to resize them. ' +
+            'Choose Base, Compact, mimi or joanna independently of the color mode.');
 
     }
     groupPanel(pane, group) { pane.div(group.readme, {id: `readme-${group.key}`}); }
     footer(footer) {
-        super.footer(footer);
-        const inspector = footer.button({type: 'button', id: 'gallery-inspector', class: 'gallery-inspector',
+        footer.html_button('⚙', {type: 'button', id: 'gallery-settings-toggle', class: 'gallery-settings-toggle',
+            title: 'Settings', aria_label: 'Settings', popovertarget: 'gallery-settings'});
+        const settings = footer.div({id: 'gallery-settings', popover: 'auto', aria_labelledby: 'gallery-settings-title'});
+        const heading = settings.div({class: 'gallery-settings-heading'});
+        heading.h2('Settings', {id: 'gallery-settings-title'});
+        heading.html_button('×', {type: 'button', aria_label: 'Close settings', popovertarget: 'gallery-settings', popovertargetaction: 'hide'});
+        super.footer(settings);
+        const labels = settings.div({class: 'index-theme'});
+        labels.html_label('Label position', {for: 'gallery-label-position'});
+        const position = labels.select({id: 'gallery-label-position', value: 'example'});
+        position.option('As in the example', {value: 'example', selected: true});
+        for (const code of ['TL', 'TC', 'TR', 'L', 'R', 'BL', 'BC', 'BR']) position.option(code, {value: code});
+        settings.p("Label position applies to input components in the previews. Choose As in the example to restore the lesson's layout.");
+        const inspector = footer.html_button({type: 'button', id: 'gallery-inspector', class: 'gallery-inspector',
             title: 'Open inspector', aria_label: 'Inspector', aria_pressed: 'false', disabled: true});
         inspector.span('🔍', {aria_hidden: 'true'});
 
     }
-    behavior(shell) { shell.script({src: this.constructor.galleryScript}); }
+    header(shell) {
+        const header = shell.header({class: 'gallery-toolbar'});
+        header.html_button('☰ Navigation', {type: 'button', id: 'index-navigation-toggle',
+            aria_controls: 'index-sidebar', aria_expanded: 'true'});
+        header.h1(this.constructor.title);
+        header.html_button('Code ⟨/⟩', {type: 'button', id: 'index-code-toggle',
+            aria_controls: 'index-code', aria_expanded: 'false', disabled: true});
+    }
+    behavior(shell) {
+        shell.div({class: 'index-divider', id: 'index-code-divider', hidden: true,
+            title: 'Drag to resize code', role: 'separator', aria_orientation: 'vertical',
+            tabindex: 0, aria_label: 'Resize code', aria_controls: 'index-code',
+            aria_valuemin: 200, aria_valuemax: 800, aria_valuenow: 420});
+        const code = shell.aside({id: 'index-code', aria_label: 'Example source code', hidden: true});
+        for (const family of this.constructor.navigation) {
+            for (const example of family.children) this.codePanel(code, example);
+        }
+        shell.script({src: this.constructor.galleryScript});
+    }
 
     panel(parent, example) {
         const key = example.key;
@@ -38,21 +68,23 @@ export class GalleryPage extends IndexPage {
         const explanation = panel.header({class: 'gallery-explanation'});
         explanation.div(example.readme, {id: `readme-${key}`});
 
-        const split = panel.div({class: 'gallery-split', id: `split-${key}`,
-            style: '--split-position: 65%'});
-        const preview = split.div({class: 'gallery-preview', id: `preview-${key}`});
-        preview.iframe({title: `${example.title} preview`, name: `example-${key}`,
+        const preview = panel.div({class: 'gallery-preview', id: `preview-${key}`});
+        const modes = preview.div({class: 'gallery-preview-modes', role: 'group', aria_label: 'Preview mode'});
+        for (const [mode, caption] of [['normal', 'Normale'], ['mobile', 'Mobile']]) {
+            modes.html_button(caption, {type: 'button', id: `preview-${mode}-${key}`, aria_pressed: mode === 'normal' ? 'true' : 'false'});
+        }
+        const stage = preview.div({class: 'gallery-preview-stage', id: `preview-stage-${key}`});
+        stage.iframe({title: `${example.title} preview`, name: `example-${key}`,
             id: `frame-${key}`});
-        split.div({class: 'gallery-divider', id: `divider-${key}`,
-            role: 'separator', aria_orientation: 'vertical', tabindex: 0,
-            aria_label: 'Resize preview and code', aria_valuemin: 20,
-            aria_valuemax: 80, aria_valuenow: 65});
-        const codepane = split.div({class: 'gallery-codepane', id: `codepane-${key}`});
+    }
+    codePanel(parent, example) {
+        const key = example.key;
+        const codepane = parent.div({class: 'gallery-codepane', id: `codepane-${key}`, hidden: true});
         const tabs = codepane.div({class: 'gallery-source-tabs', role: 'tablist', aria_label: 'Source files'});
-        tabs.button('JavaScript', {title: `${example.folder}.js`, type: 'button', role: 'tab',
+        tabs.html_button('JavaScript', {title: `${example.folder}.js`, type: 'button', role: 'tab',
             id: `code-tab-${key}`, aria_controls: `code-panel-${key}`, aria_selected: 'true', tabindex: 0});
         if (example.logic != null) {
-            tabs.button('logic.js', {hidden: true, title: `${example.folder}_aux.js`, type: 'button', role: 'tab',
+            tabs.html_button('logic.js', {hidden: true, title: `${example.folder}_aux.js`, type: 'button', role: 'tab',
                 id: `logic-tab-${key}`, aria_controls: `logic-panel-${key}`, aria_selected: 'false', tabindex: -1});
         }
         codepane.pre({id: `code-panel-${key}`, role: 'tabpanel', aria_labelledby: `code-tab-${key}`, tabindex: 0})

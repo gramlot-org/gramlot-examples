@@ -56,7 +56,7 @@ export class Page extends BasePage {
         options.input({type: 'text', id: 'unavailable', value: 'Disabled', disabled: true});
         options.html_label('Attachment', {for: 'attachment'});
         options.input({type: 'file', id: 'attachment', name: 'attachment'});
-        form.button('Submit unavailable', {type: 'submit', disabled: true});
+        form.html_button('Submit unavailable', {type: 'submit', disabled: true});
 
         const record = layout.aside({class: 'card stack'});
         record.h2('The Data record');

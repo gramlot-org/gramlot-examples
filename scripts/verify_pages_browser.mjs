@@ -152,7 +152,7 @@ LOGIC.c15 = async (page, text) => {
 LOGIC.c16 = async (page, text) => {
     await page.fill('#name', 'Grace'); assert.equal(await text('#greeting'), 'Hello, Grace');
     assert.equal(await page.locator('#card').getAttribute('title'), 'Customer: Grace');
-    assert.equal(await page.locator('#card').getAttribute('customer'), null);
+    assert.equal(await page.locator('#card').getAttribute('customer'), 'Grace');
     assert.equal(await page.locator('#preview').getAttribute('sandbox'), '');
     await page.fill('#html', '<h2>Preview two</h2><p>Only this frame changes.</p>');
     await page.frameLocator('#preview').getByRole('heading', {name: 'Preview two'}).waitFor();

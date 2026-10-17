@@ -1,10 +1,12 @@
+import {mountGallerySettings} from './gallery-settings.js';
 import {mountIndexPage} from '@gramlot/gramlot/index-page-runtime';
 import {highlightCode, logicSource} from './code-highlight.js';
 import {renderReadme} from './markdown.js';
 
 /** Gallery-only Markdown, highlighting and source-file tabs. */
 export function mountGallery(renderer, root, onSelection) {
-    return mountIndexPage(renderer, root, onSelection, (entry, {byId, node, set, listen}) => {
+    const settings = mountGallerySettings(renderer, root);
+    const index = mountIndexPage(renderer, root, onSelection, (entry, {byId, node, set, listen}) => {
         const {key} = entry;
         renderReadme(byId(`readme-${key}`));
         if (entry.panel.classList.contains('index-category')) return;
@@ -36,4 +38,5 @@ export function mountGallery(renderer, root, onSelection) {
                 });
             }
     });
+    return {dispose() { settings.dispose(); index.dispose(); }};
 }

@@ -1,3 +1,4 @@
+import {collections} from './gallery/collections.js';
 /** Gramlot example pages, the gallery page and its catalogue. */
 import {existsSync, readFileSync} from 'node:fs';
 import {basename, extname, join} from 'node:path';
@@ -6,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 const PACKAGE = fileURLToPath(new URL('./', import.meta.url));
 const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json'};
 const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js'];
-const DIST = ['gallery.js', 'frame.js', 'notices.json', 'LICENSE', 'NOTICE'];
+const DIST = ['gallery.js', 'frame.js', 'inputs.js', 'layout.js', 'notices.json', 'LICENSE', 'NOTICE'];
 
 /** Media type of a gallery asset; only the built gallery scripts are served as JavaScript. */
 function mediaType(path, script = false) {
@@ -77,5 +78,5 @@ export function buildGallery({catalogs = []} = {}) {
             }
         }
     }
-    return {families, routes, assets};
+    return {families, routes, assets, collections};
 }
