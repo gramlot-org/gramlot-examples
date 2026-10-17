@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
-import sys
+import signal
 import time
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -126,7 +126,7 @@ def deploy(snapshot, current):
     promoted = False
     try:
         for kind, image in [('python', py_image), ('node', js_image)]:
-            run('docker', 'build', '--pull', '--no-cache', '-f', ROOT / 'automation' / f'Dockerfile.{kind}', '-t', image, ROOT / 'automation')
+            run('docker', 'buildx', 'build', '--builder', 'gramlot-galleries', '--load', '--pull', '--no-cache', '-f', ROOT / 'automation' / f'Dockerfile.{kind}', '-t', image, ROOT / 'automation')
         py_versions = json.loads(run('docker', 'run', '--rm', py_image, 'python', '-c', 'import json,importlib.metadata as m; print(json.dumps({p:m.version(p) for p in '+repr(list(PYPI))+'}))', capture=True))
         js_versions = json.loads(run('docker', 'run', '--rm', js_image, 'node', '-e', 'console.log(JSON.stringify(Object.fromEntries('+json.dumps(list(NPM))+'.map(p=>[p,require("./node_modules/"+p+"/package.json").version]))))', capture=True))
         verify_versions(py_versions, snapshot, PYPI)
@@ -171,7 +171,6 @@ def deploy(snapshot, current):
                     for image in json.loads(old_receipt.read_text())['images']:
                         subprocess.run(['docker', 'image', 'rm', image], check=False)
                 shutil.rmtree(old)
-        (target/'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
         print(f'Deployed {generation}: {digest}', flush=True)
     finally:
         if not promoted:
@@ -180,9 +179,15 @@ def deploy(snapshot, current):
             for image in (py_image, js_image):
                 subprocess.run(['docker', 'image', 'rm', image], check=False)
             shutil.rmtree(target)
+        subprocess.run(['docker', 'buildx', 'prune', '--builder', 'gramlot-galleries', '--force', '--max-used-space', '1gb'], check=False)
+
+
+def interrupted(signum, frame):
+    raise InterruptedError(f'Deployment interrupted by signal {signum}')
 
 
 def main():
+    signal.signal(signal.SIGTERM, interrupted)
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true', help='Read release readiness without deploying')
     args = parser.parse_args()

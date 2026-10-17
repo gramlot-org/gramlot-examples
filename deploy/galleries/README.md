@@ -36,7 +36,8 @@ One nginx configuration selects both upstreams and the immutable shared ZIP.
 After `nginx -t` and reload, public HTTPS browser checks and both ZIP hashes must
 pass. A failure restores and reloads the preceding configuration and removes the
 candidate. The previous containers stop only after successful promotion. The last
-successful generation is retained for rollback. No unrelated images or services
+successful generation is retained for rollback. Builds use a dedicated `gramlot-galleries` BuildKit builder; its cache is pruned
+to at most 1 GB after each attempt. No unrelated images, caches or services
 are pruned. Existing clients can need a reload after deployment: in-memory page
 sessions are not transferred between containers.
 
@@ -46,6 +47,7 @@ Install this directory as `/opt/gramlot-galleries/automation`, retaining the
 existing TLS certificate and nginx site symlink. Build the verifier once:
 
 ```sh
+docker buildx create --name gramlot-galleries --driver docker-container
 docker build -f automation/Dockerfile.check -t gramlot-gallery-check:current automation
 python3 automation/test_update.py
 python3 automation/update.py --check
