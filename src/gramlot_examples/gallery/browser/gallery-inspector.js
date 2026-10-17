@@ -2,15 +2,16 @@ import {InspectorConnection, attachInspectorAgent} from '@gramlot/gramlot/tools/
 import {INSPECTOR_CONNECT, INSPECTOR_READY} from './inspector-messages.js';
 
 /** One shell palette; only the shell and the visible, registered preview are offered. */
-export function mountGalleryInspector(renderer, root) {
+export function mountGalleryInspector(renderer, root, destination = renderer.destination.ownerDocument.body) {
     const document = renderer.destination.ownerDocument;
     const window = document.defaultView;
     const button = document.getElementById('gallery-inspector');
     const buttonNode = renderer.elements.get(button).node;
     let entries = new Map(), active = null, palette = null, rootAgent = null;
+    let docked = false, desktopVisible = false;
     const ready = new Set();
     const connections = new Map();
-    const buttonState = () => buttonNode.setAttr({disabled: false, aria_pressed: String(!!palette)});
+    const buttonState = () => buttonNode.setAttr({disabled: false, aria_pressed: String(!!palette && !palette.hidden)});
     const close = () => {
         palette?.remove(); palette = null;
         for (const connection of connections.values()) connection.close();
@@ -42,13 +43,29 @@ export function mountGalleryInspector(renderer, root) {
             connection.close(); connections.delete(id);
         }
     };
-    const toggle = () => {
-        if (palette) { close(); return; }
+    const open = () => {
+        if (palette) return;
         connectRoot();
         palette = document.createElement('gramlot-tools-inspector');
+        palette.toggleAttribute('docked', docked);
         palette.addEventListener('close', close);
         sync(true);
-        document.body.append(palette);
+        destination.append(palette);
+        buttonState();
+    };
+    const toggle = () => {
+        if (palette && !palette.hidden) { close(); return; }
+        open(); palette.hidden = false; buttonState();
+    };
+    const setPresentation = (nextDocked, visible) => {
+        if (nextDocked && !docked) desktopVisible = !!palette && !palette.hidden;
+        if (!nextDocked && docked) visible = desktopVisible;
+        docked = nextDocked;
+        if (visible) open();
+        if (palette) {
+            palette.toggleAttribute('docked', docked);
+            palette.hidden = !visible;
+        }
         buttonState();
     };
     const receive = event => {
@@ -72,5 +89,5 @@ export function mountGalleryInspector(renderer, root) {
         window.removeEventListener('message', receive);
         close(); ready.clear();
     });
-    return {update};
+    return {update, setPresentation};
 }

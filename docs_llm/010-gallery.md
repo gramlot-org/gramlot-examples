@@ -563,7 +563,7 @@ Block ID: **GE-010-170**.
 
 Use **Normale / Mobile** above the running example. Mobile keeps the same iframe,
 constrains its width to 390 CSS pixels (or the available space), and activates
-Gramlot touch sizing. Normale restores the available width and ordinary density.
+Gramlot touch sizing. Normale restores the available width and automatic device touch sizing.
 Switching preserves accepted Data, rejected drafts and the running page; changing
 lesson tabs also retains each preview choice. Preview mode is session-only.
 The Mobile button's tooltip reports Page.devices when declared; unspecified does
@@ -665,3 +665,39 @@ the download; the serverless gallery uses the JavaScript equivalents and browser
 Workers. Its named endpoints execute locally, without a Python or Node server.
 
 The public [Python gallery](https://gallery-py.gramlot.dev/) and [Node gallery](https://gallery-js.gramlot.dev/) offer the same offline archive. Successful stable releases of any of the four product repositories trigger a coordinated rebuild, checked every ten minutes. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
+
+
+<a id="ge-010-205"></a>
+## 205 · Responsive gallery on phones and tablets
+
+Block ID: **GE-010-205**.
+
+Below 1024 CSS pixels, the gallery offers **Esempio**, **Codice** and
+**Inspector** as separate views. The example and source each use the full width;
+Inspector fills the content area. The menu button opens navigation over the
+current view. Selecting a page, tapping the backdrop or pressing Escape closes
+navigation. The drawer supports keyboard focus and makes the covered view inert.
+Code is unavailable on introduction/category pages; Inspector can inspect the
+shell as well as the current example.
+
+Views hide their existing panels: no iframe is moved, reloaded or replaced.
+Accepted Data, rejected field drafts and the running example survive switching.
+The same inspector remains mounted and keeps its selected target/node; normal
+editor behavior still applies (leaving a property row commits it). Desktop
+navigation/code visibility preferences are restored when returning to a wider
+window. Open pages remain reachable through navigation on mobile.
+
+The **Normale / Mobile** preview controls are shown on desktop only. On a phone,
+the example already occupies the device width. Normale uses automatic device
+pointer detection for touch sizing; an explicit Mobile preview forces it on.
+This does not make every authored example responsive: its own component layout
+must also fit the available space. Python and Node share these behaviors and the
+serverless gallery uses the same bundle. No separate mobile copy of a lesson or
+its Data is created.
+
+The hosted bootstrap declares `width=device-width,initial-scale=1`, as the
+serverless bootstrap already does. The inspector must come from a core build
+that supports dynamic `docked` presentation; ship the updated core and examples
+together. `scripts/verify_gallery_mobile.mjs PLAYWRIGHT_ENTRY PYTHON_URL NODE_URL`
+checks both engines and hosts, identity/Data retention, inspector editing,
+rejected drafts, navigation and the desktop round trip.

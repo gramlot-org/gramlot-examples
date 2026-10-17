@@ -8,6 +8,6 @@ queueMicrotask(() => {
     const renderer = window.gramlot.src.renderer;
     const record = renderer.elements.get(script.parentElement);
     if (!record || renderer.disposed || renderer.records.get(record.node) !== record) return; // Removed while the script was loading.
-    const inspector = mountGalleryInspector(renderer, record.node);
-    mountGallery(renderer, record.node, inspector.update);
+    const inspector = mountGalleryInspector(renderer, record.node, document.getElementById('gallery-inspector-panel'));
+    mountGallery(renderer, record.node, inspector);
 });

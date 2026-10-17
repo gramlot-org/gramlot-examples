@@ -51,11 +51,20 @@ export class GalleryPage extends IndexPage {
         const header = shell.header({class: 'gallery-toolbar'});
         header.html_button('☰ Navigation', {type: 'button', id: 'index-navigation-toggle',
             aria_controls: 'index-sidebar', aria_expanded: 'true'});
+        header.html_button('☰', {type: 'button', id: 'gallery-mobile-menu', class: 'gallery-mobile-only',
+            aria_label: 'Navigation', aria_controls: 'index-sidebar', aria_expanded: 'false'});
         header.h1(this.constructor.title);
         header.html_button('Code ⟨/⟩', {type: 'button', id: 'index-code-toggle',
             aria_controls: 'index-code', aria_expanded: 'false', disabled: true});
+        const views = header.div({class: 'gallery-mobile-views gallery-mobile-only', role: 'group', aria_label: 'Gallery view'});
+        for (const [view, caption] of [['example', 'Esempio'], ['code', 'Codice'], ['inspector', 'Inspector']]) {
+            views.html_button(caption, {type: 'button', id: `gallery-view-${view}`, aria_pressed: String(view === 'example')});
+        }
     }
     behavior(shell) {
+        shell.html_button('', {type: 'button', id: 'gallery-mobile-backdrop', hidden: true,
+            aria_label: 'Close navigation', tabindex: -1});
+        shell.section({id: 'gallery-inspector-panel', aria_label: 'Inspector'});
         shell.div({class: 'index-divider', id: 'index-code-divider', hidden: true,
             title: 'Drag to resize code', role: 'separator', aria_orientation: 'vertical',
             tabindex: 0, aria_label: 'Resize code', aria_controls: 'index-code',

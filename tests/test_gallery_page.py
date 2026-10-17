@@ -32,6 +32,22 @@ class GalleryPageTests(unittest.TestCase):
                 self.assertEqual(links[0].attr["href"], url)
                 self.assertEqual(links[0].attr["download"], "gramlot-gallery-serverless.zip")
 
+    def test_mobile_controls_are_source_authored(self):
+        page = Page()
+        builder = page.source_builder("main")
+        page.header(builder.root)
+        def walk(bag):
+            for node in bag.nodes:
+                yield node
+                if hasattr(node.value, "nodes"):
+                    yield from walk(node.value)
+        ids = {node.attr.get("id"): node for node in walk(builder.source)}
+        for view in ("example", "code", "inspector"):
+            node = ids[f"gallery-view-{view}"]
+            self.assertEqual(node.node_tag, "html_button")
+            self.assertEqual(node.attr["aria_pressed"], "true" if view == "example" else "false")
+        self.assertEqual(ids["gallery-mobile-menu"].attr["aria_controls"], "index-sidebar")
+
     def test_default_urls(self):
         self.assertEqual(sources(Page()), {"img": "/assets/branding/gramlot-logo-dark.svg",
                                            "script": "/gallery/dist/gallery.js"})

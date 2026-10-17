@@ -14,6 +14,9 @@ import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/th
 
 function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }', prepare = () => {}) {
     const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://gallery.test/py/index'}).window.document;
+    const media = new document.defaultView.EventTarget();
+    media.matches = false;
+    document.defaultView.matchMedia = () => media;
     prepare(document.defaultView);
     class Page extends GalleryPage {
         static logoUrl = '/logo.svg';
@@ -31,10 +34,14 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     const renderer = app.src.renderer;
     const root = renderer.elements.get(document.getElementById('gallery')).node;
     const selections = [];
-    const behavior = mountGallery(renderer, root, (entries, active) => selections.push({entries, active}));
+    const presentations = [];
+    const behavior = mountGallery(renderer, root, {
+        update: (entries, active) => selections.push({entries, active}),
+        setPresentation: (docked, visible) => presentations.push({docked, visible}),
+    });
     const get = id => document.getElementById(id);
     const source = id => renderer.elements.get(get(id)).node;
-    return {app, renderer, document, get, source, root, behavior, selections};
+    return {app, renderer, document, get, source, root, behavior, selections, media, presentations};
 }
 const change = (f, id, value) => {
     f.get(id).value = value;
@@ -233,7 +240,7 @@ test('a rebuilt gallery can reattach page behavior without resetting Source stat
     key(f, 'index-code-divider', 'ArrowLeft');
     f.renderer.freeze(f.root); f.renderer.unfreeze(f.root);
     // In a browser the shell's script is reinserted and runs this same attachment.
-    mountGallery(f.renderer, f.root, () => {});
+    mountGallery(f.renderer, f.root, {update() {}, setPresentation() {}});
     assert.equal(f.get('panel-e01').hidden, false);
     assert.equal(f.get('index-theme').value, 'dark');
     assert.equal(f.get('index-appearance').value, 'base');
@@ -385,7 +392,7 @@ test('source excerpt keeps method bodies intact and suppresses an empty Logic ta
     const f = fixture('export class Page {}\nexport class Logic {}');
     assert.equal(f.get('logic-tab-c01').textContent, 'logic.js');
     f.behavior.dispose();
-    const behavior = mountGallery(f.renderer, f.root, () => {});
+    const behavior = mountGallery(f.renderer, f.root, {update() {}, setPresentation() {}});
     assert.equal(f.get('logic-tab-c01').hidden, true);
     f.get('open-c01').click();
     key(f, 'code-tab-c01', 'ArrowRight');
@@ -549,7 +556,7 @@ test('settings persist, accept owned frames only and release their listener', ()
     const messages = [];
     frame.contentWindow.postMessage = data => messages.push(data);
     change(f, 'gallery-label-position', 'R');
-    assert.deepEqual(messages.at(-1), {type: SETTINGS_SET, labelPosition: 'R', touchMode: 'off'});
+    assert.deepEqual(messages.at(-1), {type: SETTINGS_SET, labelPosition: 'R', touchMode: 'auto'});
     assert.equal(f.source('gallery-label-position').getAttr('value'), 'R');
     const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.settings:/py/index');
     f.behavior.dispose();
@@ -614,7 +621,7 @@ test('preview modes retain the iframe, source URL and per-example choice', () =>
     assert.equal(f.get('frame-e01'), frame); assert.equal(frame.src, source);
     assert.equal(f.get('preview-mobile-e01').getAttribute('aria-pressed'), 'true');
     f.get('preview-normal-e01').click();
-    assert.equal(messages.at(-1).touchMode, 'off');
+    assert.equal(messages.at(-1).touchMode, 'auto');
     assert.equal(f.get('frame-e01'), frame); assert.equal(frame.src, source);
     f.app.dispose();
 });
@@ -632,4 +639,54 @@ test('the hosted gallery exposes an optional native ZIP download', () => {
             assert.equal(links[0].attr.download, 'gramlot-gallery-serverless.zip');
         }
     }
+});
+
+
+test('phone views retain the iframe and Source, close navigation, and restore desktop preferences', () => {
+    const f = fixture(null, window => { window.matchMedia().matches = true; });
+    assert.equal(f.get('index-sidebar').hidden, true);
+    assert.equal(f.get('gallery-view-code').disabled, true);
+    f.get('gallery-mobile-menu').click();
+    assert.equal(f.get('index-sidebar').hidden, false);
+    assert.equal(f.get('open-e01').tabIndex, 0);
+    f.get('open-e01').click();
+    const frame = f.get('frame-e01'), frameWindow = frame.contentWindow;
+    frameWindow.retainedDraft = 'Unsaved draft';
+    const source = f.source('frame-e01');
+    f.get('gallery-mobile-menu').click(); f.get('open-e01').click();
+    assert.equal(f.get('index-sidebar').hidden, true, 're-selecting the active page also closes the drawer');
+    assert.equal(f.get('index-sidebar').hidden, true);
+    assert.equal(f.document.activeElement, f.document.querySelector('.index-main'));
+    for (const view of ['code', 'inspector', 'example']) {
+        f.get(`gallery-view-${view}`).click();
+        assert.equal(f.get('gallery').getAttribute('data-mobile-view'), view);
+        assert.equal(f.get('index-code').hidden, view !== 'code');
+        assert.equal(f.get('gallery-inspector-panel').hidden, view !== 'inspector');
+        assert.equal(f.get('frame-e01'), frame);
+        assert.equal(frame.contentWindow, frameWindow);
+        assert.equal(frameWindow.retainedDraft, 'Unsaved draft');
+        assert.equal(f.source('frame-e01'), source);
+    }
+    f.get('gallery-mobile-menu').click();
+    key(f, 'gallery-mobile-menu', 'Escape');
+    assert.equal(f.get('index-sidebar').hidden, true);
+    assert.equal(f.document.activeElement, f.get('gallery-mobile-menu'));
+    f.get('gallery-mobile-menu').click(); f.get('gallery-mobile-backdrop').click();
+    assert.equal(f.get('index-sidebar').hidden, true);
+    f.media.matches = false; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.get('gallery').hasAttribute('data-mobile-view'), false);
+    assert.equal(f.get('index-sidebar').hidden, false);
+    assert.equal(f.get('index-code').hidden, false);
+    f.get('index-navigation-toggle').click(); f.get('index-code-toggle').click();
+    f.media.matches = true; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    f.get('gallery-view-inspector').click();
+    assert.deepEqual(f.presentations.at(-1), {docked: true, visible: true});
+    f.media.matches = false; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.get('index-sidebar').hidden, true);
+    assert.equal(f.get('index-code').hidden, true);
+    assert.equal(frame.contentWindow, frameWindow);
+    f.behavior.dispose();
+    f.media.matches = true; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.get('gallery').hasAttribute('data-mobile-view'), false);
+    f.app.dispose();
 });

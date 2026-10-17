@@ -72,11 +72,21 @@ class Page(IndexPage):
         header = shell.header(class_="gallery-toolbar")
         header.html_button("☰ Navigation", type="button", id="index-navigation-toggle",
                       aria_controls="index-sidebar", aria_expanded="true")
+        header.html_button("☰", type="button", id="gallery-mobile-menu", class_="gallery-mobile-only",
+                           aria_label="Navigation", aria_controls="index-sidebar", aria_expanded="false")
         header.h1(self.title)
         header.html_button("Code ⟨/⟩", type="button", id="index-code-toggle",
                       aria_controls="index-code", aria_expanded="false", disabled=True)
 
+        views = header.div(class_="gallery-mobile-views gallery-mobile-only", role="group", aria_label="Gallery view")
+        for view, caption in (("example", "Esempio"), ("code", "Codice"), ("inspector", "Inspector")):
+            views.html_button(caption, type="button", id=f"gallery-view-{view}",
+                              aria_pressed="true" if view == "example" else "false")
+
     def behavior(self, shell):
+        shell.html_button("", type="button", id="gallery-mobile-backdrop", hidden=True,
+                          aria_label="Close navigation", tabindex=-1)
+        shell.section(id="gallery-inspector-panel", aria_label="Inspector")
         shell.div(class_="index-divider", id="index-code-divider", hidden=True,
                   title="Drag to resize code", role="separator", aria_orientation="vertical",
                   tabindex=0, aria_label="Resize code", aria_controls="index-code",

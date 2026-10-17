@@ -21,7 +21,7 @@ export function mountGallerySettings(renderer, root) {
     const previewKey = frame => frame.id.slice('frame-'.length);
     const send = frame => frame.contentWindow.postMessage({type: SETTINGS_SET,
         labelPosition: state.getItem('labelPosition'),
-        touchMode: state.getItem(`preview.${previewKey(frame)}`) === 'mobile' ? 'on' : 'off'}, '*');
+        touchMode: state.getItem(`preview.${previewKey(frame)}`) === 'mobile' ? 'on' : 'auto'}, '*');
     const listeners = [];
     for (const frame of frames()) {
         const key = previewKey(frame);
