@@ -4,15 +4,31 @@ Owner authorization, 2026-10-17: “si confermo, dopo ogni release dei quattro r
 procedi anche a includere il link di download nei pacchetti ufficiali”.
 This supersedes the initial deployment's manual-update policy.
 
-The existing host runs `gramlot-galleries-update.timer` every ten minutes after
-completion of the preceding check. No GitHub SSH secret, webhook listener or
-personal access token is needed. The public GitHub API is read for stable releases
-of gramlot, gramlot-examples, gramlot-js-server and gramlot-py-server. A change is
-eligible only after each matching Publish release workflow succeeds and npm/PyPI
-report the corresponding versions. A tag or an early GitHub release alone is not
-sufficient. Failed/incomplete publication is retried at the next check. Concurrent
-updates are excluded by a file lock. Multiple releases completed between checks
-are combined into one update of the newest eligible set; prereleases are excluded.
+Owner follow-up, 2026-10-17: start the update directly from CI when publication
+finishes, without the ten-minute check. This supersedes the timer-based trigger.
+
+Each of the four repositories has `Update hosted galleries`, triggered by a
+successful completed `Publish release` workflow. The separate `workflow_run`
+workflow starts only after all registry jobs complete; appending a deploy job
+inside publication would deadlock the updater's completed-publication check.
+`workflow_dispatch` on main also allows a retry without publishing a new package.
+No timer polls for releases.
+
+CI connects with a dedicated per-repository SSH key. It cannot run a shell,
+forward ports, upload files or choose a command. The forced command can only run
+the root-owned gallery updater. The server host key is pinned; no root SSH key
+or personal access token is stored in GitHub. The job executes no checked-out
+code or downloaded release scripts. The updater itself still requires successful
+publication workflows and matching public npm/PyPI versions for all four repos.
+
+Concurrent events wait on the updater lock instead of being discarded. Each
+rechecks the newest release set after acquiring the lock; duplicate events are
+no-ops. Readiness and installed-version races retry every 30 seconds, within a
+15-minute wait budget. Real build/browser/promotion failures fail the CI job
+without automatic retry. The remote process has a 40-minute limit and the CI job
+45 minutes. These are bounded retries of a received event, not a periodic release
+poll. Incomplete/failed publications are never promoted; rerun the failed job
+once publication or infrastructure is repaired.
 
 ## Build and promotion
 
@@ -59,26 +75,50 @@ an initial registry-only rebuild). For the original manual deployment, slot is 0
 and compose is `/opt/gramlot-galleries/compose.yaml`. Never initialize this state
 over an existing automatic deployment.
 
-Install the supplied service/timer into `/etc/systemd/system`, then:
+The existing service remains available for an explicit operator invocation.
+Disable and remove the previous `gramlot-galleries-update.timer`; do not leave
+it running alongside CI.
 
-```sh
-systemctl daemon-reload
-systemctl enable --now gramlot-galleries-update.timer
-systemctl start --no-block gramlot-galleries-update.service
-journalctl -u gramlot-galleries-update.service -n 100
-systemctl list-timers gramlot-galleries-update.timer
+Install `ci-update` as root-owned executable
+`/usr/local/sbin/gramlot-galleries-ci-update`, and `ci-ssh-entry` as root-owned
+executable `/usr/local/sbin/gramlot-galleries-ci-ssh`. Create a dedicated
+`gramlot-gallery-ci` system account with a locked password. Its root-owned
+`.ssh/authorized_keys` entries must use:
+
+```text
+restrict,command="/usr/local/sbin/gramlot-galleries-ci-ssh" ssh-ed25519 PUBLIC_KEY repository-name
 ```
 
-The service logs build, checks and errors to journald; it does not send messages.
-To pause future automatic deployments, stop and disable the timer. To roll back,
-stop the timer, read `current.json` and the preceding generation's `receipt.json`,
-start that receipt's Compose project with `up -d --wait`, and regenerate nginx
-using `nginx_text(template, slot, archive)` from update.py with its slot and ZIP.
-Validate/reload nginx and verify both public URLs before replacing current.json
-with that receipt. Keep the failed generation for diagnosis. For the original
-manual deployment, the prior Compose file, nginx file and ZIP remain in the root.
+The only sudo permission is the updater wrapper with **no arguments**:
+
+```text
+gramlot-gallery-ci ALL=(root) NOPASSWD: /usr/local/sbin/gramlot-galleries-ci-update ""
+```
+
+In each repository configure the `gallery-deploy` environment, restricted to
+main, with secret `GALLERY_DEPLOY_KEY` and variables `GALLERY_DEPLOY_HOST` and
+`GALLERY_DEPLOY_KNOWN_HOSTS`. Generate a different key per repository, install
+only its public half on the host, upload the private half through standard input
+to `gh secret set`, then remove the local private file. Obtain the host public
+key through an already authenticated connection; never trust an unchecked scan.
+Credentials belong neither in the repository nor in workflow logs.
+
+After installing and testing the SSH restrictions, publish the workflow on main
+in all four repositories and run it manually once from each. Confirm success in
+GitHub Actions, `current.json`, the public galleries and both ZIP downloads.
+Workflow logs contain the updater's build and verification output. The manual
+systemd service continues to log to journald.
+
+To pause future CI deployments, disable `update-galleries.yml` in all four
+repositories. To roll back, pause those workflows, read `current.json` and the
+preceding generation's `receipt.json`, start that receipt's Compose project with
+`up -d --wait`, and regenerate nginx using `nginx_text(template, slot, archive)`
+from update.py with its slot and ZIP. Validate/reload nginx and verify both public
+URLs before replacing current.json with that receipt. Keep the failed generation
+for diagnosis. For the original manual deployment, the prior Compose file, nginx
+file and ZIP remain in the root.
 
 Changes to these scripts are deployed explicitly from the reviewed repository;
-the timer only updates released product packages, never its own control code.
-Run `python3 deploy/galleries/test_update.py` in the examples repository to test
-publication gates, version races, archive contents and successful/failed promotion.
+CI only updates released product packages, never its own control code. Run
+`python3 deploy/galleries/test_update.py` to check publication gates, bounded
+retries, concurrent/duplicate events, version races, archive contents and rollback.

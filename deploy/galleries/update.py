@@ -21,6 +21,11 @@ NPM = {'@gramlot/gramlot': 'gramlot', '@gramlot/gramlot-examples': 'gramlot-exam
        '@gramlot/gramlot-js-server': 'gramlot-js-server', '@gramlot/gramlot-serverless': 'gramlot-js-server'}
 PYPI = {'gramlot': 'gramlot', 'gramlot-examples': 'gramlot-examples', 'gramlot-py-server': 'gramlot-py-server'}
 DOWNLOAD = '/downloads/gramlot-gallery-serverless.zip'
+RETRY_INTERVAL = 30
+
+
+class ReleasePending(RuntimeError):
+    """Published metadata and installed packages have not converged yet."""
 
 
 def read_json(url):
@@ -113,7 +118,7 @@ def zip_gallery(folder, archive, versions):
 def verify_versions(actual, expected, packages):
     for package, repo in packages.items():
         if actual[package] != expected[repo]['version']:
-            raise RuntimeError(f'{package}: resolved {actual[package]} instead of released {expected[repo]["version"]}')
+            raise ReleasePending(f'{package}: resolved {actual[package]} instead of released {expected[repo]["version"]}')
 
 
 def deploy(snapshot, current):
@@ -148,7 +153,7 @@ def deploy(snapshot, current):
             'gramlot-gallery-check:current', 'node', 'smoke.mjs',
             f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
         if releases() != snapshot or not ready(snapshot, verified=snapshot):
-            raise RuntimeError('Release set changed during build; retry after publication completes')
+            raise ReleasePending('Release set changed during build; retry after publication completes')
         def public_check():
             run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', 'gramlot-gallery-check:current',
                 'node', 'smoke.mjs', 'https://gallery-py.gramlot.dev', 'https://gallery-js.gramlot.dev')
@@ -188,25 +193,66 @@ def interrupted(signum, frame):
     raise InterruptedError(f'Deployment interrupted by signal {signum}')
 
 
-def main():
-    signal.signal(signal.SIGTERM, interrupted)
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--check', action='store_true', help='Read release readiness without deploying')
-    args = parser.parse_args()
-    with (ROOT/'update.lock').open('w') as lock:
+def pause_until_retry(deadline, reason):
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise TimeoutError(reason)
+    print(reason, flush=True)
+    time.sleep(min(RETRY_INTERVAL, remaining))
+
+
+def acquire_lock(lock, deadline=None):
+    while True:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return True
         except BlockingIOError:
-            print('Another update is running'); return
+            if deadline is None:
+                print('Another update is running', flush=True)
+                return False
+            pause_until_retry(deadline, 'Waiting for the preceding gallery update')
+
+
+def reconcile(*, check=False, deadline=None):
+    while True:
         current = json.loads((ROOT/'current.json').read_text())
         snapshot = releases()
         if snapshot == current.get('releases'):
-            print('Published releases unchanged'); return
-        if not ready(snapshot, verified=current.get('releases')):
-            print('Waiting for all publication workflows and registries'); return
-        if args.check:
-            print(json.dumps(snapshot, indent=2)); return
-        deploy(snapshot, current)
+            print(f"Published releases unchanged: {current.get('generation')}", flush=True)
+            return
+        if ready(snapshot, verified=current.get('releases')):
+            if check:
+                print(json.dumps(snapshot, indent=2))
+                return
+            try:
+                deploy(snapshot, current)
+                return
+            except ReleasePending as error:
+                if deadline is None:
+                    raise
+                reason = str(error)
+        else:
+            reason = 'Waiting for all publication workflows and registries'
+            if deadline is None:
+                print(reason, flush=True)
+                return
+        pause_until_retry(deadline, reason)
+
+
+def main():
+    signal.signal(signal.SIGTERM, interrupted)
+    parser = argparse.ArgumentParser()
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--check', action='store_true', help='Read release readiness without deploying')
+    mode.add_argument('--wait-seconds', type=int, default=0,
+                      help='Bounded wait for concurrent updates and registry propagation')
+    args = parser.parse_args()
+    if args.wait_seconds < 0:
+        parser.error('--wait-seconds must be non-negative')
+    deadline = time.monotonic() + args.wait_seconds if args.wait_seconds else None
+    with (ROOT/'update.lock').open('w') as lock:
+        if acquire_lock(lock, deadline):
+            reconcile(check=args.check, deadline=deadline)
 
 
 if __name__ == '__main__':

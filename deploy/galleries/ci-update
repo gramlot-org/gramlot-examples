@@ -1,0 +1,6 @@
+#!/bin/sh
+# Root-owned command; the CI account may invoke only this file, without arguments.
+set -eu
+[ "$#" -eq 0 ] || exit 126
+exec /usr/bin/timeout --signal=TERM --kill-after=60 40m \
+    /usr/bin/python3 /opt/gramlot-galleries/automation/update.py --wait-seconds 900

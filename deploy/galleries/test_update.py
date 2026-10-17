@@ -2,7 +2,10 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import subprocess
+import os
 import unittest
+from unittest.mock import patch
 import zipfile
 
 spec = importlib.util.spec_from_file_location('update', Path(__file__).with_name('update.py'))
@@ -79,5 +82,72 @@ class UpdaterTests(unittest.TestCase):
             with zipfile.ZipFile(root/'gallery.zip') as z:
                 self.assertIn('gramlot-gallery-serverless/index.html',z.namelist())
                 self.assertEqual(json.loads(z.read('gramlot-gallery-serverless/versions.json')),{'gramlot':'1.2.3'})
+
+class EventUpdateTests(unittest.TestCase):
+    snapshot = UpdaterTests.snapshot
+
+    def run_reconcile(self, ready_values, deploy_effect=None, deadline=100):
+        current = {'releases': {}, 'generation': 'old'}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'current.json').write_text(json.dumps(current))
+            with patch.object(u, 'ROOT', root), patch.object(u, 'releases', return_value=self.snapshot()), \
+                    patch.object(u, 'ready', side_effect=ready_values), \
+                    patch.object(u, 'deploy', side_effect=deploy_effect) as deploy, \
+                    patch.object(u.time, 'monotonic', return_value=0), patch.object(u.time, 'sleep') as sleep:
+                u.reconcile(deadline=deadline)
+                return deploy.call_count, sleep.call_count
+
+    def test_ssh_entry_rejects_caller_commands(self):
+        entry = Path(__file__).with_name('ci-ssh-entry')
+        for command in ('id', 'sh', 'scp -t /tmp/file'):
+            result = subprocess.run(['sh', str(entry)], env={**os.environ, 'SSH_ORIGINAL_COMMAND': command})
+            self.assertEqual(result.returncode, 126)
+
+    def test_privileged_wrapper_rejects_arguments(self):
+        result = subprocess.run(['sh', str(Path(__file__).with_name('ci-update')), '--check'])
+        self.assertEqual(result.returncode, 126)
+
+    def test_registry_propagation_is_retried_within_the_triggered_job(self):
+        self.assertEqual(self.run_reconcile([False, False, True]), (1, 2))
+
+    def test_installed_version_race_is_retried(self):
+        self.assertEqual(self.run_reconcile([True, True], [u.ReleasePending('old wheel'), None]), (2, 1))
+
+    def test_browser_or_build_failure_is_not_hidden_by_retry(self):
+        with self.assertRaisesRegex(RuntimeError, 'browser failed'):
+            self.run_reconcile([True], RuntimeError('browser failed'))
+
+    def test_incomplete_publication_fails_after_the_wait_deadline(self):
+        with self.assertRaisesRegex(TimeoutError, 'publication'):
+            self.run_reconcile([False], deadline=0)
+
+    def test_identical_release_event_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'current.json').write_text(json.dumps({'releases': self.snapshot(), 'generation': 'current'}))
+            with patch.object(u, 'ROOT', root), patch.object(u, 'releases', return_value=self.snapshot()), \
+                    patch.object(u, 'deploy') as deploy, patch.object(u, 'ready') as ready:
+                u.reconcile(deadline=100)
+                deploy.assert_not_called()
+                ready.assert_not_called()
+
+    def test_concurrent_trigger_waits_for_the_lock_instead_of_being_lost(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with open(Path(directory)/'lock', 'w') as first, open(Path(directory)/'lock', 'w') as second:
+                self.assertTrue(u.acquire_lock(first))
+                self.assertFalse(u.acquire_lock(second))
+                with patch.object(u.time, 'monotonic', return_value=0), \
+                        patch.object(u.time, 'sleep', side_effect=lambda _: u.fcntl.flock(first, u.fcntl.LOCK_UN)):
+                    self.assertTrue(u.acquire_lock(second, deadline=100))
+
+    def test_concurrent_trigger_has_a_bounded_wait(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with open(Path(directory)/'lock', 'w') as first, open(Path(directory)/'lock', 'w') as second:
+                self.assertTrue(u.acquire_lock(first))
+                with patch.object(u.time, 'monotonic', return_value=100):
+                    with self.assertRaises(TimeoutError):
+                        u.acquire_lock(second, deadline=100)
+
 
 if __name__=='__main__': unittest.main()

@@ -1,0 +1,5 @@
+#!/bin/sh
+# OpenSSH forced command: no caller-provided command, argument or shell is accepted.
+set -eu
+[ -z "${SSH_ORIGINAL_COMMAND:-}" ] || exit 126
+exec /usr/bin/sudo -n /usr/local/sbin/gramlot-galleries-ci-update
