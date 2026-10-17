@@ -13,6 +13,8 @@ for (const [name, engine] of [['chromium', chromium], ['webkit', webkit]]) {
         await page.goto(url);
         const menu = page.locator('#gallery-mobile-menu');
         await menu.waitFor({state: 'visible'});
+        // Source renders before the asynchronous gallery bundle finishes mounting.
+        await page.locator('#gallery[data-mobile-view=example]').waitFor({state: 'visible'});
         assert.equal(await page.evaluate(() => innerWidth), 390, 'real device viewport, not 980px desktop scaling');
         assert.equal(await page.locator('#index-sidebar').isVisible(), false);
         assert.equal(await page.locator('#gallery-view-code').isDisabled(), true);
@@ -81,7 +83,7 @@ for (const [name, engine] of [['chromium', chromium], ['webkit', webkit]]) {
         await page.locator('#gallery-view-inspector').click();
         await page.locator('#gallery-view-example').click();
         assert.equal(await invalid.inputValue(), 'A', 'rejected widget draft survives view changes');
-        const validationFrame = page.frames().find(frame => new URL(frame.url()).pathname.endsWith('/w25'));
+        const validationFrame = page.frames().find(frame => (/\/w25(?:\/index\.html)?$/).test(new URL(frame.url()).pathname));
         assert.equal(await validationFrame.evaluate(() => gramlot.data.getItem('profile.full_name')), 'Ada Lovelace');
         assert.equal(await invalid.getAttribute('aria-invalid'), 'true');
         assert.deepEqual(errors, []);
