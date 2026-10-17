@@ -618,3 +618,18 @@ test('preview modes retain the iframe, source URL and per-example choice', () =>
     assert.equal(f.get('frame-e01'), frame); assert.equal(frame.src, source);
     f.app.dispose();
 });
+
+
+test('the hosted gallery exposes an optional native ZIP download', () => {
+    for (const url of [null, '/downloads/gallery.zip']) {
+        class HostedPage extends GalleryPage { static serverlessDownloadUrl = url; }
+        const builder = new GramlotBuilder();
+        new HostedPage().footer(builder.root);
+        const links = builder.source.getNodes().filter(node => node.nodeTag === 'a');
+        assert.equal(links.length, url ? 1 : 0);
+        if (url) {
+            assert.equal(links[0].attr.href, url);
+            assert.equal(links[0].attr.download, 'gramlot-gallery-serverless.zip');
+        }
+    }
+});

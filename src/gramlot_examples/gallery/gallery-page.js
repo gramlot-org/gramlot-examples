@@ -2,6 +2,7 @@
 import {IndexPage} from '@gramlot/gramlot/page';
 export class GalleryPage extends IndexPage {
     static title = 'Gramlot examples';
+    static serverlessDownloadUrl = null;
     static installable = true;
     static appIcon = '/assets/branding/app-icon.png';
     static shellId = 'gallery';
@@ -23,6 +24,11 @@ export class GalleryPage extends IndexPage {
     }
     groupPanel(pane, group) { pane.div(group.readme, {id: `readme-${group.key}`}); }
     footer(footer) {
+        if (this.constructor.serverlessDownloadUrl) {
+            footer.a('↓ Serverless ZIP', {href: this.constructor.serverlessDownloadUrl,
+                download: 'gramlot-gallery-serverless.zip', class: 'gallery-download',
+                title: 'Download the offline gallery; unzip and open index.html'});
+        }
         footer.html_button('⚙', {type: 'button', id: 'gallery-settings-toggle', class: 'gallery-settings-toggle',
             title: 'Settings', aria_label: 'Settings', popovertarget: 'gallery-settings'});
         const settings = footer.div({id: 'gallery-settings', popover: 'auto', aria_labelledby: 'gallery-settings-title'});

@@ -83,3 +83,5 @@
 .gallery-preview-modes button[aria-pressed=true]{color:var(--gramlot-action);border-block-end-color:currentColor}
 .gallery-preview-stage{min-block-size:0;min-inline-size:0;overflow:hidden;background:var(--gramlot-surface-subtle);display:flex;justify-content:center}
 .gallery-preview-stage[data-preview-mode=mobile] iframe{inline-size:390px;max-inline-size:100%;flex:none;border-inline:1px solid var(--gramlot-border)}
+
+.gallery-download { font-size: .8rem; color: inherit; white-space: nowrap; padding-inline: .3rem; }

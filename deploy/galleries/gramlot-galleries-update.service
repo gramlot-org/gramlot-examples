@@ -1,0 +1,12 @@
+[Unit]
+Description=Update Gramlot galleries from successful public releases
+After=docker.service network-online.target
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/gramlot-galleries/automation/update.py
+TimeoutStartSec=45min
+UMask=0022
+Nice=10

@@ -12,6 +12,7 @@ class Page(IndexPage):
     logoUrl = "/assets/branding/gramlot-logo-dark.svg"
     galleryScript = "/gallery/dist/gallery.js"
     catalogs = ()
+    serverless_download_url = None
 
     @property
     def logo_url(self):
@@ -42,6 +43,10 @@ class Page(IndexPage):
         pane.div((group["path"] / "README.md").read_text(), id=f"readme-{group['key']}")
 
     def footer(self, footer):
+        if self.serverless_download_url:
+            footer.a("↓ Serverless ZIP", href=self.serverless_download_url,
+                     download="gramlot-gallery-serverless.zip", class_="gallery-download",
+                     title="Download the offline gallery; unzip and open index.html")
         footer.html_button("⚙", type="button", id="gallery-settings-toggle", class_="gallery-settings-toggle",
                       title="Settings", aria_label="Settings", popovertarget="gallery-settings")
         settings = footer.div(id="gallery-settings", popover="auto", aria_labelledby="gallery-settings-title")

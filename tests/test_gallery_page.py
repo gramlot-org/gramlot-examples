@@ -20,6 +20,18 @@ def sources(page):
 
 
 class GalleryPageTests(unittest.TestCase):
+    def test_optional_serverless_download(self):
+        for url in (None, "/downloads/gallery.zip"):
+            page = Page()
+            page.serverless_download_url = url
+            builder = page.source_builder("main")
+            page.footer(builder.root)
+            links = [node for node in builder.source.nodes if node.node_tag == "a"]
+            self.assertEqual(len(links), int(url is not None))
+            if url:
+                self.assertEqual(links[0].attr["href"], url)
+                self.assertEqual(links[0].attr["download"], "gramlot-gallery-serverless.zip")
+
     def test_default_urls(self):
         self.assertEqual(sources(Page()), {"img": "/assets/branding/gramlot-logo-dark.svg",
                                            "script": "/gallery/dist/gallery.js"})

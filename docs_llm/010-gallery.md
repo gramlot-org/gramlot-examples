@@ -644,3 +644,24 @@ Lesson w25, “Validation rules and callbacks”, groups varied widgets inside o
 Verified with 96 JavaScript and 16 Python gallery tests and Chromium/WebKit interaction checks, including the actual Python endpoint. This is a local development example, not a new publication.
 
 The w25 group copy control exports the accepted `profile` Bag: TYTX by default, JSON from its menu. Invalid drafts are not copied. Both copy formats and the existing validations were checked in Chromium and WebKit.
+
+
+<a id="ge-010-055"></a>
+## 055 · Hosted gallery download
+
+Block ID: **GE-010-055**.
+
+Hosted Python and Node galleries can display a footer link to a serverless ZIP.
+Pass `--serverless-download /downloads/gramlot-gallery-serverless.zip` to
+`gramlot uvicorn gallery` or `gramlot node gallery`. The deployment serves that
+static file; the gallery does not generate an archive per request. Omit the option
+when no archive is available. Custom gallery subclasses use
+`serverless_download_url` (Python) or `serverlessDownloadUrl` (JavaScript).
+
+Build the archive with `gramlot-serverless gallery OUTPUT`, include the complete
+output directory, and tell users to unzip it and open `index.html`. Both hosted
+galleries may serve the same artifact: Python server execution is not embedded in
+the download; the serverless gallery uses the JavaScript equivalents and browser
+Workers. Its named endpoints execute locally, without a Python or Node server.
+
+The public [Python gallery](https://gallery-py.gramlot.dev/) and [Node gallery](https://gallery-js.gramlot.dev/) offer the same offline archive. Successful stable releases of any of the four product repositories trigger a coordinated rebuild, checked every ten minutes. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).

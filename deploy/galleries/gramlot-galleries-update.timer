@@ -1,0 +1,10 @@
+[Unit]
+Description=Check published Gramlot gallery releases every ten minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=10min
+Unit=gramlot-galleries-update.service
+
+[Install]
+WantedBy=timers.target

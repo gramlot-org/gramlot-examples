@@ -1,0 +1,7 @@
+FROM node:22-bookworm-slim
+WORKDIR /app
+RUN npm install --omit=dev --package-lock=false @gramlot/gramlot @gramlot/gramlot-examples @gramlot/gramlot-js-server @gramlot/gramlot-serverless && npm cache clean --force
+ENV NODE_ENV=production
+USER node
+HEALTHCHECK --interval=10s --timeout=5s --start-period=20s CMD node -e "fetch('http://127.0.0.1:8080/assets/gramlot.js',{method:'HEAD'}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["./node_modules/.bin/gramlot", "node", "gallery", "--host", "0.0.0.0", "--port", "8080", "--serverless-download", "/downloads/gramlot-gallery-serverless.zip"]
