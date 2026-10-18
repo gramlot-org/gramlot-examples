@@ -33,7 +33,7 @@ for (const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
  await gear.click();const frameBox=await page.locator('#frame-w01').boundingBox();
  await page.mouse.click(frameBox.x+frameBox.width/2,frameBox.y+30);await popup.waitFor({state:'hidden'});
  assert.equal(await first.locator('#customer input').inputValue(),'Kept after dismiss');
- if(!url.startsWith('file:')) {await gear.click();await page.locator('#gallery-label-position').selectOption('TR');await page.reload();await gear.click();assert.equal(await page.locator('#gallery-label-position').inputValue(),'TR');}
+ if(!url.startsWith('file:')) {await gear.click();await page.locator('#gallery-label-position').selectOption('TR');await page.reload();await page.waitForFunction(()=>window.gramlot?.state==='started');await gear.click();await page.waitForFunction(()=>document.querySelector('#gallery-label-position')?.value==='TR');assert.equal(await page.locator('#gallery-label-position').inputValue(),'TR');}
  await page.setViewportSize({width:390,height:750});if(!await popup.isVisible())await gear.click();
  const box=await popup.boundingBox();assert(box.x>=0&&box.x+box.width<=390&&box.y>=0&&box.y+box.height<=750);
  await page.mouse.click(380,100);assert.equal(await popup.isVisible(),false);
