@@ -10,7 +10,7 @@
  */
 import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';
-import {dirname, extname, join, resolve, sep} from 'node:path';
+import {dirname, extname, join, relative, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {GramlotFileServer, InvalidRequest, PageNotFound, runtimeAsset} from '@gramlot/gramlot/server';
 
@@ -31,7 +31,9 @@ async function servedFile(root, relative) {
 
 export function servePages(folder, port) {
     const pages = resolve(folder);
-    const {assets, collections} = buildGallery();
+    const {assets, collections, routes} = buildGallery();
+    const pageRoutes = Object.fromEntries(Object.entries(routes).filter(([key]) => key !== 'index')
+        .map(([key, route]) => [key, relative(pages, route.page).replace(/\.js$/, '')]));
     const server = new GramlotFileServer(pages, {collections});
     return createServer(async (request, response) => {
         const reply = (status, body, type) => {
@@ -48,7 +50,7 @@ export function servePages(folder, port) {
                         ? await servedFile(THEMES, path.slice('/themes/'.length)) : await servedFile(pages, path);
                     return file ? reply(200, await readFile(file), MEDIA_TYPES[extname(file)]) : reply(404, 'Not found', 'text/plain');
                 }
-                const opened = await server.openPage(path);
+                const opened = await server.openPage(pageRoutes[path.split('/').at(-1)] ?? path);
                 return reply(200, opened.html, 'text/html; charset=utf-8');
             }
             const chunks = [];

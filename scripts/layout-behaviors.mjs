@@ -1,0 +1,68 @@
+/** Small behavioral checks for every container lesson; detailed geometry has dedicated suites. */
+import assert from 'node:assert/strict';
+
+async function edit(page, selector, value) {
+    const field = page.locator(selector);
+    await field.fill(value);
+    await field.press('Tab');
+    return field;
+}
+async function range(page, selector, value) {
+    await page.locator(selector).evaluate((input, value) => {
+        input.value = String(value);
+        input.dispatchEvent(new Event('input', {bubbles: true}));
+    }, value);
+}
+export const layoutBehaviors = {
+    async l01(page) {
+        await edit(page, '#customer-name input', 'Grace');
+        assert.equal(await page.locator('#accepted-name').textContent(), 'Grace');
+        const splitter = page.locator('#border-demo .separator[data-side=left]').first();
+        await splitter.focus(); await splitter.press('ArrowRight');
+        assert.equal(await page.locator('#customer-name input').inputValue(), 'Grace');
+    },
+    async l02(page) {
+        const note = await edit(page, '#nested-note textarea', 'Retained after layout change');
+        await page.locator('#design .toggle').click();
+        await page.getByRole('option', {name: 'Sidebar', exact: true}).click();
+        assert.equal(await note.inputValue(), 'Retained after layout change');
+    },
+    async l03(page) {
+        await range(page, '#rounded-slider input', 12);
+        for (const id of ['rounded-border', 'rounded-inner']) {
+            assert.equal(await page.locator('#' + id).evaluate(el => getComputedStyle(el).borderTopLeftRadius), '12px');
+        }
+    },
+    async l04(page) {
+        const note = await edit(page, '#handles-note input', 'Retained drawer value');
+        const handle = page.locator('#handles-demo .separator[data-side=left] .drawer').first();
+        await handle.click(); assert.equal(await handle.getAttribute('aria-expanded'), 'false');
+        await handle.click(); assert.equal(await note.inputValue(), 'Retained drawer value');
+    },
+    async l05(page) {
+        await edit(page, '#lab-customer input', 'Grace Hopper');
+        await range(page, '#lab-radius input', 18);
+        assert.equal(await page.locator('#lab-outer').evaluate(el => getComputedStyle(el).borderTopLeftRadius), '18px');
+        assert.equal(await page.locator('#lab-customer input').inputValue(), 'Grace Hopper');
+    },
+    async l06(page) {
+        await page.locator('#events-border .separator[data-side=left] .drawer').first().click();
+        assert.equal(await page.evaluate(() => gramlot.data.getItem('events.drawerCount')), 1);
+        assert.deepEqual(JSON.parse(await page.locator('#events-drawer-payload').textContent()), {open: false, region: 'left'});
+    },
+    async l07(page) {
+        const tabs = page.locator('#tabs-demo');
+        await tabs.getByRole('tab', {name: /Notes/}).click();
+        await edit(page, '#tabs-notes textarea', 'Retained notes');
+        await tabs.getByRole('tab', {name: /Customer/}).click();
+        await tabs.getByRole('tab', {name: /Notes/}).click();
+        assert.equal(await page.locator('#tabs-notes textarea').inputValue(), 'Retained notes');
+        assert.equal(await page.locator('#tab-variants gramlot-tab-container').count(), 8);
+    },
+    async l08(page) {
+        await range(page, '#stack-panel input', 1);
+        await page.waitForFunction(() => gramlot.data.getItem('stackDemo.active') === 'e02');
+        await page.frameLocator('#live-e02').locator('#gramlot-root > *').first().waitFor();
+        assert.equal(await page.locator('#stack-page').textContent(), 'Demo: e02');
+    },
+};

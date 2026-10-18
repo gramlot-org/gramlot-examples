@@ -30,6 +30,8 @@ class PagesServer(ThreadingHTTPServer):
         self.pages = Path(folder)
         gallery = build_gallery()
         self.assets = gallery["assets"]
+        self.routes = {key: str(route["page"].relative_to(self.pages.resolve()).with_suffix(""))
+                       for key, route in gallery["routes"].items() if key != "index"}
         self.gramlot_server = GramlotFileServer(self.pages, collections=gallery["collections"])
 
 
@@ -68,7 +70,8 @@ class Handler(BaseHTTPRequestHandler):
         if path.endswith((".js", ".css")):
             return self.file(self.server.pages, path.lstrip("/"))
         try:
-            opened = asyncio.run(server.open_page(path))
+            page_path = self.server.routes.get(path.rsplit("/", 1)[-1], path)
+            opened = asyncio.run(server.open_page(page_path))
         except PageNotFound:
             return self.reply(404, "Not found", "text/plain")
         self.reply(200, opened.html, "text/html; charset=utf-8")
