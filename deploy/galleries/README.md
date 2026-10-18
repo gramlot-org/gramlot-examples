@@ -133,8 +133,9 @@ JavaScript and the serverless export.
 
 Controlled before/after measurements, methodology and limitations are retained in
 [the measurement report](reports/2026-10-18-lazy-tabs.json). The first click does
-more work on demand; the initial index and combined time to the first usable
-example both improve. The release was explicitly authorized by the owner.
+more work on demand. Controlled candidate comparisons improved index startup and
+combined time to the first usable example; subsequent public samples show a
+smaller index gain and mixed combined-time results. The release was explicitly authorized by the owner.
 
 After deployment, verify both public hosts and the extracted archive with:
 
@@ -146,3 +147,13 @@ Install Playwright Chromium/WebKit before this check. It covers empty initial
 Source, first-click creation, identity and edited Data retention, no repeated
 lesson request, code/explanations, inspector and mobile views. Guided playback
 is checked online; offline playback retains its pre-existing file-origin limit.
+
+Public verification is complete. Generation `20261018T172328Z` runs core 0.3.3
+and examples 0.3.5. Chromium/WebKit pass both hosts and the regenerated official
+ZIP; gzip and old/new generation validators pass on both hosts. Public medians
+(three pairs per host): Python index 2.149→1.461 s cold, 1.763→0.819 s repeat;
+JavaScript 1.944→1.465 s cold, 1.076→0.882 s repeat. First selection costs about
+1.3 s versus 0.6–0.7 s before; retained tabs reopen in about 50–60 ms. Combined
+index plus first selection is nearly unchanged for Python cold, improves for
+Python repeat and is slower for JavaScript in this public sample. Raw results,
+limitations, version receipt, archive hash and successful CI links are in the report.

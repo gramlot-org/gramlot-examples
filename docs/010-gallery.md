@@ -948,6 +948,6 @@ The shared index waits for the requested Source, prepares Markdown/code for that
 
 `mountIndexPage` retains generic navigation/selection ownership. Its container layout accepts a `createEntry(entry)` callback returning a promise and `onLoad(key, status, error)` for loading feedback; the gallery owns its fragments and content rendering. Selection and opened/requested keys remain in the index Data Bag. This does not change Source code activation, the component container contract or dependency implementations.
 
-Qualification and deployment status are recorded in GC-070 and deploy/galleries/reports. Source implementation is not a claim that the public packages or galleries have been updated.
+Qualification and deployment evidence are recorded in GC-070 and deploy/galleries/reports. Both public galleries and the official ZIP passed Chromium/WebKit verification after the CI update. Cache validators change with the generation. The first selection builds Source on demand and can cost more than before; index startup and tab reuse are measured separately.
 
 Publication authorized by the owner: “Sì, pubblica e aggiorna le gallery”. The isolated release candidate excludes unpublished c23 and passes 19 Python and 109 JavaScript tests. Both galleries and the serverless archive are updated by the existing release-driven CI pipeline.
