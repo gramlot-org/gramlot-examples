@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {fromTytx, toTytx} from '@genrojs/tytx';
 import {JSDOM} from 'jsdom';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import {pathToFileURL} from 'node:url';
@@ -44,7 +45,15 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     }
     const builder = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument()]});
     new Page().main(builder.root);
-    const app = new Gramlot({document, transport: false, collections: [inputs, layout]}).src.startSource(builder.source);
+    const calls = [];
+    const transport = {async call(text) {
+        const {id, contentType, name, params} = fromTytx(text);
+        calls.push({name, ...params});
+        const fragment = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument()]});
+        new Page()[name](fragment.root, params);
+        return toTytx({id, contentType, value: fragment.toTytx()});
+    }};
+    const app = new Gramlot({document, pageId: 'gallery', transport, collections: [inputs, layout]}).src.startSource(builder.source);
     const renderer = app.src.renderer;
     const root = renderer.elements.get(document.getElementById('gallery')).node;
     const selections = [];
@@ -57,7 +66,7 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     const source = id => renderer.elements.get(get(id)).node;
     const tab = (host, name) => [...get(host).shadowRoot.querySelectorAll('[role="tab"]')].find(el => el.textContent.trim() === name);
     const state = app.data.getItem('galleryIndex');
-    return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state};
+    return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state, calls, transport};
 }
 const change = (f, id, value) => {
     f.get(id).value = value;
@@ -221,7 +230,9 @@ const pressTab = (f, host, name, key) => f.tab(host, name).dispatchEvent(
 
 test('shared containers own page selection and lazy frames retain identity', async t => {
     const f = await setup(t);
-    assert.equal(f.document.querySelectorAll('iframe[src]').length, 0);
+    assert.equal(f.document.querySelectorAll('iframe').length, 0);
+    assert.equal(f.get('index-pages').children.length, 1);
+    assert.equal(f.calls.length, 0);
     assert.equal(f.get('index-pages').localName, 'gramlot-tab-container');
     f.get('open-e01').click();
     await settle();
@@ -412,11 +423,64 @@ test('phone views preserve the same frame, Data and Source and restore desktop d
 
 test('empty Logic is hidden and closing gallery behavior detaches navigation', async t => {
     const f = await setup(t, 'export class Logic {}');
+    assert.equal(f.get('logic-panel-c01'), null);
+    f.get('open-c01').click();
+    await settle();
     assert.equal(f.source('logic-panel-c01').getAttr('hidden'), true);
     f.get('open-e01').click();
     await settle();
     f.behavior.dispose();
     f.get('open-e02').click();
     await settle();
-    assert.equal(f.source('frame-e02').getAttr('src'), null);
+    assert.equal(f.get('frame-e02'), null);
+});
+
+
+test('repeated clicks create one Source panel and request each view once', async t => {
+    const f = await setup(t);
+    f.get('open-e01').click(); f.get('open-e01').click(); f.get('open-e01').click();
+    await settle();
+    const frame = f.get('frame-e01');
+    frame.contentWindow.draft = 'Retain me';
+    f.get('open-e02').click(); await settle();
+    f.get('open-e01').click(); await settle();
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(frame.contentWindow.draft, 'Retain me');
+    assert.equal(f.calls.filter(call => call.key === 'e01').length, 2);
+    assert.equal(f.document.querySelectorAll('#panel-e01').length, 1);
+    assert.equal(f.get('index-pages').children.length, 3);
+});
+
+test('out-of-order lesson replies do not override the latest selection', async t => {
+    const f = await setup(t);
+    const call = f.transport.call;
+    let release;
+    const held = new Promise(resolve => { release = resolve; });
+    f.transport.call = async text => {
+        if (fromTytx(text).params.key === 'e01') await held;
+        return call(text);
+    };
+    f.get('open-e01').click(); f.get('open-e02').click();
+    await settle();
+    assert.equal(f.state.getItem('active'), 'e02');
+    release(); await settle();
+    assert.equal(f.state.getItem('active'), 'e02');
+    f.get('open-e01').click(); await settle();
+    assert.equal(f.state.getItem('active'), 'e01');
+    assert.equal(f.calls.filter(call => call.key === 'e01').length, 2);
+});
+
+test('failed lesson removes incomplete Source and can be retried', async t => {
+    const f = await setup(t);
+    const call = f.transport.call;
+    f.transport.call = async () => { throw new Error('Connection interrupted'); };
+    f.get('open-e01').click(); await settle();
+    assert.equal(f.get('panel-e01'), null);
+    assert.equal(f.get('codepane-e01'), null);
+    assert.equal(f.state.getItem('active'), 'intro');
+    assert.match(f.get('gallery-load-status').textContent, /retry/);
+    f.transport.call = call;
+    f.get('open-e01').click(); await settle();
+    assert.equal(f.state.getItem('active'), 'e01');
+    assert.equal(f.get('gallery-load-status').textContent, '');
 });

@@ -14,14 +14,14 @@ export class Page extends GalleryPage {
         return families.map(({key, title, path, examples}) => {
             const read = name => readFileSync(join(path, name), 'utf8');
             return {
-                key, title, readme: read('README.md'),
+                key, title, get readme() { return read('README.md'); },
                 examples: examples.map(example => ({
                     key: example.key, title: example.title, description: example.description, folder: example.folder, frameUrl: example.key,
-                    readme: read(`${example.folder}.md`),
-                    source: read(`${example.folder}.js`),
+                    get readme() { return read(`${example.folder}.md`); },
+                    get source() { return read(`${example.folder}.js`); },
                     // The page module shows its own Logic; only a companion NN_name_aux.js is shown apart.
-                    logic: routes[example.key].logic === routes[example.key].page
-                        ? null : readFileSync(routes[example.key].logic, 'utf8'),
+                    get logic() { return routes[example.key].logic === routes[example.key].page
+                        ? null : readFileSync(routes[example.key].logic, 'utf8'); },
                 })),
             };
         });

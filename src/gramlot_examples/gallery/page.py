@@ -1,5 +1,5 @@
 """Gallery content on Gramlot's reusable index page."""
-from gramlot import IndexPage
+from gramlot import IndexPage, source
 from gramlot_examples import build_gallery
 from gramlot_examples.gallery.guided_demo import guided_demo
 
@@ -57,18 +57,11 @@ class Page(IndexPage):
                                      selectedPage="^galleryIndex.active", tabMode="tabs")
         self.introduction(panels.contentPane(id="panel-intro", title="Introduction", pageName="intro",
                                              class_="index-intro"))
-        for family in families:
-            self.group_panel(panels.contentPane(id=f"panel-{family['key']}", title=family["title"],
-                pageName=family["key"], class_="index-category", hidden=True), family)
-            for example in family["children"]:
-                self.panel(panels, example)
         code = regions.contentPane(region="right", width="420px", minSize=220, maxSize=900,
                                    splitter=True, drawer=True, drawer_icon="⌘", drawer_label="Code",
                                    drawer_minimize=True, node_id="galleryCode", id="index-code",
                                    aria_label="Example source code", hidden=True)
-        for family in families:
-            for example in family["children"]:
-                self.code_panel(code, example)
+        code.div(id="gallery-code-pages", height="100%")
         self.footer(shell.footer(class_="index-footer"))
         self.behavior(shell)
 
@@ -113,6 +106,7 @@ class Page(IndexPage):
         header.html_button("☰", type="button", id="gallery-mobile-menu", class_="gallery-mobile-only",
                            aria_label="Navigation", aria_controls="index-sidebar", aria_expanded="false")
         header.h1(self.title)
+        header.span("", id="gallery-load-status", role="status", aria_live="polite")
         header.html_button("Code ⟨/⟩", type="button", id="index-code-toggle",
                       aria_controls="index-code", aria_expanded="false", disabled=True)
 
@@ -127,12 +121,32 @@ class Page(IndexPage):
         shell.section(id="gallery-inspector-panel", aria_label="Inspector")
         shell.script(src=self.galleryScript)
 
+    def gallery_item(self, key):
+        for family in self.navigation:
+            if family["key"] == key:
+                return family
+            for example in family["children"]:
+                if example["key"] == key:
+                    return example
+        raise ValueError(f"Unknown gallery entry: {key}")
+
+    @source
+    def lesson(self, root, key, view="example", **kwargs):
+        item = self.gallery_item(key)
+        if view == "code" and "children" not in item:
+            self.code_panel(root, item)
+        elif view == "example":
+            if "children" in item:
+                self.group_panel(root, item)
+            else:
+                self.panel(root, item)
+        else:
+            raise ValueError(f"Unknown gallery view: {key}/{view}")
+
     def panel(self, parent, example):
         examples = example["path"]
         key = example["key"]
-        panel = parent.contentPane(id=f"panel-{key}", title=example["title"], pageName=key,
-                                   class_="gallery-panel", hidden=True)
-        panel = panel.div(class_="gallery-panel-layout")
+        panel = parent.div(class_="gallery-panel-layout")
         header = panel.header(class_="gallery-explanation")
         header.h2(example["title"])
         header.p("In this example: " + example.get("description", ""))
@@ -154,8 +168,7 @@ class Page(IndexPage):
         key = example["key"]
         source_path = example["path"] / f"{example['folder']}.py"
         logic_path = example["logic"]
-        codepane = parent.tabContainer(class_="gallery-codepane gallery-source-tabs", id=f"codepane-{key}", hidden=True,
-                                       height="100%", tabMode="underline")
+        codepane = parent
         codepane.contentPane(title="Python", pageName="python", id=f"code-panel-{key}").pre(
             tabindex=0).code(source_path.read_text(), class_="language-python", id=f"code-{key}")
         if logic_path is not None:

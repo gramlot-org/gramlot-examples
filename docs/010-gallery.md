@@ -934,3 +934,20 @@ Source parity tests compare the eight Python/JavaScript declarations and the gui
 ## 260. Settings dismissal and compact footer
 
 Owner requested removing the ZIP link from the index and closing Settings on an outside click. Python and JavaScript footers omit the link. The native auto popover dismisses on outside clicks in the main document. The gallery settings service also closes it when focus enters an example iframe, whose pointer events do not reach the parent document. Clicks inside keep Settings open; Escape and its Close button continue to work. The focus listener and scheduled frame are released on disposal; no parallel popup state is added.
+
+
+<a id="ge-010-265"></a>
+
+## 265 · Create tabs on first selection
+
+Owner, 2026-10-18: “si procedi così per entrambe le gallery: crea il tab solo al click, riusa quello già aperto e poi verifica quanto migliorano i tempi”, clarified as inserting the pane with its iframe into Source on click.
+
+The initial gallery Source contains navigation and Introduction only. No example/category panel, example iframe, README body or code viewer is authored in advance. Selecting a navigation entry inserts its contentPane into the existing tabContainer Source. The selected lesson is built through the registered `lesson` Source method; example code uses the same method with `view="code"`. Categories have no code request. Unknown keys/views are rejected. The Node catalogue reads lesson files only when their content is requested.
+
+The shared index waits for the requested Source, prepares Markdown/code for that entry and starts its iframe once. Already opened tabs reuse their Source, DOM, iframe and example Data. Concurrent clicks on the same entry share the pending creation; an older response cannot override a newer selection. Background completions become available tabs. Loading failures remove incomplete Source and expose a retry message; selecting the entry again retries. Source removal retains the existing remote request cancellation contract. The guided tool attaches only after its lesson has been created.
+
+`mountIndexPage` retains generic navigation/selection ownership. Its container layout accepts a `createEntry(entry)` callback returning a promise and `onLoad(key, status, error)` for loading feedback; the gallery owns its fragments and content rendering. Selection and opened/requested keys remain in the index Data Bag. This does not change Source code activation, the component container contract or dependency implementations.
+
+Qualification and deployment status are recorded in GC-070 and deploy/galleries/reports. Source implementation is not a claim that the public packages or galleries have been updated.
+
+Publication authorized by the owner: “Sì, pubblica e aggiorna le gallery”. The isolated release candidate excludes unpublished c23 and passes 19 Python and 109 JavaScript tests. Both galleries and the serverless archive are updated by the existing release-driven CI pipeline.

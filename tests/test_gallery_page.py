@@ -82,16 +82,28 @@ class GalleryPageTests(unittest.TestCase):
         pages = controls["index-pages"]
         self.assertEqual(pages.node_tag.lower(), "tabcontainer")
         self.assertEqual(pages.attr["selectedPage"], "^galleryIndex.active")
-        self.assertEqual(controls["panel-l04"].node_tag.lower(), "contentpane")
-        source = controls["codepane-l04"]
-        self.assertEqual(source.node_tag.lower(), "tabcontainer")
-        self.assertEqual([node.attr["pageName"] for node in source.value.nodes], ["python", "logic"])
-        self.assertNotIn("tab-l04", controls)
-        self.assertNotIn("code-tab-l04", controls)
-        preview = controls["preview-l04"]
-        self.assertEqual(preview.node_tag.lower(), "tabcontainer")
-        self.assertEqual([n.attr["title"] for n in preview.value.nodes], ["Example", "Explanation"])
-        self.assertNotIn("preview-mobile-l04", controls)
+        self.assertEqual([n.attr.get("id") for n in pages.value.nodes], ["panel-intro"])
+        self.assertNotIn("panel-l04", controls)
+        self.assertNotIn("codepane-l04", controls)
+        self.assertFalse(any(n.node_tag == "iframe" for n in nodes))
+
+    def test_lesson_builds_only_selected_content(self):
+        page = Page()
+        for view, expected in (("example", "frame-l04"), ("code", "code-l04")):
+            builder = page.source_builder("lesson", collections=GRAMMARS)
+            page.lesson(builder.root, "l04", view)
+            def walk(bag):
+                for node in bag.nodes:
+                    yield node
+                    if hasattr(node.value, "nodes"):
+                        yield from walk(node.value)
+            ids = {n.attr.get("id") for n in walk(builder.source)}
+            self.assertIn(expected, ids)
+            self.assertNotIn("frame-w01", ids)
+        with self.assertRaises(ValueError):
+            page.lesson(builder.root, "../unknown")
+        with self.assertRaises(ValueError):
+            page.lesson(builder.root, "l04", "unknown")
 
     def test_subclass_sets_the_urls(self):
         class MountedPage(Page):

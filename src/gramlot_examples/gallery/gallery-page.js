@@ -10,8 +10,8 @@ export class GalleryPage extends IndexPage {
     static galleryScript = '/gallery/dist/gallery.js';
     static css = [...IndexPage.css, '/gallery/gallery.css'];
     static get navigation() {
-        return this.families.map(group => ({...group,
-            children: group.examples.map(item => ({...item, url: item.frameUrl}))}));
+        return this.families.map(group => ({key: group.key, title: group.title,
+            children: group.examples.map(item => ({key: item.key, title: item.title, url: item.frameUrl}))}));
     }
     main(root) {
         const families = this.constructor.navigation;
@@ -38,17 +38,10 @@ export class GalleryPage extends IndexPage {
         const panels = center.tabContainer({id: 'index-pages', class: 'index-main', height: '100%',
             selectedPage: '^galleryIndex.active', tabMode: 'tabs'});
         this.introduction(panels.contentPane({id: 'panel-intro', title: 'Introduction', pageName: 'intro', class: 'index-intro'}));
-        for (const family of families) {
-            this.groupPanel(panels.contentPane({id: `panel-${family.key}`, title: family.title,
-                pageName: family.key, class: 'index-category', hidden: true}), family);
-            for (const example of family.children) this.panel(panels, example);
-        }
         const code = regions.contentPane({region: 'right', width: '420px', minSize: 220, maxSize: 900,
             splitter: true, drawer: true, drawer_icon: '⌘', drawer_label: 'Code', drawer_minimize: true,
             node_id: 'galleryCode', id: 'index-code', aria_label: 'Example source code', hidden: true});
-        for (const family of families) {
-            for (const example of family.children) this.codePanel(code, example);
-        }
+        code.div({id: 'gallery-code-pages', height: '100%'});
         this.footer(shell.footer({class: 'index-footer'}));
         this.behavior(shell);
     }
@@ -84,6 +77,7 @@ export class GalleryPage extends IndexPage {
         header.html_button('☰', {type: 'button', id: 'gallery-mobile-menu', class: 'gallery-mobile-only',
             aria_label: 'Navigation', aria_controls: 'index-sidebar', aria_expanded: 'false'});
         header.h1(this.constructor.title);
+        header.span('', {id: 'gallery-load-status', role: 'status', aria_live: 'polite'});
         header.html_button('Code ⟨/⟩', {type: 'button', id: 'index-code-toggle',
             aria_controls: 'index-code', aria_expanded: 'false', disabled: true});
         const views = header.div({class: 'gallery-mobile-views gallery-mobile-only', role: 'group', aria_label: 'Gallery view'});
@@ -98,10 +92,24 @@ export class GalleryPage extends IndexPage {
         shell.script({src: this.constructor.galleryScript});
     }
 
+    galleryItem(key) {
+        for (const family of this.constructor.families) {
+            if (family.key === key) return family;
+            for (const example of family.examples) if (example.key === key) return example;
+        }
+        throw new Error(`Unknown gallery entry: ${key}`);
+    }
+    lesson(root, {key, view = 'example'}) {
+        const item = this.galleryItem(key);
+        if (view === 'code' && !item.examples) this.codePanel(root, item);
+        else if (view === 'example') {
+            if (item.examples) this.groupPanel(root, item);
+            else this.panel(root, item);
+        } else throw new Error(`Unknown gallery view: ${key}/${view}`);
+    }
     panel(parent, example) {
         const key = example.key;
-        const panel = parent.contentPane({id: `panel-${key}`, title: example.title, pageName: key,
-            class: 'gallery-panel', hidden: true}).div({class: 'gallery-panel-layout'});
+        const panel = parent.div({class: 'gallery-panel-layout'});
         const header = panel.header({class: 'gallery-explanation'});
         header.h2(example.title);
         header.p('In this example: ' + example.description);
@@ -121,8 +129,7 @@ export class GalleryPage extends IndexPage {
     }
     codePanel(parent, example) {
         const key = example.key;
-        const codepane = parent.tabContainer({class: 'gallery-codepane gallery-source-tabs', id: `codepane-${key}`,
-            hidden: true, height: '100%', tabMode: 'underline'});
+        const codepane = parent;
         codepane.contentPane({title: 'JavaScript', pageName: 'javascript', id: `code-panel-${key}`})
             .pre({tabindex: 0}).code(example.source, {class: 'language-javascript', id: `code-${key}`});
         if (example.logic != null) {
@@ -131,3 +138,5 @@ export class GalleryPage extends IndexPage {
         }
     }
 }
+
+GalleryPage.registerSource('lesson');

@@ -122,3 +122,27 @@ Changes to these scripts are deployed explicitly from the reviewed repository;
 CI only updates released product packages, never its own control code. Run
 `python3 deploy/galleries/test_update.py` to check publication gates, bounded
 retries, concurrent/duplicate events, version races, archive contents and rollback.
+
+
+## Tabs created on click — 2026-10-18
+
+The initial index authors Introduction and navigation only. First selection adds
+the selected pane/iframe and code to Source through the existing remoteSource
+contract; reopening retains the same iframe and Data. This applies to Python,
+JavaScript and the serverless export.
+
+Controlled before/after measurements, methodology and limitations are retained in
+[the measurement report](reports/2026-10-18-lazy-tabs.json). The first click does
+more work on demand; the initial index and combined time to the first usable
+example both improve. The release was explicitly authorized by the owner.
+
+After deployment, verify both public hosts and the extracted archive with:
+
+```sh
+node scripts/verify_gallery_lazy_tabs.mjs https://gallery-py.gramlot.dev/ https://gallery-js.gramlot.dev/ file:///path/to/gramlot-gallery-serverless/index.html
+```
+
+Install Playwright Chromium/WebKit before this check. It covers empty initial
+Source, first-click creation, identity and edited Data retention, no repeated
+lesson request, code/explanations, inspector and mobile views. Guided playback
+is checked online; offline playback retains its pre-existing file-origin limit.

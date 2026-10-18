@@ -1,0 +1,2008 @@
+{
+  "status": "implemented and verified; publication explicitly authorized; core publication in progress; examples and public deployment pending",
+  "owner_authorization": "si procedi così per entrambe le gallery: crea il tab solo al click, riusa quello già aperto e poi verifica quanto migliorano i tempi",
+  "method": "Three interleaved old/new Chromium contexts per environment. Each context visits with an empty browser cache, opens w01 and w02, reselects w01, then repeats. The same remote server, one CPU and 512 MiB per container, identical gzip level 6 and conditional browser-cache configuration. Four loopback-only proxy ports reached through a private SSH tunnel; these are controlled comparisons, not newly deployed public HTTPS measurements. Server processes were already warm. No concurrent test suites from this task during the final run. Small-sample times remain machine/network dependent.",
+  "base_generation": "20261018T141451Z",
+  "candidate_directory": "/opt/gramlot-galleries/candidates/lazy-tabs-20261018",
+  "candidate_images": [
+    "gramlot-gallery-python:lazy-tabs-final",
+    "gramlot-gallery-node:lazy-tabs-final"
+  ],
+  "files_sha256": {
+    "page.py": "e0a6bb3e048bf4804c255ff0e3fcb065b51c8ef659f3786ab50e2e43c8ac0e8e",
+    "page.js": "c15c080350f591208b1b9ec8dee2973c372b206fcbd2146249110104363ba187",
+    "gallery-page.js": "685debecf9d71688461fb83f69e7c75b560b8e288cd62632f11f45185445a092",
+    "dist/gallery.js": "b6bd534ab7e9352753374d30b244dfce04704b60463ee8510d8a18d12bfca10c"
+  },
+  "summary": {
+    "python-before": {
+      "cold": {
+        "readyMs": 2654,
+        "firstExampleMs": 854,
+        "reopenMs": 78,
+        "wireBytes": 592438,
+        "elements": 15831,
+        "panels": 85,
+        "iframes": 79,
+        "firstUsableExampleMs": 3508,
+        "sourceDecodedBytes": 1224783
+      },
+      "repeat": {
+        "readyMs": 2194,
+        "firstExampleMs": 824,
+        "reopenMs": 69,
+        "wireBytes": 166239,
+        "elements": 15831,
+        "panels": 85,
+        "iframes": 79,
+        "firstUsableExampleMs": 3018,
+        "sourceDecodedBytes": 1224783
+      }
+    },
+    "javascript-before": {
+      "cold": {
+        "readyMs": 2435,
+        "firstExampleMs": 885,
+        "reopenMs": 73,
+        "wireBytes": 561721,
+        "elements": 22204,
+        "panels": 85,
+        "iframes": 79,
+        "firstUsableExampleMs": 3320,
+        "sourceDecodedBytes": 934186
+      },
+      "repeat": {
+        "readyMs": 1921,
+        "firstExampleMs": 817,
+        "reopenMs": 91,
+        "wireBytes": 135524,
+        "elements": 22204,
+        "panels": 85,
+        "iframes": 79,
+        "firstUsableExampleMs": 2773,
+        "sourceDecodedBytes": 934186
+      }
+    },
+    "python-after": {
+      "cold": {
+        "readyMs": 1311,
+        "firstExampleMs": 1312,
+        "reopenMs": 48,
+        "wireBytes": 435102,
+        "elements": 268,
+        "panels": 1,
+        "iframes": 0,
+        "firstUsableExampleMs": 2623,
+        "sourceDecodedBytes": 47780
+      },
+      "repeat": {
+        "readyMs": 971,
+        "firstExampleMs": 1304,
+        "reopenMs": 55,
+        "wireBytes": 8257,
+        "elements": 268,
+        "panels": 1,
+        "iframes": 0,
+        "firstUsableExampleMs": 2241,
+        "sourceDecodedBytes": 47780
+      }
+    },
+    "javascript-after": {
+      "cold": {
+        "readyMs": 1282,
+        "firstExampleMs": 1302,
+        "reopenMs": 90,
+        "wireBytes": 434981,
+        "elements": 268,
+        "panels": 1,
+        "iframes": 0,
+        "firstUsableExampleMs": 2584,
+        "sourceDecodedBytes": 44076
+      },
+      "repeat": {
+        "readyMs": 766,
+        "firstExampleMs": 1317,
+        "reopenMs": 40,
+        "wireBytes": 8134,
+        "elements": 268,
+        "panels": 1,
+        "iframes": 0,
+        "firstUsableExampleMs": 2152,
+        "sourceDecodedBytes": 44076
+      }
+    }
+  },
+  "measurements": [
+    {
+      "base": "http://127.0.0.1:28160/",
+      "run": 1,
+      "visit": "cold",
+      "readyMs": 2715,
+      "firstExampleMs": 871,
+      "reopenMs": 66,
+      "wireBytes": 592438,
+      "elements": 15831,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 213
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 100
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 110
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 114
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 195
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 120
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 163842,
+          "encoded": 163542,
+          "decoded": 1224783,
+          "duration": 1111
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90012,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 111
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 54
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28160/",
+      "run": 1,
+      "visit": "repeat",
+      "readyMs": 2526,
+      "firstExampleMs": 795,
+      "reopenMs": 70,
+      "wireBytes": 166242,
+      "elements": 15831,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 500
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 53
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 103
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 103
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 101
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 102
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 163842,
+          "encoded": 163542,
+          "decoded": 1224783,
+          "duration": 1140
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 50
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 53
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28162/",
+      "run": 1,
+      "visit": "cold",
+      "readyMs": 1335,
+      "firstExampleMs": 1439,
+      "reopenMs": 48,
+      "wireBytes": 435102,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 215
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 98
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 117
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 121
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 196
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 118
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5857,
+          "encoded": 5557,
+          "decoded": 47780,
+          "duration": 362
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90661,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 113
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 72
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28162/",
+      "run": 1,
+      "visit": "repeat",
+      "readyMs": 981,
+      "firstExampleMs": 1694,
+      "reopenMs": 119,
+      "wireBytes": 8257,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 103
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 104
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 105
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 105
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 104
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 52
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5857,
+          "encoded": 5557,
+          "decoded": 47780,
+          "duration": 392
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 49
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 86
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28161/",
+      "run": 1,
+      "visit": "cold",
+      "readyMs": 2632,
+      "firstExampleMs": 961,
+      "reopenMs": 101,
+      "wireBytes": 561720,
+      "elements": 22204,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 260
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 142
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 208
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 202
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 487
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 202
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 133124,
+          "encoded": 132824,
+          "decoded": 934186,
+          "duration": 628
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90012,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 165
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 119
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28161/",
+      "run": 1,
+      "visit": "repeat",
+      "readyMs": 1921,
+      "firstExampleMs": 895,
+      "reopenMs": 117,
+      "wireBytes": 135524,
+      "elements": 22204,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 69
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 100
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 49
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 100
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 99
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 99
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 133124,
+          "encoded": 132824,
+          "decoded": 934186,
+          "duration": 777
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 53
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 57
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28163/",
+      "run": 1,
+      "visit": "cold",
+      "readyMs": 1479,
+      "firstExampleMs": 1680,
+      "reopenMs": 90,
+      "wireBytes": 434981,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 272
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 113
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 124
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 134
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 237
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 151
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5736,
+          "encoded": 5436,
+          "decoded": 44076,
+          "duration": 397
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90661,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 130
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 93
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28163/",
+      "run": 1,
+      "visit": "repeat",
+      "readyMs": 889,
+      "firstExampleMs": 1317,
+      "reopenMs": 40,
+      "wireBytes": 8134,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 91
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 99
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 50
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 99
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 98
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 96
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5734,
+          "encoded": 5434,
+          "decoded": 44076,
+          "duration": 252
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 51
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 87
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28160/",
+      "run": 2,
+      "visit": "cold",
+      "readyMs": 2654,
+      "firstExampleMs": 854,
+      "reopenMs": 82,
+      "wireBytes": 592436,
+      "elements": 15831,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 226
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 100
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 108
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 117
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 169
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 139
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 163840,
+          "encoded": 163540,
+          "decoded": 1224783,
+          "duration": 1194
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90012,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 112
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 68
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28160/",
+      "run": 2,
+      "visit": "repeat",
+      "readyMs": 2194,
+      "firstExampleMs": 824,
+      "reopenMs": 69,
+      "wireBytes": 166236,
+      "elements": 15831,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 87
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 110
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 111
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 111
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 57
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 109
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 163836,
+          "encoded": 163536,
+          "decoded": 1224783,
+          "duration": 1165
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 50
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 56
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28162/",
+      "run": 2,
+      "visit": "cold",
+      "readyMs": 1311,
+      "firstExampleMs": 1312,
+      "reopenMs": 50,
+      "wireBytes": 435099,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 213
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 96
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 111
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 126
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 190
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 125
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5854,
+          "encoded": 5554,
+          "decoded": 47780,
+          "duration": 410
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90661,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 112
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 104
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28162/",
+      "run": 2,
+      "visit": "repeat",
+      "readyMs": 971,
+      "firstExampleMs": 1253,
+      "reopenMs": 43,
+      "wireBytes": 8256,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 100
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 100
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 100
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 101
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 100
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 53
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5856,
+          "encoded": 5556,
+          "decoded": 47780,
+          "duration": 385
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 49
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 82
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28161/",
+      "run": 2,
+      "visit": "cold",
+      "readyMs": 2435,
+      "firstExampleMs": 885,
+      "reopenMs": 73,
+      "wireBytes": 561721,
+      "elements": 22204,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 216
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 99
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 131
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 127
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 226
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 129
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 133125,
+          "encoded": 132825,
+          "decoded": 934186,
+          "duration": 595
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90012,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 117
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 71
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28161/",
+      "run": 2,
+      "visit": "repeat",
+      "readyMs": 1956,
+      "firstExampleMs": 817,
+      "reopenMs": 91,
+      "wireBytes": 135525,
+      "elements": 22204,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 79
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 118
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 118
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 118
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 117
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 62
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 133125,
+          "encoded": 132825,
+          "decoded": 934186,
+          "duration": 759
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 57
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 56
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28163/",
+      "run": 2,
+      "visit": "cold",
+      "readyMs": 1209,
+      "firstExampleMs": 1277,
+      "reopenMs": 94,
+      "wireBytes": 434978,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 228
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 98
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 125
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 116
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 170
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 115
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5733,
+          "encoded": 5433,
+          "decoded": 44076,
+          "duration": 281
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90661,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 120
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 90
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28163/",
+      "run": 2,
+      "visit": "repeat",
+      "readyMs": 758,
+      "firstExampleMs": 1244,
+      "reopenMs": 42,
+      "wireBytes": 8134,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 95
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 95
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 96
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 96
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 95
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 49
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5734,
+          "encoded": 5434,
+          "decoded": 44076,
+          "duration": 220
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 48
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 87
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28160/",
+      "run": 3,
+      "visit": "cold",
+      "readyMs": 2631,
+      "firstExampleMs": 835,
+      "reopenMs": 78,
+      "wireBytes": 592438,
+      "elements": 15831,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 215
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 98
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 110
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 103
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 120
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 199
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 163842,
+          "encoded": 163542,
+          "decoded": 1224783,
+          "duration": 1188
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90012,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 141
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 99
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28160/",
+      "run": 3,
+      "visit": "repeat",
+      "readyMs": 2126,
+      "firstExampleMs": 856,
+      "reopenMs": 41,
+      "wireBytes": 166239,
+      "elements": 15831,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 76
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 97
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 51
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 98
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 97
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 97
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 163839,
+          "encoded": 163539,
+          "decoded": 1224783,
+          "duration": 1219
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 49
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 49
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28162/",
+      "run": 3,
+      "visit": "cold",
+      "readyMs": 1269,
+      "firstExampleMs": 1286,
+      "reopenMs": 44,
+      "wireBytes": 435102,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 219
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 100
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 111
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 121
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 113
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 194
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5857,
+          "encoded": 5557,
+          "decoded": 47780,
+          "duration": 385
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90661,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 115
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 93
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28162/",
+      "run": 3,
+      "visit": "repeat",
+      "readyMs": 937,
+      "firstExampleMs": 1304,
+      "reopenMs": 55,
+      "wireBytes": 8257,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 91
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 48
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 95
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 95
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 93
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 94
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5857,
+          "encoded": 5557,
+          "decoded": 47780,
+          "duration": 384
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 50
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 81
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28161/",
+      "run": 3,
+      "visit": "cold",
+      "readyMs": 2041,
+      "firstExampleMs": 868,
+      "reopenMs": 66,
+      "wireBytes": 561721,
+      "elements": 22204,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 207
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 104
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 132
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 128
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 199
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 130
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 133125,
+          "encoded": 132825,
+          "decoded": 934186,
+          "duration": 652
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90012,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 113
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 75
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28161/",
+      "run": 3,
+      "visit": "repeat",
+      "readyMs": 1677,
+      "firstExampleMs": 732,
+      "reopenMs": 44,
+      "wireBytes": 135523,
+      "elements": 22204,
+      "iframes": 79,
+      "panels": 85,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 78
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 95
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 49
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 95
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 94
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 94
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 133123,
+          "encoded": 132823,
+          "decoded": 934186,
+          "duration": 794
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 49
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 89712,
+          "decoded": 393004,
+          "duration": 49
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28163/",
+      "run": 3,
+      "visit": "cold",
+      "readyMs": 1282,
+      "firstExampleMs": 1302,
+      "reopenMs": 42,
+      "wireBytes": 434981,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 140372,
+          "encoded": 140072,
+          "decoded": 512544,
+          "duration": 216
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 4166,
+          "encoded": 3866,
+          "decoded": 15992,
+          "duration": 244
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 1828,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 297
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 3055,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 295
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 16874,
+          "encoded": 16574,
+          "decoded": 73256,
+          "duration": 296
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 167773,
+          "encoded": 167473,
+          "decoded": 824972,
+          "duration": 361
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5736,
+          "encoded": 5436,
+          "decoded": 44076,
+          "duration": 222
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 90661,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 110
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 4516,
+          "encoded": 4216,
+          "decoded": 9305,
+          "duration": 70
+        }
+      ],
+      "errors": []
+    },
+    {
+      "base": "http://127.0.0.1:28163/",
+      "run": 3,
+      "visit": "repeat",
+      "readyMs": 766,
+      "firstExampleMs": 1386,
+      "reopenMs": 36,
+      "wireBytes": 8135,
+      "elements": 268,
+      "iframes": 0,
+      "panels": 1,
+      "resources": [
+        {
+          "path": "/assets/gramlot.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 93
+        },
+        {
+          "path": "/themes/gramlot-base/theme.css",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 51
+        },
+        {
+          "path": "/themes/gramlot-index/theme.css",
+          "transfer": 300,
+          "encoded": 1528,
+          "decoded": 5567,
+          "duration": 108
+        },
+        {
+          "path": "/gallery/gallery.css",
+          "transfer": 300,
+          "encoded": 2755,
+          "decoded": 10186,
+          "duration": 108
+        },
+        {
+          "path": "/gallery/dist/inputs.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 107
+        },
+        {
+          "path": "/gallery/dist/layout.js",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 107
+        },
+        {
+          "path": "/gramlot/rpc",
+          "transfer": 5735,
+          "encoded": 5435,
+          "decoded": 44076,
+          "duration": 227
+        },
+        {
+          "path": "/assets/branding/gramlot-logo-dark.svg",
+          "transfer": 300,
+          "encoded": 0,
+          "decoded": 0,
+          "duration": 48
+        },
+        {
+          "path": "/gallery/dist/gallery.js",
+          "transfer": 300,
+          "encoded": 90361,
+          "decoded": 395320,
+          "duration": 83
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "verification": {
+    "python_examples_tests": 19,
+    "javascript_examples_tests": 110,
+    "core_index_tests": 7,
+    "core_javascript_checks": 3564,
+    "core_rechecks": "3556 passed in the initial complete run; 3 conformance and 5 generated-bundle checks passed after permitting loopback servers and rebuilding artifacts. Earlier incorrect-interpreter runs are not counted as code failures.",
+    "browsers": "Chromium and WebKit: Python and Node candidates; no initial iframes, one initial tab; click creation; no duplicate lesson calls; iframe/Source identity and draft retention; explanations/code, inspector, mobile views and l04 guide. Serverless file export: same tab/reuse checks, excluding guide playback.",
+    "offline_limit": "The l04 guided player uses direct iframe access, blocked by file:// same-origin isolation. Reproduced in the previous /tmp/gramlot-gallery-serverless-candidate.zip export; not introduced or repaired by this change."
+  },
+  "publication_authorization": "Sì, pubblica e aggiorna le gallery — authorizes the corrective core/examples release limited to tabs created on click and the resulting CI update of both galleries",
+  "isolated_release_verification": {
+    "core_javascript": 3560,
+    "core_python": 168,
+    "core_python_subtests": 266,
+    "core_python_expected_failure": 1,
+    "examples_javascript": 109,
+    "examples_python": 19,
+    "excluded": "Concurrent database-selector changes and unpublished c23 website lesson"
+  }
+}
