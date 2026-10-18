@@ -102,6 +102,7 @@ export class GalleryPage extends IndexPage {
     lesson(root, {key, view = 'example'}) {
         const item = this.galleryItem(key);
         if (view === 'code' && !item.examples) this.codePanel(root, item);
+        else if (view === 'description' && !item.examples) root.div(item.readme, {id: `readme-${key}`});
         else if (view === 'example') {
             if (item.examples) this.groupPanel(root, item);
             else this.panel(root, item);
@@ -124,8 +125,8 @@ export class GalleryPage extends IndexPage {
             guidedDemo(layout);
         }
         stage.iframe({title: `${example.title} preview`, name: `example-${key}`, id: `frame-${key}`});
-        preview.contentPane({title: 'Explanation', pageName: 'explanation', class: 'gallery-lesson', overflow: 'auto'})
-            .div(example.readme, {id: `readme-${key}`});
+        preview.contentPane({title: 'Explanation', pageName: 'explanation', class: 'gallery-lesson', overflow: 'auto', id: `description-${key}`})
+            .p('Loading explanation…', {role: 'status'});
     }
     codePanel(parent, example) {
         const key = example.key;

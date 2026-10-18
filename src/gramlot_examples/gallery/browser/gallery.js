@@ -2,7 +2,7 @@ import {mountGuidedDemo} from './gallery-guide.js';
 import {mountGalleryMobile} from './gallery-mobile.js';
 import {mountGallerySettings} from './gallery-settings.js';
 import {mountIndexPage} from '@gramlot/gramlot/index-page-runtime';
-import {highlightCode, logicSource} from './code-highlight.js';
+import {mountGalleryContent} from './gallery-content.js';
 import {renderReadme} from './markdown.js';
 
 /** Gallery-only teaching tools and rendering services around shared containers. */
@@ -10,24 +10,20 @@ export function mountGallery(renderer, root, inspector) {
     const state = root.builder.data.getItem('galleryIndex');
     const settings = mountGallerySettings(renderer, root, state);
     let guide = null;
+    const content = mountGalleryContent(renderer, root);
     const mobile = mountGalleryMobile(renderer, root, inspector, state, visible => { if (!visible) guide?.pause(); });
     const index = mountIndexPage(renderer, root, (entries, active) => {
         inspector.update(entries, active);
         mobile.update(entries, active);
         guide?.update(entries, active);
-    }, (entry, {byId, node, set, listen}) => {
+    }, (entry, {byId}) => {
         const {key} = entry;
         if (key === 'l04' && !guide) guide = mountGuidedDemo(renderer, root);
-        renderReadme(byId(`readme-${key}`));
-        if (entry.panel.classList.contains('index-category')) return;
-        highlightCode(byId(`code-${key}`));
-        const logic = byId(`logic-${key}`);
-        if (logic) {
-            const source = logicSource(node(logic).value);
-            set(byId(`logic-panel-${key}`), {hidden: source === null});
-            logic.textContent = source ?? '';
-            if (source !== null) highlightCode(logic);
+        if (entry.panel.classList.contains('index-category')) {
+            renderReadme(byId(`readme-${key}`));
+            return;
         }
+        content.observe(entry.key);
     }, {containerLayout: true, state,
         async createEntry(entry) {
             const document = renderer.destination.ownerDocument;
@@ -37,15 +33,14 @@ export function mountGallery(renderer, root, inspector) {
             const pane = source('index-pages').contentPane({id: `panel-${entry.key}`,
                 title: entry.open.textContent, pageName: entry.key, hidden: true,
                 class: category ? 'index-category' : 'gallery-panel'});
-            const code = category ? null : source('gallery-code-pages').tabContainer({id: `codepane-${entry.key}`,
-                class: 'gallery-codepane gallery-source-tabs', hidden: true, height: '100%', tabMode: 'underline'});
+            const code = category ? null : source('gallery-code-pages').div({id: `codepane-${entry.key}`,
+                class: 'gallery-codepane', hidden: true, height: '100%'});
+            if (code) code.tabContainer({id: `code-tabs-${entry.key}`, class: 'gallery-source-tabs',
+                height: '100%', tabMode: 'underline'}).contentPane({title: 'Code'}).p('Loading code…', {role: 'status'});
             try {
                 const runtime = renderer.binding.gramlot;
-                const results = await Promise.all([
-                    runtime.src.remoteSource(node(`panel-${entry.key}`), 'lesson', {key: entry.key}),
-                    ...(code ? [runtime.src.remoteSource(node(`codepane-${entry.key}`), 'lesson', {key: entry.key, view: 'code'})] : []),
-                ]);
-                if (results.some(mounted => !mounted)) throw new Error('Lesson loading was cancelled');
+                const mounted = await runtime.src.remoteSource(node(`panel-${entry.key}`), 'lesson', {key: entry.key});
+                if (!mounted) throw new Error('Lesson loading was cancelled');
             } catch (error) {
                 for (const target of [pane, code]) if (target?.parentBag) target.parentBag.popNode(target.label);
                 throw error;
@@ -57,5 +52,5 @@ export function mountGallery(renderer, root, inspector) {
                 : status === 'error' ? 'Could not load this lesson. Select it again to retry.' : '');
         },
     });
-    return {dispose() { guide?.dispose(); settings.dispose(); index.dispose(); mobile.dispose(); }};
+    return {dispose() { guide?.dispose(); content.dispose(); settings.dispose(); index.dispose(); mobile.dispose(); }};
 }

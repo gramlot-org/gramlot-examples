@@ -157,3 +157,12 @@ JavaScript 1.944→1.465 s cold, 1.076→0.882 s repeat. First selection costs a
 index plus first selection is nearly unchanged for Python cold, improves for
 Python repeat and is slower for JavaScript in this public sample. Raw results,
 limitations, version receipt, archive hash and successful CI links are in the report.
+
+
+Visibility-on-demand checks (examples 0.3.6) are available with:
+
+```sh
+node scripts/verify_gallery_visible_content.mjs https://gallery-py.gramlot.dev/ https://gallery-js.gramlot.dev/ file:///path/to/gramlot-gallery-serverless/index.html
+```
+
+This verifies that hidden Code/Explanation panels make no Source request, first visibility requests content once, and switching pages preserves iframe identity and edited Data. Controlled first-click measurements are in `reports/2026-10-18-visible-content.json`.

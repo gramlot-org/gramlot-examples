@@ -89,7 +89,7 @@ class GalleryPageTests(unittest.TestCase):
 
     def test_lesson_builds_only_selected_content(self):
         page = Page()
-        for view, expected in (("example", "frame-l04"), ("code", "code-l04")):
+        for view, expected in (("example", "frame-l04"), ("code", "code-l04"), ("description", "readme-l04")):
             builder = page.source_builder("lesson", collections=GRAMMARS)
             page.lesson(builder.root, "l04", view)
             def walk(bag):
@@ -100,6 +100,10 @@ class GalleryPageTests(unittest.TestCase):
             ids = {n.attr.get("id") for n in walk(builder.source)}
             self.assertIn(expected, ids)
             self.assertNotIn("frame-w01", ids)
+            if view == "example":
+                self.assertNotIn("readme-l04", ids)
+                self.assertNotIn("code-l04", ids)
+                self.assertIn("description-l04", ids)
         with self.assertRaises(ValueError):
             page.lesson(builder.root, "../unknown")
         with self.assertRaises(ValueError):

@@ -24,6 +24,20 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     document.defaultView.matchMedia = () => media;
     document.defaultView.HTMLElement.prototype.scrollIntoView = function () {};
     document.defaultView.ResizeObserver = class { observe() {} disconnect() {} unobserve() {} };
+    const observers = new Set();
+    document.defaultView.IntersectionObserver = class {
+        targets = new Set();
+        constructor(callback) { this.callback = callback; observers.add(this); }
+        observe(element) { this.targets.add(element); }
+        unobserve(element) { this.targets.delete(element); }
+        disconnect() { this.targets.clear(); observers.delete(this); }
+    };
+    const visible = (id, shown = true) => {
+        const target = document.getElementById(id);
+        for (const observer of observers) if (observer.targets.has(target)) observer.callback([
+            {target, isIntersecting: shown, intersectionRect: {width: shown ? 100 : 0, height: shown ? 100 : 0}},
+        ]);
+    };
     Object.defineProperty(document, 'fonts', {value: new document.defaultView.EventTarget()});
     const computed = document.defaultView.getComputedStyle.bind(document.defaultView);
     document.defaultView.getComputedStyle = element => {
@@ -66,7 +80,7 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     const source = id => renderer.elements.get(get(id)).node;
     const tab = (host, name) => [...get(host).shadowRoot.querySelectorAll('[role="tab"]')].find(el => el.textContent.trim() === name);
     const state = app.data.getItem('galleryIndex');
-    return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state, calls, transport};
+    return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state, calls, transport, visible};
 }
 const change = (f, id, value) => {
     f.get(id).value = value;
@@ -294,6 +308,7 @@ test('Explanation and source tabs preserve frames, sanitize prose and retain lit
     await settle();
     const frame = f.get('frame-e01');
     f.tab('preview-e01', 'Explanation').click();
+    f.visible('description-e01'); f.visible('codepane-e01');
     await settle();
     assert.equal(f.tab('preview-e01', 'Example').getAttribute('aria-selected'), 'false');
     assert.equal(f.get('readme-e01').querySelector('script, [onerror], [href^="javascript:"]'), null);
@@ -305,16 +320,17 @@ test('Explanation and source tabs preserve frames, sanitize prose and retain lit
     assert.equal(f.get('frame-e01'), frame);
     f.get('open-c01').click();
     await settle();
-    f.tab('codepane-c01', 'logic.js').click();
+    f.visible('codepane-c01'); await settle();
+    f.tab('code-tabs-c01', 'logic.js').click();
     await settle();
-    assert.equal(f.tab('codepane-c01', 'JavaScript').getAttribute('aria-selected'), 'false');
+    assert.equal(f.tab('code-tabs-c01', 'JavaScript').getAttribute('aria-selected'), 'false');
     assert.equal(f.get('logic-panel-c01').hidden, false);
     f.get('open-e01').click(); f.tab('index-pages', 'c01').click();
     await settle();
     assert.equal(f.get('logic-panel-c01').hidden, false);
-    pressTab(f, 'codepane-c01', 'logic.js', 'Home');
+    pressTab(f, 'code-tabs-c01', 'logic.js', 'Home');
     await settle();
-    assert.equal(f.tab('codepane-c01', 'logic.js').getAttribute('aria-selected'), 'false');
+    assert.equal(f.tab('code-tabs-c01', 'logic.js').getAttribute('aria-selected'), 'false');
 });
 
 test('tab keyboard navigation is built in; navigation links remain opt-in', async t => {
@@ -338,7 +354,8 @@ test('drawer visibility and file selection survive switching pages and preferenc
     f.get('open-c01').click();
     await settle();
     const frame = f.get('frame-c01');
-    f.tab('codepane-c01', 'logic.js').click();
+    f.visible('codepane-c01'); await settle();
+    f.tab('code-tabs-c01', 'logic.js').click();
     await settle();
     f.get('index-code-toggle').click(); f.get('index-navigation-toggle').click();
     await settle();
@@ -426,6 +443,7 @@ test('empty Logic is hidden and closing gallery behavior detaches navigation', a
     assert.equal(f.get('logic-panel-c01'), null);
     f.get('open-c01').click();
     await settle();
+    f.visible('codepane-c01'); await settle();
     assert.equal(f.source('logic-panel-c01').getAttr('hidden'), true);
     f.get('open-e01').click();
     await settle();
@@ -446,7 +464,7 @@ test('repeated clicks create one Source panel and request each view once', async
     f.get('open-e01').click(); await settle();
     assert.equal(f.get('frame-e01'), frame);
     assert.equal(frame.contentWindow.draft, 'Retain me');
-    assert.equal(f.calls.filter(call => call.key === 'e01').length, 2);
+    assert.equal(f.calls.filter(call => call.key === 'e01').length, 1);
     assert.equal(f.document.querySelectorAll('#panel-e01').length, 1);
     assert.equal(f.get('index-pages').children.length, 3);
 });
@@ -467,7 +485,7 @@ test('out-of-order lesson replies do not override the latest selection', async t
     assert.equal(f.state.getItem('active'), 'e02');
     f.get('open-e01').click(); await settle();
     assert.equal(f.state.getItem('active'), 'e01');
-    assert.equal(f.calls.filter(call => call.key === 'e01').length, 2);
+    assert.equal(f.calls.filter(call => call.key === 'e01').length, 1);
 });
 
 test('failed lesson removes incomplete Source and can be retried', async t => {
@@ -483,4 +501,68 @@ test('failed lesson removes incomplete Source and can be retried', async t => {
     f.get('open-e01').click(); await settle();
     assert.equal(f.state.getItem('active'), 'e01');
     assert.equal(f.get('gallery-load-status').textContent, '');
+});
+
+test('hidden teaching content makes no requests; visible content never delays the frame and loads once', async t => {
+    const f = await setup(t);
+    f.get('open-e01').click(); await settle();
+    const frame = f.get('frame-e01');
+    assert.equal(frame.getAttribute('src'), 'e01');
+    assert.equal(f.get('readme-e01'), null);
+    assert.equal(f.get('code-e01'), null);
+    assert.deepEqual(f.calls.map(c => c.view ?? 'example'), ['example']);
+    f.visible('codepane-e01', false); f.visible('description-e01', false); await settle();
+    assert.equal(f.calls.length, 1);
+    const call = f.transport.call;
+    let release;
+    const held = new Promise(resolve => { release = resolve; });
+    f.transport.call = async text => { if (fromTytx(text).params.view === 'code') await held; return call(text); };
+    f.visible('codepane-e01'); f.visible('codepane-e01', false); f.visible('codepane-e01');
+    await settle();
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(f.state.getItem('active'), 'e01');
+    f.visible('description-e01'); await settle();
+    assert.ok(f.get('readme-e01').querySelector('h1'));
+    release(); await settle();
+    assert.ok(f.get('code-e01').querySelector('.code-line'));
+    for (let i = 0; i < 3; i++) for (const id of ['codepane-e01', 'description-e01']) {
+        f.visible(id, false); f.visible(id);
+    }
+    await settle();
+    assert.deepEqual(f.calls.map(c => c.view ?? 'example'), ['example', 'description', 'code']);
+});
+
+test('secondary content failure retains the running example and retries on reopening', async t => {
+    const f = await setup(t);
+    f.get('open-e01').click(); await settle();
+    const frame = f.get('frame-e01'); frame.contentWindow.draft = 'Keep me';
+    const call = f.transport.call;
+    f.transport.call = async text => {
+        if (fromTytx(text).params.view === 'description') throw new Error('Offline');
+        return call(text);
+    };
+    f.visible('description-e01'); await settle();
+    assert.match(f.get('description-e01').textContent, /retry/);
+    assert.equal(f.get('frame-e01'), frame);
+    f.transport.call = call;
+    f.visible('description-e01', false); f.visible('description-e01'); await settle();
+    assert.ok(f.get('readme-e01').querySelector('h1'));
+    assert.equal(frame.contentWindow.draft, 'Keep me');
+});
+
+test('remount while loading reuses the pending Source request and formats its result', async t => {
+    const f = await setup(t);
+    f.get('open-e01').click(); await settle();
+    const call = f.transport.call;
+    let release, requested = 0;
+    const held = new Promise(resolve => { release = resolve; });
+    f.transport.call = async text => { requested++; await held; return call(text); };
+    f.visible('codepane-e01'); await settle();
+    f.behavior.dispose();
+    const behavior = mountGallery(f.renderer, f.root, {update() {}, setPresentation() {}});
+    t.after(() => behavior.dispose());
+    f.visible('codepane-e01'); await settle();
+    assert.equal(requested, 1);
+    release(); await settle();
+    assert.ok(f.get('code-e01').querySelector('.code-line'));
 });

@@ -135,6 +135,8 @@ class Page(IndexPage):
         item = self.gallery_item(key)
         if view == "code" and "children" not in item:
             self.code_panel(root, item)
+        elif view == "description" and "children" not in item:
+            root.div((item["path"] / f"{item['folder']}.md").read_text(), id=f"readme-{key}")
         elif view == "example":
             if "children" in item:
                 self.group_panel(root, item)
@@ -144,7 +146,6 @@ class Page(IndexPage):
             raise ValueError(f"Unknown gallery view: {key}/{view}")
 
     def panel(self, parent, example):
-        examples = example["path"]
         key = example["key"]
         panel = parent.div(class_="gallery-panel-layout")
         header = panel.header(class_="gallery-explanation")
@@ -161,8 +162,8 @@ class Page(IndexPage):
             guided_demo(layout)
         stage.iframe(title=f"{example['title']} preview", name=f"example-{key}", id=f"frame-{key}")
         explanation = preview.contentPane(title="Explanation", pageName="explanation",
-                                          class_="gallery-lesson", overflow="auto")
-        explanation.div((examples / f"{example['folder']}.md").read_text(), id=f"readme-{key}")
+                                          class_="gallery-lesson", overflow="auto", id=f"description-{key}")
+        explanation.p("Loading explanation…", role="status")
 
     def code_panel(self, parent, example):
         key = example["key"]

@@ -1,0 +1,448 @@
+{
+  "date": "2026-10-18",
+  "scope": "Gallery content loaded on actual visibility; retain first-click pane/iframe creation. Core 0.3.3 unchanged; examples candidate 0.3.6.",
+  "owner": "contenut di codice e di descrizione possono essere \u00f2azy e scattare solo se sono visibili",
+  "method": "Three alternating before/after cold browser contexts for each gallery and Code visibility. Same remote server, one CPU/512 MiB per container, identical gzip/cache proxies, reached through a private SSH tunnel. Existing production examples 0.3.5 versus candidate. First click is measured from the click event to observed iframe runtime started; iframeStartMs is click to iframe src assignment. Host processes warm; no concurrent task test suites during the timing run. Small samples, not a public HTTPS performance guarantee.",
+  "verification": {
+    "javascriptTests": 112,
+    "pythonTests": 19,
+    "browser": "Chromium and WebKit, both hosted candidates and file export, desktop/mobile; no hidden-content RPC, first visibility, retained iframe/Data, no repeat requests. Existing offline guided playback file-origin restriction unchanged."
+  },
+  "summary": [
+    {
+      "environment": "Python",
+      "codeVisible": true,
+      "before": {
+        "firstClickMs": 1274,
+        "iframeStartMs": 523
+      },
+      "after": {
+        "firstClickMs": 1083,
+        "iframeStartMs": 279
+      }
+    },
+    {
+      "environment": "Python",
+      "codeVisible": false,
+      "before": {
+        "firstClickMs": 1250,
+        "iframeStartMs": 500
+      },
+      "after": {
+        "firstClickMs": 1040,
+        "iframeStartMs": 283
+      }
+    },
+    {
+      "environment": "JavaScript",
+      "codeVisible": true,
+      "before": {
+        "firstClickMs": 1316,
+        "iframeStartMs": 502
+      },
+      "after": {
+        "firstClickMs": 1003,
+        "iframeStartMs": 256
+      }
+    },
+    {
+      "environment": "JavaScript",
+      "codeVisible": false,
+      "before": {
+        "firstClickMs": 1351,
+        "iframeStartMs": 571
+      },
+      "after": {
+        "firstClickMs": 963,
+        "iframeStartMs": 230
+      }
+    }
+  ],
+  "samples": [
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1272,
+      "iframeStartMs": 528,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1051,
+      "iframeStartMs": 261,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1316,
+      "iframeStartMs": 571,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1003,
+      "iframeStartMs": 244,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1250,
+      "iframeStartMs": 479,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 1040,
+      "iframeStartMs": 302,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1484,
+      "iframeStartMs": 581,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 934,
+      "iframeStartMs": 225,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1274,
+      "iframeStartMs": 491,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1083,
+      "iframeStartMs": 279,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1348,
+      "iframeStartMs": 502,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 981,
+      "iframeStartMs": 271,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1293,
+      "iframeStartMs": 515,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 1095,
+      "iframeStartMs": 276,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1131,
+      "iframeStartMs": 463,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 963,
+      "iframeStartMs": 290,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1310,
+      "iframeStartMs": 523,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1166,
+      "iframeStartMs": 321,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1151,
+      "iframeStartMs": 451,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1020,
+      "iframeStartMs": 256,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1234,
+      "iframeStartMs": 500,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 1026,
+      "iframeStartMs": 283,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1351,
+      "iframeStartMs": 571,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 973,
+      "iframeStartMs": 230,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    }
+  ],
+  "publication": "pending"
+}
