@@ -9,9 +9,11 @@ from pathlib import Path
 import shutil
 import subprocess
 import signal
+import sys
+from functools import partial
 import time
-from urllib.parse import quote
-from urllib.request import Request, urlopen
+from urllib.parse import quote, urlsplit
+from urllib.request import Request, urlopen, build_opener, HTTPRedirectHandler
 import zipfile
 
 ROOT = Path('/opt/gramlot-galleries')
@@ -28,9 +30,30 @@ class ReleasePending(RuntimeError):
     """Published metadata and installed packages have not converged yet."""
 
 
-def read_json(url):
-    request = Request(url, headers={'User-Agent': 'gramlot-gallery-release-updater', 'Accept': 'application/json'})
-    with urlopen(request, timeout=30) as response:
+class NoGitHubRedirect(HTTPRedirectHandler):
+    """Never forward the ephemeral authorization header through a redirect."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def read_github_token(stream):
+    token = stream.read(4097).removesuffix('\n')
+    if not token or len(token) > 4096 or any(
+            c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_' for c in token):
+        raise ValueError('Expected one bounded GitHub token on standard input')
+    return token
+
+
+def read_json(url, *, github_token=None):
+    headers = {'User-Agent': 'gramlot-gallery-release-updater', 'Accept': 'application/json'}
+    parsed = urlsplit(url)
+    authenticated = github_token and (parsed.scheme, parsed.netloc) == ('https', 'api.github.com')
+    if authenticated:
+        headers['Authorization'] = f'Bearer {github_token}'
+    request = Request(url, headers=headers)
+    open_request = build_opener(NoGitHubRedirect()).open if authenticated else urlopen
+    with open_request(request, timeout=30) as response:
         return json.load(response)
 
 
@@ -85,7 +108,8 @@ def compose_file(slot, py_image, js_image):
 
 
 def nginx_text(template, slot, archive):
-    return template.replace('127.0.0.1:19182', f'127.0.0.1:{19182 + slot * 2}').replace('127.0.0.1:19183', f'127.0.0.1:{19183 + slot * 2}').replace('/opt/gramlot-galleries/downloads/gramlot-gallery-serverless.zip', str(archive))
+    # The same atomic configuration selects upstreams, ZIP and asset validators.
+    return template.replace('__GRAMLOT_GENERATION__', archive.parent.name).replace('127.0.0.1:19182', f'127.0.0.1:{19182 + slot * 2}').replace('127.0.0.1:19183', f'127.0.0.1:{19183 + slot * 2}').replace('/opt/gramlot-galleries/downloads/gramlot-gallery-serverless.zip', str(archive))
 
 
 def promote(candidate, check, config=CONFIG, execute=run):
@@ -213,14 +237,14 @@ def acquire_lock(lock, deadline=None):
             pause_until_retry(deadline, 'Waiting for the preceding gallery update')
 
 
-def reconcile(*, check=False, deadline=None):
+def reconcile(*, check=False, deadline=None, fetch=read_json):
     while True:
         current = json.loads((ROOT/'current.json').read_text())
-        snapshot = releases()
+        snapshot = releases(fetch)
         if snapshot == current.get('releases'):
             print(f"Published releases unchanged: {current.get('generation')}", flush=True)
             return
-        if ready(snapshot, verified=current.get('releases')):
+        if ready(snapshot, fetch, verified=current.get('releases')):
             if check:
                 print(json.dumps(snapshot, indent=2))
                 return
@@ -246,13 +270,17 @@ def main():
     mode.add_argument('--check', action='store_true', help='Read release readiness without deploying')
     mode.add_argument('--wait-seconds', type=int, default=0,
                       help='Bounded wait for concurrent updates and registry propagation')
+    parser.add_argument('--github-token-stdin', action='store_true',
+                        help='Read the short-lived CI GitHub token from standard input')
     args = parser.parse_args()
     if args.wait_seconds < 0:
         parser.error('--wait-seconds must be non-negative')
+    token = read_github_token(sys.stdin) if args.github_token_stdin else None
+    fetch = partial(read_json, github_token=token)
     deadline = time.monotonic() + args.wait_seconds if args.wait_seconds else None
     with (ROOT/'update.lock').open('w') as lock:
         if acquire_lock(lock, deadline):
-            reconcile(check=args.check, deadline=deadline)
+            reconcile(check=args.check, deadline=deadline, fetch=fetch)
 
 
 if __name__ == '__main__':

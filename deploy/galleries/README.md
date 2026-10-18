@@ -21,6 +21,15 @@ or personal access token is stored in GitHub. The job executes no checked-out
 code or downloaded release scripts. The updater itself still requires successful
 publication workflows and matching public npm/PyPI versions for all four repos.
 
+Owner authorization, 2026-10-18: “Sì, usa l’autenticazione temporanea della CI”.
+Each workflow sends its short-lived, read-only `github.token` over SSH standard
+input. The updater holds it only in memory, uses it only for HTTPS requests to
+`api.github.com`, and refuses authenticated redirects. It is never written to a
+file, logged, passed in process arguments or inherited by build subprocesses.
+Registry requests remain anonymous. The CI wrapper requires this input; all four
+workflows must be updated together. Direct administrative and timer invocations
+without `--github-token-stdin` retain their explicit anonymous mode.
+
 Concurrent events wait on the updater lock instead of being discarded. Each
 rechecks the newest release set after acquiring the lock; duplicate events are
 no-ops. Readiness and installed-version races retry every 30 seconds, within a

@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import io
 from pathlib import Path
 import tempfile
 import subprocess
@@ -11,6 +12,42 @@ import zipfile
 spec = importlib.util.spec_from_file_location('update', Path(__file__).with_name('update.py'))
 u = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(u)
+
+class GitHubAuthenticationTests(unittest.TestCase):
+    def test_only_exact_https_github_api_receives_token(self):
+        token = 'github_token_test_123'
+        for url in ('https://api.github.com/repos/gramlot-org/gramlot/releases/latest',
+                    'https://registry.npmjs.org/example/latest', 'https://pypi.org/pypi/gramlot/json',
+                    'http://api.github.com/repos/test', 'https://api.github.com.evil.test/test'):
+            authenticated = url.startswith('https://api.github.com/')
+            with patch.object(u, 'urlopen') as anonymous, patch.object(u, 'build_opener') as opener:
+                selected = opener.return_value.open if authenticated else anonymous
+                selected.return_value.__enter__.return_value = io.StringIO('{}')
+                self.assertEqual(u.read_json(url, github_token=token), {})
+                request = selected.call_args.args[0]
+                self.assertEqual(request.get_header('Authorization'), f'Bearer {token}' if authenticated else None)
+                if authenticated:
+                    anonymous.assert_not_called()
+                    self.assertIsInstance(opener.call_args.args[0], u.NoGitHubRedirect)
+                else:
+                    opener.assert_not_called()
+
+    def test_authenticated_redirects_are_refused(self):
+        handler = u.NoGitHubRedirect()
+        self.assertIsNone(handler.redirect_request(None, None, 302, '', {}, 'https://other.test/'))
+
+    def test_direct_anonymous_mode_has_no_authorization(self):
+        with patch.object(u, 'urlopen') as opening:
+            opening.return_value.__enter__.return_value = io.StringIO('{}')
+            u.read_json('https://api.github.com/repos/test')
+            self.assertIsNone(opening.call_args.args[0].get_header('Authorization'))
+
+    def test_token_input_is_bounded_and_never_echoed_on_error(self):
+        self.assertEqual(u.read_github_token(io.StringIO('github_test_123\n')), 'github_test_123')
+        for invalid in ('', 'a' * 4097, 'secret\nInjected: yes', 'a b', 'token\n\n'):
+            with self.assertRaisesRegex(ValueError, '^Expected one bounded GitHub token on standard input$'):
+                u.read_github_token(io.StringIO(invalid))
+
 
 class UpdaterTests(unittest.TestCase):
     def snapshot(self):
