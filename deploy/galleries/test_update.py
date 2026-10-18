@@ -170,6 +170,18 @@ class EventUpdateTests(unittest.TestCase):
         with self.assertRaisesRegex(TimeoutError, 'publication'):
             self.run_reconcile([False], deadline=0)
 
+    def test_authenticated_fetch_reaches_build_verification(self):
+        fetch = object()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'current.json').write_text(json.dumps({'releases': {}}))
+            with patch.object(u, 'ROOT', root), patch.object(u, 'releases', return_value=self.snapshot()) as releases, \
+                    patch.object(u, 'ready', return_value=True) as ready, patch.object(u, 'deploy') as deploy:
+                u.reconcile(fetch=fetch)
+                releases.assert_called_once_with(fetch)
+                ready.assert_called_once_with(self.snapshot(), fetch, verified={})
+                deploy.assert_called_once_with(self.snapshot(), {'releases': {}}, fetch=fetch)
+
     def test_identical_release_event_is_idempotent(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

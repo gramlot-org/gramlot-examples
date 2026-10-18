@@ -145,7 +145,7 @@ def verify_versions(actual, expected, packages):
             raise ReleasePending(f'{package}: resolved {actual[package]} instead of released {expected[repo]["version"]}')
 
 
-def deploy(snapshot, current):
+def deploy(snapshot, current, *, fetch=read_json):
     slot = 1 - current.get('slot', 0)
     generation = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
     target = ROOT / 'generations' / generation
@@ -176,7 +176,7 @@ def deploy(snapshot, current):
         run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', '-v', f'{offline}:/offline:ro',
             'gramlot-gallery-check:current', 'node', 'smoke.mjs',
             f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
-        if releases() != snapshot or not ready(snapshot, verified=snapshot):
+        if releases(fetch) != snapshot or not ready(snapshot, fetch, verified=snapshot):
             raise ReleasePending('Release set changed during build; retry after publication completes')
         def public_check():
             run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', 'gramlot-gallery-check:current',
@@ -249,7 +249,7 @@ def reconcile(*, check=False, deadline=None, fetch=read_json):
                 print(json.dumps(snapshot, indent=2))
                 return
             try:
-                deploy(snapshot, current)
+                deploy(snapshot, current, fetch=fetch)
                 return
             except ReleasePending as error:
                 if deadline is None:
