@@ -957,4 +957,7 @@ Owner refinement, 2026-10-18: “contenut di codice e di descrizione possono ess
 
 The outer code pane remains stable for index selection; only its inner `code-tabs-<key>` Source is replaced. This is gallery-owned behavior using the existing `remoteSource` contract, with no core or adapter change and no hidden iframe preloading. Categories render their README when selected because that content is visible.
 
-The 0.3.6 candidate passes 112 JavaScript and 19 Python tests, plus Chromium/WebKit desktop/mobile visibility and Data-retention checks for both hosted galleries and the file-based serverless export. Timing evidence and publication status are tracked in GC-070 and the deployment report.
+Published examples 0.3.6 passes 112 JavaScript and 19 Python tests, plus Chromium/WebKit desktop/mobile visibility and Data-retention checks for both hosted galleries and the file-based serverless export. Timing evidence and publication status are tracked in GC-070 and the deployment report.
+
+
+Examples 0.3.6 was published through the authorized CI and deployed as generation `20261018T180418Z`. Both public galleries and the downloaded ZIP pass the visibility checks in Chromium/WebKit on desktop/mobile. Gzip and conditional cache validation remain enabled; the new generation invalidates previous validators. Controlled median first-click improvement with Code open: Python 1274→1083 ms (15%), JavaScript 1316→1003 ms (24%); with Code closed: 1250→1040 ms and 1351→963 ms. Public post-deployment observations are about 1.05 s / 1.02 s. Small samples are environment-dependent; detailed methods, raw samples and CI evidence are in `deploy/galleries/reports/2026-10-18-visible-content.json`.

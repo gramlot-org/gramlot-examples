@@ -444,5 +444,194 @@
       ]
     }
   ],
-  "publication": "pending"
+  "publication": {
+    "release": "https://github.com/gramlot-org/gramlot-examples/releases/tag/v0.3.6",
+    "workflow": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39151985508",
+    "deployment": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39152264322",
+    "receipt": {
+      "releases": {
+        "gramlot": {
+          "tag": "v0.3.3",
+          "version": "0.3.3",
+          "release_id": 416585968
+        },
+        "gramlot-examples": {
+          "tag": "v0.3.6",
+          "version": "0.3.6",
+          "release_id": 416610461
+        },
+        "gramlot-js-server": {
+          "tag": "v0.2.13",
+          "version": "0.2.13",
+          "release_id": 416488728
+        },
+        "gramlot-py-server": {
+          "tag": "v0.2.10",
+          "version": "0.2.10",
+          "release_id": 416002432
+        }
+      },
+      "slot": 0,
+      "generation": "20261018T180418Z",
+      "compose": "/opt/gramlot-galleries/generations/20261018T180418Z/compose.json",
+      "images": [
+        "gramlot-gallery-python:20261018T180418Z",
+        "gramlot-gallery-node:20261018T180418Z"
+      ],
+      "archive_sha256": "0e0ab2bd5eb86f9e4aea2a14f655213af88c64c0650e62e630007cfe8ff029c6",
+      "previous": "20261018T172328Z"
+    },
+    "cacheChecks": [
+      {
+        "host": "gallery-py.gramlot.dev",
+        "path": "/assets/gramlot.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/assets/gramlot.js\"",
+        "wire_bytes": 140371,
+        "decoded_bytes": 513391,
+        "sha256": "5fa010c251cec786da178f59aa9dd39f40cd6f8ce7b4a44c17e99f71e3cbe8dc"
+      },
+      {
+        "host": "gallery-py.gramlot.dev",
+        "path": "/gallery/dist/gallery.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/gallery/dist/gallery.js\"",
+        "wire_bytes": 91395,
+        "decoded_bytes": 399869,
+        "sha256": "d87b6f94de03512be0913837b18f2d2b1bab3a39335c62eac0cd5830bc118606"
+      },
+      {
+        "host": "gallery-js.gramlot.dev",
+        "path": "/assets/gramlot.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/assets/gramlot.js\"",
+        "wire_bytes": 140371,
+        "decoded_bytes": 513391,
+        "sha256": "5fa010c251cec786da178f59aa9dd39f40cd6f8ce7b4a44c17e99f71e3cbe8dc"
+      },
+      {
+        "host": "gallery-js.gramlot.dev",
+        "path": "/gallery/dist/gallery.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/gallery/dist/gallery.js\"",
+        "wire_bytes": 91395,
+        "decoded_bytes": 399869,
+        "sha256": "d87b6f94de03512be0913837b18f2d2b1bab3a39335c62eac0cd5830bc118606"
+      }
+    ],
+    "browser": "Both public HTTPS galleries and the actual downloaded ZIP passed Chromium/WebKit desktop/mobile visibility and retained Data checks. ZIP checksum matches receipt; Python/JavaScript examples versions are 0.3.6. Temporary candidate containers, image tags, proxy and tunnel were removed; production/rollback retained.",
+    "timingNote": "Three cold contexts per public gallery with Code visible, measured from click event. A final production observation, not a paired before/after comparison; temporary candidate cleanup overlapped the beginning of this observation. Use the controlled summary above for the comparison.",
+    "timings": [
+      {
+        "run": 1,
+        "environment": "Python",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1077,
+        "iframeStartMs": 303,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "environment": "JavaScript",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 827,
+        "iframeStartMs": 225,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "environment": "Python",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1022,
+        "iframeStartMs": 292,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "environment": "JavaScript",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1016,
+        "iframeStartMs": 294,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "environment": "Python",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1046,
+        "iframeStartMs": 316,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "environment": "JavaScript",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1075,
+        "iframeStartMs": 273,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      }
+    ],
+    "medianFirstClickMs": {
+      "Python": 1046,
+      "JavaScript": 1016
+    }
+  }
 }
