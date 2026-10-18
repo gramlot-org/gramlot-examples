@@ -10,7 +10,7 @@
  */
 import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';
-import {dirname, extname, join, relative, resolve, sep} from 'node:path';
+import {dirname, extname, join, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {GramlotFileServer, InvalidRequest, PageNotFound, runtimeAsset} from '@gramlot/gramlot/server';
 
@@ -31,9 +31,9 @@ async function servedFile(root, relative) {
 
 export function servePages(folder, port) {
     const pages = resolve(folder);
-    const {assets, collections, routes} = buildGallery();
-    const pageRoutes = Object.fromEntries(Object.entries(routes).filter(([key]) => key !== 'index')
-        .map(([key, route]) => [key, relative(pages, route.page).replace(/\.js$/, '')]));
+    const {assets, collections, families} = buildGallery();
+    const pageRoutes = Object.fromEntries(families.flatMap(family => family.examples
+        .map(example => [example.key, `${family.key}/${example.folder}`])));
     const server = new GramlotFileServer(pages, {collections});
     return createServer(async (request, response) => {
         const reply = (status, body, type) => {
