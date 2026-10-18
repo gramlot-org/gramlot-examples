@@ -37,22 +37,22 @@ class Page(BasePage):
         drawer = dict(splitter=True, drawer=True, drawer_minimize="^minimize")
         outer = pane.borderContainer(id="lab-outer", height="700px", max_width="78rem", design="^design",
                                     rounded="^radius", border=edge, background=surface)
-        header = outer.contentPane(region="top", height="^regions.outer.top:{}px", minSize=40, maxSize=110,
+        header = outer.contentPane(region="top", height="^regions.outer.top", minSize=40, maxSize=110,
                                    drawer_label="Header", padding="10px", background=fills["nav"], **drawer)
         header.strong("Customer workspace · ")
         header.span("^customer")
-        footer = outer.contentPane(region="bottom", height="^regions.outer.bottom:{}px", minSize=35, maxSize=130,
+        footer = outer.contentPane(region="bottom", height="^regions.outer.bottom", minSize=35, maxSize=130,
                                    drawer_label="Status", padding="10px", background=fills["preview"], **drawer)
         footer.span("^customer", mask="Customer: {}")
         footer.span("^delivery", mask=" · Delivery: {}")
-        nav = outer.borderContainer(id="lab-navigation", region="left", width="^regions.outer.left:{}px",
+        nav = outer.borderContainer(id="lab-navigation", region="left", width="^regions.outer.left",
                                     minSize=90, maxSize=240, drawer_label="Navigation", background=fills["nav"], **drawer)
         nav.contentPane(region="top", height="40px", padding="10px").strong("Navigation")
         navbody = nav.contentPane(region="center", padding="12px")
         navbody.textbox(id="lab-search", value="^search", lbl="Search", width="100%")
         navbody.radioButtonText(value="^section", lbl="Section", values="profile:Profile,orders:Orders,history:History", cols=1)
         nav.contentPane(region="bottom", height="54px", padding="10px").span("^section", mask="Section: {}")
-        details = outer.borderContainer(id="lab-details", region="right", width="^regions.outer.right:{}px",
+        details = outer.borderContainer(id="lab-details", region="right", width="^regions.outer.right",
                                         minSize=90, maxSize=240, drawer_label="Details", background=fills["details"], **drawer)
         details.contentPane(region="top", height="40px", padding="10px").strong("Details")
         detailfields = details.contentPane(region="center", padding="12px").formlet(columns=1)
@@ -61,12 +61,12 @@ class Page(BasePage):
         detailfields.dateTextBox(id="lab-date", value="^appointment", lbl="Appointment", width="100%")
         details.contentPane(region="bottom", height="60px", padding="10px").p("An independent nested container.")
         work = outer.borderContainer(id="lab-workspace", region="center", rounded="^radius", border=edge)
-        tools = work.contentPane(region="left", width="^regions.workspace.left:{}px", minSize=70, maxSize=200,
+        tools = work.contentPane(region="left", width="^regions.workspace.left", minSize=70, maxSize=200,
                                  drawer_label="Tools", padding="10px", background=fills["tools"], **drawer)
         tools.strong("Tools")
         tools.checkbox(value="^active", lbl="Enabled", mode="switch")
         tools.checkbox(value="^readonly", lbl="Editor", label="Read only")
-        preview = work.contentPane(region="bottom", height="^regions.workspace.bottom:{}px", minSize=50, maxSize=180,
+        preview = work.contentPane(region="bottom", height="^regions.workspace.bottom", minSize=50, maxSize=180,
                                    drawer_label="Preview", padding="12px", background=fills["preview"], **drawer)
         preview.strong("Shared note")
         preview.p("^note")
@@ -78,7 +78,7 @@ class Page(BasePage):
         fields.filteringSelect(id="lab-delivery", value="^delivery", lbl="Delivery", width="100%",
                                values="standard:Standard,express:Express,pickup:Pick up")
         fields.numberTextBox(id="lab-quantity", value="^quantity", lbl="Quantity", width="100%")
-        notes = editor.contentPane(region="bottom", height="^regions.editor.bottom:{}px", minSize=60, maxSize=180,
+        notes = editor.contentPane(region="bottom", height="^regions.editor.bottom", minSize=60, maxSize=180,
                                    drawer_label="Notes", padding="10px 24px", background=fills["tools"], **drawer)
         notes.textBoxArea(id="lab-note", value="^note", lbl="Retained draft", rows=2, live=True, width="100%")
         for key, value in (("design", "headline"), ("minimize", True), ("radius", 12),

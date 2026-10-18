@@ -44,6 +44,37 @@ export const layoutBehaviors = {
         await range(page, '#lab-radius input', 18);
         assert.equal(await page.locator('#lab-outer').evaluate(el => getComputedStyle(el).borderTopLeftRadius), '18px');
         assert.equal(await page.locator('#lab-customer input').inputValue(), 'Grace Hopper');
+        const regions = [
+            ['lab-outer', 'outer.top', 'top'], ['lab-outer', 'outer.bottom', 'bottom'],
+            ['lab-outer', 'outer.left', 'left'], ['lab-outer', 'outer.right', 'right'],
+            ['lab-workspace', 'workspace.left', 'left'], ['lab-workspace', 'workspace.bottom', 'bottom'],
+            ['lab-editor', 'editor.bottom', 'bottom'],
+        ];
+        for (const [id, path, side] of regions) {
+            const slider = page.locator('#size-' + path.replace('.', '-') + ' input');
+            const separator = page.locator('#' + id + ' .separator[data-side=' + side + ']').first();
+            const before = Number(await slider.inputValue());
+            await separator.focus();
+            await separator.press(['top', 'bottom'].includes(side) ? 'ArrowDown' : 'ArrowRight');
+            const expected = before + (['left', 'top'].includes(side) ? 1 : -1);
+            assert.equal(await page.evaluate(path => gramlot.data.getItem('regions.' + path), path), expected);
+            assert.equal(Number(await slider.inputValue()), expected);
+            await range(page, '#size-' + path.replace('.', '-') + ' input', before);
+            assert.equal(await page.locator('#' + id).evaluate((el, side) => el.control.style.getPropertyValue('--' + side), side), before + 'px');
+        }
+        // Assert writeback before pointerup: synchronization must be live.
+        const separator = page.locator('#lab-outer .separator[data-side=left]').first();
+        await separator.scrollIntoViewIfNeeded();
+        const box = await separator.boundingBox();
+        const before = Number(await page.locator('#size-outer-left input').inputValue());
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+        await page.mouse.down();
+        await page.mouse.move(box.x + box.width / 2 + 20, box.y + box.height / 2, {steps: 4});
+        const size = await page.evaluate(() => gramlot.data.getItem('regions.outer.left'));
+        assert(size > before, 'Dragging must update Data before release');
+        assert.equal(Number(await page.locator('#size-outer-left input').inputValue()), size);
+        await page.mouse.up();
+        assert.equal(await page.locator('#lab-customer input').inputValue(), 'Grace Hopper');
     },
     async l06(page) {
         await page.locator('#events-border .separator[data-side=left] .drawer').first().click();

@@ -82,7 +82,7 @@ export class Page extends BasePage {
         });
         const header = outer.contentPane({
             region: 'top',
-            height: '^regions.outer.top:{}px',
+            height: '^regions.outer.top',
             minSize: 40,
             maxSize: 110,
             drawer_label: 'Header',
@@ -94,7 +94,7 @@ export class Page extends BasePage {
         header.span('^customer');
         const footer = outer.contentPane({
             region: 'bottom',
-            height: '^regions.outer.bottom:{}px',
+            height: '^regions.outer.bottom',
             minSize: 35,
             maxSize: 130,
             drawer_label: 'Status',
@@ -107,7 +107,7 @@ export class Page extends BasePage {
         const nav = outer.borderContainer({
             id: 'lab-navigation',
             region: 'left',
-            width: '^regions.outer.left:{}px',
+            width: '^regions.outer.left',
             minSize: 90,
             maxSize: 240,
             drawer_label: 'Navigation',
@@ -129,7 +129,7 @@ export class Page extends BasePage {
         const details = outer.borderContainer({
             id: 'lab-details',
             region: 'right',
-            width: '^regions.outer.right:{}px',
+            width: '^regions.outer.right',
             minSize: 90,
             maxSize: 240,
             drawer_label: 'Details',
@@ -159,7 +159,7 @@ export class Page extends BasePage {
         });
         const tools = work.contentPane({
             region: 'left',
-            width: '^regions.workspace.left:{}px',
+            width: '^regions.workspace.left',
             minSize: 70,
             maxSize: 200,
             drawer_label: 'Tools',
@@ -172,7 +172,7 @@ export class Page extends BasePage {
         tools.checkbox({ value: '^readonly', lbl: 'Editor', label: 'Read only' });
         const preview = work.contentPane({
             region: 'bottom',
-            height: '^regions.workspace.bottom:{}px',
+            height: '^regions.workspace.bottom',
             minSize: 50,
             maxSize: 180,
             drawer_label: 'Preview',
@@ -213,7 +213,7 @@ export class Page extends BasePage {
         fields.numberTextBox({ id: 'lab-quantity', value: '^quantity', lbl: 'Quantity', width: '100%' });
         const notes = editor.contentPane({
             region: 'bottom',
-            height: '^regions.editor.bottom:{}px',
+            height: '^regions.editor.bottom',
             minSize: 60,
             maxSize: 180,
             drawer_label: 'Notes',
