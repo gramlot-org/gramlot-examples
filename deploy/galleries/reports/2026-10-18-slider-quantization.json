@@ -1,0 +1,288 @@
+{
+  "date": "2026-10-18",
+  "scope": "Slider min/max/step projection corrects finite externally bound Data, including fractional splitter dimensions. Core 0.3.5 and examples 0.3.8 published; both HTTPS galleries and the official offline archive verified.",
+  "ownerAuthorization": {
+    "publication": "bene, pubblica anche questa correzione e aggiorna entrambe le gallery e lo zip serverless, poi verifica online che lo slider corregga i decimali dello splitter",
+    "temporaryCiAuthentication": "Sì, usa l’autenticazione temporanea della CI"
+  },
+  "registries": {
+    "core_pypi": {
+      "url": "https://pypi.org/pypi/gramlot/0.3.5/json",
+      "version": "0.3.5"
+    },
+    "examples_pypi": {
+      "url": "https://pypi.org/pypi/gramlot-examples/0.3.8/json",
+      "version": "0.3.8"
+    },
+    "core_npm": {
+      "url": "https://registry.npmjs.org/@gramlot%2Fgramlot/0.3.5",
+      "version": "0.3.5"
+    },
+    "examples_npm": {
+      "url": "https://registry.npmjs.org/@gramlot%2Fgramlot-examples/0.3.8",
+      "version": "0.3.8"
+    },
+    "core_jsr": {
+      "url": "https://jsr.io/@gramlot/gramlot/meta.json",
+      "version": "0.3.5"
+    }
+  },
+  "artifacts": {
+    "generation": {
+      "releases": {
+        "gramlot": {
+          "tag": "v0.3.5",
+          "version": "0.3.5",
+          "release_id": 416685936
+        },
+        "gramlot-examples": {
+          "tag": "v0.3.8",
+          "version": "0.3.8",
+          "release_id": 416689157
+        },
+        "gramlot-js-server": {
+          "tag": "v0.2.13",
+          "version": "0.2.13",
+          "release_id": 416488728
+        },
+        "gramlot-py-server": {
+          "tag": "v0.2.10",
+          "version": "0.2.10",
+          "release_id": 416002432
+        }
+      },
+      "slot": 0,
+      "generation": "20261018T205005Z",
+      "compose": "/opt/gramlot-galleries/generations/20261018T205005Z/compose.json",
+      "images": [
+        "gramlot-gallery-python:20261018T205005Z",
+        "gramlot-gallery-node:20261018T205005Z"
+      ],
+      "archive_sha256": "21ccd6cc65019c4ba97aa45d806e421f9077e6f76d2ed161e45534f177d2477e",
+      "previous": "20261018T193539Z"
+    },
+    "cache": [
+      {
+        "host": "https://gallery-py.gramlot.dev",
+        "path": "/gallery/dist/layout.js",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T205005Z:/gallery/dist/layout.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      },
+      {
+        "host": "https://gallery-py.gramlot.dev",
+        "path": "/gallery/dist/inputs.js",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T205005Z:/gallery/dist/inputs.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      },
+      {
+        "host": "https://gallery-py.gramlot.dev",
+        "path": "/assets/gramlot.js",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T205005Z:/assets/gramlot.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      },
+      {
+        "host": "https://gallery-js.gramlot.dev",
+        "path": "/gallery/dist/layout.js",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T205005Z:/gallery/dist/layout.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      },
+      {
+        "host": "https://gallery-js.gramlot.dev",
+        "path": "/gallery/dist/inputs.js",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T205005Z:/gallery/dist/inputs.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      },
+      {
+        "host": "https://gallery-js.gramlot.dev",
+        "path": "/assets/gramlot.js",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T205005Z:/assets/gramlot.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      }
+    ],
+    "zip": {
+      "sha256": "21ccd6cc65019c4ba97aa45d806e421f9077e6f76d2ed161e45534f177d2477e",
+      "bytes": 30917109,
+      "versions": {
+        "python": {
+          "gramlot": "0.3.5",
+          "gramlot-examples": "0.3.8",
+          "gramlot-py-server": "0.2.10"
+        },
+        "javascript": {
+          "@gramlot/gramlot": "0.3.5",
+          "@gramlot/gramlot-examples": "0.3.8",
+          "@gramlot/gramlot-js-server": "0.2.13",
+          "@gramlot/gramlot-serverless": "0.2.13"
+        }
+      }
+    }
+  },
+  "browser": [
+    {
+      "engine": "chromium",
+      "url": "https://gallery-py.gramlot.dev/l05",
+      "sevenBindings": true,
+      "externalQuantization": {
+        "value": 177,
+        "slider": 177,
+        "panel": "177px",
+        "label": "Navigation width · 177 px",
+        "writes": 2
+      },
+      "fractionalDragQuantized": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "url": "https://gallery-js.gramlot.dev/l05",
+      "sevenBindings": true,
+      "externalQuantization": {
+        "value": 177,
+        "slider": 177,
+        "panel": "177px",
+        "label": "Navigation width · 177 px",
+        "writes": 2
+      },
+      "fractionalDragQuantized": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "url": "file:///tmp/gramlot-slider-published/gramlot-gallery-serverless/l05/index.html",
+      "sevenBindings": true,
+      "externalQuantization": {
+        "value": 177,
+        "slider": 177,
+        "panel": "177px",
+        "label": "Navigation width · 177 px",
+        "writes": 2
+      },
+      "fractionalDragQuantized": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "url": "https://gallery-py.gramlot.dev/l05",
+      "sevenBindings": true,
+      "externalQuantization": {
+        "value": 177,
+        "slider": 177,
+        "panel": "177px",
+        "label": "Navigation width · 177 px",
+        "writes": 2
+      },
+      "fractionalDragQuantized": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "url": "https://gallery-js.gramlot.dev/l05",
+      "sevenBindings": true,
+      "externalQuantization": {
+        "value": 177,
+        "slider": 177,
+        "panel": "177px",
+        "label": "Navigation width · 177 px",
+        "writes": 2
+      },
+      "fractionalDragQuantized": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "url": "file:///tmp/gramlot-slider-published/gramlot-gallery-serverless/l05/index.html",
+      "sevenBindings": true,
+      "externalQuantization": {
+        "value": 177,
+        "slider": 177,
+        "panel": "177px",
+        "label": "Navigation width · 177 px",
+        "writes": 2
+      },
+      "fractionalDragQuantized": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    }
+  ],
+  "ci": {
+    "coreRelease": {
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/gramlot-org/gramlot/actions/runs/39162376360"
+    },
+    "examplesRelease": {
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39162782197"
+    },
+    "galleryDeployment": {
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/gramlot-org/gramlot/actions/runs/39165098063"
+    },
+    "idempotentExamplesEvent": {
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39163150782"
+    }
+  },
+  "qualification": {
+    "isolatedCoreJavaScriptTests": 3563,
+    "isolatedCorePythonTests": 168,
+    "isolatedCorePythonSubtests": 266,
+    "existingExpectedFailure": 1,
+    "examplesJavaScriptTests": 112,
+    "examplesPythonTests": 46,
+    "examplesPythonSubtests": 93,
+    "examplesPythonSkipped": 1
+  },
+  "recoveryNotes": [
+    "Dependent Python checks started before PyPI exposed core 0.3.5. Failed jobs were rerun after propagation and succeeded; no dependency pin or code workaround was introduced.",
+    "The first JSR job remained at publication for over 30 minutes and was cancelled. Retrying only JSR found 0.3.5 already published and succeeded; npm/PyPI were not rerun. The first gallery deployment timed out awaiting publication readiness and was retried after all registries and workflows passed. Temporary CI authentication and all release, consistency and smoke checks remained enabled."
+  ],
+  "limitations": [
+    "Browser coverage is Chromium and WebKit on desktop for l05; no new mobile or performance measurement is claimed.",
+    "Controls sharing a Data value require compatible min/max/step constraints; this release introduces no conflicting-constraint resolution protocol."
+  ]
+}

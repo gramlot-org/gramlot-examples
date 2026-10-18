@@ -875,3 +875,28 @@ build processes. All 28 updater tests pass on the server, including nginx
 integration. Publication gates remain mandatory. Evidence, successful CI links,
 archive hash and recovery notes are in
 [the release report](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/reports/2026-10-18-border-binding.json).
+
+
+<a id="ge-010-275"></a>
+## 275 · Published slider quantization — 2026-10-18
+
+The owner authorized publishing the slider correction, updating both galleries and
+regenerating the serverless ZIP. Core 0.3.5 and examples 0.3.8 are published;
+generation `20261018T205005Z` serves both HTTPS galleries and the official archive.
+The slider projects externally supplied finite values through its native
+min/max/step constraints and writes a differing result through its existing plain
+reactive value pointer. The splitter continues to write numeric pixels. Compatible
+constraints are required when several sliders share Data.
+
+Chromium and WebKit pass all seven regional bindings on both public hosts and the
+downloaded archive opened with `file://`. The explicit external value `176.73`
+becomes `177` in Data, slider, label and panel size. The probe records two writes:
+the external assignment and one corrective write, with no loop. Real fractional
+splitter drags remain synchronized before pointer release; keyboard resize,
+reverse slider updates and retained content also pass, without page errors.
+
+The runtime, input collection and layout collection on both hosts invalidate old
+cache validators (200) and accept current ones (304), retaining gzip. ZIP integrity,
+version receipt and deployment SHA-256 agree. Release gates, including JSR, remain
+mandatory. Detailed evidence and successful CI links are in
+[the release report](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/reports/2026-10-18-slider-quantization.json).
