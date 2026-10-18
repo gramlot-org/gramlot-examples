@@ -4,12 +4,21 @@ export const SETTINGS_SET = 'gallery:settings-set';
 export const LABEL_POSITIONS = new Set(['example', 'TL', 'TC', 'TR', 'L', 'R', 'BL', 'BC', 'BR']);
 
 /** Gallery preferences use Data; the iframe receives only the preview choice. */
-export function mountGallerySettings(renderer, root) {
+export function mountGallerySettings(renderer, root, state) {
     const document = renderer.destination.ownerDocument;
     const window = document.defaultView;
     const control = document.getElementById('gallery-label-position');
+    const popup = document.getElementById('gallery-settings');
+    let frameFocus = null;
+    // Native popover light dismissal does not receive pointer events inside an iframe.
+    const dismissOnFrameFocus = () => {
+        window.cancelAnimationFrame(frameFocus);
+        frameFocus = window.requestAnimationFrame(() => {
+            frameFocus = null;
+            if (document.activeElement?.localName === 'iframe' && popup.matches(':popover-open')) popup.hidePopover();
+        });
+    };
     const source = renderer.elements.get(control).node;
-    const state = new root.builder.data.constructor();
     const key = `gramlot.gallery.settings:${window.location.pathname}`;
     let saved;
     try { saved = window.localStorage.getItem(key); }
@@ -18,30 +27,8 @@ export function mountGallerySettings(renderer, root) {
     source.setAttr({value: state.getItem('labelPosition')});
     for (const option of control.options) renderer.elements.get(option).node.setAttr({selected: option.value === state.getItem('labelPosition')});
     const frames = () => [...renderer.records.get(root).element.querySelectorAll('.gallery-preview iframe')];
-    const previewKey = frame => frame.id.slice('frame-'.length);
     const send = frame => frame.contentWindow.postMessage({type: SETTINGS_SET,
-        labelPosition: state.getItem('labelPosition'),
-        touchMode: state.getItem(`preview.${previewKey(frame)}`) === 'mobile' ? 'on' : 'auto'}, '*');
-    const listeners = [];
-    for (const frame of frames()) {
-        const key = previewKey(frame);
-        const stage = document.getElementById(`preview-stage-${key}`);
-        state.setItem(`preview.${key}`, 'normal');
-        for (const mode of ['normal', 'mobile']) {
-            const button = document.getElementById(`preview-${mode}-${key}`);
-            const select = () => {
-                state.setItem(`preview.${key}`, mode);
-                renderer.elements.get(stage).node.setAttr({'data-preview-mode': mode});
-                for (const candidate of ['normal', 'mobile']) {
-                    const target = document.getElementById(`preview-${candidate}-${key}`);
-                    renderer.elements.get(target).node.setAttr({'aria-pressed': String(candidate === mode)});
-                }
-                if (frame.hasAttribute('src')) send(frame);
-            };
-            button.addEventListener('click', select);
-            listeners.push(() => button.removeEventListener('click', select));
-        }
-    }
+        labelPosition: state.getItem('labelPosition'), touchMode: 'auto'}, '*');
     const change = () => {
         state.setItem('labelPosition', control.value);
         source.setAttr({value: control.value});
@@ -52,20 +39,17 @@ export function mountGallerySettings(renderer, root) {
     const message = event => {
         if (event.data?.type !== THEME_READY) return;
         const frame = frames().find(item => item.contentWindow === event.source);
-        if (frame) {
-            send(frame);
-            const button = document.getElementById(`preview-mobile-${previewKey(frame)}`);
-            if (button) renderer.elements.get(button).node.setAttr({title: event.data.devices?.length
-                ? `Declared devices: ${event.data.devices.join(', ')}` : 'Device suitability not declared; preview only'});
-        }
+        if (frame) send(frame);
     };
+    window.addEventListener('blur', dismissOnFrameFocus);
     control.addEventListener('change', change);
     window.addEventListener('message', message);
     let disposed = false;
     const dispose = () => {
         if (disposed) return;
         disposed = true;
-        for (const release of listeners) release();
+        window.removeEventListener('blur', dismissOnFrameFocus);
+        window.cancelAnimationFrame(frameFocus);
         control.removeEventListener('change', change);
         window.removeEventListener('message', message);
     };

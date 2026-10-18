@@ -651,12 +651,10 @@ The w25 group copy control exports the accepted `profile` Bag: TYTX by default, 
 
 Block ID: **GE-010-055**.
 
-Hosted Python and Node galleries can display a footer link to a serverless ZIP.
-Pass `--serverless-download /downloads/gramlot-gallery-serverless.zip` to
-`gramlot uvicorn gallery` or `gramlot node gallery`. The deployment serves that
-static file; the gallery does not generate an archive per request. Omit the option
-when no archive is available. Custom gallery subclasses use
-`serverless_download_url` (Python) or `serverlessDownloadUrl` (JavaScript).
+The gallery index no longer displays the serverless ZIP link, including when a
+deployment supplies a download URL. Owner decision, 2026-10-18: “lo toglerei”.
+This replaces the previous footer-link presentation; archive generation and the
+deployment's download endpoint remain available independently of the index.
 
 Build the archive with `gramlot-serverless gallery OUTPUT`, include the complete
 output directory, and tell users to unzip it and open `index.html`. Both hosted
@@ -676,7 +674,9 @@ Below 1024 CSS pixels, the gallery offers **Example**, **Code** and
 **Inspector** as separate views. The example and source each use the full width;
 Inspector fills the content area. The menu button opens navigation over the
 current view. Selecting a page, tapping the backdrop or pressing Escape closes
-navigation. The drawer supports keyboard focus and makes the covered view inert.
+navigation. Expanding, collapsing or selecting a section keeps navigation open,
+so its examples remain reachable without reopening the menu. The drawer supports
+keyboard focus and makes the covered view inert.
 Code is unavailable on introduction/category pages; Inspector can inspect the
 shell as well as the current example.
 
@@ -701,3 +701,122 @@ that supports dynamic `docked` presentation; ship the updated core and examples
 together. `scripts/verify_gallery_mobile.mjs PLAYWRIGHT_ENTRY PYTHON_URL NODE_URL`
 checks both engines and hosts, identity/Data retention, inspector editing,
 rejected drafts, navigation and the desktop round trip.
+
+
+Border layout increment (development): l01 demonstrates live splitters, drawer styling/placement and retained validation drafts; l02 demonstrates nested borders, headline/sidebar and fixed drawers. Both Python and JavaScript sources use the same layout collection and are included in the serverless gallery. Requires the corresponding unreleased core border implementation; no gallery deployment is implied.
+
+l03 adds explicit outer/inner rounded outlines, four live splitters/drawers and
+calendar, choice and validation popovers. `scripts/verify_rounded_border_browser.mjs`
+checks both browser engines against Python/Node layout-folder servers and the
+file:// manual playgrounds, including clicks beyond the inner outline, all corner
+hit tests, retained invalid drafts and narrow-screen drawer reopening.
+
+Border visual follow-up: l02/l03 use the Gramlot filteringSelect for Headline/Sidebar,
+with a neutral inset focus indication and a slightly inset popup. Regions use
+contrasting theme surfaces. Drawer handles follow the legacy attached-tab shape,
+with rounded corners only on their exposed edge. l03 binds `rounded` on both
+containers to the same live slider; explicit bindings make their shared radius
+visible in the Python/JS sources.
+
+The Containers lesson **l04 · Drawers: handles, content and retained Data** demonstrates icon/caption minimization, automatically rotated side labels and compact touch interaction. Drawer styling uses the existing drawer_ attributes and theme variables. Hover leaves content geometry and Data unchanged. The Python browser probe scripts/verify_drawer_handles_browser.mjs covers natural sizing with larger fonts/padding, explicit Source colors, automatic contrast, dragging from closed and touch press/rest.
+
+Drawer defaults in Python l04: drawer_label is small and oriented by region. drawer_minimize defaults to True and reveals icon and caption together on hover/focus. The resting grip stays thin, without a square icon slot. Explicit False keeps both visible. Touch keeps the content compact and readable. The example needs no drawer presentation classes or CSS dimensions.
+
+The Python development lesson **l05 · Nested regions playground** combines five border containers, seven compact region-size sliders, reactive design/radius/minimize and retained editable widgets. Data paths under regions drive pane width/height with pointer suffixes. Splitter dragging remains local geometry and does not write slider values back. Node/serverless parity is deferred to final release preparation.
+
+The Python development lesson **l06 · Border events and controllers** demonstrates Source-local closable_change and splitter_resize, their payloads, Data-driven visibility and completion-only resize counters. Drawer state, invalid drafts and accepted Data keep their existing lifecycle. JavaScript/serverless parity remains deferred to final release qualification.
+
+
+Python development previews l07 (Tabs, selection and closing) and l08 (Demo carousel and live preview) exercise shared selection, named/index bindings, controller notifications, synchronous close veto, Source removal and retained Data/drafts. JavaScript/serverless example alignment is deferred until final qualification.
+
+
+<a id="ge-010-210"></a>
+## 210. Reactive tab presentation (Python preview)
+
+In Containers → Tabs, selection and closing, change Tabs/Underline and Top/Bottom/Left/Right. The Notes icon, unread badge and badge color are bound to Data; changing them while Customer is selected leaves that panel mounted. The gallery appearance menu supports visual comparison of mimi and joanna, light/dark. Demo carousel and live preview uses a compact slider to select among live miniature demo iframes. These remain Python previews until final JS/serverless qualification.
+
+
+<a id="ge-010-215"></a>
+## 215. Catalogue thumbnails in a stack (Python preview)
+
+Containers → Demo carousel and live preview (l08) reads the common catalogue and creates one persistent iframe per other demo (currently 78). The zero-based slider selects a panel and the selected subscription updates its title. Each page renders at half scale using CSS and keeps its independent Data when hidden. Native lazy loading controls when frames load; only l08 itself is excluded to prevent recursion. Chromium/WebKit checks cover slider endpoints, bound edits, document identity, scale and narrow layout.
+
+
+<a id="ge-010-220"></a>
+## 220. Drawer carousel and delayed center preview (Python)
+
+The l08 carousel now occupies a resizable borderContainer drawer. Its slider updates the thumbnail stack immediately. A dataController with _delay=350 updates the center stack only after selection settles. Center iframes have no src before their first settled visit; their URLs remain set afterward. Rapidly traversed demos are not loaded in the center. Thumbnail and full-size pages keep independent Data, both preserved across switching. Closing the drawer releases the center width without resetting either stack. Verified in Chromium/WebKit and the Python gallery suite.
+
+
+<a id="ge-010-225"></a>
+## 225. Container-based Python gallery and explanations
+
+The Python development gallery uses a borderContainer for Navigation, the running lesson and Code. Navigation and Code have live splitters and compact drawer handles; toolbar switches operate the same panes. Resizing and closing preserve the mounted examples. The general IndexPage still supports its original layout; this gallery explicitly selects component-based layout.
+
+Each lesson has **Example** and **Explanation** tabs. Explanation presents the lesson Markdown as a readable, scrollable document instead of a compact header. Switching does not reload the iframe or reset Data. The old **Normal / Mobile** preview choice is removed; responsive behavior and phone views for Example, Code and Inspector remain.
+
+The Containers family provides a dedicated drawer workspace and eight expanded explanations with concrete steps and expected outcomes. The basic regions lesson concentrates on splitters; the drawer lesson combines search, filters, editable customer details and shared output. Gallery controls and lesson text remain English.
+
+Python-first development preview. JavaScript/serverless shell authoring alignment and qualification are deferred until acceptance, together with the existing pending container-example ports; shared browser assets are not release-ready for the old JS shell. No publication in this increment.
+
+
+<a id="ge-010-230"></a>
+## 230. Guided drawer demo (Python preview)
+
+Open **Containers → Drawers: handles, content and retained Data** inside the Python gallery. The lower **Guide** drawer provides eight narrated/captioned steps. **Start / Resume** runs the sequence, **Pause** suspends it, **Next** executes the next unvisited step; after Back, it only reviews already visited steps. **Back** reviews the previous explanation without undo. **Stop** keeps the current example values. Starting after Stop or completion begins the tour again; this is not a full application reset.
+
+**Voice** is off initially. When an English browser voice is available, it reads the same caption; the speed selector controls speech rate. Each automatic step waits for speech completion plus its observation interval. Pausing cancels speech; resuming reads the current caption again, then continues with the next action not yet executed. Reviewing a step never overwrites edits by replaying its action. Missing/failed speech leaves the text tour usable. Closing the teaching drawer, leaving Example, switching examples/mobile views or hiding the browser document pauses the sequence.
+
+The first lesson changes drawer visibility, Filters width, delivery, customer and note through the example's real Data and existing bindings. Closing drawers and switching presentation keep the iframe and Data. Steps are Python-authored records of title, text, changes and seconds; this is a bounded gallery player, not a core event recorder or a public replay API. Other examples and JavaScript/serverless authoring remain deferred until owner acceptance.
+
+Verified with the Python suite, player unit tests and Chromium/WebKit integration. Voice synchronization/cancellation is tested with deterministic browser synthesis doubles; the actual installed voice's quality must be tried on the user's device.
+
+
+<a id="ge-010-235"></a>
+## 235. Lessons for learners and compact Guide handle
+
+The Containers introduction and all eight container explanations now guide a learner through a concrete task before introducing the relevant concepts. Each lesson explains what to observe, why it happens and when the technique is useful. Full source remains in Code; Explanation is readable prose, not an expandable source dump. The first drawer tour uses the same teaching approach and gives captions longer reading time.
+
+Drawer captions now minimize by default in core. Explicit drawer_minimize=False requests a visible caption. The gallery's Guide handle minimizes icon and caption together to a thin grip, revealing both during interaction; touch keeps the content readable in a compact handle. Existing CSS variables control its compact proportions. Tested in the Python gallery; other gallery families are not yet rewritten as tutorials.
+
+
+<a id="ge-010-240"></a>
+## 240. Shared containers and review-safe teaching playback
+
+The Python gallery now uses the same tabContainer for open lessons, Example/Explanation and Python/Logic source files. Page selection and responsive preferences live in galleryIndex Data. Code, explanation and mobile navigation change presentation without replacing the example iframe. The page stylesheet defines the responsive threshold; JavaScript reads its flag rather than repeating the number.
+
+The guided drawer lesson distinguishes the explanation being read from the last action applied. Back, then Next or Resume, cannot replay an old action over an edit made in the example. Start after Stop or completion deliberately starts the lesson again. The same Source-driven guide and component defaults remain in use; no replay framework or extra authoring parameters were added.
+
+Python-only development qualification continues. JavaScript/serverless shell alignment and publication await the owner's final release phase.
+
+
+<a id="ge-010-245"></a>
+## 245. Visible tab variants (Python preview)
+
+The owner requested visible comparisons rather than only presentation selectors. The existing l07 lesson now starts with eight working cards: tabs/underline crossed with top/bottom/left/right. Each card shows the exact Python options, a Profile editor, Messages with icon and reactive badge, and Activity. Selection is independent per card; fields share ordinary Data bindings. The previous selection/closing playground remains below the comparison.
+
+The grid adapts to one column on narrow screens, using normal declarative layout. Chromium and WebKit checks cover all eight variants, both mimi/joanna appearances, shared edits and phone overflow; Python page qualification passed four tests and 93 route subtests. JavaScript example parity remains deferred. Alignment along the strip is distinct from side position and is not supported yet: the owner subsequently approved tabAlign=start/center/end (see §250).
+
+
+<a id="ge-010-250"></a>
+## 250. Tab alignment (Python preview)
+
+Owner-approved tabAlign defaults to start and accepts center/end or a Data pointer. Position chooses the side; alignment places the labels along that side. The l07 lesson now contains fourteen real comparisons, including horizontal left/center/right and vertical top/center/bottom. One shared Python helper constructs all cards, and the interactive editor includes a bound alignment selector.
+
+Both modes and four sides were checked with all alignments in Chromium and WebKit, including safe overflow, Home/End, shared values and phone width, with mimi and joanna. The new parameter preserves mounted fields and selection. Python remains the current acceptance surface; no JavaScript/serverless release is claimed.
+
+
+<a id="ge-010-255"></a>
+## 255. Python, JavaScript and offline gallery alignment
+
+The final preparation phase supersedes the Python-only qualification limits in §§215–250. Both gallery shells use borderContainer drawers and tabContainer for pages, Example/Explanation and source files. Python shows Python declarations with separate Logic where present; JavaScript shows its actual Page/Logic module, with a separate tab only for a companion. The eight container lessons, fourteen tab comparisons and guided drawer tour are available in both languages.
+
+The carousel reads the common catalogue. Hosted pages use route keys; the static exporter supplies galleryUrls mapping each key to its relative file URL. The catalogue is also served as /catalog.json for the JavaScript page's module import. The paused selection loads a full-size demo once, retaining visited frames and their Data. Thumbnail and full-size instances remain independent.
+
+Source parity tests compare the eight Python/JavaScript declarations and the guided lesson, including values, bindings and controller scripts. The comparison accounts for Python's class_ spelling. Browser qualification checks actual layout, themes, mobile presentation and retained frames separately; equivalent Source alone is not a visual check. Release qualification and publication status are recorded in GC-070.
+
+
+<a id="ge-010-260"></a>
+## 260. Settings dismissal and compact footer
+
+Owner requested removing the ZIP link from the index and closing Settings on an outside click. Python and JavaScript footers omit the link. The native auto popover dismisses on outside clicks in the main document. The gallery settings service also closes it when focus enters an example iframe, whose pointer events do not reach the parent document. Clicks inside keep Settings open; Escape and its Close button continue to work. The focus listener and scheduled frame are released on disposal; no parallel popup state is added.

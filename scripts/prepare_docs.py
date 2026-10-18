@@ -78,8 +78,7 @@ def stage():
                           ' · Use 🔍 to open the Inspector.</p>\n'
                           f'<iframe src="{url}" title="{title}" width="100%" height="620"'
                           ' loading="lazy" style="border: 1px solid #ddd;"></iframe>\n```\n\n')
-            position = text.index("<details>")
-            text = text[:position] + playground + text[position:]
+            text += playground
             text += "\n\n## Complete source\n\nPython builds the page; the JavaScript module also supplies any browser Logic.\n"
             for extension, language in (("py", "python"), ("js", "javascript"), ("css", "css")):
                 original = (ROOT / source).with_suffix("." + extension)

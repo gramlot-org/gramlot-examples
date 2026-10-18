@@ -1,5 +1,6 @@
 /** Gallery content on Gramlot's reusable index page. */
 import {IndexPage} from '@gramlot/gramlot/page';
+import {guidedDemo} from './guided-demo.js';
 export class GalleryPage extends IndexPage {
     static title = 'Gramlot examples';
     static serverlessDownloadUrl = null;
@@ -12,23 +13,52 @@ export class GalleryPage extends IndexPage {
         return this.families.map(group => ({...group,
             children: group.examples.map(item => ({...item, url: item.frameUrl}))}));
     }
+    main(root) {
+        const families = this.constructor.navigation;
+        const shell = root.div({class: 'index-shell gallery-containers', id: this.constructor.shellId});
+        this.header(shell);
+        const regions = shell.borderContainer({id: 'gallery-regions', node_id: 'galleryRegions',
+            data_index_regions: true, height: '100%', min_height: 0});
+        const sidebar = regions.contentPane({region: 'left', width: '240px', minSize: 160, maxSize: 420,
+            splitter: true, drawer: true, drawer_icon: '☰', drawer_label: 'Navigation', drawer_minimize: true,
+            node_id: 'galleryNavigation', class: 'index-sidebar', id: 'index-sidebar'});
+        sidebar.header().img({src: this.constructor.logoUrl, alt: this.constructor.title, class: 'index-logo'});
+        const navigation = sidebar.nav({aria_label: 'Pages'}).ul({class: 'index-list'});
+        for (const family of families) {
+            const category = navigation.li().details({open: family === families[0]});
+            category.summary({tabindex: -1}).a(family.title, {id: `open-${family.key}`,
+                href: `#panel-${family.key}`, class: 'index-family', tabindex: -1});
+            const items = category.ul({class: 'index-list'});
+            for (const example of family.children) {
+                items.li().a(example.title, {id: `open-${example.key}`, href: example.url, tabindex: -1});
+            }
+        }
+        const center = regions.contentPane({region: 'center', id: 'gallery-center', overflow: 'hidden'});
+        shell.dataSetter({destination_path: 'galleryIndex.active', value: 'intro'});
+        const panels = center.tabContainer({id: 'index-pages', class: 'index-main', height: '100%',
+            selectedPage: '^galleryIndex.active', tabMode: 'tabs'});
+        this.introduction(panels.contentPane({id: 'panel-intro', title: 'Introduction', pageName: 'intro', class: 'index-intro'}));
+        for (const family of families) {
+            this.groupPanel(panels.contentPane({id: `panel-${family.key}`, title: family.title,
+                pageName: family.key, class: 'index-category', hidden: true}), family);
+            for (const example of family.children) this.panel(panels, example);
+        }
+        const code = regions.contentPane({region: 'right', width: '420px', minSize: 220, maxSize: 900,
+            splitter: true, drawer: true, drawer_icon: '⌘', drawer_label: 'Code', drawer_minimize: true,
+            node_id: 'galleryCode', id: 'index-code', aria_label: 'Example source code', hidden: true});
+        for (const family of families) {
+            for (const example of family.children) this.codePanel(code, example);
+        }
+        this.footer(shell.footer({class: 'index-footer'}));
+        this.behavior(shell);
+    }
     introduction(intro) {
-        intro.h2('Example gallery');
-        intro.p('This gallery shows each example page beside the code that creates it. ' +
-            'The Python and JavaScript integrations have the same examples.');
-        intro.p('Choose an example from the list. Its tab stays open so you can return to it. ' +
-            'Open Settings (⚙) in the footer and enable Keyboard navigation to move through tabs by keyboard. ' +
-            'Use the top bar to show or hide Navigation and Code; drag their dividers to resize them. ' +
-            'Choose Base, Compact, mimi or joanna independently of the color mode.');
-
+        intro.h2("Example gallery");
+        intro.p("This gallery shows each example page beside the code that creates it. The Python and JavaScript integrations have the same examples.");
+        intro.p("Choose an example from the list. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. In Settings (⚙), enable Keyboard navigation to include the navigation links in the Tab sequence. Use the top bar to show or hide Navigation and Code; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
     }
     groupPanel(pane, group) { pane.div(group.readme, {id: `readme-${group.key}`}); }
     footer(footer) {
-        if (this.constructor.serverlessDownloadUrl) {
-            footer.a('↓ Serverless ZIP', {href: this.constructor.serverlessDownloadUrl,
-                download: 'gramlot-gallery-serverless.zip', class: 'gallery-download',
-                title: 'Download the offline gallery; unzip and open index.html'});
-        }
         footer.html_button('⚙', {type: 'button', id: 'gallery-settings-toggle', class: 'gallery-settings-toggle',
             title: 'Settings', aria_label: 'Settings', popovertarget: 'gallery-settings'});
         const settings = footer.div({id: 'gallery-settings', popover: 'auto', aria_labelledby: 'gallery-settings-title'});
@@ -65,48 +95,39 @@ export class GalleryPage extends IndexPage {
         shell.html_button('', {type: 'button', id: 'gallery-mobile-backdrop', hidden: true,
             aria_label: 'Close navigation', tabindex: -1});
         shell.section({id: 'gallery-inspector-panel', aria_label: 'Inspector'});
-        shell.div({class: 'index-divider', id: 'index-code-divider', hidden: true,
-            title: 'Drag to resize code', role: 'separator', aria_orientation: 'vertical',
-            tabindex: 0, aria_label: 'Resize code', aria_controls: 'index-code',
-            aria_valuemin: 200, aria_valuemax: 800, aria_valuenow: 420});
-        const code = shell.aside({id: 'index-code', aria_label: 'Example source code', hidden: true});
-        for (const family of this.constructor.navigation) {
-            for (const example of family.children) this.codePanel(code, example);
-        }
         shell.script({src: this.constructor.galleryScript});
     }
 
     panel(parent, example) {
         const key = example.key;
-        const panel = parent.section({id: `panel-${key}`, class: 'gallery-panel', role: 'tabpanel',
-            aria_labelledby: `tab-${key}`, hidden: true});
-        const explanation = panel.header({class: 'gallery-explanation'});
-        explanation.div(example.readme, {id: `readme-${key}`});
-
-        const preview = panel.div({class: 'gallery-preview', id: `preview-${key}`});
-        const modes = preview.div({class: 'gallery-preview-modes', role: 'group', aria_label: 'Preview mode'});
-        for (const [mode, caption] of [['normal', 'Normal'], ['mobile', 'Mobile']]) {
-            modes.html_button(caption, {type: 'button', id: `preview-${mode}-${key}`, aria_pressed: mode === 'normal' ? 'true' : 'false'});
+        const panel = parent.contentPane({id: `panel-${key}`, title: example.title, pageName: key,
+            class: 'gallery-panel', hidden: true}).div({class: 'gallery-panel-layout'});
+        const header = panel.header({class: 'gallery-explanation'});
+        header.h2(example.title);
+        header.p('In this example: ' + example.description);
+        const preview = panel.tabContainer({class: 'gallery-preview', id: `preview-${key}`,
+            tabMode: 'underline', height: '100%', min_height: 0,
+            ...(key === 'l04' ? {node_id: 'galleryGuidePreview'} : {})});
+        let stage = preview.contentPane({title: 'Example', pageName: 'example',
+            class: 'gallery-preview-stage', id: `preview-stage-${key}`});
+        if (key === 'l04') {
+            const layout = stage.borderContainer({height: '100%', id: 'gallery-guide-layout'});
+            stage = layout.contentPane({region: 'center', overflow: 'hidden'});
+            guidedDemo(layout);
         }
-        const stage = preview.div({class: 'gallery-preview-stage', id: `preview-stage-${key}`});
-        stage.iframe({title: `${example.title} preview`, name: `example-${key}`,
-            id: `frame-${key}`});
+        stage.iframe({title: `${example.title} preview`, name: `example-${key}`, id: `frame-${key}`});
+        preview.contentPane({title: 'Explanation', pageName: 'explanation', class: 'gallery-lesson', overflow: 'auto'})
+            .div(example.readme, {id: `readme-${key}`});
     }
     codePanel(parent, example) {
         const key = example.key;
-        const codepane = parent.div({class: 'gallery-codepane', id: `codepane-${key}`, hidden: true});
-        const tabs = codepane.div({class: 'gallery-source-tabs', role: 'tablist', aria_label: 'Source files'});
-        tabs.html_button('JavaScript', {title: `${example.folder}.js`, type: 'button', role: 'tab',
-            id: `code-tab-${key}`, aria_controls: `code-panel-${key}`, aria_selected: 'true', tabindex: 0});
+        const codepane = parent.tabContainer({class: 'gallery-codepane gallery-source-tabs', id: `codepane-${key}`,
+            hidden: true, height: '100%', tabMode: 'underline'});
+        codepane.contentPane({title: 'JavaScript', pageName: 'javascript', id: `code-panel-${key}`})
+            .pre({tabindex: 0}).code(example.source, {class: 'language-javascript', id: `code-${key}`});
         if (example.logic != null) {
-            tabs.html_button('logic.js', {hidden: true, title: `${example.folder}_aux.js`, type: 'button', role: 'tab',
-                id: `logic-tab-${key}`, aria_controls: `logic-panel-${key}`, aria_selected: 'false', tabindex: -1});
-        }
-        codepane.pre({id: `code-panel-${key}`, role: 'tabpanel', aria_labelledby: `code-tab-${key}`, tabindex: 0})
-            .code(example.source, {class: 'language-javascript', id: `code-${key}`});
-        if (example.logic != null) {
-            codepane.pre({id: `logic-panel-${key}`, role: 'tabpanel', aria_labelledby: `logic-tab-${key}`,
-                tabindex: 0, hidden: true}).code(example.logic, {class: 'language-javascript', id: `logic-${key}`});
+            codepane.contentPane({title: 'logic.js', pageName: 'logic', id: `logic-panel-${key}`})
+                .pre({tabindex: 0}).code(example.logic, {class: 'language-javascript', id: `logic-${key}`});
         }
     }
 }

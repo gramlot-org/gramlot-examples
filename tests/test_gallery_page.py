@@ -3,11 +3,14 @@
 import unittest
 
 from gramlot_examples.gallery.page import Page
+from gramlot_examples.gallery.collections import collections
+
+GRAMMARS = [item["grammar"] for item in collections()]
 
 
 def sources(page):
     """Build ``main`` as the server does and return the ``src`` of each Source node by tag."""
-    builder = page.source_builder("main")
+    builder = page.source_builder("main", collections=GRAMMARS)
     page.main(builder.root)
 
     def walk(bag):
@@ -20,21 +23,18 @@ def sources(page):
 
 
 class GalleryPageTests(unittest.TestCase):
-    def test_optional_serverless_download(self):
+    def test_footer_omits_serverless_download(self):
         for url in (None, "/downloads/gallery.zip"):
             page = Page()
             page.serverless_download_url = url
-            builder = page.source_builder("main")
+            builder = page.source_builder("main", collections=GRAMMARS)
             page.footer(builder.root)
             links = [node for node in builder.source.nodes if node.node_tag == "a"]
-            self.assertEqual(len(links), int(url is not None))
-            if url:
-                self.assertEqual(links[0].attr["href"], url)
-                self.assertEqual(links[0].attr["download"], "gramlot-gallery-serverless.zip")
+            self.assertEqual(links, [])
 
     def test_mobile_controls_are_source_authored(self):
         page = Page()
-        builder = page.source_builder("main")
+        builder = page.source_builder("main", collections=GRAMMARS)
         page.header(builder.root)
         def walk(bag):
             for node in bag.nodes:
@@ -54,7 +54,7 @@ class GalleryPageTests(unittest.TestCase):
 
     def test_theme_choices_and_sidebar_separator(self):
         page = Page()
-        builder = page.source_builder("main")
+        builder = page.source_builder("main", collections=GRAMMARS)
         page.main(builder.root)
 
         def walk(bag):
@@ -74,10 +74,24 @@ class GalleryPageTests(unittest.TestCase):
         self.assertEqual(controls["gallery-settings"].attr["popover"], "auto")
         self.assertEqual(controls["gallery-settings-toggle"].attr["popovertarget"], "gallery-settings")
         self.assertEqual(controls["gallery-label-position"].attr["value"], "example")
-        divider = controls["index-sidebar-divider"]
-        self.assertEqual(divider.attr["role"], "separator")
-        self.assertEqual(divider.attr["aria_controls"], "index-sidebar")
-        self.assertEqual(divider.attr["tabindex"], 0)
+        self.assertEqual(controls["gallery-regions"].node_tag.lower(), "bordercontainer")
+        for id_, region in (("index-sidebar", "left"), ("index-code", "right")):
+            self.assertEqual(controls[id_].attr["region"], region)
+            self.assertTrue(controls[id_].attr["splitter"])
+            self.assertTrue(controls[id_].attr["drawer"])
+        pages = controls["index-pages"]
+        self.assertEqual(pages.node_tag.lower(), "tabcontainer")
+        self.assertEqual(pages.attr["selectedPage"], "^galleryIndex.active")
+        self.assertEqual(controls["panel-l04"].node_tag.lower(), "contentpane")
+        source = controls["codepane-l04"]
+        self.assertEqual(source.node_tag.lower(), "tabcontainer")
+        self.assertEqual([node.attr["pageName"] for node in source.value.nodes], ["python", "logic"])
+        self.assertNotIn("tab-l04", controls)
+        self.assertNotIn("code-tab-l04", controls)
+        preview = controls["preview-l04"]
+        self.assertEqual(preview.node_tag.lower(), "tabcontainer")
+        self.assertEqual([n.attr["title"] for n in preview.value.nodes], ["Example", "Explanation"])
+        self.assertNotIn("preview-mobile-l04", controls)
 
     def test_subclass_sets_the_urls(self):
         class MountedPage(Page):

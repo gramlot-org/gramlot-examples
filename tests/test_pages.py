@@ -23,8 +23,8 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
                 server = GramlotFileServer(str(page.parent), collections=build_gallery()["collections"])
                 opened = await server.open_page(f"/{page.stem}")
                 self.assertRegex(opened.html, re.compile(r"<title>[^<]+</title>"))
-                if key != "index":
-                    # The Python page takes its Logic from the page module beside it.
+                if route["logic"] is not None:
+                    # Only pages declaring a companion Logic module load one.
                     self.assertIn(f'{{"url":"/{page.stem}.js","group":null}}', opened.html)
                 response = await call(server, opened.page_id, "source", "main")
                 self.assertNotIn("error", response)

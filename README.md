@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.3.3.
+Current release: 0.3.4.
 
 [Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
 include every lesson, its Python and JavaScript source, and the gallery guide.
@@ -30,7 +30,7 @@ Choose [packaged or source-checkout updates](docs/010-gallery.md#ge-010-050). A 
 
 ## Pages
 
-[`src/gramlot_examples/pages/`](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/README.md) holds four
+[`src/gramlot_examples/pages/`](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/README.md) holds five
 families. Each example is a Python page and its JavaScript equivalent, with a
 same-name README:
 
@@ -43,7 +43,10 @@ same-name README:
   requires the current core release; each lesson states which features it uses.
 
 - `components/`: twenty-five lessons for inputs, labelbox, formlet, group copy,
-  command buttons and field validation (`w01`–`w25`), with compact touch previews.
+  command buttons and field validation (`w01`–`w25`), with compact controls.
+- `layout/`: eight container lessons (`l01`–`l08`), with live splitters, drawers,
+  nested layouts, selection and closing events, fourteen tab presentations,
+  a guided drawer tour and a lazy carousel with retained live previews.
 
 Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
 `Logic` from the module beside it.

@@ -36,7 +36,9 @@ for (const [name, engine] of Object.entries({chromium, webkit})) {
                     assert.deepEqual(errors, []);
                     count++;
                 } catch (error) {
-                    failures.push(`${name} ${url}: ${error.message}; ${errors.join('; ')}`);
+                    const failure = `${name} ${url}: ${error.message}; ${errors.join('; ')}`;
+                    failures.push(failure);
+                    console.error(failure);
                 } finally {
                     page.removeAllListeners('pageerror');
                     await page.close();

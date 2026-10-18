@@ -52,6 +52,7 @@ export function buildGallery({catalogs = []} = {}) {
     const resolve = specifier => fileURLToPath(import.meta.resolve(specifier));
     const routes = {index: {page: join(gallery, 'page.js'), stylesheet: null, logic: null}};
     const filesByUrl = [
+        ['/catalog.json', join(PACKAGE, 'catalog.json')],
         ['/themes/gramlot-base/theme.css', resolve('@gramlot/gramlot/themes/gramlot-base/theme.css')],
         ['/assets/branding/gramlot-logo-dark.svg', resolve('@gramlot/gramlot/assets/branding/gramlot-logo-dark.svg')],
         ['/assets/branding/app-icon.png', resolve('@gramlot/gramlot/assets/branding/app-icon.png')],

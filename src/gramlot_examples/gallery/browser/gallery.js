@@ -1,47 +1,32 @@
+import {mountGuidedDemo} from './gallery-guide.js';
 import {mountGalleryMobile} from './gallery-mobile.js';
 import {mountGallerySettings} from './gallery-settings.js';
 import {mountIndexPage} from '@gramlot/gramlot/index-page-runtime';
 import {highlightCode, logicSource} from './code-highlight.js';
 import {renderReadme} from './markdown.js';
 
-/** Gallery-only Markdown, highlighting and source-file tabs. */
+/** Gallery-only teaching tools and rendering services around shared containers. */
 export function mountGallery(renderer, root, inspector) {
-    const settings = mountGallerySettings(renderer, root);
-    const mobile = mountGalleryMobile(renderer, root, inspector);
+    const state = root.builder.data.getItem('galleryIndex');
+    const settings = mountGallerySettings(renderer, root, state);
+    const guide = mountGuidedDemo(renderer, root);
+    const mobile = mountGalleryMobile(renderer, root, inspector, state, visible => { if (!visible) guide.pause(); });
     const index = mountIndexPage(renderer, root, (entries, active) => {
         inspector.update(entries, active);
         mobile.update(entries, active);
+        guide.update(entries, active);
     }, (entry, {byId, node, set, listen}) => {
         const {key} = entry;
         renderReadme(byId(`readme-${key}`));
         if (entry.panel.classList.contains('index-category')) return;
-            highlightCode(byId(`code-${key}`));
-            const logic = byId(`logic-${key}`);
-            if (logic) {
-                const source = logicSource(node(logic).value);
-                set(byId(`logic-tab-${key}`), {hidden: source === null});
-                logic.textContent = source ?? '';
-                if (source !== null) highlightCode(logic);
-            }
-            const sourceTabs = [...byId(`codepane-${key}`).querySelectorAll('[role="tab"]')].filter(tab => !tab.hidden);
-            const selectSource = selected => {
-                for (const item of sourceTabs) {
-                    const active = item === selected;
-                    set(item, {aria_selected: String(active), tabindex: active ? 0 : -1});
-                    set(byId(item.getAttribute('aria-controls')), {hidden: !active});
-                }
-            };
-            for (const [index, sourceTab] of sourceTabs.entries()) {
-                listen(sourceTab, 'click', () => selectSource(sourceTab));
-                listen(sourceTab, 'keydown', event => {
-                    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-                    const next = event.key === 'Home' ? 0 : event.key === 'End' ? sourceTabs.length - 1
-                        : (index + (event.key === 'ArrowRight' ? 1 : -1) + sourceTabs.length) % sourceTabs.length;
-                    event.preventDefault();
-                    selectSource(sourceTabs[next]);
-                    sourceTabs[next].focus();
-                });
-            }
-    });
-    return {dispose() { settings.dispose(); index.dispose(); mobile.dispose(); }};
+        highlightCode(byId(`code-${key}`));
+        const logic = byId(`logic-${key}`);
+        if (logic) {
+            const source = logicSource(node(logic).value);
+            set(byId(`logic-panel-${key}`), {hidden: source === null});
+            logic.textContent = source ?? '';
+            if (source !== null) highlightCode(logic);
+        }
+    }, {containerLayout: true, state});
+    return {dispose() { guide.dispose(); settings.dispose(); index.dispose(); mobile.dispose(); }};
 }

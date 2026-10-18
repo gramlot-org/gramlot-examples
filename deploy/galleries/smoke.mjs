@@ -13,11 +13,7 @@ try {
       assert.equal(await page.evaluate(() => gramlot.state), 'started', `${base}/${key}`);
     };
     await visit('');
-    if (!offline) {
-      const link = page.locator('a.gallery-download');
-      assert.equal(await link.isVisible(), true);
-      assert.equal(await link.getAttribute('href'), '/downloads/gramlot-gallery-serverless.zip');
-    }
+    assert.equal(await page.locator('a.gallery-download').count(), 0);
     for (let n=1; n<=25; n++) await visit(`w${String(n).padStart(2,'0')}`);
     await visit('w01');
     await page.locator('#customer input').fill('Grace');
@@ -32,7 +28,7 @@ try {
     await page.locator('#remote-name input').press('Tab');
     await page.waitForFunction(() => gramlot.data.getItem('profile.remote_name') === 'NEWNAME');
     assert.deepEqual(errors, []);
-    console.log(`PASS ${base}: 25 component pages, binding, validation and download link`);
+    console.log(`PASS ${base}: 25 component pages, binding, validation and footer without download link`);
     await page.close();
   }
 } finally {await browser.close();}

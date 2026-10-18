@@ -19,8 +19,11 @@ for (const [name, engine] of [['chromium', chromium], ['webkit', webkit]]) {
         assert.equal(await page.locator('#index-sidebar').isVisible(), false);
         assert.equal(await page.locator('#gallery-view-code').isDisabled(), true);
         await menu.click();
-        await page.getByText('Input components', {exact: true}).first().click();
-        await menu.click();
+        const family = page.getByText('Input components', {exact: true}).first();
+        await family.click();
+        assert.equal(await page.locator('#index-sidebar').isVisible(), true, 'expanding a family keeps navigation open');
+        await family.click();
+        assert.equal(await page.locator('#index-sidebar').isVisible(), true, 'reselecting a family keeps navigation open');
         await page.getByRole('link', {name: 'Textbox and labelbox', exact: true}).click();
         assert.equal(await page.locator('#index-sidebar').isVisible(), false);
         const frameElement = page.locator('#frame-w01');

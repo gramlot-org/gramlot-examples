@@ -1,6 +1,6 @@
 {
   "name": "@gramlot/gramlot-examples",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Gramlot example pages, the gallery page and its catalogue.",
   "license": "Apache-2.0",
   "repository": {
@@ -14,7 +14,7 @@
     "prepack": "node scripts/build-browser.mjs"
   },
   "dependencies": {
-    "@gramlot/gramlot": ">=0.3.1"
+    "@gramlot/gramlot": ">=0.3.2"
   },
   "devDependencies": {
     "@genrojs/bag": ">=0.11.0",
@@ -42,7 +42,8 @@
     "src/gramlot_examples/gallery/gallery-page.js",
     "src/gramlot_examples/gallery/gallery.css",
     "src/gramlot_examples/gallery/dist",
-    "src/gramlot_examples/gallery/collections.js"
+    "src/gramlot_examples/gallery/collections.js",
+    "src/gramlot_examples/gallery/guided-demo.js"
   ],
   "engines": {
     "node": ">=22"

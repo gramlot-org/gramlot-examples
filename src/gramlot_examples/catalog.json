@@ -487,6 +487,60 @@
           "description": "Transformations, conditions, warnings, local callbacks and remote validation."
         }
       ]
+    },
+    {
+      "key": "layout",
+      "title": "Containers",
+      "examples": [
+        {
+          "key": "l01",
+          "folder": "01_border",
+          "title": "Border regions and splitters",
+          "description": "A customer workspace divided into a header, filters, an editor and a live summary. The center uses the space left by the other regions."
+        },
+        {
+          "key": "l02",
+          "folder": "02_nested",
+          "title": "Nested borders and layout designs",
+          "description": "An outer workspace contains another independent borderContainer. This separates application navigation from the editor and its output."
+        },
+        {
+          "key": "l03",
+          "folder": "03_rounded",
+          "title": "Rounded borders and popups",
+          "description": "Two nested containers share a reactive corner radius, while date and choice popups open inside the editor."
+        },
+        {
+          "key": "l04",
+          "folder": "04_drawer_handles",
+          "title": "Drawers: handles, content and retained Data",
+          "description": "Four drawers surround one customer workspace. Each contains useful controls or shared output, so closing a pane has a visible purpose."
+        },
+        {
+          "key": "l05",
+          "folder": "05_nested_lab",
+          "title": "Nested regions playground",
+          "description": "A small application workspace built from five nested containers. Size controls let you inspect several levels of layout while real widgets keep working."
+        },
+        {
+          "key": "l06",
+          "folder": "06_border_events",
+          "title": "Border events and controllers",
+          "description": "The example makes container notifications visible as counters and payloads, using ordinary dataController subscriptions."
+        },
+        {
+          "key": "l07",
+          "folder": "07_tabs",
+          "title": "Tabs, selection and closing",
+          "description": "Compare fourteen working tab presentations: styles on four sides, horizontal and vertical alignment, then selection, icons, badges and closing."
+        },
+        {
+          "key": "l08",
+          "folder": "08_stack",
+          "title": "Demo carousel and live preview",
+          "description": "The left drawer browses every other demo as a miniature; the center lets you try the chosen demo at its normal size."
+        }
+      ]
     }
   ]
 }

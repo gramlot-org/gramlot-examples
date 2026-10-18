@@ -56,6 +56,11 @@ jobs:
         run: npm install --ignore-scripts --package-lock=false
       - name: Build the gallery bundle
         run: npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python twin for Source parity checks
+        run: python -m pip install .
       - name: Test pages, gallery and buildGallery with Node
         if: matrix.runtime == 'node'
         run: npm test

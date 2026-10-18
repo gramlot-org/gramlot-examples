@@ -7,6 +7,7 @@ for (const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
  try {for(const url of urls) {
  const page=await browser.newPage({viewport:{width:1280,height:960}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));await page.goto(url);
+ assert.equal(await page.locator('a.gallery-download').count(),0);
  const gear=page.locator('#gallery-settings-toggle'),popup=page.locator('#gallery-settings');
  await gear.waitFor();assert.equal(await popup.isVisible(),false);const before=await page.locator('.index-main').boundingBox();
  await gear.click();await popup.waitFor();assert.deepEqual(await page.locator('.index-main').boundingBox(),before);
@@ -21,15 +22,21 @@ for (const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
  await frame.locator('#calendar .labelbox[data-position="TL"]').waitFor();
  await page.locator('#index-theme').selectOption('light');await page.screenshot({path:`/tmp/gallery-settings-${name}-${new URL(url).port||'static'}.png`});
  await page.locator('[aria-label="Close settings"]').click();assert.equal(await popup.isVisible(),false);
- await page.locator('#open-w01').click();const first=page.frameLocator('#frame-w01');await first.locator('#position').selectOption('BC');
- await first.locator('#customer .labelbox[data-position="BC"]').waitFor();
+ await page.locator('#open-w01').click();const first=page.frameLocator('#frame-w01');await first.locator('#customer input').fill('Kept after dismiss');await first.locator('#customer input').press('Tab');
+ await first.locator('#customer .labelbox[data-position="TL"]').waitFor();
  await gear.click();await page.locator('#gallery-label-position').selectOption('L');await page.locator('[aria-label="Close settings"]').click();
  await first.locator('#customer .labelbox[data-position="L"]').waitFor();
  await gear.click();await page.locator('#gallery-label-position').selectOption('example');await page.locator('[aria-label="Close settings"]').click();
- await first.locator('#customer .labelbox[data-position="BC"]').waitFor();
+ await first.locator('#customer .labelbox[data-position="TL"]').waitFor();
+ await gear.click();await page.locator('#gallery-settings-title').click();assert.equal(await popup.isVisible(),true);
+ await page.locator('.gallery-toolbar h1').click();assert.equal(await popup.isVisible(),false);
+ await gear.click();const frameBox=await page.locator('#frame-w01').boundingBox();
+ await page.mouse.click(frameBox.x+frameBox.width/2,frameBox.y+30);await popup.waitFor({state:'hidden'});
+ assert.equal(await first.locator('#customer input').inputValue(),'Kept after dismiss');
  if(!url.startsWith('file:')) {await gear.click();await page.locator('#gallery-label-position').selectOption('TR');await page.reload();await gear.click();assert.equal(await page.locator('#gallery-label-position').inputValue(),'TR');}
  await page.setViewportSize({width:390,height:750});if(!await popup.isVisible())await gear.click();
  const box=await popup.boundingBox();assert(box.x>=0&&box.x+box.width<=390&&box.y>=0&&box.y+box.height<=750);
+ await page.mouse.click(380,100);assert.equal(await popup.isVisible(),false);
  assert.deepEqual(errors,[]);console.log(`PASS ${name} ${url}: popup, theme/color, lazy-frame labels, authored-pointer restore, persistence, narrow viewport`);await page.close();
  }}finally{await browser.close();}
 }

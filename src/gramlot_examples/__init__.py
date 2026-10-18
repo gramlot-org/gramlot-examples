@@ -59,6 +59,7 @@ def build_gallery(catalogs=()):
     resources = Path(files("gramlot")) / "resources"
     routes = {"index": {"page": gallery / "page.py", "stylesheet": None, "logic": None}}
     files_by_url = [
+        ("/catalog.json", PACKAGE / "catalog.json"),
         ("/themes/gramlot-base/theme.css", resources / "themes" / "gramlot-base" / "theme.css"),
         ("/assets/branding/gramlot-logo-dark.svg", resources / "assets" / "branding" / "gramlot-logo-dark.svg"),
         ("/assets/branding/app-icon.png", resources / "assets" / "branding" / "app-icon.png"),

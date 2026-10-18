@@ -21,8 +21,8 @@ const environment = families => ({environment: 'test', families});
 
 test('common gallery', () => {
     const gallery = buildGallery();
-    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components']);
-    assert.equal(Object.keys(gallery.routes).length, 72);
+    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
+    assert.equal(Object.keys(gallery.routes).length, 1 + gallery.families.reduce((n, family) => n + family.examples.length, 0));
     assert.match(gallery.routes.index.page, /\/page\.js$/);
     assert.equal(gallery.routes.c03.logic, gallery.routes.c03.page, 'the page module holds the Logic');
     for (const [url, asset] of Object.entries(gallery.assets)) assert.ok(existsSync(asset.file), url);

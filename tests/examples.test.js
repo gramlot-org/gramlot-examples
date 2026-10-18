@@ -33,7 +33,7 @@ async function mount(family, example) {
     dom.window.HTMLElement.prototype.showPopover = function () {};
     dom.window.HTMLElement.prototype.hidePopover = function () {};
 
-    const {Logic} = await import(new URL(`${example.folder}.js`, folder(family.key)));
+    const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
     const server = new GramlotFileServer(fileURLToPath(folder(family.key)), {collections:buildGallery().collections});
     const {pageId} = await server.registerPage(`/${example.folder}`);
     const calls = [];
@@ -601,7 +601,7 @@ CHECKS.c17 = async ({window, app, byId, edit, click, data}) => {
 };
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);
