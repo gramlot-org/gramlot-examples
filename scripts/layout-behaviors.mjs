@@ -61,6 +61,10 @@ export const layoutBehaviors = {
             assert.equal(Number(await slider.inputValue()), expected);
             await range(page, '#size-' + path.replace('.', '-') + ' input', before);
             assert.equal(await page.locator('#' + id).evaluate((el, side) => el.control.style.getPropertyValue('--' + side), side), before + 'px');
+            await page.evaluate(({path, value}) => gramlot.data.setItem('regions.' + path, value), {path, value: before + 0.37});
+            assert.equal(await page.evaluate(path => gramlot.data.getItem('regions.' + path), path), before, 'The slider quantizes external Data');
+            assert.equal(Number(await slider.inputValue()), before);
+            assert.equal(await page.locator('#' + id).evaluate((el, side) => el.control.style.getPropertyValue('--' + side), side), before + 'px');
         }
         // Assert writeback before pointerup: synchronization must be live.
         const separator = page.locator('#lab-outer .separator[data-side=left]').first();
@@ -69,9 +73,11 @@ export const layoutBehaviors = {
         const before = Number(await page.locator('#size-outer-left input').inputValue());
         await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
         await page.mouse.down();
-        await page.mouse.move(box.x + box.width / 2 + 20, box.y + box.height / 2, {steps: 4});
+        await page.mouse.move(box.x + box.width / 2 + 20.73, box.y + box.height / 2, {steps: 4});
         const size = await page.evaluate(() => gramlot.data.getItem('regions.outer.left'));
         assert(size > before, 'Dragging must update Data before release');
+        assert(Number.isInteger(size), 'The slider corrects fractional splitter writes');
+        assert.equal(await page.locator('#lab-outer').evaluate(el => el.control.style.getPropertyValue('--left')), size + 'px');
         assert.equal(Number(await page.locator('#size-outer-left input').inputValue()), size);
         await page.mouse.up();
         assert.equal(await page.locator('#lab-customer input').inputValue(), 'Grace Hopper');

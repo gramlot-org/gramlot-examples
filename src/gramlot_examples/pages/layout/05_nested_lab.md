@@ -21,10 +21,16 @@ Finally, try the design and corner-radius controls. These change presentation wh
 The slider and the region both use a plain pointer to the same number. Numeric region widths and heights are pixels; the borderContainer converts them to CSS internally. Dragging the splitter writes back the constrained number through the binding, so the slider follows immediately.
 
 ```python
-sliders.horizontalSlider(value="^regions.outer.left", min=90, max=240, live=True)
+sliders.horizontalSlider(value="^regions.outer.left", min=90, max=240, step=1, live=True)
 nav = outer.borderContainer(region="left", width="^regions.outer.left",
                             splitter=True, minSize=90, maxSize=240)
 ```
+
+Each size slider uses `step=1`. It also corrects numbers received through the binding:
+a fractional splitter measurement such as `176.73` becomes `177` in Data, then the
+panel and label follow that same value. In Inspector, set `regions.outer.left`
+to `176.73` and observe it settle at `177`. The slider writes only when correction
+is needed; a number already on the step grid is not written again.
 
 There is no formatting suffix or synchronization controller. `regions` is just the Data branch chosen by this example; it is not a special container parameter. You can find all seven shared size bindings in **Code**.
 
