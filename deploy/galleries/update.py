@@ -38,9 +38,9 @@ class NoGitHubRedirect(HTTPRedirectHandler):
 
 
 def read_github_token(stream):
-    token = stream.read(4097).removesuffix('\n')
-    if not token or len(token) > 4096 or any(
-            c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_' for c in token):
+    token = stream.read(16385).removesuffix('\n')
+    if not token or len(token) > 16384 or any(
+            c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~+/=' for c in token):
         raise ValueError('Expected one bounded GitHub token on standard input')
     return token
 

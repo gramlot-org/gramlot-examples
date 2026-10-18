@@ -44,7 +44,8 @@ class GitHubAuthenticationTests(unittest.TestCase):
 
     def test_token_input_is_bounded_and_never_echoed_on_error(self):
         self.assertEqual(u.read_github_token(io.StringIO('github_test_123\n')), 'github_test_123')
-        for invalid in ('', 'a' * 4097, 'secret\nInjected: yes', 'a b', 'token\n\n'):
+        self.assertEqual(u.read_github_token(io.StringIO('opaque.token-~+/=\n')), 'opaque.token-~+/=')
+        for invalid in ('', 'a' * 16385, 'secret\nInjected: yes', 'a b', 'token\n\n'):
             with self.assertRaisesRegex(ValueError, '^Expected one bounded GitHub token on standard input$'):
                 u.read_github_token(io.StringIO(invalid))
 
@@ -111,6 +112,16 @@ class UpdaterTests(unittest.TestCase):
         result=u.nginx_text(template,1,Path('/opt/gramlot-galleries/generations/test/offline.zip'))
         self.assertEqual(result.count('alias /opt/gramlot-galleries/generations/test/offline.zip;'),2)
         self.assertIn('127.0.0.1:19184',result);self.assertIn('127.0.0.1:19185',result)
+    def test_asset_validator_changes_with_generation_and_rollback(self):
+        template=Path(__file__).with_name('nginx.conf').read_text()
+        first=u.nginx_text(template,0,Path('/generations/first/gallery.zip'))
+        second=u.nginx_text(template,1,Path('/generations/second/gallery.zip'))
+        self.assertEqual(first.count('W/"first:$uri"'),2)
+        self.assertEqual(second.count('W/"second:$uri"'),2)
+        self.assertNotIn('__GRAMLOT_GENERATION__',first+second)
+        self.assertNotIn('W/"first:',second)
+        self.assertEqual(first,u.nginx_text(template,0,Path('/generations/first/gallery.zip')))
+
     def test_zip_is_self_contained_with_receipt(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d);folder=root/'export';folder.mkdir();(folder/'index.html').write_text('test')
