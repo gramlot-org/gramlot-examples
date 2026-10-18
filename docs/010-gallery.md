@@ -961,3 +961,31 @@ Published examples 0.3.6 passes 112 JavaScript and 19 Python tests, plus Chromiu
 
 
 Examples 0.3.6 was published through the authorized CI and deployed as generation `20261018T180418Z`. Both public galleries and the downloaded ZIP pass the visibility checks in Chromium/WebKit on desktop/mobile. Gzip and conditional cache validation remain enabled; the new generation invalidates previous validators. Controlled median first-click improvement with Code open: Python 1274→1083 ms (15%), JavaScript 1316→1003 ms (24%); with Code closed: 1250→1040 ms and 1351→963 ms. Public post-deployment observations are about 1.05 s / 1.02 s. Small samples are environment-dependent; detailed methods, raw samples and CI evidence are in `deploy/galleries/reports/2026-10-18-visible-content.json`.
+
+
+<a id="ge-010-270"></a>
+## 270 · Published numeric splitter binding — 2026-10-18
+
+The owner authorized the numeric splitter correction, publication of both galleries
+and regeneration of the serverless ZIP. The `l05` nested layout now binds all seven
+regional dimensions directly to numeric Data values, shared with their sliders.
+Dragging a splitter writes constrained pixels before pointer release; keyboard
+resize and slider changes use the same Data. No transformed `:{}px` pointer or
+separate region state is involved.
+
+Core 0.3.4 and examples 0.3.7 are published. Generation `20261018T193539Z` serves
+both public galleries and the official ZIP. Chromium and WebKit pass the seven
+bindings, live drag before pointer release, keyboard resize, reverse slider
+updates and retained customer content on both HTTPS hosts and the downloaded
+ZIP opened with `file://`. No browser errors were recorded. Both hosts retain
+gzip and generation-specific conditional validators (old validator: 200; current:
+304). The ZIP matches its deployment receipt and the released versions.
+
+The owner also authorized temporary CI authentication for GitHub release checks
+after the server exhausted anonymous API requests. Tokens travel over SSH stdin,
+remain in updater memory, and are sent only to the exact HTTPS GitHub API origin;
+authenticated redirects are refused. They are not saved, logged or inherited by
+build processes. All 28 updater tests pass on the server, including nginx
+integration. Publication gates remain mandatory. Evidence, successful CI links,
+archive hash and recovery notes are in
+[the release report](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/reports/2026-10-18-border-binding.json).
