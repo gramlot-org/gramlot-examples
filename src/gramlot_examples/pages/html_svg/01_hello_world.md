@@ -18,14 +18,14 @@ A small page with a heading and a greeting. You learn how to create elements and
 
 ## Read the page
 
-`Page` extends `BasePage`; the adapter calls `main(root)`. Each element call adds a typed Source node. The browser renders that tree; the Python code does not manipulate DOM. `Page.css` selects the shared theme.
+`Page` extends `BasePage`; the adapter calls `main(root)`. Each element call adds a typed Source node. The browser renders that tree; the Python code does not manipulate DOM. The server links the shared theme to the page.
 
 ```python
-page.h1("Hello, Gramlot!")
-page.p("This heading and paragraph come from a Source tree.")
+main_content.h1("Hello, Gramlot!")
+main_content.p("This heading and paragraph come from a Source tree.")
 ```
 
-Here `page` is the local variable holding the main element, not the Page instance (`self`).
+Here `main_content` is the local variable holding the main element, not the Page instance (`self`).
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
 
@@ -36,7 +36,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Add `page.p("My second paragraph")` immediately after the existing paragraph. Predict the count, save and reload.
+Add `main_content.p("My second paragraph")` immediately after the existing paragraph. Predict the count, save and reload.
 
 **Answer:** two paragraphs appear below the same heading. The new call created another Source child; no separate DOM insertion code is needed.
 

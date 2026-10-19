@@ -7,7 +7,6 @@ class EmptyOrder extends Error {
 
 export class Page extends BasePage {
     static title = 'End-to-end story';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'story'});

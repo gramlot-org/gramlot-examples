@@ -10,30 +10,29 @@ class Page(BasePage):
     gallery_urls = {example["key"]: example["key"] for example in EXAMPLES}
     title = "Demo carousel and live preview"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         demos = [demo for demo in EXAMPLES if demo["key"] != "l08"]
-        pane = root.main(class_="example-page stack", datapath="stackDemo")
+        main_content = root.main(class_="example-page stack", datapath="stackDemo")
         for key, value in (("panel", 0), ("page", demos[0]["key"]), ("caption", demos[0]["title"]),
                            ("active", demos[0]["key"]), ("activeCaption", demos[0]["title"]), ("event", "")):
-            pane.dataSetter(f".{key}", value)
+            main_content.dataSetter(f".{key}", value)
         for demo in demos:
-            pane.dataSetter(f".urls.{demo['key']}", self.gallery_urls[demo["key"]])
-            pane.dataSetter(f".titles.{demo['key']}", demo["title"])
-            pane.dataSetter(f".opened.{demo['key']}", None)
-        pane.dataController(
+            main_content.dataSetter(f".urls.{demo['key']}", self.gallery_urls[demo["key"]])
+            main_content.dataSetter(f".titles.{demo['key']}", demo["title"])
+            main_content.dataSetter(f".opened.{demo['key']}", None)
+        main_content.dataController(
             "if (selected) { this.SET('.caption', this.GET('.titles.' + page)); } "
             "this.SET('.event', JSON.stringify(_subscription_kwargs));",
             subscribe_demoStack_selected=True)
-        pane.dataController(
+        main_content.dataController(
             "this.SET('.opened.' + demo, this.GET('.urls.' + demo)); this.SET('.active', demo); "
             "this.SET('.activeCaption', this.GET('.titles.' + demo));",
             demo="^.page", _delay=350, _onStart=True)
-        pane.h1("Browse, pause and try the demo")
-        pane.p(f"Slide through {len(demos)} thumbnails in the drawer. Pause to open the full-size demo in the center. Close the drawer for more space.")
-        border = pane.borderContainer(id="carousel-layout", height="min(76vh, 680px)", min_height="420px",
-                                      rounded=6, border="1px solid var(--gramlot-border-control, #aaa)")
+        main_content.h1("Browse, pause and try the demo")
+        main_content.p(f"Slide through {len(demos)} thumbnails in the drawer. Pause to open the full-size demo in the center. Close the drawer for more space.")
+        border = main_content.borderContainer(id="carousel-layout", height="min(76vh, 680px)", min_height="420px",
+                                              rounded=6, border="1px solid var(--gramlot-border-control, #aaa)")
         border.contentPane(region="top", height="36px", padding="8px 12px",
                            border_bottom="1px solid var(--gramlot-border, #ccc)",
                            background="var(--gramlot-surface-subtle, #eef1f5)").strong(
@@ -59,4 +58,4 @@ class Page(BasePage):
             full.contentPane(pageName=demo["key"]).iframe(
                 id=f"live-{demo['key']}", src=f"^.opened.{demo['key']}", title=f"Live: {demo['title']}",
                 width="100%", height="100%", border=0, display="block")
-        pane.p("The center loads a demo only after a pause and keeps visited pages mounted. Thumbnail and full-size views have independent Data. This overview excludes itself.")
+        main_content.p("The center loads a demo only after a pause and keeps visited pages mounted. Thumbnail and full-size views have independent Data. This overview excludes itself.")

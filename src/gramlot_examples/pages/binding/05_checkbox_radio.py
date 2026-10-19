@@ -5,7 +5,6 @@ PLANS = (("basic", "Basic"), ("plus", "Plus"), ("team", "Team"))
 
 class Page(BasePage):
     title = "Checkbox and radio"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="choice")

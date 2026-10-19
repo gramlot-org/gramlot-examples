@@ -3,4 +3,3 @@
 .complete-header nav { display: flex; flex-wrap: wrap; gap: 1rem; padding-top: .5rem; }
 .complete-hero { display: grid; gap: 1rem; text-align: center; }
 .complete-grid { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
-.eyebrow { margin: 0; color: var(--gramlot-text-secondary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }

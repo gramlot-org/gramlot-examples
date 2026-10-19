@@ -3,10 +3,9 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Drawers: handles, content and retained Data';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const pane = root.main({
+        const main_content = root.main({
             class: 'example-page stack',
             height: '100dvh',
             box_sizing: 'border-box',
@@ -14,9 +13,9 @@ export class Page extends BasePage {
             flex_direction: 'column',
             overflow: 'hidden',
         });
-        pane.h1('Small handles, readable labels');
-        pane.p('Open and resize the regions; the fields share the same Data.');
-        const border = pane.borderContainer({
+        main_content.h1('Small handles, readable labels');
+        main_content.p('Open and resize the regions; the fields share the same Data.');
+        const border = main_content.borderContainer({
             id: 'handles-demo',
             height: '100%',
             min_height: 0,
@@ -118,23 +117,21 @@ export class Page extends BasePage {
             'Click to toggle. Drag to resize, even from closed. On touch devices the captions remain visible and compact at rest.',
         );
         for (const title of ['Search', 'Filters', 'Details', 'Output']) {
-            pane.dataSetter({
+            main_content.dataSetter({
                 destination_path: `drawer${title}`,
                 value: title === 'Details' ? 'close' : true,
             });
-            pane.dataController({
+            main_content.dataController({
                 script: "this.SET(path, open ? true : 'close')",
                 path: `drawer${title}`,
                 ...{ [`subscribe_drawer${title}_closable_change`]: true },
             });
         }
-        pane.dataSetter({ destination_path: 'filtersWidth', value: '180px' });
-        pane.dataSetter({ destination_path: 'customer', value: 'Ada Lovelace' });
-        pane.dataSetter({ destination_path: 'search', value: '' });
-        pane.dataSetter({ destination_path: 'active', value: true });
-        pane.dataSetter({ destination_path: 'delivery', value: 'standard' });
-        pane.dataSetter({ destination_path: 'note', value: 'Same Data, every presentation' });
+        main_content.dataSetter({ destination_path: 'filtersWidth', value: '180px' });
+        main_content.dataSetter({ destination_path: 'customer', value: 'Ada Lovelace' });
+        main_content.dataSetter({ destination_path: 'search', value: '' });
+        main_content.dataSetter({ destination_path: 'active', value: true });
+        main_content.dataSetter({ destination_path: 'delivery', value: 'standard' });
+        main_content.dataSetter({ destination_path: 'note', value: 'Same Data, every presentation' });
     }
 }
-
-export class Logic {}

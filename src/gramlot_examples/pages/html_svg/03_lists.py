@@ -7,22 +7,21 @@ TERMS = [("Source", "The declared structure of a page."), ("Data", "A separate h
 
 class Page(BasePage):
     title = "Lists"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        page.h1("Lists tell a sequence")
-        page.p("Loops add one Source node for each item.")
-        ordered = page.ol()
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Lists tell a sequence")
+        main_content.p("Loops add one Source node for each item.")
+        ordered = main_content.ol()
         for step in STEPS:
             ordered.li(step)
-        page.h2("Two useful terms")
-        definitions = page.dl()
+        main_content.h2("Two useful terms")
+        definitions = main_content.dl()
         for term, description in TERMS:
             definitions.dt(term)
             definitions.dd(description)
-        page.h2("A nested list")
-        groups = page.ul()
+        main_content.h2("A nested list")
+        groups = main_content.ul()
         first = groups.li("HTML elements")
         nested = first.ul()
         for item in ("headings", "lists", "links"):

@@ -13,7 +13,7 @@ contains no server code.
 | Content | Source | PyPI | npm |
 | --- | --- | --- | --- |
 | Example pages | `src/gramlot_examples/pages/<family>/NN_name.{py,js}` | `.py` | `.js` |
-| Page modules (`Page` and `Logic`) | `NN_name.js` | yes | yes |
+| Page modules (`Page`; `Logic` when the page names client methods) | `NN_name.js` | yes | yes |
 | README, stylesheet | `NN_name.md`, `NN_name.css` | yes | yes |
 | Family README | `pages/<family>/README.md` | yes | yes |
 | Common catalogue | `src/gramlot_examples/catalog.json` | yes | yes |
@@ -116,7 +116,9 @@ An environment serves the gallery with its own server and static-file mechanism:
 2. It copies `stylesheet` beside the staged module, named after the key (`e06.css`):
    the core `GramlotFileServer` links it as the same-name stylesheet. It serves `logic` as
    JavaScript at a URL of its own and stages a one-line `<key>_aux.js` that re-exports
-   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`). The page
+   `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`). A module that
+   exports no `Logic` has no methods to stage: `export * from "/…/01_hello_world.js";` serves it
+   as well. The page
    module imports `@gramlot/gramlot/page`, which the import map of the bootstrap
    resolves to the runtime (core 0.2.5).
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
@@ -230,8 +232,8 @@ not a requirement on Python applications.
 
 The optional second tab is **logic.js**. For the shared examples it shows only
 the final exported `Logic` class, with the originating filename on hover. It is
-a class excerpt, not a renamed or newly created file. Empty Logic classes have
-no second tab. JS page modules already display their own Logic; a separate
+a class excerpt, not a renamed or newly created file. A module without `Logic`, or with
+an empty one, has no second tab. JS page modules already display their own Logic; a separate
 companion, when present, uses the second tab. The shared examples place Logic
 last; tests compare each excerpt with the exported class's own source to enforce
 that layout. This presentation uses no parser or extra dependency and does not
@@ -299,7 +301,8 @@ python -m unittest discover -s tests
 ```
 
 - `tests/examples.test.js`: every family folder and file pair; every page module exports
-  `Page` and `Logic`, and no common page has `_aux.js`; one behaviour of each Binding and
+  `Page`, and `Logic` only with methods, and no common page has `_aux.js`; the pages follow the
+  naming and theme conventions (`main_content`, `pane`, no base theme line); one behaviour of each Binding and
   Controllers page, mounted in jsdom with the core and the module's `Logic`. The core
   `GramlotFileServer` of the family folder answers the request envelopes in the same
   process: `main`, the endpoints of c08–c11 and c14 and the fragments of c12 and c13.
@@ -573,8 +576,8 @@ calendar dates and words such as `oggi`/`domani`, with a fixed workdate for a
 repeatable lesson. w12 **Time editing** demonstrates hours, minutes, seconds and
 milliseconds. They reuse labelbox, reactive labels, readonly/live controls and
 24rem cards. Their Python pages initialize Decimal/date/time; the JS twins carry
-the same typed values. The numeric JS page imports Bag inside its async Page.main: typed initialization
-runs on the host, while the same module supplies an empty client Logic.
+the same typed values. The numeric JS page imports `createDecimal` from `@gramlot/gramlot/page`: typed
+initialization runs on the host, and the module names no client Logic.
 
 Invalid text remains visible with an error and does not overwrite Data. Empty
 input writes null. Enter/change commit; Escape cancels; live editing commits only

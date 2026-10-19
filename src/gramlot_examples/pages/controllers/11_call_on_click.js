@@ -9,7 +9,6 @@ class OutOfStock extends Error {
 
 export class Page extends BasePage {
     static title = 'Call on click';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'stock'});
@@ -42,6 +41,3 @@ export class Page extends BasePage {
 }
 Page.registerEndpoint('reserve');
 Page.registerEndpoint('cancel', {auth: 'admin'});
-
-/** The page logic: this page names no methods. */
-export class Logic {}

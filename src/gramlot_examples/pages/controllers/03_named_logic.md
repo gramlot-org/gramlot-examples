@@ -47,7 +47,7 @@ Add a second formula using `func="finalPrice"`, another result path `.other_fina
 
 ## Resource exercise: keep styling and Logic with the page
 
-`Page.css` already selects the shared theme. In your editable project, create
+The server already links the shared theme. In your editable project, create
 `03_named_logic.css` beside the two page modules and put `h1 { color: teal; }` in it.
 Reload the page and inspect its stylesheet requests. **Answer:** the matching
 stylesheet is served as a companion and the heading changes without adding a

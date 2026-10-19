@@ -7,7 +7,6 @@ const SHOWN = ['name', 'email', 'search', 'website', 'telephone', 'quantity', 'd
 
 export class Page extends BasePage {
     static title = 'Forms with binding';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'form'});
@@ -78,6 +77,3 @@ export class Page extends BasePage {
         parent.input({type: kind, id: key, name: key, value: `^.${key}`, ...attrs});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

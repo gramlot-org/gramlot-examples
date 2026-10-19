@@ -3,30 +3,29 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     title = "Pointer templates and expressions"
-    css = ("/themes/gramlot-base/theme.css",)
     locale = "it-IT"
     time_zone = "Europe/Rome"
 
     def main(self, root):
-        pane = root.main(class_="example-page stack", datapath="transforms")
-        pane.dataSetter(".width", 38)
-        pane.dataSetter(".draft", False)
-        pane.dataSetter(".name", "Ada")
-        pane.dataSetter(".amount", 1234.5)
-        pane.h1("Same Data, different presentation")
-        sizes = pane.section(class_="card stack")
+        main_content = root.main(class_="example-page stack", datapath="transforms")
+        main_content.dataSetter(".width", 38)
+        main_content.dataSetter(".draft", False)
+        main_content.dataSetter(".name", "Ada")
+        main_content.dataSetter(".amount", 1234.5)
+        main_content.h1("Same Data, different presentation")
+        sizes = main_content.section(class_="card stack")
         sizes.h2("1. A number becomes a CSS length")
         sizes.html_label("Width in pixels", for_="width-input")
         sizes.input(id="width-input", type="number", value="^.width", live=True)
         sizes.div("Width", id="width-preview", width="^.width:{}px", background_color="#456bc4", color="white")
         sizes.p("Edit the number: only its presentation gains px. Clear it: the explicit width disappears.")
-        state = pane.section(class_="card stack")
+        state = main_content.section(class_="card stack")
         state.h2("2. A boolean becomes another boolean")
         state.html_label("Draft: allow editing", for_="draft-input")
         state.input(id="draft-input", type="checkbox", value="^.draft")
         state.html_label("Name", for_="name-input")
         state.input(id="name-input", value="^.name", readonly="^.draft:=!{}")
-        display = pane.section(class_="card stack")
+        display = main_content.section(class_="card stack")
         display.h2("3. Format a number, then wrap the text")
         display.html_label("Amount", for_="amount-input")
         display.input(id="amount-input", type="number", value="^.amount", live=True)

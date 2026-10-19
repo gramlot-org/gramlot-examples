@@ -18,7 +18,7 @@ const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.me
 
 /**
  * Mount one JavaScript example as its server would: the core GramlotFileServer of the family folder answers
- * the request envelopes (`main` and the endpoints), the module's Logic is registered as the root group.
+ * the request envelopes (`main` and the endpoints), the module's Logic, when it has one, is registered as the root group.
  */
 async function mount(family, example, {hold = null} = {}) {
     const errors = [];
@@ -33,6 +33,7 @@ async function mount(family, example, {hold = null} = {}) {
     dom.window.HTMLElement.prototype.showPopover = function () {};
     dom.window.HTMLElement.prototype.hidePopover = function () {};
 
+    // A page module that names no client method exports no Logic.
     const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
     const server = new GramlotFileServer(fileURLToPath(folder(family.key)), {collections:buildGallery().collections});
     const {pageId} = await server.registerPage(`/${example.folder}`);
@@ -46,7 +47,7 @@ async function mount(family, example, {hold = null} = {}) {
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
     const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout]});
-    app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
+    if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
     const data = path => app.data.getItem(path);
@@ -650,14 +651,27 @@ test('every family folder has a README and every example its Python, JavaScript 
     }
 });
 
-test('every page module exports Page and Logic, and no page has a logic companion', async () => {
+test('every page module exports Page, and Logic only with methods; no page has a logic companion', async () => {
     for (const family of families) {
         assert.deepEqual(readdirSync(folder(family.key)).filter(name => name.endsWith('_aux.js')), [], family.key);
         for (const example of family.examples) {
             const module = await import(new URL(`${example.folder}.js`, folder(family.key)));
             assert.equal(typeof module.Page, 'function', `${example.key} Page`);
-            assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
+            if ('Logic' in module) {
+                assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
+                assert.ok(Reflect.ownKeys(module.Logic.prototype).some(name => name !== 'constructor'), `${example.key} exports an empty Logic`);
+            }
         }
+    }
+});
+
+test('the pages follow the naming and theme conventions (GC-225)', () => {
+    for (const family of families) for (const example of family.examples) for (const suffix of ['.py', '.js']) {
+        const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
+        const name = `${family.key}/${example.folder}${suffix}`;
+        assert.doesNotMatch(text, /\bpage\s*=/, `${name}: never page for an element`);
+        assert.doesNotMatch(text, /\bpane\s*=\s*root\.main\(/, `${name}: html_main is held in main_content`);
+        assert.doesNotMatch(text, /themes\/gramlot-base/, `${name}: the server links the base theme`);
     }
 });
 
@@ -665,10 +679,6 @@ for (const family of families.filter(({key}) => key !== 'html_svg')) {
     for (const example of family.examples) {
         // c14 observes expiry of a five-second cache; Bun defaults to five seconds per test.
         test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000}, async () => {
-            for (const suffix of ['.py', '.js']) {
-                const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
-                assert.doesNotMatch(text, /\bpage\s*=/, 'never page for an element');
-            }
             const page = await mount(family, example);
             try {
                 assert.ok(page.byId('gramlot-root').childElementCount > 0);

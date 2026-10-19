@@ -4,16 +4,15 @@ from gramlot import Page as BasePage
 class Page(BasePage):
     title = "Nested borders and layout designs"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        pane = root.main(class_="example-page stack")
-        pane.h1("One layout inside another")
-        controls = pane.formlet(max_width="24rem", columns=1)
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("One layout inside another")
+        controls = main_content.formlet(max_width="24rem", columns=1)
         controls.filteringSelect(id="design", value="^design", lbl="Outer design",
                                  values="headline:Headline,sidebar:Sidebar", width="10rem")
-        bc = pane.borderContainer(id="nested-demo", height="440px", design="^design", max_width="64rem",
-                                  border="1px solid var(--gramlot-border-control, #aaa)")
+        bc = main_content.borderContainer(id="nested-demo", height="440px", design="^design", max_width="64rem",
+                                          border="1px solid var(--gramlot-border-control, #aaa)")
         bc.contentPane(region="top", border_bottom="1px solid var(--gramlot-border-control, #aaa)", height="48px", splitter=True, minSize=30, maxSize=100,
                        padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("Outer header")
         left = bc.contentPane(region="left", border_right="1px solid var(--gramlot-border-control, #aaa)", width="130px", drawer=True, splitter=False,
@@ -30,8 +29,8 @@ class Page(BasePage):
         nested.contentPane(region="bottom", border_top="1px solid var(--gramlot-border-control, #aaa)", height="80px", splitter=True, minSize=36, maxSize=180,
                            drawer=True, drawer_title="Output",
                            padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("^note")
-        pane.dataSetter("name", "Ada Lovelace")
-        pane.dataSetter("active", True)
-        pane.dataSetter("section", "profile")
-        pane.dataSetter("design", "headline")
-        pane.dataSetter("note", "Resize the inner bottom region, then change the outer design.")
+        main_content.dataSetter("name", "Ada Lovelace")
+        main_content.dataSetter("active", True)
+        main_content.dataSetter("section", "profile")
+        main_content.dataSetter("design", "headline")
+        main_content.dataSetter("note", "Resize the inner bottom region, then change the outer design.")

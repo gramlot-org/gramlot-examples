@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Events';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'events'});
@@ -36,6 +35,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.length', value: 0});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

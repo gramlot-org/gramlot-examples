@@ -48,8 +48,8 @@ same-name README:
   nested layouts, selection and closing events, fourteen tab presentations,
   a guided drawer tour and a lazy carousel with retained live previews.
 
-Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
-`Logic` from the module beside it.
+Each `NN_name.js` exports `Page`, and `Logic` when the page names client methods; the
+Python page `NN_name.py` takes that `Logic` from the module beside it.
 
 ## Gallery
 

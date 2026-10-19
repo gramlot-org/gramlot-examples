@@ -3,10 +3,9 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Tabs, selection and closing';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const pane = root.main({ class: 'example-page stack', datapath: 'tabsDemo' });
+        const main_content = root.main({ class: 'example-page stack', datapath: 'tabsDemo' });
         for (const [key, value] of [
             ['page', 'customer'],
             ['index', 0],
@@ -23,24 +22,24 @@ export class Page extends BasePage {
             ['events', ''],
             ['closed', 'None'],
         ]) {
-            pane.dataSetter({ destination_path: `.${key}`, value: value });
+            main_content.dataSetter({ destination_path: `.${key}`, value: value });
         }
         for (const topic of ['hiding', 'showing', 'selected', 'closing', 'closed']) {
-            pane.dataController({
+            main_content.dataController({
                 script: "this.SET('.events', history + topic + ': ' + JSON.stringify(_subscription_kwargs) + '\\n');",
                 history: '=.events',
                 topic: topic,
                 ...{ [`subscribe_editor_${topic}`]: true },
             });
         }
-        pane.dataController({ script: "this.SET('.closed', pageName)", subscribe_editor_closed: true });
-        this.tab_variants(pane);
-        this.tab_alignment(pane);
-        pane.h2('Try the controls, selection and closing');
-        pane.p(
+        main_content.dataController({ script: "this.SET('.closed', pageName)", subscribe_editor_closed: true });
+        this.tab_variants(main_content);
+        this.tab_alignment(main_content);
+        main_content.h2('Try the controls, selection and closing');
+        main_content.p(
             'Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.',
         );
-        const controls = pane.formlet({ col_min_width: '14rem', max_width: '36rem' });
+        const controls = main_content.formlet({ col_min_width: '14rem', max_width: '36rem' });
         controls.filteringSelect({
             id: 'tabs-choice',
             value: '^.page',
@@ -94,11 +93,11 @@ export class Page extends BasePage {
             label: 'Prevent closing Notes',
             mode: 'switch',
         });
-        pane.p(
+        main_content.p(
             'Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.',
         );
-        pane.p('^.index', { id: 'tabs-index', mask: 'Selected index: {}' });
-        const tabs = pane.tabContainer({
+        main_content.p('^.index', { id: 'tabs-index', mask: 'Selected index: {}' });
+        const tabs = main_content.tabContainer({
             id: 'tabs-demo',
             node_id: 'editor',
             selectedPage: '^.page',
@@ -167,10 +166,10 @@ export class Page extends BasePage {
         nested
             .contentPane({ region: 'center', padding: '12px' })
             .textbox({ value: '^.name', lbl: 'Same accepted name', width: '15rem' });
-        pane.p('^.closed', { id: 'tabs-closed', mask: 'Last closed: {}' });
-        pane.p('^.notes', { id: 'tabs-saved-notes', mask: 'Saved notes: {}' });
-        pane.h2('Container events');
-        pane.pre('^.events', {
+        main_content.p('^.closed', { id: 'tabs-closed', mask: 'Last closed: {}' });
+        main_content.p('^.notes', { id: 'tabs-saved-notes', mask: 'Saved notes: {}' });
+        main_content.h2('Container events');
+        main_content.pre('^.events', {
             id: 'tabs-events',
             max_height: '12rem',
             overflow: 'auto',
@@ -179,15 +178,15 @@ export class Page extends BasePage {
         });
     }
 
-    tab_variants(pane) {
-        pane.h1('See the tab variants side by side');
-        pane.p(
+    tab_variants(main_content) {
+        main_content.h1('See the tab variants side by side');
+        main_content.p(
             'Compare shaped tabs with a light underline, on each of the four sides. Every card is a working editor. Change the name in one: the others show the same Data.',
         );
-        pane.p(
+        main_content.p(
             'Top and bottom use a horizontal row. Left and right use a vertical list; the words remain horizontal so they are easy to read.',
         );
-        const grid = pane.section({
+        const grid = main_content.section({
             id: 'tab-variants',
             display: 'grid',
             grid_template_columns: 'repeat(auto-fit, minmax(min(100%, 24rem), 1fr))',
@@ -211,12 +210,12 @@ export class Page extends BasePage {
         }
     }
 
-    tab_alignment(pane) {
-        pane.h2('Align the labels along the strip');
-        pane.p(
+    tab_alignment(main_content) {
+        main_content.h2('Align the labels along the strip');
+        main_content.p(
             'Position chooses the side of the panel. Alignment chooses where the labels sit along that side. Compare the three horizontal rows, then the three vertical lists.',
         );
-        const grid = pane.section({
+        const grid = main_content.section({
             id: 'tab-alignment',
             display: 'grid',
             grid_template_columns: 'repeat(auto-fit, minmax(min(100%, 22rem), 1fr))',
@@ -296,5 +295,3 @@ export class Page extends BasePage {
         });
     }
 }
-
-export class Logic {}

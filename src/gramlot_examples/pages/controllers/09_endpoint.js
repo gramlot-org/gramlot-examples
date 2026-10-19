@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Endpoint';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'invoice'});
@@ -25,6 +24,3 @@ export class Page extends BasePage {
     with_vat({price, rate}) { return Math.floor(price * (100 + rate) + 0.5) / 100; }
 }
 Page.registerEndpoint('with_vat');
-
-/** The page logic: this page names no methods. */
-export class Logic {}

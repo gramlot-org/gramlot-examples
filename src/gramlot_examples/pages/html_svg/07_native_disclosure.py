@@ -3,20 +3,19 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     title = "Native disclosure and measures"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        page.h1("Built-in disclosure and measures")
-        page.p("Open the questions with the browser's native details control.")
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Built-in disclosure and measures")
+        main_content.p("Open the questions with the browser's native details control.")
         for question, answer in (
             ("What is Source?", "A declarative tree describing the page."),
             ("Can a page contain SVG?", "Yes. The SVG dialect nests under an HTML Source node."),
         ):
-            details = page.details(class_="card")
+            details = main_content.details(class_="card")
             details.summary(question)
             details.p(answer)
-        measures = page.section(class_="card stack")
+        measures = main_content.section(class_="card stack")
         measures.h2("Measured values")
         measures.html_label("Preparation: 70%", for_="preparation")
         measures.progress(id="preparation", value=70, max=100)

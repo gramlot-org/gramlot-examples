@@ -8,7 +8,6 @@ const CHOICES = [
 
 export class Page extends BasePage {
     static title = 'Style and visibility';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'look'});
@@ -49,6 +48,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.style', value: 'border: 4px dashed #ffc400'});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

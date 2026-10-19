@@ -17,6 +17,8 @@ function normalize(value) {
     if (typeof value === 'string') return REFERENCE.test(value) ? '<reference>' : value;
     // A civil time is a Date on 1970-01-01 UTC (TYTX H); a civil date is a Date at UTC midnight (TYTX D).
     if (value instanceof Date) return value.toISOString().startsWith('1970-01-01T') ? value.toISOString().slice(11, 19) : value.toISOString().slice(0, 10);
+    // An exact Decimal (createDecimal in JavaScript, decimal.Decimal in Python) is compared by its value, without trailing zeros.
+    if (value.constructor?.name === 'Decimal') return value.toString();
     if (typeof value.getNodes === 'function') return source(value);
     if (Array.isArray(value)) return value.map(normalize);
     if (typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([k, v]) => k !== '_meta' && v !== undefined).map(([k,v]) => [k, normalize(v)]));
@@ -30,6 +32,7 @@ function source(bag) {
 const script = `
 import importlib.util, json, re, sys
 from datetime import date, time
+from decimal import Decimal
 from gramlot import GramlotBuilder
 from gramlot_examples.gallery.collections import collections
 from gramlot_examples.gallery.guided_demo import guided_demo
@@ -37,6 +40,7 @@ from gramlot_examples.gallery.guided_demo import guided_demo
 def normalize(v):
     if isinstance(v, str): return '<reference>' if re.fullmatch(r'[0-9a-f]{32}', v) else v
     if isinstance(v, (date, time)): return v.isoformat()
+    if isinstance(v, Decimal): return format(v.normalize(), 'f')
     if hasattr(v, 'nodes'): return source(v)
     if isinstance(v, (tuple, list)): return [normalize(x) for x in v]
     if isinstance(v, dict): return {(k[:-1] if k.endswith('_') else k):normalize(x) for k,x in v.items() if k != '_meta'}

@@ -1,6 +1,6 @@
 /** Build every manual lesson as a standalone example with the standard exporter. */
 import {copyFile, mkdir, rm, writeFile} from 'node:fs/promises';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {join} from 'node:path';
 import {buildDirectory} from '@gramlot/gramlot-serverless/directory';
 import {buildGallery} from '../src/gramlot_examples/index.js';
@@ -31,7 +31,8 @@ export class Page extends Example {
     }
 }
 `);
-    await writeFile(join(folder, 'index_aux.js'), `export {Logic} from ${JSON.stringify(route.logic)};\n`);
+    // A lesson module that names no client method exports no Logic and needs no companion.
+    if ((await import(pathToFileURL(route.logic))).Logic) await writeFile(join(folder, 'index_aux.js'), `export {Logic} from ${JSON.stringify(route.logic)};\n`);
     if (route.stylesheet) await copyFile(route.stylesheet, join(folder, 'index.css'));
     await buildDirectory({pages: {index: join(folder, 'index.js')},
         output: join(root, 'build/docs-source/_extra/playgrounds', key), assets: copied, collections});

@@ -8,7 +8,6 @@ SHOWN = ("name", "email", "search", "website", "telephone", "quantity", "date", 
 
 class Page(BasePage):
     title = "Forms with binding"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="form")

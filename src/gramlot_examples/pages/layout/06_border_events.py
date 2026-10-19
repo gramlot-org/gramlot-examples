@@ -4,33 +4,32 @@ from gramlot import Page as BasePage
 class Page(BasePage):
     title = "Border events and controllers"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        pane = root.main(class_="example-page stack", datapath="events")
+        main_content = root.main(class_="example-page stack", datapath="events")
         for name, value in (("drawerCount", 0), ("resizeCount", 0),
                             ("drawerMessage", "No visibility change yet"),
                             ("resizeMessage", "No completed resize yet"),
                             ("drawerPayload", "{}"), ("resizePayload", "{}"),
                             ("hideFilters", False), ("name", "Ada"), ("note", "Keep this draft")):
-            pane.dataSetter(f".{name}", value)
-        pane.dataController(
+            main_content.dataSetter(f".{name}", value)
+        main_content.dataController(
             "this.SET('.drawerCount', count + 1); "
             "this.SET('.drawerMessage', region + ': ' + (open ? 'open' : 'closed')); "
             "this.SET('.drawerPayload', JSON.stringify(_subscription_kwargs));",
             count="=.drawerCount", subscribe_eventFilters_closable_change=True)
-        pane.dataController(
+        main_content.dataController(
             "this.SET('.resizeCount', count + 1); "
             "this.SET('.resizeMessage', region + ': ' + previousSize + ' → ' + size); "
             "this.SET('.resizePayload', JSON.stringify(_subscription_kwargs));",
             count="=.resizeCount", subscribe_eventWorkspace_splitter_resize=True)
 
-        pane.h1("Observe a drawer and a splitter")
-        pane.p("Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.")
-        pane.checkbox(id="events-hide", value="^.hideFilters", label="Hide Filters from Data")
-        border = pane.borderContainer(id="events-border", node_id="eventWorkspace",
-                                      height="360px", max_width="48rem", rounded=10,
-                                      border="1px solid var(--gramlot-border-control, #aaa)")
+        main_content.h1("Observe a drawer and a splitter")
+        main_content.p("Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.")
+        main_content.checkbox(id="events-hide", value="^.hideFilters", label="Hide Filters from Data")
+        border = main_content.borderContainer(id="events-border", node_id="eventWorkspace",
+                                              height="360px", max_width="48rem", rounded=10,
+                                              border="1px solid var(--gramlot-border-control, #aaa)")
         filters = border.contentPane(node_id="eventFilters", region="left", width="130px",
                                      minSize=90, maxSize=230, splitter=True, drawer=True,
                                      drawer_label="Filters", hidden="^.hideFilters", padding="12px",
@@ -48,7 +47,7 @@ class Page(BasePage):
                            splitter=True, padding="12px",
                            border_top="1px solid var(--gramlot-border-control, #aaa)",
                            background="var(--gramlot-surface-subtle, #eef1f5)").p("Resize this bottom region too.")
-        report = pane.section(class_="card stack", max_width="48rem")
+        report = main_content.section(class_="card stack", max_width="48rem")
         report.h2("Received by dataController")
         report.p("^.drawerCount", id="events-drawer-count", mask="Visibility events: {}")
         report.p("^.drawerMessage")
@@ -56,4 +55,4 @@ class Page(BasePage):
         report.p("^.resizeCount", id="events-resize-count", mask="Completed resizes: {}")
         report.p("^.resizeMessage")
         report.pre("^.resizePayload", id="events-resize-payload", white_space="pre-wrap", overflow_wrap="anywhere")
-        pane.p("No events are emitted at startup. The Data checkbox changes visibility too; it does not change the drawer's own open/closed preference.")
+        main_content.p("No events are emitted at startup. The Data checkbox changes visibility too; it does not change the drawer's own open/closed preference.")

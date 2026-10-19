@@ -10,7 +10,6 @@ class OutOfStock(Exception):
 
 class Page(BasePage):
     title = "Call on click"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="stock")

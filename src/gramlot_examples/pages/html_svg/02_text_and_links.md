@@ -21,8 +21,8 @@ Paragraphs, emphasis and links in one page. You learn how to combine text and el
 The paragraph has text and `strong`, `em`, `span` and `a` children. The `pre().code(...)` pair presents code as text. A fragment link uses the HTML `id`, not a Source label.
 
 ```python
-page.h3("A local destination", id="destination")
-page.a("Jump back to the heading", href="#destination")
+main_content.h3("A local destination", id="destination")
+main_content.a("Jump back to the heading", href="#destination")
 ```
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
@@ -34,7 +34,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Add `page.h3("More", id="more")` and `page.a("Read more", href="#more")`.
+Add `main_content.h3("More", id="more")` and `main_content.a("Read more", href="#more")`.
 
 **Answer:** the new link jumps to the new heading. Changing only `href` to `#missing` does not create a destination: the two names must match.
 

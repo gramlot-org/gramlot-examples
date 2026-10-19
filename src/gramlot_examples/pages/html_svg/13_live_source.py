@@ -3,32 +3,31 @@ from gramlot import Page as BasePage
 
 # These browser actions change Source, never DOM elements. `this` is the button node; its builder holds the Source.
 ACTIONS = {
-    'add': "this.builder.wrapSource(this.builder.source.getNode('main.page.work.items')).li('A new item', {class: 'card'})",
-    'remove': "const items = this.builder.source.getItem('main.page.work.items'); const last = items.getNodes().at(-1); if (last) items.popNode(last.label)",
-    'clear': "this.builder.source.getItem('main.page.work.items').clear()",
-    'rename': "this.builder.source.getNode('main.page.heading').setValue('Source is alive!')",
-    'color': "this.builder.source.getNode('main.page.motion.scene.ball').setAttr({fill: 'var(--gramlot-warning)'})",
-    'stop': "this.builder.source.getItem('main.page').popNode('motion')",
+    'add': "this.builder.wrapSource(this.builder.source.getNode('main.main_content.work.items')).li('A new item', {class: 'card'})",
+    'remove': "const items = this.builder.source.getItem('main.main_content.work.items'); const last = items.getNodes().at(-1); if (last) items.popNode(last.label)",
+    'clear': "this.builder.source.getItem('main.main_content.work.items').clear()",
+    'rename': "this.builder.source.getNode('main.main_content.heading').setValue('Source is alive!')",
+    'color': "this.builder.source.getNode('main.main_content.motion.scene.ball').setAttr({fill: 'var(--gramlot-warning)'})",
+    'stop': "this.builder.source.getItem('main.main_content').popNode('motion')",
 }
 
 
 class Page(BasePage):
     title = "Live Source playground"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(node_label="page", class_="example-page stack")
-        page.h1("Live Source playground", node_label="heading")
-        page.p("Create and remove items, change text and watch SVG move. Every change goes through Source.")
-        self.workspace(page)
-        self.motion(page)
-        page.p("Reload to restore the initial page. Changes are local to this browser page.", class_="muted")
+        main_content = root.main(node_label="main_content", class_="example-page stack")
+        main_content.h1("Live Source playground", node_label="heading")
+        main_content.p("Create and remove items, change text and watch SVG move. Every change goes through Source.")
+        self.workspace(main_content)
+        self.motion(main_content)
+        main_content.p("Reload to restore the initial page. Changes are local to this browser page.", class_="muted")
 
     def action_button(self, root, title, action):
         root.html_button(title, type="button", connect_onclick=ACTIONS[action])
 
-    def workspace(self, page):
-        work = page.section(node_label="work", class_="card stack")
+    def workspace(self, main_content):
+        work = main_content.section(node_label="work", class_="card stack")
         work.h2("Build a list live")
         work.p("The first two items are authored by a loop. Add item uses the browser Builder to create another li.")
         toolbar = work.div(class_="live-toolbar")
@@ -38,8 +37,8 @@ class Page(BasePage):
         for title in ("Explore the Source", "Try a live change"):
             items.li(title, class_="card")
 
-    def motion(self, page):
-        motion = page.section(node_label="motion", class_="card stack")
+    def motion(self, main_content):
+        motion = main_content.section(node_label="motion", class_="card stack")
         motion.h2("An animated Source attribute")
         motion.p("Every 50 ms a controller changes the circle's cx attribute in Source. Gramlot projects it into SVG.")
         motion.dataController(func="animate", _timing=0.05)

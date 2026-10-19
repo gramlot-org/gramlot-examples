@@ -4,7 +4,6 @@ from gramlot import endpoint
 
 class Page(BasePage):
     title = "Call on change"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="quote")

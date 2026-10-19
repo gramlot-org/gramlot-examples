@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Call on change';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'quote'});
@@ -32,6 +31,3 @@ export class Page extends BasePage {
     }
 }
 Page.registerEndpoint('quote');
-
-/** The page logic: this page names no methods. */
-export class Logic {}

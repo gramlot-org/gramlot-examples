@@ -21,7 +21,7 @@ Bullet lists, numbered lists and terms with descriptions. You learn how a loop b
 `STEPS` drives an ordered list, `TERMS` drives paired `dt`/`dd` nodes, and a nested `ul` is a child of one `li`.
 
 ```python
-ordered = page.ol()
+ordered = main_content.ol()
 for step in STEPS:
     ordered.li(step)
 ```

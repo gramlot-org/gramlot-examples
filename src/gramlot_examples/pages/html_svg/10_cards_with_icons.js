@@ -8,17 +8,16 @@ const CARDS = [
 
 export class Page extends BasePage {
     static title = 'Cards with SVG icons';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({node_label: 'page', class: 'example-page stack'});
-        page.h1('Three ideas, three icons');
-        page.p('Click × to remove a card from Source. Gramlot updates the DOM without reloading.');
-        const cards = page.section({node_label: 'cards', class: 'grid icon-cards', aria_label: 'Gramlot concepts'});
+        const main_content = root.main({node_label: 'main_content', class: 'example-page stack'});
+        main_content.h1('Three ideas, three icons');
+        main_content.p('Click × to remove a card from Source. Gramlot updates the DOM without reloading.');
+        const cards = main_content.section({node_label: 'cards', class: 'grid icon-cards', aria_label: 'Gramlot concepts'});
         for (const [title, description, kind] of CARDS) {
             const card = cards.article({node_label: kind, class: 'card stack'});
             card.html_button('×', {type: 'button', class: 'card-remove', aria_label: `Remove ${title}`,
-                connect_onclick: `this.builder.source.getItem('main.page.cards').popNode('${kind}')`});
+                connect_onclick: `this.builder.source.getItem('main.main_content.cards').popNode('${kind}')`});
             const icon = card.svg({viewBox: '0 0 64 64', width: 64, height: 64, aria_hidden: 'true'});
             this.icon(icon, kind);
             card.h2(title);
@@ -38,6 +37,3 @@ export class Page extends BasePage {
         }
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

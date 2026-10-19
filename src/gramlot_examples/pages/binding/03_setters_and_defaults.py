@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     title = "Setters and defaults"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="order")

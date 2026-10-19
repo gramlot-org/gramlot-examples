@@ -6,13 +6,12 @@ from gramlot import Page as BasePage, endpoint
 class Page(BasePage):
     title = "Validation rules and callbacks"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        pane = root.main(class_="example-page stack")
-        pane.h1("Validation playground")
-        pane.p("Leave a field to validate it. Invalid drafts stay visible; the accepted values below change only after success.")
-        group = pane.groupBox(id="validation-group", datapath="profile", copy=True, lbl="Profile · field validations", max_width="36rem")
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Validation playground")
+        main_content.p("Leave a field to validate it. Invalid drafts stay visible; the accepted values below change only after success.")
+        group = main_content.groupBox(id="validation-group", datapath="profile", copy=True, lbl="Profile · field validations", max_width="36rem")
         fields = group.formlet(id="validation-fields", lbl_position="L", box_c_width="100%")
         fields.textbox(id="full-name", value="^.full_name", lbl="Name (2–30)",
                        validate_notnull=True, validate_len="2:30",
@@ -39,7 +38,7 @@ class Page(BasePage):
                                values="standard:Standard,express:Express,pickup:Pick up", validate_notnull=True,
                                validate_notnull_error="Choose a delivery option.")
         group.p("Try an empty name, quantity 11, a malformed email, or a long note. The local callback rejects admin; the asynchronous endpoint rejects taken.")
-        accepted = pane.details(max_width="36rem", open=True)
+        accepted = main_content.details(max_width="36rem", open=True)
         accepted.summary("Accepted Data · invalid drafts do not overwrite these values")
         values = accepted.dl()
         for label, path in (("Name", "full_name"), ("Code", "code"), ("Quantity", "quantity"),
@@ -55,7 +54,7 @@ class Page(BasePage):
                             ("appointment", date(2026, 10, 17)), ("delivery", "standard"), ("code", "AB"), ("fallback", "Guest"), ("quantity", 2), ("email", ""),
                             ("strict", False), ("check_length", False), ("conditional", "Ada"),
                             ("nickname", "Ada"), ("remote_name", "AVAILABLE"), ("validation_status", "Edit a nickname.")):
-            pane.dataSetter("profile." + path, value)
+            main_content.dataSetter("profile." + path, value)
 
     @endpoint
     def check_name(self, value: str):

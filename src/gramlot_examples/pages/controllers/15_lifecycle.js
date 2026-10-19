@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Lifecycle';
-    static css = ['/themes/gramlot-base/theme.css'];
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'lifecycle'});
         pane.h1('Lifecycle');

@@ -6,7 +6,6 @@ from gramlot import endpoint
 
 class Page(BasePage):
     title = "Endpoint"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="invoice")

@@ -4,14 +4,13 @@ from gramlot import Page as BasePage
 class Page(BasePage):
     title = "Border regions and splitters"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        pane = root.main(class_="example-page stack")
-        pane.h1("Space for content")
-        pane.p("Drag a separator or use its arrow keys. Resize Filters and Details while editing the customer.")
-        bc = pane.borderContainer(id="border-demo", height="440px", max_width="64rem",
-                                  border="1px solid var(--gramlot-border-control, #aaa)")
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Space for content")
+        main_content.p("Drag a separator or use its arrow keys. Resize Filters and Details while editing the customer.")
+        bc = main_content.borderContainer(id="border-demo", height="440px", max_width="64rem",
+                                          border="1px solid var(--gramlot-border-control, #aaa)")
         bc.contentPane(region="top", border_bottom="1px solid var(--gramlot-border-control, #aaa)", height="40px", background="var(--gramlot-surface-subtle, #eef1f5)",
                        padding="8px").strong("Customer workspace")
         left = bc.contentPane(region="left", border_right="1px solid var(--gramlot-border-control, #aaa)", width="160px", splitter=True, minSize=100, maxSize=300,
@@ -31,4 +30,4 @@ class Page(BasePage):
         center.p("^customer.name", id="accepted-name")
         center.p("Try an invalid one-character name, then resize the panes. The draft stays in the field.")
         for path, value in (("customer.active", True), ("filter", ""), ("customer.name", "Ada"), ("customer.notes", "Same fields, same Data")):
-            pane.dataSetter(path, value)
+            main_content.dataSetter(path, value)

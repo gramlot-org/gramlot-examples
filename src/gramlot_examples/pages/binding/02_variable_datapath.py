@@ -9,7 +9,6 @@ PEOPLE = {
 
 class Page(BasePage):
     title = "Variable datapath"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack")

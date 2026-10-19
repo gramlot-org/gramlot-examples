@@ -3,13 +3,12 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     title = "SVG composition"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        page.h1("Compose a small SVG scene")
-        page.p("Groups and loops arrange repeated Source nodes in a single viewport.")
-        figure = page.figure(class_="card")
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Compose a small SVG scene")
+        main_content.p("Groups and loops arrange repeated Source nodes in a single viewport.")
+        figure = main_content.figure(class_="card")
         drawing = figure.svg(viewBox="0 0 560 240", role="img", aria_labelledby="scene-title", class_="example-art")
         drawing.title("A row of houses and trees in a garden", id="scene-title")
         drawing.rect(x=0, y=0, width=560, height=240, fill="var(--gramlot-surface-subtle)")
