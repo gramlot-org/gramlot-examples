@@ -44,6 +44,6 @@ Remove only the later `.customer` setter and add `pane.dataSetter(".quantity", 0
 
 These are build-time defaults, not record/new-record defaults or automatic refill whenever a user clears a control. Destination paths are bare Data paths, not `^` pointers or `?attr` destinations.
 
-Continue with [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/04_native_editing.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/04_native_editing.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-045) explains the full contract.
 
 </details>

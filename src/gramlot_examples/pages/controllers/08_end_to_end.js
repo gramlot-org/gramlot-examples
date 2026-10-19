@@ -1,5 +1,10 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
+/** The endpoint refuses an order without items; the class name reaches the page as error.remoteName. */
+class EmptyOrder extends Error {
+    name = 'EmptyOrder';
+}
+
 export class Page extends BasePage {
     static title = 'End-to-end story';
     static css = ['/themes/gramlot-base/theme.css'];
@@ -74,7 +79,7 @@ export class Page extends BasePage {
     }
 
     quote({quantity, large, gift}) {
-        if (quantity === null || quantity < 1) throw new RangeError('Choose at least one item');
+        if (quantity == null || quantity < 1) throw new EmptyOrder('Choose at least one item');
         return quantity * (large ? 3 : 1) + (gift ? 5 : 0);
     }
 }
@@ -83,7 +88,7 @@ Page.registerEndpoint('quote');
 /** Logic of 08_end_to_end.py and 08_end_to_end.js: the named logic of the story. */
 export class Logic {
     sourceNode(nodeId) {
-        return this.page.src.source.getNodeByAttr('node_id', nodeId);
+        return this.page.src.builder.nodeById(nodeId);
     }
 
     /** Controller of the total: the circle turns red above 10. */

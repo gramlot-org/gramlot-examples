@@ -19,8 +19,8 @@ class Page(BasePage):
         cards = page.section(node_label="cards", class_="grid icon-cards", aria_label="Gramlot concepts")
         for title, description, kind in CARDS:
             card = cards.article(node_label=kind, class_="card stack")
-            card.button("×", type="button", class_="card-remove", aria_label=f"Remove {title}",
-                        connect_onclick=f"window.gramlot.src.builder.source.getItem('main.page.cards').popNode('{kind}')")
+            card.html_button("×", type="button", class_="card-remove", aria_label=f"Remove {title}",
+                             connect_onclick=f"this.builder.source.getItem('main.page.cards').popNode('{kind}')")
             icon = card.svg(viewBox="0 0 64 64", width=64, height=64, aria_hidden="true")
             self.icon(icon, kind)
             card.h2(title)

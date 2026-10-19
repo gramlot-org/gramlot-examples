@@ -2,6 +2,11 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 const SHOW_ERROR = "this.SET('.error', error.code + ': ' + error.message)";
 
+/** The endpoint refuses the reservation; the class name reaches the page as error.remoteName. */
+class OutOfStock extends Error {
+    name = 'OutOfStock';
+}
+
 export class Page extends BasePage {
     static title = 'Call on click';
     static css = ['/themes/gramlot-base/theme.css'];
@@ -31,9 +36,9 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.item', value: 'Lamp'});
     }
 
-    reserve({item}) { throw new Error(`${item} is out of stock`); }
+    reserve({item}) { throw new OutOfStock(`${item} is out of stock`); }
 
-    cancel() { return false; }
+    cancel({item}) { return false; }
 }
 Page.registerEndpoint('reserve');
 Page.registerEndpoint('cancel', {auth: 'admin'});

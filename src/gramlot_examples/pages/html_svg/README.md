@@ -25,7 +25,7 @@ watch a small SVG animation driven by Source attributes. The live examples also 
 
 Start with e01/e03 for structure. HTML details (e02/e04/e05/e06/e07) and
 SVG (e08/e09/e11) are optional branches. e10/e13 are advanced live Source lessons:
-read c07's event explanation first and learn removal/cleanup before adapting the
+read c07's event explanation and c02's `_timing` first, then adapt the
 animation. A loop in main builds Source once; it is not reactive Data. See the
 [release-by-release route](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md#gc-025-015). Prerequisites support the
 chronological sequence; they do not replace it. The maintained files may use
@@ -40,7 +40,7 @@ exercise in your own editable page. Each exercise includes an answer. Follow
 keep both stages visible. A newer interactive page can contain more total code
 while requiring less explicit state synchronization or request coordination.
 
-e10/e13 contain inline actions/scripts; their empty Logic class is not the source
-of those actions. They are advanced bridges to the 0.2.0 behavior lessons.
+e10/e13 contain inline actions; the Logic class of e13 holds only its animation
+controller, not those actions. They are advanced bridges to the 0.2.0 behavior lessons.
 
 </details>

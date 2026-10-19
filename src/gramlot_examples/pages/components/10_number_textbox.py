@@ -1,5 +1,4 @@
 from gramlot import Page as BasePage
-from decimal import Decimal
 
 
 class Page(BasePage):
@@ -23,6 +22,5 @@ class Page(BasePage):
         pane.p("^exact", id="exact-value", format="0.00", dtype="N")
         pane.dataSetter('amount', 12.5)
         pane.dataSetter('quantity', 3)
-        pane.dataSetter('exact', Decimal('9007199254740993.25'))
         pane.dataSetter("live", False)
         pane.dataSetter("locked", False)

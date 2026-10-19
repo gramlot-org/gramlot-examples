@@ -7,7 +7,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.main({class: 'example-page stack'});
         pane.h1("Multiline text and labelbox");
-        pane.p("Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection.");
+        pane.p("Two multiline fields share one note. Switch live editing or disable the controls while keeping the text and selection.");
         const controls = pane.formlet({class: "card stack", width: "100%", max_width: "24rem"});
         controls.checkbox({id: "live", value: "^live", lbl: "Editing", label: "Update while editing"});
         controls.checkbox({id: "locked", value: "^locked", lbl: "State", label: "Disable controls"});

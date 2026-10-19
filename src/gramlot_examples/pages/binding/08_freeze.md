@@ -18,7 +18,7 @@ Freeze a list, add or remove items, then thaw it. You learn that structural chan
 
 ## Read the page
 
-The buttons call named `Logic` methods through nested `dataController` declarations. Freeze targets the `board` Source node. `add` increments `.count`; despite the method’s short name, it does **not** create a list item. `removeLast` deletes a Source child.
+The buttons call named `Logic` methods through nested `dataController` declarations. Freeze targets the `board` Source node, which the Logic finds by its `node_id` with `gramlot.src.builder.nodeById`. `add` increments `.count`; despite the method’s short name, it does **not** create a list item. `removeLast` deletes a Source child.
 
 ```python
 actions.button(label, id=method).dataController(func=method)
@@ -44,6 +44,6 @@ Reload, freeze, increment twice, remove once, then thaw.
 
 Freeze is not a transaction, a Data pause or a persistence mechanism. Removed nodes stop participating even while old DOM waits for thaw. Avoid adding arbitrary DOM operations to “force” the visual change.
 
-Continue with [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/09_forms.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/09_forms.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-030) explains the full contract.
 
 </details>

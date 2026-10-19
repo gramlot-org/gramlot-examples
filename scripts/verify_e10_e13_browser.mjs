@@ -36,6 +36,10 @@ async function started(page, errors) {
 async function cards(browser, base) {
     const {page, errors} = await open(browser, `${base}/10_cards_with_icons`);
     assert.equal(await page.locator('.icon-cards article').count(), 3);
+    // The × buttons are HTML buttons whose inline code reaches the Source through `this`, not through the window global.
+    assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll('.card-remove')].map(button => ({
+        tag: button.localName, global: /window\.gramlot/.test(window.gramlot.dom.getBaseSourceNode(button).getAttr('connect_onclick'))}))),
+        [{tag: 'button', global: false}, {tag: 'button', global: false}, {tag: 'button', global: false}]);
     await page.evaluate(() => {
         window.originalCards = window.gramlot.src.builder.source.getItem('main.page.cards');
         window.originalSibling = document.querySelector('.icon-cards article');
@@ -64,9 +68,18 @@ async function cards(browser, base) {
     await page.close();
 }
 
-/** e13: the buttons create, update and remove Source nodes; the animation timer ends with its section. */
+/** e13: the buttons create, update and remove Source nodes; the `_timing` controller of the animation ends with its section. */
 async function playground(browser, base) {
     const {page, errors} = await open(browser, `${base}/13_live_source`, {timers: true});
+    // The animation is a controller with `_timing`, not a Source script; no inline code reads the window global.
+    assert.deepEqual(await page.evaluate(() => {
+        const source = window.gramlot.src.source;
+        const motion = source.getItem('main.page.motion').getNodes();
+        const handlers = [...document.querySelectorAll('button')].map(button => window.gramlot.dom.getBaseSourceNode(button).getAttr('connect_onclick'));
+        return {scripts: document.querySelectorAll('script:not([src]):not([type])').length,
+            controller: motion.filter(node => node.nodeTag === 'dataController').map(node => [node.getAttr('func'), node.getAttr('_timing')]),
+            globals: handlers.filter(code => /window\.gramlot/.test(code)).length, handlers: handlers.length};
+    }), {scripts: 0, controller: [['animate', 0.05]], globals: 0, handlers: 6});
     const list = page.locator('.live-items li');
     assert.equal(await list.count(), 2);
     await page.getByRole('button', {name: 'Add item', exact: true}).click();

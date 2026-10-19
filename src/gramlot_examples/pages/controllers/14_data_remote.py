@@ -30,5 +30,5 @@ class Page(BasePage):
         pane.dataSetter(".table", "dishes")
 
     @endpoint
-    def load_menu(self, table=None, **kwargs):
+    def load_menu(self, table, **kwargs):
         return ", ".join(MENUS[table])

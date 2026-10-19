@@ -28,7 +28,7 @@ export class Page extends BasePage {
 /** Logic of 08_freeze.py and 08_freeze.js: each button's nested controller calls one method. */
 export class Logic {
     sourceNode(nodeId) {
-        return this.page.src.source.getNodeByAttr('node_id', nodeId);
+        return this.page.src.builder.nodeById(nodeId);
     }
 
     freeze(node) {

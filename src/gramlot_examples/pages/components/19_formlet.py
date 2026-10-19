@@ -21,7 +21,7 @@ class Page(BasePage):
         fields.textbox(id="first-name", value="^.name", lbl="Name")
         fields.textbox(value="^.surname", lbl="Surname")
         fields.textbox(value="^.city", lbl="City")
-        fields.checkbox(value="^.enabled", lbl="Active", mode="switch")
+        fields.checkbox(value="^.enabled", lbl="Active")
         fields.textBoxArea(value="^.notes", lbl="Notes (override)", lbl_position="TL", rows=2)
         pane.p("^customer.name", id="accepted-name")
         for path, value in (("columns", "2"), ("customer.name", "Ada"), ("customer.surname", "Lovelace"),

@@ -4,8 +4,7 @@ export class Page extends BasePage {
     static title = "Number editing";
     static locale = "it-IT";
     static css = ["/themes/gramlot-base/theme.css"];
-    async main(root) {
-        const {Bag} = await import('@gramlot/gramlot');
+    main(root) {
         const pane = root.main({class:"example-page stack"});
         pane.h1("Number editing");
         pane.p("Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data.");
@@ -21,7 +20,6 @@ export class Page extends BasePage {
         pane.p("^exact", {id:"exact-value", format:"0.00", dtype:"N"});
         pane.dataSetter({destination_path:"amount",value:12.5});
         pane.dataSetter({destination_path:"quantity",value:3});
-        pane.dataSetter({destination_path:"exact",value:Bag.fromTytx('{"exact":"9007199254740993.25::N"}').getItem('exact')});
         for (const [path,value] of [["live",false],["locked",false]]) pane.dataSetter({destination_path:path,value});
     }
 }

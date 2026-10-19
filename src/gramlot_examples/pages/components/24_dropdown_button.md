@@ -2,7 +2,7 @@
 
 The main surface executes; the arrow opens the menu. Shift-select a command to run it and make it the default.
 
-**Uses:** built-in command components, Source, Data and the shared action engine; the toggle example also uses inputs and layout. No endpoints or database.
+**Uses:** built-in command components, Source, Data and the shared action engine. No endpoints or database.
 
 <details>
 <summary>More detail</summary>

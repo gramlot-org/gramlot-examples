@@ -49,6 +49,6 @@ Compare e08’s `r=38` with this page’s `r="^.radius"` and one setter. Static 
 
 Not every control is live: the color field uses change. SVG presentation values retain their own types/units. This is a maintained current-API comparison, not an old-package installation exercise.
 
-Continue with [b11 · Complete page with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/11_complete_page.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b11 · Complete page with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/11_complete_page.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

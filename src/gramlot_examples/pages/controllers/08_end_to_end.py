@@ -1,6 +1,10 @@
 from gramlot import Page as BasePage, endpoint
 
 
+class EmptyOrder(Exception):
+    """The endpoint refuses an order without items; the class name reaches the page as error.remoteName."""
+
+
 class Page(BasePage):
     title = "End-to-end story"
     css = ("/themes/gramlot-base/theme.css",)
@@ -75,5 +79,5 @@ class Page(BasePage):
     @endpoint
     def quote(self, quantity, large, gift, **kwargs):
         if quantity is None or quantity < 1:
-            raise ValueError("Choose at least one item")
+            raise EmptyOrder("Choose at least one item")
         return quantity * (3 if large else 1) + (5 if gift else 0)

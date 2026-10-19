@@ -28,5 +28,6 @@ class Page(BasePage):
 
     @endpoint
     def quote(self, quantity, **kwargs):
-        quantity = quantity or 0
+        if quantity is None:
+            quantity = 0
         return quantity * (8 if quantity >= 10 else 10)

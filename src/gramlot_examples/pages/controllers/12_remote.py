@@ -24,7 +24,7 @@ class Page(BasePage):
         pane.dataSetter(".record_id", "lamp")
 
     @source
-    def details(self, root, record_id=None, **kwargs):
+    def details(self, root, record_id, **kwargs):
         name, stock = RECORDS[record_id]
         root.h2(name, id="name")
         root.p(f"{stock} in stock", id="stock")

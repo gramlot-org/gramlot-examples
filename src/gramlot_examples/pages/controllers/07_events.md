@@ -44,6 +44,6 @@ For most field editing, b04’s `value` pointer replaces an authored input-to-Da
 
 Removing a node removes its listeners. Named handlers require a dotted `group.method` from `js_requires`; a root Logic method used by `func` is not a substitute. The common gallery has no resource host; the named-group lesson belongs with genro-kajenn. Inline code needs the permissive CSP profile.
 
-Continue with [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/08_end_to_end.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/08_end_to_end.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-075) explains the full contract.
 
 </details>

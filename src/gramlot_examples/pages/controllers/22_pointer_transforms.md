@@ -11,19 +11,13 @@ Resize a bar, enable a field and display an amount. The same typed Data drives a
 
 ## One value, one template
 
-Earlier lessons needed a supporting attribute to turn a number into CSS text:
-
-```python
-pane.div(width="${pixels}px", pixels="^.width")
-```
-
-The suffix expresses that same operation directly:
+A number becomes CSS text with a template after the pointer:
 
 ```python
 pane.div(width="^.width:{}px")
 ```
 
-Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. The old multi-attribute template remains supported.
+Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. Ordinary `${...}` text is literal: `width="${pixels}px"` would set that exact string and read nothing. To use another attribute of the same node, write its name in a slot after the `:`, as [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md) shows.
 
 ## An expression keeps its result type
 

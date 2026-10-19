@@ -1,21 +1,25 @@
 from gramlot import Page as BasePage
 from gramlot_examples import PACKAGE, read_catalog
 
+EXAMPLES = [example for family in read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
+            for example in family["examples"]]
+
 
 class Page(BasePage):
+    # The static exporter supplies its file routes; the hosted gallery uses route keys.
+    gallery_urls = {example["key"]: example["key"] for example in EXAMPLES}
     title = "Demo carousel and live preview"
     devices = ("desktop", "tablet", "phone")
     css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        demos = [demo for family in read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
-                 for demo in family["examples"] if demo["key"] != "l08"]
+        demos = [demo for demo in EXAMPLES if demo["key"] != "l08"]
         pane = root.main(class_="example-page stack", datapath="stackDemo")
         for key, value in (("panel", 0), ("page", demos[0]["key"]), ("caption", demos[0]["title"]),
                            ("active", demos[0]["key"]), ("activeCaption", demos[0]["title"]), ("event", "")):
             pane.dataSetter(f".{key}", value)
         for demo in demos:
-            pane.dataSetter(f".urls.{demo['key']}", demo["key"])
+            pane.dataSetter(f".urls.{demo['key']}", self.gallery_urls[demo["key"]])
             pane.dataSetter(f".titles.{demo['key']}", demo["title"])
             pane.dataSetter(f".opened.{demo['key']}", None)
         pane.dataController(
@@ -49,7 +53,7 @@ class Page(BasePage):
         full = center.stackContainer(id="stack-full", selectedPage="^.active", height="100%")
         for demo in demos:
             panel = thumbnails.contentPane(pageName=demo["key"], position="relative", overflow="hidden")
-            panel.iframe(id=f"mini-{demo['key']}", src=demo["key"], title=demo["title"], loading="lazy",
+            panel.iframe(id=f"mini-{demo['key']}", src=self.gallery_urls[demo["key"]], title=demo["title"], loading="lazy",
                          position="absolute", top=0, left=0, width="200%", height="200%", border=0,
                          transform="scale(0.5)", max_width="none", style="transform-origin:top left")
             full.contentPane(pageName=demo["key"]).iframe(

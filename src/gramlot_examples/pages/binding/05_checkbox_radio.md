@@ -44,6 +44,6 @@ Add `("pro", "Pro")` to `PLANS` and include `plan.pro` in the displayed key list
 
 A radio’s bound value is not a string enum. Unselected paths need not all have been written false. Use the existing `group` contract rather than assigning a shared native name manually.
 
-Continue with [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/06_style_and_visibility.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/06_style_and_visibility.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

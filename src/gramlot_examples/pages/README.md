@@ -96,9 +96,8 @@ from [the gallery guide](https://github.com/gramlot-org/gramlot-examples/blob/ma
 c13/c14 separate the basic trial from advanced cache/error/lifetime exercises.
 In c13, “Mounted fragments” counts successful mounts; HTTP calls must be observed
 independently. c14 has an explicit read button to distinguish a stored snapshot
-from a later response. The corrected cache behavior is included from core 0.2.17. Update older
-installations before following the advanced trials; a startup check alone does
-not qualify every exercise in an environment.
+from a later response. A startup check alone does not qualify every exercise in an
+environment.
 
 The common FileServer gallery has no named resource groups: css_requires,
 js_requires and named connect_on handlers need genro-kajenn's resource host.

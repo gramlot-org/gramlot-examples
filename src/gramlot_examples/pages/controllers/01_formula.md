@@ -48,6 +48,6 @@ Earlier e05 computed totals once while building Source. In 0.2.0, `dataFormula` 
 
 A formula is for a derived value; use a controller for effects. VAT here is a fraction (0.2), while c09 later uses a percentage (22); do not copy the number unchanged.
 
-Continue with [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/02_controller.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/02_controller.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
 
 </details>

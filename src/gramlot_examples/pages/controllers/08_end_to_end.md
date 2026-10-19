@@ -20,7 +20,7 @@ After **Endpoint** and **Call on click**, return to the **0.2.14 quote section**
 
 ## Read the page
 
-This is the **local 0.2.0 story**, with the maintained 0.2.5 Logic-module arrangement. Setters initialize caption, radio flags and checkboxes; a default initializes quantity. Formulas derive total/radius and the named `paint` controller selects color. Named button controllers handle press and freeze.
+This is the **local 0.2.0 story**, with the maintained 0.2.5 Logic-module arrangement. Setters initialize caption, radio flags and checkboxes; a default initializes quantity. Formulas derive total/radius and the named `paint` controller selects color. Named button controllers handle press and freeze; the Logic finds the `later` and `notes` nodes by their `node_id` with `gramlot.src.builder.nodeById`.
 
 ```python
 pane.dataFormula(".total", "quantity * (large ? 3 : 1) + (gift ? 5 : 0)",
@@ -136,7 +136,7 @@ qualify every timing, transport or lifecycle edge case.
 On the **first local pass**, continue with [c15 · Lifecycle](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/15_lifecycle.md), then projection and Data exchange before c09–c11.
 After returning for the **0.2.14 extension**, continue with c11's separately
 labelled 0.2.15 Source-auth section, then c12–c14 at 0.2.16. The
-[authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md)
+[data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080)
 provides the full contract. Do not install old packages to perform these stages.
 
 </details>

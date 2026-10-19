@@ -66,7 +66,7 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
         const fragment = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument()]});
         new Page()[name](fragment.root, params);
         return toTytx({id, contentType, value: fragment.toTytx()});
-    }};
+    }, close() {}, dispose() {}};
     const app = new Gramlot({document, pageId: 'gallery', transport, collections: [inputs, layout]}).src.startSource(builder.source);
     const renderer = app.src.renderer;
     const root = renderer.elements.get(document.getElementById('gallery')).node;
@@ -147,7 +147,7 @@ test('every shared example displays exactly its exported Logic class, never the 
             shown++;
         } else assert.equal(excerpt, null, example.key);
     }
-    assert.equal(shown, 13);
+    assert.equal(shown, 14);
 });
 
 test('built frame inspector uses the example runtime classes without another core', async () => {

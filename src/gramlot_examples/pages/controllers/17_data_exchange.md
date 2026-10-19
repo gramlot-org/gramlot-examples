@@ -56,6 +56,6 @@ b09 made a form share one Data record with its display. This later release lets 
 
 TYTX Save/Restore preserves supported types. JSON/XML exports are for other programs; the `.json` suffix alone does not make a file restorable. File dialogs require a user gesture. If you cancel a picker, the existing Data remains; start a new Restore action when ready. Browser download settings may prompt or save automatically. Named Logic handles these actions without an inline-code CSP requirement. The catalogue entry is a local file lesson; mail and HTTP environment checks are separately classified.
 
-Continue with [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/09_endpoint.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) provides the full contract.
+Continue with [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/09_endpoint.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-095) provides the full contract.
 
 </details>

@@ -28,7 +28,7 @@ observed.dataController(func="record", stage="start", _onStart=True)
 
 Data setters run before these hooks. `_init` installs initial behavior, `_onBuilt` follows the first successful build, and `_onStart` follows readiness. A separate timer controller uses `_timing=1` (seconds). Hook delays, if numeric, are milliseconds. The trace and tick count are ordinary Data, displayed outside the removable branch.
 
-Inspect uses `gramlot.dom.getDomNode(sourceNode)` and `getBaseSourceNode(domNode)` for read-only identity lookup. It does not mutate the DOM. `node_id` locates Source; the separate HTML `id` locates the rendered element.
+Inspect finds the branch by its `node_id` with `gramlot.src.builder.nodeById('observed')`, which throws once the branch is removed, and then uses `gramlot.dom.getDomNode(sourceNode)` and `getBaseSourceNode(domNode)` for read-only identity lookup. It does not mutate the DOM. `node_id` locates Source; the separate HTML `id` locates the rendered element.
 
 ## Try it and predict the result
 
@@ -48,12 +48,12 @@ Advanced: freeze, then remove the branch before thawing. The Data ticks stop eve
 
 ## The same example across stages
 
-b08 introduced a frozen visual branch. This lesson revisits it with explicit lifecycle observations. Compared with e13's manually owned animation timer, `_timing` owns repeated controller scheduling and cancellation: no page timer handle or `clearInterval` is needed. Source/DOM lookup is diagnostic; it does not introduce another state system.
+b08 introduced a frozen visual branch. This lesson revisits it with explicit lifecycle observations. `_timing` owns repeated controller scheduling and cancellation, as in e13: no page timer handle or `clearInterval` is needed. Source/DOM lookup is diagnostic; it does not introduce another state system.
 
 ## Limits and next step
 
 Freeze defers structural projection and insertion/rebuild work; existing nodes still follow Data. Removing a branch is different from hiding it. This page uses named Logic; no new lifecycle hook or timer implementation is invented. Full page disposal also ends its providers. Late startup and insertion while frozen are advanced contract cases, not extra steps needed for the basic trace.
 
-Continue with [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) provides the full contract.
+Continue with [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080) provides the full contract.
 
 </details>

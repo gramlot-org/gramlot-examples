@@ -36,5 +36,5 @@ class Page(BasePage):
         pane.dataSetter("current", "products.lamp")
 
     @source
-    def rules(self, root, category=None, **kwargs):
+    def rules(self, root, category, **kwargs):
         root.p(RULES[category], id="rule")

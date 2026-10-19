@@ -12,7 +12,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'form'});
         pane.h1('Native form controls, bound');
-        pane.p('The same fields as HTML / SVG example 06. Every value lives in the Data record on the right.');
+        pane.p('The same fields as HTML / SVG example 06, bound to the Data record on the right. The summary leaves out the password and the daily radio; the file input, the read-only code and the disabled field are not bound.');
         const layout = pane.div({class: 'bound-form'});
         const form = layout.form();
         const identity = form.fieldset({class: 'form-grid'});
