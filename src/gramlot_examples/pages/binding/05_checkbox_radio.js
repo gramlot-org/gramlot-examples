@@ -4,7 +4,6 @@ const PLANS = [['basic', 'Basic'], ['plus', 'Plus'], ['team', 'Team']];
 
 export class Page extends BasePage {
     static title = 'Checkbox and radio';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'choice'});
@@ -39,6 +38,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.plan.plus', value: true});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

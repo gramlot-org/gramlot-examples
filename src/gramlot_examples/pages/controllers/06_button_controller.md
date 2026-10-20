@@ -49,6 +49,6 @@ In the later **0.2.14** [c11 · Call on click](https://github.com/gramlot-org/gr
 
 The counter belongs to the button and survives a rebuild of that node; a newly created button is not the same identity. Do not add an `action` to the existing nested-controller button.
 
-Continue with [c07 · Events](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/07_events.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c07 · Events](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/07_events.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-075) explains the full contract.
 
 </details>

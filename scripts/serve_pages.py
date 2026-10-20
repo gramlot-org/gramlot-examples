@@ -3,8 +3,8 @@
 A loopback test server on the page protocol of the core: the runtime at ``runtime_url``, the
 core themes under ``/themes/``, the ``.js`` and ``.css`` files below the pages folder (the
 page modules, whose ``Logic`` the pages take), the pages, and ``rpc`` (the request
-envelope, answered by ``call``) and ``close`` as POST. No Content-Security-Policy, as with the default of the adapters: e13
-puts an inline ``script`` in its Source, and the inline expressions of the pages need eval.
+envelope, answered by ``call``) and ``close`` as POST. No Content-Security-Policy, as with the default of the adapters: the inline
+expressions and actions of the pages (for example the click of e10 and e13) need eval.
 """
 
 import asyncio

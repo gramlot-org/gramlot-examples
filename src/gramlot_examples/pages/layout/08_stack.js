@@ -8,13 +8,12 @@ export class Page extends BasePage {
     );
     static title = 'Demo carousel and live preview';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const demos = catalog.families
             .flatMap((family) => family.examples)
             .filter((demo) => demo.key !== 'l08');
-        const pane = root.main({ class: 'example-page stack', datapath: 'stackDemo' });
+        const main_content = root.main({ class: 'example-page stack', datapath: 'stackDemo' });
         for (const [key, value] of [
             ['panel', 0],
             ['page', demos[0]['key']],
@@ -23,31 +22,31 @@ export class Page extends BasePage {
             ['activeCaption', demos[0]['title']],
             ['event', ''],
         ]) {
-            pane.dataSetter({ destination_path: `.${key}`, value: value });
+            main_content.dataSetter({ destination_path: `.${key}`, value: value });
         }
         for (const demo of demos) {
-            pane.dataSetter({
+            main_content.dataSetter({
                 destination_path: `.urls.${demo.key}`,
                 value: this.constructor.galleryUrls[demo.key],
             });
-            pane.dataSetter({ destination_path: `.titles.${demo['key']}`, value: demo['title'] });
-            pane.dataSetter({ destination_path: `.opened.${demo['key']}`, value: null });
+            main_content.dataSetter({ destination_path: `.titles.${demo['key']}`, value: demo['title'] });
+            main_content.dataSetter({ destination_path: `.opened.${demo['key']}`, value: null });
         }
-        pane.dataController({
+        main_content.dataController({
             script: "if (selected) { this.SET('.caption', this.GET('.titles.' + page)); } this.SET('.event', JSON.stringify(_subscription_kwargs));",
             subscribe_demoStack_selected: true,
         });
-        pane.dataController({
+        main_content.dataController({
             script: "this.SET('.opened.' + demo, this.GET('.urls.' + demo)); this.SET('.active', demo); this.SET('.activeCaption', this.GET('.titles.' + demo));",
             demo: '^.page',
             _delay: 350,
             _onStart: true,
         });
-        pane.h1('Browse, pause and try the demo');
-        pane.p(
+        main_content.h1('Browse, pause and try the demo');
+        main_content.p(
             `Slide through ${demos.length} thumbnails in the drawer. Pause to open the full-size demo in the center. Close the drawer for more space.`,
         );
-        const border = pane.borderContainer({
+        const border = main_content.borderContainer({
             id: 'carousel-layout',
             height: 'min(76vh, 680px)',
             min_height: '420px',
@@ -133,10 +132,8 @@ export class Page extends BasePage {
                 display: 'block',
             });
         }
-        pane.p(
+        main_content.p(
             'The center loads a demo only after a pause and keeps visited pages mounted. Thumbnail and full-size views have independent Data. This overview excludes itself.',
         );
     }
 }
-
-export class Logic {}

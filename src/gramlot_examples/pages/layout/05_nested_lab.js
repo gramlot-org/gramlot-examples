@@ -3,15 +3,14 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Nested regions playground';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const pane = root.main({ class: 'example-page stack' });
-        pane.h1('Five containers, one live workspace');
-        pane.p(
+        const main_content = root.main({ class: 'example-page stack' });
+        main_content.h1('Five containers, one live workspace');
+        main_content.p(
             'Move the sliders, drag separators and close drawers. The same widgets and their values stay in place.',
         );
-        const settings = pane.section({
+        const settings = main_content.section({
             display: 'flex',
             flex_wrap: 'wrap',
             gap: '12px',
@@ -39,7 +38,7 @@ export class Page extends BasePage {
             live: true,
             width: '12rem',
         });
-        const sliders = pane.section({ display: 'flex', flex_wrap: 'wrap', gap: '12px' });
+        const sliders = main_content.section({ display: 'flex', flex_wrap: 'wrap', gap: '12px' });
         const sizes = [
             ['outer.top', 'Header height', 40, 110, 58],
             ['outer.bottom', 'Footer height', 35, 130, 46],
@@ -60,7 +59,7 @@ export class Page extends BasePage {
                 live: true,
                 width: '12rem',
             });
-            pane.dataSetter({ destination_path: 'regions.' + path, value: initial });
+            main_content.dataSetter({ destination_path: 'regions.' + path, value: initial });
         }
         const surface = 'var(--gramlot-surface, #fff)';
         const edge = '1px solid var(--gramlot-border-control, #8192aa)';
@@ -71,7 +70,7 @@ export class Page extends BasePage {
             preview: 'color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #9977bb)',
         };
         const drawer = { splitter: true, drawer: true, drawer_minimize: '^minimize' };
-        const outer = pane.borderContainer({
+        const outer = main_content.borderContainer({
             id: 'lab-outer',
             height: '700px',
             max_width: '78rem',
@@ -243,9 +242,7 @@ export class Page extends BasePage {
             ['appointment', new Date(Date.UTC(2026, 9, 18))],
             ['note', 'Resize any region: this note stays here.'],
         ]) {
-            pane.dataSetter({ destination_path: key, value: value });
+            main_content.dataSetter({ destination_path: key, value: value });
         }
     }
 }
-
-export class Logic {}

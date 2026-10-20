@@ -9,7 +9,7 @@ Send a message to the embedded page, then reply from that page. The example reus
 <details>
 <summary>More detail</summary>
 
-The same page opens with `#child` inside the iframe. Its setup controller hides the parent section and does not load another iframe, so nesting stops after one child. The URL hash is only this example's mode selector; it is not a messaging address.
+The iframe `src` is bound to `^.frame_url` and its size comes from the `frame-preview` class of the lesson stylesheet. The setup controller writes `.frame_url` with the same page and the `#child` hash, so the page opens itself inside the iframe. In that child page the controller hides the parent section and writes no URL, so nesting stops after one child. The URL hash is only this example's mode selector; it is not a messaging address.
 
 Python passes the iframe Source as `target`. Logic uses `{topic: 'message', iframe: target}`. The child uses `{topic: 'message', parent: true}`. All cross-frame calls use postMessage, including same-origin pages; each receiving page activates its ordinary subscribe_message controller.
 

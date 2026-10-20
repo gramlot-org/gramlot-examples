@@ -6,7 +6,6 @@ MENUS = {"dishes": ("Soup", "Risotto", "Fish"), "drinks": ("Water", "Lemonade", 
 
 class Page(BasePage):
     title = "Data remote"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="kitchen")
@@ -30,5 +29,5 @@ class Page(BasePage):
         pane.dataSetter(".table", "dishes")
 
     @endpoint
-    def load_menu(self, table=None, **kwargs):
+    def load_menu(self, table, **kwargs):
         return ", ".join(MENUS[table])

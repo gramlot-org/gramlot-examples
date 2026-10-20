@@ -3,12 +3,11 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Validation rules and callbacks';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
     main(root) {
-        const pane = root.main({class:'example-page stack'});
-        pane.h1('Validation playground');
-        pane.p('Leave a field to validate it. Invalid drafts stay visible; the accepted values below change only after success.');
-        const group = pane.groupBox({id:'validation-group',datapath:'profile',copy:true,lbl:'Profile · field validations',max_width:'36rem'});
+        const main_content = root.main({class:'example-page stack'});
+        main_content.h1('Validation playground');
+        main_content.p('Leave a field to validate it. Invalid drafts stay visible; the accepted values below change only after success.');
+        const group = main_content.groupBox({id:'validation-group',datapath:'profile',copy:true,lbl:'Profile · field validations',max_width:'36rem'});
         const fields = group.formlet({id:'validation-fields',lbl_position:'L',box_c_width:'100%'});
         fields.textbox({id:'full-name',value:'^.full_name',lbl:'Name (2–30)',validate_notnull:true,validate_len:'2:30',validate_notnull_error:'Please enter a name.',validate_len_error:'Use 2–30 characters.'});
         fields.textbox({id:'code',value:'^.code',lbl:'Code (2–6 letters)',validate_case:'upper',validate_regex:'(?:^[A-Z]{2,6}$)',validate_regex_error:'Use 2–6 letters.'});
@@ -24,7 +23,7 @@ export class Page extends BasePage {
         fields.dateTextBox({id:'appointment',value:'^.appointment',lbl:'Appointment',format:'short',validate_notnull:true,validate_notnull_error:'Choose a date or type a date expression.'});
         fields.filteringSelect({id:'delivery',value:'^.delivery',lbl:'Delivery',values:'standard:Standard,express:Express,pickup:Pick up',validate_notnull:true,validate_notnull_error:'Choose a delivery option.'});
         group.p('Try an empty name, quantity 11, a malformed email, or a long note. The local callback rejects admin; the asynchronous endpoint rejects taken.');
-        const accepted = pane.details({max_width:'36rem',open:true});
+        const accepted = main_content.details({max_width:'36rem',open:true});
         accepted.summary('Accepted Data · invalid drafts do not overwrite these values');
         const values = accepted.dl();
         for (const [label,path] of [['Name','full_name'],['Code','code'],['Quantity','quantity'],['Email','email'],['Notes','notes'],['Delivery code','delivery'],['Remote name','remote_name']]) {
@@ -34,7 +33,7 @@ export class Page extends BasePage {
         values.dt('Appointment');
         values.dd('^profile.appointment',{format:'short'});
         accepted.p('^profile.validation_status',{id:'validation-status'});
-        for (const [destination_path,value] of [['full_name','Ada Lovelace'],['notes','Please ring the bell.'],['appointment',new Date('2026-10-17T00:00:00Z')],['delivery','standard'],['code','AB'],['fallback','Guest'],['quantity',2],['email',''],['strict',false],['check_length',false],['conditional','Ada'],['nickname','Ada'],['remote_name','AVAILABLE'],['validation_status','Edit a nickname.']]) pane.dataSetter({destination_path:'profile.'+destination_path,value});
+        for (const [destination_path,value] of [['full_name','Ada Lovelace'],['notes','Please ring the bell.'],['appointment',new Date('2026-10-17T00:00:00Z')],['delivery','standard'],['code','AB'],['fallback','Guest'],['quantity',2],['email',''],['strict',false],['check_length',false],['conditional','Ada'],['nickname','Ada'],['remote_name','AVAILABLE'],['validation_status','Edit a nickname.']]) main_content.dataSetter({destination_path:'profile.'+destination_path,value});
     }
     check_name({value}) {
         return value.toLowerCase() === 'taken' ? {errorcode:'reserved',message:'That name is reserved.'} : {value:value.toUpperCase()};

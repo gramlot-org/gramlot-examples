@@ -4,9 +4,12 @@ from gramlot import endpoint
 SHOW_ERROR = "this.SET('.error', error.code + ': ' + error.message)"
 
 
+class OutOfStock(Exception):
+    """The endpoint refuses the reservation; the class name reaches the page as error.remoteName."""
+
+
 class Page(BasePage):
     title = "Call on click"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="stock")
@@ -33,7 +36,7 @@ class Page(BasePage):
 
     @endpoint
     def reserve(self, item, **kwargs):
-        raise LookupError(f"{item} is out of stock")
+        raise OutOfStock(f"{item} is out of stock")
 
     @endpoint(auth="admin")
     def cancel(self, item, **kwargs):

@@ -6,26 +6,25 @@ REGIONS = (("North", 12, "var(--gramlot-action)"), ("South", 9, "var(--gramlot-w
 
 class Page(BasePage):
     title = "Static report"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        header = page.header()
+        main_content = root.main(class_="example-page stack")
+        header = main_content.header()
         header.p("SAMPLE REPORT", class_="eyebrow")
         header.h1("Orders by region")
         header.p("A fixed dataset feeds the summary, chart and table.")
         total = sum(value for _, value, _ in REGIONS)
-        self.summary(page, total)
-        self.chart(page)
-        self.table(page, total)
+        self.summary(main_content, total)
+        self.chart(main_content)
+        self.table(main_content, total)
 
-    def summary(self, page, total):
-        summary = page.section(class_="grid report-summary", aria_label="Summary")
+    def summary(self, main_content, total):
+        summary = main_content.section(class_="grid report-summary", aria_label="Summary")
         self.stat(summary, "Total orders", str(total))
         self.stat(summary, "Regions", str(len(REGIONS)))
 
-    def chart(self, page):
-        chart = page.figure(class_="card")
+    def chart(self, main_content):
+        chart = main_content.figure(class_="card")
         svg = chart.svg(viewBox="0 0 520 230", role="img", aria_labelledby="report-chart-title", class_="example-art")
         svg.title("Orders by region: North 12, South 9, West 15", id="report-chart-title")
         for index, (region, value, color) in enumerate(REGIONS):
@@ -34,14 +33,14 @@ class Page(BasePage):
             svg.rect(x=105, y=y, width=value * 23, height=32, rx=7, fill=color)
             svg.text(str(value), x=112 + value * 23, y=y + 23, font_size=17, fill="currentColor")
         chart.figcaption("The bar lengths and table cells use the same values.")
-        legend = page.ul(class_="report-legend")
+        legend = main_content.ul(class_="report-legend")
         for region, _, color in REGIONS:
             item = legend.li()
             item.span("■ ", style=f"color: {color}")
             item.span(region)
 
-    def table(self, page, total):
-        table = page.table()
+    def table(self, main_content, total):
+        table = main_content.table()
         table.caption("Exact figures")
         head = table.thead().tr()
         head.th("Region", scope="col")

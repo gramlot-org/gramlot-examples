@@ -7,8 +7,8 @@
 gramlot-examples/
 ├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.17
-├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.17
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.3.6
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.3.6
 ├── src/gramlot_examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
@@ -24,7 +24,7 @@ gramlot-examples/
 │   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the core GramlotFileServer
 │   ├── verify_pages_browser.mjs         Every page in Chromium, Python and JavaScript
 │   └── verify_e10_e13_browser.mjs       e10 and e13 in Chromium
-├── tests/                               Pages, gallery, build_gallery · fixtures/environment
+├── tests/                               Pages, gallery, build_gallery · Python/JS parity · fixtures/environment
 ├── .github/
 │   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · browser, every page · core main (informative)
 │   ├── workflows/publish.yml            Tag → GitHub release, PyPI, npm

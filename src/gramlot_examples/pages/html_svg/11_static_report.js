@@ -4,28 +4,27 @@ const REGIONS = [['North', 12, 'var(--gramlot-action)'], ['South', 9, 'var(--gra
 
 export class Page extends BasePage {
     static title = 'Static report';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
-        const header = page.header();
+        const main_content = root.main({class: 'example-page stack'});
+        const header = main_content.header();
         header.p('SAMPLE REPORT', {class: 'eyebrow'});
         header.h1('Orders by region');
         header.p('A fixed dataset feeds the summary, chart and table.');
         const total = REGIONS.reduce((sum, region) => sum + region[1], 0);
-        this.summary(page, total);
-        this.chart(page);
-        this.table(page, total);
+        this.summary(main_content, total);
+        this.chart(main_content);
+        this.table(main_content, total);
     }
 
-    summary(page, total) {
-        const summary = page.section({class: 'grid report-summary', aria_label: 'Summary'});
+    summary(main_content, total) {
+        const summary = main_content.section({class: 'grid report-summary', aria_label: 'Summary'});
         this.stat(summary, 'Total orders', String(total));
         this.stat(summary, 'Regions', String(REGIONS.length));
     }
 
-    chart(page) {
-        const chart = page.figure({class: 'card'});
+    chart(main_content) {
+        const chart = main_content.figure({class: 'card'});
         const svg = chart.svg({viewBox: '0 0 520 230', role: 'img', aria_labelledby: 'report-chart-title', class: 'example-art'});
         svg.title('Orders by region: North 12, South 9, West 15', {id: 'report-chart-title'});
         REGIONS.forEach(([region, value, color], index) => {
@@ -35,7 +34,7 @@ export class Page extends BasePage {
             svg.text(String(value), {x: 112 + value * 23, y: y + 23, font_size: 17, fill: 'currentColor'});
         });
         chart.figcaption('The bar lengths and table cells use the same values.');
-        const legend = page.ul({class: 'report-legend'});
+        const legend = main_content.ul({class: 'report-legend'});
         for (const [region, , color] of REGIONS) {
             const item = legend.li();
             item.span('■ ', {style: `color: ${color}`});
@@ -43,8 +42,8 @@ export class Page extends BasePage {
         }
     }
 
-    table(page, total) {
-        const table = page.table();
+    table(main_content, total) {
+        const table = main_content.table();
         table.caption('Exact figures');
         const head = table.thead().tr();
         head.th('Region', {scope: 'col'});
@@ -66,6 +65,3 @@ export class Page extends BasePage {
         card.p(value, {class: 'report-number'});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

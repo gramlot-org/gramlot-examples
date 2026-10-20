@@ -6,7 +6,6 @@ KEYS = ("[button_shift && 'Shift', button_ctrl && 'Ctrl', button_alt && 'Alt', b
 
 class Page(BasePage):
     title = "Button controller"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="buttons")

@@ -3,10 +3,9 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Border events and controllers';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const pane = root.main({ class: 'example-page stack', datapath: 'events' });
+        const main_content = root.main({ class: 'example-page stack', datapath: 'events' });
         for (const [name, value] of [
             ['drawerCount', 0],
             ['resizeCount', 0],
@@ -18,24 +17,24 @@ export class Page extends BasePage {
             ['name', 'Ada'],
             ['note', 'Keep this draft'],
         ]) {
-            pane.dataSetter({ destination_path: `.${name}`, value: value });
+            main_content.dataSetter({ destination_path: `.${name}`, value: value });
         }
-        pane.dataController({
+        main_content.dataController({
             script: "this.SET('.drawerCount', count + 1); this.SET('.drawerMessage', region + ': ' + (open ? 'open' : 'closed')); this.SET('.drawerPayload', JSON.stringify(_subscription_kwargs));",
             count: '=.drawerCount',
             subscribe_eventFilters_closable_change: true,
         });
-        pane.dataController({
+        main_content.dataController({
             script: "this.SET('.resizeCount', count + 1); this.SET('.resizeMessage', region + ': ' + previousSize + ' → ' + size); this.SET('.resizePayload', JSON.stringify(_subscription_kwargs));",
             count: '=.resizeCount',
             subscribe_eventWorkspace_splitter_resize: true,
         });
-        pane.h1('Observe a drawer and a splitter');
-        pane.p(
+        main_content.h1('Observe a drawer and a splitter');
+        main_content.p(
             'Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.',
         );
-        pane.checkbox({ id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
-        const border = pane.borderContainer({
+        main_content.checkbox({ id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
+        const border = main_content.borderContainer({
             id: 'events-border',
             node_id: 'eventWorkspace',
             height: '360px',
@@ -93,7 +92,7 @@ export class Page extends BasePage {
                 background: 'var(--gramlot-surface-subtle, #eef1f5)',
             })
             .p('Resize this bottom region too.');
-        const report = pane.section({ class: 'card stack', max_width: '48rem' });
+        const report = main_content.section({ class: 'card stack', max_width: '48rem' });
         report.h2('Received by dataController');
         report.p('^.drawerCount', { id: 'events-drawer-count', mask: 'Visibility events: {}' });
         report.p('^.drawerMessage');
@@ -109,10 +108,8 @@ export class Page extends BasePage {
             white_space: 'pre-wrap',
             overflow_wrap: 'anywhere',
         });
-        pane.p(
+        main_content.p(
             "No events are emitted at startup. The Data checkbox changes visibility too; it does not change the drawer's own open/closed preference.",
         );
     }
 }
-
-export class Logic {}

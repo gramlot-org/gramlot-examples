@@ -25,7 +25,7 @@ parent.input(type=kind, id=key, name=key, value=f"^.{key}", **attrs)
 record.h2("The Data record")
 ```
 
-Password is bound but deliberately absent from the summary; the file input stays native. Boolean radio paths use the `frequency` group.
+Password is bound but deliberately absent from the summary, and so is the `frequency.daily` path: the summary lists only `frequency.weekly`. The file input, the read-only code and the disabled field are not bound. Boolean radio paths use the `frequency` group.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
 
@@ -53,6 +53,6 @@ The same initial information is declared centrally and reflected in multiple pla
 
 No native Reset is offered: native reset does not emit the input/change events needed to synchronize Data. Submit remains disabled. File selection has no bound Data value or upload; this is not a record/form persistence framework.
 
-Continue with [b10 · SVG shapes with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/10_svg_shapes.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b10 · SVG shapes with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/10_svg_shapes.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

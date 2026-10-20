@@ -47,6 +47,6 @@ Earlier e13 explicitly called `setAttr` on a Source node for each animated coord
 
 The range has to remain compatible with the viewBox; a large radius near an edge can be clipped. This lesson changes geometry, not SVG structure.
 
-Continue with [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/08_freeze.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/08_freeze.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

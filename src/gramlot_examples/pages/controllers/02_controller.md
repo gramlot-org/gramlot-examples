@@ -42,7 +42,7 @@ Change `_delay=400` to `_delay=800`, reload and type another query.
 
 ## The same example across stages
 
-Compare e13’s `setInterval` plus explicit disposal with this page’s `_timing` on a controller. For a repeated controller effect, the provider owns timer cleanup, so the page no longer authors a timer handle and `clearInterval` pair. Keep e13’s Source animation as its own earlier/advanced example; no animation behavior has been silently replaced.
+e13 uses the same `_timing` on a controller to move an SVG circle through Source attributes. For a repeated controller effect, the provider owns timer cleanup, so the page authors no timer handle and no `clearInterval`. Here the controller writes Data; e13’s controller writes Source attributes.
 
 
 ## Advanced: filter the changed path (0.2.0)
@@ -60,6 +60,6 @@ Exercise: change `_userChanges=True` to False on an exact watcher, reload and re
 
 `requests` in this page counts fired local events. The advanced `_userChanges` counters are separate from `requests`: they filter exact-path changes, including programmatic writes, not human versus code identity.
 
-Continue with [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/03_named_logic.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/03_named_logic.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
 
 </details>

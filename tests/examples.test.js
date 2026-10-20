@@ -18,9 +18,9 @@ const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.me
 
 /**
  * Mount one JavaScript example as its server would: the core GramlotFileServer of the family folder answers
- * the request envelopes (`main` and the endpoints), the module's Logic is registered as the root group.
+ * the request envelopes (`main` and the endpoints), the module's Logic, when it has one, is registered as the root group.
  */
-async function mount(family, example) {
+async function mount(family, example, {hold = null} = {}) {
     const errors = [];
     const virtualConsole = new VirtualConsole();
     virtualConsole.on('jsdomError', error => errors.push(error));
@@ -33,16 +33,21 @@ async function mount(family, example) {
     dom.window.HTMLElement.prototype.showPopover = function () {};
     dom.window.HTMLElement.prototype.hidePopover = function () {};
 
+    // A page module that names no client method exports no Logic.
     const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
     const server = new GramlotFileServer(fileURLToPath(folder(family.key)), {collections:buildGallery().collections});
     const {pageId} = await server.registerPage(`/${example.folder}`);
     const calls = [];
+    // `hold(request)` true keeps the answer of that request until `release()`, to observe a request in flight.
+    const held = [];
     const transport = {call(text) {
-        calls.push(JSON.parse(text));
-        return server.call(text);
-    }};
+        const request = JSON.parse(text);
+        calls.push(request);
+        if (!hold?.(request)) return server.call(text);
+        return new Promise(resolve => held.push(() => resolve(server.call(text))));
+    }, close() {}, dispose() {}};
     const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout]});
-    app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
+    if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
     const data = path => app.data.getItem(path);
@@ -52,7 +57,8 @@ async function mount(family, example) {
     };
     const click = (id, options = {}) => byId(id).dispatchEvent(new dom.window.MouseEvent('click',
         {bubbles: true, cancelable: true, ...options}));
-    return {app, dom, window: dom.window, byId, data, edit, click, calls, errors};
+    const release = () => held.splice(0).forEach(answer => answer());
+    return {app, dom, window: dom.window, byId, data, edit, click, calls, errors, release};
 }
 
 const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
@@ -600,6 +606,35 @@ CHECKS.c17 = async ({window, app, byId, edit, click, data}) => {
     assert.equal(links.length, 3, 'preview sends no mail');
 };
 
+test('c13: a request in flight is never cancelled, and the change made during the flight waits and is sent at the answer', async () => {
+    const family = families.find(({key}) => key === 'controllers');
+    const example = family.examples.find(({key}) => key === 'c13');
+    const page = await mount(family, example, {hold: ({contentType, name, params}) => contentType === 'source' && name === 'rules' && params.category === 'seating'});
+    try {
+        const {byId, edit, release, calls} = page;
+        const rules = () => calls.filter(({contentType, name}) => contentType === 'source' && name === 'rules').map(({params}) => params.category);
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting']);
+        assert.equal(byId('mounts').textContent, '1');
+        edit('product', 'products.chair');                    // B: sent, answer held
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting', 'seating']);
+        edit('product', 'products.lamp');                     // back to A during the flight: waits, sends nothing
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting', 'seating']);
+        assert.equal(byId('mounts').textContent, '1');
+        release();                                            // B answers: its fragment is mounted, then A is sent
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting', 'seating', 'lighting']);
+        assert.equal(byId('mounts').textContent, '3');
+        assert.equal(byId('rule').textContent, 'Ships in two days, bulbs not included.');
+        assert.equal(byId('status').textContent, 'Mounted the lighting rules');
+        assert.deepEqual(page.errors, []);
+    } finally {
+        page.app.dispose();
+    }
+});
+
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
     assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
     const keys = new Set();
@@ -616,14 +651,27 @@ test('every family folder has a README and every example its Python, JavaScript 
     }
 });
 
-test('every page module exports Page and Logic, and no page has a logic companion', async () => {
+test('every page module exports Page, and Logic only with methods; no page has a logic companion', async () => {
     for (const family of families) {
         assert.deepEqual(readdirSync(folder(family.key)).filter(name => name.endsWith('_aux.js')), [], family.key);
         for (const example of family.examples) {
             const module = await import(new URL(`${example.folder}.js`, folder(family.key)));
             assert.equal(typeof module.Page, 'function', `${example.key} Page`);
-            assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
+            if ('Logic' in module) {
+                assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
+                assert.ok(Reflect.ownKeys(module.Logic.prototype).some(name => name !== 'constructor'), `${example.key} exports an empty Logic`);
+            }
         }
+    }
+});
+
+test('the pages follow the naming and theme conventions (GC-225)', () => {
+    for (const family of families) for (const example of family.examples) for (const suffix of ['.py', '.js']) {
+        const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
+        const name = `${family.key}/${example.folder}${suffix}`;
+        assert.doesNotMatch(text, /\bpage\s*=/, `${name}: never page for an element`);
+        assert.doesNotMatch(text, /\bpane\s*=\s*root\.main\(/, `${name}: html_main is held in main_content`);
+        assert.doesNotMatch(text, /themes\/gramlot-base/, `${name}: the server links the base theme`);
     }
 });
 
@@ -631,10 +679,6 @@ for (const family of families.filter(({key}) => key !== 'html_svg')) {
     for (const example of family.examples) {
         // c14 observes expiry of a five-second cache; Bun defaults to five seconds per test.
         test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000}, async () => {
-            for (const suffix of ['.py', '.js']) {
-                const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
-                assert.doesNotMatch(text, /\bpage\s*=/, 'never page for an element');
-            }
             const page = await mount(family, example);
             try {
                 assert.ok(page.byId('gramlot-root').childElementCount > 0);

@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.3.8.
+Current release: 0.3.9.
 
 [Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
 include every lesson, its Python and JavaScript source, and the gallery guide.
@@ -48,8 +48,8 @@ same-name README:
   nested layouts, selection and closing events, fourteen tab presentations,
   a guided drawer tour and a lazy carousel with retained live previews.
 
-Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
-`Logic` from the module beside it.
+Each `NN_name.js` exports `Page`, and `Logic` when the page names client methods; the
+Python page `NN_name.py` takes that `Logic` from the module beside it.
 
 ## Gallery
 

@@ -2,13 +2,12 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'SVG composition';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
-        page.h1('Compose a small SVG scene');
-        page.p('Groups and loops arrange repeated Source nodes in a single viewport.');
-        const figure = page.figure({class: 'card'});
+        const main_content = root.main({class: 'example-page stack'});
+        main_content.h1('Compose a small SVG scene');
+        main_content.p('Groups and loops arrange repeated Source nodes in a single viewport.');
+        const figure = main_content.figure({class: 'card'});
         const drawing = figure.svg({viewBox: '0 0 560 240', role: 'img', aria_labelledby: 'scene-title', class: 'example-art'});
         drawing.title('A row of houses and trees in a garden', {id: 'scene-title'});
         drawing.rect({x: 0, y: 0, width: 560, height: 240, fill: 'var(--gramlot-surface-subtle)'});
@@ -40,6 +39,3 @@ export class Page extends BasePage {
         group.circle({cx: 0, cy: 184, r: 4, fill: 'var(--gramlot-brand-yellow)'});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

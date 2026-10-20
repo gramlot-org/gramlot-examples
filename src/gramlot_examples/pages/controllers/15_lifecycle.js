@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Lifecycle';
-    static css = ['/themes/gramlot-base/theme.css'];
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'lifecycle'});
         pane.h1('Lifecycle');
@@ -29,7 +28,14 @@ export class Page extends BasePage {
 }
 
 export class Logic {
-    branch() { return this.page.src.source.getNodeByAttr('node_id', 'observed'); }
+    /** The branch by its node_id, or null once it has been removed: nodeById throws for an unknown id. */
+    branch() {
+        try { return this.page.src.builder.nodeById('observed'); }
+        catch (error) {
+            if (error.message === 'node_id not found: observed') return null;
+            throw error;
+        }
+    }
     record(node, {stage}) {
         const previous = node.GET('.trace');
         node.SET('.trace', previous ? `${previous} → ${stage}` : stage);
@@ -41,8 +47,9 @@ export class Logic {
         const branch = this.branch();
         if (!branch) { node.SET('.lookup', 'Source branch absent'); return; }
         const element = this.page.dom.getDomNode(branch);
-        node.SET('.lookup', element && this.page.dom.getBaseSourceNode(element) === branch
-            ? 'Source → DOM → same Source' : 'Source present; DOM absent');
+        // nodeById answers the stable handle of the node; wrapSource gives the same handle for the same node.
+        const back = element && this.page.src.builder.wrapSource(this.page.dom.getBaseSourceNode(element));
+        node.SET('.lookup', back === branch ? 'Source → DOM → same Source' : 'Source present; DOM absent');
     }
     remove() {
         const branch = this.branch();

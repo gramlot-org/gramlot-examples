@@ -24,7 +24,7 @@ A nested `dataRpc` is the button’s click mechanism. Reserve deliberately raise
 reserve.dataRpc("reserve", result_path=".reserved", item="=.item", _onError=SHOW_ERROR)
 ```
 
-`error.remoteName` is LookupError in Python and Error in JS. The visible code/message agree even though exception classes differ.
+`error.remoteName` is the class name of the exception the server raised: `OutOfStock` in both twins. The page shows `error.code` and `error.message`.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Endpoint/fragment methods execute there too; bindings and any Logic execute in the browser. A Worker is not a private server.
 
@@ -58,6 +58,6 @@ Authenticated allow/deny and a subsequent anonymous request belong to the [Kajen
 
 An identity-aware adapter can produce different auth outcomes according to the user’s tags. This page demonstrates default refusal, not login or an authenticated allow/deny matrix. The separately labelled 0.2.15 section demonstrates Source omission; the endpoint buttons remain the earlier 0.2.14 step. Without `_onError`, failures reach the console.
 
-Continue with [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/12_remote.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/12_remote.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
 
 </details>

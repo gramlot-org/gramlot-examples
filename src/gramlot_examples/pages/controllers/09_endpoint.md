@@ -26,6 +26,8 @@ pane.dataRpc("with_vat", result_path=".gross", price="=.price", rate="=.rate", _
 
 `=` reads values for the initial call without making them triggers. `_init` runs after setters. Python receives keyword arguments and declares `**kwargs` for additional authored arguments; JS receives one object. Each server call creates a fresh Page, so its fields are not session storage.
 
+Both twins round the total half up to the cent with `floor(x + 0.5) / 100`. Python's `round` rounds half to even and `Math.round` rounds half up, so for price 0.5 and rate 1 Python `round` gives 0.5 and `Math.round` gives 0.51.
+
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Endpoint/fragment methods execute there too; bindings and any Logic execute in the browser. A Worker is not a private server.
 
 ## Try it and predict the result
@@ -37,7 +39,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 Change the price setter to 20 and reload.
 
-**Answer:** total 24.4, from `round(20 * 122) / 100`. `result_path` directs the value into Data; the existing `^.gross` display then follows without a separate response-to-DOM handler.
+**Answer:** total 24.4, from `floor(20 * 122 + 0.5) / 100`. `result_path` directs the value into Data; the existing `^.gross` display then follows without a separate response-to-DOM handler.
 
 ## The same example across stages
 
@@ -47,6 +49,6 @@ Revisit c01’s computed gross. There the browser owns the formula; here the Pag
 
 This lesson sends one initial call; it has no live price control or persistence. VAT is a percentage, unlike c01’s fractional rate. Do not infer login or database integration from an endpoint.
 
-Continue with [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/10_call_on_change.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/10_call_on_change.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
 
 </details>

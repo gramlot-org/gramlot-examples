@@ -1,10 +1,11 @@
+from math import floor
+
 from gramlot import Page as BasePage
 from gramlot import endpoint
 
 
 class Page(BasePage):
     title = "Endpoint"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="invoice")
@@ -23,4 +24,5 @@ class Page(BasePage):
 
     @endpoint
     def with_vat(self, price, rate, **kwargs):
-        return round(price * (100 + rate)) / 100
+        # Half up to the cent. Python round() rounds half to even, so both twins use floor(x + 0.5).
+        return floor(price * (100 + rate) + 0.5) / 100

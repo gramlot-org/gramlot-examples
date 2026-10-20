@@ -8,7 +8,6 @@ const PEOPLE = {
 
 export class Page extends BasePage {
     static title = 'Variable datapath';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack'});
@@ -31,6 +30,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: 'current', value: 'people.ada'});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

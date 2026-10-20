@@ -22,10 +22,10 @@ The Source declares `header`, `nav`, a main landmark, an `article`, an `aside` a
 
 ```python
 nav.a("Story", href="#story")
-article = main.article(id="story", class_="stack")
+article = main_content.article(id="story", class_="stack")
 ```
 
-Here `main` is an element variable, distinct from the Page method `main(root)`.
+Here `main_content` is an element variable, distinct from the Page method `main(root)`.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
 
@@ -36,7 +36,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Add `main.article(id="references").h2("References")` and a navigation link with `href="#references"`.
+Add `main_content.article(id="references").h2("References")` and a navigation link with `href="#references"`.
 
 **Answer:** a third destination appears; the browser handles the jump. Adding a link alone would not create an article.
 

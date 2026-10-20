@@ -12,7 +12,6 @@ ON_REMOTE = "this.SET('mounts', (this.GET('mounts') ?? 0) + 1); this.SET('status
 
 class Page(BasePage):
     title = "Cached remote"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack")
@@ -36,5 +35,5 @@ class Page(BasePage):
         pane.dataSetter("current", "products.lamp")
 
     @source
-    def rules(self, root, category=None, **kwargs):
+    def rules(self, root, category, **kwargs):
         root.p(RULES[category], id="rule")

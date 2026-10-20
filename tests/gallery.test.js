@@ -66,7 +66,7 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
         const fragment = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument()]});
         new Page()[name](fragment.root, params);
         return toTytx({id, contentType, value: fragment.toTytx()});
-    }};
+    }, close() {}, dispose() {}};
     const app = new Gramlot({document, pageId: 'gallery', transport, collections: [inputs, layout]}).src.startSource(builder.source);
     const renderer = app.src.renderer;
     const root = renderer.elements.get(document.getElementById('gallery')).node;
@@ -127,27 +127,28 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     app.dispose();
 });
 
-test('every shared example displays exactly its exported Logic class, never the alternative Page', async () => {
+test('every shared example displays exactly its exported Logic class, never the alternative Page; a module without Logic shows none', async () => {
     const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url)));
     const routes = buildGallery().routes;
     const urls = families.flatMap(family => family.examples.map(example => pathToFileURL(routes[example.key].logic).href));
     // Node preserves the authored class source; Bun rewrites imported modules before execution.
     // Node is already required for the gallery build in both CI runtime jobs.
     const originals = JSON.parse(execFileSync('node', ['--input-type=module', '-e',
-        "const result = {}; for (const url of JSON.parse(process.argv[1])) { const {Logic} = await import(url); result[url] = Function.prototype.toString.call(Logic); } console.log(JSON.stringify(result));",
+        "const result = {}; for (const url of JSON.parse(process.argv[1])) { const {Logic} = await import(url); if (Logic) result[url] = Function.prototype.toString.call(Logic); } console.log(JSON.stringify(result));",
         JSON.stringify(urls)], {encoding: 'utf8'}));
     let shown = 0;
     for (const family of families) for (const example of family.examples) {
         const url = pathToFileURL(routes[example.key].logic);
         const {Logic} = await import(url);
         const excerpt = logicSource(readFileSync(url, 'utf8'));
-        const hasMethods = Reflect.ownKeys(Logic.prototype).some(name => name !== 'constructor');
-        if (hasMethods) {
+        // The shared pages export Logic only when they name client methods.
+        if (Logic) {
+            assert.ok(Reflect.ownKeys(Logic.prototype).some(name => name !== 'constructor'), `${example.key} exports an empty Logic`);
             assert.equal(excerpt, `export ${originals[url.href]}`, example.key);
             shown++;
         } else assert.equal(excerpt, null, example.key);
     }
-    assert.equal(shown, 13);
+    assert.equal(shown, 14);
 });
 
 test('built frame inspector uses the example runtime classes without another core', async () => {
@@ -453,6 +454,13 @@ test('empty Logic is hidden and closing gallery behavior detaches navigation', a
     assert.equal(f.get('frame-e02'), null);
 });
 
+
+test('logicSource: a module without Logic, or with an empty one, shows no tab', () => {
+    assert.equal(logicSource('export class Page {}\n'), null);
+    assert.equal(logicSource('export class Page {}\n\nexport class Logic {}\n'), null);
+    assert.equal(logicSource('export class Page {}\nexport class Logic { total() {} }\n'), 'export class Logic { total() {} }');
+    assert.throws(() => logicSource('export class Logic {}\nexport class Logic {}\n'), /one final exported Logic/);
+});
 
 test('repeated clicks create one Source panel and request each view once', async t => {
     const f = await setup(t);

@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Freeze';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'board'});
@@ -28,7 +27,7 @@ export class Page extends BasePage {
 /** Logic of 08_freeze.py and 08_freeze.js: each button's nested controller calls one method. */
 export class Logic {
     sourceNode(nodeId) {
-        return this.page.src.source.getNodeByAttr('node_id', nodeId);
+        return this.page.src.builder.nodeById(nodeId);
     }
 
     freeze(node) {

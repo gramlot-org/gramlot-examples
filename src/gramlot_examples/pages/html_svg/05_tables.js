@@ -4,13 +4,12 @@ const ROWS = [['North', 12, 8], ['South', 9, 11], ['West', 15, 6]];
 
 export class Page extends BasePage {
     static title = 'Tables';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
-        page.h1('A small regional report');
-        page.p('Rows come from data; totals are computed before Source is built.');
-        const table = page.table();
+        const main_content = root.main({class: 'example-page stack'});
+        main_content.h1('A small regional report');
+        main_content.p('Rows come from data; totals are computed before Source is built.');
+        const table = main_content.table();
         table.caption('Orders by region and quarter');
         const heading = table.thead().tr();
         for (const label of ['Region', 'Q1', 'Q2', 'Total']) heading.th(label, {scope: 'col'});
@@ -25,6 +24,3 @@ export class Page extends BasePage {
         for (const value of [ROWS.reduce((n, row) => n + row[1], 0), ROWS.reduce((n, row) => n + row[2], 0), ROWS.reduce((n, row) => n + row[1] + row[2], 0)]) total.td(String(value));
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

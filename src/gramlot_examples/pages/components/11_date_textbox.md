@@ -9,7 +9,7 @@ Enter a calendar date or a word such as oggi or domani. Two fields share one civ
 
 The page locale is `it-IT`. Focus a field to edit its short date; leave it to see its chosen `format`. Try `18/10/2026`, `oggi` and `domani`. Words such as `ieri`, `oggi` and `domani` are relative to today in the browser, independently of the date already in the field. An explicit `workdate="YYYY-MM-DD"` can be used when an application deliberately needs a different reference day.
 
-The Data value is a Python `date`, transported as TYTX `D`; JavaScript represents it as a Date at UTC midnight. It remains a civil date, independent of the page timezone. `31/02/2026` is invalid and does not change Data. Period expressions are rejected: this field edits one complete date. Clearing writes null; Escape cancels the draft. This is a text editor, not a calendar popup.
+The Data value is a Python `date`, transported as TYTX `D`; JavaScript represents it as a Date at UTC midnight. It remains a civil date, independent of the page timezone. `31/02/2026` is invalid and does not change Data. Period expressions are rejected: this field edits one complete date. Clearing writes null; Escape cancels the draft. The control is a text editor first; the calendar popup of the first field is described below.
 
 Make the fields read-only; try label layout variants from Settings (⚙) in the gallery footer. Both controls keep the shared labelbox contract (`lbl_` and `box_`). The cards stay within 24rem.
 

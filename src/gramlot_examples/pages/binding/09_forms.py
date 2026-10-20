@@ -8,12 +8,11 @@ SHOWN = ("name", "email", "search", "website", "telephone", "quantity", "date", 
 
 class Page(BasePage):
     title = "Forms with binding"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="form")
         pane.h1("Native form controls, bound")
-        pane.p("The same fields as HTML / SVG example 06. Every value lives in the Data record on the right.")
+        pane.p("The same fields as HTML / SVG example 06, bound to the Data record on the right. The summary leaves out the password and the daily radio; the file input, the read-only code and the disabled field are not bound.")
         layout = pane.div(class_="bound-form")
         form = layout.form()
         identity = form.fieldset(class_="form-grid")

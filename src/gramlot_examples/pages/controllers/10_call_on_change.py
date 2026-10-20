@@ -4,7 +4,6 @@ from gramlot import endpoint
 
 class Page(BasePage):
     title = "Call on change"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="quote")
@@ -28,5 +27,6 @@ class Page(BasePage):
 
     @endpoint
     def quote(self, quantity, **kwargs):
-        quantity = quantity or 0
+        if quantity is None:
+            quantity = 0
         return quantity * (8 if quantity >= 10 else 10)

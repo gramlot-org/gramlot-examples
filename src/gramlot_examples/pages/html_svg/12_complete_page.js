@@ -11,23 +11,22 @@ const QUESTIONS = [['Do I need a service?', 'This local example has no remote da
 
 export class Page extends BasePage {
     static title = 'A complete example page';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const shell = root.div({class: 'example-page complete-page'});
-        this.header(shell);
-        const main = shell.main({class: 'stack'});
-        this.hero(main);
-        this.highlights(main);
-        this.schedule(main);
-        this.speakers(main);
-        this.map(main);
-        this.faq(main);
-        shell.footer().small('Gramlot HTML/SVG examples · Static content');
+        const pane = root.div({class: 'example-page complete-page'});
+        this.header(pane);
+        const main_content = pane.main({class: 'stack'});
+        this.hero(main_content);
+        this.highlights(main_content);
+        this.schedule(main_content);
+        this.speakers(main_content);
+        this.map(main_content);
+        this.faq(main_content);
+        pane.footer().small('Gramlot HTML/SVG examples · Static content');
     }
 
-    header(shell) {
-        const header = shell.header({class: 'complete-header'});
+    header(pane) {
+        const header = pane.header({class: 'complete-header'});
         header.p('GRAMLOT FIELD NOTES', {class: 'eyebrow'});
         header.h1('A day of small interfaces');
         header.p('A composed page built from HTML and SVG Source.');
@@ -36,8 +35,8 @@ export class Page extends BasePage {
             ['Speakers', 'speakers'], ['Map', 'map'], ['FAQ', 'faq']]) nav.a(label, {href: `#${target}`});
     }
 
-    hero(main) {
-        const hero = main.section({class: 'card complete-hero', aria_label: 'Illustration'});
+    hero(main_content) {
+        const hero = main_content.section({class: 'card complete-hero', aria_label: 'Illustration'});
         const drawing = hero.svg({viewBox: '0 0 720 180', role: 'img', aria_labelledby: 'complete-art-title', class: 'example-art'});
         drawing.title('Three connected steps', {id: 'complete-art-title'});
         drawing.line({x1: 125, y1: 90, x2: 595, y2: 90, stroke: 'var(--gramlot-border)', stroke_width: 8});
@@ -51,8 +50,8 @@ export class Page extends BasePage {
         hero.p('Three lessons. One Source tree. A page you can read without scripts beyond the Gramlot runtime.');
     }
 
-    highlights(main) {
-        const section = main.section({id: 'highlights', class: 'stack'});
+    highlights(main_content) {
+        const section = main_content.section({id: 'highlights', class: 'stack'});
         section.h2('Highlights');
         const cards = section.div({class: 'grid complete-grid'});
         for (const [number, title, description] of [
@@ -67,8 +66,8 @@ export class Page extends BasePage {
         }
     }
 
-    schedule(main) {
-        const section = main.section({id: 'schedule', class: 'stack'});
+    schedule(main_content) {
+        const section = main_content.section({id: 'schedule', class: 'stack'});
         section.h2('Schedule');
         const table = section.table();
         table.caption('Three short sessions');
@@ -82,8 +81,8 @@ export class Page extends BasePage {
         }
     }
 
-    speakers(main) {
-        const section = main.section({id: 'speakers', class: 'stack'});
+    speakers(main_content) {
+        const section = main_content.section({id: 'speakers', class: 'stack'});
         section.h2('Speakers');
         const cards = section.div({class: 'grid complete-grid'});
         for (const [name, specialty] of SPEAKERS) {
@@ -93,8 +92,8 @@ export class Page extends BasePage {
         }
     }
 
-    map(main) {
-        const section = main.section({id: 'map', class: 'stack'});
+    map(main_content) {
+        const section = main_content.section({id: 'map', class: 'stack'});
         section.h2('A schematic venue map');
         const figure = section.figure({class: 'card'});
         const drawing = figure.svg({viewBox: '0 0 600 210', role: 'img', aria_labelledby: 'venue-title', class: 'example-art'});
@@ -108,8 +107,8 @@ export class Page extends BasePage {
         figure.figcaption('A diagram made of paths, circles and labels; it is not navigation.');
     }
 
-    faq(main) {
-        const section = main.section({id: 'faq', class: 'stack'});
+    faq(main_content) {
+        const section = main_content.section({id: 'faq', class: 'stack'});
         section.h2('Frequently asked questions');
         for (const [question, answer] of QUESTIONS) {
             const details = section.details({class: 'card'});
@@ -118,6 +117,3 @@ export class Page extends BasePage {
         }
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

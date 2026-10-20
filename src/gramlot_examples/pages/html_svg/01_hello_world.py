@@ -3,9 +3,8 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     title = "Hello, Gramlot"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        page.h1("Hello, Gramlot!")
-        page.p("This heading and paragraph come from a Source tree.")
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Hello, Gramlot!")
+        main_content.p("This heading and paragraph come from a Source tree.")

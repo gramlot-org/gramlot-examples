@@ -13,22 +13,21 @@ QUESTIONS = (("Do I need a service?", "This local example has no remote data."),
 
 class Page(BasePage):
     title = "A complete example page"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        shell = root.div(class_="example-page complete-page")
-        self.header(shell)
-        main = shell.main(class_="stack")
-        self.hero(main)
-        self.highlights(main)
-        self.schedule(main)
-        self.speakers(main)
-        self.map(main)
-        self.faq(main)
-        shell.footer().small("Gramlot HTML/SVG examples · Static content")
+        pane = root.div(class_="example-page complete-page")
+        self.header(pane)
+        main_content = pane.main(class_="stack")
+        self.hero(main_content)
+        self.highlights(main_content)
+        self.schedule(main_content)
+        self.speakers(main_content)
+        self.map(main_content)
+        self.faq(main_content)
+        pane.footer().small("Gramlot HTML/SVG examples · Static content")
 
-    def header(self, shell):
-        header = shell.header(class_="complete-header")
+    def header(self, pane):
+        header = pane.header(class_="complete-header")
         header.p("GRAMLOT FIELD NOTES", class_="eyebrow")
         header.h1("A day of small interfaces")
         header.p("A composed page built from HTML and SVG Source.")
@@ -37,8 +36,8 @@ class Page(BasePage):
                               ("Speakers", "speakers"), ("Map", "map"), ("FAQ", "faq")):
             nav.a(label, href=f"#{target}")
 
-    def hero(self, main):
-        hero = main.section(class_="card complete-hero", aria_label="Illustration")
+    def hero(self, main_content):
+        hero = main_content.section(class_="card complete-hero", aria_label="Illustration")
         drawing = hero.svg(viewBox="0 0 720 180", role="img", aria_labelledby="complete-art-title", class_="example-art")
         drawing.title("Three connected steps", id="complete-art-title")
         drawing.line(x1=125, y1=90, x2=595, y2=90, stroke="var(--gramlot-border)", stroke_width=8)
@@ -51,8 +50,8 @@ class Page(BasePage):
                        font_weight="bold", fill="var(--gramlot-background)")
         hero.p("Three lessons. One Source tree. A page you can read without scripts beyond the Gramlot runtime.")
 
-    def highlights(self, main):
-        section = main.section(id="highlights", class_="stack")
+    def highlights(self, main_content):
+        section = main_content.section(id="highlights", class_="stack")
         section.h2("Highlights")
         cards = section.div(class_="grid complete-grid")
         for number, title, description in (("01", "Write", "Use page methods to describe content."),
@@ -63,8 +62,8 @@ class Page(BasePage):
             card.h3(title)
             card.p(description)
 
-    def schedule(self, main):
-        section = main.section(id="schedule", class_="stack")
+    def schedule(self, main_content):
+        section = main_content.section(id="schedule", class_="stack")
         section.h2("Schedule")
         table = section.table()
         table.caption("Three short sessions")
@@ -78,8 +77,8 @@ class Page(BasePage):
             for text in (title, speaker, focus):
                 row.td(text)
 
-    def speakers(self, main):
-        section = main.section(id="speakers", class_="stack")
+    def speakers(self, main_content):
+        section = main_content.section(id="speakers", class_="stack")
         section.h2("Speakers")
         cards = section.div(class_="grid complete-grid")
         for name, specialty in SPEAKERS:
@@ -87,8 +86,8 @@ class Page(BasePage):
             card.h3(name)
             card.p(specialty)
 
-    def map(self, main):
-        section = main.section(id="map", class_="stack")
+    def map(self, main_content):
+        section = main_content.section(id="map", class_="stack")
         section.h2("A schematic venue map")
         figure = section.figure(class_="card")
         drawing = figure.svg(viewBox="0 0 600 210", role="img", aria_labelledby="venue-title", class_="example-art")
@@ -100,8 +99,8 @@ class Page(BasePage):
             stop.text(label, x=0, y=37, text_anchor="middle", font_size=17, fill="currentColor")
         figure.figcaption("A diagram made of paths, circles and labels; it is not navigation.")
 
-    def faq(self, main):
-        section = main.section(id="faq", class_="stack")
+    def faq(self, main_content):
+        section = main_content.section(id="faq", class_="stack")
         section.h2("Frequently asked questions")
         for question, answer in QUESTIONS:
             details = section.details(class_="card")

@@ -11,24 +11,18 @@ Resize a bar, enable a field and display an amount. The same typed Data drives a
 
 ## One value, one template
 
-Earlier lessons needed a supporting attribute to turn a number into CSS text:
+A number becomes CSS text with a template after the pointer:
 
 ```python
-pane.div(width="${pixels}px", pixels="^.width")
+main_content.div(width="^.width:{}px")
 ```
 
-The suffix expresses that same operation directly:
-
-```python
-pane.div(width="^.width:{}px")
-```
-
-Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. The old multi-attribute template remains supported.
+Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. Ordinary `${...}` text is literal: `width="${pixels}px"` would set that exact string and read nothing. To use another attribute of the same node, write its name in a slot after the `:`, as [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md) shows.
 
 ## An expression keeps its result type
 
 ```python
-pane.input(value="^.name", readonly="^.draft:=!{}")
+main_content.input(value="^.name", readonly="^.draft:=!{}")
 ```
 
 After `:=` comes a JavaScript expression. If Draft is false, `!{}` is true: Name is read-only. With Draft true it becomes editable. `:!{}` would create text instead, which is not the intended boolean result.
@@ -40,7 +34,7 @@ Keep `value` as a plain pointer: suffix transformations are not allowed on the w
 For the content of a paragraph, ordinary attributes are the clearest choice:
 
 ```python
-pane.p("^.amount", format="0.00", mask="Total: {} €")
+main_content.p("^.amount", format="0.00", mask="Total: {} €")
 ```
 
 `format` produces the number text using the page locale; `mask` wraps that text. This page declares `locale = "it-IT"`, so 1234.5 displays as `Total: 1234,50 €`.
@@ -48,7 +42,7 @@ pane.p("^.amount", format="0.00", mask="Total: {} €")
 For an attribute such as a tooltip, use the same formatter inside an expression:
 
 ```python
-pane.p("Hover here", title="^.amount:=_F({}, {pattern: '0.00', mask: '{} €'})")
+main_content.p("Hover here", title="^.amount:=_F({}, {pattern: '0.00', mask: '{} €'})")
 ```
 
 The first `{}` passes the typed amount. The quoted `'{} €'` is the mask passed to `_F`; it is not another pointer placeholder. `_F` calls this page's `gramlot.format` and does not create a global function.
