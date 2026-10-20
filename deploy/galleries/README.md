@@ -21,6 +21,11 @@ or personal access token is stored in GitHub. The job executes no checked-out
 code or downloaded release scripts. The updater itself still requires successful
 publication workflows and matching public npm/PyPI versions for all four repos.
 
+Owner decision, 2026-10-20: “consideriamo jsr opzionale. e ci basiamo su npm”.
+A completed publication run whose only unsuccessful job is `jsr` counts as
+published; npm and PyPI versions still gate the deployment. A run still in
+progress is never ready: cancel a JSR job that does not finish.
+
 Owner authorization, 2026-10-18: “Sì, usa l’autenticazione temporanea della CI”.
 Each workflow sends its short-lived, read-only `github.token` over SSH standard
 input. The updater holds it only in memory, uses it only for HTTPS requests to
