@@ -59,11 +59,26 @@ class UpdaterTests(unittest.TestCase):
         if 'pypi.org' in url:
             return {'info':{'version':'1.2.3'}}
         return {'version':'1.2.3'}
+    def run_with_jobs(self, status, conclusion, jobs):
+        def fetch(url):
+            if '/runs?' in url:
+                return {'workflow_runs':[{'status':status,'conclusion':conclusion,
+                                          'jobs_url':'https://api.github.com/repos/gramlot-org/x/actions/runs/1/jobs'}]}
+            if '/jobs?' in url:
+                return {'jobs':[{'name':name,'conclusion':result} for name, result in jobs.items()]}
+            return self.fetch(url)
+        return fetch
     def test_waits_for_failed_or_incomplete_publication(self):
-        for conclusion in ('failure', None):
-            def fetch(url):
-                return {'workflow_runs':[{'status':'completed','conclusion':conclusion}]} if '/runs?' in url else self.fetch(url)
+        for status, conclusion in (('completed', 'failure'), ('completed', None), ('in_progress', None)):
+            fetch = self.run_with_jobs(status, conclusion, {'build':'success', 'pypi':'failure', 'npm':'success'})
             self.assertFalse(u.ready(self.snapshot(), fetch))
+    def test_optional_jsr_job_does_not_gate_the_galleries(self):
+        for result in ('cancelled', 'failure'):
+            fetch = self.run_with_jobs('completed', result, {'build':'success', 'pypi':'success', 'npm':'success', 'jsr':result})
+            self.assertTrue(u.ready(self.snapshot(), fetch))
+    def test_a_running_publication_waits_even_if_only_jsr_remains(self):
+        fetch = self.run_with_jobs('in_progress', None, {'build':'success', 'npm':'success', 'jsr':None})
+        self.assertFalse(u.ready(self.snapshot(), fetch))
     def test_waits_for_registry_propagation(self):
         def fetch(url):
             return {'version':'1.2.2'} if 'registry.npmjs' in url else self.fetch(url)

@@ -24,6 +24,8 @@ NPM = {'@gramlot/gramlot': 'gramlot', '@gramlot/gramlot-examples': 'gramlot-exam
 PYPI = {'gramlot': 'gramlot', 'gramlot-examples': 'gramlot-examples', 'gramlot-py-server': 'gramlot-py-server'}
 DOWNLOAD = '/downloads/gramlot-gallery-serverless.zip'
 RETRY_INTERVAL = 30
+# Publication jobs that do not gate the galleries: JSR is optional, npm is required.
+OPTIONAL_JOBS = {'jsr'}
 
 
 class ReleasePending(RuntimeError):
@@ -70,12 +72,21 @@ def releases(fetch=read_json):
     return result
 
 
+def published(run, fetch=read_json):
+    if run['status'] != 'completed':
+        return False
+    if run['conclusion'] == 'success':
+        return True
+    jobs = [job for job in fetch(f"{run['jobs_url']}?per_page=100")['jobs'] if job['name'] not in OPTIONAL_JOBS]
+    return bool(jobs) and all(job['conclusion'] == 'success' for job in jobs)
+
+
 def ready(snapshot, fetch=read_json, verified=None):
     for repo, release in snapshot.items():
         if verified and verified.get(repo) == release:
             continue
         runs = fetch(f'https://api.github.com/repos/gramlot-org/{repo}/actions/workflows/publish.yml/runs?branch={quote(release["tag"])}&event=workflow_dispatch&per_page=1')['workflow_runs']
-        if not runs or runs[0]['status'] != 'completed' or runs[0]['conclusion'] != 'success':
+        if not runs or not published(runs[0], fetch):
             return False
     for package, repo in NPM.items():
         if fetch(f'https://registry.npmjs.org/{quote(package, safe="")}/latest')['version'] != snapshot[repo]['version']:
