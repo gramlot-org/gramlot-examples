@@ -13,7 +13,7 @@ class Page(BasePage):
         pane.h1("^.settings.caption", id="caption")
         pane.h2("0.2.0 · Local page")
 
-        form = pane.form(class_="card stack", node_id="form")
+        form = pane.form(class_="card stack", nodeId="form")
         form.html_label("Caption", for_="caption-field")
         form.input(value="^.settings.caption", live="^.live", id="caption-field")
         row = form.div()
@@ -45,9 +45,9 @@ class Page(BasePage):
         pane.dataFormula(".radius", "Math.min(20 + total * 4, 90)", total="^.total", _init=True)
         pane.dataController(func="paint", total="^.total", _init=True)
 
-        later = pane.section(class_="card stack", node_id="later")
+        later = pane.section(class_="card stack", nodeId="later")
         later.h2("0.2.0 · Optional freeze exercise")
-        notes = later.ul(node_id="notes", id="notes")
+        notes = later.ul(nodeId="notes", id="notes")
         for text in ("Setters live here too", "This note can be removed under freeze"):
             notes.li(text)
         actions = later.div(class_="actions")

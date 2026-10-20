@@ -63,7 +63,7 @@ def guided_demo(parent):
         parent.dataSetter(f"galleryGuide.{name}", value)
     panel = parent.contentPane(region="bottom", height="190px", minSize=140, maxSize=300,
         splitter=True, drawer=True, drawer_label="Guide", drawer_icon="▶",
-        node_id="galleryGuidePanel", id="gallery-guide", class_="gallery-guide", padding="12px 16px",
+        nodeId="galleryGuidePanel", id="gallery-guide", class_="gallery-guide", padding="12px 16px",
         border_top="1px solid var(--gramlot-border)", background="var(--gramlot-surface-subtle)")
     toolbar = panel.div(class_="gallery-guide-toolbar")
     for name, caption, disabled in (
@@ -72,7 +72,7 @@ def guided_demo(parent):
         ("Stop", "■ Stop", "^galleryGuide.status:= !['running','paused'].includes({})"),
         ("Previous", "← Back", "^galleryGuide.position:= {} <= 0"),
         ("Next", "Next →", "^galleryGuide.position:= {} >= {count} - 1 || !{available}")):
-        toolbar.button(caption, node_id=f"galleryGuide{name}", id=f"gallery-guide-{name.lower()}",
+        toolbar.button(caption, nodeId=f"galleryGuide{name}", id=f"gallery-guide-{name.lower()}",
                        action="this.publish('command')", disabled=disabled, available="^galleryGuide.available", count="^galleryGuide.count")
     toolbar.checkbox(value="^galleryGuide.voice", label="Voice", id="gallery-guide-voice",
                      disabled="^galleryGuide.voiceAvailable:=!{}")

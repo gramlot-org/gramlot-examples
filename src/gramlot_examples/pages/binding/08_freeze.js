@@ -13,10 +13,10 @@ export class Page extends BasePage {
         }
         pane.p('^.frozen', {id: 'frozen', class: 'muted'});
 
-        const board = pane.section({node_id: 'board', class: 'card stack'});
+        const board = pane.section({nodeId: 'board', class: 'card stack'});
         board.h2('A branch that can be frozen');
         board.p('^.count', {id: 'count'});
-        const items = board.ul({node_id: 'items', id: 'items'});
+        const items = board.ul({nodeId: 'items', id: 'items'});
         for (const number of [1, 2, 3]) items.li(`Item ${number}`);
 
         pane.dataSetter({destination_path: '.count', value: 0});

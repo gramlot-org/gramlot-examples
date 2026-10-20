@@ -901,3 +901,15 @@ cache validators (200) and accept current ones (304), retaining gzip. ZIP integr
 version receipt and deployment SHA-256 agree. Release gates, including JSR, remain
 mandatory. Detailed evidence and successful CI links are in
 [the release report](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/reports/2026-10-18-slider-quantization.json).
+
+
+<a id="ge-010-060"></a>
+
+## 060 · Source identity migration
+
+Pages and gallery use `nodeId` in Python and JavaScript. Update old `node_id`
+declarations and attribute reads/writes; rebuild gallery bundles after updating
+source checkouts. Upgrade Gramlot and both Builder packages with the examples.
+Source-local topics retain their names and payloads; DOM `id` stays independent.
+There is no old-name alias. System callbacks and namespaced parameters such as
+`node_label`, `node_position`, `target_id` retain their spelling.

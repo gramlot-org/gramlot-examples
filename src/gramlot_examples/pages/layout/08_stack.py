@@ -45,7 +45,7 @@ class Page(BasePage):
                                 min=0, max=len(demos) - 1, step=1, live=True, width="100%", min_width=0)
         drawer.h2("^.caption", id="stack-caption", margin_top="12px")
         drawer.p("^.page", id="stack-page", mask="Demo: {}")
-        thumbnails = drawer.stackContainer(id="stack-demo", node_id="demoStack", selectedPage="^.page",
+        thumbnails = drawer.stackContainer(id="stack-demo", nodeId="demoStack", selectedPage="^.page",
                                             selected="^.panel", height="300px", rounded=4,
                                             border="1px solid var(--gramlot-border-control, #aaa)")
         center = border.contentPane(region="center", background="var(--gramlot-surface, #fff)")

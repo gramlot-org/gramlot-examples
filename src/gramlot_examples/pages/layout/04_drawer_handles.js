@@ -27,7 +27,7 @@ export class Page extends BasePage {
         const surface = 'var(--gramlot-surface-subtle, #eef1f5)';
         const search = border.contentPane({
             region: 'top',
-            node_id: 'drawerSearch',
+            nodeId: 'drawerSearch',
             height: '64px',
             splitter: true,
             drawer: '^drawerSearch',
@@ -48,7 +48,7 @@ export class Page extends BasePage {
         });
         const filters = border.contentPane({
             region: 'left',
-            node_id: 'drawerFilters',
+            nodeId: 'drawerFilters',
             width: '^filtersWidth',
             splitter: true,
             drawer: '^drawerFilters',
@@ -67,7 +67,7 @@ export class Page extends BasePage {
         });
         const details = border.contentPane({
             region: 'right',
-            node_id: 'drawerDetails',
+            nodeId: 'drawerDetails',
             width: '180px',
             splitter: true,
             drawer: '^drawerDetails',
@@ -84,7 +84,7 @@ export class Page extends BasePage {
         border
             .contentPane({
                 region: 'bottom',
-                node_id: 'drawerOutput',
+                nodeId: 'drawerOutput',
                 height: '64px',
                 splitter: true,
                 drawer: '^drawerOutput',

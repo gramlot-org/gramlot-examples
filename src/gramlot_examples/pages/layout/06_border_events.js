@@ -36,14 +36,14 @@ export class Page extends BasePage {
         main_content.checkbox({ id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
         const border = main_content.borderContainer({
             id: 'events-border',
-            node_id: 'eventWorkspace',
+            nodeId: 'eventWorkspace',
             height: '360px',
             max_width: '48rem',
             rounded: 10,
             border: '1px solid var(--gramlot-border-control, #aaa)',
         });
         const filters = border.contentPane({
-            node_id: 'eventFilters',
+            nodeId: 'eventFilters',
             region: 'left',
             width: '130px',
             minSize: 90,

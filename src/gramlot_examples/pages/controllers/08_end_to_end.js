@@ -13,7 +13,7 @@ export class Page extends BasePage {
         pane.h1('^.settings.caption', {id: 'caption'});
         pane.h2('0.2.0 · Local page');
 
-        const form = pane.form({class: 'card stack', node_id: 'form'});
+        const form = pane.form({class: 'card stack', nodeId: 'form'});
         form.html_label('Caption', {for: 'caption-field'});
         form.input({value: '^.settings.caption', live: '^.live', id: 'caption-field'});
         const row = form.div();
@@ -46,9 +46,9 @@ export class Page extends BasePage {
         pane.dataFormula({result_path: '.radius', formula: 'Math.min(20 + total * 4, 90)', total: '^.total', _init: true});
         pane.dataController({func: 'paint', total: '^.total', _init: true});
 
-        const later = pane.section({class: 'card stack', node_id: 'later'});
+        const later = pane.section({class: 'card stack', nodeId: 'later'});
         later.h2('0.2.0 · Optional freeze exercise');
-        const notes = later.ul({node_id: 'notes', id: 'notes'});
+        const notes = later.ul({nodeId: 'notes', id: 'notes'});
         for (const text of ['Setters live here too', 'This note can be removed under freeze']) notes.li(text);
         const actions = later.div({class: 'actions'});
         for (const [label, method] of [['Freeze', 'freeze'], ['Remove a note', 'removeNote'], ['Thaw', 'thaw']]) {

@@ -106,7 +106,7 @@
           "title": "Pointers",
           "folder": "01_pointers",
           "description": "Read Data with ^, =, relative, symbolic and ?attr pointers.",
-          "explanation": "Each ^ pointer subscribes its attribute or text to a Data path; = reads once. A datapath makes .paths relative, #node_id reaches the context of a named node, and ?attr reads an attribute of a Data node."
+          "explanation": "Each ^ pointer subscribes its attribute or text to a Data path; = reads once. A datapath makes .paths relative, #nodeId reaches the context of a named node, and ?attr reads an attribute of a Data node."
         },
         {
           "key": "b02",

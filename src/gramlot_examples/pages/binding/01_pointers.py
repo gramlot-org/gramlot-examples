@@ -9,7 +9,7 @@ class Page(BasePage):
         pane.h1("^settings.caption", id="caption")
         pane.p("^settings.intro", class_="muted")
 
-        settings = pane.section(datapath="settings", node_id="settings", class_="card stack")
+        settings = pane.section(datapath="settings", nodeId="settings", class_="card stack")
         settings.h2("Relative pointers")
         settings.html_label("Caption", for_="caption-field")
         settings.input(value="^.caption", id="caption-field")

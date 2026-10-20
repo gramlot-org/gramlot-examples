@@ -20,7 +20,7 @@ After **Endpoint** and **Call on click**, return to the **0.2.14 quote section**
 
 ## Read the page
 
-This is the **local 0.2.0 story**, with the maintained 0.2.5 Logic-module arrangement. Setters initialize caption, radio flags and checkboxes; a default initializes quantity. Formulas derive total/radius and the named `paint` controller selects color. Named button controllers handle press and freeze; the Logic finds the `later` and `notes` nodes by their `node_id` with `gramlot.src.builder.nodeById`.
+This is the **local 0.2.0 story**, with the maintained 0.2.5 Logic-module arrangement. Setters initialize caption, radio flags and checkboxes; a default initializes quantity. Formulas derive total/radius and the named `paint` controller selects color. Named button controllers handle press and freeze; the Logic finds the `later` and `notes` nodes by their `nodeId` with `gramlot.src.builder.nodeById`.
 
 ```python
 pane.dataFormula(".total", "quantity * (large ? 3 : 1) + (gift ? 5 : 0)",

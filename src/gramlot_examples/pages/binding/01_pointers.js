@@ -8,7 +8,7 @@ export class Page extends BasePage {
         pane.h1('^settings.caption', {id: 'caption'});
         pane.p('^settings.intro', {class: 'muted'});
 
-        const settings = pane.section({datapath: 'settings', node_id: 'settings', class: 'card stack'});
+        const settings = pane.section({datapath: 'settings', nodeId: 'settings', class: 'card stack'});
         settings.h2('Relative pointers');
         settings.html_label('Caption', {for: 'caption-field'});
         settings.input({value: '^.caption', id: 'caption-field'});

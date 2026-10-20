@@ -92,7 +92,7 @@ export class Page extends BasePage {
         drawer.p('^.page', { id: 'stack-page', mask: 'Demo: {}' });
         const thumbnails = drawer.stackContainer({
             id: 'stack-demo',
-            node_id: 'demoStack',
+            nodeId: 'demoStack',
             selectedPage: '^.page',
             selected: '^.panel',
             height: '300px',
