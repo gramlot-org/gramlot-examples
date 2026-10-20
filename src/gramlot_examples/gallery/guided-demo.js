@@ -98,7 +98,7 @@ export function guidedDemo(parent) {
         drawer: true,
         drawer_label: 'Guide',
         drawer_icon: '▶',
-        node_id: 'galleryGuidePanel',
+        nodeId: 'galleryGuidePanel',
         id: 'gallery-guide',
         class: 'gallery-guide',
         padding: '12px 16px',
@@ -114,7 +114,7 @@ export function guidedDemo(parent) {
         ['Next', 'Next →', '^galleryGuide.position:= {} >= {count} - 1 || !{available}'],
     ]) {
         toolbar.button(caption, {
-            node_id: `galleryGuide${name}`,
+            nodeId: `galleryGuide${name}`,
             id: `gallery-guide-${name.toLowerCase()}`,
             action: "this.publish('command')",
             disabled: disabled,

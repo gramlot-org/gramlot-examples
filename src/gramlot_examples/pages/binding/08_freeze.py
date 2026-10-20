@@ -13,10 +13,10 @@ class Page(BasePage):
             actions.button(label, id=method).dataController(func=method)
         pane.p("^.frozen", id="frozen", class_="muted")
 
-        board = pane.section(node_id="board", class_="card stack")
+        board = pane.section(nodeId="board", class_="card stack")
         board.h2("A branch that can be frozen")
         board.p("^.count", id="count")
-        items = board.ul(node_id="items", id="items")
+        items = board.ul(nodeId="items", id="items")
         for number in (1, 2, 3):
             items.li(f"Item {number}")
 

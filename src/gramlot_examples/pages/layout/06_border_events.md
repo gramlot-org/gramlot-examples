@@ -18,7 +18,7 @@ The structured text below each message is the event's **payload**: the details s
 
 ## Connecting your own controller
 
-The Filters pane has a node_id of eventFilters. The controller's subscribe_eventFilters_closable_change parameter listens to its visibility announcement. The other subscription names eventWorkspace, the container, and splitter_resize, its completed-resize event.
+The Filters pane has a nodeId of eventFilters. The controller's subscribe_eventFilters_closable_change parameter listens to its visibility announcement. The other subscription names eventWorkspace, the container, and splitter_resize, its completed-resize event.
 
 Read the name in three parts: subscribe, the component's identity, and the event. The controller receives the details and writes its result into Data. The counters on screen then update through normal bindings.
 

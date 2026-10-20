@@ -18,7 +18,7 @@ Freeze a list, add or remove items, then thaw it. You learn that structural chan
 
 ## Read the page
 
-The buttons call named `Logic` methods through nested `dataController` declarations. Freeze targets the `board` Source node, which the Logic finds by its `node_id` with `gramlot.src.builder.nodeById`. `add` increments `.count`; despite the method’s short name, it does **not** create a list item. `removeLast` deletes a Source child.
+The buttons call named `Logic` methods through nested `dataController` declarations. Freeze targets the `board` Source node, which the Logic finds by its `nodeId` with `gramlot.src.builder.nodeById`. `add` increments `.count`; despite the method’s short name, it does **not** create a list item. `removeLast` deletes a Source child.
 
 ```python
 actions.button(label, id=method).dataController(func=method)

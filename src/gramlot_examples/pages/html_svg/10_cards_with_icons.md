@@ -20,7 +20,7 @@ Three cards, each with an SVG icon. You learn how to combine text and drawings. 
 
 Three cards use Source `node_label` values `structure`, `drawing` and `reading`. The inline click declaration runs with `this` bound to the button node: `this.builder.source` gives the Source, where it finds the container `main.main_content.cards` and calls `popNode` with the selected card label. Its SVG disappears with the card.
 
-`node_label` is a Bag path segment, `node_id` is a Source lookup identity, and HTML `id` identifies a DOM element; they are not interchangeable. `main` here is a **Source** path, not a Data prefix.
+`node_label` is a Bag path segment, `nodeId` is a Source lookup identity, and HTML `id` identifies a DOM element; they are not interchangeable. `main` here is a **Source** path, not a Data prefix.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
 

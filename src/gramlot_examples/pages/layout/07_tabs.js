@@ -99,7 +99,7 @@ export class Page extends BasePage {
         main_content.p('^.index', { id: 'tabs-index', mask: 'Selected index: {}' });
         const tabs = main_content.tabContainer({
             id: 'tabs-demo',
-            node_id: 'editor',
+            nodeId: 'editor',
             selectedPage: '^.page',
             selected: '^.index',
             tabMode: '^.mode',

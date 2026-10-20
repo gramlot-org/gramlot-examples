@@ -17,11 +17,11 @@ export class GalleryPage extends IndexPage {
         const families = this.constructor.navigation;
         const shell = root.div({class: 'index-shell gallery-containers', id: this.constructor.shellId});
         this.header(shell);
-        const regions = shell.borderContainer({id: 'gallery-regions', node_id: 'galleryRegions',
+        const regions = shell.borderContainer({id: 'gallery-regions', nodeId: 'galleryRegions',
             data_index_regions: true, height: '100%', min_height: 0});
         const sidebar = regions.contentPane({region: 'left', width: '240px', minSize: 160, maxSize: 420,
             splitter: true, drawer: true, drawer_icon: '☰', drawer_label: 'Navigation', drawer_minimize: true,
-            node_id: 'galleryNavigation', class: 'index-sidebar', id: 'index-sidebar'});
+            nodeId: 'galleryNavigation', class: 'index-sidebar', id: 'index-sidebar'});
         sidebar.header().img({src: this.constructor.logoUrl, alt: this.constructor.title, class: 'index-logo'});
         const navigation = sidebar.nav({aria_label: 'Pages'}).ul({class: 'index-list'});
         for (const family of families) {
@@ -40,7 +40,7 @@ export class GalleryPage extends IndexPage {
         this.introduction(panels.contentPane({id: 'panel-intro', title: 'Introduction', pageName: 'intro', class: 'index-intro'}));
         const code = regions.contentPane({region: 'right', width: '420px', minSize: 220, maxSize: 900,
             splitter: true, drawer: true, drawer_icon: '⌘', drawer_label: 'Code', drawer_minimize: true,
-            node_id: 'galleryCode', id: 'index-code', aria_label: 'Example source code', hidden: true});
+            nodeId: 'galleryCode', id: 'index-code', aria_label: 'Example source code', hidden: true});
         code.div({id: 'gallery-code-pages', height: '100%'});
         this.footer(shell.footer({class: 'index-footer'}));
         this.behavior(shell);
@@ -116,7 +116,7 @@ export class GalleryPage extends IndexPage {
         header.p('In this example: ' + example.description);
         const preview = panel.tabContainer({class: 'gallery-preview', id: `preview-${key}`,
             tabMode: 'underline', height: '100%', min_height: 0,
-            ...(key === 'l04' ? {node_id: 'galleryGuidePreview'} : {})});
+            ...(key === 'l04' ? {nodeId: 'galleryGuidePreview'} : {})});
         let stage = preview.contentPane({title: 'Example', pageName: 'example',
             class: 'gallery-preview-stage', id: `preview-stage-${key}`});
         if (key === 'l04') {

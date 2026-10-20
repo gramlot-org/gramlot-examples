@@ -25,7 +25,7 @@ settings.input(value="^.caption", id="caption-field")
 settings.p("=.caption", id="first-caption")
 ```
 
-The heading uses absolute `^settings.caption`. `#settings.caption` uses the context of the Source node with `node_id="settings"`; `#FORM.name` uses the nearest form context. `.name?role` reads a Data **attribute**, not a DOM attribute.
+The heading uses absolute `^settings.caption`. `#settings.caption` uses the context of the Source node with `nodeId="settings"`; `#FORM.name` uses the nearest form context. `.name?role` reads a Data **attribute**, not a DOM attribute.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
 
@@ -50,7 +50,7 @@ Earlier e01 rendered a literal heading. Here the declaration is `pane.h1("^setti
 
 The added section has an `_anchor` at Data context `contexts`, then a child with `.child`. Read the three paragraphs: the local `.name` reads Inner; `#ANCHOR.name` reads Outer. `^.#parent.name` starts from the resolved local Data context `contexts.child`, cancels its last segment and reads Outer. `#parent` is a Data-path segment, not a Source-node lookup. A bare leading `^#parent.name` is not the declaration used here.
 
-Change `contexts.name` to Outside in the initial setter and reload. **Answer:** the anchor and parent-path paragraphs change; the local read stays Inner. Now change `contexts.child.name`: only the local paragraph changes. The `node_id`, HTML `id`, and Data context are distinct identities.
+Change `contexts.name` to Outside in the initial setter and reload. **Answer:** the anchor and parent-path paragraphs change; the local read stays Inner. Now change `contexts.child.name`: only the local paragraph changes. The `nodeId`, HTML `id`, and Data context are distinct identities.
 
 ## Limits and next step
 

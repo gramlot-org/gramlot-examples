@@ -15,7 +15,7 @@ class Page(BasePage):
         for label, key in (("Hook trace", "trace"), ("Data ticks", "ticks"), ("Lookup", "lookup")):
             pane.h2(label)
             pane.p(f"^.{key}", id=key)
-        observed = pane.section(node_id="observed", id="observed", class_="card stack")
+        observed = pane.section(nodeId="observed", id="observed", class_="card stack")
         observed.h2("Observed branch")
         observed.p("^.ticks", id="branch-ticks")
         for hook, stage in (("_init", "init"), ("_onBuilt", "built"), ("_onStart", "start")):

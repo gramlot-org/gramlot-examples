@@ -41,7 +41,7 @@ class Page(BasePage):
         controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch")
         main_content.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
         main_content.p("^.index", id="tabs-index", mask="Selected index: {}")
-        tabs = main_content.tabContainer(id="tabs-demo", node_id="editor", selectedPage="^.page",
+        tabs = main_content.tabContainer(id="tabs-demo", nodeId="editor", selectedPage="^.page",
                                   selected="^.index", tabMode="^.mode", tabPosition="^.position", tabAlign="^.align", height="300px", max_width="44rem",
                                   border="1px solid var(--gramlot-border-control, #aaa)", rounded=6)
         customer = tabs.contentPane(id="customer-panel", pageName="customer", title="Customer", icon="👤", padding="12px")

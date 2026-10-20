@@ -28,7 +28,7 @@ observed.dataController(func="record", stage="start", _onStart=True)
 
 Data setters run before these hooks. `_init` installs initial behavior, `_onBuilt` follows the first successful build, and `_onStart` follows readiness. A separate timer controller uses `_timing=1` (seconds). Hook delays, if numeric, are milliseconds. The trace and tick count are ordinary Data, displayed outside the removable branch.
 
-Inspect finds the branch by its `node_id` with `gramlot.src.builder.nodeById('observed')`, which throws once the branch is removed, and then uses `gramlot.dom.getDomNode(sourceNode)` and `getBaseSourceNode(domNode)` for read-only identity lookup. It does not mutate the DOM. `node_id` locates Source; the separate HTML `id` locates the rendered element.
+Inspect finds the branch by its `nodeId` with `gramlot.src.builder.nodeById('observed')`, which throws once the branch is removed, and then uses `gramlot.dom.getDomNode(sourceNode)` and `getBaseSourceNode(domNode)` for read-only identity lookup. It does not mutate the DOM. `nodeId` locates Source; the separate HTML `id` locates the rendered element.
 
 ## Try it and predict the result
 

@@ -35,11 +35,11 @@ class Page(IndexPage):
         families = self.navigation
         shell = root.div(class_="index-shell gallery-containers", id=self.shell_id)
         self.header(shell)
-        regions = shell.borderContainer(id="gallery-regions", node_id="galleryRegions",
+        regions = shell.borderContainer(id="gallery-regions", nodeId="galleryRegions",
                                         data_index_regions=True, height="100%", min_height=0)
         sidebar = regions.contentPane(region="left", width="240px", minSize=160, maxSize=420,
                                       splitter=True, drawer=True, drawer_icon="☰", drawer_label="Navigation",
-                                      drawer_minimize=True, node_id="galleryNavigation",
+                                      drawer_minimize=True, nodeId="galleryNavigation",
                                       class_="index-sidebar", id="index-sidebar")
         brand = sidebar.header()
         brand.img(src=self.logo_url, alt=self.title, class_="index-logo")
@@ -59,7 +59,7 @@ class Page(IndexPage):
                                              class_="index-intro"))
         code = regions.contentPane(region="right", width="420px", minSize=220, maxSize=900,
                                    splitter=True, drawer=True, drawer_icon="⌘", drawer_label="Code",
-                                   drawer_minimize=True, node_id="galleryCode", id="index-code",
+                                   drawer_minimize=True, nodeId="galleryCode", id="index-code",
                                    aria_label="Example source code", hidden=True)
         code.div(id="gallery-code-pages", height="100%")
         self.footer(shell.footer(class_="index-footer"))
@@ -153,7 +153,7 @@ class Page(IndexPage):
         header.p("In this example: " + example.get("description", ""))
         preview = panel.tabContainer(class_="gallery-preview", id=f"preview-{key}",
                                      tabMode="underline", height="100%", min_height=0,
-                                     **({"node_id": "galleryGuidePreview"} if key == "l04" else {}))
+                                     **({"nodeId": "galleryGuidePreview"} if key == "l04" else {}))
         stage = preview.contentPane(title="Example", pageName="example",
                                     class_="gallery-preview-stage", id=f"preview-stage-{key}")
         if key == "l04":

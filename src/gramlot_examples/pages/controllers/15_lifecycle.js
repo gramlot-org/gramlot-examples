@@ -14,7 +14,7 @@ export class Page extends BasePage {
         for (const [label, key] of [['Hook trace', 'trace'], ['Data ticks', 'ticks'], ['Lookup', 'lookup']]) {
             pane.h2(label); pane.p(`^.${key}`, {id: key});
         }
-        const observed = pane.section({node_id: 'observed', id: 'observed', class: 'card stack'});
+        const observed = pane.section({nodeId: 'observed', id: 'observed', class: 'card stack'});
         observed.h2('Observed branch');
         observed.p('^.ticks', {id: 'branch-ticks'});
         for (const [hook, stage] of [['_init', 'init'], ['_onBuilt', 'built'], ['_onStart', 'start']]) {
@@ -28,11 +28,11 @@ export class Page extends BasePage {
 }
 
 export class Logic {
-    /** The branch by its node_id, or null once it has been removed: nodeById throws for an unknown id. */
+    /** The branch by its nodeId, or null once it has been removed: nodeById throws for an unknown id. */
     branch() {
         try { return this.page.src.builder.nodeById('observed'); }
         catch (error) {
-            if (error.message === 'node_id not found: observed') return null;
+            if (error.message === 'nodeId not found: observed') return null;
             throw error;
         }
     }
