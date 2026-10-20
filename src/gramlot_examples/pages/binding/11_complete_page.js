@@ -12,27 +12,26 @@ const QUESTIONS = [['Do I need a service?', 'This local example has no remote da
 
 export class Page extends BasePage {
     static title = 'A complete page with binding';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const shell = root.div({class: 'example-page complete-page', datapath: 'event'});
-        this.header(shell);
-        const main_content = shell.html_main({class: 'stack'});
+        const pane = root.div({class: 'example-page complete-page', datapath: 'event'});
+        this.header(pane);
+        const main_content = pane.html_main({class: 'stack'});
         this.hero(main_content);
         this.schedule(main_content);
         this.speakers(main_content);
         this.map(main_content);
         this.faq(main_content);
-        shell.footer().small('^.footer');
-        shell.dataSetter({destination_path: '.title', value: 'A day of small interfaces'});
-        shell.dataSetter({destination_path: '.footer', value: 'Gramlot binding examples · Data-driven content'});
-        shell.dataSetter({destination_path: '.show', value: {mira: true, theo: true}});
-        shell.dataSetter({destination_path: '.stop', value: {entrance: false, studio: true, hall: false}});
-        shell.dataSetter({destination_path: '.faq_open', value: false});
+        pane.footer().small('^.footer');
+        pane.dataSetter({destination_path: '.title', value: 'A day of small interfaces'});
+        pane.dataSetter({destination_path: '.footer', value: 'Gramlot binding examples · Data-driven content'});
+        pane.dataSetter({destination_path: '.show', value: {mira: true, theo: true}});
+        pane.dataSetter({destination_path: '.stop', value: {entrance: false, studio: true, hall: false}});
+        pane.dataSetter({destination_path: '.faq_open', value: false});
     }
 
-    header(shell) {
-        const header = shell.header({class: 'complete-header'});
+    header(pane) {
+        const header = pane.header({class: 'complete-header'});
         header.p('GRAMLOT FIELD NOTES', {class: 'eyebrow'});
         header.h1('^.title', {id: 'title'});
         header.html_label('Event title', {for: 'title-field'});
@@ -125,6 +124,3 @@ export class Page extends BasePage {
         }
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

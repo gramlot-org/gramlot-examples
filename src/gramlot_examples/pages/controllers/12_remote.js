@@ -4,7 +4,6 @@ const RECORDS = {lamp: ['Lamp', 3], desk: ['Desk', 0], chair: ['Chair', 12]};
 
 export class Page extends BasePage {
     static title = 'Remote';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'catalog'});
@@ -28,6 +27,3 @@ export class Page extends BasePage {
     }
 }
 Page.registerSource('details');
-
-/** The page logic: this page names no methods. */
-export class Logic {}

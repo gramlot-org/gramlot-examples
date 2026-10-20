@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Attribute projection';
-    static css = ['/themes/gramlot-base/theme.css'];
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'projection'});
         pane.h1('Attribute projection');
@@ -21,5 +20,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.html', value: '<h2>Hello, Ada</h2><p>A separate document.</p>'});
     }
 }
-
-export class Logic {}

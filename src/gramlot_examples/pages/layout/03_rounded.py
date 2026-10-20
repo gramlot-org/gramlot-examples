@@ -5,21 +5,20 @@ from gramlot import Page as BasePage
 class Page(BasePage):
     title = "Rounded borders and popups"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        pane = root.main(class_="example-page stack")
-        pane.h1("Rounded outside, continuous inside")
-        pane.p("Drag all four separators and toggle their drawers. Open the calendar and choices inside the rounded inner panel.")
-        controls = pane.formlet(max_width="24rem", columns=1)
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Rounded outside, continuous inside")
+        main_content.p("Drag all four separators and toggle their drawers. Open the calendar and choices inside the rounded inner panel.")
+        controls = main_content.formlet(max_width="24rem", columns=1)
         controls.filteringSelect(id="rounded-design", value="^design", lbl="Outer design",
                                  values="headline:Headline,sidebar:Sidebar", width="10rem")
         controls.horizontalSlider(id="rounded-slider", value="^rounded", lbl="Corner radius (px)",
                                   min=0, max=48, step=1, live=True, width="14rem")
-        border = pane.borderContainer(id="rounded-border", height="560px", max_width="64rem",
-                                      design="^design", rounded="^rounded",
-                                      border="2px solid var(--gramlot-border-control, #8192aa)",
-                                      background="var(--gramlot-surface, #fff)")
+        border = main_content.borderContainer(id="rounded-border", height="560px", max_width="64rem",
+                                              design="^design", rounded="^rounded",
+                                              border="2px solid var(--gramlot-border-control, #8192aa)",
+                                              background="var(--gramlot-surface, #fff)")
         for side, size, label in (("top", "64px", "Header"), ("bottom", "64px", "Footer"),
                                   ("left", "140px", "Filters"), ("right", "140px", "Details")):
             dimensions = {f"border_{dict(top='bottom', bottom='top', left='right', right='left')[side]}": "1px solid var(--gramlot-border-control, #aaa)",
@@ -43,9 +42,9 @@ class Page(BasePage):
         form.filteringSelect(id="rounded-choice", value="^choice", lbl="Delivery",
                              values="standard:Standard,express:Express,pickup:Pick up,scheduled:Scheduled,evening:Evening,weekend:Weekend",
                              width="100%")
-        pane.p("The rounded outline clips pane backgrounds. Calendar, choices and validation messages use the browser's top layer.")
-        pane.dataSetter("design", "headline")
-        pane.dataSetter("rounded", 24)
-        pane.dataSetter("name", "Ada")
-        pane.dataSetter("date", date(2026, 10, 18))
-        pane.dataSetter("choice", "standard")
+        main_content.p("The rounded outline clips pane backgrounds. Calendar, choices and validation messages use the browser's top layer.")
+        main_content.dataSetter("design", "headline")
+        main_content.dataSetter("rounded", 24)
+        main_content.dataSetter("name", "Ada")
+        main_content.dataSetter("date", date(2026, 10, 18))
+        main_content.dataSetter("choice", "standard")

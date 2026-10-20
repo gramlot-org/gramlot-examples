@@ -7,12 +7,12 @@ A labelled groupBox contains a compact formlet with text, multiline text, number
 <details><summary>More detail</summary>
 
 ```python
-group = pane.groupBox(datapath="profile", copy=True, lbl="Profile")
-pane = group.formlet(lbl_position="L")
-pane.textbox(value="^.code", validate_case="upper", validate_regex="(?:^[A-Z]{2,6}$)")
-pane.textbox(value="^.email", validate_email=True, validate_email_iswarning="^.strict:=!{}")
-pane.textbox(value="^.nickname", validate_call="checkNickname")
-pane.textbox(value="^.remote_name", validate_remote="check_name")
+group = main_content.groupBox(datapath="profile", copy=True, lbl="Profile")
+fields = group.formlet(lbl_position="L")
+fields.textbox(value="^.code", validate_case="upper", validate_regex="(?:^[A-Z]{2,6}$)")
+fields.textbox(value="^.email", validate_email=True, validate_email_iswarning="^.strict:=!{}")
+fields.textbox(value="^.nickname", validate_call="checkNickname")
+fields.textbox(value="^.remote_name", validate_remote="check_name")
 ```
 
 Clear Name or Appointment to test required values. Write more than 40 characters in Notes. Delivery accepts a listed choice and cannot be empty. The groupBox declares `datapath="profile"` once; its formlet inherits it and fields use relative `^.field` pointers. The formlet automatically aligns left labels without fixed label widths.

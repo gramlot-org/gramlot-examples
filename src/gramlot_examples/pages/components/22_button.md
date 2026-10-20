@@ -2,7 +2,7 @@
 
 Compare the Gramlot command button with plain HTML. Try confirmation and a delayed command.
 
-**Uses:** built-in command components, Source, Data and the shared action engine; the toggle example also uses inputs and layout. No endpoints or database.
+**Uses:** built-in command components, Source, Data and the shared action engine. No endpoints or database.
 
 <details>
 <summary>More detail</summary>

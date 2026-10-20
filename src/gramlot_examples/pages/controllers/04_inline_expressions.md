@@ -48,8 +48,8 @@ For a value used only by one display, compare a `.full_name` dataFormula plus a 
 
 Inline expressions/scripts require the permitted CSP profile and are not code loaded from Data. Do not teach deprecated SET macros. An expression cannot use another `==` attribute as a computed dependency; use a Data formula when several nodes need one result.
 
-For attribute templates, compare [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md): `${name}` consumes a declared sibling parameter; it does not permit chains of `==` attributes.
+For attribute templates, compare [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md): the slot `{name}` after the `:` of a pointer reads a declared sibling attribute, and ordinary `${name}` text stays literal. Neither permits chains of `==` attributes.
 
-Continue with [c05 · Node methods](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/05_node_methods.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c05 · Node methods](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/05_node_methods.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-065) explains the full contract.
 
 </details>

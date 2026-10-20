@@ -47,7 +47,7 @@ Add a second formula using `func="finalPrice"`, another result path `.other_fina
 
 ## Resource exercise: keep styling and Logic with the page
 
-`Page.css` already selects the shared theme. In your editable project, create
+The server already links the shared theme. In your editable project, create
 `03_named_logic.css` beside the two page modules and put `h1 { color: teal; }` in it.
 Reload the page and inspect its stylesheet requests. **Answer:** the matching
 stylesheet is served as a companion and the heading changes without adding a
@@ -63,6 +63,6 @@ that host. Do not simulate it by loading scripts in the example.
 
 Named Logic works without runtime inline compilation. A root `func` method does not become a named `connect_on` group: dotted event names need a resource group unavailable in the common FileServer gallery. Server-only imports cannot be placed in a module that the browser imports for Logic.
 
-Continue with [c04 · Inline expressions](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/04_inline_expressions.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c04 · Inline expressions](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/04_inline_expressions.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-060) explains the full contract.
 
 </details>

@@ -19,6 +19,6 @@ The Logic method receives `(node, kw)`. `_querystring` asks for matches; `_id` a
 
 A callback may also return a Promise. The control shows pending state and discards responses from superseded searches or removed controls. Callback failures appear below the input. The same code/caption, keyboard and invalid-draft rules apply as in Filtering select.
 
-Move the label or enable read-only mode without replacing the input. Both lessons use the same `lbl_` and `box_` contract as the earlier controls, with compact cards and bounded field widths.
+Enable read-only mode without replacing the input; label layout variants are in Settings (⚙) in the gallery footer. Both fields use the same `lbl_` and `box_` contract as the earlier controls, with compact cards and bounded field widths.
 
 </details>

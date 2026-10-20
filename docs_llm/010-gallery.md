@@ -6,9 +6,9 @@
 ## 005 · Contents
 
 - PyPI `gramlot-examples` (module `gramlot_examples`), npm `@gramlot/gramlot-examples`.
-  Depends only on `gramlot` / `@gramlot/gramlot` 0.2.17 or later. No server code.
+  Depends only on `gramlot` / `@gramlot/gramlot` 0.3.6 or later. No server code.
 - Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
-  language; `NN_name.js` exports `Page` and `Logic`, in both packages) with `.md`,
+  language; `NN_name.js` exports `Page`, and `Logic` when the page names client methods, in both packages) with `.md`,
   `.css`; family READMEs; `catalog.json`.
 - Gallery page `gallery/page.py` / `gallery/page.js` + `gallery-page.js`,
   `gallery.css`, built bundle `gallery/dist/`. `gallery/browser/` is not published.
@@ -58,7 +58,8 @@ Nothing is written or served.
 1. Stage one module per example key: extend the Page, append
    `script(src="/gallery/dist/frame.js")`.
 2. Copy `stylesheet` beside it as `<key>.css`; serve `logic` as JavaScript and stage
-   `<key>_aux.js` = `export {Logic} from "<its URL>";`.
+   `<key>_aux.js` = `export {Logic} from "<its URL>";` (`export * from` also serves a module
+   without `Logic`).
 3. Stage `index` as a gallery page subclass with `catalogs`, and `logoUrl` /
    `galleryScript` when served elsewhere (e.g. under the mount); same names and defaults
    in `page.py` and `page.js`.
@@ -141,8 +142,8 @@ not a requirement on Python applications.
 
 The optional second tab is **logic.js**. For the shared examples it shows only
 the final exported `Logic` class, with the originating filename on hover. It is
-a class excerpt, not a renamed or newly created file. Empty Logic classes have
-no second tab. JS page modules already display their own Logic; a separate
+a class excerpt, not a renamed or newly created file. A module without `Logic`, or with
+an empty one, has no second tab. JS page modules already display their own Logic; a separate
 companion, when present, uses the second tab. The shared examples place Logic
 last; tests compare each excerpt with the exported class's own source to enforce
 that layout. This presentation uses no parser or extra dependency and does not
@@ -459,8 +460,8 @@ calendar dates and words such as `oggi`/`domani`, with a fixed workdate for a
 repeatable lesson. w12 **Time editing** demonstrates hours, minutes, seconds and
 milliseconds. They reuse labelbox, reactive labels, readonly/live controls and
 24rem cards. Their Python pages initialize Decimal/date/time; the JS twins carry
-the same typed values. The numeric JS page imports Bag inside its async Page.main: typed initialization
-runs on the host, while the same module supplies an empty client Logic.
+the same typed values. The numeric JS page imports `createDecimal` from `@gramlot/gramlot/page`: typed
+initialization runs on the host, and the module names no client Logic.
 
 Invalid text remains visible with an error and does not overwrite Data. Empty
 input writes null. Enter/change commit; Escape cancels; live editing commits only
@@ -811,9 +812,9 @@ Both modes and four sides were checked with all alignments in Chromium and WebKi
 
 The final preparation phase supersedes the Python-only qualification limits in §§215–250. Both gallery shells use borderContainer drawers and tabContainer for pages, Example/Explanation and source files. Python shows Python declarations with separate Logic where present; JavaScript shows its actual Page/Logic module, with a separate tab only for a companion. The eight container lessons, fourteen tab comparisons and guided drawer tour are available in both languages.
 
-The carousel reads the common catalogue. Hosted pages use route keys; the static exporter supplies galleryUrls mapping each key to its relative file URL. The catalogue is also served as /catalog.json for the JavaScript page's module import. The paused selection loads a full-size demo once, retaining visited frames and their Data. Thumbnail and full-size instances remain independent.
+The carousel reads the common catalogue. Hosted pages use route keys; the static exporter supplies `galleryUrls` (Python `gallery_urls`) mapping each key to its relative file URL. The catalogue is also served as /catalog.json for the JavaScript page's module import. The paused selection loads a full-size demo once, retaining visited frames and their Data. Thumbnail and full-size instances remain independent.
 
-Source parity tests compare the eight Python/JavaScript declarations and the guided lesson, including values, bindings and controller scripts. The comparison accounts for Python's class_ spelling. Browser qualification checks actual layout, themes, mobile presentation and retained frames separately; equivalent Source alone is not a visual check. Release qualification and publication status are recorded in GC-070.
+Source parity tests compare the Python and JavaScript declarations of every example and the guided lesson, including values, bindings and controller scripts. The comparison accounts for Python's trailing-underscore spelling (`class_`, `for_`) and ignores the random ids of authored references. An endpoint parity test sends the same request envelopes to the endpoints and fragments of both languages and compares the values, the error classes and the Source. Browser qualification checks actual layout, themes, mobile presentation and retained frames separately; equivalent Source alone is not a visual check. Release qualification and publication status are recorded in GC-070.
 
 
 <a id="ge-010-260"></a>

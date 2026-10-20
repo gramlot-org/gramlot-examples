@@ -14,26 +14,25 @@ QUESTIONS = (("Do I need a service?", "This local example has no remote data."),
 
 class Page(BasePage):
     title = "A complete page with binding"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        shell = root.div(class_="example-page complete-page", datapath="event")
-        self.header(shell)
-        main_content = shell.html_main(class_="stack")
+        pane = root.div(class_="example-page complete-page", datapath="event")
+        self.header(pane)
+        main_content = pane.html_main(class_="stack")
         self.hero(main_content)
         self.schedule(main_content)
         self.speakers(main_content)
         self.map(main_content)
         self.faq(main_content)
-        shell.footer().small("^.footer")
-        shell.dataSetter(".title", "A day of small interfaces")
-        shell.dataSetter(".footer", "Gramlot binding examples · Data-driven content")
-        shell.dataSetter(".show", {"mira": True, "theo": True})
-        shell.dataSetter(".stop", {"entrance": False, "studio": True, "hall": False})
-        shell.dataSetter(".faq_open", False)
+        pane.footer().small("^.footer")
+        pane.dataSetter(".title", "A day of small interfaces")
+        pane.dataSetter(".footer", "Gramlot binding examples · Data-driven content")
+        pane.dataSetter(".show", {"mira": True, "theo": True})
+        pane.dataSetter(".stop", {"entrance": False, "studio": True, "hall": False})
+        pane.dataSetter(".faq_open", False)
 
-    def header(self, shell):
-        header = shell.header(class_="complete-header")
+    def header(self, pane):
+        header = pane.header(class_="complete-header")
         header.p("GRAMLOT FIELD NOTES", class_="eyebrow")
         header.h1("^.title", id="title")
         header.html_label("Event title", for_="title-field")

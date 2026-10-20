@@ -17,16 +17,18 @@ JavaScript, in four families:
 
 Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,
 its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css`.
-`NN_name.js` exports `Page` and `Logic`: the JavaScript page uses both, the Python
-page takes `Logic` from it. The pages use only what the core `GramlotFileServer` serves:
-`Page.css`, the same-name stylesheet, the `Logic` of the page module, the endpoints
-and the Source fragments of the page. The gallery
+`NN_name.js` exports `Page`, and `Logic` when the page names client methods: the
+JavaScript page uses both, the Python page takes `Logic` from it. A page without client
+methods exports no `Logic`. The pages use only what the core `GramlotFileServer` serves:
+the base theme, `Page.css` for the stylesheets added after it, the same-name stylesheet,
+the `Logic` of the page module, the endpoints and the Source fragments of the page. The gallery
 adds its own files: the frame script, a staged `<key>_aux.js` per example and its
 assets ([GE-010 §025](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md#ge-010-025)).
 
 The pages depend only on the Gramlot core. Shared visual styling is the
-`gramlot-base` theme shipped in the core package, served by each environment at
-`/themes/gramlot-base/theme.css`.
+`gramlot-base` theme shipped in the core package. The server links it to every page
+(its `css_theme` option, `cssTheme` in JavaScript), so no page lists it in `Page.css`;
+it is served at `/themes/gramlot-base/theme.css`.
 
 ## Learn through the release sequence
 
@@ -96,9 +98,8 @@ from [the gallery guide](https://github.com/gramlot-org/gramlot-examples/blob/ma
 c13/c14 separate the basic trial from advanced cache/error/lifetime exercises.
 In c13, “Mounted fragments” counts successful mounts; HTTP calls must be observed
 independently. c14 has an explicit read button to distinguish a stored snapshot
-from a later response. The corrected cache behavior is included from core 0.2.17. Update older
-installations before following the advanced trials; a startup check alone does
-not qualify every exercise in an environment.
+from a later response. A startup check alone does not qualify every exercise in an
+environment.
 
 The common FileServer gallery has no named resource groups: css_requires,
 js_requires and named connect_on handlers need genro-kajenn's resource host.

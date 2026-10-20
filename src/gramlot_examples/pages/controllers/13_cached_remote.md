@@ -2,7 +2,7 @@
 
 Revisit **Remote** with caching. Request the same content again and watch the mounted-fragment counter: you learn how unchanged inputs can reuse the current fragment. The counter measures mounts, not network calls.
 
-**Uses:** Data binding and cached remote Source — core 0.2.16. Advanced cache/lifetime trials need a qualified runtime.
+**Uses:** Data binding and cached remote Source — core 0.2.16. The request rule and the readiness condition `_if` are those of the current core.
 
 <details>
 <summary>More detail</summary>
@@ -24,7 +24,7 @@ The product card uses b02’s variable datapath. The fragment depends on **categ
 rules.remote("rules", category="^.category", _cachedRemote=True, _onRemote=ON_REMOTE)
 ```
 
-**Mounted fragments** counts successful mounts, not requests sent. A pending, failed or cancelled call may send traffic without incrementing it. To verify a skipped HTTP call, inspect Network envelopes with `contentType: "source"` and `name: "rules"`; do not count bootstrap/main. Standalone uses Worker messages instead.
+**Mounted fragments** counts successful mounts, not requests sent. A failed request sends traffic without incrementing it, and a request skipped by `_cachedRemote` sends none. To verify a skipped HTTP call, inspect Network envelopes with `contentType: "source"` and `name: "rules"`; do not count bootstrap/main. Standalone uses Worker messages instead.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Endpoint/fragment methods execute there too; bindings and any Logic execute in the browser. A Worker is not a private server.
 
@@ -44,24 +44,22 @@ Remove only `_cachedRemote=True` from the declaration, reload, wait for Lamp, th
 
 c12 declared reactive Source replacement. Here one `_cachedRemote=True` declaration removes the need for page code to remember which inputs produced the currently displayed fragment and decide whether to call again. Product context may change while the fragment’s relevant inputs remain equal.
 
-The corrected identity is the method name plus the **TYTX snapshot of parameters at dispatch of the last successfully mounted response**. Failure does not replace that identity. Mutating a Bag/object in place can change the next snapshot even though its object identity stays the same. Reordering object keys may produce a different snapshot and an extra call; no order-insensitive normalization is promised.
+`_cachedRemote` compares the method name and the **TYTX snapshot of the parameters, taken when the request is made**, with the request in flight; when none is in flight, with the fragment mounted last. A failure does not replace that record; a fragment mounted from code with `gramlot.src.remoteSource` does. Mutating a Bag/object in place can change the next snapshot even though its object identity stays the same. Reordering object keys may produce a different snapshot and an extra call; no order-insensitive normalization is promised.
 
 ## Advanced practice
 
-**Release history:** core 0.2.17 includes the corrected cache identity and cancellation behavior. Update an older runtime before trying these advanced cases.
+Run these separately after the basic trial. Reload between source edits so each trial has a known starting state.
 
-Run these separately after the basic trial, using that core cache correction. Reload between source edits so each trial has a known starting state.
-
-1. **Delayed A → B → A.** Let Lamp/lighting (A) finish mounting. Slow responses in the HTTP environment, choose Chair/seating (B), then Lamp before B finishes. Expected: B’s pending call is cancelled/superseded; the already mounted lighting fragment remains; mounts stay 1. A cache hit must not allow a late B response to overwrite A. Observe the B request independently: the mount counter alone cannot establish cancellation.
+1. **Delayed A → B → A.** Let Lamp/lighting (A) finish mounting. Slow responses in the HTTP environment, choose Chair/seating (B), then Lamp before B finishes. Expected: the request in flight is never cancelled, so B’s answer mounts the seating rules (mounts 2) although Lamp is selected. The change back to Lamp waits while B is in flight and is sent when B answers; `_cachedRemote` does not skip it, because when it was made it differed from B, the request in flight. Its answer mounts the lighting rules (mounts 3), and the content ends matching the Data. Until then the page shows B’s rules next to Lamp. Observe the three `rules` requests in Network: the counter alone does not show their order.
 2. **Mutable parameters.** Add `pane.dataSetter("context", {"revision": 1})`, an input bound to `^context.revision`, and `context="=context"` to the remote declaration. After Lamp mounts, change revision to 2 and leave the field, then choose Spotlight. Expected: the `=` parameter alone is not a trigger, but the subsequent context switch reads the modified Bag and sends a new rules call. The fragment method already ignores unused keyword/object fields; the visible text stays the same and mounts become 2. This is a snapshot comparison, not a same-object comparison.
 
-For `_if`, add a boolean Data checkbox and `enabled="^enabled", _if="enabled"` to the declaration in a separate copy. After one mount, disabling it retains the content and suppresses new calls; enable it to resume. Test request lifetime through observation, not by adding networking or cache state to the application.
+For `_if`, add a boolean Data checkbox and `enabled="^enabled", _if="enabled"` to the declaration in a separate copy. `_if` is a readiness condition: after one mount, disabling it makes no request, cancels nothing and leaves the content as it is; enable it to resume. `_else` would run as inline code while the condition is false. Test request lifetime through observation, not by adding networking or cache state to the application.
 
 ## Limits and next step
 
-`_onRemote` and conditional code require the inline CSP profile. A false `_if` suppresses the call and can run `_else`; it also cancels a pending request. The method name is fixed: `remote("rules", category="^.category", ...)` varies the category while always calling `rules`. A Data pointer such as `remote("^method", ...)` is outside the contract and is correctly rejected during Source construction. A variable method would require a future explicit owner decision; it is not a missing exercise or capability to enable. Live Source-attribute-mutation semantics remain outside this lesson.
+`_onRemote` and conditional code require the inline CSP profile. A false `_if` makes no request, cancels nothing and can run `_else`. This lesson keeps the method name fixed: `remote("rules", category="^.category", ...)` varies the category while always calling `rules`. The name can also be a pointer such as `remote("^method", ...)`: the method is then read from Data and a reader of the Source no longer sees which method runs. An empty or null name rejects the request with an error, so write `_if` to make no request while no method is chosen. Live Source-attribute-mutation semantics remain outside this lesson.
 
 
-Continue with [c14 · Data remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/14_data_remote.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c14 · Data remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/14_data_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
 
 </details>

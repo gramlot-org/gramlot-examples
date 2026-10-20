@@ -30,14 +30,14 @@
           "title": "Semantic page",
           "folder": "04_semantic_page",
           "description": "A page composed from meaningful HTML landmarks.",
-          "explanation": "Header, navigation, article, aside and footer give the content structure. Ordinary page methods divide construction into readable sections."
+          "explanation": "Header, navigation, main, article, aside and footer give the content structure; the markup stays meaningful without decoration."
         },
         {
           "key": "e05",
           "title": "Tables",
           "folder": "05_tables",
           "description": "A catalogue with headings, rows and totals.",
-          "explanation": "A row helper and a loop build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the calculated total."
+          "explanation": "Loops build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the totals computed before Source is built."
         },
         {
           "key": "e06",
@@ -162,7 +162,7 @@
           "title": "Forms with binding",
           "folder": "09_forms",
           "description": "The native form of example 06, bound to a record.",
-          "explanation": "The same fieldsets as HTML / SVG example 06, with every value bound to one Data record. The summary beside the form shows the record while you type."
+          "explanation": "The same fieldsets as HTML / SVG example 06, with most fields bound to one Data record. The summary beside the form shows the record while you type; it leaves out the password and the daily radio, and the file input, the read-only code and the disabled field are not bound."
         },
         {
           "key": "b10",
@@ -175,8 +175,8 @@
           "key": "b11",
           "title": "Complete page with binding",
           "folder": "11_complete_page",
-          "description": "The event page of example 12, with a bound heading, filter and map.",
-          "explanation": "The event page of HTML / SVG example 12 reads its heading from settings, filters the schedule by speaker through visible, and highlights the chosen map stop."
+          "description": "The event page of example 12, with a bound title, speaker filter, map and FAQ.",
+          "explanation": "The event page of HTML / SVG example 12 reads its heading from the event Data record, filters the schedule and the speaker cards by speaker through visible, highlights the chosen map stop and opens the FAQ answers from one flag."
         }
       ]
     },

@@ -2,21 +2,20 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = "Callback select";
-    static css = ["/themes/gramlot-base/theme.css"];
     main(root) {
-        const pane = root.main({class:"example-page stack"});
-        pane.h1("Callback select");
-        pane.p("Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request.");
-        const controls = pane.formlet({class:"card stack",width:"100%",max_width:"24rem"});
+        const main_content = root.main({class:"example-page stack"});
+        main_content.h1("Callback select");
+        main_content.p("Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request.");
+        const controls = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});
         controls.checkbox({id:"locked",value:"^locked",lbl:"State",label:"Read only"});
-        const fields = pane.formlet({class:"card stack",width:"100%",max_width:"24rem"});
+        const fields = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});
         fields.callbackSelect({id:"choice",value:"^choice",callback:"searchChoices",lbl:"Sample",readonly:"^locked",box_c_width:"18rem",placeholder:"Try Sample 02 or value 7"});
         fields.callbackSelect({id:"choice-copy",value:"^choice",callback:"searchChoices",lbl:"Same sample",readonly:"^locked",box_c_width:"18rem"});
-        pane.p("100 stable codes; random values stay unchanged until the page reloads.");
-        pane.dataController({func:"createSamples",_onStart:true});
-        pane.p("Selected code:");
-        pane.p("^choice",{id:"choice-value"});
-        pane.dataSetter({destination_path:"locked",value:false});
+        main_content.p("100 stable codes; random values stay unchanged until the page reloads.");
+        main_content.dataController({func:"createSamples",_onStart:true});
+        main_content.p("Selected code:");
+        main_content.p("^choice",{id:"choice-value"});
+        main_content.dataSetter({destination_path:"locked",value:false});
     }
 }
 

@@ -40,6 +40,6 @@ Reload and click PUT twice, then GET value, then SET.
 
 PUT is not a second state store and does not mean the write failed. Do not use it when other views must update immediately. A delayed fire is cancelled when its owning node is removed.
 
-Continue with [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/06_button_controller.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/06_button_controller.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-065) explains the full contract.
 
 </details>

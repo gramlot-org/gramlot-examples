@@ -2,13 +2,12 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'SVG shapes';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
-        page.h1('SVG shape vocabulary');
-        page.p('One SVG viewport contains six shapes and a text label.');
-        const figure = page.figure({class: 'card'});
+        const main_content = root.main({class: 'example-page stack'});
+        main_content.h1('SVG shape vocabulary');
+        main_content.p('One SVG viewport contains six shapes and a text label.');
+        const figure = main_content.figure({class: 'card'});
         const art = figure.svg({viewBox: '0 0 480 200', role: 'img', aria_labelledby: 'shapes-title', class: 'example-art'});
         art.title('Six geometric shapes', {id: 'shapes-title'});
         art.rect({x: 15, y: 20, width: 95, height: 75, rx: 14, fill: 'var(--gramlot-action)'});
@@ -21,6 +20,3 @@ export class Page extends BasePage {
         figure.figcaption('The shape attributes are part of the Source tree.');
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

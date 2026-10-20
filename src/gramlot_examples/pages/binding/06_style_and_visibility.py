@@ -9,7 +9,6 @@ CHOICES = (
 
 class Page(BasePage):
     title = "Style and visibility"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="look")

@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'SVG shapes with binding';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'shapes'});
@@ -40,6 +39,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.label', value: 'rectangle · circle · ellipse · line · polyline · polygon'});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

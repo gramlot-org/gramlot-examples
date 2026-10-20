@@ -4,27 +4,26 @@ from gramlot import Page as BasePage
 class Page(BasePage):
     title = "Tabs, selection and closing"
     devices = ("desktop", "tablet", "phone")
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        pane = root.main(class_="example-page stack", datapath="tabsDemo")
+        main_content = root.main(class_="example-page stack", datapath="tabsDemo")
         for key, value in (("page", "customer"), ("index", 0), ("name", "Ada"),
                            ("notes", "These Data survive closing Notes."),
                            ("variantMessage", "Please confirm the delivery address."),
                            ("mode", "tabs"), ("position", "top"), ("align", "start"), ("unread", 3),
                            ("badgeColor", "crimson"), ("notesIcon", "✉"), ("locked", False), ("events", ""), ("closed", "None")):
-            pane.dataSetter(f".{key}", value)
+            main_content.dataSetter(f".{key}", value)
         for topic in ("hiding", "showing", "selected", "closing", "closed"):
-            pane.dataController(
+            main_content.dataController(
                 "this.SET('.events', history + topic + ': ' + JSON.stringify(_subscription_kwargs) + '\\n');",
                 history="=.events", topic=topic,
                 **{f"subscribe_editor_{topic}": True})
-        pane.dataController("this.SET('.closed', pageName)", subscribe_editor_closed=True)
-        self.tab_variants(pane)
-        self.tab_alignment(pane)
-        pane.h2("Try the controls, selection and closing")
-        pane.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
-        controls = pane.formlet(col_min_width="14rem", max_width="36rem")
+        main_content.dataController("this.SET('.closed', pageName)", subscribe_editor_closed=True)
+        self.tab_variants(main_content)
+        self.tab_alignment(main_content)
+        main_content.h2("Try the controls, selection and closing")
+        main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
+        controls = main_content.formlet(col_min_width="14rem", max_width="36rem")
         controls.filteringSelect(id="tabs-choice", value="^.page", lbl="Selected page",
                                  values="customer:Customer,notes:Notes,layout:Nested border")
         controls.filteringSelect(id="tabs-mode", value="^.mode", lbl="Presentation",
@@ -40,9 +39,9 @@ class Page(BasePage):
         controls.filteringSelect(id="tabs-icon", value="^.notesIcon", lbl="Notes icon",
                                  values="✉:Envelope,●:Dot,★:Star")
         controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch")
-        pane.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
-        pane.p("^.index", id="tabs-index", mask="Selected index: {}")
-        tabs = pane.tabContainer(id="tabs-demo", node_id="editor", selectedPage="^.page",
+        main_content.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
+        main_content.p("^.index", id="tabs-index", mask="Selected index: {}")
+        tabs = main_content.tabContainer(id="tabs-demo", node_id="editor", selectedPage="^.page",
                                   selected="^.index", tabMode="^.mode", tabPosition="^.position", tabAlign="^.align", height="300px", max_width="44rem",
                                   border="1px solid var(--gramlot-border-control, #aaa)", rounded=6)
         customer = tabs.contentPane(id="customer-panel", pageName="customer", title="Customer", icon="👤", padding="12px")
@@ -57,33 +56,33 @@ class Page(BasePage):
         nested.contentPane(region="left", width="100px", splitter=True, drawer=True,
                            drawer_label="Tools", padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("Resize me")
         nested.contentPane(region="center", padding="12px").textbox(value="^.name", lbl="Same accepted name", width="15rem")
-        pane.p("^.closed", id="tabs-closed", mask="Last closed: {}")
-        pane.p("^.notes", id="tabs-saved-notes", mask="Saved notes: {}")
-        pane.h2("Container events")
-        pane.pre("^.events", id="tabs-events", max_height="12rem", overflow="auto", white_space="pre-wrap", overflow_wrap="anywhere")
+        main_content.p("^.closed", id="tabs-closed", mask="Last closed: {}")
+        main_content.p("^.notes", id="tabs-saved-notes", mask="Saved notes: {}")
+        main_content.h2("Container events")
+        main_content.pre("^.events", id="tabs-events", max_height="12rem", overflow="auto", white_space="pre-wrap", overflow_wrap="anywhere")
 
-    def tab_variants(self, pane):
-        pane.h1("See the tab variants side by side")
-        pane.p("Compare shaped tabs with a light underline, on each of the four sides. "
-               "Every card is a working editor. Change the name in one: the others show the same Data.")
-        pane.p("Top and bottom use a horizontal row. Left and right use a vertical list; "
-               "the words remain horizontal so they are easy to read.")
-        grid = pane.section(id="tab-variants", display="grid",
-                            grid_template_columns="repeat(auto-fit, minmax(min(100%, 24rem), 1fr))",
-                            gap="16px", width="100%", max_width="72rem")
+    def tab_variants(self, main_content):
+        main_content.h1("See the tab variants side by side")
+        main_content.p("Compare shaped tabs with a light underline, on each of the four sides. "
+                       "Every card is a working editor. Change the name in one: the others show the same Data.")
+        main_content.p("Top and bottom use a horizontal row. Left and right use a vertical list; "
+                       "the words remain horizontal so they are easy to read.")
+        grid = main_content.section(id="tab-variants", display="grid",
+                                    grid_template_columns="repeat(auto-fit, minmax(min(100%, 24rem), 1fr))",
+                                    gap="16px", width="100%", max_width="72rem")
         for position, caption in (("top", "Top"), ("bottom", "Bottom"),
                                   ("left", "Left"), ("right", "Right")):
             for mode, presentation in (("tabs", "Shaped tabs"), ("underline", "Underline")):
                 key = f"{mode}-{position}"
                 self.variant_card(grid, key, f"{presentation} · {caption}", mode, position)
 
-    def tab_alignment(self, pane):
-        pane.h2("Align the labels along the strip")
-        pane.p("Position chooses the side of the panel. Alignment chooses where the labels sit "
-               "along that side. Compare the three horizontal rows, then the three vertical lists.")
-        grid = pane.section(id="tab-alignment", display="grid",
-                            grid_template_columns="repeat(auto-fit, minmax(min(100%, 22rem), 1fr))",
-                            gap="16px", width="100%", max_width="72rem")
+    def tab_alignment(self, main_content):
+        main_content.h2("Align the labels along the strip")
+        main_content.p("Position chooses the side of the panel. Alignment chooses where the labels sit "
+                       "along that side. Compare the three horizontal rows, then the three vertical lists.")
+        grid = main_content.section(id="tab-alignment", display="grid",
+                                    grid_template_columns="repeat(auto-fit, minmax(min(100%, 22rem), 1fr))",
+                                    gap="16px", width="100%", max_width="72rem")
         for position, axis, captions in (("top", "Horizontal", ("Left", "Center", "Right")),
                                          ("left", "Vertical", ("Top", "Center", "Bottom"))):
             for align, caption in zip(("start", "center", "end"), captions):

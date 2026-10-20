@@ -6,13 +6,12 @@ ROWS = [("North", 12, 8), ("South", 9, 11), ("West", 15, 6)]
 
 class Page(BasePage):
     title = "Tables"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        page.h1("A small regional report")
-        page.p("Rows come from data; totals are computed before Source is built.")
-        table = page.table()
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("A small regional report")
+        main_content.p("Rows come from data; totals are computed before Source is built.")
+        table = main_content.table()
         table.caption("Orders by region and quarter")
         heading = table.thead().tr()
         for label in ("Region", "Q1", "Q2", "Total"):

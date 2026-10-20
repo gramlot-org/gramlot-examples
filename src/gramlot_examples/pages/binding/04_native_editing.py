@@ -6,7 +6,6 @@ FIELDS = (("Text", "text", "text"), ("Number", "number", "number"), ("Range", "r
 
 class Page(BasePage):
     title = "Native editing"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="edit")

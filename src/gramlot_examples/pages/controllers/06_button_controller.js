@@ -5,7 +5,6 @@ const KEYS = "[button_shift && 'Shift', button_ctrl && 'Ctrl', button_alt && 'Al
 
 export class Page extends BasePage {
     static title = 'Button controller';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'buttons'});
@@ -34,6 +33,3 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.clicks', value: 0});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

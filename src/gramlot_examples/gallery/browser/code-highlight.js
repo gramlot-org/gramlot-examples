@@ -32,10 +32,11 @@ function lines(html) {
     });
 }
 
-/** The shared teaching modules end with their exported Logic class; catalogue tests enforce this layout. */
+/** The shared teaching modules that name client methods end with their exported Logic class (catalogue tests enforce this layout); a module without Logic, or with an empty one, has nothing to show. */
 export function logicSource(source) {
     const declarations = [...source.matchAll(/^export class Logic\b/gm)];
-    if (declarations.length !== 1) throw new Error('Expected one final exported Logic class in the example module');
+    if (declarations.length === 0) return null;
+    if (declarations.length > 1) throw new Error('Expected one final exported Logic class in the example module');
     const text = source.slice(declarations[0].index).trim();
     return /^export class Logic\s*\{\s*\}$/.test(text) ? null : text;
 }

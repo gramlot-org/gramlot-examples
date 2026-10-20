@@ -48,6 +48,6 @@ In e06 the browser edits native control values only. Here `value="^.text"` plus 
 
 Use `change`/leaving the field for the non-live trial; do not rely on Enter having identical behavior in every native control. Browser validation and picker presentation vary.
 
-Continue with [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/05_checkbox_radio.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/05_checkbox_radio.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

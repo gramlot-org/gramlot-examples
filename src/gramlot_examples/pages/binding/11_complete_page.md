@@ -53,6 +53,6 @@ Change the initial `.title` setter and start with `.show.theo` false in the dict
 
 The map has no routing service. Manually toggling a native disclosure is not declared as a write-back to `.faq_open`; the shared checkbox is the state-control demonstration. No server save or booking is performed.
 
-Continue with [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/01_formula.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/01_formula.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

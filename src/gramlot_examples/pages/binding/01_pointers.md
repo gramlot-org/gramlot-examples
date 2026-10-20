@@ -56,6 +56,6 @@ Change `contexts.name` to Outside in the initial setter and reload. **Answer:** 
 
 Inputs here use `change`, not live keystrokes. Do not prefix Data paths with the Source `main` path. The advanced section distinguishes `#ANCHOR` from the Data-path segment `.#parent`; do not treat `#parent` as a Source-node identifier.
 
-Continue with [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/02_variable_datapath.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/02_variable_datapath.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-040) explains the full contract.
 
 </details>

@@ -15,6 +15,6 @@ Type `Exp`, then press Enter or click **Express**. Data stores `express`, while 
 fields.filteringSelect(value="^choice", values="^choices", lbl="Delivery")
 ```
 
-Move the label or enable read-only mode without replacing the input. Both lessons use the same `lbl_` and `box_` contract as the earlier controls, with compact cards and bounded field widths.
+Enable read-only mode without replacing the input; label layout variants are in Settings (⚙) in the gallery footer. Both fields use the same `lbl_` and `box_` contract as the earlier controls, with compact cards and bounded field widths.
 
 </details>

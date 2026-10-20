@@ -5,28 +5,24 @@ const TERMS = [['Source', 'The declared structure of a page.'], ['Data', 'A sepa
 
 export class Page extends BasePage {
     static title = 'Lists';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
-        page.h1('Lists tell a sequence');
-        page.p('Loops add one Source node for each item.');
-        const ordered = page.ol();
+        const main_content = root.main({class: 'example-page stack'});
+        main_content.h1('Lists tell a sequence');
+        main_content.p('Loops add one Source node for each item.');
+        const ordered = main_content.ol();
         for (const step of STEPS) ordered.li(step);
-        page.h2('Two useful terms');
-        const definitions = page.dl();
+        main_content.h2('Two useful terms');
+        const definitions = main_content.dl();
         for (const [term, description] of TERMS) {
             definitions.dt(term);
             definitions.dd(description);
         }
-        page.h2('A nested list');
-        const groups = page.ul();
+        main_content.h2('A nested list');
+        const groups = main_content.ul();
         const first = groups.li('HTML elements');
         const nested = first.ul();
         for (const item of ['headings', 'lists', 'links']) nested.li(item);
         groups.li('SVG');
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

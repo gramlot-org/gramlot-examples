@@ -46,8 +46,8 @@ c02 used `_delay` for a local search-status effect. c10 reuses that declaration 
 
 ## Limits and next step
 
-Debounce is not a guarantee of one request for all typing patterns. A new executed call supersedes its in-flight predecessor; delayed scheduling still waits for its window. Callbacks here are inline and need the permitted CSP profile.
+Debounce is not a guarantee of one request for all typing patterns. `_delay` replaces the call that is scheduled, never the call in flight: one call is in flight at a time, its answer is always written, the first trigger during the flight waits with its arguments and is sent when the answer arrives, and later triggers do nothing while one waits. A result `false` from `_onCalling` makes no call. Callbacks here are inline and need the permitted CSP profile.
 
-Continue with [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/11_call_on_click.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/11_call_on_click.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
 
 </details>

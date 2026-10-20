@@ -10,7 +10,6 @@ const ON_REMOTE = "this.SET('mounts', (this.GET('mounts') ?? 0) + 1); this.SET('
 
 export class Page extends BasePage {
     static title = 'Cached remote';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack'});
@@ -39,6 +38,3 @@ export class Page extends BasePage {
     }
 }
 Page.registerSource('rules');
-
-/** The page logic: this page names no methods. */
-export class Logic {}

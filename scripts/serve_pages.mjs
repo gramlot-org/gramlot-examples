@@ -5,8 +5,8 @@
  * core themes under `/themes/`, the `.js` and `.css` files below the pages folder (the page
  * modules, whose `Logic` the browser imports), the pages, and `rpc` (the request envelope,
  * answered by `call`) and `close` as POST.
- * No Content-Security-Policy, as with the default of the adapters: e13 puts an inline
- * `script` in its Source, and the inline expressions of the pages need eval.
+ * No Content-Security-Policy, as with the default of the adapters: the inline
+ * expressions and actions of the pages (for example the click of e10 and e13) need eval.
  */
 import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';

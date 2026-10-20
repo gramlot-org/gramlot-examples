@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Setters and defaults';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'order'});
@@ -40,6 +39,3 @@ export class Page extends BasePage {
         later.dataSetter({destination_path: '.shipping', value: {city: 'London', zone: 'EU'}});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

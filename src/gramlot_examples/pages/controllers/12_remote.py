@@ -6,7 +6,6 @@ RECORDS = {"lamp": ("Lamp", 3), "desk": ("Desk", 0), "chair": ("Chair", 12)}
 
 class Page(BasePage):
     title = "Remote"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="catalog")
@@ -24,7 +23,7 @@ class Page(BasePage):
         pane.dataSetter(".record_id", "lamp")
 
     @source
-    def details(self, root, record_id=None, **kwargs):
+    def details(self, root, record_id, **kwargs):
         name, stock = RECORDS[record_id]
         root.h2(name, id="name")
         root.p(f"{stock} in stock", id="stock")

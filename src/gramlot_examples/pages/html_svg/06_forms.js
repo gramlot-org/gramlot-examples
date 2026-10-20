@@ -2,13 +2,12 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static title = 'Native form controls';
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const page = root.main({class: 'example-page stack'});
-        page.h1('Native form controls');
-        page.p('Try the controls, then use Reset to restore their initial values. Submit is disabled in this static example.');
-        const form = page.form();
+        const main_content = root.main({class: 'example-page stack'});
+        main_content.h1('Native form controls');
+        main_content.p('Try the controls, then use Reset to restore their initial values. Submit is disabled in this static example.');
+        const form = main_content.form();
         const identity = form.fieldset({class: 'form-grid'});
         identity.legend('Identity');
         this.field(identity, 'Name', 'name', 'text', {value: 'Ada Lovelace', required: true});
@@ -61,6 +60,3 @@ export class Page extends BasePage {
         parent.input({type: kind, id: key, name: key, ...attrs});
     }
 }
-
-/** The page logic: this page names no methods. */
-export class Logic {}

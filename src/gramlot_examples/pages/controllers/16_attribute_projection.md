@@ -53,6 +53,6 @@ e02 taught literal text; b01 added a pointer. The 0.2.0 stage now adds presentat
 
 Templates apply to visual attributes, not node text or data-element declarations. A static Python f-string runs on the host once. A mask never interprets HTML. Keep the default empty sandbox for this exercise; do not add script permissions. A literal authored srcdoc has a different contract. JavaScript counterparts use quoted template text here, not JS backtick interpolation.
 
-Continue with [c17 · Data exchange](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/17_data_exchange.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) provides the full contract.
+Continue with [c17 · Data exchange](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/17_data_exchange.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-130) provides the full contract.
 
 </details>

@@ -3,15 +3,14 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Rounded borders and popups';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const pane = root.main({ class: 'example-page stack' });
-        pane.h1('Rounded outside, continuous inside');
-        pane.p(
+        const main_content = root.main({ class: 'example-page stack' });
+        main_content.h1('Rounded outside, continuous inside');
+        main_content.p(
             'Drag all four separators and toggle their drawers. Open the calendar and choices inside the rounded inner panel.',
         );
-        const controls = pane.formlet({ max_width: '24rem', columns: 1 });
+        const controls = main_content.formlet({ max_width: '24rem', columns: 1 });
         controls.filteringSelect({
             id: 'rounded-design',
             value: '^design',
@@ -29,7 +28,7 @@ export class Page extends BasePage {
             live: true,
             width: '14rem',
         });
-        const border = pane.borderContainer({
+        const border = main_content.borderContainer({
             id: 'rounded-border',
             height: '560px',
             max_width: '64rem',
@@ -97,15 +96,13 @@ export class Page extends BasePage {
             values: 'standard:Standard,express:Express,pickup:Pick up,scheduled:Scheduled,evening:Evening,weekend:Weekend',
             width: '100%',
         });
-        pane.p(
+        main_content.p(
             "The rounded outline clips pane backgrounds. Calendar, choices and validation messages use the browser's top layer.",
         );
-        pane.dataSetter({ destination_path: 'design', value: 'headline' });
-        pane.dataSetter({ destination_path: 'rounded', value: 24 });
-        pane.dataSetter({ destination_path: 'name', value: 'Ada' });
-        pane.dataSetter({ destination_path: 'date', value: new Date(Date.UTC(2026, 9, 18)) });
-        pane.dataSetter({ destination_path: 'choice', value: 'standard' });
+        main_content.dataSetter({ destination_path: 'design', value: 'headline' });
+        main_content.dataSetter({ destination_path: 'rounded', value: 24 });
+        main_content.dataSetter({ destination_path: 'name', value: 'Ada' });
+        main_content.dataSetter({ destination_path: 'date', value: new Date(Date.UTC(2026, 9, 18)) });
+        main_content.dataSetter({ destination_path: 'choice', value: 'standard' });
     }
 }
-
-export class Logic {}

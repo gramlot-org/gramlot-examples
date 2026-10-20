@@ -3,13 +3,12 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     title = "Native form controls"
-    css = ("/themes/gramlot-base/theme.css",)
 
     def main(self, root):
-        page = root.main(class_="example-page stack")
-        page.h1("Native form controls")
-        page.p("Try the controls, then use Reset to restore their initial values. Submit is disabled in this static example.")
-        form = page.form()
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("Native form controls")
+        main_content.p("Try the controls, then use Reset to restore their initial values. Submit is disabled in this static example.")
+        form = main_content.form()
         identity = form.fieldset(class_="form-grid")
         identity.legend("Identity")
         self.field(identity, "Name", "name", "text", value="Ada Lovelace", required=True)

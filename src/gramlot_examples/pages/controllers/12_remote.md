@@ -47,14 +47,14 @@ In 0.2.14, `dataRpc` brought a value into a predeclared display. In 0.2.16, `rem
 
 ## Advanced practice
 
-After the basic trial, select an invalid record by editing an option’s value in your **source file** and reloading. First mount a valid record, then choose the invalid one. Expect the prior content to remain and a console failure. Restore the option afterwards. Do not invent an error callback on remote or reinterpret an empty method name: that lifecycle question remains undecided.
+After the basic trial, select an invalid record by editing an option’s value in your **source file** and reloading. First mount a valid record, then choose the invalid one. Expect the prior content to remain and a console failure. Restore the option afterwards. Do not invent an error callback on remote. The method name is fixed here; if it came from Data, an empty or null name would reject the request with an error, and `_if` (for example `_if="record_id"`) is how a page makes no request while nothing is chosen.
 
 For nested fragments, the owning method can declare another `.remote(...)` in the returned Source. Each fragment has its own lifetime; this page does not claim to be a complete nested-fragment exercise.
 
 ## Limits and next step
 
-A fragment is typed Source, not an endpoint returning HTML text. New requests supersede previous ones; removing the owning element cancels its request. A failure retains already mounted content and is reported to the console; remote has no dataRpc-style `_onError` callback.
+A fragment is typed Source, not an endpoint returning HTML text. One request is in flight for the element and its answer always mounts: the first change during the flight waits with its parameters and is sent when the answer arrives, and later changes do nothing while one waits. A slow answer can therefore leave the content one choice behind the select until the next answer. Removing the owning element cancels its request. A failure retains already mounted content and is reported to the console; remote has no dataRpc-style `_onError` callback.
 
-Continue with [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/13_cached_remote.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/13_cached_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
 
 </details>

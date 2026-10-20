@@ -3,15 +3,14 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = 'Border regions and splitters';
     static devices = ['desktop', 'tablet', 'phone'];
-    static css = ['/themes/gramlot-base/theme.css'];
 
     main(root) {
-        const pane = root.main({ class: 'example-page stack' });
-        pane.h1('Space for content');
-        pane.p(
+        const main_content = root.main({ class: 'example-page stack' });
+        main_content.h1('Space for content');
+        main_content.p(
             'Drag a separator or use its arrow keys. Resize Filters and Details while editing the customer.',
         );
-        const bc = pane.borderContainer({
+        const bc = main_content.borderContainer({
             id: 'border-demo',
             height: '440px',
             max_width: '64rem',
@@ -72,9 +71,7 @@ export class Page extends BasePage {
             ['customer.name', 'Ada'],
             ['customer.notes', 'Same fields, same Data'],
         ]) {
-            pane.dataSetter({ destination_path: path, value: value });
+            main_content.dataSetter({ destination_path: path, value: value });
         }
     }
 }
-
-export class Logic {}
