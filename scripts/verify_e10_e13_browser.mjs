@@ -34,7 +34,7 @@ async function started(page, errors) {
 
 /** e10: each × button removes its labelled card from the Source; reload restores the cards. */
 async function cards(browser, base) {
-    const {page, errors} = await open(browser, `${base}/10_cards_with_icons`);
+    const {page, errors} = await open(browser, `${base}/04-page_composition/01-cards_with_icons`);
     assert.equal(await page.locator('.icon-cards article').count(), 3);
     // The × buttons are HTML buttons whose inline code reaches the Source through `this`, not through the window global.
     assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll('.card-remove')].map(button => ({
@@ -70,7 +70,7 @@ async function cards(browser, base) {
 
 /** e13: the buttons create, update and remove Source nodes; the `_timing` controller of the animation ends with its section. */
 async function playground(browser, base) {
-    const {page, errors} = await open(browser, `${base}/13_live_source`, {timers: true});
+    const {page, errors} = await open(browser, `${base}/05-live_source`, {timers: true});
     // The animation is a controller with `_timing`, not a Source script; no inline code reads the window global.
     assert.deepEqual(await page.evaluate(() => {
         const source = window.gramlot.src.source;
@@ -117,9 +117,9 @@ const browser = await chromium.launch({headless: true});
 try {
     for (const base of bases) {
         await cards(browser, base);
-        console.log(`PASS ${base}/10_cards_with_icons: Source removal, DOM cleanup, sibling identity, keyboard and reload`);
+        console.log(`PASS ${base}/04-page_composition/01-cards_with_icons: Source removal, DOM cleanup, sibling identity, keyboard and reload`);
         await playground(browser, base);
-        console.log(`PASS ${base}/13_live_source: insert, delete, clear, text, SVG, animation and timer cleanup`);
+        console.log(`PASS ${base}/05-live_source: insert, delete, clear, text, SVG, animation and timer cleanup`);
     }
 } finally {
     await browser.close();

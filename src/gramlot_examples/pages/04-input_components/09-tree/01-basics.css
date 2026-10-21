@@ -1,0 +1,6 @@
+.example-bag-tree { display:block; max-width:40rem; border:1px solid #9aa7ba; border-radius:6px; --gramlot-tree-row-height:32px; }
+.example-bag-tree::part(tree) { padding:8px; }
+.example-bag-tree::part(branch-row) { font-weight:600; }
+.example-bag-tree::part(icon) { color:#597baf; }
+.tree-actions { display:flex; flex-wrap:wrap; gap:8px; }
+[data-theme="dark"] .example-bag-tree { --gramlot-tree-hover-background:#273348; --gramlot-tree-selected-background:#314b70; --gramlot-tree-selected-color:#f0f5ff; }

@@ -20,11 +20,12 @@ def stage():
     lessons = {}
     for family in catalog["families"]:
         key = family["key"]
-        documents[f"{PAGES}/{key}/README.md"] = f"lessons/{key}/index.md"
+        folder = family["folder"]
+        documents[f"{PAGES}/{folder}/README.md"] = f"lessons/{key}/index.md"
         for example in family["examples"]:
             name = example["folder"]
-            documents[f"{PAGES}/{key}/{name}.md"] = f"lessons/{key}/{name}.md"
-            lessons[f"{PAGES}/{key}/{name}.md"] = example
+            documents[f"{PAGES}/{folder}/{name}.md"] = f"lessons/{key}/{name}.md"
+            lessons[f"{PAGES}/{folder}/{name}.md"] = example
     destination = ROOT / "build/docs-source"
     if destination.exists():
         shutil.rmtree(destination)
@@ -67,11 +68,11 @@ def stage():
             text = add_toc(text, [f'{f["key"]}/index' for f in catalog["families"]], "Learning sequence")
         else:
             for family in catalog["families"]:
-                if source == f'{PAGES}/{family["key"]}/README.md':
+                if source == f'{PAGES}/{family["folder"]}/README.md':
                     text = add_toc(text, [e["folder"] for e in family["examples"]], family["title"])
         if source.startswith(PAGES + "/") and not source.endswith("README.md"):
             example = lessons[source]
-            url = f"../../playgrounds/{example['key']}/index.html"
+            url = posixpath.relpath(f"playgrounds/{example['key']}/index.html", posixpath.dirname(target))
             title = escape(f"Gramlot {example['title']} and inspector playground", quote=True)
             playground = ("\n\n```{raw} html\n"
                           f'<p><a href="{url}" target="_blank" rel="noopener">Open this example in a separate tab</a>'

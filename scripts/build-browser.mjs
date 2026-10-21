@@ -20,7 +20,6 @@ await writeFile(new URL('theme-styles.js', output),
     `// Generated from canonical Gramlot themes.\nexport const appearanceStyles = ${JSON.stringify(appearanceStyles)};\n`);
 const result = await build({
     entryPoints: {
-        gallery: fileURLToPath(new URL('browser/entry.js', directory)),
         inspector: fileURLToPath(new URL('browser/inspector-entry.js', directory)),
         frame: fileURLToPath(new URL('browser/frame-entry.js', directory)),
     },
@@ -37,6 +36,12 @@ const result = await build({
         `}));
     }}],
 });
+const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/entry.js', directory))],
+    outfile:fileURLToPath(new URL('gallery.js',output)), bundle:true, format:'esm', platform:'browser',
+    target:'es2022', legalComments:'inline', metafile:true, plugins:[{name:'shared-runtime',setup(plugin){
+        plugin.onResolve({filter:/^@gramlot\/gramlot$/},args=>({path:args.path,external:true}));
+    }}]});
+Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
 // Keep notices for every bundled dependency, including transitive Bag dependencies.
 const packages = new Set();
 for (const input of Object.keys(result.metafile.inputs)) {
@@ -60,6 +65,6 @@ for (const name of ['LICENSE', 'NOTICE']) {
 console.log('Gallery browser scripts built.');
 
 // Independent collection module: no second runtime, only descriptors and controls.
-for (const name of ['inputs', 'layout']) await build({entryPoints: [require.resolve(`@gramlot/gramlot/components/${name}`)],
+for (const name of ['inputs', 'layout', 'tree']) await build({entryPoints: [require.resolve(`@gramlot/gramlot/components/${name}`)],
     outfile: fileURLToPath(new URL(`${name}.js`, output)), bundle: true, format: 'esm',
-    platform: 'browser', target: 'es2022', legalComments: 'inline'});
+    platform: 'browser', target: 'es2022', legalComments: 'inline', external: ['@gramlot/gramlot']});

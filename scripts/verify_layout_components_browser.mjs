@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry,...urls]=process.argv.slice(2);
@@ -8,8 +9,8 @@ for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
   const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);
-  await page.locator('details').filter({has:page.locator('#open-w19')}).locator('summary').first().click();
-  const open=async key=>{await page.locator(`#open-${key}`).click();const f=await (await page.locator(`#frame-${key}`).elementHandle()).contentFrame();await f.waitForFunction(()=>window.gramlot?.state==='started');return f;};
+  await galleryRow(page, 'w19');
+  const open=async key=>{await (await galleryRow(page, key)).click();const f=await (await page.locator(`#frame-${key}`).elementHandle()).contentFrame();await f.waitForFunction(()=>window.gramlot?.state==='started');return f;};
   let frame=await open('w19');
   const input=frame.locator('#first-name input');await input.fill('Grace');
   // Change layout through Data without blurring/committing the focused draft.
@@ -18,11 +19,11 @@ for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
   assert.equal(await frame.evaluate(()=>window.gramlot.data.getItem('customer.name')),'Ada');
   assert.equal(await input.evaluate(el=>el.getRootNode().activeElement===el),true);
   await input.press('Tab');assert.equal(await frame.evaluate(()=>window.gramlot.data.getItem('customer.name')),'Grace');
-  await page.locator('#gallery-settings-toggle').click();
+  await page.locator('.drawer[aria-label="Open bottom region"]').click();
   await page.locator('#index-appearance').selectOption('mimi');
   await page.locator('#index-theme').selectOption('dark');
   await page.locator('#gallery-label-position').selectOption('example');
-  await page.locator('[aria-label="Close settings"]').click();
+  await page.locator('.drawer[aria-label="Close bottom region"]').click();
   await page.locator('#preview-mobile-w19').click();
   await frame.locator('html[data-gramlot-touch=on]').waitFor();
   assert.equal(await input.inputValue(),'Grace');

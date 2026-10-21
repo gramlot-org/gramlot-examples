@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from "node:assert/strict";
 const { chromium, webkit } = await import(process.argv[2]);
 const base = process.argv[3] ?? "http://127.0.0.1:8243";
@@ -8,8 +9,8 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
   p.on("pageerror", (e) => errors.push(e.message));
   try {
     await p.goto(base);
-    await p.locator("#open-layout").click();
-    await p.locator("#open-l04").click();
+    await (await galleryRow(p, 'layout')).click();
+    await (await galleryRow(p, 'l04')).click();
     await p.waitForFunction(() => gramlot.data.getItem("galleryGuide.available"));
     await p.locator("#index-code-toggle").click();
     const handles = [p.locator("#gallery-regions").getByRole("button", { name: "Close left region", exact: true }), p.locator('#gallery-guide-layout .separator[data-side="bottom"] > .drawer')];
@@ -44,8 +45,8 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     const phone = await touch.newPage();
     await phone.goto(base);
     await phone.locator("#gallery-mobile-menu").click();
-    await phone.locator("#open-layout").click();
-    await phone.locator("#open-l04").click();
+    await (await galleryRow(phone, 'layout')).click();
+    await (await galleryRow(phone, 'l04')).click();
     await phone.waitForFunction(() => gramlot.data.getItem("galleryGuide.available"));
     const phoneGrip = phone.locator('#gallery-guide-layout .separator[data-side="bottom"] > .drawer');
     assert.equal(await phoneGrip.locator(".drawer-content").evaluate((e) => getComputedStyle(e).opacity), "1");

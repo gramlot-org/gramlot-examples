@@ -1,6 +1,7 @@
 """Gallery content on Gramlot's reusable index page."""
-from gramlot import IndexPage, source
-from gramlot_examples import build_gallery
+from gramlot import IndexPage, source, endpoint
+from genro_bag import Bag
+from gramlot_examples import build_gallery, navigation_directory
 from gramlot_examples.gallery.guided_demo import guided_demo
 
 
@@ -8,10 +9,10 @@ class Page(IndexPage):
     title = "Gramlot examples"
     installable = True
     app_icon = "/assets/branding/app-icon.png"
-    css = (*IndexPage.css, "/gallery/gallery.css")
+    css = (*IndexPage.css, "/themes/gramlot-index/theme.css", "/gallery/gallery.css")
     shell_id = "gallery"
     logoUrl = "/assets/branding/gramlot-logo-dark.svg"
-    galleryScript = "/gallery/dist/gallery.js"
+    datapath = "galleryIndex"
     catalogs = ()
     serverless_download_url = None
 
@@ -24,68 +25,94 @@ class Page(IndexPage):
         return build_gallery(self.catalogs)
 
     @property
-    def navigation(self):
+    def groups(self):
         gallery = self.gallery
         return [{**family, "children": [
-            {**item, "url": item["key"], "path": family["path"],
+            {**item, "url": gallery["routes"][item["key"]]["url"], "path": family["path"],
              "logic": gallery["routes"][item["key"]]["logic"]}
             for item in family["examples"]]} for family in gallery["families"]]
 
-    def main(self, root):
-        families = self.navigation
-        shell = root.div(class_="index-shell gallery-containers", id=self.shell_id)
-        self.header(shell)
-        regions = shell.borderContainer(id="gallery-regions", nodeId="galleryRegions",
-                                        data_index_regions=True, height="100%", min_height=0)
-        sidebar = regions.contentPane(region="left", width="240px", minSize=160, maxSize=420,
-                                      splitter=True, drawer=True, drawer_icon="☰", drawer_label="Navigation",
-                                      drawer_minimize=True, nodeId="galleryNavigation",
-                                      class_="index-sidebar", id="index-sidebar")
-        brand = sidebar.header()
-        brand.img(src=self.logo_url, alt=self.title, class_="index-logo")
-        navigation = sidebar.nav(aria_label="Pages").ul(class_="index-list")
-        for family in families:
-            category = navigation.li().details(open=family is families[0])
-            category.summary(tabindex=-1).a(family["title"], id=f"open-{family['key']}",
-                href=f"#panel-{family['key']}", class_="index-family", tabindex=-1)
-            items = category.ul(class_="index-list")
-            for example in family["children"]:
-                items.li().a(example["title"], id=f"open-{example['key']}", href=example["url"], tabindex=-1)
-        center = regions.contentPane(region="center", id="gallery-center", overflow="hidden")
-        shell.dataSetter("galleryIndex.active", "intro")
-        panels = center.tabContainer(id="index-pages", class_="index-main", height="100%",
-                                     selectedPage="^galleryIndex.active", tabMode="tabs")
-        self.introduction(panels.contentPane(id="panel-intro", title="Introduction", pageName="intro",
-                                             class_="index-intro"))
-        code = regions.contentPane(region="right", width="420px", minSize=220, maxSize=900,
-                                   splitter=True, drawer=True, drawer_icon="⌘", drawer_label="Code",
-                                   drawer_minimize=True, nodeId="galleryCode", id="index-code",
-                                   aria_label="Example source code", hidden=True)
-        code.div(id="gallery-code-pages", height="100%")
-        self.footer(shell.footer(class_="index-footer"))
-        self.behavior(shell)
+    @property
+    def navigation(self):
+        return navigation_directory(catalogs=self.catalogs)
+
+    def left(self, pane):
+        pane.set_attr({"id": "index-sidebar", "class": "index-sidebar", "nodeId": "galleryNavigation"})
+        pane.header().img(src=self.logo_url, alt=self.title, class_="index-logo")
+        super().left(pane)
+        pane.set_attr({"drawer_minimize": True})
+        pane.value.get_node("tree").set_attr({"id": "gallery-navigation-tree", "class": "gallery-navigation-tree", "autoCollapse": True, "hideValues": True})
+
+    def center(self, pane):
+        pane.set_attr({"id": "gallery-center", "overflow": "hidden"})
+        super().center(pane)
+        pane.value.get_node("tabs").set_attr({"id": "index-pages", "class": "index-main", "hidden": True})
+        pane.div(id="gallery-introduction", height="100%").iframe(src="pages/00-index", title="Example gallery", width="100%", height="100%", border=0)
+
+    def right(self, pane):
+        pane.set_attr({"id": "index-code", "nodeId": "galleryCode", "width": "420px",
+                       "minSize": 220, "maxSize": 900, "splitter": True,
+                       "drawer": "close", "drawer_label": "Code", "drawer_minimize": True,
+                       "aria_label": "Example source code", "hidden": True})
+        pane.div(id="gallery-code-pages", height="100%")
+
+    def bottom(self, pane):
+        pane.set_attr({"id": "gallery-settings", "height": "180px", "drawer": "close",
+                       "drawer_label": "Settings", "drawer_icon": "⚙", "drawer_minimize": True,
+                       "class": "index-footer", "aria_label": "Settings"})
+        self.footer(pane)
+
+    def top(self, pane):
+        pane.set_attr({"height": "42px"})
+        self.header(pane)
+
+    @endpoint
+    def navigation_section(self, directory):
+        return navigation_directory(directory, self.catalogs)
 
     def introduction(self, intro):
         intro.h2("Example gallery")
         intro.p("This gallery shows each example page beside the code that creates it. "
                 "The Python and JavaScript integrations have the same examples.")
-        intro.p("Choose an example from the list. Its tab stays open so you can return to it. "
-                "Use the arrow keys on a focused tab to switch pages. In Settings (⚙), enable Keyboard navigation to include the navigation links in the Tab sequence. "
-                "Use the top bar to show or hide Navigation and Code; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. "
+        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. "
+                "Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. "
+                "Use the Navigation and Code drawer labels to show or hide their panels; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. "
                 "Choose Base, Compact, mimi or joanna independently of the color mode.")
 
     def group_panel(self, pane, group):
         pane.div((group["path"] / "README.md").read_text(), id=f"readme-{group['key']}")
 
     def footer(self, footer):
-        footer.html_button("⚙", type="button", id="gallery-settings-toggle", class_="gallery-settings-toggle",
-                      title="Settings", aria_label="Settings", popovertarget="gallery-settings")
-        settings = footer.div(id="gallery-settings", popover="auto", aria_labelledby="gallery-settings-title")
+        settings = footer.div(class_="gallery-settings-content")
         heading = settings.div(class_="gallery-settings-heading")
         heading.h2("Settings", id="gallery-settings-title")
-        heading.html_button("×", type="button", aria_label="Close settings", popovertarget="gallery-settings",
-                       popovertargetaction="hide")
-        super().footer(settings)
+        theme = settings.div(class_="index-theme")
+        theme.html_label("Theme", for_="index-appearance")
+        appearance = theme.select(id="index-appearance", value="compact")
+        appearance.option("Base", value="base", selected=False)
+        appearance.option("Compact", value="compact", selected=True)
+        appearance.option("mimi", value="mimi")
+        appearance.option("joanna", value="joanna")
+        color = settings.div(class_="index-theme")
+        color.html_label("Color mode", for_="index-theme")
+        choices = color.select(id="index-theme", value="light")
+        choices.option("Light", value="light", selected=True)
+        choices.option("Dark", value="dark", selected=False)
+        keyboard = settings.div(class_="index-keyboard")
+        label = keyboard.html_label(for_="keyboard-navigation")
+        label.input(type="checkbox", id="keyboard-navigation", checked=False)
+        label.span("Keyboard navigation")
+
+        if self.installable:
+            app = settings.details(class_="index-install")
+            app.summary("Install app")
+            app.html_button("Install", type="button", id="index-install-button", hidden=True)
+            app.p("", id="index-install-status", role="status")
+            app.p("Chrome: use Install page as app in the browser menu. "
+                  "Safari on macOS Sonoma or later: File > Add to Dock.")
+            app.p("Use HTTPS or localhost. For a static export, serve the directory; "
+                  "direct file opening is not installable. Keep the server running for hosted pages.")
+
         labels = settings.div(class_="index-theme")
         labels.html_label("Label position", for_="gallery-label-position")
         position = labels.select(id="gallery-label-position", value="example")
@@ -94,35 +121,26 @@ class Page(IndexPage):
             position.option(code, value=code)
         settings.p("Label position applies to input components in the previews. "
                    "Choose As in the example to restore the lesson's layout.")
-        inspector = footer.html_button(type="button", id="gallery-inspector", class_="gallery-inspector",
-                                  title="Open inspector", aria_label="Inspector",
-                                  aria_pressed="false", disabled=True)
-        inspector.span("🔍", aria_hidden="true")
 
     def header(self, shell):
         header = shell.header(class_="gallery-toolbar")
-        header.html_button("☰ Navigation", type="button", id="index-navigation-toggle",
-                      aria_controls="index-sidebar", aria_expanded="true")
-        header.html_button("☰", type="button", id="gallery-mobile-menu", class_="gallery-mobile-only",
-                           aria_label="Navigation", aria_controls="index-sidebar", aria_expanded="false")
         header.h1(self.title)
         header.span("", id="gallery-load-status", role="status", aria_live="polite")
-        header.html_button("Code ⟨/⟩", type="button", id="index-code-toggle",
-                      aria_controls="index-code", aria_expanded="false", disabled=True)
-
-        views = header.div(class_="gallery-mobile-views gallery-mobile-only", role="group", aria_label="Gallery view")
-        for view, caption in (("example", "Example"), ("code", "Code"), ("inspector", "Inspector")):
-            views.html_button(caption, type="button", id=f"gallery-view-{view}",
-                              aria_pressed="true" if view == "example" else "false")
+        inspector = header.html_button(type="button", id="gallery-inspector", class_="gallery-inspector",
+                                  title="Open inspector", aria_label="Inspector",
+                                  aria_pressed="false", disabled=True)
+        inspector.span("🔍", aria_hidden="true")
+        inspector.span("Inspector")
 
     def behavior(self, shell):
-        shell.html_button("", type="button", id="gallery-mobile-backdrop", hidden=True,
-                          aria_label="Close navigation", tabindex=-1)
+        shell.set_attr({"class": "frame-page index-shell gallery-containers"})
+        shell.value.get_node("frame").set_attr({"id": "gallery-regions", "nodeId": "galleryRegions"})
         shell.section(id="gallery-inspector-panel", aria_label="Inspector")
-        shell.script(src=self.galleryScript)
+        shell.dataController(func="galleryInitialize", _onBuilt=True)
+        shell.dataController(func="galleryMount", _onStart=True)
 
     def gallery_item(self, key):
-        for family in self.navigation:
+        for family in self.groups:
             if family["key"] == key:
                 return family
             for example in family["children"]:
@@ -141,11 +159,21 @@ class Page(IndexPage):
             if "children" in item:
                 self.group_panel(root, item)
             else:
-                self.panel(root, item)
+                self.example_panel(root, item)
         else:
             raise ValueError(f"Unknown gallery view: {key}/{view}")
 
-    def panel(self, parent, example):
+    def panel(self, pane, node):
+        key = node.attr.get("key")
+        if "markdown" in node.attr:
+            pane.div(node.attr["markdown"], class_="gallery-directory-markdown", padding="24px")
+        elif node.attr.get("category") or key is None:
+            pane.iframe(src=node.attr["url"], title=node.attr.get("title", node.label),
+                        width="100%", height="100%", border=0)
+        else:
+            self.example_panel(pane, self.gallery_item(key))
+
+    def example_panel(self, parent, example):
         key = example["key"]
         panel = parent.div(class_="gallery-panel-layout")
         header = panel.header(class_="gallery-explanation")

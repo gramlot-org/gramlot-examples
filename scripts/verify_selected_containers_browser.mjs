@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry,base='http://127.0.0.1:8243/']=process.argv.slice(2);
@@ -74,18 +75,18 @@ for (const [name,type] of Object.entries({chromium,webkit})) {
         await touch.close();
         await page.setViewportSize({width:1200,height:900});
         await page.goto(base);
-        await page.locator('#gallery-settings-toggle').waitFor();
-        if (!await page.locator('#open-l07').isVisible()) {
-            await page.locator('details').filter({has:page.locator('#open-l07')}).locator('summary').first().click();
+        await page.locator('.drawer[aria-label="Open bottom region"]').waitFor();
+        if (!await (await galleryRow(page, 'l07')).isVisible()) {
+            await galleryRow(page, 'l07');
         }
-        await page.locator('#open-l07').click();
+        await (await galleryRow(page, 'l07')).click();
         const themed=page.frameLocator('#frame-l07');
         for (const profile of ['mimi','joanna']) {
             for (const scheme of ['light','dark']) {
-                await page.locator('#gallery-settings-toggle').click();
+                await page.locator('.drawer[aria-label="Open bottom region"]').click();
                 await page.locator('#index-appearance').selectOption(profile);
                 await page.locator('#index-theme').selectOption(scheme);
-                await page.locator('[aria-label="Close settings"]').click();
+                await page.locator('.drawer[aria-label="Close bottom region"]').click();
                 const tab=themed.locator('#tabs-demo').getByRole('tab',{name:'Customer',exact:true});
                 const height=profile==='mimi'?24:26;
                 await tab.evaluate((el,height)=>new Promise(resolve=>{

@@ -137,3 +137,41 @@ export const componentBehaviors = {
         await page.waitForFunction(() => gramlot.data.getItem('profile.remote_name') === 'NEWNAME');
     }
 };
+
+Object.assign(componentBehaviors, {
+    async w26(page) {
+        const tree = page.locator('#example-tree');
+        await tree.locator('[data-path="catalog"] > .row > button').click();
+        await tree.locator('[data-path="catalog.books"]').waitFor();
+        await page.locator('#tree-select-notes').click();
+        assert.equal(await data(page, 'treeDemo.selection'), 'documents.notes');
+        await page.locator('#tree-hide-values input').check();
+        assert.equal(await data(page, 'treeDemo.hideValues'), true);
+    },
+    async w27(page) {
+        const tree = page.locator('#styled-tree');
+        await tree.locator('[data-path="documents"] > .row > button').click();
+        await tree.locator('[data-path="documents.notes"] > .row').click();
+        assert.equal(await data(page, 'treeStyle.selection'), 'documents.notes');
+        await page.locator('#styled-rename').click();
+        assert.equal(await tree.locator('[data-path="documents.notes"] .caption').textContent(), 'Updated notes');
+        assert(await tree.locator('[data-path="documents.notes"]').evaluate(node => node.classList.contains('attention-node')));
+    },
+    async w28(page) {
+        const tree = page.locator('#rich-callback-tree');
+        assert.equal(await tree.locator('[data-path="documents"] .caption strong').textContent(), 'Documents');
+        assert.equal(await tree.locator('[data-path="starred"] .favorite-icon').count(), 1);
+        await tree.locator('[data-path="documents"] > .row > button').click();
+        assert.match(await tree.locator('[data-path="documents"] > .row .caption').textContent(), /open/);
+        await page.locator('#toggle-rich').click();
+        assert.equal(await tree.locator('[data-path="documents"] .caption strong').count(), 0);
+    },
+    async w29(page) {
+        const origin = page.locator('#drag-documents').getByText('Project brief', {exact:true});
+        const destination = page.locator('#drop-folders');
+        await origin.dragTo(destination.getByText('Inbox', {exact:true}));
+        await page.locator('#last-drop').filter({hasText:'Copied Project brief to Inbox'}).waitFor();
+        await destination.locator('[data-path="inbox"] > .row > button').click();
+        await destination.locator('[data-path="inbox.brief"]').waitFor();
+    },
+});

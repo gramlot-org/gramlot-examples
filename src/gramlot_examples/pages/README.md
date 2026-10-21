@@ -3,16 +3,16 @@
 The [gallery](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md) presents the same examples in Python and
 JavaScript, in four families:
 
-- [`html_svg/`](html_svg/): thirteen HTML and SVG pages, without binding.
-- [`binding/`](binding/): eleven pages whose DOM follows the Data through pointers,
+- [`html_svg/`](01-html_elements/): thirteen HTML and SVG pages, without binding.
+- [`binding/`](02-binding/): eleven pages whose DOM follows the Data through pointers,
   editing, booleans, style, SVG and freeze. The last three take the content of
   `html_svg` examples 06, 08 and 12 and add the binding.
-- [`controllers/`](controllers/): twenty-two pages with formulas, controllers, named
+- [`controllers/`](03-controllers/): twenty-three pages with formulas, controllers, named
   logic in the `Logic` class of the page module, inline expressions, node methods, buttons,
   events, the end-to-end story, `dataRpc` calls to the endpoints of the page, `remote`
   fragments and `dataRemote` values.
 
-- [`components/`](components/): twenty-five lessons for inputs, labelbox, layout,
+- [`components/`](04-input_components/): twenty-five lessons for inputs, labelbox, layout,
   command buttons and validation, with compact desktop/touch presentation.
 
 Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,

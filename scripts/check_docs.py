@@ -1,4 +1,5 @@
 """Check public lesson coverage, local HTML links and paired guide anchors."""
+import posixpath
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -53,7 +54,7 @@ def main():
         frames = parsed[(site / lesson).resolve()].frames
         assert len(frames) == 1, f'Expected one playground in {lesson}'
         frame = frames[0]
-        assert frame['src'] == f'../../playgrounds/{key}/index.html', lesson
+        assert frame['src'] == posixpath.relpath(f'playgrounds/{key}/index.html', posixpath.dirname(lesson)), lesson
         assert frame.get('title') and frame.get('loading') == 'lazy', lesson
     for p, links in parsed.items():
         for href in links.links:

@@ -1,5 +1,6 @@
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
+import tree from '@gramlot/gramlot/components/tree';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
@@ -14,7 +15,7 @@ const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gram
 const {GramlotFileServer} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/server')).href);
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
-const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
+const folder = key => new URL(`../src/gramlot_examples/pages/${families.find(f => f.key === key).folder}/`, import.meta.url);
 
 /**
  * Mount one JavaScript example as its server would: the core GramlotFileServer of the family folder answers
@@ -46,7 +47,7 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree]});
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
@@ -65,6 +66,79 @@ const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    async w29({byId, data, window}) {
+        const row = (id, path) => byId(id).shadowRoot.querySelector(`[data-path="${path}"] > .row`);
+        const values = new Map();
+        const transfer = {dropEffect: 'none', effectAllowed: 'all', clearData: () => values.clear(),
+            setData: (type, value) => values.set(type, value), setDragImage() {}};
+        const send = (type, id, path) => {
+            const event = new window.Event(type, {bubbles: true, composed: true, cancelable: true});
+            Object.defineProperty(event, 'dataTransfer', {value: transfer});
+            row(id, path).dispatchEvent(event);
+        };
+        send('dragstart', 'drag-documents', 'brief');
+        assert.ok(values.has('app/document'));
+        send('dragover', 'drop-folders', 'inbox');
+        assert.equal(transfer.dropEffect, 'copy');
+        assert.ok(row('drop-folders', 'inbox').classList.contains('canBeDropped'));
+        send('drop', 'drop-folders', 'inbox'); await tick();
+        send('dragend', 'drag-documents', 'brief'); await tick();
+        assert.equal(data('treeDrag.folders.inbox.brief'), 'Project brief');
+        assert.equal(data('treeDrag.documents.brief'), 'Project brief');
+        assert.equal(byId('last-drop').textContent, 'Copied Project brief to Inbox');
+        assert.equal(byId('last-drag-end').textContent, 'Browser gesture: copy');
+        row('drop-folders', 'inbox').querySelector('button').click(); await tick();
+        assert.equal(row('drop-folders', 'inbox.brief').querySelector('.caption').textContent, 'Project brief');
+        send('dragstart', 'drag-documents', 'notes');
+        send('dragover', 'drop-folders', 'archive');
+        assert.equal(transfer.dropEffect, 'none');
+        assert.ok(row('drop-folders', 'archive').classList.contains('cannotBeDropped'));
+        send('drop', 'drop-folders', 'archive');
+        send('dragend', 'drag-documents', 'notes'); await tick();
+        assert.equal(data('treeDrag.folders.archive').getNodes().length, 0);
+        assert.equal(byId('last-drag-end').textContent, 'Browser gesture: none');
+        assert.equal(byId('drop-folders').shadowRoot.querySelector('.cannotBeDropped'), null);
+    },
+    async w27({byId, data}) {
+        const row = path => byId('styled-tree').shadowRoot.querySelector(`[data-path="${path}"]`);
+        row('documents').querySelector('button').click();
+        assert.ok(row('documents').querySelector('.caption').classList.contains('caption-open'));
+        row('documents.notes').querySelector('.row').click(); await tick();
+        assert.equal(data('treeStyle.selection'), 'documents.notes');
+        assert.ok(row('documents.notes').classList.contains('attention-node'));
+        assert.ok(row('documents.notes').querySelector('.caption').classList.contains('caption-selected'));
+        byId('styled-rename').click(); await tick();
+        assert.equal(row('documents.notes').querySelector('.caption').textContent, 'Updated notes');
+    },
+    async w28({byId, data}) {
+        const row = path => byId('rich-callback-tree').shadowRoot.querySelector(`[data-path="${path}"]`);
+        assert.equal(row('documents').querySelector('.caption strong').textContent, 'Documents');
+        assert.ok(row('starred').querySelector('.icon').classList.contains('favorite-icon'));
+        row('documents').querySelector('button').click();
+        assert.match(row('documents').querySelector('.caption').textContent, /open/);
+        row('documents.notes').querySelector('.row').click(); await tick();
+        assert.equal(data('treeLabels.selection'), 'documents.notes');
+        byId('toggle-rich').click(); await tick();
+        assert.equal(row('documents').querySelector('.caption strong'), null);
+        assert.equal(row('documents').querySelector('.caption').textContent, 'Documents');
+    },
+    async w26({app, byId, data, calls}) {
+        const host = byId('example-tree');
+        const row = path => host.shadowRoot.querySelector(`[data-path="${path}"]`);
+        assert.equal(app.data.getNode('treeDemo.nodes.catalog').staticValue, null);
+        assert.equal(calls.filter(call => call.name === 'catalog_children').length, 0);
+        byId('tree-select-notes').click(); await tick();
+        assert.equal(data('treeDemo.selection'), 'documents.notes');
+        assert.equal(row('documents').getAttribute('aria-expanded'), 'true');
+        byId('tree-rename').click(); await tick();
+        assert.equal(row('documents.notes').querySelector('.caption').textContent, 'Meeting notes');
+        row('catalog').querySelector('button').click(); await tick(); await tick();
+        assert.ok(row('catalog.books'));
+        assert.equal(calls.filter(call => call.name === 'catalog_children').length, 1);
+        row('catalog').querySelector('button').click();
+        row('catalog').querySelector('button').click(); await tick();
+        assert.equal(calls.filter(call => call.name === 'catalog_children').length, 1);
+    },
     async w25({byId, data: pageData, window}) {
         const data = path => pageData('profile.' + path);
         const edit = (id, value) => {
