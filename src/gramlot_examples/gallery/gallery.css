@@ -1,7 +1,7 @@
 /* The source viewer is a sibling of navigation and content, never an iframe overlay. */
 #gallery.index-shell {
   --gallery-narrow: 0;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   grid-template-columns: minmax(0, 1fr);
 }
 #gallery-regions { grid-column: 1; grid-row: 2; min-width: 0; min-height: 0; }
@@ -45,19 +45,18 @@
 .gallery-codepane :is(.hljs-meta, .hljs-meta .hljs-keyword, .hljs-tag) { color: #9b9b9b; }
 .gallery-codepane :is(.hljs-variable, .hljs-template-variable) { color: #bd63c5; }
 .gallery-codepane :is(.hljs-attr, .hljs-attribute) { color: #9cdcfe; }
-.gallery-inspector { display: inline-flex; align-items: center; justify-content: center; flex: none; margin-inline-start: auto; padding: 0; inline-size: 28px; block-size: 28px; min-block-size: 28px; border: 0; background: transparent; box-shadow: none; font-size: 16px; line-height: 1; }
+.gallery-inspector { display: inline-flex; align-items: center; justify-content: center; flex: none; margin-inline-start: auto; padding: 0; inline-size: auto; block-size: 28px; min-block-size: 28px; border: 0; background: transparent; box-shadow: none; font-size: 16px; line-height: 1; }
+.gallery-toolbar .gallery-inspector { gap: 5px; font-size: 11px; }
 .gallery-inspector:hover { background: var(--gramlot-surface); }
 .gallery-inspector:focus-visible { outline: 2px solid var(--gramlot-focus-ring); outline-offset: 2px; }
 .gallery-inspector[aria-pressed="true"] { background: var(--gramlot-action); color: var(--gramlot-navigation-text); }
 
-/* Native popover keeps settings out of both the footer and lesson layout. */
-.gallery-settings-toggle { inline-size: 28px; block-size: 28px; min-block-size: 28px;
-  padding: 0; margin: 0; border: 0; background: transparent; color: inherit; font-size: 18px; }
-#gallery-settings { inset: auto auto 42px 10px; margin: 0; box-sizing: border-box;
-  inline-size: min(320px, calc(100vw - 20px)); max-block-size: calc(100dvh - 60px); overflow: auto;
-  padding: 12px; border: 1px solid var(--gramlot-border); border-radius: var(--gramlot-radius);
-  background: var(--gramlot-surface); color: var(--gramlot-ink); box-shadow: 0 4px 20px #0003; }
-#gallery-settings:popover-open { display: grid; gap: 10px; }
+/* Settings live directly in the shared bottom drawer. */
+#gallery-settings { padding: 12px 20px; box-sizing: border-box; overflow: auto;
+  background: var(--gramlot-surface); color: var(--gramlot-ink); }
+#gallery-settings .gallery-settings-content { display: flex; flex-wrap: wrap; align-items: start; gap: 12px 24px; }
+#gallery-settings .gallery-settings-heading, #gallery-settings p { flex-basis: 100%; }
+#gallery-settings .index-theme { min-width: 150px; }
 .gallery-settings-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .gallery-settings-heading h2 { margin: 0; font-size: 1rem; }
 .gallery-settings-heading button { padding: 0 6px; min-block-size: 24px; font-size: 1rem; }
@@ -77,13 +76,13 @@
 #gallery-inspector-panel { display: contents; }
 @media (max-width: 1023px) {
   #gallery.index-shell { --gallery-narrow: 1; }
-  #gallery.index-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto;
+  #gallery.index-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr);
     height: 100dvh; min-width: 0; }
   #gallery > .gallery-toolbar { flex-wrap: wrap; gap: 0; padding: 0 .35rem; }
   .gallery-toolbar h1 { text-align: left; padding-inline: .5rem; font-size: .95rem; }
   .gallery-mobile-only { display: flex; }
   #gallery .gallery-toolbar button { min-height: 44px; font-size: .9rem; }
-  #gallery :is(#index-navigation-toggle, #index-code-toggle, .index-divider, .index-tabs, .gallery-inspector) { display: none; }
+  #gallery :is(#index-navigation-toggle, #index-code-toggle, .index-divider, .index-tabs) { display: none; }
   .gallery-mobile-views { flex-basis: 100%; border-top: 1px solid var(--gramlot-border); }
   .gallery-mobile-views button { flex: 1; border: 0; border-radius: 0; background: transparent;
     color: var(--gramlot-ink); border-bottom: 3px solid transparent; box-shadow: none; }
@@ -143,4 +142,26 @@
 .gallery-codepane pre { height: 100%; box-sizing: border-box; }
 @media (max-width: 1023px) {
   #index-pages { --gramlot-tab-strip-display: none; }
+}
+
+/* The shared tree owns rows and state; the gallery supplies its presentation. */
+.gallery-navigation-tree { --gramlot-tree-row-height: 32px; --gramlot-tree-hover-background:#2b394c; color: inherit; width:100%; }
+.gallery-navigation-tree::part(tree) { padding: 4px 0; }
+.gallery-navigation-tree::part(row) { padding-inline: 4px; }
+.gallery-navigation-tree::part(branch-row) { font-weight: 600; }
+.gallery-navigation-tree::part(caption) { font-size: 13px; }
+.gallery-navigation-tree::part(icon) { color: inherit; opacity:.8; }
+[data-theme="dark"] .gallery-navigation-tree { --gramlot-tree-hover-background:#273348;
+    --gramlot-tree-selected-background:#314b70; --gramlot-tree-selected-color:#f0f5ff; }
+
+#gallery .gallery-toolbar .gallery-inspector { margin-inline-start: auto; font-size: 11px; color: var(--gramlot-ink); }
+
+/* FramePage owns the five regions; the gallery only styles their contents. */
+#gallery.frame-page { position:relative; --gallery-narrow:0; }
+#gallery.frame-page > #gallery-regions { flex:1; }
+.gallery-toolbar { min-height:42px; box-sizing:border-box; }
+@media(max-width:1023px) {
+  #gallery.frame-page { --gallery-narrow:1; }
+  #gallery[data-mobile-view="inspector"] > #gallery-inspector-panel { position:absolute; inset:42px 0 0; z-index:20; }
+  #gallery .gallery-toolbar { flex-wrap:nowrap; }
 }

@@ -36,9 +36,9 @@ same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: twenty-two pages with formulas, controllers, named logic, events, the
+- `controllers/`: twenty-three pages with formulas, controllers, named logic, events, the
   end-to-end story, `dataRpc` calls to the endpoints of the page, `remote` fragments and
-  `dataRemote` values (`c01`–`c22`). Later lessons introduce topics, authored references, native ask,
+  `dataRemote` values (`c01`–`c23`). Later lessons introduce topics, authored references, native ask,
   parent/child messages, plain HTML buttons and delayed Gramlot clicks. The package
   requires the current core release; each lesson states which features it uses.
 

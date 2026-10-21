@@ -20,6 +20,7 @@ for (const {key} of families.flatMap(family => family.examples)) {
     await mkdir(folder, {recursive: true});
     await writeFile(join(folder, 'index.js'), `import {Page as Example} from ${JSON.stringify(route.page)};
 export class Page extends Example {
+    static galleryUrls = ${JSON.stringify(Object.fromEntries(families.flatMap(f => f.examples).map(e => [e.key, `../${e.key}/index.html`])))};
     async main(root) {
         const inspector = root.div({style: 'padding: .25rem .5rem; text-align: right'})
             .button({type: 'button', id: 'gallery-inspector', title: 'Open inspector',

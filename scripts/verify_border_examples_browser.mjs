@@ -9,7 +9,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   const page=await browser.newPage({viewport:{width:1100,height:800}}),errors=[];
   page.setDefaultTimeout(15000);
   page.on('pageerror',e=>errors.push(e.message));
-  const target=base.startsWith('file:') ? `${route==='01_border'?'l01':'l02'}/index.html` : route;
+  const target=base.startsWith('file:') ? `${route==='01_border'?'l01':'l02'}/index.html` : `border/${route}`;
   await page.goto(new URL(target,base).href);
   await page.waitForFunction(()=>['started','failed','disposed'].includes(window.gramlot?.state));
   assert.equal(await page.evaluate(()=>gramlot.state),'started',errors.join('; '));

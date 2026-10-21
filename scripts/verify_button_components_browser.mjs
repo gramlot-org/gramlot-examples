@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry,...urls]=process.argv.slice(2);
@@ -8,8 +9,8 @@ for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]) {
   const page=await browser.newPage({viewport:{width:1500,height:1000}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);
-  await page.locator('details').filter({has:page.locator('#open-w22')}).locator('summary').first().click();
-  const open=async key=>{await page.locator(`#open-${key}`).click();const frame=await(await page.locator(`#frame-${key}`).elementHandle()).contentFrame();await frame.waitForFunction(()=>window.gramlot?.state==='started');return frame;};
+  await galleryRow(page, 'w22');
+  const open=async key=>{await (await galleryRow(page, key)).click();const frame=await(await page.locator(`#frame-${key}`).elementHandle()).contentFrame();await frame.waitForFunction(()=>window.gramlot?.state==='started');return frame;};
   let f=await open('w22');
   await f.locator('#command-confirm button').click();await f.locator('dialog button[type=submit]').click();
   assert.equal(await f.locator('#command-result').innerText(),'Confirmed');

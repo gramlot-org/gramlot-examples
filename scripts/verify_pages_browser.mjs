@@ -458,6 +458,16 @@ LOGIC.c22 = async (page, text) => {
     assert.equal(await page.evaluate(() => gramlot.data.getItem('transforms.amount')), 45.5);
 };
 
+LOGIC.c23 = async (page, text) => {
+    assert.equal(await page.evaluate(() => gramlot.data.getItem('estimate.total')), 270);
+    await page.locator('#nights input').focus();
+    await page.locator('#nights input').fill('7');
+    await page.locator('#nights input').press('Tab');
+    assert.equal(await page.evaluate(() => gramlot.data.getItem('estimate.total')), 567);
+    await page.locator('#prepare button').click();
+    assert.equal(await text('#summary'), 'Stay estimate: €567');
+};
+
 Object.assign(LOGIC, componentBehaviors, layoutBehaviors);
 
 for (const family of families) for (const example of family.examples) {
@@ -476,7 +486,7 @@ export async function verifyExample(page, key, calls = []) {
 }
 
 async function check(browser, base, family, example) {
-    const url = `${base}/${family.key}/${example.folder}`;
+    const url = `${base}/${family.folder}/${example.folder}`;
     const page = await browser.newPage();
     const errors = [];
     const calls = [];

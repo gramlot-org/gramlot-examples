@@ -35,11 +35,11 @@ export function mountGalleryInspector(renderer, root, destination = renderer.des
         const available = entry?.frame && ready.has(entry.frame.contentWindow);
         if (available && !connections.has(entry.key)) connectFrame(entry);
         const targets = [{id: 'top', title: `${document.title || 'Gallery'} (top)`, connection: connections.get('top')}];
-        if (available) targets.push({id: entry.key, title: entry.tab.textContent, connection: connections.get(entry.key)});
+        if (available) targets.push({id: entry.key, title: entry.title, connection: connections.get(entry.key)});
         palette.targets = targets;
         if (follow) palette.selectedTarget = available ? entry.key : 'top';
         // Hidden previews retain their agent and breakpoints until reload or palette close.
-        for (const [id, connection] of connections) if (id !== 'top' && !entries.has(id)) {
+        for (const [id, connection] of connections) if (id !== 'top' && ![...entries.values()].some(entry => entry.key === id)) {
             connection.close(); connections.delete(id);
         }
     };
@@ -74,7 +74,7 @@ export function mountGalleryInspector(renderer, root, destination = renderer.des
         if (!entry) return;
         ready.add(event.source);
         connections.get(entry.key)?.close(); connections.delete(entry.key);
-        sync(entry.key === active);
+        sync(entry.url === active);
     };
     const update = (nextEntries, nextActive) => {
         const changed = nextActive !== active;

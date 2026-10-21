@@ -30,7 +30,7 @@ class PagesServer(ThreadingHTTPServer):
         self.pages = Path(folder)
         gallery = build_gallery()
         self.assets = gallery["assets"]
-        self.routes = {example["key"]: f'{family["key"]}/{example["folder"]}'
+        self.routes = {example["key"]: f'{family["folder"]}/{example["folder"]}'
                        for family in gallery["families"] for example in family["examples"]}
         self.gramlot_server = GramlotFileServer(self.pages, collections=gallery["collections"])
 

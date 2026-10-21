@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 const {chromium, webkit} = await import(process.argv[2]);
 const base = process.argv[3];
@@ -32,15 +33,15 @@ for (const [name, engine] of Object.entries({chromium, webkit})) {
         page.on('pageerror', error => errors.push(error.message));
         await page.goto(base);
         await page.waitForFunction(() => window.gramlot?.data.getItem('galleryIndex.opened.intro') === true);
-        await page.locator('#open-layout').click();
-        await page.locator('#open-l07').click();
+        await (await galleryRow(page, 'layout')).click();
+        await (await galleryRow(page, 'l07')).click();
         const frame = page.frameLocator('#frame-l07');
         await frame.locator('#tab-variants').waitFor();
         for (const appearance of ['mimi', 'joanna']) {
-            await page.locator('#gallery-settings-toggle').click();
+            await page.locator('.drawer[aria-label="Open bottom region"]').click();
             await page.locator('#index-appearance').selectOption(appearance);
             await page.locator('#index-theme').selectOption(appearance === 'mimi' ? 'light' : 'dark');
-            await page.getByRole('button', {name: 'Close settings', exact: true}).click();
+            await page.locator('.drawer[aria-label="Close bottom region"]').click();
             for (const position of ['top', 'bottom', 'left', 'right']) {
                 for (const mode of ['tabs', 'underline']) {
                     const tabs = frame.locator(`#tabs-variant-${mode}-${position}`);

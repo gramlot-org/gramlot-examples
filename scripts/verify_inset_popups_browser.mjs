@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry, ...urls] = process.argv.slice(2);
@@ -9,21 +10,21 @@ for (const [name, engine] of [['chromium', chromium], ['webkit', webkit]]) {
             const page = await browser.newPage({viewport: {width: 1440, height: 1000}}), errors = [];
             page.on('pageerror', error => errors.push(error.message));
             await page.goto(url);
-            await page.locator('details').filter({has: page.locator('#open-w11')}).locator('summary').first().click();
+            await galleryRow(page, 'w11');
             for (const [key, id, toggle, popup] of [
                 ['w11', 'date', '.calendar-toggle', '.calendar-popup'],
                 ['w13', 'choice', '.toggle', '.choices'],
             ]) {
-                await page.locator(`#open-${key}`).click();
+                await (await galleryRow(page, key)).click();
                 const frame = page.frameLocator(`#frame-${key}`);
                 const input = frame.locator(`#${id} input`), button = frame.locator(`#${id} ${toggle}`);
                 await input.waitFor();
                 for (const theme of ['base', 'compact', 'mimi', 'joanna']) {
-                    await page.locator('#gallery-settings-toggle').click();
+                    await page.locator('.drawer[aria-label="Open bottom region"]').click();
                     await page.locator('#index-appearance').selectOption(theme);
                     await page.locator('#index-theme').selectOption('dark');
                     await page.locator('#gallery-label-position').selectOption('L');
-                    await page.locator('[aria-label="Close settings"]').click();
+                    await page.locator('.drawer[aria-label="Close bottom region"]').click();
                     for (const mode of ['normal', 'mobile']) {
                         await page.locator(`#preview-${mode}-${key}`).click();
                         await frame.locator(`html[data-gramlot-touch=${mode === 'mobile' ? 'on' : 'off'}]`).waitFor();

@@ -1,0 +1,6 @@
+.styled-tree { display:block; max-width:42rem; border:1px solid var(--gramlot-border,#8997ab); border-radius:8px; padding:8px; }
+.styled-tree::part(caption-base) { font-style:italic; }
+.styled-tree::part(caption-closed) { color:#a86520; }
+.styled-tree::part(caption-open) { color:#269b76; font-weight:700; }
+.styled-tree::part(caption-selected) { text-decoration:underline; text-underline-offset:4px; }
+.styled-tree::part(attention-node) { border-inline-start:3px solid #c69836; padding-inline-start:6px; }

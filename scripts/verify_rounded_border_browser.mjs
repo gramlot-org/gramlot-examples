@@ -7,7 +7,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
  const b=await type.launch();
  try{for(const base of bases){
  const p=await b.newPage({viewport:{width:1100,height:950}});p.setDefaultTimeout(12000);const errors=[];p.on('pageerror',e=>errors.push(e.message));
- await p.goto(new URL(base.startsWith('file:')?'l03/index.html':'03_rounded',base).href);await p.locator('#rounded-name input').waitFor();
+ await p.goto(new URL(base.startsWith('file:')?'l03/index.html':'border/03_rounded',base).href);await p.locator('#rounded-name input').waitFor();
  await p.evaluate(()=>window.roundedNodes=[document.querySelector('#rounded-border'),document.querySelector('#rounded-inner')]);
  const slider=p.locator('#rounded-slider input');
  for(const [key,value] of [['End',48],['Home',0]]){

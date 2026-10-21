@@ -33,7 +33,7 @@ export function servePages(folder, port) {
     const pages = resolve(folder);
     const {assets, collections, families} = buildGallery();
     const pageRoutes = Object.fromEntries(families.flatMap(family => family.examples
-        .map(example => [example.key, `${family.key}/${example.folder}`])));
+        .map(example => [example.key, `${family.folder}/${example.folder}`])));
     const server = new GramlotFileServer(pages, {collections});
     return createServer(async (request, response) => {
         const reply = (status, body, type) => {

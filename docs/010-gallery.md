@@ -31,17 +31,17 @@ the exports `@gramlot/gramlot/themes/*` and `@gramlot/gramlot/assets/branding/*`
 
 ## 010 · `catalog.json`
 
-A catalogue is an object with `families`. Each family has `key`, `title` and
+A catalogue is an object with `families`. Each family has `key`, `folder`, `title` and
 `examples`; each example has `key`, `title`, `folder`, `description` and
-`explanation`. The pages of a family live in the folder named by the family `key`;
-`folder` is the file stem of an example (`06_forms` for `06_forms.py`, `06_forms.js`,
-`06_forms.md`).
+`explanation`. The family `folder` names its physical directory. An example `folder` is its
+family-relative path without the extension, including any topic directories.
+Keys identify lessons; public URLs retain the complete numbered filesystem path.
 
 ```json
 {
   "environment": "django",
   "families": [
-    {"key": "django_pages", "title": "Django", "examples": [
+    {"key": "django_pages", "folder": "django_pages", "title": "Django", "examples": [
       {"key": "django-01", "title": "Quick start", "folder": "01_quick_start",
        "description": "…", "explanation": "…"}
     ]}
@@ -56,7 +56,7 @@ environment (an adapter or a runtime) declares it.
 
 ## 015 · Keys
 
-- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c22`.
+- The common families use the keys `e01`–`e13`, `b01`–`b11` and `c01`–`c23`.
   Keys are stable within a release. 0.2.8 renumbered the controllers after
   removing the remote Source example; 0.2.10 added `c09`–`c11` (`dataRpc`), 0.2.11 added `c12`–`c14`
   (`remote` and `dataRemote`).
@@ -89,13 +89,13 @@ folder that holds its family folders. The common catalogue always comes first. T
 result has three parts:
 
 - `families`: the families of all catalogues, each with `path`, its pages folder;
-- `routes`: key → `page`, `stylesheet`, `logic`. `page` is the `.py` file in Python
+- `routes`: key → `page`, `stylesheet`, `logic`, `url`. `page` is the `.py` file in Python
   and the `.js` file in JavaScript; `stylesheet` is the same-name `.css` file, or
   `None`/`null`. `logic` is the module whose `Logic` export the server takes:
   `NN_name_aux.js` when it exists, else `NN_name.js` (in JavaScript the page module
   itself), else `None`. Every common example has `NN_name.js` and no `_aux.js`; an
   environment page can still use `NN_name_aux.js`. The server reports a page with both.
-  The `index` route is the gallery page;
+  The `index` route is the gallery page; other routes have a nested `url` used by the host.
 - `assets`: URL → `file`, `type`. The theme, the logo, `/gallery/gallery.css`,
   `/gallery/dist/*` and the source files of every example under
   `/pages/<family>/<file>`. Only the built scripts in `gallery/dist/` are
@@ -109,13 +109,13 @@ The functions read the catalogues and check files. They write and serve nothing.
 
 An environment serves the gallery with its own server and static-file mechanism:
 
-1. For each example route it stages one page module named after the key. The module
+1. For each example route it stages one page module at its `url` path. The module
    extends the original Page and appends `script(src="/gallery/dist/frame.js")` to the
    root, so the example frame follows the gallery theme. The teaching pages are not
    changed.
-2. It copies `stylesheet` beside the staged module, named after the key (`e06.css`):
+2. It copies `stylesheet` beside the staged module, at the same nested path:
    the core `GramlotFileServer` links it as the same-name stylesheet. It serves `logic` as
-   JavaScript at a URL of its own and stages a one-line `<key>_aux.js` that re-exports
+   JavaScript at a URL of its own and stages a one-line `<url>_aux.js` that re-exports
    `Logic` from that URL (`export {Logic} from "/…/03_named_logic.js";`). A module that
    exports no `Logic` has no methods to stage: `export * from "/…/01_hello_world.js";` serves it
    as well. The page
@@ -123,11 +123,11 @@ An environment serves the gallery with its own server and static-file mechanism:
    resolves to the runtime (core 0.2.5).
 3. For `index` it stages a subclass of the gallery page that sets `catalogs` to the
    environment catalogues, so the gallery lists the common families and its own. The
-   same subclass sets `logoUrl` and `galleryScript` when it serves the logo and the
-   gallery script at other URLs, for example under its mount
-   (`/py/assets/branding/gramlot-logo-dark.svg`, `/py/gallery/dist/gallery.js`). The
-   attributes have the same names and defaults (`/assets/branding/gramlot-logo-dark.svg`,
-   `/gallery/dist/gallery.js`) in `gallery/page.py` and `gallery/page.js`.
+   same subclass sets `logoUrl` when the logo is served under a mount.
+   Stage `index_aux.js` to re-export Logic from the mounted
+   `/gallery/dist/gallery.js`; the gallery uses ordinary `_onBuilt` / `_onStart`
+   controllers, without a late application script. Nested routes are staged in
+   corresponding subdirectories.
 4. It serves every URL of `assets` with its media type. A server mounted under a prefix
    that links `Page.css` under that prefix (`/py/themes/gramlot-base/theme.css`) serves
    the stylesheet assets under the prefix too.
@@ -307,7 +307,7 @@ python -m unittest discover -s tests
   `GramlotFileServer` of the family folder answers the request envelopes in the same
   process: `main`, the endpoints of c08–c11 and c14 and the fragments of c12 and c13.
 - `tests/gallery.test.js`: the gallery UI in jsdom; with `tests/test_gallery_page.py`, the
-  default and subclass values of `logoUrl` and `galleryScript` in both languages.
+  logo configuration, frame regions and ordinary Logic declarations in both languages.
 - `tests/build-gallery.test.js` and `tests/test_build_gallery.py`: the same cases in
   both languages, with the environment catalogue in `tests/fixtures/environment/`.
 - `tests/test_pages.py`: every Python route opens through the core `GramlotFileServer`, links its
@@ -939,6 +939,21 @@ Source parity tests compare the Python and JavaScript declarations of every exam
 Owner requested removing the ZIP link from the index and closing Settings on an outside click. Python and JavaScript footers omit the link. The native auto popover dismisses on outside clicks in the main document. The gallery settings service also closes it when focus enters an example iframe, whose pointer events do not reach the parent document. Clicks inside keep Settings open; Escape and its Close button continue to work. The focus listener and scheduled frame are released on disposal; no parallel popup state is added.
 
 
+<a id="ge-010-940"></a>
+
+## 940 · An editable stay estimate — 2026-10-18
+
+Owner follow-up: “tipo camera quanti ospiti e piu calcli in catena”. This revises the earlier two-field estimate into c23, a Python-first stay estimate with room choice, guests and nights. Seven formulas connect the room rate and guest supplement to nightly price, subtotal, long-stay discount, total and rounded deposit. The complete Page is 42 nonblank Python lines, with CSS and host configuration disclosed separately. The summary controller still takes a snapshot only on click.
+
+Chromium and WebKit verify all seven results, room selection, the discount boundary in both directions, rejected/empty drafts preserving accepted Data, correction, click-snapshot timing and three actual source edits (guest limit, discount threshold, guest supplement), plus mobile width. The website distributes the canonical source snapshot, editable project and real recording. The paired JavaScript Page has mount smoke qualification. No framework or dependency implementation changes; no publication authorized.
+
+Historical record — initial two-field revision: c23 previously used hours × rate in 23 nonblank lines. It passed its own checks before this owner-requested expansion. The initially considered Reset action was not retained: unchanged accepted Data intentionally does not clear a rejected field draft. This remains why the teaching action is Prepare summary.
+
+Inspector follow-up (owner, 2026-10-18): the real gallery inspector follows the Data chain in Chromium/WebKit, and the website adds a dedicated recording. Editing the inline discount text in live Source reaches the node but is refused by the runtime on the next trigger, as constitution 11.53 requires. No workaround or core edit is authorized. Owner confirmed: “inspector per seguire i dati, poi cambiamo la formula nel Python e ricarichiamo per vedere il risultato. lasciamo invariato il contratto”. The permission/activation proposal was not approved or implemented. The demo now uses the real Python-file save, normal development-server reload and browser reload.
+
+Completed recording: Data inspection → actual Python threshold edit (7 to 5) → normal development-server reload and browser reload → re-enter the same five-night stay. Chromium/WebKit verify Data subtotal 450, discount 45, total 405 and rounded deposit 122. Reload starts with default inputs; the comparison explicitly re-enters five nights. The runtime contract and framework implementation remain unchanged.
+
+
 <a id="ge-010-265"></a>
 
 ## 265 · Create tabs on first selection
@@ -964,6 +979,7 @@ Published examples 0.3.6 passes 112 JavaScript and 19 Python tests, plus Chromiu
 
 
 Examples 0.3.6 was published through the authorized CI and deployed as generation `20261018T180418Z`. Both public galleries and the downloaded ZIP pass the visibility checks in Chromium/WebKit on desktop/mobile. Gzip and conditional cache validation remain enabled; the new generation invalidates previous validators. Controlled median first-click improvement with Code open: Python 1274→1083 ms (15%), JavaScript 1316→1003 ms (24%); with Code closed: 1250→1040 ms and 1351→963 ms. Public post-deployment observations are about 1.05 s / 1.02 s. Small samples are environment-dependent; detailed methods, raw samples and CI evidence are in `deploy/galleries/reports/2026-10-18-visible-content.json`.
+
 
 
 <a id="ge-010-270"></a>
@@ -1018,6 +1034,103 @@ version receipt and deployment SHA-256 agree. Release gates, including JSR, rema
 mandatory. Detailed evidence and successful CI links are in
 [the release report](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/reports/2026-10-18-slider-quantization.json).
 
+
+<a id="ge-010-280"></a>
+
+## 280 · Bag-tree navigation — development increment, 2026-10-20
+
+The owner requests Gramlot's tree for gallery navigation, suitable CSS classes and resolver-backed sections. Python and JavaScript pages now declare `galleryIndex.navigation` as a Bag, one `dataRemote(cacheTime=-1)` section value, and a tree bound through `storepath`, `labelAttribute="title"` and `selectedPath="^galleryIndex.navigationSelection"`. Opening a section reads its resolver; rendering the initial gallery does not load section children. Reopening uses the Bag resolver cache. Existing deferred lessons, explanation/code panels and retained tab state remain in place. Selecting a tab also selects its tree row. The tree has its own arrow-key/Enter navigation, independent of the legacy link keyboard preference.
+
+The `tree` collection is included in the gallery's Python grammar descriptors, JS collection list and served assets. The collection module imports the existing core runtime rather than bundling another Bag constructor; the core import map maps both `@gramlot/gramlot` and `@gramlot/gramlot/page` to that same runtime. This increment therefore requires the matching development core, not merely an older released package.
+
+Example **w26 — Bag tree**, under Input components, is authored in Python and JS. Documents is a loaded Bag; Catalog is a dataRemote resolver returning a Bag. Buttons show bound selection, live insertion and caption updates. `26_bag_tree.md` explains the same contract. Icons distinguish folder/file and open folders; callback-defined icons, badges and hover actions remain later increments.
+
+The gallery uses `.gallery-navigation-tree`, the example `.example-bag-tree`. Both style the shared component through CSS parts: `tree`, `group`, `node`, `branch`, `leaf`, `row`, `branch-row`, `leaf-row`, `selected-row`, `expander`, `spacer`, `icon`, `branch-icon`, `leaf-icon`, `opened-icon`, `closed-icon`, `caption`. Internal classes also expose opened/closed, selected, loading and error states. CSS variables with the --gramlot-tree- prefix control row height and hover/selection colors. Dark sidebar contrast belongs to gallery CSS, not a hard-coded tree theme.
+
+Qualification: 22 gallery integration tests pass, including section laziness/cache, selection, remount and failed-lesson retry. Six Python gallery tests pass. The 115-test examples suite passes 114 tests; the existing binding/01_pointers symbolic Source lookup remains unresolved. `verify_gallery_tree_browser.mjs <url>` passes Chromium/WebKit against both local Python and Node galleries, including lazy Catalog, retained tab state and mobile. Screenshots were reviewed. Existing browser scripts navigate through `gallery-navigation.mjs`, which expands the actual tree; it is test code, not an application loader. The broader lazy-tabs script reaches its separate guided-demo availability timeout after its navigation/content/mobile checks. Core tracking: GC-197 §065, GC-070 §1520 and PORT-0017-bag-tree. No publication or deployment is included; owner visual acceptance remains pending.
+
+
+Owner follow-up, 2026-10-20: “fai nella navigaxione il tree auto collapse”. Both gallery pages now set `autoCollapse=True` (Python) / `autoCollapse: true` (JS). Expanding a section closes its siblings while retaining resolver cache and descendant state. Switching tabs reveals the selected row and closes sibling sections. The example tree keeps its existing independent expansion. The 22 integration tests and six Python tests pass; Chromium/WebKit pass on Python and Node, including sibling collapse, external tab reveal, cached reopen and mobile. This requires the matching core increment (GC-197 §070; GC-070 §1525).
+
+
+<a id="ge-010-285"></a>
+
+## 285 · Toolbar inspector and bottom settings drawer — development increment, 2026-10-20
+
+Owner requests Navigation/Code only on drawer labels, a bottom drawer opening configuration directly, and Inspector at the toolbar's far right with an icon and small caption. Implemented: Python/JS pages move Inspector to that location and share it with mobile Inspector presentation; Settings is a 180px bottom contentPane, initially drawer="close", containing configuration directly instead of a popover. Theme, appearance, keyboard preference, label position and installation controls remain in that panel. The existing shared drawer owns open/close behavior.
+
+Verified: 23 gallery integration tests, six Python gallery tests and local build; `node scripts/verify_gallery_drawers_browser.mjs <gallery-url>` checks Chromium/WebKit, desktop/mobile Inspector open/close, direct Settings access and theme changes. Both local Python and Node hosts passed. Owner visual acceptance remains pending.
+
+Navigation/Code toolbar removal is pending: core mountIndexPage still requires those controls during panel and drawer updates. Core authorization was requested under constitution §3; no hidden substitute controls or application workaround was added. The two toolbar controls remain until that decision is resolved. GC-070 §1530 tracks this boundary. The maximum-tab/LRU proposal remains unconfirmed. No release or deployment.
+
+
+<a id="ge-010-290"></a>
+
+## 290 · FramePage, IndexPage and directory navigation — 2026-10-20
+
+Owner implementation instruction: “bene procediamo con questa struttura e usiamo la gallery per verificarla”. This supersedes §285's pending core authorization. The reusable frame declares region hooks; the index adds only its tree, URL-identified tabs and panel lifecycle. The gallery owns top title/Inspector, right Code, bottom Settings and navigation branding. Navigation and Code now appear only on their shared drawer labels. No tab-count limit or eviction is implemented.
+
+The navigation store is a Bag. Python `navigation_directory` and JS `navigationDirectory` read one filesystem level. A directory returns a node with a relative `directory` path; an index.py/index.js adds its own `url`. The browser's NavigationResolver loads children on expansion and recursively installs child resolvers. Directory-label selection opens its own page without expanding children. Known catalogue entries retain their current page URLs and teaching metadata; additional filesystem pages use `pages/<relative-path>`. The local example `HTML / SVG → nested → child` demonstrates independent folder pages and nested loading. Route staging discovers available files at startup; this does not eagerly load their child Bags in the browser.
+
+The gallery uses a normal Logic module: galleryInitialize installs resolvers on `_onBuilt`, before the tree's first render; galleryMount starts presentation on `_onStart`. Core classes and mountIndexPage come from the actual shared runtime. The coordinator transports the selected node's attributes in a one-node Bag to index_panel; panel(pane, node) authors the first panel, then its Source and frame are retained. Clicking another tab while a panel is pending determines the final selection. Errors remove incomplete panels and permit retry.
+
+Verification: 24 focused JS gallery/navigation tests, 34 Python core/gallery/staging tests and four Node staging tests pass. The Python and Node galleries pass the same Chromium/WebKit scenario for lazy nested directories, their index pages, URL tabs, retained example state, Code, Inspector, Settings and responsive drawers. The local static exporter also passes ten directory/gallery tests, including nested output paths and the ordinary root Logic. Broader pre-existing checks are tracked separately in GC-070 §1535. Owner visual acceptance remains pending; no release or deployment.
+
+
+<a id="ge-010-295"></a>
+
+## 295 · Nested borderContainer lessons — 2026-10-20
+
+Owner requests deeper gallery navigation with related border pages grouped below an introductory page. Containers now contains a `border` filesystem directory with an `index.py`/`index.js` introduction and six existing lessons. Select the branch label for the five-region overview; expand its arrow to resolve the lesson list. Tabs and Demo carousel remain siblings. The catalogue stores family-relative paths, while lesson keys/URLs (`l01`–`l06`), browser Logic, Code and Explanation remain attached to each lesson. Source assets and documentation playground links preserve nested paths. This is a gallery organization change using the existing FramePage/IndexPage and NavigationResolver contracts.
+
+
+<a id="ge-010-300"></a>
+
+## 300 · Topic groups — 2026-10-20
+
+Owner: “fai gruppaggi logici allora”. The five main sections now use topic directories with their own introductory Python/JavaScript pages. Each directory is a lazy navigation branch. Existing lesson keys, routes and content remain unchanged. Single lessons stay directly in their section; no one-lesson groups are introduced.
+
+- **HTML / SVG**: HTML basics; Native HTML controls; SVG drawing; Composing complete pages.
+- **Binding**: Data paths and updates; Editing bound values; Binding the presentation.
+- **Controllers**: Formulas and page logic; Actions and commands; Events and lifecycle; Calling the server; Remote content and Data; Putting page logic together.
+- **Input components**: Text inputs; Checkboxes and switches; Selecting values; Numbers and sliders; Dates and times; Forms and validation; Buttons and commands.
+- **Containers**: Border containers (six lessons); Tabs and Demo carousel stay at the section level.
+
+All 81 catalogue lessons remain reachable. The filesystem carries the group hierarchy; the catalogue carries lesson titles, teaching content and stable keys. No separate navigation manifest or core change is added.
+
+
+Topic grouping verification — 2026-10-20. The 81 lessons now sit in 21 topic directories with paired introductory pages, or remain directly in their family when no useful multi-lesson group exists. Python tests: 26 passed with 120 subtests. JavaScript suite: 119/120 passed; the existing b01 symbolic pointer failure (`cannot resolve ^#settings.caption`) remains outside this grouping scope. All 30 Source parity checks pass, including every topic introduction. Connected adapters: nine Python checks and seven Node/static-export checks pass. Sphinx builds successfully; all 81 lesson playgrounds, two paired guides and local links/anchors validate. Live Python navigation verifies Input components → text → Textbox and the group's own introduction. Live Node verifies Controllers → logic → Named logic, nested source display and reactive Logic (price 120 → final 108). Implemented and verified; owner visual acceptance remains pending. No release or deployment.
+
+
+Source identity alignment — 2026-10-20. Owner: “ok riallinea esempi e dipendenze senza perdere il lavoro sulla gallery e verifica che i test passino”. Migrated remaining authored node_id attributes and direct identity lookups to canonical nodeId in the current examples, guided demo and gallery, together with lesson explanations and catalogue text. No paths, groups or lessons were removed: all 81 lessons and 21 topic groups remain. Example package requirements now match the already approved identity release (Gramlot >=0.3.7, without an upper bound). The connected core installs Builder JS 0.7.0 and Python 0.30.0, with required TYTX 0.16.3. Full examples verification: 140 JS tests and 26 Python tests plus 120 subtests pass. Connected gallery integration: nine Python tests and seven Node/static export tests pass. All prior b01 pointer failures are resolved. Shared runtime and gallery bundles rebuilt; local servers restarted. The Python gallery opens b01 through Binding → paths and updates → Pointers; editing Caption updates the heading and #settings.caption while the read-once value remains Pointers. No publication or deployment.
+
+
+Tree presentation examples — 2026-10-20. The catalogue now has 83 lessons and 22 directory groups. Input components → tree groups w26 (Bag tree, lazy Catalog and live hideValues), w27 (label attributes and node/open/closed/selected classes) and w28 (named Logic callbacks returning text/HTML, custom icons and caption classes). Their Python pages remain primary; JavaScript twins and Logic accompany them. The filesystem directory is a resolver and its own index explains the group. Navigation explicitly hides scalar values; the Bag tree example starts with hideValues=False. Drag/drop remains a separate core contract proposal.
+
+
+Tree increment verification — 2026-10-20. All 143 gallery JS tests pass. Focused core/examples Python: 37 tests and 132 subtests pass, with one previously diagnosed upstream expected failure. Gallery adapters: nine Python and seven Node/static checks pass. Sphinx and all 83 lesson playground/link/anchor checks pass. Live Python w26 verifies scalar values, immediate hideValues binding and lazy Catalog; Python gallery w28 verifies text/HTML callbacks, open state and selection with a custom star icon; Node w27 verifies open/selected/node classes and live caption updates. Implemented and verified, pending owner visual acceptance; no release or deployment.
+
+
+<a id="ge-010-305"></a>
+
+## 305 · Internal tree drag lesson — 2026-10-21
+
+Input components → tree → Internal tree drag and drop (w29) adds a Python-first page and JavaScript twin with shared Logic. Dragging a document into Inbox or Projects copies its snapshot to the destination Bag; Locked archive rejects it. Repeating a copy updates the entry with the same key. The source Bag stays unchanged. The example declares type/tag/effect restrictions and a synchronous target predicate, then writes Data in onDrop. onDragEnd displays the browser effect, not an application-success claim. No application DOM construction or event wiring is used.
+
+The catalogue now has 84 lessons in 22 groups. All 144 JavaScript tests and 19 Python tests pass, including the two-tree event integration check for accepted copy, rendered child, rejected archive and completion text. The gallery bundle builds. The Python gallery opens w29, but automated browser drags delivered dragover only to the origin and ended with none. A successful real browser drop and preview remain unverified; manual verification is needed before visual acceptance. Core qualification is recorded in GC-070 §1560. Cross-window drag, typed callbacks, custom Source previews and external files remain pending; unsupported nested TYTX values are owner-deferred. No release or deployment.
+
+
+<a id="ge-010-310"></a>
+
+## 310 · Numbered filesystem navigation — 2026-10-21
+
+Owner confirms numeric sibling prefixes in physical names, lowercase and underscores (`01-html_elements`), nested paths, `00-index` as the hidden directory index, `Page.title` for executable titles and the first Markdown H1 for `00-index.md`. This supersedes the physical naming and short public URL descriptions in blocks 290–300. Catalogue keys remain lesson identities; required family `folder` and lesson `folder` locate the files. No route aliases or core loader extensions are introduced.
+
+All 84 lessons retain their Python, JavaScript, prose and stylesheet companions. Navigation sorts directories and pages together by filename, resolves one level on expansion, and opens the directory index on label selection. The root introduction appears when no tab is selected and is not a tree leaf. Markdown-only indexes use the existing sanitized gallery prose renderer. A dedicated descriptive-index directory demonstrates this path.
+
+The host stages each executable `route.url`, including parent directories. Hosted and offline carousel URLs retain their respective mount-relative or file-relative paths. Environment catalogues explicitly declare family `folder`; numbered routes work in Python, Node/Bun and the static exporter. Owner authorizes the connected integration update with “Sì, adegua anche le integrazioni”. The existing executable indexes were renamed, not deleted or replaced. Verification and visual acceptance are separate; no release or deployment is included.
+
+Verification: 146 JavaScript tests; 27 Python tests and 124 subtests; all 84 manual playgrounds built. Clean Sphinx build and coverage/link checks pass for 84 lessons and both paired guides. Live Python/Node checks confirm ordered trees, hidden executable/Markdown indexes and nested URLs; the Python Code drawer retains its source. Owner visual acceptance remains pending.
 
 <a id="ge-010-060"></a>
 

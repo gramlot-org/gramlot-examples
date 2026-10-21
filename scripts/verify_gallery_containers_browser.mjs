@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 const {chromium, webkit} = await import(process.argv[2]);
 const base = process.argv[3] ?? 'http://127.0.0.1:8243';
@@ -10,8 +11,8 @@ for (const [name, engine] of Object.entries({chromium, webkit})) {
     try {
         await page.goto(base);
         await page.waitForFunction(() => window.gramlot?.data.getItem('galleryIndex.opened.intro') === true);
-        await page.locator('#open-layout').click();
-        await page.locator('#open-l04').click();
+        await (await galleryRow(page, 'layout')).click();
+        await (await galleryRow(page, 'l04')).click();
         const preview = page.locator('#preview-l04');
         const frame = page.frameLocator('#frame-l04');
         const note = frame.locator('#handles-note input');
@@ -35,10 +36,10 @@ for (const [name, engine] of Object.entries({chromium, webkit})) {
         await page.locator('#index-code-toggle').click();
         await page.locator('#index-code-toggle').click();
         assert.equal(await note.inputValue(), 'Kept across views');
-        await page.locator('#open-l07').click(); await page.locator('#index-pages').getByRole('tab', {name: await page.locator('#open-l04').textContent(), exact: true}).click();
+        await (await galleryRow(page, 'l07')).click(); await page.locator('#index-pages').getByRole('tab', {name: await (await galleryRow(page, 'l04')).textContent(), exact: true}).click();
         assert.equal(await note.inputValue(), 'Kept across views');
-        await page.locator('#open-controllers').click();
-        await page.locator('#open-c03').click();
+        await (await galleryRow(page, 'controllers')).click();
+        await (await galleryRow(page, 'c03')).click();
         const sourceTabs = page.locator('#codepane-c03');
         if (sourceLanguage === 'Python') {
             await sourceTabs.getByRole('tab', {name: 'logic.js', exact: true}).click();
@@ -50,26 +51,26 @@ for (const [name, engine] of Object.entries({chromium, webkit})) {
         }
         await sourceTabs.getByRole('tab', {name: sourceLanguage, exact: true}).click();
         await page.locator('#code-c03').waitFor({state: 'visible'});
-        await page.locator('#open-l04').click();
-        await page.locator('#gallery-settings-toggle').click();
+        await (await galleryRow(page, 'l04')).click();
+        await page.locator('.drawer[aria-label="Open bottom region"]').click();
         await page.locator('#gallery-label-position').selectOption('L');
         assert.equal(await page.evaluate(() => gramlot.data.getItem('galleryIndex.labelPosition')), 'L');
         await page.locator('#gallery-label-position').selectOption('example');
         for (const appearance of ['mimi', 'joanna']) {
             await page.locator('#index-appearance').selectOption(appearance);
             await page.locator('#index-theme').selectOption('dark');
-            await page.locator('#gallery-settings').getByRole('button', {name: 'Close settings', exact: true}).click();
+            await page.locator('.drawer[aria-label="Close bottom region"]').click();
             await preview.getByRole('tab', {name: 'Explanation', exact: true}).click();
             await page.screenshot({path: `/tmp/gallery-${appearance}-${name}.png`});
             await preview.getByRole('tab', {name: 'Example', exact: true}).click();
-            await page.locator('#gallery-settings-toggle').click();
+            await page.locator('.drawer[aria-label="Open bottom region"]').click();
         }
-        await page.locator('#gallery-settings').getByRole('button', {name: 'Close settings', exact: true}).click();
+        await page.locator('.drawer[aria-label="Close bottom region"]').click();
         await page.setViewportSize({width: 390, height: 844});
         await page.locator('#gallery-mobile-menu').click();
-        await page.locator('#open-binding').click();
+        await (await galleryRow(page, 'binding')).click();
         assert.equal(await page.locator('#gallery-mobile-menu').getAttribute('aria-expanded'), 'true');
-        await page.locator('#open-l04').click();
+        await (await galleryRow(page, 'l04')).click();
         await note.waitFor({state: 'visible'});
         assert.equal(await note.inputValue(), 'Kept across views');
         await page.locator('#gallery-view-code').click();

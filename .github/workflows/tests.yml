@@ -31,7 +31,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm install --ignore-scripts --package-lock=false --no-save @gramlot/gramlot-serverless
+      - name: Use the coordinated exporter for documentation playgrounds
+        uses: actions/checkout@v4
+        with:
+          repository: gramlot-org/gramlot-js-server
+          ref: develop
+          path: integration
+      - run: npm install --ignore-scripts --package-lock=false --no-save ./integration/serverless
       - run: npm run build
       - run: python -m pip install -r requirements-docs.txt
       - run: python scripts/prepare_docs.py
@@ -123,10 +129,10 @@ jobs:
           python scripts/serve_pages.py "$pages" 8091 > "$RUNNER_TEMP/python-server.log" 2>&1 &
           node scripts/serve_pages.mjs "$pages" 8092 > "$RUNNER_TEMP/javascript-server.log" 2>&1 &
           for port in 8091 8092; do
-            for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/html_svg/01_hello_world" && break; sleep 1; done
+            for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/01-html_elements/01-html_basics/01-hello_world" && break; sleep 1; done
           done
           node scripts/verify_pages_browser.mjs http://127.0.0.1:8091 http://127.0.0.1:8092
-          node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091/html_svg http://127.0.0.1:8092/html_svg
+          node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091/01-html_elements http://127.0.0.1:8092/01-html_elements
       - name: Server logs
         if: ${{ failure() }}
         run: cat "$RUNNER_TEMP/python-server.log" "$RUNNER_TEMP/javascript-server.log"

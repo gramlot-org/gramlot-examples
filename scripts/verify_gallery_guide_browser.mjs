@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from "node:assert/strict";
 const { chromium, webkit } = await import(process.argv[2]);
 const base = process.argv[3] ?? "http://127.0.0.1:8243";
@@ -28,8 +29,8 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
   try {
     await page.goto(base);
     await page.waitForFunction(() => window.gramlot?.data.getItem("galleryIndex.opened.intro") === true);
-    await page.locator("#open-layout").click();
-    await page.locator("#open-l04").click();
+    await (await galleryRow(page, 'layout')).click();
+    await (await galleryRow(page, 'l04')).click();
     await page.waitForFunction(() => gramlot.data.getItem("galleryGuide.available") === true);
     const frame = page.frameLocator("#frame-l04");
     const read = (path) => page.evaluate((path2) => document.querySelector("#frame-l04").contentWindow.gramlot.data.getItem(path2), path);
@@ -81,15 +82,15 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     assert.equal(await read("drawerOutput"), true);
     assert.equal(await page.evaluate((ref) => ref === document.querySelector("#frame-l04").contentDocument, identity), true);
     await page.locator("#index-code-toggle").click();
-    await page.locator("#gallery-settings-toggle").click();
+    await page.locator('.drawer[aria-label="Open bottom region"]').click();
     for (const theme of ["mimi", "joanna"]) {
       await page.locator("#index-appearance").selectOption(theme);
       await page.locator("#index-theme").selectOption(theme === "mimi" ? "light" : "dark");
-      await page.locator("#gallery-settings").getByRole("button", { name: "Close settings", exact: true }).click();
+      await page.locator('.drawer[aria-label="Close bottom region"]').click();
       await page.screenshot({ path: `/tmp/gallery-guide-${theme}-${name}.png` });
-      await page.locator("#gallery-settings-toggle").click();
+      await page.locator('.drawer[aria-label="Open bottom region"]').click();
     }
-    await page.locator("#gallery-settings").getByRole("button", { name: "Close settings", exact: true }).click();
+    await page.locator('.drawer[aria-label="Close bottom region"]').click();
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({ path: `/tmp/gallery-guide-phone-${name}.png` });
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));

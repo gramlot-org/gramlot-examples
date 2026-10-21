@@ -1,4 +1,4 @@
-"""The Python gallery page: the URLs of the logo and of the gallery script are class attributes."""
+"""The gallery specializes the frame regions and uses ordinary Page Logic."""
 
 import unittest
 
@@ -42,15 +42,14 @@ class GalleryPageTests(unittest.TestCase):
                 if hasattr(node.value, "nodes"):
                     yield from walk(node.value)
         ids = {node.attr.get("id"): node for node in walk(builder.source)}
-        for view in ("example", "code", "inspector"):
-            node = ids[f"gallery-view-{view}"]
-            self.assertEqual(node.node_tag, "html_button")
-            self.assertEqual(node.attr["aria_pressed"], "true" if view == "example" else "false")
-        self.assertEqual(ids["gallery-mobile-menu"].attr["aria_controls"], "index-sidebar")
+        self.assertNotIn("gallery-mobile-menu", ids)
+        self.assertNotIn("index-navigation-toggle", ids)
+        self.assertNotIn("index-code-toggle", ids)
+        self.assertEqual(ids["gallery-inspector"].node_tag, "html_button")
+        self.assertNotIn("gallery-view-inspector", ids)
 
     def test_default_urls(self):
-        self.assertEqual(sources(Page()), {"img": "/assets/branding/gramlot-logo-dark.svg",
-                                           "script": "/gallery/dist/gallery.js"})
+        self.assertEqual(sources(Page()), {"img": "/assets/branding/gramlot-logo-dark.svg", "iframe": "pages/00-index"})
 
     def test_theme_choices_and_sidebar_separator(self):
         page = Page()
@@ -71,8 +70,10 @@ class GalleryPageTests(unittest.TestCase):
         self.assertEqual(appearance.attr["value"], "compact")
         self.assertEqual(color.attr["value"], "light")
         self.assertEqual([node.attr["value"] for node in appearance.value.nodes], ["base", "compact", "mimi", "joanna"])
-        self.assertEqual(controls["gallery-settings"].attr["popover"], "auto")
-        self.assertEqual(controls["gallery-settings-toggle"].attr["popovertarget"], "gallery-settings")
+        self.assertEqual(controls["gallery-settings"].attr["region"], "bottom")
+        self.assertEqual(controls["gallery-settings"].attr["drawer"], "close")
+        self.assertNotIn("popover", controls["gallery-settings"].attr)
+        self.assertNotIn("gallery-settings-toggle", controls)
         self.assertEqual(controls["gallery-label-position"].attr["value"], "example")
         self.assertEqual(controls["gallery-regions"].node_tag.lower(), "bordercontainer")
         for id_, region in (("index-sidebar", "left"), ("index-code", "right")):
@@ -82,10 +83,11 @@ class GalleryPageTests(unittest.TestCase):
         pages = controls["index-pages"]
         self.assertEqual(pages.node_tag.lower(), "tabcontainer")
         self.assertEqual(pages.attr["selectedPage"], "^galleryIndex.active")
-        self.assertEqual([n.attr.get("id") for n in pages.value.nodes], ["panel-intro"])
+        self.assertIsNone(pages.value)
         self.assertNotIn("panel-l04", controls)
         self.assertNotIn("codepane-l04", controls)
-        self.assertFalse(any(n.node_tag == "iframe" for n in nodes))
+        self.assertEqual([n.attr["src"] for n in nodes if n.node_tag == "iframe"], ["pages/00-index"])
+        self.assertTrue(pages.attr["hidden"])
 
     def test_lesson_builds_only_selected_content(self):
         page = Page()
@@ -112,10 +114,8 @@ class GalleryPageTests(unittest.TestCase):
     def test_subclass_sets_the_urls(self):
         class MountedPage(Page):
             logoUrl = "/py/assets/branding/gramlot-logo-dark.svg"
-            galleryScript = "/py/gallery/dist/gallery.js"
 
-        self.assertEqual(sources(MountedPage()), {"img": "/py/assets/branding/gramlot-logo-dark.svg",
-                                                  "script": "/py/gallery/dist/gallery.js"})
+        self.assertEqual(sources(MountedPage()), {"img": "/py/assets/branding/gramlot-logo-dark.svg", "iframe": "pages/00-index"})
 
 
 if __name__ == "__main__":

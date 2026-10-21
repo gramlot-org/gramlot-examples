@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 /** Check readable source tabs in delivered galleries: node scripts/verify_gallery_browser.mjs <URL> [...]. */
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -16,8 +17,8 @@ try {
         await page.goto(url);
         await page.waitForFunction(() => window.gramlot?.state === 'started');
         for (const key of keys) {
-            await page.locator(`#open-${key}`).evaluate(link => link.closest('details').open = true);
-            await page.click(`#open-${key}`);
+            await galleryRow(page, key);
+            await (await galleryRow(page, key)).click();
             const frame = await page.locator(`#frame-${key}`).elementHandle();
             await (await frame.contentFrame()).waitForFunction(() => window.gramlot?.state === 'started');
             const pane = page.locator(`#codepane-${key}`);

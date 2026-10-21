@@ -9,7 +9,7 @@ import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {fileURLToPath, pathToFileURL} from 'node:url';
-import {fromTytx, toTytx} from '@genrojs/tytx';
+const {fromTytx, toTytx} = await import(createRequire(import.meta.resolve('@gramlot/gramlot')).resolve('@genrojs/tytx'));
 import {buildGallery} from '../src/gramlot_examples/index.js';
 
 const fromExamples = createRequire(new URL('../package.json', import.meta.url));
@@ -73,7 +73,7 @@ async function answerInJavaScript() {
     const answers = [];
     for (const [key, contentType, name, params] of CASES) {
         const {family, example} = located(key);
-        const server = new GramlotFileServer(fileURLToPath(new URL(`../src/gramlot_examples/pages/${family.key}/`, import.meta.url)),
+        const server = new GramlotFileServer(fileURLToPath(new URL(`../src/gramlot_examples/pages/${family.folder}/`, import.meta.url)),
             {collections: buildGallery().collections});
         const {pageId} = await server.registerPage(`/${example.folder}`);
         const text = toTytx({id: '1', pageId, contentType, name, params});

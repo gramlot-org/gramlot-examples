@@ -1,4 +1,5 @@
 /** Gallery content on Gramlot's reusable index page. */
+import {Bag} from '@gramlot/gramlot';
 import {IndexPage} from '@gramlot/gramlot/page';
 import {guidedDemo} from './guided-demo.js';
 export class GalleryPage extends IndexPage {
@@ -7,89 +8,110 @@ export class GalleryPage extends IndexPage {
     static installable = true;
     static appIcon = '/assets/branding/app-icon.png';
     static shellId = 'gallery';
-    static galleryScript = '/gallery/dist/gallery.js';
-    static css = [...IndexPage.css, '/gallery/gallery.css'];
-    static get navigation() {
+    static datapath = 'galleryIndex';
+    static introductionUrl = 'pages/00-index';
+    static css = [...IndexPage.css, '/themes/gramlot-index/theme.css', '/gallery/gallery.css'];
+    static get groups() {
         return this.families.map(group => ({key: group.key, title: group.title,
             children: group.examples.map(item => ({key: item.key, title: item.title, url: item.frameUrl}))}));
     }
-    main(root) {
-        const families = this.constructor.navigation;
-        const shell = root.div({class: 'index-shell gallery-containers', id: this.constructor.shellId});
-        this.header(shell);
-        const regions = shell.borderContainer({id: 'gallery-regions', nodeId: 'galleryRegions',
-            data_index_regions: true, height: '100%', min_height: 0});
-        const sidebar = regions.contentPane({region: 'left', width: '240px', minSize: 160, maxSize: 420,
-            splitter: true, drawer: true, drawer_icon: '☰', drawer_label: 'Navigation', drawer_minimize: true,
-            nodeId: 'galleryNavigation', class: 'index-sidebar', id: 'index-sidebar'});
-        sidebar.header().img({src: this.constructor.logoUrl, alt: this.constructor.title, class: 'index-logo'});
-        const navigation = sidebar.nav({aria_label: 'Pages'}).ul({class: 'index-list'});
-        for (const family of families) {
-            const category = navigation.li().details({open: family === families[0]});
-            category.summary({tabindex: -1}).a(family.title, {id: `open-${family.key}`,
-                href: `#panel-${family.key}`, class: 'index-family', tabindex: -1});
-            const items = category.ul({class: 'index-list'});
-            for (const example of family.children) {
-                items.li().a(example.title, {id: `open-${example.key}`, href: example.url, tabindex: -1});
-            }
-        }
-        const center = regions.contentPane({region: 'center', id: 'gallery-center', overflow: 'hidden'});
-        shell.dataSetter({destination_path: 'galleryIndex.active', value: 'intro'});
-        const panels = center.tabContainer({id: 'index-pages', class: 'index-main', height: '100%',
-            selectedPage: '^galleryIndex.active', tabMode: 'tabs'});
-        this.introduction(panels.contentPane({id: 'panel-intro', title: 'Introduction', pageName: 'intro', class: 'index-intro'}));
-        const code = regions.contentPane({region: 'right', width: '420px', minSize: 220, maxSize: 900,
-            splitter: true, drawer: true, drawer_icon: '⌘', drawer_label: 'Code', drawer_minimize: true,
-            nodeId: 'galleryCode', id: 'index-code', aria_label: 'Example source code', hidden: true});
-        code.div({id: 'gallery-code-pages', height: '100%'});
-        this.footer(shell.footer({class: 'index-footer'}));
-        this.behavior(shell);
+    static get navigation() {
+        const navigation = new Bag();
+        for (const family of this.groups) navigation.setItem(family.key, null, {title:family.title, key:family.key, category:true, directory:family.key});
+        return navigation;
+    }
+    left(pane) {
+        pane.setAttr({id:'index-sidebar', class:'index-sidebar', nodeId:'galleryNavigation'});
+        pane.header().img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
+        super.left(pane);
+        pane.setAttr({drawer_minimize:true});
+        pane.value.getNode('tree').setAttr({id:'gallery-navigation-tree', class:'gallery-navigation-tree', autoCollapse:true, hideValues:true});
+
+    }
+    center(pane) {
+        pane.setAttr({id:'gallery-center', overflow:'hidden'});
+        super.center(pane);
+        pane.value.getNode('tabs').setAttr({id:'index-pages', class:'index-main', hidden:true});
+        pane.div({id:'gallery-introduction',height:'100%'}).iframe({src:this.constructor.introductionUrl,title:'Example gallery',width:'100%',height:'100%',border:0});
+    }
+    right(pane) {
+        pane.setAttr({id:'index-code', nodeId:'galleryCode', width:'420px', minSize:220, maxSize:900, splitter:true,
+            drawer:'close', drawer_label:'Code', drawer_minimize:true, aria_label:'Example source code', hidden:true});
+        pane.div({id:'gallery-code-pages', height:'100%'});
+    }
+    bottom(pane) {
+        pane.setAttr({id:'gallery-settings', height:'180px', drawer:'close', drawer_label:'Settings', drawer_icon:'⚙',
+            drawer_minimize:true, class:'index-footer', aria_label:'Settings'});
+        this.footer(pane);
+    }
+    top(pane) { pane.setAttr({height:'42px'}); this.header(pane); }
+    navigation_section({directory}) {
+        const family = directory;
+        const group = this.constructor.groups.find(item => item.key === family);
+        if (!group) throw new Error(`Unknown gallery section: ${family}`);
+        const children = new Bag();
+        for (const item of group.children) children.setItem(item.key, null,
+            {title: item.title, key: item.key, url: item.url, category: false});
+        return children;
     }
     introduction(intro) {
         intro.h2("Example gallery");
         intro.p("This gallery shows each example page beside the code that creates it. The Python and JavaScript integrations have the same examples.");
-        intro.p("Choose an example from the list. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. In Settings (⚙), enable Keyboard navigation to include the navigation links in the Tab sequence. Use the top bar to show or hide Navigation and Code; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
+        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. Use the Navigation and Code drawer labels to show or hide their panels; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
     }
     groupPanel(pane, group) { pane.div(group.readme, {id: `readme-${group.key}`}); }
     footer(footer) {
-        footer.html_button('⚙', {type: 'button', id: 'gallery-settings-toggle', class: 'gallery-settings-toggle',
-            title: 'Settings', aria_label: 'Settings', popovertarget: 'gallery-settings'});
-        const settings = footer.div({id: 'gallery-settings', popover: 'auto', aria_labelledby: 'gallery-settings-title'});
-        const heading = settings.div({class: 'gallery-settings-heading'});
-        heading.h2('Settings', {id: 'gallery-settings-title'});
-        heading.html_button('×', {type: 'button', aria_label: 'Close settings', popovertarget: 'gallery-settings', popovertargetaction: 'hide'});
-        super.footer(settings);
+        const settings = footer.div({class: 'gallery-settings-content'});
+        settings.div({class: 'gallery-settings-heading'}).h2('Settings', {id: 'gallery-settings-title'});
+        const theme = settings.div({class: 'index-theme'});
+        theme.html_label('Theme', {for: 'index-appearance'});
+        const appearance = theme.select({id: 'index-appearance', value: 'compact'});
+        appearance.option('Base', {value: 'base', selected: false});
+        appearance.option('Compact', {value: 'compact', selected: true});
+        appearance.option('mimi', {value: 'mimi'});
+        appearance.option('joanna', {value: 'joanna'});
+        const color = settings.div({class: 'index-theme'});
+        color.html_label('Color mode', {for: 'index-theme'});
+        const choices = color.select({id: 'index-theme', value: 'light'});
+        choices.option('Light', {value: 'light', selected: true});
+        choices.option('Dark', {value: 'dark', selected: false});
+        const keyboard = settings.div({class: 'index-keyboard'});
+        const label = keyboard.html_label({for: 'keyboard-navigation'});
+        label.input({type: 'checkbox', id: 'keyboard-navigation', checked: false});
+        label.span('Keyboard navigation');
+
+        if (this.constructor.installable) {
+            const app = settings.details({class: 'index-install'});
+            app.summary('Install app');
+            app.html_button('Install', {type: 'button', id: 'index-install-button', hidden: true});
+            app.p('', {id: 'index-install-status', role: 'status'});
+            app.p('Chrome: use Install page as app in the browser menu. Safari on macOS Sonoma or later: File > Add to Dock.');
+            app.p('Use HTTPS or localhost. For a static export, serve the directory; direct file opening is not installable. Keep the server running for hosted pages.');
+        }
         const labels = settings.div({class: 'index-theme'});
         labels.html_label('Label position', {for: 'gallery-label-position'});
         const position = labels.select({id: 'gallery-label-position', value: 'example'});
         position.option('As in the example', {value: 'example', selected: true});
         for (const code of ['TL', 'TC', 'TR', 'L', 'R', 'BL', 'BC', 'BR']) position.option(code, {value: code});
         settings.p("Label position applies to input components in the previews. Choose As in the example to restore the lesson's layout.");
-        const inspector = footer.html_button({type: 'button', id: 'gallery-inspector', class: 'gallery-inspector',
-            title: 'Open inspector', aria_label: 'Inspector', aria_pressed: 'false', disabled: true});
-        inspector.span('🔍', {aria_hidden: 'true'});
 
     }
     header(shell) {
         const header = shell.header({class: 'gallery-toolbar'});
-        header.html_button('☰ Navigation', {type: 'button', id: 'index-navigation-toggle',
-            aria_controls: 'index-sidebar', aria_expanded: 'true'});
-        header.html_button('☰', {type: 'button', id: 'gallery-mobile-menu', class: 'gallery-mobile-only',
-            aria_label: 'Navigation', aria_controls: 'index-sidebar', aria_expanded: 'false'});
         header.h1(this.constructor.title);
         header.span('', {id: 'gallery-load-status', role: 'status', aria_live: 'polite'});
-        header.html_button('Code ⟨/⟩', {type: 'button', id: 'index-code-toggle',
-            aria_controls: 'index-code', aria_expanded: 'false', disabled: true});
-        const views = header.div({class: 'gallery-mobile-views gallery-mobile-only', role: 'group', aria_label: 'Gallery view'});
-        for (const [view, caption] of [['example', 'Example'], ['code', 'Code'], ['inspector', 'Inspector']]) {
-            views.html_button(caption, {type: 'button', id: `gallery-view-${view}`, aria_pressed: String(view === 'example')});
-        }
+        const inspector = header.html_button({type: 'button', id: 'gallery-inspector', class: 'gallery-inspector',
+            title: 'Open inspector', aria_label: 'Inspector', aria_pressed: 'false', disabled: true});
+        inspector.span('🔍', {aria_hidden: 'true'});
+        inspector.span('Inspector');
+
     }
     behavior(shell) {
-        shell.html_button('', {type: 'button', id: 'gallery-mobile-backdrop', hidden: true,
-            aria_label: 'Close navigation', tabindex: -1});
+        shell.setAttr({class:'frame-page index-shell gallery-containers'});
+        shell.value.getNode('frame').setAttr({id:'gallery-regions', nodeId:'galleryRegions'});
         shell.section({id: 'gallery-inspector-panel', aria_label: 'Inspector'});
-        shell.script({src: this.constructor.galleryScript});
+        shell.dataController({func:'galleryInitialize', _onBuilt:true});
+        shell.dataController({func:'galleryMount', _onStart:true});
     }
 
     galleryItem(key) {
@@ -105,10 +127,17 @@ export class GalleryPage extends IndexPage {
         else if (view === 'description' && !item.examples) root.div(item.readme, {id: `readme-${key}`});
         else if (view === 'example') {
             if (item.examples) this.groupPanel(root, item);
-            else this.panel(root, item);
+            else this.examplePanel(root, item);
         } else throw new Error(`Unknown gallery view: ${key}/${view}`);
     }
-    panel(parent, example) {
+    panel(pane, node) {
+        const key = node.attr.key;
+        if (Object.hasOwn(node.attr,'markdown')) pane.div(node.attr.markdown,{class:'gallery-directory-markdown',padding:'24px'});
+        else if (node.attr.category || key == null) pane.iframe({src:node.attr.url, title:node.attr.title ?? node.label,
+            width:'100%', height:'100%', border:0});
+        else this.examplePanel(pane, this.galleryItem(key));
+    }
+    examplePanel(parent, example) {
         const key = example.key;
         const panel = parent.div({class: 'gallery-panel-layout'});
         const header = panel.header({class: 'gallery-explanation'});
@@ -141,3 +170,5 @@ export class GalleryPage extends IndexPage {
 }
 
 GalleryPage.registerSource('lesson');
+
+GalleryPage.registerEndpoint('navigation_section');

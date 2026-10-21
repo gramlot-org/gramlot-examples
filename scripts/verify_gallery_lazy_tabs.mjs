@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 /** Verify tabs created on selection and retained Data on both delivered galleries and offline export. */
 import assert from 'node:assert/strict';
 import {chromium, webkit} from 'playwright';
@@ -9,16 +10,16 @@ for (const engine of [chromium, webkit]) {
   page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()==='POST')calls.push(r.postData()||'');});
   await page.goto(base);await page.waitForFunction(()=>window.gramlot?.state==='started');await page.waitForLoadState('networkidle');
   assert.equal(await page.evaluate(()=>document.querySelector('#index-pages').children.length),1);assert.equal(await page.locator('iframe').count(),0);
-  await page.locator('#open-components').click();await page.locator('#panel-components h1').waitFor();
-  await page.locator('#open-w01').click();
+  await (await galleryRow(page, 'components')).click();await page.locator('#panel-components h1').waitFor();
+  await (await galleryRow(page, 'w01')).click();
   const frame=page.frameLocator('#frame-w01');await frame.locator('#customer input').waitFor();
   await frame.locator('#customer input').fill('Retained draft');await frame.locator('#customer input').press('Tab');
   assert.equal(await frame.locator('#customer-copy input').inputValue(),'Retained draft');
   await page.evaluate(()=>{window.testFrame=document.querySelector('#frame-w01');window.testSource=gramlot.src.renderer.elements.get(testFrame).node;});
   const firstCalls=calls.filter(s=>s.includes('lesson')&&s.includes('w01')).length;
   if(!base.startsWith('file:'))assert.equal(firstCalls,2);
-  await page.locator('#open-w02').click();await page.frameLocator('#frame-w02').locator('body').waitFor();
-  await page.locator('#open-w01').click();await page.waitForFunction(()=>gramlot.data.getItem('galleryIndex.active')==='w01');
+  await (await galleryRow(page, 'w02')).click();await page.frameLocator('#frame-w02').locator('body').waitFor();
+  await (await galleryRow(page, 'w01')).click();await page.waitForFunction(()=>gramlot.data.getItem('galleryIndex.active')==='w01');
   assert.equal(await page.evaluate(()=>document.querySelector('#frame-w01')===testFrame && gramlot.src.renderer.elements.get(testFrame).node===testSource),true);
   assert.equal(await frame.locator('#customer input').inputValue(),'Retained draft');
   assert.equal(calls.filter(s=>s.includes('lesson')&&s.includes('w01')).length,firstCalls);
@@ -31,8 +32,8 @@ for (const engine of [chromium, webkit]) {
   assert.equal(await frame.locator('#customer input').inputValue(),'Retained draft');
   await page.setViewportSize({width:1440,height:1000});
   if(!base.startsWith('file:')) {
-  await page.locator('#open-layout').click();await page.locator('#panel-layout h1').waitFor();
-  await page.locator('#open-l04').click();await page.frameLocator('#frame-l04').locator('body').waitFor();
+  await (await galleryRow(page, 'layout')).click();await page.locator('#panel-layout h1').waitFor();
+  await (await galleryRow(page, 'l04')).click();await page.frameLocator('#frame-l04').locator('body').waitFor();
   await page.waitForFunction(()=>gramlot.data.getItem('galleryGuide.available')===true);
   await page.locator('#gallery-guide-play').click();await page.waitForFunction(()=>gramlot.data.getItem('galleryGuide.status')==='running');
   await page.locator('#gallery-guide-stop').click();

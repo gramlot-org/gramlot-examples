@@ -1,13 +1,16 @@
 import {collections} from './gallery/collections.js';
 /** Gramlot example pages, the gallery page and its catalogue. */
-import {existsSync, readFileSync} from 'node:fs';
-import {basename, extname, join} from 'node:path';
+import {existsSync, readFileSync, readdirSync, statSync, lstatSync, realpathSync} from 'node:fs';
+import {Bag} from '@gramlot/gramlot';
+import {basename, extname, join, relative, sep, isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
+const require = createRequire(import.meta.url);
 
 const PACKAGE = fileURLToPath(new URL('./', import.meta.url));
 const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json'};
 const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js'];
-const DIST = ['gallery.js', 'frame.js', 'inputs.js', 'layout.js', 'notices.json', 'LICENSE', 'NOTICE'];
+const DIST = ['gallery.js', 'frame.js', 'inputs.js', 'layout.js', 'tree.js', 'notices.json', 'LICENSE', 'NOTICE'];
 
 /** Media type of a gallery asset; only the built gallery scripts are served as JavaScript. */
 function mediaType(path, script = false) {
@@ -28,7 +31,7 @@ function readCatalog(catalog, pages, common) {
                 throw new Error(`Example key '${example.key}' does not match ${environment}-NN: ${catalog}`);
             }
         }
-        return {...family, path: join(pages, family.key)};
+        return {...family, path: join(pages, family.folder)};
     });
 }
 
@@ -72,12 +75,76 @@ export function buildGallery({catalogs = []} = {}) {
             if (!existsSync(page)) throw new Error(`Missing page: ${page}`);
             const stylesheet = join(folder, `${example.folder}.css`);
             const logic = [join(folder, `${example.folder}_aux.js`), page].find(path => existsSync(path));
-            routes[example.key] = {page, stylesheet: existsSync(stylesheet) ? stylesheet : null, logic};
+            routes[example.key] = {page, stylesheet: existsSync(stylesheet) ? stylesheet : null, logic, url: `pages/${family.folder}/${example.folder}`};
             for (const suffix of SUFFIXES) {
                 const source = join(folder, `${example.folder}${suffix}`);
-                if (existsSync(source)) assets[`/pages/${family.key}/${basename(source)}`] = {file: source, type: mediaType(source)};
+                if (existsSync(source)) assets[`/pages/${family.folder}/${relative(folder,source).split(sep).join('/')}`] = {file: source, type: mediaType(source)};
             }
         }
     }
+    const known=new Set(Object.values(routes).map(route=>realpathSync(route.page)));
+    const visit=(base,prefix)=>{
+        for(const name of readdirSync(base).sort()) {
+            const path=join(base,name);
+            if(name.startsWith('.')||name.startsWith('_')||lstatSync(path).isSymbolicLink())continue;
+            if(statSync(path).isDirectory())visit(path,`${prefix}/${name}`);
+            else if(name.endsWith('.js')&&!name.endsWith('_aux.js')&&!known.has(realpathSync(path))) {
+                const key=`${prefix}/${basename(name,'.js')}`;
+                const stylesheet=path.slice(0,-3)+'.css';
+                routes[key]={page:path,stylesheet:existsSync(stylesheet)?stylesheet:null,logic:null,url:key};
+            }
+        }
+    };
+    visit(join(PACKAGE,'pages'),'pages');
+    for(const family of families)if(!family.path.startsWith(join(PACKAGE,'pages')+sep))visit(family.path,`pages/${family.folder}`);
     return {families, routes, assets, collections};
+}
+
+/** Read the title from the actual page class, or the first Markdown H1. */
+export function pageTitle(path) {
+    if (extname(path) === '.md') {
+        const match = readFileSync(path, 'utf8').match(/^# +(.+?)\s*#*\s*$/m);
+        if (!match) throw new Error(`Markdown index requires a level-one heading: ${path}`);
+        return match[1];
+    }
+    return require(path).Page.title;
+}
+
+export function directoryIndex(folder) {
+    const indexes = ['00-index.js', '00-index.md'].map(name => join(folder, name)).filter(existsSync);
+    if (indexes.length !== 1) throw new Error(`Directory requires exactly one executable or Markdown index: ${folder}`);
+    return indexes[0];
+}
+
+/** Read one numbered filesystem level, without exposing its own index. */
+export function navigationDirectory(directory = '', catalogs = []) {
+    const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
+    for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
+    const groups = new Map(families.map(group => [group.folder, group]));
+    const parts = directory ? directory.split('/') : [];
+    if (parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw new Error('Invalid navigation directory');
+    const boundary = parts.length && groups.has(parts[0]) ? groups.get(parts[0]).path : join(PACKAGE, 'pages');
+    const folder = join(boundary, ...(parts.length && groups.has(parts[0]) ? parts.slice(1) : parts));
+    const rel = relative(realpathSync(boundary), realpathSync(folder));
+    if (rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) throw new Error('Navigation directory is outside its pages root');
+    const files = new Map(readdirSync(folder).map(name => [name, join(folder, name)]));
+    if (!parts.length) for (const [name, group] of groups) files.set(name, group.path);
+    const bag = new Bag();
+    for (const [name, path] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
+        if (name.startsWith('.') || name.startsWith('_') || lstatSync(path).isSymbolicLink()) continue;
+        const childPath = [...parts, name].join('/');
+        if (statSync(path).isDirectory()) {
+            const index = directoryIndex(path);
+            const attrs = {title: pageTitle(index), category: true, directory: childPath, url: `pages/${childPath}/00-index`};
+            if (extname(index) === '.md') attrs.markdown = readFileSync(index, 'utf8');
+            bag.setItem(!parts.length && groups.has(name) ? groups.get(name).key : name, null, attrs);
+        } else if (extname(path) === '.js' && basename(name, '.js') !== '00-index' && !name.endsWith('_aux.js')) {
+            const stem = basename(name, '.js');
+            const example = groups.get(parts[0])?.examples.find(item => item.folder === [...parts.slice(1), stem].join('/'));
+            const attrs = {title: pageTitle(path), url: `pages/${[...parts, stem].join('/')}`, category: false};
+            if (example) attrs.key = example.key;
+            bag.setItem(example ? example.key : stem, null, attrs);
+        }
+    }
+    return bag;
 }
