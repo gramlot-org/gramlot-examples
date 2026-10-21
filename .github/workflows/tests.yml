@@ -37,7 +37,7 @@ jobs:
           repository: gramlot-org/gramlot-js-server
           ref: develop
           path: integration
-      - run: npm install --ignore-scripts --package-lock=false --no-save ./integration/serverless
+      - run: npm install --ignore-scripts --package-lock=false --no-save ./integration/serverless @gramlot/gramlot-examples@file:.
       - run: npm run build
       - run: python -m pip install -r requirements-docs.txt
       - run: python scripts/prepare_docs.py
