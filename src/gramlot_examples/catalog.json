@@ -72,7 +72,7 @@
           "title": "Cards with icons",
           "folder": "04-page_composition/01-cards_with_icons",
           "description": "HTML cards with SVG icons and live Source removal.",
-          "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+          "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
         },
         {
           "key": "e11",
@@ -521,6 +521,38 @@
           "folder": "09-tree/04-internal_drag",
           "title": "Internal tree drag and drop",
           "description": "Copy documents between two Bag trees, reject locked folders and observe browser gesture completion."
+        },
+        {
+          "key": "code_mirror",
+          "title": "CodeMirror",
+          "folder": "10-code_editors/01-base",
+          "description": "A live CodeMirror editor bound to Data.",
+          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
+        },
+        {
+          "key": "code_mirror_options",
+          "title": "CodeMirror with options",
+          "folder": "10-code_editors/02-options",
+          "description": "A live CodeMirror editor bound to Data.",
+          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
+        },
+        {
+          "key": "html_editor",
+          "title": "HTML: code, preview and Jodit",
+          "folder": "10-code_editors/03-html",
+          "description": "Edit and preview one HTML document with CodeMirror and Jodit."
+        },
+        {
+          "key": "markdown_editor",
+          "title": "Markdown: code, preview and rich text",
+          "folder": "10-code_editors/04-markdown",
+          "description": "Edit and preview one Markdown document with CodeMirror and ProseMirror."
+        },
+        {
+          "key": "typst_editor",
+          "title": "Typst: editor, preview and PDF",
+          "folder": "10-code_editors/05-typst",
+          "description": "Compile a Typst draft to SVG and PDF in the browser, also offline."
         }
       ],
       "folder": "04-input_components"

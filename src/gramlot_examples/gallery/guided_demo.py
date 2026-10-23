@@ -62,7 +62,8 @@ def guided_demo(parent):
                             voice=False, rate="1", voiceAvailable=False, voiceMessage="", available=False).items():
         parent.dataSetter(f"galleryGuide.{name}", value)
     panel = parent.contentPane(region="bottom", height="190px", minSize=140, maxSize=300,
-        splitter=True, drawer=True, drawer_label="Guide", drawer_icon="▶",
+        splitter=True, drawer="close", drawer_label="Guide", drawer_minimize=False,
+        drawer_title="Show or hide guide",
         nodeId="galleryGuidePanel", id="gallery-guide", class_="gallery-guide", padding="12px 16px",
         border_top="1px solid var(--gramlot-border)", background="var(--gramlot-surface-subtle)")
     toolbar = panel.div(class_="gallery-guide-toolbar")

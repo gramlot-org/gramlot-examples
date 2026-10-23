@@ -77,7 +77,7 @@ class Page(IndexPage):
         intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. "
                 "Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. "
                 "Use the Navigation and Code drawer labels to show or hide their panels; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. "
-                "Choose Base, Compact, mimi or joanna independently of the color mode.")
+                "Choose the theme, color combination and light/dark mode independently in Settings.")
 
     def group_panel(self, pane, group):
         pane.div((group["path"] / "README.md").read_text(), id=f"readme-{group['key']}")
@@ -93,11 +93,20 @@ class Page(IndexPage):
         appearance.option("Compact", value="compact", selected=True)
         appearance.option("mimi", value="mimi")
         appearance.option("joanna", value="joanna")
+        palette = settings.div(class_="index-theme")
+        palette.html_label("Colors", for_="index-palette")
+        colors = palette.select(id="index-palette", value="default")
+        colors.option("Theme default", value="default", selected=True)
+        colors.option("Blue & slate", value="compact")
+        colors.option("Sage & green", value="mimi")
+        colors.option("Warm gray & blue", value="joanna")
         color = settings.div(class_="index-theme")
         color.html_label("Color mode", for_="index-theme")
         choices = color.select(id="index-theme", value="light")
         choices.option("Light", value="light", selected=True)
         choices.option("Dark", value="dark", selected=False)
+        settings.p("Colors change surfaces, text and accents without changing density. "
+                   "Theme default restores the chosen theme's own colors.")
         keyboard = settings.div(class_="index-keyboard")
         label = keyboard.html_label(for_="keyboard-navigation")
         label.input(type="checkbox", id="keyboard-navigation", checked=False)
@@ -195,11 +204,31 @@ class Page(IndexPage):
 
     def code_panel(self, parent, example):
         key = example["key"]
-        source_path = example["path"] / f"{example['folder']}.py"
+        document = self.source_document(key)
+        pane = parent.contentPane(title="Python", pageName="python", id=f"code-panel-{key}")
+        scope = "galleryIndex.sourceDocuments.s_" + key.encode("utf-8").hex()
+        body = pane.div(datapath=scope, height="100%", display="flex", flex_direction="column")
+        for name, value in dict(content=document["content"], saved=document["content"],
+                                revision=document["revision"], readonly=not document["writable"],
+                                busy=False, saveDisabled=True, revertDisabled=True,
+                                status="" if document["writable"] else "Read only: remote editing is disabled.").items():
+            body.dataSetter(f".{name}", value)
+        toolbar = body.div(display="flex", gap="6px", padding="6px", flex_shrink=0,
+                           class_="gallery-code-toolbar", hidden="^.readonly")
+        toolbar.button("Save", class_="button--quiet", disabled="^.saveDisabled").dataController(
+            func="galleryCodeSave", key=key)
+        toolbar.button("Revert", class_="button--quiet", disabled="^.revertDisabled").dataController(
+            func="galleryCodeRevert", key=key)
+        body.div("^.status", role="status", padding="6px", white_space="pre-wrap", flex_shrink=0,
+                 id=f"code-status-{key}")
+        body.codeMirror(value="^.content", language="python", readonly="^.readonly", flex="1", min_height=0,
+                        id=f"code-{key}", nodeId=f"galleryCodeEditor_{key}")
+        body.dataController(func="galleryCodeMount", key=key, _onStart=True)
+        body.dataController(func="galleryCodeSave", key=key, **{f"subscribe_galleryCodeEditor_{key}_save": True})
         logic_path = example["logic"]
         codepane = parent
         codepane.contentPane(title="Python", pageName="python", id=f"code-panel-{key}").pre(
             tabindex=0).code(source_path.read_text(), class_="language-python", id=f"code-{key}")
         if logic_path is not None:
-            codepane.contentPane(title="logic.js", pageName="logic", id=f"logic-panel-{key}").pre(
+            parent.contentPane(title="logic.js", pageName="logic", id=f"logic-panel-{key}").pre(
                 tabindex=0).code(logic_path.read_text(), class_="language-javascript", id=f"logic-{key}")

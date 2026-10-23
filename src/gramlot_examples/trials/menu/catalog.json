@@ -1,0 +1,110 @@
+{
+  "environment": "menu",
+  "families": [
+    {
+      "key": "menu-trial",
+      "title": "Menus, toolbars and framePane",
+      "folder": "menu",
+      "examples": [
+        {
+          "key": "menu-02",
+          "title": "One menu: popup, horizontal, vertical and contextual",
+          "folder": "02_popup",
+          "description": "One hierarchy with icons, separators, checked and disabled, reused in four presentations plus exact opening modifiers.",
+          "explanation": "Read the instructions above each example. The shared controls update every presentation."
+        },
+        {
+          "key": "menu-03",
+          "title": "Toolbar: groups, priority and overflow",
+          "folder": "03_toolbar",
+          "description": "Compact toolbar, retained search, indivisible groups, priority overflow and scrolling.",
+          "explanation": "Use the width slider. Instructions above each example explain what moves and what stays."
+        },
+        {
+          "key": "menu-07",
+          "title": "Vertical icon toolbar",
+          "folder": "07_vertical_toolbar",
+          "description": "Large icons, tooltip, selected state, separators and priority overflow in a narrow rail.",
+          "explanation": "Use the height slider, select an icon, and open Tools or overflow. Chevrons follow toolbar orientation."
+        },
+        {
+          "key": "menu-08",
+          "title": "Classic menu bar and hierarchy",
+          "folder": "08_menu_bar",
+          "description": "Named top-level menus, nested side-opening submenus, checked and disabled entries.",
+          "explanation": "Try File \u2192 Export \u2192 Image and View \u2192 Show details."
+        },
+        {
+          "key": "menu-04",
+          "title": "Reactive menu states",
+          "folder": "04_live_states",
+          "description": "Shared checked, disabled and hidden bindings in popup and toolbar.",
+          "explanation": "Read the Python source and the explanation, then try the controls. This chapter uses the provisional menu/frame API."
+        },
+        {
+          "key": "menu-05",
+          "title": "FramePane: regions and recipient",
+          "folder": "05_frame_pane",
+          "description": "Five regions, multiple bars, five-field messages and nested frame isolation.",
+          "explanation": "Read the Python source and the explanation, then try the controls. This chapter uses the provisional menu/frame API."
+        },
+        {
+          "key": "menu-06",
+          "title": "Resolver menus and nested Bags",
+          "folder": "06_resolver",
+          "description": "Direct resolver, nested Bags, lazy submenus, live states, empty results and retry.",
+          "explanation": "Read the Python source and the explanation, then try the controls. This chapter uses the provisional menu/frame API."
+        },
+        {
+          "key": "menu-01",
+          "title": "Complete document workspace",
+          "folder": "01_menu_trial",
+          "description": "Popup and toolbar together, central content, bindings, remote export, confirmation and delay.",
+          "explanation": "Read the Python source and the explanation, then try the controls. This chapter uses the provisional menu/frame API."
+        },
+        {
+          "key": "menu-09",
+          "title": "FramePane, dialog and floating",
+          "folder": "09_windows",
+          "description": "Modal and nonmodal windows around a retained frame, with movement, resize and collapse.",
+          "explanation": "Compare defaults, collapsed modality, close guards and background interaction."
+        },
+        {
+          "key": "menu-10",
+          "title": "Complete dialog editor: Save and Cancel",
+          "folder": "10_dialog_editor",
+          "description": "A modal framePane with a top toolbar, editable draft and bottom Save/Cancel actions.",
+          "explanation": "Follow the steps above the editor. Compare the saved document after Save and Cancel; try reset, details, validation and window controls."
+        },
+        {
+          "key": "menu-11",
+          "title": "Joanna \u00b7 professional density",
+          "folder": "11_joanna",
+          "description": "32px controls / 14px text \u2014 forms, tabs, menus, table and windows.",
+          "explanation": "Compare the three profiles on the same specimen; try focus, disabled states, menus and window controls."
+        },
+        {
+          "key": "menu-12",
+          "title": "Compact \u00b7 professional density",
+          "folder": "12_compact",
+          "description": "28px controls / 13px text \u2014 forms, tabs, menus, table and windows.",
+          "explanation": "Compare the three profiles on the same specimen; try focus, disabled states, menus and window controls."
+        },
+        {
+          "key": "menu-13",
+          "title": "Mimi \u00b7 professional density",
+          "folder": "13_mimi",
+          "description": "24px controls / 12.5px text \u2014 forms, tabs, menus, table and windows.",
+          "explanation": "Compare the three profiles on the same specimen; try focus, disabled states, menus and window controls."
+        },
+        {
+          "key": "menu-14",
+          "title": "Complete floating editor: Save and Cancel",
+          "folder": "14_floating_editor",
+          "description": "The same editor in a nonmodal floating window, with top toolbar, fields and bottom Save/Cancel.",
+          "explanation": "Compare with Complete dialog editor using the same gallery theme and colors. Move or collapse the window and edit Background note to verify the page remains usable."
+        }
+      ]
+    }
+  ]
+}

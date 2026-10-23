@@ -42,7 +42,7 @@ same-name README:
   parent/child messages, plain HTML buttons and delayed Gramlot clicks. The package
   requires the current core release; each lesson states which features it uses.
 
-- `components/`: twenty-five lessons for inputs, labelbox, formlet, group copy,
+- `components/`: thirty-four lessons for inputs, labelbox, formlet, group copy,
   command buttons and field validation (`w01`–`w25`), with compact controls.
 - `layout/`: eight container lessons (`l01`–`l08`), with live splitters, drawers,
   nested layouts, selection and closing events, fourteen tab presentations,

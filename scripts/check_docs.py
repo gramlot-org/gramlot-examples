@@ -41,7 +41,7 @@ def main():
             expected.add(f"{prefix}/{example['folder']}.html")
             lessons[f"{prefix}/{example['folder']}.html"] = example['key']
             count += 1
-    playground = {f'playgrounds/{key}/index.html' for key in lessons.values()}
+    playground = {'playgrounds/index.html', *(f'playgrounds/{key}/index.html' for key in lessons.values())}
     actual = {str(p.relative_to(site)) for p in site.rglob('*.html')}
     assert actual == expected | playground, f'Public page coverage differs: {actual ^ (expected | playground)}'
     parsed = {}

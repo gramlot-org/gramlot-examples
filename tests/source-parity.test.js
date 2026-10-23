@@ -4,9 +4,7 @@ import test from 'node:test';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {GramlotBuilder} from '@gramlot/gramlot';
-import inputs from '@gramlot/gramlot/components/inputs';
-import tree from '@gramlot/gramlot/components/tree';
-import layout from '@gramlot/gramlot/components/layout';
+import {collections} from '../src/gramlot_examples/gallery/collections.js';
 import catalog from '../src/gramlot_examples/catalog.json' with {type: 'json'};
 import {guidedDemo} from '../src/gramlot_examples/gallery/guided-demo.js';
 const python = process.env.GRAMLOT_TEST_PYTHON ?? 'python3';
@@ -51,7 +49,7 @@ def source(bag):
     return [dict(tag=n.node_tag.lower() if n.node_tag else n.label, attrs=normalize(n.attr),
                  value=source(n.value) if hasattr(n.value, 'nodes') else normalize(n.value)) for n in bag.nodes]
 
-b=GramlotBuilder(collections=[c['grammar'] for c in collections()])
+b=GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in collections()])
 options = None
 if sys.argv[1] == 'guide': guided_demo(b.root)
 else:
@@ -63,7 +61,7 @@ print(json.dumps(dict(source=source(b.source), options=options)))
 `;
 for (const example of [...catalog.families.flatMap(family => family.examples.map(item => ({...item, family: family.folder}))), {key: 'guide'}]) {
     test(`${example.key}: Python and JavaScript author equivalent Source and page options`, async () => {
-        const b = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument(), tree.toDocument()]});
+        const b = new GramlotBuilder(null, {collections: collections.map(item => item.grammar)});
         const path = example.key === 'guide' ? 'guide' : `src/gramlot_examples/pages/${example.family}/${example.folder}.py`;
         let options = null;
         if (path === 'guide') guidedDemo(b.root);

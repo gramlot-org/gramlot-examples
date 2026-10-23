@@ -4,6 +4,8 @@ import test from 'node:test';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {GramlotBuilder} from '@gramlot/gramlot';
+import editors from '@gramlot/gramlot/components/editors';
+import typst from '@gramlot/gramlot/components/typst';
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import catalog from '../src/gramlot_examples/catalog.json' with {type: 'json'};
@@ -37,7 +39,7 @@ def normalize(v):
 def source(bag):
     return [dict(tag=n.node_tag.lower(), attrs=normalize(n.attr), value=source(n.value) if hasattr(n.value, 'nodes') else normalize(n.value)) for n in bag.nodes]
 
-b=GramlotBuilder(collections=[c['grammar'] for c in collections()])
+b=GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in collections()])
 if sys.argv[1] == 'guide': guided_demo(b.root)
 else:
     spec=importlib.util.spec_from_file_location('example', sys.argv[1]); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)

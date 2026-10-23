@@ -1,113 +1,72 @@
 # Gramlot examples
 
-The [gallery](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md) presents the same examples in Python and
-JavaScript, in four families:
+Learn the current framework by building up one concept at a time: Source, Data
+binding, behavior, input components and containers. The lesson order follows
+learning prerequisites, not the release chronology.
 
-- [`html_svg/`](01-html_elements/): thirteen HTML and SVG pages, without binding.
-- [`binding/`](02-binding/): eleven pages whose DOM follows the Data through pointers,
-  editing, booleans, style, SVG and freeze. The last three take the content of
-  `html_svg` examples 06, 08 and 12 and add the binding.
-- [`controllers/`](03-controllers/): twenty-three pages with formulas, controllers, named
-  logic in the `Logic` class of the page module, inline expressions, node methods, buttons,
-  events, the end-to-end story, `dataRpc` calls to the endpoints of the page, `remote`
-  fragments and `dataRemote` values.
+## A route through the lessons
 
-- [`components/`](04-input_components/): twenty-five lessons for inputs, labelbox, layout,
-  command buttons and validation, with compact desktop/touch presentation.
-
-Each example is a file page: `NN_name.py`, its JavaScript equivalent `NN_name.js`,
-its README `NN_name.md`, and where needed a same-name stylesheet `NN_name.css`.
-`NN_name.js` exports `Page`, and `Logic` when the page names client methods: the
-JavaScript page uses both, the Python page takes `Logic` from it. A page without client
-methods exports no `Logic`. The pages use only what the core `GramlotFileServer` serves:
-the base theme, `Page.css` for the stylesheets added after it, the same-name stylesheet,
-the `Logic` of the page module, the endpoints and the Source fragments of the page. The gallery
-adds its own files: the frame script, a staged `<key>_aux.js` per example and its
-assets ([GE-010 §025](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md#ge-010-025)).
-
-The pages depend only on the Gramlot core. Shared visual styling is the
-`gramlot-base` theme shipped in the core package. The server links it to every page
-(its `css_theme` option, `cssTheme` in JavaScript), so no page lists it in `Page.css`;
-it is served at `/themes/gramlot-base/theme.css`.
-
-## Learn through the release sequence
-
-The sections follow the chronological growth of Gramlot. Start with Source, then
-return to the same interface as later releases add Data bindings, controllers,
-endpoint calls and remote content. The same example may appear more than once:
-compare the earlier code with the later declaration, identify what is removed and
-explain why the result still works. Repetition for this comparison is intentional.
-
-Use the [core release-by-release learning route](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md#gc-025-015) for the milestones and
-references. These labels name **core** releases, not the independent release
-numbers of this package. The gallery's maintained pages are not frozen executable
-copies of old packages: historical forms must be labelled, not installed through
-pinned/downgraded dependencies. Each of the 41 lessons opens with a short description and feature scope.
-Section introductions state which library features are used at each release stage.
-Guided trials, exercises and limits remain available under **More detail**, closed
-initially so the gallery starts with just the introduction. Before/after comparisons distinguish reduced
-coordination from added behavior; the complete-page lesson retains its local stage and adds a separate endpoint
-trial; explicitly blocked advanced topics remain separate work. The identity-aware auth walkthrough lives in the Kajenn
-adapter guide.
-
-| Stage | Existing examples | Comparison to make |
+| Family | Lessons | What you learn |
 | --- | --- | --- |
-| 0.1.x Source foundation | e01–e13, beginning with e01 | Structure, native controls and SVG before Data binding. The maintained live Source demonstrations add later inline browser actions. |
-| 0.2.0 binding and controllers | b01–b11, c01–c08, c15 and the first part of c16 | Return to forms e06→b09, SVG e08→b10 and composition e12→b11. Follow Data instead of manually synchronizing presentation. c08 combines local behavior. |
-| 0.2.3 Data-srcdoc sandbox | Later section of c16 | Distinguish bound text from a separate sandboxed HTML preview. |
-| 0.2.5 page module and Data exchange | c03, c17 and the shared Logic beside Python | Save/restore the same form record; distinguish TYTX from JSON/XML exports. The public utility path changed in 0.2.10. |
-| 0.2.14 endpoints | c09–c11, then return to c08’s later section | Move from local effects to a Page method returning a value into Data. Explain success, error and default refusal. |
-| 0.2.15 Source authorization | Later section of c11; identity-aware adapter guide | Server removes refused Source subtrees. Common pages do not demonstrate authenticated allow/deny. |
-| 0.2.16 remote and lazy Data | c12–c14 | Compare returning a value with mounting Source and with loading a value only when read. |
+| [HTML / SVG](01-html_elements/README.md) | 13 | HTML structure, native controls and SVG before reactive Data. |
+| [Binding](02-binding/README.md) | 11 | Pointers, live and committed editing, Boolean values, styles and shared Data. |
+| [Controllers](03-controllers/README.md) | 23 | Formulas, named Logic, events, commands, endpoints, remote Source and lazy Data. |
+| [Input components](04-input_components/README.md) | 34 | Fields, choices, typed values, validation, labels, tree and document editors. |
+| [Containers](05-containers/README.md) | 8 | Regions, splitters, drawers, nested layouts, tabs and stacked panels. |
 
-Within a stage, use prerequisites to understand a page; they do not reorder the
-release narrative. c08 retains its original local stage and appends a labelled 0.2.14 quote trial.
-Return there after c09/c11: compare live local totals with an explicit server
-snapshot, failure retaining the last quote, and recovery.
-The runtime naming changes between the page module and endpoint milestones are
-covered in the core reference, without inventing extra example stages.
+Each lesson says what to observe and provides complete Python and JavaScript
+source. Start with its small example, change one value, then compare the visible
+result with Source and Data. The same concept can return in a richer composition.
+
+## Run an example here
+
+Read the lesson, then use its embedded Gramlot playground. Open it in a separate
+tab for a wider workspace. The Inspector button exposes its Data and Source.
+The documentation build exports real JavaScript Page/Logic modules through the
+standard serverless exporter; it does not execute a Python web server inside
+Read the Docs. Its Python source shows the equivalent authoring declarations.
+
+Use the local Python gallery for Python endpoints, filesystem features and the
+additional development chapters. A browser Worker can execute its own exported
+JavaScript handlers; it does not provide a secret store or database connection.
+
+## Use the gallery
+
+Choose a lesson in the navigation tree. **Example** shows the running page;
+**Explanation** describes what to try. The Code region shows the authoring source.
+In **Settings**, choose Theme, Colors and Color mode independently. Compact,
+Mimi and Joanna provide different densities; color changes do not discard Data.
+
+The drawer lesson's **Guide** starts closed. Click its visible handle to open or
+close it; keeping it closed leaves the whole preview available for experimentation.
+Closing a region or changing tabs preserves the controls according to the owning
+container's contract. Application Save/Cancel semantics remain application logic.
+
+## Look up a component or extend the framework
+
+- [Widget and parameter reference](https://gramlot.readthedocs.io/en/latest/docs/public/345-widget-reference.html): declarations, defaults, bindings and collections.
+- [Components and collections](https://gramlot.readthedocs.io/en/latest/docs/public/340-components-and-collections-guide.html): JS definitions, generated Python descriptors, resources and overrides.
+- [Menus, toolbars, frames and windows](https://gramlot.readthedocs.io/en/latest/docs/public/350-menus-toolbars-and-windows.html): shared commands and development window composition.
+- [Themes and CSS](https://gramlot.readthedocs.io/en/latest/docs/public/096-themes-and-css.html): density, palette, labels and shared tokens.
+
+New development chapters may not yet be present in the latest published manual;
+use matching checkouts/packages when trying their APIs.
 
 ## Setup and use
 
-Basic Python, an editor and a browser are enough for the Python route. Follow the
-[core setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md#gc-025-010)
-to open a gallery and create a separate editable page. The gallery shows source;
-it does not save edits to source files. Python builds Source on its server; the
-JavaScript Logic beside it runs in the browser. JS Pages also run on Node/Bun or
-in a standalone Worker. After saving a change, reload/reopen as the environment
-guide explains. Predict the result first, then explain it using Source and Data.
+The [Python server manual](https://gramlot-py-server.readthedocs.io/en/latest/)
+and [JavaScript server manual](https://gramlot-js-server.readthedocs.io/en/latest/)
+own installation and startup. This package supplies the pages, gallery and
+catalogue, and depends on the Gramlot core; it contains no web server.
 
-For example, in c01 changing VAT alone does not recalculate gross; changing
-quantity afterwards uses the new VAT. This exercise checks ^ versus =; it is not
-a reason to move the lesson out of its release stage.
+Each common lesson has `.py`, `.js` and `.md` files and optional `.css`. JavaScript
+modules export Page and Logic; Python pages reuse the browser Logic. Endpoints,
+remote fragments and named methods follow the shared Gramlot contracts.
 
 ## Current teaching limits
 
-The catalogue now has 41 lessons: the 38 revised pages and three focused additions.
-c15 demonstrates lifecycle, c16 templates/mask and sandboxed srcdoc, and c17 local
-Data exchange; b01/c02/c11 add paths, path filtering and Source authorization.
-Keys remain stable; the controller menu places c15/c16/c17 before c09 to follow
-core 0.2.0 → 0.2.3 → 0.2.5 → 0.2.14, not numeric key order.
-The nested-Date initialization extension of c17 is blocked by an owning-library
-defect; dates/decimals are not claimed as covered by that page. Mail/HTTP need
-explicit actions or environment-owned fixtures. Named resource groups need
-genro-kajenn. c08 now includes its bounded later endpoint exercise. D6 checks
-qualify the local teaching candidate in the eight documented environments; owner
-teaching acceptance remains separate. See the dated qualification record linked
-from [the gallery guide](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/010-gallery.md#ge-010-030).
-c13/c14 separate the basic trial from advanced cache/error/lifetime exercises.
-In c13, “Mounted fragments” counts successful mounts; HTTP calls must be observed
-independently. c14 has an explicit read button to distinguish a stored snapshot
-from a later response. A startup check alone does not qualify every exercise in an
-environment.
-
-The common FileServer gallery has no named resource groups: css_requires,
-js_requires and named connect_on handlers need genro-kajenn's resource host.
-The Kajenn adapter's auth capability is separate from that resource system.
-Authentication allow/deny needs an identity-aware environment; c11 demonstrates
-anonymous refusal. Planned lessons are not part of this catalogue until delivered.
-
-The environment controls CSP: a strict named-Logic starter project cannot execute
-inline gallery code unchanged. A standalone Worker is not an external server and
-does not provide secret storage or database access. Keep these limits visible
-when adapting a lesson.
+The examples are learning tools, not complete business applications. They do not
+supply login policy, database persistence or a record/form framework. Check the
+lesson's endpoint requirements and the selected environment. Inline JavaScript
+examples also require a compatible CSP; a named-Logic-only deployment must use
+named Logic rather than simply enabling inline execution.

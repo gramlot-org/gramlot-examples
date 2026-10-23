@@ -1,0 +1,33 @@
+{
+  "document_format": {
+    "name": "gramlot_commands",
+    "version": "1.0"
+  },
+  "groups": {
+    "documenti": {
+      "author": "Gramlot examples",
+      "commands": {
+        "export": {
+          "icon": "↓",
+          "label": "Export",
+          "publish": "export"
+        },
+        "save": {
+          "icon": "💾",
+          "label": "Save",
+          "publish": "save"
+        },
+        "toggleDetails": {
+          "icon": "☰",
+          "label": "Details",
+          "publish": "toggleDetails"
+        },
+        "undo": {
+          "icon": "↶",
+          "label": "Undo",
+          "publish": "undo"
+        }
+      }
+    }
+  }
+}

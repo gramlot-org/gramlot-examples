@@ -22,6 +22,12 @@ MEDIA_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; chars
 RESOURCES = Path(files("gramlot")) / "resources"
 
 
+class CollectionServer(GramlotFileServer):
+    def collection_url(self, collection, path):
+        from urllib.parse import quote
+        return f'/gramlot/collections/{quote(collection.name,safe="")}/{collection.build_id[7:]}/{path}'
+
+
 class PagesServer(ThreadingHTTPServer):
     """The loopback server of one pages folder and its GramlotFileServer."""
 
@@ -32,7 +38,7 @@ class PagesServer(ThreadingHTTPServer):
         self.assets = gallery["assets"]
         self.routes = {example["key"]: f'{family["folder"]}/{example["folder"]}'
                        for family in gallery["families"] for example in family["examples"]}
-        self.gramlot_server = GramlotFileServer(self.pages, collections=gallery["collections"])
+        self.gramlot_server = CollectionServer(self.pages, collections=gallery["collections"])
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -60,6 +66,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         server, path = self.server.gramlot_server, self.path.split("?", 1)[0]
+        if path.startswith('/gramlot/collections/'):
+            from urllib.parse import unquote
+            parts=unquote(path).removeprefix('/gramlot/collections/').split('/',2)
+            if len(parts)==3:
+                name,digest,resource=parts
+                for collection in server.collections:
+                    if collection.name==name and collection.build_id=='sha256:'+digest and resource.startswith('assets/') and resource in collection.files:
+                        content=collection.verify()
+                        return self.reply(200,content[resource],MEDIA_TYPES.get(Path(resource).suffix,'application/octet-stream'))
+            return self.reply(404,'Not found','text/plain')
         if path in self.server.assets:
             asset = self.server.assets[path]
             return self.reply(200, asset["file"].read_bytes(), asset["type"])
