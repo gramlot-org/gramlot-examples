@@ -44,7 +44,8 @@ export const componentBehaviors = {
         await page.waitForFunction(() => document.querySelector('gramlot-html-preview').frame.srcdoc.includes('Verified HTML'));
         assert.equal(await page.locator('gramlot-html-preview iframe').getAttribute('sandbox'), '');
         await page.getByRole('tab', {name:'Rich text', exact:true}).click();
-        await page.locator('.jodit-wysiwyg').waitFor({state:'visible'});
+        await page.frameLocator('gramlot-html-editor iframe').locator('body').waitFor({state:'visible'});
+        assert.match(await page.frameLocator('gramlot-html-editor iframe').locator('body').textContent(), /Verified HTML/);
     },
     async markdown_editor(page) {
         await page.locator('gramlot-code-mirror .cm-content').fill('# Verified Markdown');
@@ -56,7 +57,7 @@ export const componentBehaviors = {
     },
     async typst_editor(page) {
         await page.locator('gramlot-code-mirror .cm-content').fill('= Verified Typst\nA browser compilation.');
-        await page.waitForFunction(() => document.querySelector('gramlot-typst-preview').status.textContent === 'Preview and PDF are up to date', {timeout:60000});
+        await page.waitForFunction(() => document.querySelector('gramlot-typst-preview').status.textContent === 'Preview and PDF are up to date', null, {timeout:60000});
         assert.match(await page.locator('gramlot-typst-preview img').getAttribute('src'), /^blob:/);
         assert.equal(await page.locator('gramlot-typst-preview a').getAttribute('aria-disabled'), 'false');
     },
