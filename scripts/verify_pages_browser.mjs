@@ -501,7 +501,9 @@ async function check(browser, base, family, example) {
         if (response.status() >= 400 && !response.url().endsWith('/favicon.ico')) errors.push(`${response.status()} ${response.url()}`);
     });
     await page.goto(url);
-    await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state));
+    await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state)).catch(error => {
+        throw new Error(`${url}: ${error.message}; browser errors: ${errors.join('; ')}`, {cause:error});
+    });
     assert.equal(await page.evaluate(() => window.gramlot.state), 'started', `${url}: ${errors.join('; ')}`);
     assert.ok(await page.evaluate(() => document.getElementById('gramlot-root').childElementCount > 0), url);
     await verifyExample(page, example.key, calls);
