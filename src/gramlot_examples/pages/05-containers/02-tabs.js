@@ -256,7 +256,7 @@ export class Page extends BasePage {
             tabMode: mode,
             tabPosition: position,
             tabAlign: align,
-            height: '240px',
+            height: '200px',
             width: '100%',
             border: '1px solid var(--gramlot-border-control)',
             rounded: 6,

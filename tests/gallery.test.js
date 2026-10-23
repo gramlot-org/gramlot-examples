@@ -18,6 +18,7 @@ import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {mountFrameSettings, SETTINGS_SET} from '../src/gramlot_examples/gallery/browser/gallery-settings.js';
 import {mountFrameTheme} from '../src/gramlot_examples/gallery/browser/frame-theme.js';
+import {paletteStyles} from '../src/gramlot_examples/gallery/dist/theme-styles.js';
 import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/theme-messages.js';
 
 function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }', prepare = () => {}) {
@@ -115,23 +116,35 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     assert.ok(style.textContent.includes('font-size: 13px'));
     assert.ok(app.src.renderer.elements.get(style), 'preview CSS belongs to Source');
     assert.deepEqual(ready, [{data: {type: THEME_READY, devices: []}, target: '*'}]);
-    const message = (source, theme, appearance = 'compact') => child.dispatchEvent(new child.MessageEvent('message',
-        {source, data: {type: THEME_SET, theme, appearance}}));
+    const message = (source, theme, appearance = 'compact', palette = 'default') => child.dispatchEvent(new child.MessageEvent('message',
+        {source, data: {type: THEME_SET, theme, appearance, palette}}));
     message(new JSDOM('').window, 'dark'); message(parent, 'system');
     assert.equal(child.document.documentElement.hasAttribute('data-theme'), false);
     message(parent, 'dark');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'base');
-    assert.equal(style.textContent, '');
+    assert.equal(style.textContent.trim(), '');
     message(parent, 'light', 'invalid');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'compact');
     assert.match(style.textContent, /font-size: 13px/);
     message(parent, 'light', 'mimi');
-    assert.match(style.textContent, /--gramlot-field-height: 18px/);
+    assert.match(style.textContent, /--gramlot-field-height: 24px/);
     message(parent, 'dark', 'joanna');
-    assert.match(style.textContent, /--gramlot-field-height: 20px/);
-    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 18px/);
+    assert.match(style.textContent, /--gramlot-field-height: 32px/);
+    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 24px/);
+    message(parent, 'light', 'mimi', 'joanna');
+    assert.match(style.textContent, /--gramlot-field-height: 24px/);
+    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 32px/);
+    assert.ok(style.textContent.lastIndexOf('--gramlot-background: #f5f4f2') > style.textContent.lastIndexOf('--gramlot-background: #edf1ef'));
+    const before = style.textContent;
+    message(parent, 'dark', 'compact', 'unknown');
+    message(parent, 'dark', 'compact', '__proto__');
+    message(parent, 'dark', 'compact', ['mimi']);
+    child.dispatchEvent(new child.MessageEvent('message', {source:parent, data:{type:THEME_SET, theme:'dark', appearance:'compact'}}));
+    assert.equal(style.textContent, before);
+    assert.equal(child.document.documentElement.getAttribute('data-theme'), 'light');
+    message(parent, 'dark', 'joanna', 'default');
     node.parentBag.popNode(node.label);
     assert.equal(child.document.querySelector('style'), null);
     message(parent, 'light');
@@ -395,6 +408,7 @@ test('theme, color and label settings persist and reject foreign frame messages'
     const frame = f.get('frame-e01');
     frame.contentWindow.postMessage = (data, origin) => messages.push({data, origin});
     change(f, 'index-theme', 'dark'); change(f, 'index-appearance', 'mimi');
+    change(f, 'index-palette', 'joanna');
     change(f, 'gallery-label-position', 'L');
     assert.equal(f.document.documentElement.getAttribute('data-theme'), 'dark');
     assert.equal(f.state.getItem('labelPosition'), 'L');
@@ -404,17 +418,24 @@ test('theme, color and label settings persist and reject foreign frame messages'
     assert.equal(messages.length, before);
     f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message', {data: {type: THEME_READY}, source: frame.contentWindow}));
     assert.ok(messages.length > before);
+    assert.deepEqual(messages.at(-1).data, {type: THEME_SET, theme: 'dark', appearance: 'mimi', palette: 'joanna'});
     const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.preferences:/py/index');
     const g = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
     assert.equal(g.get('index-appearance').value, 'mimi');
     assert.equal(g.get('index-theme').value, 'dark');
+    assert.equal(g.get('index-palette').value, 'joanna');
+    change(g, 'index-palette', 'default');
+    assert.equal(g.get('index-appearance').value, 'mimi');
+    assert.equal(g.get('index-theme').value, 'dark');
+    assert.equal(g.state.getItem('palette'), 'default');
 });
 
 test('invalid or unavailable browser storage leaves valid defaults and usable controls', async t => {
-    for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}']) {
+    for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}', '{"palette":["mimi"]}', '{"palette":"__proto__"}']) {
         const f = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
         assert.equal(f.get('index-appearance').value, 'compact');
         assert.equal(f.get('index-theme').value, 'light');
+        assert.equal(f.get('index-palette').value, 'default');
         assert.equal(f.source('index-sidebar').getAttr('width'), '240px');
     }
     for (const name of ['SecurityError', 'QuotaExceededError']) {

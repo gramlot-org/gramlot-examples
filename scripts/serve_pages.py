@@ -22,8 +22,16 @@ MEDIA_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; chars
 RESOURCES = Path(files("gramlot")) / "resources"
 
 
+class CollectionServer(GramlotFileServer):
+    def collection_url(self, collection, path):
+        from urllib.parse import quote
+        return f'/gramlot/collections/{quote(collection.name,safe="")}/{collection.build_id[7:]}/{path}'
+
+
 class PagesServer(ThreadingHTTPServer):
     """The loopback server of one pages folder and its GramlotFileServer."""
+
+    request_queue_size = 128
 
     def __init__(self, folder, port):
         super().__init__(("127.0.0.1", port), Handler)
@@ -32,7 +40,13 @@ class PagesServer(ThreadingHTTPServer):
         self.assets = gallery["assets"]
         self.routes = {example["key"]: f'{family["folder"]}/{example["folder"]}'
                        for family in gallery["families"] for example in family["examples"]}
-        self.gramlot_server = GramlotFileServer(self.pages, collections=gallery["collections"])
+        self.gramlot_server = CollectionServer(self.pages, collections=gallery["collections"])
+        self.collection_assets = {}
+        for collection in self.gramlot_server.collections:
+            for path, content in collection.verify().items():
+                if path.startswith("assets/"):
+                    url = self.gramlot_server.collection_url(collection, path)
+                    self.collection_assets[url] = (content, MEDIA_TYPES.get(Path(path).suffix, "application/octet-stream"))
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -60,6 +74,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         server, path = self.server.gramlot_server, self.path.split("?", 1)[0]
+        if path.startswith('/gramlot/collections/'):
+            asset = self.server.collection_assets.get(path)
+            return self.reply(200, *asset) if asset else self.reply(404, 'Not found', 'text/plain')
         if path in self.server.assets:
             asset = self.server.assets[path]
             return self.reply(200, asset["file"].read_bytes(), asset["type"])

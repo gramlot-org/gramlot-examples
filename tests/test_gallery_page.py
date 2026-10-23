@@ -1,11 +1,12 @@
 """The gallery specializes the frame regions and uses ordinary Page Logic."""
 
+import json
 import unittest
 
 from gramlot_examples.gallery.page import Page
 from gramlot_examples.gallery.collections import collections
 
-GRAMMARS = [item["grammar"] for item in collections()]
+GRAMMARS = [json.loads(item.verify()[item.grammar]) for item in collections()]
 
 
 def sources(page):

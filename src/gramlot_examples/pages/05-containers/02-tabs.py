@@ -95,7 +95,7 @@ class Page(BasePage):
         card.p(f'tabMode="{mode}", tabPosition="{position}", tabAlign="{align}"',
                font_family="var(--gramlot-font-code)", font_size=".8rem", margin="0 0 8px")
         tabs = card.tabContainer(id=f"tabs-variant-{key}", tabMode=mode, tabPosition=position, tabAlign=align,
-                                 height="240px", width="100%",
+                                 height="200px", width="100%",
                                  border="1px solid var(--gramlot-border-control)", rounded=6)
         profile = tabs.contentPane(pageName="profile", title="Profile", padding="12px")
         profile.textbox(id=f"variant-name-{key}", value="^.name", lbl="Customer name",

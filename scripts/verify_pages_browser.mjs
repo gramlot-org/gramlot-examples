@@ -501,11 +501,20 @@ async function check(browser, base, family, example) {
         if (response.status() >= 400 && !response.url().endsWith('/favicon.ico')) errors.push(`${response.status()} ${response.url()}`);
     });
     await page.goto(url);
-    await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state));
+    await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state)).catch(error => {
+        throw new Error(`${url}: ${error.message}; browser errors: ${errors.join('; ')}`, {cause:error});
+    });
     assert.equal(await page.evaluate(() => window.gramlot.state), 'started', `${url}: ${errors.join('; ')}`);
     assert.ok(await page.evaluate(() => document.getElementById('gramlot-root').childElementCount > 0), url);
     await verifyExample(page, example.key, calls);
-    assert.deepEqual(errors, [], url);
+    const expectedErrors = [];
+    if (example.key === 'html_editor') {
+        // This lesson intentionally includes a script to demonstrate sandbox protection.
+        expectedErrors.push("Blocked script execution in 'about:srcdoc' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.");
+        assert.equal(await page.locator('gramlot-html-preview iframe').getAttribute('sandbox'), '');
+        assert.equal(await page.frameLocator('gramlot-html-preview iframe').locator('body').getAttribute('data-executed'), null);
+    }
+    assert.deepEqual(errors, expectedErrors, url);
     await page.close();
 }
 

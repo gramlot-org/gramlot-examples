@@ -26,7 +26,41 @@ const booleanMirror = (first, second) => async page => {
     await control.setChecked(next);
     assert.equal(await page.locator(`#${second} input`).isChecked(), next);
 };
+const codeDraft = async page => {
+    const editor = page.locator('#demo-editor .cm-content');
+    await editor.fill('print("Verified draft")');
+    await page.waitForFunction(() => document.getElementById('live-draft').textContent === 'print("Verified draft")');
+    await page.locator('#save-snapshot button').click();
+    assert.equal(await page.locator('#saved-snapshot').textContent(), 'print("Verified draft")');
+};
+
 export const componentBehaviors = {
+    code_mirror: codeDraft,
+    code_mirror_options: codeDraft,
+    async html_editor(page) {
+        await page.locator('gramlot-code-mirror .cm-content').fill('<h1>Verified HTML</h1>');
+        await page.getByRole('tab', {name:'Preview', exact:true}).click();
+        await page.locator('gramlot-html-preview iframe').waitFor();
+        await page.waitForFunction(() => document.querySelector('gramlot-html-preview').frame.srcdoc.includes('Verified HTML'));
+        assert.equal(await page.locator('gramlot-html-preview iframe').getAttribute('sandbox'), '');
+        await page.getByRole('tab', {name:'Rich text', exact:true}).click();
+        await page.frameLocator('gramlot-html-editor iframe').locator('body').waitFor({state:'visible'});
+        assert.match(await page.frameLocator('gramlot-html-editor iframe').locator('body').textContent(), /Verified HTML/);
+    },
+    async markdown_editor(page) {
+        await page.locator('gramlot-code-mirror .cm-content').fill('# Verified Markdown');
+        await page.waitForFunction(() => document.getElementById('live-markdown').textContent === '# Verified Markdown');
+        await page.getByRole('tab', {name:'Preview', exact:true}).click();
+        await page.waitForFunction(() => document.querySelector('gramlot-markdown-preview').frame.srcdoc.includes('Verified Markdown'));
+        await page.getByRole('tab', {name:'Rich text', exact:true}).click();
+        await page.locator('.ProseMirror').waitFor({state:'visible'});
+    },
+    async typst_editor(page) {
+        await page.locator('gramlot-code-mirror .cm-content').fill('= Verified Typst\nA browser compilation.');
+        await page.waitForFunction(() => document.querySelector('gramlot-typst-preview').status.textContent === 'Preview and PDF are up to date', null, {timeout:60000});
+        assert.match(await page.locator('gramlot-typst-preview img').getAttribute('src'), /^blob:/);
+        assert.equal(await page.locator('gramlot-typst-preview a').getAttribute('aria-disabled'), 'false');
+    },
     w01: mirroredText('customer', 'input', 'Grace'),
     w02: booleanMirror('newsletter', 'newsletter-copy'),
     async w03(page) {

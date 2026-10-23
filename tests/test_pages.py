@@ -4,7 +4,12 @@ import re
 import unittest
 
 from genro_tytx import from_tytx, to_tytx
-from gramlot.server import GramlotFileServer
+from gramlot.server import GramlotFileServer as BaseFileServer
+
+class GramlotFileServer(BaseFileServer):
+    def collection_url(self, collection, path):
+        return f"/gramlot/collections/{collection.name}/{collection.build_id[7:]}/{path}"
+
 
 from gramlot_examples import build_gallery
 

@@ -1,0 +1,20 @@
+import {Page as BasePage} from '@gramlot/gramlot/page';
+export class Page extends BasePage {
+    static title='Markdown: code, preview and rich text';
+    main(root) {
+        const main_content=root.main({datapath:'markdownDemo',padding:'24px',class:'example-page stack'});
+        main_content.h1(Page.title);
+        main_content.p('Three views share one Markdown draft. Rich text provides Bold, Italic, Code, Undo and Redo. Tables and complex blocks retain their source; edit them in Code.');
+        main_content.dataSetter({destination_path:'.content',value:"# A Markdown document\n\nEdit this paragraph in **Rich text**, then inspect its Markdown in Code.\n\n## Shared document\n\n- CodeMirror edits the source.\n- ProseMirror edits supported Markdown visually.\n- Preview renders the same draft.\n\n> Save and Revert belong to the document in the IDE.\n\n```python\nprint(\"Hello, Gramlot!\")\n```\n\n| View | Purpose |\n| --- | --- |\n| Code | Edit all syntax |\n| Rich text | Edit supported blocks |\n\nThe table above and ~~strikethrough~~ are preserved blocks: edit them in Code.\n\n<div><strong>Embedded HTML</strong>: enable Allow embedded HTML to render this block.</div>\n"});
+        main_content.dataSetter({destination_path:'.allowHtml',value:false});
+        main_content.dataSetter({destination_path:'.readonly',value:false});
+        main_content.dataSetter({destination_path:'.view',value:'code'});
+        main_content.checkbox({value:'^.readonly',label:'Read only'});
+        main_content.checkbox({value:'^.allowHtml',label:'Allow embedded HTML'});
+        const tabs=main_content.tabContainer({selectedPage:'^.view',height:'500px'});
+        tabs.contentPane({title:'Code',pageName:'code',height:'100%'}).codeMirror({value:'^.content',language:'markdown',readonly:'^.readonly',height:'100%'});
+        tabs.contentPane({title:'Preview',pageName:'preview',height:'100%'}).markdownPreview({value:'^.content',allowHtml:'^.allowHtml',height:'100%'});
+        tabs.contentPane({title:'Rich text',pageName:'rich',height:'100%'}).markdownEditor({value:'^.content',readonly:'^.readonly',height:'100%'});
+        main_content.h3('Live Markdown in Data');main_content.pre('^.content',{white_space:'pre-wrap',id:'live-markdown'});
+    }
+}

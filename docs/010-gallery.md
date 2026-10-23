@@ -1,5 +1,11 @@
 # The gallery package
 
+For using the gallery, start with the [learning path](https://gramlot-examples.readthedocs.io/en/latest/lessons/index.html).
+For API lookup, use the [widget reference](https://gramlot.readthedocs.io/en/latest/docs/public/345-widget-reference.html).
+This package guide also retains dated engineering and delivery records below;
+those records describe their stated revision, not current API guarantees.
+
+
 <!-- Document ID: GE-010 -->
 <a id="ge-010-005"></a>
 
@@ -1142,3 +1148,20 @@ source checkouts. Upgrade Gramlot and both Builder packages with the examples.
 Source-local topics retain their names and payloads; DOM `id` stays independent.
 There is no old-name alias. System callbacks and namespaced parameters such as
 `node_label`, `node_position`, `target_id` retain their spelling.
+
+
+### Build the public documentation from source
+
+Run `python scripts/prepare_docs_dependencies.py` before staging the manual. It
+checks out the public `main` branches of the core and JavaScript host, builds
+prepared collections, and installs the generator locally for this build. No npm
+or PyPI publication is required. Read the Docs pull-request previews and CI
+preview runs explicitly select `develop`; public `latest` uses `main`.
+`GRAMLOT_SOURCE_REF` selects the coordinated branch for verification. Commit
+identities are printed in build logs; first-party dependencies are not pinned.
+
+`python scripts/prepare_docs.py` exports 89 real playgrounds. Ordinary lessons
+share one exported directory runtime, while the optional Typst engine stays in
+its own export. The Source-authored playground index is available at
+`playgrounds/index.html`. Each lesson keeps its original playground URL. Run
+Sphinx and `python scripts/check_docs.py` to check the resulting documentation.

@@ -1,4 +1,4 @@
-import {appearanceStyles} from '../dist/theme-styles.js';
+import {appearanceStyles, paletteStyles} from '../dist/theme-styles.js';
 import {THEME_READY, THEME_SET, THEMES, APPEARANCES} from '@gramlot/gramlot/index-page-runtime';
 
 /** Gallery preferences; shared layout components own drawers and splitters. */
@@ -14,6 +14,7 @@ export function mountGalleryPresentation(renderer, root, state) {
     if (saved === null || typeof saved !== 'object' || Array.isArray(saved)) saved = {};
     state.setItem('theme', THEMES.has(saved.theme) ? saved.theme : 'light');
     state.setItem('appearance', APPEARANCES.has(saved.appearance) ? saved.appearance : 'compact');
+    state.setItem('palette', typeof saved.palette === 'string' && Object.hasOwn(paletteStyles, saved.palette) ? saved.palette : 'default');
     state.setItem('keyboard', false);
     state.setItem('navigationVisible', saved.navigationVisible !== false);
     state.setItem('codeVisible', saved.codeVisible !== false);
@@ -21,17 +22,17 @@ export function mountGalleryPresentation(renderer, root, state) {
     const releases = [];
     const listen = (element, type, fn) => { element.addEventListener(type, fn); releases.push(() => element.removeEventListener(type, fn)); };
     const save = () => {
-        try { window.localStorage.setItem(key, JSON.stringify({theme:state.getItem('theme'), appearance:state.getItem('appearance'),
+        try { window.localStorage.setItem(key, JSON.stringify({theme:state.getItem('theme'), appearance:state.getItem('appearance'), palette:state.getItem('palette'),
             navigationVisible:state.getItem('navigationVisible'), codeVisible:state.getItem('codeVisible')})); }
         catch (error) { if (!['SecurityError','QuotaExceededError'].includes(error.name)) throw error; }
     };
-    const send = frame => frame.contentWindow.postMessage({type:THEME_SET, theme:state.getItem('theme'), appearance:state.getItem('appearance')}, '*');
+    const send = frame => frame.contentWindow.postMessage({type:THEME_SET, theme:state.getItem('theme'), appearance:state.getItem('appearance'), palette:state.getItem('palette')}, '*');
     const apply = () => {
         document.documentElement.setAttribute('data-theme', state.getItem('theme'));
-        style.setValue(appearanceStyles[state.getItem('appearance')]);
+        style.setValue(appearanceStyles[state.getItem('appearance')] + '\n' + paletteStyles[state.getItem('palette')]);
         for (const entry of entries.values()) if (entry.frame) send(entry.frame);
     };
-    for (const [id, property] of [['index-theme','theme'],['index-appearance','appearance']]) {
+    for (const [id, property] of [['index-theme','theme'],['index-appearance','appearance'],['index-palette','palette']]) {
         const control = byId(id); set(control,{value:state.getItem(property)});
         listen(control, 'change', () => { state.setItem(property, control.value); set(control,{value:control.value}); apply(); save(); });
     }

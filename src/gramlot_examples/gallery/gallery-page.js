@@ -70,6 +70,13 @@ export class GalleryPage extends IndexPage {
         appearance.option('Compact', {value: 'compact', selected: true});
         appearance.option('mimi', {value: 'mimi'});
         appearance.option('joanna', {value: 'joanna'});
+        const palette = settings.div({class: 'index-theme'});
+        palette.html_label('Colors', {for: 'index-palette'});
+        const colors = palette.select({id: 'index-palette', value: 'default'});
+        colors.option('Theme default', {value: 'default', selected: true});
+        colors.option('Blue & slate', {value: 'compact'});
+        colors.option('Sage & green', {value: 'mimi'});
+        colors.option('Warm gray & blue', {value: 'joanna'});
         const color = settings.div({class: 'index-theme'});
         color.html_label('Color mode', {for: 'index-theme'});
         const choices = color.select({id: 'index-theme', value: 'light'});

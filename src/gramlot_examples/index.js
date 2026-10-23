@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const PACKAGE = fileURLToPath(new URL('./', import.meta.url));
 const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json'};
 const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js'];
-const DIST = ['gallery.js', 'frame.js', 'inputs.js', 'layout.js', 'tree.js', 'notices.json', 'LICENSE', 'NOTICE'];
+const DIST = ['gallery.js', 'frame.js', 'notices.json', 'LICENSE', 'NOTICE'];
 
 /** Media type of a gallery asset; only the built gallery scripts are served as JavaScript. */
 function mediaType(path, script = false) {
@@ -67,6 +67,14 @@ export function buildGallery({catalogs = []} = {}) {
     for (const name of DIST) {
         const path = join(gallery, 'dist', name);
         assets[`/gallery/dist/${name}`] = {file: path, type: mediaType(path, extname(path) === '.js')};
+    }
+    for (const collection of collections) {
+        const folder = join(gallery,'dist',collection.name,'assets');
+        for (const file of readdirSync(folder,{recursive:true})) {
+            const absolute = join(folder,file);
+            if (statSync(absolute).isFile()) assets[collection.module.slice(0, -'index.js'.length) + file] =
+                {file:absolute,type:mediaType(absolute,extname(file)==='.js')};
+        }
     }
     for (const family of families) {
         const folder = family.path;

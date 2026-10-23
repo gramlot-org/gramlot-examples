@@ -93,6 +93,10 @@ from genro_tytx import from_tytx, to_tytx
 from gramlot.server import GramlotFileServer
 from gramlot_examples import build_gallery
 
+class CollectionServer(GramlotFileServer):
+    def collection_url(self, collection, path):
+        return f"/gramlot/collections/{collection.name}/{collection.build_id[7:]}/{path}"
+
 def normalize(v):
     if isinstance(v, date): return v.isoformat()
     if isinstance(v, (tuple, list)): return [normalize(x) for x in v]
@@ -108,7 +112,7 @@ async def main(cases):
     answers = []
     for key, content_type, name, params in cases:
         page = gallery['routes'][key]['page']
-        server = GramlotFileServer(str(page.parent), collections=gallery['collections'])
+        server = CollectionServer(str(page.parent), collections=gallery['collections'])
         opened = await server.open_page(f'/{page.stem}')
         text = to_tytx({'id': '1', 'pageId': opened.page_id, 'contentType': content_type, 'name': name, 'params': params})
         response = from_tytx(await server.call(text))
@@ -122,7 +126,8 @@ async def main(cases):
 print(json.dumps(asyncio.run(main(json.loads(sys.stdin.read())))))
 `;
 
-test('every endpoint and fragment answers the same in Python and JavaScript', async () => {
+// This cross-language test starts Python and verifies all prepared collections.
+test('every endpoint and fragment answers the same in Python and JavaScript', {timeout:30000}, async () => {
     const expected = JSON.parse(execFileSync(python, ['-c', script], {cwd: root, encoding: 'utf8', input: JSON.stringify(CASES)}));
     const actual = await answerInJavaScript();
     assert.equal(actual.length, CASES.length);
