@@ -1,6 +1,8 @@
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
+import editors from '@gramlot/gramlot/components/editors';
+import typst from '@gramlot/gramlot/components/typst';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
@@ -47,7 +49,7 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst]});
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
@@ -752,7 +754,7 @@ test('the pages follow the naming and theme conventions (GC-225)', () => {
 for (const family of families.filter(({key}) => key !== 'html_svg')) {
     for (const example of family.examples) {
         // c14 observes expiry of a five-second cache; Bun defaults to five seconds per test.
-        test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000}, async () => {
+        test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000, skip: example.folder.startsWith('10-code_editors/') ? 'Qualified by the every-page Chromium suite: editor CSS and WASM require a browser' : false}, async () => {
             const page = await mount(family, example);
             try {
                 assert.ok(page.byId('gramlot-root').childElementCount > 0);

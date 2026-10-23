@@ -9,7 +9,7 @@ from .gallery.collections import collections as gallery_collections
 PACKAGE = Path(__file__).resolve().parent
 MEDIA_TYPES = {".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".json": "application/json"}
 SUFFIXES = (".py", ".js", ".css", ".md", "_aux.js")
-DIST = ("gallery.js", "frame.js", "inputs.js", "layout.js", "tree.js", "notices.json", "LICENSE", "NOTICE")
+DIST = ("gallery.js", "frame.js", "notices.json", "LICENSE", "NOTICE")
 
 
 def media_type(path, script=False):

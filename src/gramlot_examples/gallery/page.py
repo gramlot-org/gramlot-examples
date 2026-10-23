@@ -202,6 +202,12 @@ class Page(IndexPage):
                                           class_="gallery-lesson", overflow="auto", id=f"description-{key}")
         explanation.p("Loading explanation…", role="status")
 
+    def source_document(self, key):
+        """Read-only default; the serving integration supplies write authorization."""
+        example = self.gallery_item(key)
+        file = example["path"] / f"{example['folder']}.py"
+        return dict(content=file.read_text(), revision=None, writable=False)
+
     def code_panel(self, parent, example):
         key = example["key"]
         document = self.source_document(key)
@@ -226,9 +232,6 @@ class Page(IndexPage):
         body.dataController(func="galleryCodeMount", key=key, _onStart=True)
         body.dataController(func="galleryCodeSave", key=key, **{f"subscribe_galleryCodeEditor_{key}_save": True})
         logic_path = example["logic"]
-        codepane = parent
-        codepane.contentPane(title="Python", pageName="python", id=f"code-panel-{key}").pre(
-            tabindex=0).code(source_path.read_text(), class_="language-python", id=f"code-{key}")
         if logic_path is not None:
             parent.contentPane(title="logic.js", pageName="logic", id=f"logic-panel-{key}").pre(
                 tabindex=0).code(logic_path.read_text(), class_="language-javascript", id=f"logic-{key}")

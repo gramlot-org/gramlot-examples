@@ -1,5 +1,6 @@
 """The gallery specializes the frame regions and uses ordinary Page Logic."""
 
+import json
 import unittest
 
 from gramlot_examples.gallery.page import Page

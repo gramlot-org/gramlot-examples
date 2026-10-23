@@ -1,11 +1,10 @@
 import {Page as BasePage, codeMirrorWithOptions} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static title = "CodeMirror with options";
-    static css = ['/themes/gramlot-base/theme.css'];
     main(root) {
-        const pane = root.main({class:'example-page stack', datapath:'editorDemo', padding:'24px'});
-        pane.h1("CodeMirror with options");
-        pane.p('Edit the draft: Data updates immediately. Ctrl/Cmd+F opens search; Escape then Tab leaves the editor. Save or Ctrl/Cmd+S copies the draft to the snapshot below.');
+        const main_content = root.main({class:'example-page stack', datapath:'editorDemo', padding:'24px'});
+        main_content.h1("CodeMirror with options");
+        main_content.p('Edit the draft: Data updates immediately. Ctrl/Cmd+F opens search; Escape then Tab leaves the editor. Save or Ctrl/Cmd+S copies the draft to the snapshot below.');
         const snippets = {
     "python": "def greet(name):\n    \"\"\"Return a greeting.\"\"\"\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Gramlot\"))\n",
     "javascript": "function greet(name) {\n    return `Hello, ${name}!`;\n}\n\nconsole.log(greet(\"Gramlot\"));\n",
@@ -18,20 +17,19 @@ export class Page extends BasePage {
     "sql": "SELECT name, COUNT(*) AS total\nFROM documents\nWHERE status = 'published'\nGROUP BY name\nORDER BY total DESC;\n",
     "text": "Hello, Gramlot!\n\nThis is plain text.\nNo programming-language highlighting is applied.\n"
 };
-        for (const [language, snippet] of Object.entries(snippets)) pane.dataSetter({destination_path:`.snippets.${language}`, value:snippet});
-        pane.dataSetter({destination_path:".document.source", value:"def greet(name):\n    \"\"\"Return a greeting.\"\"\"\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Gramlot\"))\n"});
-        pane.dataSetter({destination_path:".document.readonly", value:false});
-        pane.dataSetter({destination_path:".document.disabled", value:false});
-        pane.dataSetter({destination_path:".document.saved", value:""});
-        pane.p("Choose a language to load its sample and switch syntax highlighting. Changing language replaces the current draft.");
-        pane.filteringSelect({value:"^.document.settings.language", values:"python:Python,javascript:JavaScript,typescript:TypeScript,json:JSON,html:HTML,css:CSS,xml:XML,markdown:Markdown,sql:SQL,text:Plain text", lbl:"Language and sample", validate_notnull:true, id:"sample-language"});
-        pane.checkbox({value:'^.document.readonly', label:'Read only'});
-        pane.checkbox({value:'^.document.disabled', label:'Disabled'});
-        codeMirrorWithOptions(pane, {datapath:'.document', value:'^.source', language:'python', id:'demo-editor', readonly:'^.readonly', disabled:'^.disabled', selfsubscribe_save:"this.SET('.saved', p_0.value)"});
-        pane.dataController({script:"this.SET('.document.source', snippets.getItem(language))", language:"^.document.settings.language", snippets:"=.snippets"});
-        pane.button('Save snapshot', {id:'save-snapshot', action:"this.SET('.document.saved', this.GET('.document.source'))"});
-        pane.h3('Live Data'); pane.pre('^.document.source', {id:'live-draft'});
-        pane.h3('Saved snapshot'); pane.pre('^.document.saved', {id:'saved-snapshot'});
+        for (const [language, snippet] of Object.entries(snippets)) main_content.dataSetter({destination_path:`.snippets.${language}`, value:snippet});
+        main_content.dataSetter({destination_path:".document.source", value:"def greet(name):\n    \"\"\"Return a greeting.\"\"\"\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Gramlot\"))\n"});
+        main_content.dataSetter({destination_path:".document.readonly", value:false});
+        main_content.dataSetter({destination_path:".document.disabled", value:false});
+        main_content.dataSetter({destination_path:".document.saved", value:""});
+        main_content.p("Choose a language to load its sample and switch syntax highlighting. Changing language replaces the current draft.");
+        main_content.filteringSelect({value:"^.document.settings.language", values:"python:Python,javascript:JavaScript,typescript:TypeScript,json:JSON,html:HTML,css:CSS,xml:XML,markdown:Markdown,sql:SQL,text:Plain text", lbl:"Language and sample", validate_notnull:true, id:"sample-language"});
+        main_content.checkbox({value:'^.document.readonly', label:'Read only'});
+        main_content.checkbox({value:'^.document.disabled', label:'Disabled'});
+        codeMirrorWithOptions(main_content, {datapath:'.document', value:'^.source', language:'python', id:'demo-editor', readonly:'^.readonly', disabled:'^.disabled', selfsubscribe_save:"this.SET('.saved', p_0.value)"});
+        main_content.dataController({script:"this.SET('.document.source', snippets.getItem(language))", language:"^.document.settings.language", snippets:"=.snippets"});
+        main_content.button('Save snapshot', {id:'save-snapshot', action:"this.SET('.document.saved', this.GET('.document.source'))"});
+        main_content.h3('Live Data'); main_content.pre('^.document.source', {id:'live-draft'});
+        main_content.h3('Saved snapshot'); main_content.pre('^.document.saved', {id:'saved-snapshot'});
     }
 }
-export class Logic {}

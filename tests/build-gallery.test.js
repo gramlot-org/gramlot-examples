@@ -22,7 +22,7 @@ const environment = families => ({environment: 'test', families: families.map(fa
 test('common gallery', () => {
     const gallery = buildGallery();
     assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
-    assert.equal(Object.keys(gallery.routes).length, 111);
+    assert.equal(Object.keys(gallery.routes).length, 117);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
     assert.equal(gallery.routes.c03.logic, gallery.routes.c03.page, 'the page module holds the Logic');
     for (const [url, asset] of Object.entries(gallery.assets)) assert.ok(existsSync(asset.file), url);
