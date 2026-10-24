@@ -651,7 +651,7 @@ test('settings use a nonmodal floating formlet and close back into the toolbar',
 test('a Markdown directory index opens as sanitized content without expanding its resolver', async t => {
     const f = await setup(t);
     const node = f.app.data.getNode('galleryIndex.navigation.html_svg');
-    node.setAttr({title:'Markdown overview', url:'pages/01-html_elements/07-markdown_index/00-index',
+    node.setAttr({title:'Markdown overview', url:'pages/08-html_svg/07-markdown_index/00-index',
         markdown:'# Markdown overview\n\n**Readable** <script>bad()</script><img onerror="bad()">'});
     const before = f.calls.filter(c => c.name === 'navigation_section').length;
     f.navigation('html_svg').click(); await settle();
@@ -725,6 +725,18 @@ test('toolbar placement uses proportions and explicit choices without resetting 
     assert.equal(f.source('gallery-rail-region').getAttr('region'),'left');
     assert.equal(f.source('gallery-navigation-button').getAttr('width'),'36px');
     assert.equal(f.state.getItem('menu'),true,'rotation within the narrow layout keeps the current panel');
+    assert.equal(f.source('index-sidebar').getAttr('width'),'260px');
+    assert.equal(f.source('gallery-center').getAttr('hidden'),false,'navigation leaves the example visible when both fit');
+    Object.assign(window,{innerWidth:600,innerHeight:390});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('index-sidebar').getAttr('width'),'100%');
+    assert.equal(f.source('gallery-center').getAttr('hidden'),true,'small screens retain the single-panel view');
+    Object.assign(window,{innerWidth:768,innerHeight:1024});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
+    assert.equal(f.source('index-sidebar').getAttr('width'),'260px','portrait tablets also keep navigation bounded');
+    assert.equal(f.source('gallery-center').getAttr('hidden'),false);
+
     change(f,'gallery-toolbar-position','bottom');
     assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
     f.media.matches=false;Object.assign(window,{innerWidth:1280,innerHeight:850});

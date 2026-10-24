@@ -1,4 +1,4 @@
-# Plan your stay
+# Calculate a room estimate
 
 **Sample data:** `02-room_estimate_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

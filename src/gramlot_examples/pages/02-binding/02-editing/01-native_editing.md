@@ -1,4 +1,4 @@
-# 04 · Native editing
+# Edit shared Data with native fields
 
 **Sample data:** `01-native_editing_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 
@@ -14,7 +14,7 @@ A form displays the Data written by each control. Switch **live** on and off: yo
 
 **Goal:** Observe when a control writes Data and which type it writes.
 
-**Before this lesson:** [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/01-html_elements/02-native_controls/01-forms.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
+**Before this lesson:** [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/02-native_controls/01-forms.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
 
 **Open and edit:** select **b04 · Native editing** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
 

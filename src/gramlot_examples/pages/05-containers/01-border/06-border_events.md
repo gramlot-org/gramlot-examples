@@ -1,4 +1,4 @@
-# Let another part of your page know what happened
+# Border events and controllers
 
 **Sample data:** `06-border_events_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

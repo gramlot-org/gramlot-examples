@@ -5,7 +5,7 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [inputs, layout]
-    title = "Tabs, selection and closing"
+    title = "Tabs: select, close and retain content"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

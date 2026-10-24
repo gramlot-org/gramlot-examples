@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Automatic initial data"
+    title = "Load example data and replay field edits"
 
     def main(self, root):
         pane = root.div(class_="example-page stack")

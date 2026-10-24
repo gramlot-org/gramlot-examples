@@ -1,4 +1,4 @@
-# 02 · Variable datapath
+# Change the current record with datapath
 
 **Sample data:** `02-variable_datapath_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

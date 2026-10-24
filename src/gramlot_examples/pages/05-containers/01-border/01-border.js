@@ -4,7 +4,7 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static gramlots = [inputs, layout];
-    static title = 'Border regions and splitters';
+    static title = "Border regions and splitters";
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

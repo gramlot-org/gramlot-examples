@@ -19,6 +19,6 @@ def test_all_pages_build_without_server_wide_collections():
 def test_heavy_collections_are_not_activated_by_basic_pages():
     root = Path(__file__).parents[1] / 'src/gramlot_examples/pages'
     server = GramlotFileServer(root)
-    assert [c.name for c in page_collections(server.resolve_page('04-input_components/01-text/01-textbox'))] == ['inputs', 'layout']
+    assert [c.name for c in page_collections(server.resolve_page('01-inputs/01-text/01-textbox'))] == ['inputs', 'layout']
     assert not page_collections(server.resolve_page('00-index'))
     assert 'typst' not in {c.name for c in page_collections(GalleryPage)}

@@ -1,4 +1,4 @@
-# 22 · Pointer templates and expressions
+# Transform bound values with pointer expressions
 
 **Sample data:** `06-pointer_transforms_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

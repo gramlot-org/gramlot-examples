@@ -1,4 +1,4 @@
-# 11 · A complete page with binding
+# A complete page driven by Data
 
 **Sample data:** `04-complete_page_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 
@@ -14,7 +14,7 @@ The event page from **A complete page** now follows shared Data. Change one valu
 
 **Goal:** Revisit the event page with shared Data driving several destinations.
 
-**Before this lesson:** [e12 · Complete page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/01-html_elements/04-page_composition/03-complete_page.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md), [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/01-style_and_visibility.md), [b10 · SVG shapes with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/03-svg_shapes.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
+**Before this lesson:** [e12 · Complete page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/04-page_composition/03-complete_page.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md), [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/01-style_and_visibility.md), [b10 · SVG shapes with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/03-svg_shapes.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
 
 **Open and edit:** select **b11 · Complete page with binding** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
 

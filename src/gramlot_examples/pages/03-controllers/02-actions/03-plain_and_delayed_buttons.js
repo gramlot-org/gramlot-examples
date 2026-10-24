@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Plain and delayed buttons';
+    static title = "Run immediate and delayed button actions";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'clicks'});
         main_content.h1('Native HTML, then Gramlot behavior');

@@ -1,4 +1,4 @@
-# 06 · Style and visibility
+# Control styles and visibility from Data
 
 Controls change an element’s appearance and visibility. You learn how Data drives styles and classes, and how hiding content differs from removing its space in the layout.
 

@@ -19,7 +19,7 @@ test('every JavaScript page builds with its own collection declarations',async()
 });
 test('basic pages exclude heavy collections; browser metadata imports have hosted assets',async()=>{
  const server=new GramlotFileServer(pages);
- const basic=await server.resolvePage('04-input_components/01-text/01-textbox');
+ const basic=await server.resolvePage('01-inputs/01-text/01-textbox');
  assert.deepEqual(server.pageCollections(basic).map(c=>c.name),['inputs','layout']);
  assert.deepEqual(server.pageCollections(await server.resolvePage('00-index')),[]);
  assert.ok(!server.pageCollections(GalleryPage).some(c=>c.name==='typst'));

@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Lifecycle"
+    title = "Start and dispose page behavior"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="lifecycle")

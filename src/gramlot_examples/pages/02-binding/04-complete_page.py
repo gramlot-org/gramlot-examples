@@ -13,7 +13,7 @@ QUESTIONS = (("Do I need a service?", "This local example has no remote data."),
 
 
 class Page(BasePage):
-    title = "A complete page with binding"
+    title = "A complete page driven by Data"
 
     def main(self, root):
         pane = root.div(class_="example-page complete-page", datapath="event")

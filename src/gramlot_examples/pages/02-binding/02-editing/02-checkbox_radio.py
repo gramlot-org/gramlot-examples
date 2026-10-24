@@ -4,7 +4,7 @@ PLANS = (("basic", "Basic"), ("plus", "Plus"), ("team", "Team"))
 
 
 class Page(BasePage):
-    title = "Checkbox and radio"
+    title = "Bind boolean and single-choice values"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="choice")

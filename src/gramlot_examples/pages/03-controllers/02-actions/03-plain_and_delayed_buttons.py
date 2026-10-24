@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Plain and delayed buttons"
+    title = "Run immediate and delayed button actions"
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="clicks")

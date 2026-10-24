@@ -1,187 +1,272 @@
 {
   "families": [
     {
-      "key": "html_svg",
-      "title": "HTML / SVG",
+      "key": "components",
+      "title": "Fields and input widgets",
       "examples": [
         {
-          "key": "e01",
-          "title": "Hello World",
-          "folder": "01-html_basics/01-hello_world",
-          "description": "A heading and a paragraph: the smallest Gramlot page.",
-          "explanation": "The Page class defines main(root). Each builder call adds a typed Source node; the integration hosts the page and Gramlot renders it."
+          "key": "w01",
+          "title": "Text fields: live updates and labels",
+          "folder": "01-text/01-textbox",
+          "description": "Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field."
         },
         {
-          "key": "e02",
-          "title": "Text and links",
-          "folder": "01-html_basics/02-text_and_links",
-          "description": "Headings, inline text, quotations, code and links.",
-          "explanation": "Follow the nested builder calls to see how text and child elements coexist. The example includes an internal anchor and literal text that is escaped rather than interpreted as markup."
+          "key": "w02",
+          "title": "Checkbox: a boolean value",
+          "folder": "02-checks_and_switches/01-checkbox",
+          "description": "Two checkboxes share one boolean preference. Click either caption, then disable both using the State checkbox."
         },
         {
-          "key": "e03",
-          "title": "Lists",
-          "folder": "01-html_basics/03-lists",
-          "description": "Ordered, unordered and nested lists, plus a glossary.",
-          "explanation": "Local sequences supply the content. Loops create the repeated list items, while nesting expresses the document hierarchy."
+          "key": "w03",
+          "title": "Radio group: choose one value",
+          "folder": "03-selection/01-radio_button_text",
+          "description": "Choose one delivery option in each group. Change the column count and label position, and try the arrow keys inside a group."
         },
         {
-          "key": "e04",
-          "title": "Semantic page",
-          "folder": "01-html_basics/04-semantic_page",
-          "description": "A page composed from meaningful HTML landmarks.",
-          "explanation": "Header, navigation, main, article, aside and footer give the content structure; the markup stays meaningful without decoration."
+          "key": "w04",
+          "title": "Multiline text fields",
+          "folder": "01-text/02-text_box_area",
+          "description": "Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection."
         },
         {
-          "key": "e05",
-          "title": "Tables",
-          "folder": "01-html_basics/05-tables",
-          "description": "A catalogue with headings, rows and totals.",
-          "explanation": "Loops build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the totals computed before Source is built."
+          "key": "w05",
+          "title": "Password fields",
+          "folder": "01-text/03-passwordbox",
+          "description": "Two password fields share a sample value. The browser masks the characters; changing either field updates the other."
         },
         {
-          "key": "e06",
-          "title": "Forms",
-          "folder": "02-native_controls/01-forms",
-          "description": "Native fields, choices, buttons and a slider.",
-          "explanation": "Try typing, selecting options and moving the slider. Reset restores defaults. The submit button is disabled: this example has no save endpoint or application event handlers."
+          "key": "w06",
+          "title": "Individual radio buttons",
+          "folder": "03-selection/02-radio_button",
+          "description": "Each radio binds its own boolean. A shared group makes the choices exclusive; a separate group stays independent."
         },
         {
-          "key": "e07",
-          "title": "Native disclosure",
-          "folder": "02-native_controls/02-native_disclosure",
-          "description": "Expandable questions and native progress indicators.",
-          "explanation": "The browser supplies details/summary interaction. Progress and meter values are static; the example introduces no bindings or controllers."
+          "key": "w07",
+          "title": "Choose and bind a color",
+          "folder": "04-colorpicker",
+          "description": "Choose a color in either picker. Both controls and the swatch follow the same Data value."
         },
         {
-          "key": "e08",
-          "title": "SVG shapes",
-          "folder": "03-svg/01-svg_shapes",
-          "description": "The basic SVG vocabulary inside an HTML page.",
-          "explanation": "The SVG builder creates shapes within a viewBox. Coordinates determine geometry, while the shared theme supplies colors through semantic CSS variables."
+          "key": "w08",
+          "title": "Horizontal slider: range and steps",
+          "folder": "05-numbers_and_sliders/01-horizontal_slider",
+          "description": "Two horizontal sliders share a numeric level. Drag or use the arrow keys; switch live editing to compare immediate and committed updates."
         },
         {
-          "key": "e09",
-          "title": "SVG composition",
-          "folder": "03-svg/02-svg_composition",
-          "description": "A scene assembled with groups, paths and repeated objects.",
-          "explanation": "Helper methods build houses, trees and flowers. Loops place repeated elements, and group transformations position their local coordinates."
+          "key": "w09",
+          "title": "Vertical slider: orientation and values",
+          "folder": "05-numbers_and_sliders/02-vertical_slider",
+          "description": "Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top."
         },
         {
-          "key": "e10",
-          "title": "Cards with icons",
-          "folder": "04-page_composition/01-cards_with_icons",
-          "description": "HTML cards with SVG icons and live Source removal.",
-          "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+          "key": "w10",
+          "title": "Numeric fields: format and constraints",
+          "folder": "05-numbers_and_sliders/03-number_textbox",
+          "description": "Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data."
         },
         {
-          "key": "e11",
-          "title": "Static report",
-          "folder": "04-page_composition/02-static_report",
-          "description": "A summary, chart, legend and table from the same data.",
-          "explanation": "Separate methods build each section. SVG bar lengths and table cells use one local dataset, making the connection between values and geometry explicit."
+          "key": "w11",
+          "title": "Date fields: entry and display formats",
+          "folder": "06-dates_and_times/01-date_textbox",
+          "description": "Enter a calendar date or a word such as oggi or domani. Two fields share one civil date."
         },
         {
-          "key": "e12",
-          "title": "Complete page",
-          "folder": "04-page_composition/03-complete_page",
-          "description": "An event page with a programme, speakers, map and FAQ.",
-          "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
+          "key": "w12",
+          "title": "Time fields: entry and display formats",
+          "folder": "06-dates_and_times/02-time_textbox",
+          "description": "Edit a civil time with hours, minutes and optional seconds. The two fields keep the same typed value."
         },
         {
-          "key": "e13",
-          "title": "Live Source playground",
-          "folder": "05-live_source",
-          "description": "Create, update and remove Source nodes, with a small SVG animation.",
-          "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in every gallery command and in the static gallery opened from disk."
+          "key": "w13",
+          "title": "Search a list and select a value",
+          "folder": "03-selection/03-filtering_select",
+          "description": "Search a caption, store its code. Two fields share the same choice and the same list."
+        },
+        {
+          "key": "w14",
+          "title": "Load choices with a browser callback",
+          "folder": "03-selection/04-callback_select",
+          "description": "Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request."
+        },
+        {
+          "key": "w15",
+          "title": "Combine free text and suggestions",
+          "folder": "03-selection/05-combo_box",
+          "description": "Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write."
+        },
+        {
+          "key": "w16",
+          "title": "Checkbox group: select several values",
+          "folder": "02-checks_and_switches/02-checkbox_text",
+          "description": "Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null."
+        },
+        {
+          "key": "w17",
+          "title": "Inline and popup calendars",
+          "folder": "06-dates_and_times/03-date_calendar",
+          "description": "Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value."
+        },
+        {
+          "key": "w18",
+          "title": "Validate required values and text length",
+          "folder": "07-forms_and_validation/01-validation",
+          "description": "Invalid drafts remain visible with a message while Data keeps the last accepted value."
+        },
+        {
+          "key": "w19",
+          "folder": "07-forms_and_validation/02-formlet",
+          "title": "Arrange fields with formlet",
+          "description": "Arrange fields in columns and share label settings. Changing the layout preserves each field and its draft."
+        },
+        {
+          "key": "w20",
+          "folder": "07-forms_and_validation/03-group_box",
+          "title": "Group fields and copy typed Data",
+          "description": "Group customer data under a heading. Copy TYTX with its types or choose plain JSON from the copy menu."
+        },
+        {
+          "key": "w21",
+          "folder": "02-checks_and_switches/03-switch",
+          "title": "Show a boolean as a switch",
+          "description": "A switch and a checkbox share one boolean. Compare their appearance, captions and read-only state."
+        },
+        {
+          "key": "w22",
+          "folder": "08-buttons/01-button",
+          "title": "Buttons: icons, labels and commands",
+          "description": "Compare the Gramlot command button with plain HTML. Try confirmation and a delayed command."
+        },
+        {
+          "key": "w23",
+          "folder": "08-buttons/02-toggle_button",
+          "title": "Toggle buttons and selection state",
+          "description": "A command button and a checkbox share a boolean. The LED and aria-pressed follow Data."
+        },
+        {
+          "key": "w24",
+          "folder": "08-buttons/03-dropdown_button",
+          "title": "Dropdown buttons and command menus",
+          "description": "The main surface executes; the arrow opens the menu. Shift-select a command to run it and make it the default."
+        },
+        {
+          "key": "w25",
+          "folder": "07-forms_and_validation/04-validation_engine",
+          "title": "Validation rules, warnings and callbacks",
+          "description": "Transformations, conditions, warnings, local callbacks and remote validation."
+        },
+        {
+          "key": "w26",
+          "folder": "09-tree/01-basics",
+          "title": "Browse hierarchical Data with a tree",
+          "description": "A Bag-backed tree with icons, CSS parts, live captions, selection and a lazy Catalog branch."
+        },
+        {
+          "key": "w27",
+          "folder": "09-tree/02-labels_and_classes",
+          "title": "Customize tree labels and row styles",
+          "description": "Use caption attributes and separate open, closed, selected and node classes.",
+          "explanation": "Use caption attributes and separate open, closed, selected and node classes."
+        },
+        {
+          "key": "w28",
+          "folder": "09-tree/03-callbacks_and_icons",
+          "title": "Tree icons and computed captions",
+          "description": "Use named Logic for computed labels, explicit sanitized HTML and custom icons.",
+          "explanation": "Use named Logic for computed labels, explicit sanitized HTML and custom icons."
+        },
+        {
+          "key": "w29",
+          "folder": "09-tree/04-internal_drag",
+          "title": "Reorder tree nodes with drag and drop",
+          "description": "Copy documents between two Bag trees, reject locked folders and observe browser gesture completion."
         }
       ],
-      "folder": "01-html_elements"
+      "folder": "01-inputs"
     },
     {
       "key": "binding",
-      "title": "Binding",
+      "title": "Data and bindings",
       "examples": [
         {
           "key": "b12",
-          "title": "Automatic initial data",
+          "title": "Load example data and replay field edits",
           "folder": "01-paths_and_updates/foo",
           "description": "One TYTX Data Bag shared by the Python and JavaScript page.",
           "explanation": "foo_data.tytx supplies the customer before rendering; default initializes only the accent. Edit the name to see the binding update."
         },
         {
           "key": "b01",
-          "title": "Pointers",
+          "title": "Bind values with absolute and relative paths",
           "folder": "01-paths_and_updates/01-pointers",
           "description": "Read Data with ^, =, relative, symbolic and ?attr pointers.",
           "explanation": "Each ^ pointer subscribes its attribute or text to a Data path; = reads once. A datapath makes .paths relative, #nodeId reaches the context of a named node, and ?attr reads an attribute of a Data node."
         },
         {
           "key": "b02",
-          "title": "Variable datapath",
+          "title": "Change the current record with datapath",
           "folder": "01-paths_and_updates/02-variable_datapath",
           "description": "One card follows the record chosen in a select.",
           "explanation": "The card's datapath is itself a pointer. Choosing another record changes the context of every relative pointer below it; the DOM follows without rebuilding the page."
         },
         {
           "key": "b03",
-          "title": "Setters and defaults",
+          "title": "Initialize values: defaults and dataSetter",
           "folder": "01-paths_and_updates/03-setters_and_defaults",
           "description": "dataSetter values and control defaults, all in place at the first render.",
           "explanation": "dataSetter nodes sit after the controls and in a later branch, yet the first DOM already shows their values. Controls fill an empty path with default or default_value; attr_ writes an attribute on the Data node."
         },
         {
           "key": "b04",
-          "title": "Native editing",
+          "title": "Edit shared Data with native fields",
           "folder": "02-editing/01-native_editing",
           "description": "Text, number, range, select, date and color fields bound both ways.",
           "explanation": "Each control's value is a ^ pointer. Editing writes the Data at change, or at every input when live is true; here live itself follows a checkbox."
         },
         {
           "key": "b05",
-          "title": "Checkbox and radio",
+          "title": "Bind boolean and single-choice values",
           "folder": "02-editing/02-checkbox_radio",
           "description": "Booleans in the Data, one per checkbox and radio button.",
           "explanation": "A checkbox writes true or false. Radio buttons of one group each own a boolean: choosing one writes true there and false in the others."
         },
         {
           "key": "b06",
-          "title": "Style and visibility",
+          "title": "Control styles and visibility from Data",
           "folder": "03-presentation/01-style_and_visibility",
           "description": "visible, class, style and reactive style shortcuts.",
           "explanation": "Attributes such as color, background_color, font_size and rounded compose one style attribute and follow the Data. visible hides an element and keeps its space; hidden removes it from the layout."
         },
         {
           "key": "b07",
-          "title": "Bound SVG",
+          "title": "Update SVG from Data",
           "folder": "03-presentation/02-bound_svg",
           "description": "SVG geometry and paint follow range and color fields.",
           "explanation": "SVG presentation attributes take ^ pointers like HTML attributes. The circle's radius, the bar's width and both fills are Data values edited by native controls."
         },
         {
           "key": "b08",
-          "title": "Freeze",
+          "title": "Freeze and resume bound updates",
           "folder": "01-paths_and_updates/04-freeze",
           "description": "Freeze structural rendering while Data keeps updating; increment a counter, remove Source items, then thaw.",
           "explanation": "A frozen branch keeps reacting to Data but defers structural DOM work. Removing a child under freeze takes effect at the thaw, which builds the current Source once."
         },
         {
           "key": "b09",
-          "title": "Forms with binding",
+          "title": "Build a form with shared Data",
           "folder": "02-editing/03-forms",
           "description": "The native form of example 06, bound to a record.",
           "explanation": "The same fieldsets as HTML / SVG example 06, with most fields bound to one Data record. The summary beside the form shows the record while you type; it leaves out the password and the daily radio, and the file input, the read-only code and the disabled field are not bound."
         },
         {
           "key": "b10",
-          "title": "SVG shapes with binding",
+          "title": "Bind SVG geometry and color",
           "folder": "03-presentation/03-svg_shapes",
           "description": "The six shapes of example 08, resized and recolored by controls.",
           "explanation": "The shapes of HTML / SVG example 08 read their size and color from the Data; sliders and a color field change them."
         },
         {
           "key": "b11",
-          "title": "Complete page with binding",
+          "title": "A complete page driven by Data",
           "folder": "04-complete_page",
           "description": "The event page of example 12, with a bound title, speaker filter, map and FAQ.",
           "explanation": "The event page of HTML / SVG example 12 reads its heading from the event Data record, filters the schedule and the speaker cards by speaker through visible, highlights the chosen map stop and opens the FAQ answers from one flag."
@@ -191,157 +276,109 @@
     },
     {
       "key": "controllers",
-      "title": "Controllers",
+      "title": "Logic, actions and events",
       "examples": [
         {
           "key": "c01",
-          "title": "Formula",
+          "title": "Calculate a value with dataFormula",
           "folder": "01-logic/01-formula",
           "description": "dataFormula computes a result path from its parameters.",
           "explanation": "The formula runs when a ^ parameter changes and writes its result; a = parameter is read without triggering. _if and _else choose between two results."
         },
         {
           "key": "c02",
-          "title": "Controller",
+          "title": "React to Data changes with dataController",
           "folder": "01-logic/02-controller",
           "description": "dataController reacts to Data, to a fired path and to time.",
           "explanation": "A controller runs code for its effects: here it validates a value, counts fired requests, debounces with _delay and ticks a clock with _timing."
         },
         {
           "key": "c03",
-          "title": "Named logic",
+          "title": "Organize behavior in a Logic class",
           "folder": "01-logic/03-named_logic",
           "description": "Formula and controller bodies in class Logic of 03_named_logic.js.",
           "explanation": "The page module exports class Logic beside Page. func names one of its methods; the method receives the resolved parameters, and a controller also its node. Named logic runs under a strict CSP."
         },
         {
           "key": "c04",
-          "title": "Inline expressions",
+          "title": "Use short inline expressions",
           "folder": "01-logic/04-inline_expressions",
           "description": "== expressions in text and attributes, and inline scripts.",
           "explanation": "An attribute starting with == is an expression over the other attributes of its node. It follows the pointers it reads, like a formula without a result path."
         },
         {
           "key": "c05",
-          "title": "Node methods",
+          "title": "Call methods on a Source node",
           "folder": "01-logic/05-node_methods",
           "description": "SET, GET, PUT, FIRE and FIRE_AFTER from button actions.",
           "explanation": "Each button action calls a method of its Source node. SET notifies observers, PUT writes silently, FIRE fires also with an equal value, FIRE_AFTER fires after a delay."
         },
         {
           "key": "c06",
-          "title": "Button controller",
+          "title": "Run a controller from a button",
           "folder": "02-actions/01-button_controller",
           "description": "A button with a nested controller, click counter, modifiers and fire.",
           "explanation": "A dataController nested in a button runs once per click, with button_counter and the modifier keys. fire and fire_<name> write a Data path instead of running code."
         },
         {
           "key": "c07",
-          "title": "Events",
+          "title": "Handle browser and component events",
           "folder": "03-events/01-events",
           "description": "connect_on<event> attributes for click, input, key and pointer events.",
           "explanation": "connect_onclick, connect_oninput, connect_onkeydown and connect_onmouseover add one listener each. The handler runs with this set to the declaring node."
         },
         {
           "key": "c08",
-          "title": "End-to-end story",
+          "title": "Combine inputs, calculations and server calls",
           "folder": "04-complete_examples/01-end_to_end",
           "description": "First the local 0.2.0 story; return after the endpoint lessons for a separate 0.2.14 quote, error and recovery step.",
           "explanation": "First compare setters, live editing, radio flags, formulas, SVG and freeze. After c09/c11, revisit the same inputs with a click-only dataRpc: the server quote is a snapshot, errors retain it and a successful retry clears the error."
         },
         {
           "key": "c15",
-          "title": "Lifecycle",
+          "title": "Start and dispose page behavior",
           "folder": "03-events/02-lifecycle",
           "description": "Core 0.2.0: observe hook order, freeze, removal and Source/DOM lookup."
         },
         {
           "key": "c16",
-          "title": "Attribute projection",
+          "title": "Project attributes and preview HTML",
           "folder": "03-events/03-attribute_projection",
           "description": "Core 0.2.0 templates/masks, then the 0.2.3 sandboxed Data preview."
         },
         {
-          "key": "c17",
-          "title": "Data exchange",
-          "folder": "05-data_exchange",
-          "description": "Core 0.2.5: save/restore typed Data and export JSON/XML; current utility path from 0.2.10."
-        },
-        {
-          "key": "c09",
-          "title": "Endpoint",
-          "folder": "06-server_calls/01-endpoint",
-          "description": "dataRpc calls an endpoint of the page and writes the value at its result path.",
-          "explanation": "The page declares with_vat with @endpoint in Python and Page.registerEndpoint in JavaScript. The author attributes of the dataRpc are the arguments; _init=True makes the call when the page starts."
-        },
-        {
-          "key": "c10",
-          "title": "Call on change",
-          "folder": "06-server_calls/02-call_on_change",
-          "description": "dataRpc follows a ^ argument, with _delay, _onCalling and _onResult.",
-          "explanation": "Each change of the quantity calls the endpoint 500 ms after the last edit. _onCalling and _onResult are inline code that write the status; the latest call wins."
-        },
-        {
-          "key": "c11",
-          "title": "Call on click",
-          "folder": "06-server_calls/03-call_on_click",
-          "description": "A dataRpc nested in a button, with _onError for a failing and a protected endpoint.",
-          "explanation": "Each click calls the endpoint. An exception answers application_error; an endpoint with auth answers not_authenticated on a server that knows no identity. _onError receives the error."
-        },
-        {
-          "key": "c12",
-          "title": "Remote",
-          "folder": "07-remote_data/01-remote",
-          "description": "remote makes the content of an element a fragment built by the server.",
-          "explanation": "The section declares remote('details', record_id='^.record_id'). The page builds the fragment with @source in Python and Page.registerSource in JavaScript; each change of the record requests it again."
-        },
-        {
-          "key": "c13",
-          "title": "Cached remote",
-          "folder": "07-remote_data/02-cached_remote",
-          "description": "Revisit remote with a last-result cache; distinguish mounted fragments from observed calls.",
-          "explanation": "The rules fragment depends on the category of the product. _cachedRemote makes no request when the category is the same; _onRemote is inline code that counts the mounted fragments and writes the status."
-        },
-        {
-          "key": "c14",
-          "title": "Data remote",
-          "folder": "07-remote_data/03-data_remote",
-          "description": "Revisit endpoint values with lazy Data; compare a bound read, an explicit snapshot and cache expiry.",
-          "explanation": "The menu path holds a resolver of the endpoint load_menu with cacheTime 5. The ^.menu paragraph reads it: the answer arrives with the Data event. A change of the table loads the menu again."
-        },
-        {
           "key": "c18",
-          "title": "Publish and subscribe",
+          "title": "Publish and subscribe to messages",
           "folder": "03-events/04-publish_subscribe",
           "description": "Core 0.2.18: revisit button actions with page topics, self receivers, references and native ask."
         },
         {
           "key": "c19",
-          "title": "Parent and child messages",
+          "title": "Exchange messages between frames",
           "folder": "03-events/05-frame_messages",
           "description": "Core 0.2.18: local-first publish and direct parent/child postMessage exchange."
         },
         {
           "key": "c20",
-          "title": "Actions, confirmations and references",
+          "title": "Confirm actions and target references",
           "folder": "02-actions/02-actions_ask_references",
           "description": "Core 0.2.18: action, conditional ask and explicit Source/DOM references."
         },
         {
           "key": "c21",
-          "title": "Plain and delayed buttons",
+          "title": "Run immediate and delayed button actions",
           "folder": "02-actions/03-plain_and_delayed_buttons",
           "description": "Core 0.2.19: native html_button and grouped clicks with _delay."
         },
         {
           "key": "c22",
-          "title": "Pointer templates and expressions",
+          "title": "Transform bound values with pointer expressions",
           "folder": "01-logic/06-pointer_transforms",
           "description": "Core 0.2.20: revisit CSS lengths, boolean state and formatted text with attribute pointer transforms."
         },
         {
           "key": "c23",
-          "title": "Plan your stay",
+          "title": "Calculate a room estimate",
           "folder": "04-complete_examples/02-room_estimate",
           "description": "Room, guests and nights drive seven chained formulas, validation and a click summary.",
           "explanation": "Follow room rate and extra guests through nightly price, subtotal, long-stay discount, total and deposit. Change one rule and inspect its downstream effects."
@@ -350,223 +387,63 @@
       "folder": "03-controllers"
     },
     {
-      "key": "components",
-      "title": "Input components",
+      "key": "rpc",
+      "title": "RPC and data exchange",
+      "folder": "04-rpc",
       "examples": [
         {
-          "key": "w01",
-          "title": "Textbox and labelbox",
-          "folder": "01-text/01-textbox",
-          "description": "Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field."
+          "key": "c17",
+          "title": "Export and restore typed Data",
+          "folder": "03-data_exchange",
+          "description": "Core 0.2.5: save/restore typed Data and export JSON/XML; current utility path from 0.2.10."
         },
         {
-          "key": "w02",
-          "title": "Checkbox and labelbox",
-          "folder": "02-checks_and_switches/01-checkbox",
-          "description": "Two checkboxes share one boolean preference. Click either caption, then disable both using the State checkbox."
+          "key": "c09",
+          "title": "Define and call a server endpoint",
+          "folder": "01-server_calls/01-endpoint",
+          "description": "dataRpc calls an endpoint of the page and writes the value at its result path.",
+          "explanation": "The page declares with_vat with @endpoint in Python and Page.registerEndpoint in JavaScript. The author attributes of the dataRpc are the arguments; _init=True makes the call when the page starts."
         },
         {
-          "key": "w03",
-          "title": "RadioButtonText and labelbox",
-          "folder": "03-selection/01-radio_button_text",
-          "description": "Choose one delivery option in each group. Change the column count and label position, and try the arrow keys inside a group."
+          "key": "c10",
+          "title": "Call the server when a value changes",
+          "folder": "01-server_calls/02-call_on_change",
+          "description": "dataRpc follows a ^ argument, with _delay, _onCalling and _onResult.",
+          "explanation": "Each change of the quantity calls the endpoint 500 ms after the last edit. _onCalling and _onResult are inline code that write the status; the latest call wins."
         },
         {
-          "key": "w04",
-          "title": "Multiline text and labelbox",
-          "folder": "01-text/02-text_box_area",
-          "description": "Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection."
+          "key": "c11",
+          "title": "Call the server from a button",
+          "folder": "01-server_calls/03-call_on_click",
+          "description": "A dataRpc nested in a button, with _onError for a failing and a protected endpoint.",
+          "explanation": "Each click calls the endpoint. An exception answers application_error; an endpoint with auth answers not_authenticated on a server that knows no identity. _onError receives the error."
         },
         {
-          "key": "w05",
-          "title": "Password and labelbox",
-          "folder": "01-text/03-passwordbox",
-          "description": "Two password fields share a sample value. The browser masks the characters; changing either field updates the other."
+          "key": "c12",
+          "title": "Load a remote Source fragment",
+          "folder": "02-remote_data/01-remote",
+          "description": "remote makes the content of an element a fragment built by the server.",
+          "explanation": "The section declares remote('details', record_id='^.record_id'). The page builds the fragment with @source in Python and Page.registerSource in JavaScript; each change of the record requests it again."
         },
         {
-          "key": "w06",
-          "title": "Single radio buttons",
-          "folder": "03-selection/02-radio_button",
-          "description": "Each radio binds its own boolean. A shared group makes the choices exclusive; a separate group stays independent."
+          "key": "c13",
+          "title": "Cache remote fragments",
+          "folder": "02-remote_data/02-cached_remote",
+          "description": "Revisit remote with a last-result cache; distinguish mounted fragments from observed calls.",
+          "explanation": "The rules fragment depends on the category of the product. _cachedRemote makes no request when the category is the same; _onRemote is inline code that counts the mounted fragments and writes the status."
         },
         {
-          "key": "w07",
-          "title": "Color and labelbox",
-          "folder": "04-colorpicker",
-          "description": "Choose a color in either picker. Both controls and the swatch follow the same Data value."
-        },
-        {
-          "key": "w08",
-          "title": "Horizontal slider",
-          "folder": "05-numbers_and_sliders/01-horizontal_slider",
-          "description": "Two horizontal sliders share a numeric level. Drag or use the arrow keys; switch live editing to compare immediate and committed updates."
-        },
-        {
-          "key": "w09",
-          "title": "Vertical slider",
-          "folder": "05-numbers_and_sliders/02-vertical_slider",
-          "description": "Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top."
-        },
-        {
-          "key": "w10",
-          "title": "Number editing",
-          "folder": "05-numbers_and_sliders/03-number_textbox",
-          "description": "Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data."
-        },
-        {
-          "key": "w11",
-          "title": "Date editing",
-          "folder": "06-dates_and_times/01-date_textbox",
-          "description": "Enter a calendar date or a word such as oggi or domani. Two fields share one civil date."
-        },
-        {
-          "key": "w12",
-          "title": "Time editing",
-          "folder": "06-dates_and_times/02-time_textbox",
-          "description": "Edit a civil time with hours, minutes and optional seconds. The two fields keep the same typed value."
-        },
-        {
-          "key": "w13",
-          "title": "Filtering select",
-          "folder": "03-selection/03-filtering_select",
-          "description": "Search a caption, store its code. Two fields share the same choice and the same list."
-        },
-        {
-          "key": "w14",
-          "title": "Callback select",
-          "folder": "03-selection/04-callback_select",
-          "description": "Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request."
-        },
-        {
-          "key": "w15",
-          "title": "Combo box",
-          "folder": "03-selection/05-combo_box",
-          "description": "Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write."
-        },
-        {
-          "key": "w16",
-          "title": "Checkbox group",
-          "folder": "02-checks_and_switches/02-checkbox_text",
-          "description": "Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null."
-        },
-        {
-          "key": "w17",
-          "title": "Date calendar",
-          "folder": "06-dates_and_times/03-date_calendar",
-          "description": "Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value."
-        },
-        {
-          "key": "w18",
-          "title": "Required values and length",
-          "folder": "07-forms_and_validation/01-validation",
-          "description": "Invalid drafts remain visible with a message while Data keeps the last accepted value."
-        },
-        {
-          "key": "w19",
-          "folder": "07-forms_and_validation/02-formlet",
-          "title": "Formlet and shared labels",
-          "description": "Arrange fields in columns and share label settings. Changing the layout preserves each field and its draft."
-        },
-        {
-          "key": "w20",
-          "folder": "07-forms_and_validation/03-group_box",
-          "title": "GroupBox and typed copy",
-          "description": "Group customer data under a heading. Copy TYTX with its types or choose plain JSON from the copy menu."
-        },
-        {
-          "key": "w21",
-          "folder": "02-checks_and_switches/03-switch",
-          "title": "Checkbox as a switch",
-          "description": "A switch and a checkbox share one boolean. Compare their appearance, captions and read-only state."
-        },
-        {
-          "key": "w22",
-          "folder": "08-buttons/01-button",
-          "title": "Button commands",
-          "description": "Compare the Gramlot command button with plain HTML. Try confirmation and a delayed command."
-        },
-        {
-          "key": "w23",
-          "folder": "08-buttons/02-toggle_button",
-          "title": "Toggle button with LED",
-          "description": "A command button and a checkbox share a boolean. The LED and aria-pressed follow Data."
-        },
-        {
-          "key": "w24",
-          "folder": "08-buttons/03-dropdown_button",
-          "title": "Dropdown commands and persistence",
-          "description": "The main surface executes; the arrow opens the menu. Shift-select a command to run it and make it the default."
-        },
-        {
-          "key": "w25",
-          "folder": "07-forms_and_validation/04-validation_engine",
-          "title": "Validation rules and callbacks",
-          "description": "Transformations, conditions, warnings, local callbacks and remote validation."
-        },
-        {
-          "key": "w26",
-          "folder": "09-tree/01-basics",
-          "title": "Bag tree",
-          "description": "A Bag-backed tree with icons, CSS parts, live captions, selection and a lazy Catalog branch."
-        },
-        {
-          "key": "w27",
-          "folder": "09-tree/02-labels_and_classes",
-          "title": "Tree labels and classes",
-          "description": "Use caption attributes and separate open, closed, selected and node classes.",
-          "explanation": "Use caption attributes and separate open, closed, selected and node classes."
-        },
-        {
-          "key": "w28",
-          "folder": "09-tree/03-callbacks_and_icons",
-          "title": "Tree callbacks, HTML and icons",
-          "description": "Use named Logic for computed labels, explicit sanitized HTML and custom icons.",
-          "explanation": "Use named Logic for computed labels, explicit sanitized HTML and custom icons."
-        },
-        {
-          "key": "w29",
-          "folder": "09-tree/04-internal_drag",
-          "title": "Internal tree drag and drop",
-          "description": "Copy documents between two Bag trees, reject locked folders and observe browser gesture completion."
-        },
-        {
-          "key": "code_mirror",
-          "title": "CodeMirror",
-          "folder": "10-code_editors/01-base",
-          "description": "A live CodeMirror editor bound to Data.",
-          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
-        },
-        {
-          "key": "code_mirror_options",
-          "title": "CodeMirror with options",
-          "folder": "10-code_editors/02-options",
-          "description": "A live CodeMirror editor bound to Data.",
-          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
-        },
-        {
-          "key": "html_editor",
-          "title": "HTML: code, preview and Jodit",
-          "folder": "10-code_editors/03-html",
-          "description": "Edit and preview one HTML document with CodeMirror and Jodit."
-        },
-        {
-          "key": "markdown_editor",
-          "title": "Markdown: code, preview and rich text",
-          "folder": "10-code_editors/04-markdown",
-          "description": "Edit and preview one Markdown document with CodeMirror and ProseMirror."
-        },
-        {
-          "key": "typst_editor",
-          "title": "Typst: editor, preview and PDF",
-          "folder": "10-code_editors/05-typst",
-          "description": "Compile a Typst draft to SVG and PDF in the browser, also offline."
+          "key": "c14",
+          "title": "Fetch Data with dataRemote",
+          "folder": "02-remote_data/03-data_remote",
+          "description": "Revisit endpoint values with lazy Data; compare a bound read, an explicit snapshot and cache expiry.",
+          "explanation": "The menu path holds a resolver of the endpoint load_menu with cacheTime 5. The ^.menu paragraph reads it: the answer arrives with the Data event. A change of the table loads the menu again."
         }
-      ],
-      "folder": "04-input_components"
+      ]
     },
     {
       "key": "layout",
-      "title": "Containers",
+      "title": "Containers and layout",
       "examples": [
         {
           "key": "l01",
@@ -607,23 +484,160 @@
         {
           "key": "l07",
           "folder": "02-tabs",
-          "title": "Tabs, selection and closing",
+          "title": "Tabs: select, close and retain content",
           "description": "Compare fourteen working tab presentations: styles on four sides, horizontal and vertical alignment, then selection, icons, badges and closing."
         },
         {
           "key": "l08",
           "folder": "03-stack",
-          "title": "Demo carousel",
+          "title": "Switch pages in a single stack",
           "description": "A slider above one central stack browses the other demos. Each visited demo loads once and keeps its edits."
         },
         {
           "key": "l09",
           "folder": "03-mela",
-          "title": "Mela: desktop and touch",
+          "title": "Compare desktop and touch themes",
           "description": "Compare Mela light and dark on desktop and mobile, with a toolbar, hierarchical menu, bound fields, modal dialog and nonmodal floating window."
         }
       ],
       "folder": "05-containers"
+    },
+    {
+      "key": "editors",
+      "title": "Document and code editors",
+      "folder": "06-editors",
+      "examples": [
+        {
+          "key": "code_mirror",
+          "title": "Edit source code with CodeMirror",
+          "folder": "01-base",
+          "description": "A live CodeMirror editor bound to Data.",
+          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
+        },
+        {
+          "key": "code_mirror_options",
+          "title": "Configure language, wrapping and editor options",
+          "folder": "02-options",
+          "description": "A live CodeMirror editor bound to Data.",
+          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
+        },
+        {
+          "key": "html_editor",
+          "title": "Edit HTML: source, preview and rich text",
+          "folder": "03-html",
+          "description": "Edit and preview one HTML document with CodeMirror and Jodit."
+        },
+        {
+          "key": "markdown_editor",
+          "title": "Edit Markdown: source, preview and rich text",
+          "folder": "04-markdown",
+          "description": "Edit and preview one Markdown document with CodeMirror and ProseMirror."
+        },
+        {
+          "key": "typst_editor",
+          "title": "Edit Typst and generate a PDF",
+          "folder": "05-typst",
+          "description": "Compile a Typst draft to SVG and PDF in the browser, also offline."
+        }
+      ]
+    },
+    {
+      "key": "html_svg",
+      "title": "HTML, SVG and page structure",
+      "examples": [
+        {
+          "key": "e01",
+          "title": "Your first page: headings and text",
+          "folder": "01-html_basics/01-hello_world",
+          "description": "A heading and a paragraph: the smallest Gramlot page.",
+          "explanation": "The Page class defines main(root). Each builder call adds a typed Source node; the integration hosts the page and Gramlot renders it."
+        },
+        {
+          "key": "e02",
+          "title": "Text and links",
+          "folder": "01-html_basics/02-text_and_links",
+          "description": "Headings, inline text, quotations, code and links.",
+          "explanation": "Follow the nested builder calls to see how text and child elements coexist. The example includes an internal anchor and literal text that is escaped rather than interpreted as markup."
+        },
+        {
+          "key": "e03",
+          "title": "Ordered, nested and definition lists",
+          "folder": "01-html_basics/03-lists",
+          "description": "Ordered, unordered and nested lists, plus a glossary.",
+          "explanation": "Local sequences supply the content. Loops create the repeated list items, while nesting expresses the document hierarchy."
+        },
+        {
+          "key": "e04",
+          "title": "Semantic page",
+          "folder": "01-html_basics/04-semantic_page",
+          "description": "A page composed from meaningful HTML landmarks.",
+          "explanation": "Header, navigation, main, article, aside and footer give the content structure; the markup stays meaningful without decoration."
+        },
+        {
+          "key": "e05",
+          "title": "Tables with headings and totals",
+          "folder": "01-html_basics/05-tables",
+          "description": "A catalogue with headings, rows and totals.",
+          "explanation": "Loops build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the totals computed before Source is built."
+        },
+        {
+          "key": "e06",
+          "title": "Native form controls",
+          "folder": "02-native_controls/01-forms",
+          "description": "Native fields, choices, buttons and a slider.",
+          "explanation": "Try typing, selecting options and moving the slider. Reset restores defaults. The submit button is disabled: this example has no save endpoint or application event handlers."
+        },
+        {
+          "key": "e07",
+          "title": "Expandable sections and progress indicators",
+          "folder": "02-native_controls/02-native_disclosure",
+          "description": "Expandable questions and native progress indicators.",
+          "explanation": "The browser supplies details/summary interaction. Progress and meter values are static; the example introduces no bindings or controllers."
+        },
+        {
+          "key": "e08",
+          "title": "Draw basic SVG shapes",
+          "folder": "03-svg/01-svg_shapes",
+          "description": "The basic SVG vocabulary inside an HTML page.",
+          "explanation": "The SVG builder creates shapes within a viewBox. Coordinates determine geometry, while the shared theme supplies colors through semantic CSS variables."
+        },
+        {
+          "key": "e09",
+          "title": "Compose an SVG scene",
+          "folder": "03-svg/02-svg_composition",
+          "description": "A scene assembled with groups, paths and repeated objects.",
+          "explanation": "Helper methods build houses, trees and flowers. Loops place repeated elements, and group transformations position their local coordinates."
+        },
+        {
+          "key": "e10",
+          "title": "Cards with icons",
+          "folder": "04-page_composition/01-cards_with_icons",
+          "description": "HTML cards with SVG icons and live Source removal.",
+          "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+        },
+        {
+          "key": "e11",
+          "title": "Static report",
+          "folder": "04-page_composition/02-static_report",
+          "description": "A summary, chart, legend and table from the same data.",
+          "explanation": "Separate methods build each section. SVG bar lengths and table cells use one local dataset, making the connection between values and geometry explicit."
+        },
+        {
+          "key": "e12",
+          "title": "Build a complete event page",
+          "folder": "04-page_composition/03-complete_page",
+          "description": "An event page with a programme, speakers, map and FAQ.",
+          "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
+        },
+        {
+          "key": "e13",
+          "title": "Live Source playground",
+          "folder": "05-live_source",
+          "description": "Create, update and remove Source nodes, with a small SVG animation.",
+          "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in every gallery command and in the static gallery opened from disk."
+        }
+      ],
+      "folder": "08-html_svg"
     }
   ]
 }

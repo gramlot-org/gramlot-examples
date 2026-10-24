@@ -1,4 +1,4 @@
-# 05 · Checkbox and radio
+# Bind boolean and single-choice values
 
 **Sample data:** `02-checkbox_radio_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

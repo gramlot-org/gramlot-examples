@@ -4,7 +4,7 @@ import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static gramlots = [inputs, layout];
-    static title = 'Tabs, selection and closing';
+    static title = "Tabs: select, close and retain content";
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

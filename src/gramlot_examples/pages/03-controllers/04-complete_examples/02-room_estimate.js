@@ -4,7 +4,7 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static gramlots = [inputs, layout];
-    static title = 'Plan your stay';
+    static title = "Calculate a room estimate";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({datapath: 'estimate', class: 'estimate-page'});

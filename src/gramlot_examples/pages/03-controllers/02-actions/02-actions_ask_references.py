@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Actions, confirmations and references"
+    title = "Confirm actions and target references"
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="buttons")

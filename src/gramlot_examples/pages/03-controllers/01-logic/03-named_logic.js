@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Named logic';
+    static title = "Organize behavior in a Logic class";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'cart'});

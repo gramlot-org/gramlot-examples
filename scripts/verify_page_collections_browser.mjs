@@ -7,10 +7,10 @@ for(const engine of [chromium,webkit]) {
   const context=await browser.newContext();const page=await context.newPage();const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   const cases=[
-   ['03-controllers/07-remote_data/01-remote','#record',[]],
-   ['04-input_components/09-tree/01-basics','gramlot-tree',['inputs','tree']],
-   ['04-input_components/10-code_editors/02-options','.cm-editor',['inputs','layout','editors']],
-   ['04-input_components/10-code_editors/05-typst','gramlot-typst-preview',['layout','editors','typst']]
+   ['04-rpc/02-remote_data/01-remote','#record',[]],
+   ['01-inputs/09-tree/01-basics','gramlot-tree',['inputs','tree']],
+   ['06-editors/02-options','.cm-editor',['inputs','layout','editors']],
+   ['06-editors/05-typst','gramlot-typst-preview',['layout','editors','typst']]
   ];
   for(const [route,selector,names] of cases) {
    const response=await page.goto(new URL('pages/'+route,base).href);

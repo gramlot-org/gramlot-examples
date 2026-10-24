@@ -719,7 +719,7 @@ CHECKS.c17 = async ({window, app, byId, edit, click, data}) => {
 };
 
 test('c13: a request in flight is never cancelled, and the change made during the flight waits and is sent at the answer', async () => {
-    const family = families.find(({key}) => key === 'controllers');
+    const family = families.find(({key}) => key === 'rpc');
     const example = family.examples.find(({key}) => key === 'c13');
     const page = await mount(family, example, {hold: ({contentType, name, params}) => contentType === 'source' && name === 'rules' && params.category === 'seating'});
     try {
@@ -748,7 +748,7 @@ test('c13: a request in flight is never cancelled, and the change made during th
 });
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
+    assert.deepEqual(families.map(({key}) => key), ['components', 'binding', 'controllers', 'rpc', 'layout', 'editors', 'html_svg']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);

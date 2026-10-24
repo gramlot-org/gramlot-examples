@@ -8,10 +8,10 @@ learning prerequisites, not the release chronology.
 
 | Family | Lessons | What you learn |
 | --- | --- | --- |
-| [HTML / SVG](01-html_elements/README.md) | 13 | HTML structure, native controls and SVG before reactive Data. |
+| [HTML / SVG](08-html_svg/README.md) | 13 | HTML structure, native controls and SVG before reactive Data. |
 | [Binding](02-binding/README.md) | 11 | Pointers, live and committed editing, Boolean values, styles and shared Data. |
 | [Controllers](03-controllers/README.md) | 23 | Formulas, named Logic, events, commands, endpoints, remote Source and lazy Data. |
-| [Input components](04-input_components/README.md) | 34 | Fields, choices, typed values, validation, labels, tree and document editors. |
+| [Input components](01-inputs/README.md) | 34 | Fields, choices, typed values, validation, labels, tree and document editors. |
 | [Containers](05-containers/README.md) | 8 | Regions, splitters, drawers, nested layouts, tabs and stacked panels. |
 
 Each lesson says what to observe and provides complete Python and JavaScript

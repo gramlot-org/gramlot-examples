@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Freeze"
+    title = "Freeze and resume bound updates"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="board")

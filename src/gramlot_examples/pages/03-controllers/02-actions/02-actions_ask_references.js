@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Actions, confirmations and references';
+    static title = "Confirm actions and target references";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'buttons'});
         main_content.h1('One action, with or without a question');

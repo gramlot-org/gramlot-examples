@@ -1,4 +1,4 @@
-# Containers
+# Containers and layout
 
 A useful screen needs room for the task in front of you, while keeping other tools within reach. In these lessons you will build that idea one step at a time: divide the space, put one layout inside another, tuck panels away, and move between tasks without losing your edits.
 

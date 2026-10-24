@@ -1,4 +1,4 @@
-# 15 · Lifecycle
+# Start and dispose page behavior
 
 **Sample data:** `02-lifecycle_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

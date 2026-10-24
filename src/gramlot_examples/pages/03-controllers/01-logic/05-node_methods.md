@@ -1,4 +1,4 @@
-# 05 · Node methods
+# Call methods on a Source node
 
 **Sample data:** `05-node_methods_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

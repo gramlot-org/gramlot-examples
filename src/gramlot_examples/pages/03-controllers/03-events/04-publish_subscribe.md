@@ -1,4 +1,4 @@
-# 18 · Publish and subscribe
+# Publish and subscribe to messages
 
 **Sample data:** `04-publish_subscribe_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

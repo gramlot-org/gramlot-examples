@@ -1,4 +1,4 @@
-# Rounded panels that still let you work
+# Rounded borders and popups
 
 **Sample data:** `03-rounded_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

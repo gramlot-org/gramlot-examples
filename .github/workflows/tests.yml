@@ -130,10 +130,10 @@ jobs:
           python scripts/serve_pages.py "$pages" 8091 > "$RUNNER_TEMP/python-server.log" 2>&1 &
           node scripts/serve_pages.mjs "$pages" 8092 > "$RUNNER_TEMP/javascript-server.log" 2>&1 &
           for port in 8091 8092; do
-            for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/01-html_elements/01-html_basics/01-hello_world" && break; sleep 1; done
+            for attempt in $(seq 1 60); do curl -fs -o /dev/null "http://127.0.0.1:$port/08-html_svg/01-html_basics/01-hello_world" && break; sleep 1; done
           done
           node scripts/verify_pages_browser.mjs http://127.0.0.1:8091 http://127.0.0.1:8092
-          node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091/01-html_elements http://127.0.0.1:8092/01-html_elements
+          node scripts/verify_e10_e13_browser.mjs http://127.0.0.1:8091/08-html_svg http://127.0.0.1:8092/08-html_svg
       - name: Server logs
         if: ${{ failure() }}
         run: cat "$RUNNER_TEMP/python-server.log" "$RUNNER_TEMP/javascript-server.log"

@@ -5,7 +5,7 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [inputs, layout]
-    title = "Plan your stay"
+    title = "Calculate a room estimate"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

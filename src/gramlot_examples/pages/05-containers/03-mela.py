@@ -10,7 +10,7 @@ def icon(drawing):
 
 class Page(BasePage):
     gramlots = [inputs, layout]
-    title = "Mela: desktop and touch"
+    title = "Compare desktop and touch themes"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):
