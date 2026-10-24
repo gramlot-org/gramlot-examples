@@ -26,7 +26,6 @@ class Page(BasePage):
         result.p("^.read_value", id="read-value")
 
         pane.dataRemote(".menu", "load_menu", cacheTime=5, table="^.table")
-        pane.dataSetter(".table", "dishes")
 
     @endpoint
     def load_menu(self, table, **kwargs):

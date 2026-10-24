@@ -1,5 +1,7 @@
 # 09 · Endpoint
 
+**Sample data:** `01-endpoint_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 An endpoint receives parameters and returns a value that appears in the page. You learn how `dataRpc` puts the result in Data without writing request and response handling yourself.
 
 **Uses:** Data binding and `dataRpc` — core 0.2.14. The host runs the endpoint: Python, Node/Bun or the standalone Worker.
@@ -24,7 +26,7 @@ An endpoint computes a **value**, not Source. Python marks `with_vat` with `@end
 pane.dataRpc("with_vat", result_path=".gross", price="=.price", rate="=.rate", _init=True)
 ```
 
-`=` reads values for the initial call without making them triggers. `_init` runs after setters. Python receives keyword arguments and declares `**kwargs` for additional authored arguments; JS receives one object. Each server call creates a fresh Page, so its fields are not session storage.
+`=` reads values for the initial call without making them triggers. `_init` runs after initial Data and defaults are installed. Python receives keyword arguments and declares `**kwargs` for additional authored arguments; JS receives one object. Each server call creates a fresh Page, so its fields are not session storage.
 
 Both twins round the total half up to the cent with `floor(x + 0.5) / 100`. Python's `round` rounds half to even and `Math.round` rounds half up, so for price 0.5 and rate 1 Python `round` gives 0.5 and `Math.round` gives 0.51.
 
@@ -37,7 +39,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Change the price setter to 20 and reload.
+Change `invoice.price` to 20 in `01-endpoint_data.tytx` and reload.
 
 **Answer:** total 24.4, from `floor(20 * 122 + 0.5) / 100`. `result_path` directs the value into Data; the existing `^.gross` display then follows without a separate response-to-DOM handler.
 

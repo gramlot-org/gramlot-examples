@@ -1,5 +1,7 @@
 # 20 · Actions, confirmations and references
 
+**Sample data:** `02-actions_ask_references_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 The same greeting runs immediately, after a question, or after collecting a name. Switch **Ask before running** off and on to see when the question appears. Then pass a paragraph to a controller as a Source reference or as a DOM reference.
 
 **Uses:** Source, Data, buttons, inline actions, named controllers, native ask and local references — core 0.2.18. No endpoints or cross-frame references. This revisits the earlier button lesson with the 0.2.18 additions.

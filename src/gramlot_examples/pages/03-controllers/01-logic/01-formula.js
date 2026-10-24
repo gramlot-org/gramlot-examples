@@ -26,8 +26,5 @@ export class Page extends BasePage {
             _init: true});
         pane.dataFormula({result_path: '.size', formula: "'large order'", total: '^.total', _if: 'total > 100', _else: "'small order'",
             _init: true});
-        pane.dataSetter({destination_path: '.price', value: 12.5});
-        pane.dataSetter({destination_path: '.quantity', value: 4});
-        pane.dataSetter({destination_path: '.vat', value: 0.2});
     }
 }

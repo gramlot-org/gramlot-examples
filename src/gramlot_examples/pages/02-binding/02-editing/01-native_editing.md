@@ -1,5 +1,7 @@
 # 04 · Native editing
 
+**Sample data:** `01-native_editing_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A form displays the Data written by each control. Switch **live** on and off: you learn when typing updates Data and whether each control writes text, a number or a list.
 
 **Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
@@ -42,7 +44,7 @@ Clear Number while live is on, then enter 7.
 
 ## The same example across stages
 
-In e06 the browser edits native control values only. Here `value="^.text"` plus a Data setter replaces the literal default and connects editing to application state. The mirrored display needs only another pointer; no per-control copying routine is introduced.
+In e06 the browser edits native control values only. Here `value="^.text"` plus the sample Data companion replaces the literal value and connects editing to application state. The mirrored display needs only another pointer; no per-control copying routine is introduced.
 
 ## Limits and next step
 

@@ -12,8 +12,6 @@ class Page(BasePage):
         form.input(id="native-value", value="Original")
         form.html_button("Native reset", type="reset", id="native-reset")
         main_content.p("Edit the field and Reset: the browser restores its initial value, without a Data controller.")
-        main_content.dataSetter(".count", 0)
-        main_content.dataSetter(".runs", 0)
         main_content.button("Immediate action", id="immediate",
                             action="this.SET('.count', _counter); this.SET('.runs', this.GET('.runs') + 1)")
         main_content.button("Delayed action", id="delayed", _delay=600,

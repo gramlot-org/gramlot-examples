@@ -2,7 +2,7 @@
 
 Make fields, text and drawings share the same values. Edit a value once and let every bound view follow it.
 
-**This section uses Source, Data Bags, pointers, native input binding and initialization with setters/defaults — core 0.2.0.** It makes no endpoint calls and loads no remote content.
+**This section uses Source, Data Bags, pointers, native input binding and sample Data companions and interface defaults.** It makes no endpoint calls and loads no remote content.
 
 Start with **Pointers**. The final three pages revisit **Native forms**, **SVG shapes** and **A complete page**: binding replaces code that would copy values into each view.
 
@@ -14,7 +14,7 @@ Start with **Pointers**. The final three pages revisit **Native forms**, **SVG s
 
 The pages of this family keep their content in the Data and let the DOM follow it.
 
-A `^` pointer in a text or an attribute reads a Data path and keeps the element up to date. A native control whose `value` is a `^` pointer also writes the Data when you edit it. `dataSetter` puts the initial values in the Data before the first render.
+A `^` pointer in a text or an attribute reads a Data path and keeps the element up to date. A native control whose `value` is a `^` pointer also writes the Data when you edit it. The same-name `_data.tytx` Bag supplies sample values before rendering; `default` initializes interface controls. The dedicated setters lesson shows the explicit `dataSetter` mechanism.
 
 Start with **Pointers**, then follow the order of the list: a context that changes, initial values and defaults, editing, booleans, style and SVG, freeze. The last three pages take the content of HTML / SVG examples 06, 08 and 12 and add the binding, so the same page shows the difference.
 

@@ -22,9 +22,6 @@ export class Page extends BasePage {
         pane.p('^.status', {id: 'status'});
         pane.pre('^.types', {id: 'types'});
         pane.pre('^.mail', {id: 'mail'});
-        pane.dataSetter({destination_path: '.record', value: {name: 'Ada', seats: 2, confirmed: true,
-            note: null, address: {city: 'Rome'}}});
-        pane.dataSetter({destination_path: '.status', value: 'Choose an action; files stay under your control.'});
     }
 }
 

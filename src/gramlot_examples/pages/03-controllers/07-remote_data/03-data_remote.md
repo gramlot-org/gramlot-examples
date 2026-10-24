@@ -1,5 +1,7 @@
 # 14 · Data remote
 
+**Sample data:** `03-data_remote_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A menu loads when its Data path is read. You learn how `dataRemote` supplies values on demand. The read button copies the value the read returns. After the five-second cache expires, the next read calls again; expiry alone makes no call.
 
 **Uses:** Data binding and an endpoint-backed resolver — core 0.2.16. An in-memory example, not a database service.
@@ -54,7 +56,7 @@ Start each trial from a reload and inspect only `load_menu` calls in Network on 
 - **Zero (0).** In the no-automatic-consumer variant from the exercise above, change `cacheTime=5` to 0. On HTTP every click calls synchronously and displays the fresh result. With `sync=False`, the first click starts a call and returns empty; after it finishes, the next click displays the previous result **and starts another call**. Zero-cache writes do not emit a Data event, so a permanently bound Menu paragraph would not announce the completed response; do not mistake that for failed transport.
 - **Once (`None`, JS `null`, or negative).** Repeat reads: one call per installed resolver. Change Table after it has called: the reactive argument replaces the resolver, which calls at once; “once” is not forever across all parameter combinations.
 - **Failure.** Change the Drinks option’s authored value to a missing key, reload, first load Dishes, then choose it. Expect a console error while the last successful menu remains. Restore the option. No custom error callback is invented.
-- **Condition and lifetime.** In an editable copy, add an enabled checkbox/setter and `enabled="^.enabled", _if="enabled"`. Disabling it removes the resolver and retains the last value; a call already in flight is not cancelled and still writes its own value. Re-enabling after it previously called makes the replacement resolver call at once. Removing the declaration’s owning Source branch or disposing the page aborts the call in flight; an aborted call writes nothing. These conditional declarations use inline code and require the permitted CSP profile.
+- **Condition and lifetime.** In an editable copy, add an enabled checkbox with `value="^.enabled", default=True` and `enabled="^.enabled", _if="enabled"`. Disabling it removes the resolver and retains the last value; a call already in flight is not cancelled and still writes its own value. Re-enabling after it previously called makes the replacement resolver call at once. Removing the declaration’s owning Source branch or disposing the page aborts the call in flight; an aborted call writes nothing. These conditional declarations use inline code and require the permitted CSP profile.
 
 These are separate advanced trials, not prerequisites for the first menu read. The release sequence continues with future agreed features; the complete-page extension and environment-wide qualification are separate planned work.
 

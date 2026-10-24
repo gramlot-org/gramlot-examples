@@ -2,6 +2,8 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {pathToFileURL} from 'node:url';
+import {buildGallery} from '../src/gramlot_examples/index.js';
+const {routes} = buildGallery();
 
 const [playwrightEntry, ...urls] = process.argv.slice(2);
 if (!playwrightEntry || !urls.length) throw new Error('Usage: verify_all_gallery_pages_browser.mjs PLAYWRIGHT_ENTRY URL...');
@@ -19,7 +21,9 @@ for (const [name, engine] of Object.entries({chromium, webkit})) {
                 page.setDefaultTimeout(15000);
                 const errors = [];
                 page.on('pageerror', error => errors.push(error.message));
-                const url = base + key + (base.startsWith('file:') ? (key ? '/index.html' : 'index.html') : '');
+                const url = base.startsWith('file:')
+                    ? base + (key ? key + '/index.html' : 'index.html')
+                    : new URL(key ? routes[key].url : '', base).href;
                 try {
                     await page.goto(url);
                     await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state));

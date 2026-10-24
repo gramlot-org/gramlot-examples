@@ -32,7 +32,6 @@ export class Page extends BasePage {
         auth.p('Hidden marker is still delivered', {hidden: true, id: 'hidden-source'});
         auth.p('Without an authorized identity, the protected paragraph is omitted from Source.');
 
-        pane.dataSetter({destination_path: '.item', value: 'Lamp'});
     }
 
     reserve({item}) { throw new OutOfStock(`${item} is out of stock`); }

@@ -31,7 +31,5 @@ export class Page extends BasePage {
             connect_onmouseover: "this.SET('.hover_class', 'card status status--success')",
             connect_onmouseout: "this.SET('.hover_class', 'card')"});
 
-        pane.dataSetter({destination_path: '.hover_class', value: 'card'});
-        pane.dataSetter({destination_path: '.length', value: 0});
     }
 }

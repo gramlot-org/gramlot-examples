@@ -4,6 +4,7 @@ import test from 'node:test';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {GramlotBuilder} from '@gramlot/gramlot';
+import {Bag} from '@genrojs/bag';
 import editors from '@gramlot/gramlot/components/editors';
 import typst from '@gramlot/gramlot/components/typst';
 import inputs from '@gramlot/gramlot/components/inputs';
@@ -14,30 +15,33 @@ const python = process.env.GRAMLOT_TEST_PYTHON ?? 'python3';
 const root = fileURLToPath(new URL('../', import.meta.url));
 function normalize(value) {
     if (value == null) return null;
+    if (value instanceof Bag) return source(value);
     if (value instanceof Date) return value.toISOString().slice(0, 10);
     if (Array.isArray(value)) return value.map(normalize);
     if (typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([k]) => k !== '_meta').map(([k,v]) => [k, normalize(v)]));
     return value;
 }
 function source(bag) {
-    return bag.getNodes().map(node => ({tag: node.nodeTag.toLowerCase(), attrs: normalize(node.getAttr()),
+    return bag.getNodes().map(node => ({tag: node.nodeTag ? node.nodeTag.toLowerCase() : node.label, attrs: normalize(node.getAttr()),
         value: node.getValue() instanceof bag.constructor ? source(node.getValue()) : normalize(node.getValue())}));
 }
 const script = `
 import importlib.util, json, sys
 from datetime import date
 from gramlot import GramlotBuilder
+from genro_bag import Bag
 from gramlot_examples.gallery.collections import collections
 from gramlot_examples.gallery.guided_demo import guided_demo
 
 def normalize(v):
+    if isinstance(v, Bag): return source(v)
     if isinstance(v, date): return v.isoformat()
     if isinstance(v, (tuple, list)): return [normalize(x) for x in v]
     if isinstance(v, dict): return {('class' if k == 'class_' else k):normalize(x) for k,x in v.items() if k != '_meta'}
     return v
 
 def source(bag):
-    return [dict(tag=n.node_tag.lower(), attrs=normalize(n.attr), value=source(n.value) if hasattr(n.value, 'nodes') else normalize(n.value)) for n in bag.nodes]
+    return [dict(tag=n.node_tag.lower() if n.node_tag else n.label, attrs=normalize(n.attr), value=source(n.value) if hasattr(n.value, 'nodes') else normalize(n.value)) for n in bag.nodes]
 
 b=GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in collections()])
 if sys.argv[1] == 'guide': guided_demo(b.root)

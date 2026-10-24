@@ -1,7 +1,9 @@
+from gramlot.collections.tree import mygramlot as tree
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [tree]
     title = "SVG composition"
 
     def main(self, root):

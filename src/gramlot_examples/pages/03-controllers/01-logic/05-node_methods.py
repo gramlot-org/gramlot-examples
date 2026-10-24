@@ -32,6 +32,3 @@ class Page(BasePage):
         pane.dataController("this.SET('.notified', notified + 1)", value="^.value", notified="=.notified")
         pane.dataController("this.SET('.pings', pings + 1); this.SET('.last', ping)", ping="^.ping",
                             pings="=.pings")
-        pane.dataSetter(".value", 0)
-        pane.dataSetter(".notified", 0)
-        pane.dataSetter(".pings", 0)

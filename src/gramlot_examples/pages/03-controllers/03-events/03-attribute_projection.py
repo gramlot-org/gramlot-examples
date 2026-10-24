@@ -18,5 +18,3 @@ class Page(BasePage):
         pane.textarea(value="^.html", live=True, id="html")
         pane.iframe(srcdoc="^.html", title="Sandboxed preview", id="preview")
         pane.p("Data-bound srcdoc receives an empty sandbox; this preview only displays content.")
-        pane.dataSetter(".name", "Ada")
-        pane.dataSetter(".html", "<h2>Hello, Ada</h2><p>A separate document.</p>")

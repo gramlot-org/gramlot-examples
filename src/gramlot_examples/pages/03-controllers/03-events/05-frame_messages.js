@@ -5,8 +5,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'frames'});
         main_content.h1('Parent and child messages');
-        main_content.dataSetter({destination_path: '.child', value: false});
-        main_content.dataSetter({destination_path: '.text', value: 'Hello'});
         main_content.html_label('Message', {for: 'message'});
         main_content.input({id: 'message', value: '^.text', live: true});
         const parent = main_content.section({hidden: '^.child'});

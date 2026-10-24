@@ -1,9 +1,11 @@
-from datetime import date
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 
 from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Validation rules and callbacks"
     devices = ("desktop", "tablet", "phone")
 
@@ -20,10 +22,10 @@ class Page(BasePage):
                       validate_regex="(?:^[A-Z]{2,6}$)", validate_regex_error="Use 2–6 letters.")
         fields.textbox(id="fallback", value="^.fallback", lbl="Empty becomes Guest", validate_empty="Guest")
         fields.numberTextBox(id="quantity", value="^.quantity", lbl="Quantity: 0–10", validate_min=0, validate_max=10)
-        fields.checkbox(id="strict", value="^.strict", lbl="Email", label="Make the warning blocking")
+        fields.checkbox(id="strict", value="^.strict", lbl="Email", label="Make the warning blocking", default=False)
         fields.textbox(id="email", value="^.email", lbl="Email format", validate_email=True,
                         validate_email_iswarning="^.strict:=!{}")
-        fields.checkbox(value="^.check_length", lbl="Length", label="Require at least four characters")
+        fields.checkbox(value="^.check_length", lbl="Length", label="Require at least four characters", default=False)
         fields.textbox(id="conditional", value="^.conditional", lbl="Conditional length", validate_len="4:",
                         validate_len_if="enabled", validate_enabled="^.check_length")
         fields.textbox(id="nickname", value="^.nickname", lbl="Nickname",
@@ -50,11 +52,6 @@ class Page(BasePage):
         values.dt("Appointment")
         values.dd("^profile.appointment", format="short")
         accepted.p("^profile.validation_status", id="validation-status")
-        for path, value in (("full_name", "Ada Lovelace"), ("notes", "Please ring the bell."),
-                            ("appointment", date(2026, 10, 17)), ("delivery", "standard"), ("code", "AB"), ("fallback", "Guest"), ("quantity", 2), ("email", ""),
-                            ("strict", False), ("check_length", False), ("conditional", "Ada"),
-                            ("nickname", "Ada"), ("remote_name", "AVAILABLE"), ("validation_status", "Edit a nickname.")):
-            main_content.dataSetter("profile." + path, value)
 
     @endpoint
     def check_name(self, value: str):

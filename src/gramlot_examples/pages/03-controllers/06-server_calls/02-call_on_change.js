@@ -22,7 +22,6 @@ export class Page extends BasePage {
         pane.dataRpc({method: 'quote', result_path: '.total', quantity: '^.quantity', _delay: 500, _init: true,
             _onCalling: "this.SET('.status', 'Asking the server for ' + quantity)",
             _onResult: "this.SET('.status', 'Answered ' + result + ' for ' + quantity)"});
-        pane.dataSetter({destination_path: '.quantity', value: 1});
     }
 
     quote({quantity}) {

@@ -20,7 +20,6 @@ class Page(BasePage):
         details = pane.section("Waiting for the server", class_="card stack", id="details")
         details.remote("details", record_id="^.record_id")
 
-        pane.dataSetter(".record_id", "lamp")
 
     @source
     def details(self, root, record_id, **kwargs):

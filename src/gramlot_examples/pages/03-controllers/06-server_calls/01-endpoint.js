@@ -16,8 +16,6 @@ export class Page extends BasePage {
         }
 
         pane.dataRpc({method: 'with_vat', result_path: '.gross', price: '=.price', rate: '=.rate', _init: true});
-        pane.dataSetter({destination_path: '.price', value: 12.5});
-        pane.dataSetter({destination_path: '.rate', value: 22});
     }
 
     // Half up to the cent, as the Python twin: floor(x + 0.5).

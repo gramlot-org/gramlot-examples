@@ -8,7 +8,6 @@ class Page(BasePage):
         main_content = root.main(class_="example-page stack", datapath="messages")
         main_content.h1("The same action, two entry points")
         main_content.p("Compare the direct controller with a page topic. Both update the same summary.")
-        main_content.dataSetter(".text", "Hello")
         main_content.html_label("Message", for_="message")
         main_content.input(id="message", value="^.text", live=True)
         main_content.button("Direct controller", id="direct").dataController(func="save", text="=.text")
@@ -25,4 +24,3 @@ class Page(BasePage):
             target = box.dataController(func="receive", selfsubscribe_refresh=True)
             box.button(f"Send to {name}", id=f"send-{name}").dataController(func="sendToNode", target=target, text="=.text")
             box.p("^.received", id=f"received-{name}")
-            box.dataSetter(".text", f"Hello {name}")

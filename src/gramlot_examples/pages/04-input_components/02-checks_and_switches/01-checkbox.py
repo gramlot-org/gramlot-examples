@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Checkbox and labelbox"
 
     def main(self, root):
@@ -14,8 +17,6 @@ class Page(BasePage):
         fields.checkbox(id="newsletter-copy", value="^newsletter", lbl="Same preference",
                         label="Newsletter", disabled="^locked")
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        controls.checkbox(value="^locked", lbl="State", label="Disable the preference")
+        controls.checkbox(value="^locked", lbl="State", label="Disable the preference", default=False)
         main_content.p("Subscribed", hidden="^newsletter:=!{}", id="subscribed")
         main_content.p("Not subscribed", hidden="^newsletter", id="not-subscribed")
-        for path, value in (("newsletter", False), ("locked", False), ):
-            main_content.dataSetter(path, value)

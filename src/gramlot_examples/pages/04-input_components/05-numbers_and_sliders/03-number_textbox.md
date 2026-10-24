@@ -1,5 +1,7 @@
 # 10 · Number editing
 
+**Sample data:** `03-number_textbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data.
 
 **Uses:** the 0.3 input collection, labelbox, typed Data, page locale and Gramlot formatting. No endpoint calls or validation engine.

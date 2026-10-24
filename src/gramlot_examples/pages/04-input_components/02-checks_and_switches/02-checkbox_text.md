@@ -1,5 +1,7 @@
 # 16 · Checkbox group
 
+**Sample data:** `02-checkbox_text_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null.
 
 **Uses:** the 0.3 input collection, labelbox, Source and Data bindings. No endpoints, stores or validation engine.

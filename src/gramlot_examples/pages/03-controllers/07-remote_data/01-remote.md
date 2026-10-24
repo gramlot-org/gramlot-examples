@@ -1,5 +1,7 @@
 # 12 · Remote
 
+**Sample data:** `01-remote_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A choice loads a page fragment built by the host. You learn when to request structure with `remote` rather than a value with `dataRpc`. The fragment method stays fixed; its parameters can change.
 
 **Uses:** Data binding and declarative remote Source — core 0.2.16.

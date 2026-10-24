@@ -17,7 +17,7 @@ class Page(BasePage):
         pane = root.div(class_="example-page stack")
         pane.h1("Cached remote")
         pane.html_label("Product", for_="product")
-        choice = pane.select(id="product", value="^current")
+        choice = pane.select(id="product", value="^current", default='products.lamp')
         for key, product in PRODUCTS.items():
             choice.option(product["name"], value=f"products.{key}")
 
@@ -31,8 +31,6 @@ class Page(BasePage):
             facts.dt(label)
             facts.dd(f"^{key}", id=key)
 
-        pane.dataSetter("products", PRODUCTS)
-        pane.dataSetter("current", "products.lamp")
 
     @source
     def rules(self, root, category, **kwargs):

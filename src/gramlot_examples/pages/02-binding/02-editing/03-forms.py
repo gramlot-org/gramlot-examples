@@ -1,7 +1,5 @@
 from gramlot import Page as BasePage
 
-RECORD = {"name": "Ada Lovelace", "quantity": 3, "accent": "#456bc4", "intensity": 60,
-          "region": "south", "note": "A native multiline field.", "updates": True}
 SHOWN = ("name", "email", "search", "website", "telephone", "quantity", "date", "time", "month",
          "week", "accent", "intensity", "region", "topics", "note", "updates")
 
@@ -68,9 +66,6 @@ class Page(BasePage):
         facts.dt("frequency.weekly")
         facts.dd("^.frequency.weekly", id="out-weekly")
 
-        pane.dataSetter("form", RECORD)
-        pane.dataSetter(".topics", ["html"])
-        pane.dataSetter(".frequency.weekly", True)
 
     def field(self, parent, label, key, kind, **attrs):
         parent.html_label(label, for_=key)

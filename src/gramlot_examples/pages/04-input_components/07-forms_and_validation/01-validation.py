@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     devices = ("desktop", "tablet", "phone")
     title = "Required values and length"
 
@@ -10,7 +13,7 @@ class Page(BasePage):
         main_content.h1("The draft and the accepted value")
         main_content.p("Try one letter, more than eight, or an empty name. The draft stays in the field; the Data below keeps the last valid value.")
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        controls.checkbox(id="live", value="^live", lbl="Timing", label="Validate while typing")
+        controls.checkbox(id="live", value="^live", lbl="Timing", label="Validate while typing", default=False)
         fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
         fields.textbox(id="name", value="^name", lbl="Name (2–8 characters)", live="^live",
                        validate_notnull=True, validate_len="2:8",
@@ -28,7 +31,3 @@ class Page(BasePage):
         numbers.numberTextBox(id="quantity", value="^quantity", lbl="Required quantity — zero is valid",
                               validate_notnull=True, box_c_width="10rem", box_c_max_width="100%")
         numbers.p("^quantity", id="accepted-quantity")
-        main_content.dataSetter("name", "Ada")
-        main_content.dataSetter("notes", "Hello")
-        main_content.dataSetter("quantity", 0)
-        main_content.dataSetter("live", False)

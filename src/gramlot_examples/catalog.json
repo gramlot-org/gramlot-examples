@@ -72,7 +72,7 @@
           "title": "Cards with icons",
           "folder": "04-page_composition/01-cards_with_icons",
           "description": "HTML cards with SVG icons and live Source removal.",
-          "explanation": "Helpers and loops build the cards. Each \u00d7 button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
+          "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
         },
         {
           "key": "e11",
@@ -102,6 +102,13 @@
       "key": "binding",
       "title": "Binding",
       "examples": [
+        {
+          "key": "b12",
+          "title": "Automatic initial data",
+          "folder": "01-paths_and_updates/foo",
+          "description": "One TYTX Data Bag shared by the Python and JavaScript page.",
+          "explanation": "foo_data.tytx supplies the customer before rendering; default initializes only the accent. Edit the name to see the binding update."
+        },
         {
           "key": "b01",
           "title": "Pointers",
@@ -606,8 +613,14 @@
         {
           "key": "l08",
           "folder": "03-stack",
-          "title": "Demo carousel and live preview",
-          "description": "The left drawer browses every other demo as a miniature; the center lets you try the chosen demo at its normal size."
+          "title": "Demo carousel",
+          "description": "A slider above one central stack browses the other demos. Each visited demo loads once and keeps its edits."
+        },
+        {
+          "key": "l09",
+          "folder": "03-mela",
+          "title": "Mela: desktop and touch",
+          "description": "Compare Mela light and dark on desktop and mobile, with a toolbar, hierarchical menu, bound fields, modal dialog and nonmodal floating window."
         }
       ],
       "folder": "05-containers"

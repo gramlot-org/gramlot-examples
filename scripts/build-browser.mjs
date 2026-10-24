@@ -1,7 +1,7 @@
 /** Build the provisional gallery's scripts separately from Gramlot's runtime. */
 import {build} from 'esbuild';
 import {copyFile, cp, mkdir, readFile, readdir, writeFile, rm} from 'node:fs/promises';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {resolve, dirname, join} from 'node:path';
 import {createRequire} from 'node:module';
 
@@ -13,7 +13,7 @@ await mkdir(output, {recursive: true});
 const require = createRequire(import.meta.url);
 const compactStyle = await readFile(require.resolve('@gramlot/gramlot/themes/gramlot-compact/theme.css'), 'utf8');
 const appearanceStyles = {base:'', compact:compactStyle};
-for (const name of ['mimi', 'joanna']) {
+for (const name of ['mimi', 'joanna', 'mela']) {
     appearanceStyles[name] = compactStyle + '\n' + await readFile(require.resolve(`@gramlot/gramlot/themes/${name}/theme.css`), 'utf8');
 }
 const paletteStyles = {default: ''};
@@ -51,6 +51,19 @@ for (const name of ['inputs','layout','tree','editors','typst']) {
     await rm(new URL(name+'/',output),{recursive:true,force:true});
     await cp(join(dirname(require.resolve('@gramlot/gramlot/runtime')),'components',name),
         new URL(name+'/',output),{recursive:true});
+    const artifact = join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name);
+    const {default: collection, buildId} = await import(pathToFileURL(join(artifact,'assets/index.js')).href);
+    const root = pathToFileURL(artifact + '/');
+    const hostRoot = `/gramlot/collections/${encodeURIComponent(name)}/${buildId.slice(7)}/`;
+    const descriptor = {name, grammar:collection.toDocument(), buildId,
+        module:hostRoot+'assets/index.js', dependencies:collection.dependencies.map(item=>item.name),
+        css:collection.css.map(url=>{
+            if(!url.href.startsWith(root.href)) throw new Error('Collection stylesheet escapes its artifact');
+            return hostRoot+url.href.slice(root.href.length);
+        })};
+    await writeFile(new URL(name+'/descriptor.js',output),
+        '// Prepared metadata only; widget implementations load through the bootstrap.\nexport default '+JSON.stringify(descriptor)+';\n');
+
 }
 
 // Keep notices for every bundled dependency, including transitive Bag dependencies.

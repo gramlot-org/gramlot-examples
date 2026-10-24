@@ -22,4 +22,3 @@ class Page(BasePage):
 
         pane.dataFormula(".final", func="finalPrice", price="^.price", threshold=100, _init=True)
         pane.dataController(func="countChange", price="^.price")
-        pane.dataSetter(".price", 80)

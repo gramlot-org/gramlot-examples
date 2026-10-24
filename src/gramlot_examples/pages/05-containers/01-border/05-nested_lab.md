@@ -1,5 +1,7 @@
 # Explore a layout by moving one thing at a time
 
+**Sample data:** `05-nested_lab_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 This is a small customer workspace with several layouts inside it. It is deliberately busier than the first examples: navigation, details, an editor and output all need space. The sliders let you see which container owns which area.
 
 If the page looks complicated at first, start with just one slider. You do not need to understand the whole arrangement at once.

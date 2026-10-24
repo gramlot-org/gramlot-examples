@@ -15,13 +15,12 @@ class Page(BasePage):
 
         form = pane.form(class_="card stack", nodeId="form")
         form.html_label("Caption", for_="caption-field")
-        form.input(value="^.settings.caption", live="^.live", id="caption-field")
+        form.input(value="^.settings.caption", live="^.live", id="caption-field", default='A first caption')
         row = form.div()
-        row.input(type="checkbox", value="^.live", id="live")
+        row.input(type="checkbox", value="^.live", id="live", default=False)
         row.html_label("live", for_="live")
         form.html_label("Quantity", for_="quantity")
         form.input(type="number", min=0, value="^.quantity", default=2, id="quantity")
-        form.dataSetter(".settings.caption", "A first caption")
         sizes = form.fieldset()
         sizes.legend("Size")
         for key, label in (("small", "Small"), ("large", "Large")):
@@ -48,15 +47,11 @@ class Page(BasePage):
         later = pane.section(class_="card stack", nodeId="later")
         later.h2("0.2.0 · Optional freeze exercise")
         notes = later.ul(nodeId="notes", id="notes")
-        for text in ("Setters live here too", "This note can be removed under freeze"):
+        for text in ("This branch can be frozen", "This note can be removed under freeze"):
             notes.li(text)
         actions = later.div(class_="actions")
         for label, method in (("Freeze", "freeze"), ("Remove a note", "removeNote"), ("Thaw", "thaw")):
             actions.button(label, id=method).dataController(func=method)
-        later.dataSetter(".settings.caption", "The story of a page")
-        later.dataSetter(".size", {"small": True, "large": False})
-        later.dataSetter(".gift", False)
-        later.dataSetter(".live", False)
 
         # Return here after c09/c11: the original local stage above remains independent.
         quotes = pane.section(class_="card stack")

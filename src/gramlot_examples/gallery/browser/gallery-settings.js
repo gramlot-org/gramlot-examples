@@ -7,32 +7,16 @@ export const LABEL_POSITIONS = new Set(['example', 'TL', 'TC', 'TR', 'L', 'R', '
 export function mountGallerySettings(renderer, root, state) {
     const document = renderer.destination.ownerDocument;
     const window = document.defaultView;
-    const control = document.getElementById('gallery-label-position');
-    const popup = document.getElementById('gallery-settings');
-    let frameFocus = null;
-    // Native popover light dismissal does not receive pointer events inside an iframe.
-    const dismissOnFrameFocus = () => {
-        window.cancelAnimationFrame(frameFocus);
-        frameFocus = window.requestAnimationFrame(() => {
-            frameFocus = null;
-            if (document.activeElement?.localName === 'iframe' && popup.matches(':popover-open')) popup.hidePopover();
-        });
-    };
-    const source = renderer.elements.get(control).node;
     const key = `gramlot.gallery.settings:${window.location.pathname}`;
     let saved;
     try { saved = window.localStorage.getItem(key); }
     catch (error) { if (error.name !== 'SecurityError') throw error; }
     state.setItem('labelPosition', LABEL_POSITIONS.has(saved) ? saved : 'example');
-    source.setAttr({value: state.getItem('labelPosition')});
-    for (const option of control.options) renderer.elements.get(option).node.setAttr({selected: option.value === state.getItem('labelPosition')});
     const frames = () => [...renderer.records.get(root).element.querySelectorAll('.gallery-preview iframe')];
     const send = frame => frame.contentWindow.postMessage({type: SETTINGS_SET,
         labelPosition: state.getItem('labelPosition'), touchMode: 'auto'}, '*');
     const change = () => {
-        state.setItem('labelPosition', control.value);
-        source.setAttr({value: control.value});
-        try { window.localStorage.setItem(key, control.value); }
+        try { window.localStorage.setItem(key, state.getItem('labelPosition')); }
         catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
         for (const frame of frames()) if (frame.hasAttribute('src')) send(frame);
     };
@@ -41,16 +25,15 @@ export function mountGallerySettings(renderer, root, state) {
         const frame = frames().find(item => item.contentWindow === event.source);
         if (frame) send(frame);
     };
-    window.addEventListener('blur', dismissOnFrameFocus);
-    control.addEventListener('change', change);
+    state.subscribe('gallery-label-position', {any: event => {
+        if (event.node.label === 'labelPosition') change();
+    }});
     window.addEventListener('message', message);
     let disposed = false;
     const dispose = () => {
         if (disposed) return;
         disposed = true;
-        window.removeEventListener('blur', dismissOnFrameFocus);
-        window.cancelAnimationFrame(frameFocus);
-        control.removeEventListener('change', change);
+        state.unsubscribe('gallery-label-position', {any:true});
         window.removeEventListener('message', message);
     };
     renderer.onDispose(root, dispose);

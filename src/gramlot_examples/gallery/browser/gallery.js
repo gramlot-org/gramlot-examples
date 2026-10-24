@@ -56,6 +56,8 @@ export function mountGallery(renderer, root, inspector) {
 /** Install directory resolvers during page build, before the tree first renders. */
 export function initializeNavigation(renderer, root) {
     const state=root.builder.data.getItem('galleryIndex');
+    state.setItem('navigationOpen', true);
+    state.setItem('settingsOpen', false);
     const navigation=state.getItem('navigation');
     const resolvers=[];
     for(const node of navigation.getNodes()) if(node.attr.directory !== undefined && node.resolver === null) {
@@ -64,4 +66,10 @@ export function initializeNavigation(renderer, root) {
         navigation.setResolver(node.label,resolver);resolvers.push(resolver);
     }
     renderer.onDispose(root,()=>{for(const resolver of resolvers)resolver.abort();});
+}
+
+
+/** Toolbar actions change the same Source drawers as their built-in handles. */
+export function toggleGalleryPanel(builder, nodeId, statePath) {
+    builder.nodeById(nodeId).setAttr({drawer: builder.data.getItem(statePath) ? 'close' : true});
 }

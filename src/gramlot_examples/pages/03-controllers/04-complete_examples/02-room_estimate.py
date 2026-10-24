@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Plan your stay"
     devices = ("desktop", "tablet", "phone")
 
@@ -39,6 +42,3 @@ class Page(BasePage):
         main_content.p("^.summary", id="summary", aria_live="polite")
         main_content.p("Two guests included; €25 per extra guest/night. Seven nights: 10% off. Deposit rounded to euros.")
         main_content.p("Invalid drafts do not change accepted Data. Summary updates on click. Illustrative prices only.")
-        main_content.dataSetter(".room", "classic")
-        main_content.dataSetter(".guests", 2)
-        main_content.dataSetter(".nights", 3)

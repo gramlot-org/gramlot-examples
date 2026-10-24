@@ -1,5 +1,7 @@
 # 18 · Publish and subscribe
 
+**Sample data:** `04-publish_subscribe_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Revisit **Button controller**: one button calls a controller directly, another publishes a message to the same behavior. Then address two independent receivers without looking up their IDs, and collect a message in a dialog.
 
 **Uses:** Source, Data, named Logic, page/self subscriptions, authored references and native `ask` — core 0.2.18. No endpoint calls. Earlier lessons remain the 0.2.0 stage.

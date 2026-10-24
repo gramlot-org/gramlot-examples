@@ -32,7 +32,6 @@ class Page(BasePage):
         auth.p("Hidden marker is still delivered", hidden=True, id="hidden-source")
         auth.p("Without an authorized identity, the protected paragraph is omitted from Source.")
 
-        pane.dataSetter(".item", "Lamp")
 
     @endpoint
     def reserve(self, item, **kwargs):

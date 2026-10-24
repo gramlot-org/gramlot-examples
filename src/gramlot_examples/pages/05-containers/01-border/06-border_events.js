@@ -1,24 +1,14 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Border events and controllers';
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {
         const main_content = root.main({ class: 'example-page stack', datapath: 'events' });
-        for (const [name, value] of [
-            ['drawerCount', 0],
-            ['resizeCount', 0],
-            ['drawerMessage', 'No visibility change yet'],
-            ['resizeMessage', 'No completed resize yet'],
-            ['drawerPayload', '{}'],
-            ['resizePayload', '{}'],
-            ['hideFilters', false],
-            ['name', 'Ada'],
-            ['note', 'Keep this draft'],
-        ]) {
-            main_content.dataSetter({ destination_path: `.${name}`, value: value });
-        }
         main_content.dataController({
             script: "this.SET('.drawerCount', count + 1); this.SET('.drawerMessage', region + ': ' + (open ? 'open' : 'closed')); this.SET('.drawerPayload', JSON.stringify(_subscription_kwargs));",
             count: '=.drawerCount',
@@ -33,7 +23,7 @@ export class Page extends BasePage {
         main_content.p(
             'Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.',
         );
-        main_content.checkbox({ id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
+        main_content.checkbox({default: false,  id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
         const border = main_content.borderContainer({
             id: 'events-border',
             nodeId: 'eventWorkspace',

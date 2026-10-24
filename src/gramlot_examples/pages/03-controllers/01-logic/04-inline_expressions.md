@@ -1,5 +1,7 @@
 # 04 · Inline expressions
 
+**Sample data:** `04-inline_expressions_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Small expressions calculate what an element displays directly from its inputs. You learn how to format a local result without adding another calculated Data field.
 
 **Uses:** Data binding and inline expressions — core 0.2.0.

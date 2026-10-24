@@ -1,8 +1,9 @@
+from gramlot.collections.tree import mygramlot as tree
 from gramlot import Page as BasePage
-from genro_bag import Bag
 
 
 class Page(BasePage):
+    gramlots = [tree]
     title = "Internal tree drag and drop"
     devices = ("desktop", "tablet", "phone")
 
@@ -10,16 +11,6 @@ class Page(BasePage):
         main_content = root.main(class_="example-page stack", datapath="treeDrag")
         main_content.h1("Drag a document into a folder")
         main_content.p("Drag a document from the left tree onto Inbox or Projects. Locked archive refuses it. Open the folder to see the copied item; the source stays unchanged.")
-        documents = Bag()
-        documents.set_item("brief", "Project brief", caption="Project brief")
-        documents.set_item("notes", "Meeting notes", caption="Meeting notes")
-        folders = Bag()
-        for key, caption, accepts in [("inbox", "Inbox", True), ("projects", "Projects", True), ("archive", "Locked archive", False)]:
-            folders.set_item(key, Bag(), caption=caption, accepts=accepts)
-        main_content.dataSetter(".documents", documents)
-        main_content.dataSetter(".folders", folders)
-        main_content.dataSetter(".lastDrop", "No document copied yet")
-        main_content.dataSetter(".lastEnd", "No drag finished yet")
         columns = main_content.div(class_="drag-columns")
         origin = columns.section(class_="drag-panel")
         origin.h2("Documents")

@@ -1,5 +1,7 @@
 # 16 · Attribute projection
 
+**Sample data:** `03-attribute_projection_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 One name appears in a greeting and a tooltip with different formatting. You learn how templates and masks reuse a bound value without copying text. The later **0.2.3** section previews HTML in a separate sandboxed frame.
 
 **Uses:** Data binding, explicit pointer templates and text masks; sandboxed Data `srcdoc` only in the later part (0.2.3).

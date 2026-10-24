@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 
 const PACKAGE = fileURLToPath(new URL('./', import.meta.url));
 const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json'};
-const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js'];
+const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js', '_data.tytx'];
 const DIST = ['gallery.js', 'frame.js', 'notices.json', 'LICENSE', 'NOTICE'];
 
 /** Media type of a gallery asset; only the built gallery scripts are served as JavaScript. */
@@ -69,6 +69,7 @@ export function buildGallery({catalogs = []} = {}) {
         assets[`/gallery/dist/${name}`] = {file: path, type: mediaType(path, extname(path) === '.js')};
     }
     for (const collection of collections) {
+        assets[`/gallery/dist/${collection.name}/descriptor.js`] = {file:join(gallery,'dist',collection.name,'descriptor.js'),type:'text/javascript'};
         const folder = join(gallery,'dist',collection.name,'assets');
         for (const file of readdirSync(folder,{recursive:true})) {
             const absolute = join(folder,file);
@@ -105,6 +106,10 @@ export function buildGallery({catalogs = []} = {}) {
     };
     visit(join(PACKAGE,'pages'),'pages');
     for(const family of families)if(!family.path.startsWith(join(PACKAGE,'pages')+sep))visit(family.path,`pages/${family.folder}`);
+    for (const route of Object.values(routes)) {
+        const data = route.page.slice(0, -3) + '_data.tytx';
+        route.data = existsSync(data) ? data : null;
+    }
     return {families, routes, assets, collections};
 }
 

@@ -1,5 +1,7 @@
 # 02 · Checkbox and labelbox
 
+**Sample data:** `01-checkbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Two checkboxes share one boolean preference. Click either caption, then disable both using the State checkbox.
 
 **Uses:** the first 0.3 input components, shared labelbox, Source, Data and bindings. No endpoints or validation engine.

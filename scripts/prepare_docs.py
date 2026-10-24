@@ -88,6 +88,9 @@ def stage():
                     copied.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(original, copied)
                     text += f"\n```{{literalinclude}} {copied.name}\n:language: {language}\n:caption: {copied.name}\n```\n"
+            data_file = (ROOT / source).with_name(Path(source).stem + "_data.tytx")
+            if data_file.is_file():
+                text += "\n\n## Initial Data Bag\n\nThe same-name TYTX companion is loaded automatically before rendering.\n\n```text\n" + data_file.read_text().rstrip() + "\n```\n"
         output = destination / target
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(text)

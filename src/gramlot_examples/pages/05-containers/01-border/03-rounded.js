@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Rounded borders and popups';
     static devices = ['desktop', 'tablet', 'phone'];
 
@@ -11,14 +14,14 @@ export class Page extends BasePage {
             'Drag all four separators and toggle their drawers. Open the calendar and choices inside the rounded inner panel.',
         );
         const controls = main_content.formlet({ max_width: '24rem', columns: 1 });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "headline",
             id: 'rounded-design',
             value: '^design',
             lbl: 'Outer design',
             values: 'headline:Headline,sidebar:Sidebar',
             width: '10rem',
         });
-        controls.horizontalSlider({
+        controls.horizontalSlider({default: 24,
             id: 'rounded-slider',
             value: '^rounded',
             lbl: 'Corner radius (px)',
@@ -99,10 +102,5 @@ export class Page extends BasePage {
         main_content.p(
             "The rounded outline clips pane backgrounds. Calendar, choices and validation messages use the browser's top layer.",
         );
-        main_content.dataSetter({ destination_path: 'design', value: 'headline' });
-        main_content.dataSetter({ destination_path: 'rounded', value: 24 });
-        main_content.dataSetter({ destination_path: 'name', value: 'Ada' });
-        main_content.dataSetter({ destination_path: 'date', value: new Date(Date.UTC(2026, 9, 18)) });
-        main_content.dataSetter({ destination_path: 'choice', value: 'standard' });
     }
 }

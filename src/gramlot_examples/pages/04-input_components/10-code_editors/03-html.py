@@ -1,18 +1,19 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
+from gramlot.collections.editors import mygramlot as editors
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout, editors]
     title = "HTML: code, preview and Jodit"
 
     def main(self, root):
         main_content = root.main(datapath="htmlDemo", padding="24px", class_="example-page stack")
         main_content.h1(self.title)
         main_content.p("One HTML draft, three views. Rich text preserves protected script, SVG and comment blocks. Use Code to change those blocks. Preview does not execute scripts.")
-        main_content.dataSetter(".content", '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><title>A real HTML document</title>\n<style>body {font: 17px system-ui; padding: 24px; color: #24334b} h1 {color: #3566aa} .note {background: #eaf1fc; padding: 16px; border-radius: 8px}</style></head>\n<body><h1>Hello, Gramlot!</h1><p>Edit this paragraph in <strong>Rich text</strong>, then inspect its HTML in Code.</p><p class="note">Code, Preview and Rich text share one draft.</p>\n<!-- This comment stays in the source. -->\n<svg width="100" height="50" viewBox="0 0 100 50"><circle cx="25" cy="25" r="20" fill="#3566aa"/></svg>\n<script>document.body.dataset.executed = "yes";</script>\n</body></html>')
-        main_content.dataSetter(".readonly", False)
-        main_content.dataSetter(".view", "code")
-        main_content.checkbox(value="^.readonly", label="Read only")
-        tabs = main_content.tabContainer(selectedPage="^.view", height="500px")
+        main_content.checkbox(value="^.readonly", label="Read only", default=False)
+        tabs = main_content.tabContainer(selectedPage="^.view", height="500px", default_selectedPage='code')
         tabs.contentPane(title="Code", pageName="code", height="100%").codeMirror(value="^.content", language="html", readonly="^.readonly", height="100%")
         tabs.contentPane(title="Preview", pageName="preview", height="100%").htmlPreview(value="^.content", height="100%")
         tabs.contentPane(title="Rich text", pageName="rich", height="100%").htmlEditor(value="^.content", readonly="^.readonly", height="100%")

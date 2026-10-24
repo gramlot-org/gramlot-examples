@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Border regions and splitters"
     devices = ("desktop", "tablet", "phone")
 
@@ -15,7 +18,7 @@ class Page(BasePage):
                        padding="8px").strong("Customer workspace")
         left = bc.contentPane(region="left", border_right="1px solid var(--gramlot-border-control, #aaa)", width="160px", splitter=True, minSize=100, maxSize=300,
                               padding="12px", background="var(--gramlot-surface-subtle, #eef1f5)")
-        left.textbox(value="^filter", lbl="Filter", width="100%")
+        left.textbox(value="^filter", lbl="Filter", width="100%", default='')
         right = bc.contentPane(region="right", border_left="1px solid var(--gramlot-border-control, #aaa)", width="220px", splitter=True, minSize=120, maxSize=400,
                                padding="12px", background="var(--gramlot-surface-subtle, #eef1f5)")
         right.h3("Customer summary")
@@ -29,5 +32,3 @@ class Page(BasePage):
         center.p("Accepted name:")
         center.p("^customer.name", id="accepted-name")
         center.p("Try an invalid one-character name, then resize the panes. The draft stays in the field.")
-        for path, value in (("customer.active", True), ("filter", ""), ("customer.name", "Ada"), ("customer.notes", "Same fields, same Data")):
-            main_content.dataSetter(path, value)

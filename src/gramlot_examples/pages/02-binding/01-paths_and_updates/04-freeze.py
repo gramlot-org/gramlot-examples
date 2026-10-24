@@ -19,6 +19,3 @@ class Page(BasePage):
         items = board.ul(nodeId="items", id="items")
         for number in (1, 2, 3):
             items.li(f"Item {number}")
-
-        pane.dataSetter(".count", 0)
-        pane.dataSetter(".frozen", False)

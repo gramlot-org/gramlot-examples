@@ -1,5 +1,7 @@
 # Typst: editor, preview and PDF
 
+**Sample data:** `05-typst_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 CodeMirror and `typstPreview` share the same Data string. The optional `typst`
 collection includes a browser Worker, WASM compiler/renderer and local fonts.
 SVG and PDF come from the current draft; a syntax error disables download and

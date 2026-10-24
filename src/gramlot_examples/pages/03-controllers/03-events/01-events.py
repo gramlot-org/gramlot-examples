@@ -31,6 +31,3 @@ class Page(BasePage):
         hover.div("Move the pointer over this box", id="hover-box", class_="^.hover_class",
                   connect_onmouseover="this.SET('.hover_class', 'card status status--success')",
                   connect_onmouseout="this.SET('.hover_class', 'card')")
-
-        pane.dataSetter(".hover_class", "card")
-        pane.dataSetter(".length", 0)

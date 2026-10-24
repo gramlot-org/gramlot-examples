@@ -1,5 +1,7 @@
 # 12 · Time editing
 
+**Sample data:** `02-time_textbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Edit a civil time with hours, minutes and optional seconds. The two fields keep the same typed value.
 
 **Uses:** the 0.3 input collection, labelbox, typed Data, page locale and Gramlot formatting. No endpoint calls or validation engine.

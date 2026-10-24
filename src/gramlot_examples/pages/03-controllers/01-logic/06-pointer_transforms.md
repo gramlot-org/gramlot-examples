@@ -1,5 +1,7 @@
 # 22 · Pointer templates and expressions
 
+**Sample data:** `06-pointer_transforms_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Resize a bar, enable a field and display an amount. The same typed Data drives all three: you learn when to produce text and when to keep a boolean or number.
 
 **Uses:** Source, Data, attribute pointers and the page formatter — core 0.2.20. No Web Components or endpoint calls. Earlier lessons retain their release scope.

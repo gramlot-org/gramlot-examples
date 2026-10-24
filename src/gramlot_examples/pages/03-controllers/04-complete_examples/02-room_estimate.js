@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Plan your stay';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
@@ -34,9 +37,5 @@ export class Page extends BasePage {
         main_content.p('^.summary', {id: 'summary', aria_live: 'polite'});
         main_content.p('Two guests included; €25 per extra guest/night. Seven nights: 10% off. Deposit rounded to euros.');
         main_content.p('Invalid drafts do not change accepted Data. Summary updates on click. Illustrative prices only.');
-        main_content.dataSetter({destination_path: '.room', value: 'classic'});
-        main_content.dataSetter({destination_path: '.guests', value: 2});
-        main_content.dataSetter({destination_path: '.nights', value: 3});
     }
 }
-

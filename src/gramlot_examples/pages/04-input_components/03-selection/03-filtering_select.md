@@ -1,5 +1,7 @@
 # 13 · Filtering select
 
+**Sample data:** `03-filtering_select_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Search a caption, store its code. Two fields share the same choice and the same list.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source and Data bindings. No endpoints or validation engine.

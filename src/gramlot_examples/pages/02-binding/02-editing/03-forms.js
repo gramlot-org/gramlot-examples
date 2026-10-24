@@ -1,7 +1,5 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
-const RECORD = {name: 'Ada Lovelace', quantity: 3, accent: '#456bc4', intensity: 60,
-    region: 'south', note: 'A native multiline field.', updates: true};
 const SHOWN = ['name', 'email', 'search', 'website', 'telephone', 'quantity', 'date', 'time', 'month',
     'week', 'accent', 'intensity', 'region', 'topics', 'note', 'updates'];
 
@@ -67,9 +65,6 @@ export class Page extends BasePage {
         facts.dt('frequency.weekly');
         facts.dd('^.frequency.weekly', {id: 'out-weekly'});
 
-        pane.dataSetter({destination_path: 'form', value: RECORD});
-        pane.dataSetter({destination_path: '.topics', value: ['html']});
-        pane.dataSetter({destination_path: '.frequency.weekly', value: true});
     }
 
     field(parent, label, key, kind, attrs = {}) {

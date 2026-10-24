@@ -23,7 +23,6 @@ export class Page extends BasePage {
         result.p('^.read_value', {id: 'read-value'});
 
         pane.dataRemote({destination_path: '.menu', method: 'load_menu', cacheTime: 5, table: '^.table'});
-        pane.dataSetter({destination_path: '.table', value: 'dishes'});
     }
 
     load_menu({table}) { return MENUS[table].join(', '); }

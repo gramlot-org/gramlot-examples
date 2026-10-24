@@ -1,5 +1,7 @@
 # Put a workspace inside a workspace
 
+**Sample data:** `02-nested_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A whole application and one of its editors rarely need the same layout. The application may need navigation and a header; the editor may need its own tools and output. You can give each its own **borderContainer**, placing the editor's container in the center of the application's container.
 
 Think of it as rooms inside a house: changing the arrangement of one room does not require rebuilding the house.

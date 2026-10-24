@@ -14,6 +14,5 @@ export class Page extends BasePage {
         menu.menuline('-');
         menu.menuline({caption:'Unavailable',code:'unavailable',disabled:true,action:"this.SET('result', 'Unavailable')"});
         main_content.p('^result',{id:'dropdown-result'});
-        main_content.dataSetter({destination_path:'result',value:'No command yet'});
     }
 }

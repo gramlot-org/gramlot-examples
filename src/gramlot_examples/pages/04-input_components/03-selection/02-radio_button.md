@@ -1,5 +1,7 @@
 # 06 · Single radio buttons
 
+**Sample data:** `02-radio_button_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Each radio binds its own boolean. A shared group makes the choices exclusive; a separate group stays independent.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source, Data and bindings. No endpoint calls, stores or validation engine.

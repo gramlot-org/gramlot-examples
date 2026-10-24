@@ -1,17 +1,17 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import tree from '../../../gallery/dist/tree/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 import {Bag} from '@gramlot/gramlot';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, tree];
     static title = 'Bag tree';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'treeDemo'});
         main_content.h1('Bag tree');
         main_content.p('Expand Documents or Catalog. Catalog loads its Bag through a resolver on first expansion. Select a row; the path below is bound to the same Data.');
-        main_content.dataSetter({destination_path: '.nodes', value: new Bag({documents: new Bag({readme: 'Welcome', notes: 'Notes'}), catalog: null, status: 'Ready'})});
-        main_content.dataSetter({destination_path: '.selection', value: null});
-        main_content.dataSetter({destination_path: '.hideValues', value: false});
-        main_content.checkbox({value: '^.hideValues', lbl: 'Hide scalar values', id: 'tree-hide-values'});
+        main_content.checkbox({default: false, value: '^.hideValues', lbl: 'Hide scalar values', id: 'tree-hide-values'});
         main_content.dataRemote({destination_path: '.nodes.catalog', method: 'catalog_children', cacheTime: -1});
         main_content.tree({storepath: '.nodes', hideValues: '^.hideValues', labelAttribute: 'caption', selectedPath: '^.selection', id: 'example-tree', class: 'example-bag-tree'});
         main_content.p('Selected path');
@@ -25,4 +25,3 @@ export class Page extends BasePage {
     catalog_children() { return new Bag({books: new Bag({guide: 'Guide', reference: 'Reference'}), audio: new Bag({interview: 'Interview'})}); }
 }
 Page.registerEndpoint('catalog_children');
-

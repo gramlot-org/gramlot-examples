@@ -15,7 +15,7 @@ export class Page extends BasePage {
         const pane = root.div({class: 'example-page stack'});
         pane.h1('Cached remote');
         pane.html_label('Product', {for: 'product'});
-        const choice = pane.select({id: 'product', value: '^current'});
+        const choice = pane.select({default: "products.lamp", id: 'product', value: '^current'});
         for (const [key, product] of Object.entries(PRODUCTS)) choice.option(product.name, {value: `products.${key}`});
 
         const card = pane.article({datapath: '^current', class: 'card stack'});
@@ -29,8 +29,6 @@ export class Page extends BasePage {
             facts.dd(`^${key}`, {id: key});
         }
 
-        pane.dataSetter({destination_path: 'products', value: PRODUCTS});
-        pane.dataSetter({destination_path: 'current', value: 'products.lamp'});
     }
 
     rules(root, {category}) {

@@ -1,5 +1,7 @@
 # 08 · End-to-end story
 
+**Sample data:** `01-end_to_end_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A small order form combines fields, a total and an SVG preview. Start with the **0.2.0 local part**, where bindings and controllers update the page.
 
 After **Endpoint** and **Call on click**, return to the **0.2.14 quote section**. It sends the same inputs only when you request a quote; a failed request keeps the previous quote.
@@ -20,14 +22,14 @@ After **Endpoint** and **Call on click**, return to the **0.2.14 quote section**
 
 ## Read the page
 
-This is the **local 0.2.0 story**, with the maintained 0.2.5 Logic-module arrangement. Setters initialize caption, radio flags and checkboxes; a default initializes quantity. Formulas derive total/radius and the named `paint` controller selects color. Named button controllers handle press and freeze; the Logic finds the `later` and `notes` nodes by their `nodeId` with `gramlot.src.builder.nodeById`.
+This is the **local 0.2.0 story**, with the maintained 0.2.5 Logic-module arrangement. The sample companion initializes caption, radio flags and gift choice; defaults initialize quantity and live editing. Formulas derive total/radius and the named `paint` controller selects color. Named button controllers handle press and freeze; the Logic finds the `later` and `notes` nodes by their `nodeId` with `gramlot.src.builder.nodeById`.
 
 ```python
 pane.dataFormula(".total", "quantity * (large ? 3 : 1) + (gift ? 5 : 0)",
                  quantity="^.quantity", large="^.size.large", gift="^.gift", _init=True)
 ```
 
-The later caption setter wins before render. It does not arrive late over a network. The SVG and freeze sections are optional local depth: neither is required for the later server request. Leave the separately labelled quote section alone during this first pass; it sends no request at startup or when fields change.
+The caption comes from `01-end_to_end_data.tytx` before render. It does not arrive late over a network. The SVG and freeze sections are optional local depth: neither is required for the later server request. Leave the separately labelled quote section alone during this first pass; it sends no request at startup or when fields change.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `08_end_to_end.js`) beside the Python source.
 

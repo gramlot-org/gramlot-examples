@@ -30,7 +30,7 @@ export class Page extends BasePage {
         const timed = pane.section({class: 'card stack'});
         timed.h2('Run at start and at intervals (_onStart, _timing)');
         timed.html_label('Interval in seconds', {for: 'interval'});
-        const interval = timed.select({value: '^.interval', id: 'interval'});
+        const interval = timed.select({default: "1", value: '^.interval', id: 'interval'});
         for (const seconds of [0, 1, 5]) interval.option(String(seconds), {value: String(seconds)});
         timed.p('^.ticks', {id: 'ticks'});
         timed.dataController({script: "this.SET('.ticks', (ticks ?? 0) + 1)", ticks: '=.ticks', _timing: '^.interval',
@@ -48,14 +48,8 @@ export class Page extends BasePage {
             ['address_exact', '.filter.address', true], ['address_all', '.filter.address', false]]) {
             filtered.p(`^.${key}`, {mask: `${key}: {}`, id: key});
             filtered.dataController({func: 'countPath', watched: `^${path}`, counter: `.${key}`, _userChanges: exact});
-            pane.dataSetter({destination_path: `.${key}`, value: 0});
         }
-        pane.dataSetter({destination_path: '.filter', value: {name: 'Ada', address: {city: 'Rome'}}});
-        pane.dataSetter({destination_path: '.replacement', value: {name: 'Container', address: {city: 'Paris'}}});
 
-        pane.dataSetter({destination_path: '.name', value: 'Ada'});
-        pane.dataSetter({destination_path: '.requests', value: 0});
-        pane.dataSetter({destination_path: '.interval', value: '1'});
     }
 }
 

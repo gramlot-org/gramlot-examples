@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "RadioButtonText and labelbox"
 
     def main(self, root):
@@ -12,7 +15,7 @@ class Page(BasePage):
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
         controls.html_label("Columns (1–3): ", for_="columns").span("^columns", id="columns-value")
         controls.input(id="columns", type="range", min=1, max=3, value="^columns", live=True,
-                       width="16rem", max_width="100%")
+                       width="16rem", max_width="100%", default=3)
         fields = main_content.formlet(class_="card stack", width="100%", max_width="36rem")
         choices = "standard:Standard,express:Express,pickup:Pick up"
         fields.radioButtonText(id="shipping", value="^shipping", values=choices,
@@ -25,6 +28,3 @@ class Page(BasePage):
         facts.dd("^shipping", id="shipping-value")
         facts.dt("Alternative code")
         facts.dd("^alternative", id="alternative-value")
-        for path, value in (("shipping", "standard"), ("alternative", "pickup"),
-                            ("columns", 3)):
-            main_content.dataSetter(path, value)

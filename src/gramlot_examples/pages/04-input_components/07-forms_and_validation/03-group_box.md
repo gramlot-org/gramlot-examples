@@ -1,5 +1,7 @@
 # 20 · GroupBox and typed copy
 
+**Sample data:** `03-group_box_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Group customer data under a heading. Copy TYTX with its types or choose plain JSON from the copy menu.
 
 **Uses:** the 0.3 inputs and layout collections, labelbox and Source/Data bindings. No database, form-save service or endpoints.

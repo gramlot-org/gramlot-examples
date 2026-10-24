@@ -325,6 +325,22 @@ Object.assign(LOGIC, {
         assert.equal(await page.locator('#session-1').evaluate(e=>e.style.visibility),'hidden');
         await page.click('#faq-open'); assert.equal(await page.locator('details').evaluateAll(nodes=>nodes.every(n=>n.open)),true);
     },
+    async b12(page, text) {
+        assert.equal(await page.locator('#customer-name').inputValue(), 'Ada Lovelace');
+        assert.equal(await text('#customer-city'), 'London');
+        assert.equal(await page.locator('#accent').inputValue(), '#2563eb');
+        assert.equal(await page.locator('#draft-name').inputValue(), '');
+        await page.fill('#customer-name', 'Grace');
+        assert.equal(await text('#customer-preview'), 'Grace');
+        await page.click('#fill-sample');
+        await page.waitForFunction(() => document.getElementById('draft-city').value === 'London');
+        assert.equal(await page.locator('#draft-name').inputValue(), 'Grace');
+        await page.fill('#draft-name', 'Independent');
+        assert.equal(await page.locator('#customer-name').inputValue(), 'Grace');
+        await page.click('#clear-draft');
+        assert.equal(await page.locator('#draft-name').inputValue(), '');
+        assert.equal(await page.locator('#draft-city').inputValue(), '');
+    },
     async c01(page,text) {
         await input(page,'#vat','0.1'); assert.equal(await text('#gross'),'60');
         await input(page,'#quantity','10'); assert.equal(await text('#gross'),'137.5');

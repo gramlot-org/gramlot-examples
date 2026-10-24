@@ -32,11 +32,10 @@ export function mountGalleryPresentation(renderer, root, state) {
         style.setValue(appearanceStyles[state.getItem('appearance')] + '\n' + paletteStyles[state.getItem('palette')]);
         for (const entry of entries.values()) if (entry.frame) send(entry.frame);
     };
-    for (const [id, property] of [['index-theme','theme'],['index-appearance','appearance'],['index-palette','palette']]) {
-        const control = byId(id); set(control,{value:state.getItem(property)});
-        listen(control, 'change', () => { state.setItem(property, control.value); set(control,{value:control.value}); apply(); save(); });
-    }
-    listen(byId('keyboard-navigation'), 'change', () => state.setItem('keyboard', byId('keyboard-navigation').checked));
+    state.subscribe('gallery-presentation', {any: event => {
+        if (['theme','appearance','palette'].includes(event.node.label)) { apply(); save(); }
+    }});
+    releases.push(() => state.unsubscribe('gallery-presentation', {any:true}));
     listen(window,'message',event => { if (event.data?.type === THEME_READY) {
         const frame = [...entries.values()].find(entry => entry.frame?.contentWindow === event.source)?.frame;
         if (frame) send(frame);

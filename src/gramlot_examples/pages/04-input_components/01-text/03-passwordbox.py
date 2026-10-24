@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = 'Password and labelbox'
 
     def main(self, root):
@@ -9,13 +12,11 @@ class Page(BasePage):
         main_content.h1('Password and labelbox')
         main_content.p('Two password fields share a sample value. The browser masks the characters; changing either field updates the other.')
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        controls.checkbox(id="live", value="^live", lbl="Editing", label="Update while editing")
-        controls.checkbox(id="locked", value="^locked", lbl="State", label="Disable controls")
+        controls.checkbox(id="live", value="^live", lbl="Editing", label="Update while editing", default=True)
+        controls.checkbox(id="locked", value="^locked", lbl="State", label="Disable controls", default=False)
         fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
         fields.passwordbox(id="secret", value="^secret", lbl="Sample password", live="^live",
                            disabled="^locked", placeholder="Use a sample value",
                            box_padding="8px")
         fields.passwordbox(id="secret-copy", value="^secret", lbl="Same sample password",
                            live="^live", disabled="^locked")
-        for path, value in (('secret', 'sample-only'), ('locked', False), ('live', True)):
-            main_content.dataSetter(path, value)

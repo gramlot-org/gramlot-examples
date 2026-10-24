@@ -1,5 +1,7 @@
 # 18 · Required values and length
 
+**Sample data:** `01-validation_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Try a missing, short or long name. You learn the difference between the draft visible in a field and the last accepted value in Data.
 
 **Uses:** the 0.3 input collection, shared validation, labelbox and Data bindings. No form/save service, callbacks or remote validators.

@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gramlot-examples"
-version = "0.3.11"
+version = "0.3.12"
 description = "Gramlot example pages, the gallery page and its catalogue."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.11"
-dependencies = ["gramlot>=0.3.8"]
+dependencies = ["gramlot>=0.3.15"]
 
 [project.urls]
 Documentation = "https://gramlot-examples.readthedocs.io/en/latest/"

@@ -1,9 +1,16 @@
 import {GalleryCodeLogic} from './gallery-code-logic.js';
-import {mountGallery, initializeNavigation} from './gallery.js';
+import {mountGallery, initializeNavigation, toggleGalleryPanel} from './gallery.js';
 import {mountGalleryInspector} from './gallery-inspector.js';
 
 /** The gallery uses the ordinary Page Logic lifecycle. */
 export class Logic {
+    galleryToggleNavigation() {
+        toggleGalleryPanel(this.page.src.builder, 'galleryNavigation', 'galleryIndex.navigationOpen');
+    }
+    galleryToggleSettings() {
+        const data = this.page.src.builder.data;
+        data.setItem('galleryIndex.settingsOpen', !data.getItem('galleryIndex.settingsOpen'));
+    }
     galleryCodeMount(node, args) { return GalleryCodeLogic.prototype.galleryCodeMount.call(this, node, args); }
     galleryCodeSave(node, args) { return GalleryCodeLogic.prototype.galleryCodeSave.call(this, node, args); }
     galleryCodeRevert(node, args) { return GalleryCodeLogic.prototype.galleryCodeRevert.call(this, node, args); }

@@ -1,24 +1,15 @@
+import tree from '../../../gallery/dist/tree/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import {Bag} from '@gramlot/gramlot';
+
 
 export class Page extends BasePage {
+    static gramlots = [tree];
     static title = 'Internal tree drag and drop';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'treeDrag'});
         main_content.h1('Drag a document into a folder');
         main_content.p('Drag a document from the left tree onto Inbox or Projects. Locked archive refuses it. Open the folder to see the copied item; the source stays unchanged.');
-        const documents = new Bag();
-        documents.setItem('brief', 'Project brief', {caption: 'Project brief'});
-        documents.setItem('notes', 'Meeting notes', {caption: 'Meeting notes'});
-        const folders = new Bag();
-        for (const [key, caption, accepts] of [['inbox', 'Inbox', true], ['projects', 'Projects', true], ['archive', 'Locked archive', false]]) {
-            folders.setItem(key, new Bag(), {caption, accepts});
-        }
-        main_content.dataSetter({destination_path: '.documents', value: documents});
-        main_content.dataSetter({destination_path: '.folders', value: folders});
-        main_content.dataSetter({destination_path: '.lastDrop', value: 'No document copied yet'});
-        main_content.dataSetter({destination_path: '.lastEnd', value: 'No drag finished yet'});
         const columns = main_content.div({class: 'drag-columns'});
         const origin = columns.section({class: 'drag-panel'});
         origin.h2('Documents');

@@ -7,15 +7,15 @@ for(const url of process.argv.slice(2)) for(const engine of [chromium,webkit]) {
  const page=await browser.newPage({viewport:{width:1440,height:900}}); const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);
- const inspector=page.locator('.gallery-toolbar #gallery-inspector');
+ const inspector=page.locator('#gallery-rail #gallery-inspector button');
  await inspector.waitFor();
- assert.match(await inspector.textContent(),/Inspector/);
- const drawer=page.locator('#gallery-regions [data-side="bottom"] .drawer');
+ assert.equal(await inspector.getAttribute('aria-label'),'Inspector');
+ const drawer=page.locator('#gallery-settings-button button');
  await drawer.click();
  await page.locator('#index-appearance').waitFor({state:'visible'});
- await page.locator('#index-theme').selectOption('dark');
+ await page.locator('#index-theme input').fill('Dark'); await page.locator('#index-theme').getByRole('option',{name:'Dark',exact:true}).click();
  assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
- await page.locator('#index-theme').selectOption('light');
+ await page.locator('#index-theme input').fill('Light'); await page.locator('#index-theme').getByRole('option',{name:'Light',exact:true}).click();
  await drawer.click();
  await inspector.click();
  await page.locator('gramlot-tools-inspector gramlot-poc-palette').waitFor({state:'visible'});
@@ -29,6 +29,6 @@ for(const url of process.argv.slice(2)) for(const engine of [chromium,webkit]) {
  await inspector.click();
  await page.locator('#index-appearance').waitFor({state:'visible'});
  assert.deepEqual(errors,[]);
- console.log('PASS',url,engine.name(),'toolbar inspector, direct settings drawer, theme, mobile inspector return');
+ console.log('PASS',url,engine.name(),'toolbar inspector, floating settings formlet, theme, mobile inspector return');
  }finally{await browser.close();}
 }

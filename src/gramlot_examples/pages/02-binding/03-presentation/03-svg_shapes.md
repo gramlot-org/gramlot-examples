@@ -21,8 +21,8 @@ The six shapes from **SVG shapes** now have editable dimensions and stroke setti
 The six shapes retain their positions. Width, radius, ellipse height, shared stroke, triangle color and caption now read Data. The ranges and caption text use `live=True`; the color field uses its native change behavior.
 
 ```python
-art.circle(cx=172, cy=58, r="^.radius", fill="var(--gramlot-warning)", id="circle")
-pane.dataSetter(".radius", 38)
+art.circle(cx=172, cy=58, r="^.radius", default_r=38,
+           fill="var(--gramlot-warning)", id="circle")
 ```
 
 Line and polyline both read `.stroke`. Their initial shared width is 7; e08 originally used 8 for the line and 7 for the polyline, so this is an explicit small visual change, not exact pixel identity.
@@ -43,7 +43,7 @@ Add a range for `.cx`, initialize it to 172, and replace only the circle’s `cx
 
 ## The same example across stages
 
-Compare e08’s `r=38` with this page’s `r="^.radius"` and one setter. Static structure stays; the range and circle now share Data. For stroke, one `.stroke` replaces two independently authored widths. The additional controls add code, while the binding removes the need to author separate synchronization behavior.
+Compare e08’s `r=38` with this page’s `r="^.radius", default_r=38`. Static structure stays; the range and circle now share Data. For stroke, one `.stroke` replaces two independently authored widths. The additional controls add code, while the binding removes the need to author separate synchronization behavior.
 
 ## Limits and next step
 

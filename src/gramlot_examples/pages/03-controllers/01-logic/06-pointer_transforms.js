@@ -7,9 +7,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'transforms'});
-        for (const [path, value] of [['width', 38], ['draft', false], ['name', 'Ada'], ['amount', 1234.5]]) {
-            main_content.dataSetter({destination_path: `.${path}`, value});
-        }
         main_content.h1('Same Data, different presentation');
         const sizes = main_content.section({class: 'card stack'});
         sizes.h2('1. A number becomes a CSS length');

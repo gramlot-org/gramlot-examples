@@ -16,7 +16,5 @@ export class Page extends BasePage {
         pane.textarea({value: '^.html', live: true, id: 'html'});
         pane.iframe({srcdoc: '^.html', title: 'Sandboxed preview', id: 'preview'});
         pane.p('Data-bound srcdoc receives an empty sandbox; this preview only displays content.');
-        pane.dataSetter({destination_path: '.name', value: 'Ada'});
-        pane.dataSetter({destination_path: '.html', value: '<h2>Hello, Ada</h2><p>A separate document.</p>'});
     }
 }

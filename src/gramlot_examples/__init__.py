@@ -8,7 +8,7 @@ from .gallery.collections import collections as gallery_collections
 
 PACKAGE = Path(__file__).resolve().parent
 MEDIA_TYPES = {".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".json": "application/json"}
-SUFFIXES = (".py", ".js", ".css", ".md", "_aux.js")
+SUFFIXES = (".py", ".js", ".css", ".md", "_aux.js", "_data.tytx")
 DIST = ("gallery.js", "frame.js", "notices.json", "LICENSE", "NOTICE")
 
 
@@ -70,6 +70,10 @@ def build_gallery(catalogs=()):
     for name in DIST:
         path = gallery / "dist" / name
         assets[f"/gallery/dist/{name}"] = {"file": path, "type": media_type(path, path.suffix == ".js")}
+    for collection in gallery_collections():
+        name = collection.name
+        assets[f"/gallery/dist/{name}/descriptor.js"] = {
+            "file": gallery / "dist" / name / "descriptor.js", "type": "text/javascript"}
     for family in families:
         folder = family["path"]
         for example in family["examples"]:
@@ -97,6 +101,9 @@ def build_gallery(catalogs=()):
             key = f"{prefix}/{page.relative_to(base).with_suffix('').as_posix()}"
             stylesheet = page.with_suffix(".css")
             routes[key] = {"page": page, "stylesheet": stylesheet if stylesheet.is_file() else None, "logic": None, "url": key}
+    for route in routes.values():
+        data = route["page"].with_name(route["page"].stem + "_data.tytx")
+        route["data"] = data if data.is_file() else None
     return {"families": families, "routes": routes, "assets": assets, "collections": gallery_collections()}
 
 

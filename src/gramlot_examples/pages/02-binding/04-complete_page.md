@@ -1,5 +1,7 @@
 # 11 · A complete page with binding
 
+**Sample data:** `04-complete_page_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 The event page from **A complete page** now follows shared Data. Change one value and see it update in several places. You learn how to make an existing page interactive while retaining its structure.
 
 **Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
@@ -39,7 +41,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Change the initial `.title` setter and start with `.show.theo` false in the dictionary.
+In `04-complete_page_data.tytx`, change `event.title` and set `event.show.theo` to false.
 
 **Answer:** both title destinations get the new value and both Theo destinations start invisible. You change initial Data once for each concept, not every affected Source node.
 

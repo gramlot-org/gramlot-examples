@@ -1,5 +1,7 @@
 # 17 · Date calendar
 
+**Sample data:** `03-date_calendar_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value. Learn when to use a calendar beside the page or inside a date field.
 
 **Uses:** the 0.3 input collection, labelbox and typed Data bindings. No endpoints, stores or validation engine.

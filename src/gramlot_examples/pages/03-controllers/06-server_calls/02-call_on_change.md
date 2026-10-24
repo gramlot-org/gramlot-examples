@@ -1,5 +1,7 @@
 # 10 · Call on change
 
+**Sample data:** `02-call_on_change_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A field requests a result when its value changes. You learn how a delay groups nearby edits and how the page distinguishes a pending request from the last received result.
 
 **Uses:** Data binding and delayed reactive `dataRpc` calls — core 0.2.14.

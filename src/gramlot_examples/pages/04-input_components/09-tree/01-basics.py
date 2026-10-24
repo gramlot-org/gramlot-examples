@@ -1,8 +1,11 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.tree import mygramlot as tree
 from gramlot import Page as BasePage, endpoint
 from genro_bag import Bag
 
 
 class Page(BasePage):
+    gramlots = [inputs, tree]
     title = "Bag tree"
     devices = ("desktop", "tablet", "phone")
 
@@ -10,11 +13,7 @@ class Page(BasePage):
         main_content = root.main(class_="example-page stack", datapath="treeDemo")
         main_content.h1("Bag tree")
         main_content.p("Expand Documents or Catalog. Catalog loads its Bag through a resolver on first expansion. Select a row; the path below is bound to the same Data.")
-        main_content.dataSetter(".nodes", Bag({"documents": {"readme": "Welcome", "notes": "Notes"},
-                                     "catalog": None, "status": "Ready"}))
-        main_content.dataSetter(".selection", None)
-        main_content.dataSetter(".hideValues", False)
-        main_content.checkbox(value="^.hideValues", lbl="Hide scalar values", id="tree-hide-values")
+        main_content.checkbox(value="^.hideValues", lbl="Hide scalar values", id="tree-hide-values", default=False)
         main_content.dataRemote(".nodes.catalog", "catalog_children", cacheTime=-1)
         main_content.tree(storepath=".nodes", hideValues="^.hideValues", labelAttribute="caption", selectedPath="^.selection",
                   id="example-tree", class_="example-bag-tree")

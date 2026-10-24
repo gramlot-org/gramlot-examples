@@ -1,5 +1,7 @@
 # 19 · Parent and child messages
 
+**Sample data:** `05-frame_messages_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Send a message to the embedded page, then reply from that page. The example reuses the page-topic receiver from **Publish and subscribe** and adds a destination to `publish`.
 
 **Uses:** Source, Data, named Logic, authored iframe references and direct parent/child `postMessage` — core 0.2.18. No endpoint calls or server messaging.

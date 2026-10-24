@@ -1,5 +1,7 @@
 # 01 · Formula
 
+**Sample data:** `01-formula_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A formula calculates a result from the fields. You learn which inputs trigger a calculation and which are read only when it runs: `^` follows changes, while `=` supplies the current value.
 
 **Uses:** Data binding and formulas — core 0.2.0.
@@ -18,7 +20,7 @@ A formula calculates a result from the fields. You learn which inputs trigger a 
 
 ## Read the page
 
-The first `dataFormula` computes price × quantity into `.total`; gross depends on total but only **reads** VAT. The formula for size uses `_if`/`_else`. `_init=True` evaluates after setters.
+The first `dataFormula` computes price × quantity into `.total`; gross depends on total but only **reads** VAT. The formula for size uses `_if`/`_else`. `_init=True` evaluates after initial Data and defaults are installed.
 
 ```python
 pane.dataFormula(".total", "price * quantity", price="^.price", quantity="^.quantity", _init=True)

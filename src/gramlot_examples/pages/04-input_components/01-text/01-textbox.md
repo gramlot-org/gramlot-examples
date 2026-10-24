@@ -1,5 +1,7 @@
 # 01 · Textbox and labelbox
 
+**Sample data:** `01-textbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field.
 
 **Uses:** the first 0.3 input components, shared labelbox, Source, Data and bindings. No endpoints or validation engine.

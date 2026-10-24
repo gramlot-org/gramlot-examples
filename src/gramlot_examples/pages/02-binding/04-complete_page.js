@@ -23,11 +23,6 @@ export class Page extends BasePage {
         this.map(main_content);
         this.faq(main_content);
         pane.footer().small('^.footer');
-        pane.dataSetter({destination_path: '.title', value: 'A day of small interfaces'});
-        pane.dataSetter({destination_path: '.footer', value: 'Gramlot binding examples · Data-driven content'});
-        pane.dataSetter({destination_path: '.show', value: {mira: true, theo: true}});
-        pane.dataSetter({destination_path: '.stop', value: {entrance: false, studio: true, hall: false}});
-        pane.dataSetter({destination_path: '.faq_open', value: false});
     }
 
     header(pane) {

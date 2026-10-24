@@ -7,8 +7,6 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="frames")
         main_content.h1("Parent and child messages")
-        main_content.dataSetter(".child", False)
-        main_content.dataSetter(".text", "Hello")
         main_content.html_label("Message", for_="message")
         main_content.input(id="message", value="^.text", live=True)
         parent = main_content.section(hidden="^.child")

@@ -1,5 +1,7 @@
 # 08 · Freeze
 
+**Sample data:** `04-freeze_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Freeze a list, add or remove items, then thaw it. You learn that structural changes can wait while existing Data bindings keep working. Return here after **Named logic** and **Button controller**.
 
 **Uses:** Source freeze/thaw, Data binding and local controllers (0.2.0); shared Page/Logic module layout from 0.2.5.

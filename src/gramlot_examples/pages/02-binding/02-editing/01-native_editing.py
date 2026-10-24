@@ -11,7 +11,7 @@ class Page(BasePage):
         pane = root.div(class_="example-page stack", datapath="edit")
         pane.h1("Native editing")
         pane.html_label("Write at every keystroke (live)", for_="live")
-        pane.input(type="checkbox", value="^.live", id="live")
+        pane.input(type="checkbox", value="^.live", id="live", default=False)
 
         grid = pane.div(class_="grid")
         form = grid.form(class_="card stack")
@@ -38,13 +38,3 @@ class Page(BasePage):
         for label, key in (("Note", "note"), ("Size", "size"), ("Topics", "topics")):
             facts.dt(label)
             facts.dd(f"^.{key}", id=f"out-{key}")
-
-        pane.dataSetter(".live", False)
-        pane.dataSetter(".text", "Edit me")
-        pane.dataSetter(".number", 42)
-        pane.dataSetter(".range", 30)
-        pane.dataSetter(".date", "2026-09-30")
-        pane.dataSetter(".color", "#456bc4")
-        pane.dataSetter(".note", "Two\nlines")
-        pane.dataSetter(".size", "M")
-        pane.dataSetter(".topics", ["html", "data"])

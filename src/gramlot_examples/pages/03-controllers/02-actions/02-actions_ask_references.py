@@ -7,9 +7,6 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="buttons")
         main_content.h1("One action, with or without a question")
-        main_content.dataSetter(".name", "Ada")
-        main_content.dataSetter(".confirm", True)
-        main_content.dataSetter(".result", "No action yet")
         main_content.html_label("Ask before running", for_="confirm-needed")
         main_content.input(id="confirm-needed", type="checkbox", value="^.confirm")
         main_content.button("Run action", id="action", name="=.name",

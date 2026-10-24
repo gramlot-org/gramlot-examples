@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = 'Callback select'
 
     def main(self, root):
@@ -9,7 +12,7 @@ class Page(BasePage):
         main_content.h1('Callback select')
         main_content.p('Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request.')
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        controls.checkbox(id="locked", value="^locked", lbl="State", label="Read only")
+        controls.checkbox(id="locked", value="^locked", lbl="State", label="Read only", default=False)
         fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
         fields.callbackSelect(id="choice", value="^choice", callback="searchChoices", lbl="Sample", readonly="^locked", box_c_width="18rem", placeholder="Try Sample 02 or value 7")
         fields.callbackSelect(id="choice-copy", value="^choice", callback="searchChoices", lbl="Same sample", readonly="^locked", box_c_width="18rem")
@@ -17,4 +20,3 @@ class Page(BasePage):
         main_content.dataController(func="createSamples", _onStart=True)
         main_content.p("Selected code:")
         main_content.p("^choice", id="choice-value")
-        main_content.dataSetter("locked", False)

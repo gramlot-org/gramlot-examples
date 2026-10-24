@@ -8,10 +8,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="transforms")
-        main_content.dataSetter(".width", 38)
-        main_content.dataSetter(".draft", False)
-        main_content.dataSetter(".name", "Ada")
-        main_content.dataSetter(".amount", 1234.5)
         main_content.h1("Same Data, different presentation")
         sizes = main_content.section(class_="card stack")
         sizes.h2("1. A number becomes a CSS length")

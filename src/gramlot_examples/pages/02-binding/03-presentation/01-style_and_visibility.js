@@ -29,22 +29,14 @@ export class Page extends BasePage {
             for (const option of options) select.option(option, {value: option});
         }
         controls.html_label('style', {for: 'style'});
-        controls.input({value: '^.style', id: 'style'});
+        controls.input({default: "border: 4px dashed #ffc400", value: '^.style', id: 'style'});
 
         const stage = pane.div({class: 'stack'});
         stage.p('The box keeps its place when it is not visible.', {class: 'muted'});
-        stage.div('A styled box', {id: 'box', class: '^.tone', style: '^.style',
+        stage.div('A styled box', {default_rounded: "8px", default_font_size: "1.5rem", default_class: "card", default_background_color: "#456bc4", default_color: "#ffffff", default_hidden: false, default_visible: true, id: 'box', class: '^.tone', style: '^.style',
             color: '^.color', background_color: '^.background', font_size: '^.size',
             rounded: '^.radius', padding: '1rem', visible: '^.show', hidden: '^.hide'});
         stage.p('This line follows the box.', {class: 'muted'});
 
-        pane.dataSetter({destination_path: '.show', value: true});
-        pane.dataSetter({destination_path: '.hide', value: false});
-        pane.dataSetter({destination_path: '.color', value: '#ffffff'});
-        pane.dataSetter({destination_path: '.background', value: '#456bc4'});
-        pane.dataSetter({destination_path: '.tone', value: 'card'});
-        pane.dataSetter({destination_path: '.size', value: '1.5rem'});
-        pane.dataSetter({destination_path: '.radius', value: '8px'});
-        pane.dataSetter({destination_path: '.style', value: 'border: 4px dashed #ffc400'});
     }
 }

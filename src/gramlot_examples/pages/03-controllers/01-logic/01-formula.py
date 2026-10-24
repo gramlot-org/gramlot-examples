@@ -25,6 +25,3 @@ class Page(BasePage):
                          _init=True)
         pane.dataFormula(".size", "'large order'", total="^.total", _if="total > 100", _else="'small order'",
                          _init=True)
-        pane.dataSetter(".price", 12.5)
-        pane.dataSetter(".quantity", 4)
-        pane.dataSetter(".vat", 0.2)
