@@ -96,6 +96,20 @@ export const layoutBehaviors = {
         assert.equal(await page.locator('#tabs-notes textarea').inputValue(), 'Retained notes');
         assert.equal(await page.locator('#tab-variants gramlot-tab-container').count(), 8);
     },
+    async l09(page) {
+        await page.locator('gramlot-textbox input').first().fill('Shared draft');
+        await page.locator('gramlot-textbox input').first().press('Tab');
+        await page.click('#mela-open-dialog');
+        await page.locator('#mela-dialog dialog[open]').waitFor();
+        assert.equal(await page.locator('#mela-dialog gramlot-textbox input').inputValue(), 'Shared draft');
+        await page.locator('#mela-dialog').getByText('Done', {exact: true}).click();
+        await page.waitForFunction(() => !gramlot.data.getItem('mela.dialogOpen'));
+        await page.click('#mela-open-floating');
+        await page.locator('#mela-floating gramlot-textbox input').waitFor({state:'visible'});
+        assert.equal(await page.locator('#mela-floating gramlot-textbox input').inputValue(), 'Shared draft');
+        await page.locator('#mela-floating').getByText('Done', {exact: true}).click();
+        await page.waitForFunction(() => !gramlot.data.getItem('mela.floatingOpen'));
+    },
     async l08(page) {
         await range(page, '#stack-panel input', 1);
         await page.waitForFunction(() => gramlot.data.getItem('stackDemo.active') === 'e02');
