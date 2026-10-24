@@ -5,9 +5,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'buttons'});
         main_content.h1('One action, with or without a question');
-        main_content.dataSetter({destination_path: '.name', value: 'Ada'});
-        main_content.dataSetter({destination_path: '.confirm', value: true});
-        main_content.dataSetter({destination_path: '.result', value: 'No action yet'});
         main_content.html_label('Ask before running', {for: 'confirm-needed'});
         main_content.input({id: 'confirm-needed', type: 'checkbox', value: '^.confirm'});
         main_content.button('Run action', {id: 'action', name: '=.name', action: "this.SET('.result', 'Hello ' + name)"});

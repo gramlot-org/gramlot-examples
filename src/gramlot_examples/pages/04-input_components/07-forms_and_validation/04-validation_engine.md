@@ -1,5 +1,7 @@
 # 25 · Validation rules and callbacks
 
+**Sample data:** `04-validation_engine_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A labelled groupBox contains a compact formlet with text, multiline text, number, date, selection and boolean controls. Try required values, length, normalization, conditional rules, warnings and asynchronous validation. The group copy icon copies the accepted `profile` Bag as TYTX; its menu also offers JSON. Invalid drafts are not copied. The expandable accepted-Data panel shows what actually changed.
 
 **Uses:** shared input validation, Source conditions, named Logic and typed RPC. The endpoint also runs in the serverless Worker. No database or form-save service.

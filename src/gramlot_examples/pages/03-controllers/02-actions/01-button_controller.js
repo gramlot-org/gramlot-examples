@@ -30,6 +30,5 @@ export class Page extends BasePage {
 
         pane.dataController({script: "this.SET('.saved_with', 'fired with ' + saved)", saved: '^.saved'});
         pane.dataController({script: "this.SET('.log', (log ? log + ', ' : '') + command)", command: '^.command', log: '=.log'});
-        pane.dataSetter({destination_path: '.clicks', value: 0});
     }
 }

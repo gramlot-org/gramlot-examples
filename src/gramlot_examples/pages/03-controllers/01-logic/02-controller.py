@@ -31,7 +31,7 @@ class Page(BasePage):
         timed = pane.section(class_="card stack")
         timed.h2("Run at start and at intervals (_onStart, _timing)")
         timed.html_label("Interval in seconds", for_="interval")
-        interval = timed.select(value="^.interval", id="interval")
+        interval = timed.select(value="^.interval", id="interval", default='1')
         for seconds in (0, 1, 5):
             interval.option(str(seconds), value=str(seconds))
         timed.p("^.ticks", id="ticks")
@@ -49,10 +49,3 @@ class Page(BasePage):
                                  ("address_exact", ".filter.address", True), ("address_all", ".filter.address", False)):
             filtered.p(f"^.{key}", mask=key + ": {}", id=key)
             filtered.dataController(func="countPath", watched="^" + path, counter="." + key, _userChanges=exact)
-            pane.dataSetter("." + key, 0)
-        pane.dataSetter(".filter", {"name": "Ada", "address": {"city": "Rome"}})
-        pane.dataSetter(".replacement", {"name": "Container", "address": {"city": "Paris"}})
-
-        pane.dataSetter(".name", "Ada")
-        pane.dataSetter(".requests", 0)
-        pane.dataSetter(".interval", "1")

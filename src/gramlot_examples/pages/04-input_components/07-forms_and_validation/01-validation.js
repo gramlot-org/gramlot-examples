@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static devices = ['desktop', 'tablet', 'phone'];
     static title = "Required values and length";
     main(root) {
@@ -8,7 +11,7 @@ export class Page extends BasePage {
         main_content.h1("The draft and the accepted value");
         main_content.p("Try one letter, more than eight, or an empty name. The draft stays in the field; the Data below keeps the last valid value.");
         const controls = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});
-        controls.checkbox({id:"live",value:"^live",lbl:"Timing",label:"Validate while typing"});
+        controls.checkbox({default: false, id:"live",value:"^live",lbl:"Timing",label:"Validate while typing"});
         const fields = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});
         fields.textbox({id:"name",value:"^name",lbl:"Name (2–8 characters)",live:"^live",
             validate_notnull:true,validate_len:"2:8",validate_notnull_error:"Please enter a name.",
@@ -24,6 +27,5 @@ export class Page extends BasePage {
         numbers.numberTextBox({id:"quantity",value:"^quantity",lbl:"Required quantity — zero is valid",
             validate_notnull:true,box_c_width:"10rem",box_c_max_width:"100%"});
         numbers.p("^quantity",{id:"accepted-quantity"});
-        for (const [destination_path,value] of [["name","Ada"],["notes","Hello"],["quantity",0],["live",false]]) main_content.dataSetter({destination_path,value});
     }
 }

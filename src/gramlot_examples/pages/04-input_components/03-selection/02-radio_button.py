@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = 'Single radio buttons'
 
     def main(self, root):
@@ -9,7 +12,7 @@ class Page(BasePage):
         main_content.h1('Single radio buttons')
         main_content.p('Each radio binds its own boolean. A shared group makes the choices exclusive; a separate group stays independent.')
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        controls.checkbox(id="locked", value="^locked", lbl="State", label="Disable controls")
+        controls.checkbox(id="locked", value="^locked", lbl="State", label="Disable controls", default=False)
         fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
         for code, caption in (("standard", "Standard"), ("express", "Express"), ("pickup", "Pick up")):
             fields.radioButton(id=code, value=f"^{code}", group="delivery", label=caption,
@@ -20,5 +23,3 @@ class Page(BasePage):
         for code in ("standard", "express", "pickup", "independent"):
             facts.dt(code)
             facts.dd(f"^{code}", id=f"{code}-value")
-        for path, value in (('standard', True), ('express', False), ('pickup', False), ('independent', False), ('locked', False)):
-            main_content.dataSetter(path, value)

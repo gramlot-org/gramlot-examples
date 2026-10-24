@@ -6,7 +6,7 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
     const center=byId('gallery-center'), panel=byId('gallery-inspector-panel');
     const node=element=>renderer.elements.get(element).node;
     const set=(element,attrs)=>node(element).setAttr(attrs);
-    let mobile=false, disposed=false, active=null, changing=false, desktopWidths;
+    let mobile=false, disposed=false, active=null, changing=false, desktopWidths, railLayout;
     state.setItem('menu',false);state.setItem('view','example');
     const releases=[];
     const listen=(element,type,handler)=>{element.addEventListener(type,handler);releases.push(()=>element.removeEventListener(type,handler));};
@@ -49,6 +49,21 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
     });
     const resize=()=>{
         const narrow=window.getComputedStyle(shell).getPropertyValue('--gallery-narrow').trim()==='1';
+        const position=state.getItem('toolbarPosition');
+        if(!['auto','left','bottom'].includes(position))throw new TypeError('Unknown gallery toolbar position');
+        const bottom=position==='bottom'||position==='auto'&&narrow&&window.innerHeight>=window.innerWidth;
+        const layout=`${bottom}:${narrow}`;
+        if(layout!==railLayout){
+            railLayout=layout;
+            set(byId('gallery-frame'), {data_toolbar_position:bottom?'bottom':'left'});
+            set(byId('gallery-rail-region'), {region:bottom?'bottom':'left',
+                width:bottom?'100%':'42px', height:bottom?'42px':'100%',
+                padding:bottom?'2px 3px':'45px 3px 3px'});
+            set(byId('gallery-rail'), {orientation:bottom?'horizontal':'vertical'});
+            for(const id of ['gallery-navigation-button','gallery-inspector','gallery-settings-button']) {
+                set(byId(id), {width:'36px', height:'36px'});
+            }
+        }
         if(narrow===mobile)return;
         mobile=narrow;
         if(mobile){
@@ -64,6 +79,10 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
             inspector.setPresentation(false,false);
         }
     };
+    state.subscribe('gallery-toolbar-position', {any:event=>{
+        if(event.node.label==='toolbarPosition')resize();
+    }});
+    releases.push(()=>state.unsubscribe('gallery-toolbar-position', {any:true}));
     listen(window,'resize',resize);resize();
     const update=(entries,next)=>{
         if(active!==next){state.setItem('menu',false);state.setItem('view','example');}

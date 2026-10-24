@@ -740,17 +740,23 @@ Python development previews l07 (Tabs, selection and closing) and l08 (Demo caro
 <a id="ge-010-210"></a>
 ## 210. Reactive tab presentation (Python preview)
 
+> Historical record — the carousel layout described here is superseded by [the single central stack (§370)](#ge-010-370).
+
 In Containers → Tabs, selection and closing, change Tabs/Underline and Top/Bottom/Left/Right. The Notes icon, unread badge and badge color are bound to Data; changing them while Customer is selected leaves that panel mounted. The gallery appearance menu supports visual comparison of mimi and joanna, light/dark. Demo carousel and live preview uses a compact slider to select among live miniature demo iframes. These remain Python previews until final JS/serverless qualification.
 
 
 <a id="ge-010-215"></a>
 ## 215. Catalogue thumbnails in a stack (Python preview)
 
+> Historical record — the carousel layout described here is superseded by [the single central stack (§370)](#ge-010-370).
+
 Containers → Demo carousel and live preview (l08) reads the common catalogue and creates one persistent iframe per other demo (currently 78). The zero-based slider selects a panel and the selected subscription updates its title. Each page renders at half scale using CSS and keeps its independent Data when hidden. Native lazy loading controls when frames load; only l08 itself is excluded to prevent recursion. Chromium/WebKit checks cover slider endpoints, bound edits, document identity, scale and narrow layout.
 
 
 <a id="ge-010-220"></a>
 ## 220. Drawer carousel and delayed center preview (Python)
+
+> Historical record — the carousel layout described here is superseded by [the single central stack (§370)](#ge-010-370).
 
 The l08 carousel now occupies a resizable borderContainer drawer. Its slider updates the thumbnail stack immediately. A dataController with _delay=350 updates the center stack only after selection settles. Center iframes have no src before their first settled visit; their URLs remain set afterward. Rapidly traversed demos are not loaded in the center. Thumbnail and full-size pages keep independent Data, both preserved across switching. Closing the drawer releases the center width without resetting either stack. Verified in Chromium/WebKit and the Python gallery suite.
 
@@ -815,6 +821,8 @@ Both modes and four sides were checked with all alignments in Chromium and WebKi
 
 <a id="ge-010-255"></a>
 ## 255. Python, JavaScript and offline gallery alignment
+
+> Historical record — the carousel layout described here is superseded by [the single central stack (§370)](#ge-010-370).
 
 The final preparation phase supersedes the Python-only qualification limits in §§215–250. Both gallery shells use borderContainer drawers and tabContainer for pages, Example/Explanation and source files. Python shows Python declarations with separate Logic where present; JavaScript shows its actual Page/Logic module, with a separate tab only for a companion. The eight container lessons, fourteen tab comparisons and guided drawer tour are available in both languages.
 
@@ -947,6 +955,8 @@ Owner follow-up, 2026-10-20: “fai nella navigaxione il tree auto collapse”. 
 
 ## 285 · Toolbar inspector and bottom settings drawer — development increment, 2026-10-20
 
+> Historical record. Settings now uses the floating formlet in §335; Inspector uses the rail in §330.
+
 Owner requests Navigation/Code only on drawer labels, a bottom drawer opening configuration directly, and Inspector at the toolbar's far right with an icon and small caption. Implemented: Python/JS pages move Inspector to that location and share it with mobile Inspector presentation; Settings is a 180px bottom contentPane, initially drawer="close", containing configuration directly instead of a popover. Theme, appearance, keyboard preference, label position and installation controls remain in that panel. The existing shared drawer owns open/close behavior.
 
 Verified: 23 gallery integration tests, six Python gallery tests and local build; `node scripts/verify_gallery_drawers_browser.mjs <gallery-url>` checks Chromium/WebKit, desktop/mobile Inspector open/close, direct Settings access and theme changes. Both local Python and Node hosts passed. Owner visual acceptance remains pending.
@@ -1044,8 +1054,281 @@ preview runs explicitly select `develop`; public `latest` uses `main`.
 `GRAMLOT_SOURCE_REF` selects the coordinated branch for verification. Commit
 identities are printed in build logs; first-party dependencies are not pinned.
 
-`python scripts/prepare_docs.py` exports 89 real playgrounds. Ordinary lessons
+`python scripts/prepare_docs.py` exports 90 real playgrounds. Ordinary lessons
 share one exported directory runtime, while the optional Typst engine stays in
 its own export. The Source-authored playground index is available at
 `playgrounds/index.html`. Each lesson keeps its original playground URL. Run
 Sphinx and `python scripts/check_docs.py` to check the resulting documentation.
+
+
+<a id="ge-010-065"></a>
+
+## 065 · Same-name initial Data Bag
+
+An optional `foo_data.tytx` beside `foo.py`/`foo.js` contains the initial Data Bag. `build_gallery` and `buildGallery` expose its path as route.data, or None/null when absent. Each host copies it beside the staged page under that page's stem plus `_data.tytx`; this is essential when wrapping or renaming a lesson. The documentation exporter also copies it before bundling its Worker.
+
+The gallery exposes the example file as readable source, and the manual includes it beside Python/JS. Production file hosts do not automatically serve Data companion URLs. Data arrives before defaults and rendering; invalid files fail startup. Existing dataSetter and dynamic endpoints/resolvers remain supported. The static lessons use shared TYTX companions for sample records, nested Bags, dates, Decimals and node attributes. Interface control state uses `default` or `default_<attribute>`. Scenario traces and counters with no editable control are part of the scenario's initial Bag. Production records normally arrive from server endpoints/resolvers; these companion files are teaching fixtures, not a recommendation to hard-code application data.
+
+The dedicated setters/defaults lesson retains its ordered `dataSetter` declarations. The catalogue carousel separately demonstrates host-generated metadata: its URLs and labels depend on the current deployment and are initialized explicitly rather than frozen into a sample file. Gallery-shell initialization and the shared guided tour are not lesson fixtures.
+
+Lesson b12 also offers a second, initially empty form. Type manually or press **Play · fill sample** to copy the customer Bag into an independent draft. Clear and retry. The paced load preserves typed values and node attributes, uses ordinary bindings, and does not simulate keyboard input or input validation. No character-by-character playback API is introduced.
+
+
+<a id="ge-010-320"></a>
+
+## 320 · Paced Play and bounded carousel startup — development follow-up, 2026-10-24
+
+> Historical record — the carousel layout described here is superseded by [the single central stack (§370)](#ge-010-370).
+
+Owner requests a brief delay between fields during Play and correction of the
+file-export carousel crash. In b12, Play copies the current customer into an
+independent snapshot: name immediately, city after 300 ms through a bound
+`dataController(_delay=300)`. Clear cancels pending playback; another Play restarts
+it. This is Data loading through bindings, not synthetic typing or input validation.
+
+In l08, both thumbnail and full-size iframe `src` values now come from `.opened`.
+Only a settled selection (350 ms) assigns them, preserving visited frames and
+their edits. A rapid sweep does not start every lesson. This supersedes §215–220's
+reliance on native lazy loading for thumbnails: file-origin Chromium started
+89 thumbnail navigations and dozens of Workers, while the hosted version did not.
+No runtime, exporter or dependency workaround is involved.
+
+Verification: focused behavior and Python/JS Source/layout parity pass; Play passes
+Chromium and WebKit on Python, Node, HTTP exports and file exports (8 combinations).
+Carousel loading, rapid traversal, editor startup and retained text edits pass
+both engines on Python, Node and file exports (6 combinations). This resolves the
+file-carousel crash recorded in GC-070 §1885 for the reproduced scenario; it does
+not set a memory bound for retaining every visited application. Owner trial is
+still pending. No publication or package release.
+
+
+<a id="ge-010-325"></a>
+
+## 325 · Responsive gallery toolbar — development trial, 2026-10-24
+
+Owner confirms: “framePane con toolbar a sinistra, navigazione in alto e
+impostazioni in fondo. Su mobile spostiamo la toolbar sotto, poi la provo.”
+The Python gallery and its JS twin wrap the existing IndexPage content in a
+framePane. Its left region holds one `menu(presentation="bar")`: Navigation,
+an elastic spacer, then Settings. Both menulines use SVG images, tooltips,
+44px targets and a checked background reflecting the actual drawer visibility.
+Opening or closing a drawer through its handle keeps the toolbar state aligned.
+
+At the gallery's existing narrow breakpoint (1023px), the same region becomes
+the bottom region and the same menu becomes horizontal. No second toolbar or
+lesson instance is created. Existing tabs, example Data, Code, Inspector, themes
+and panel splitters remain available. Navigation and Settings still use the
+existing drawers. This first trial changes the gallery, not the core IndexPage
+API; generalization awaits owner feedback after use.
+
+Verified: Python gallery authoring tests, gallery runtime regressions and real
+Chromium/WebKit trials on Python and Node. Geometry, icon actions, drawer-handle
+synchronization, theme switching and retained iframe identity/data across viewport
+changes are covered by `scripts/verify_gallery_rail_browser.mjs`. Desktop/mobile
+screenshots were inspected. Owner visual acceptance is pending; no publication.
+
+
+<a id="ge-010-330"></a>
+
+## 330 · Inspector in the rail and continuous shell color — 2026-10-24
+
+Owner requests Inspector directly above Settings, removal of the unexplained blue
+line, and a visually continuous, slightly darker title/left area. Inspector is
+now an SVG menuline in the same toolbar, immediately before Settings. The existing
+inspector connection/lifecycle remains; checked reflects the visible palette.
+On mobile it moves with the other toolbar entries and still opens docked.
+
+The decorative top border is removed. Header and rail share
+`--gallery-chrome-background`, mixed from the current theme's subtle surface and
+ink colors. Their adjoining vertical border is removed, producing one continuous
+surface in light and dark modes without changing global theme defaults.
+
+Verified: 26 gallery JS tests and seven Python authoring tests; Chromium/WebKit on
+Python and Node cover Inspector opening/closing and checked state, desktop/mobile
+placement, identical header/rail color, absence of the top border, drawer actions,
+theme switching and retained lesson Data. Light, dark and mobile screenshots were
+inspected. Owner visual acceptance remains pending; no publication.
+
+
+<a id="ge-010-335"></a>
+
+## 335 · Floating Settings formlet and simplified navigation — 2026-10-24
+
+Settings now uses a nonmodal `floatingPane` containing its `framePane` and a
+single-column `formlet`. This supersedes the bottom drawer described in §285.
+The gear toggles the window; its checked state and the titlebar close button use
+the same `galleryIndex.settingsOpen` binding. Moving, resizing and collapsing use
+the existing floating component. Clicking the example does not dismiss Settings.
+
+Theme, Colors, Color mode and Label position are `filteringSelect` widgets with
+required choices; keyboard navigation uses a bound `checkbox`. Labels align on
+the left. Preferences apply immediately through Data subscriptions, preserving
+existing local storage and preview forwarding. Install app remains expandable.
+The floating stays inside the viewport on mobile; the rail still moves below the
+page. Example iframes and their Data are retained.
+
+Navigation opens and closes only from its toolbar button. The drawer tab is hidden
+with the existing `drawer_display` style, while the separator remains resizable.
+Inspector has a dedicated SVG showing a lens around connected nodes.
+
+Verified: 29 JS gallery/editing tests and seven Python authoring tests pass.
+The rail browser scenario passes Chromium and WebKit on both Python and Node:
+nonmodal interaction, theme/color/label changes, titlebar closure and gear state,
+hidden navigation tab with working splitter, mobile bounds and retained lesson
+Data. Light/dark desktop and mobile screenshots were inspected. Owner visual
+acceptance is pending; the local Python preview is http://127.0.0.1:8098/.
+No publication or release was performed.
+
+
+<a id="ge-010-340"></a>
+
+## 340 · Neutral rail selection — 2026-10-24
+
+The owner requests no permanent background change for an open navigation panel.
+Rail icons keep their checked semantics but use a transparent selected background.
+Pressing an icon gives temporary feedback; the standard hover is unchanged.
+This uses existing gallery CSS and does not change other toolbars or the core.
+Chromium and WebKit checks pass on the Python preview; visual acceptance pending.
+
+
+<a id="ge-010-345"></a>
+
+## 345 · Compact desktop proportions — 2026-10-24
+
+> Historical record: dimensions superseded by [§375](#ge-010-375).
+
+At the owner's request, the desktop rail is 46px wide with 38px buttons; the title
+region is 34px tall. Navigation starts below the title line, beside the panel.
+On mobile the same toolbar keeps 44px targets, a 56px bottom region and no extra
+top offset. The responsive coordinator restores desktop sizes on return.
+The rail browser check covers Python/Node with Chromium/WebKit, including panel
+toggles and unchanged lesson iframe/Data. Owner visual acceptance pending.
+
+
+<a id="ge-010-350"></a>
+
+## 350 · Mela appearance and comparison lesson — 2026-10-24
+
+Owner approves Mela for desktop/mobile and light/dark. Choose **Settings → Theme
+→ Mela** and **Colors → Theme default** to see its neutral surfaces and blue accent.
+Other palettes remain independent. Desktop fields have a 28px minimum; narrow
+(up to 640px) or coarse-pointer layouts use 44px fields/targets and 16px text.
+
+**Containers → Mela: desktop and touch** (l09) has Python/JS authoring, a frame
+with toolbar and hierarchical menu, shared draft fields, a modal dialog and a
+nonmodal floating window. Commands update local status only; they do not export
+or save to a server. Theme changes retain entered values.
+
+Verified: 26 gallery JS and seven Python tests; Chromium/WebKit on Python/Node
+exercise both color modes at desktop and phone widths, menu/submenu, disabled
+entry, modality, viewport bounds and retained draft. Screenshots inspected.
+Visual acceptance pending; no publication or release.
+
+
+<a id="ge-010-355"></a>
+
+## 355 · Python page collection loading
+
+Block ID: **GE-010-355**.
+
+Each Python example now selects its own `Page.gramlots`. The gallery shell needs
+inputs, layout, tree and editors (the code panel); ordinary textbox examples need
+only inputs and layout. Typst is selected by the Typst lesson. Directory index
+pages that use only HTML need no optional collections. The Python gallery runner
+discovers the registry from these declarations instead of activating the full
+catalogue as server-wide defaults. Source methods and helpers count when choosing
+a page's dependencies. JavaScript-host activation is unchanged in this Python
+performance increment.
+
+The loading browser check measures fresh contexts and retained tabs, rejects
+unrelated collections in basic examples, and verifies cached transfers in
+Chromium. WebKit does not consistently expose decodedBodySize for cached assets.
+
+
+<a id="ge-010-360"></a>
+## 360 · JavaScript page collection loading
+
+Block ID: **GE-010-360**.
+
+JavaScript twins now declare `static gramlots` with the same page dependencies as
+Python. The Node/Bun gallery no longer activates the full catalogue globally.
+The browser build writes metadata-only `gallery/dist/<name>/descriptor.js`
+modules, hosted by both Python and JavaScript gallery asset maps. Importing a
+page module for its Logic therefore does not import widget bundles, editors or
+Typst as a side effect. Descriptor modules sit outside the verified artifact
+inventory; collection artifact bytes and fingerprint URLs remain unchanged.
+
+The JavaScript server discovers page classes at startup, verifies its resource
+registry once and retains those bytes. Its per-page bootstrap and grammar cache
+follow the same lifetime rules as Python. New builds require a process restart.
+Tests build all JavaScript pages without global collections and exercise remote
+Data, tree, code editors and Typst in Chromium and WebKit.
+
+
+<a id="ge-010-365"></a>
+## 365 · Try toolbar placement
+
+Block ID: **GE-010-365**.
+
+Open Settings with the gear icon and choose Toolbar: Automatic, Left or Bottom.
+The choice changes the same Source-authored toolbar immediately. It lasts for the
+open gallery page; reloading starts with Automatic. It does not change the theme,
+input density or the current example's Data.
+
+In this provisional gallery rule, Automatic puts the toolbar below the content
+when the viewport is narrower than 1024 CSS pixels and its height is at least its
+width. A landscape window uses the left edge, preserving its limited vertical
+space. Wider windows retain the left toolbar even in portrait orientation.
+Explicit Left and Bottom override placement at every size. The existing narrow
+panel layout still follows width; a landscape phone continues to show one panel
+at a time and uses 36-pixel toolbar buttons. Moving the toolbar does not recreate
+its controls, the example iframe or its Data, or reset the active narrow panel.
+
+Try a portrait phone, rotate it to landscape, force Bottom, then return to
+Automatic. On desktop, choose Bottom to compare it with Left. The settings remain
+in the existing nonmodal floating formlet. This trial changes only the gallery;
+it does not redefine the framework's device classification or touch policy.
+
+
+<a id="ge-010-370"></a>
+## 370 · Single-view demo carousel
+
+Block ID: **GE-010-370**.
+
+Owner request, 2026-10-24: use one central stackContainer with the slider above,
+so each demo has only one version. The l08 lesson now has a top region with its
+title/slider and a center with one stack. The miniature drawer and second stack
+are removed. Each demo has one iframe and one Data instance; visited pages stay
+mounted, while skipped pages never acquire a URL. The 350 ms delay remains: the
+current demo stays visible until the slider settles. The slider uses default=0;
+host-dependent URL/title metadata remains dynamically initialized.
+
+Python and JavaScript produce equivalent Source and page options. Chromium and
+WebKit checks pass on Python, Node and file exports: one stack, slider above it,
+bounded initial loading, rapid traversal, retained edits and narrow geometry.
+The lesson, catalogue and executable documentation are updated. No core/runtime
+changes or publication; owner visual trial pending.
+
+
+<a id="ge-010-375"></a>
+## 375 · Uniform gallery chrome
+
+Block ID: **GE-010-375**.
+
+Owner request, 2026-10-24: “porterei tutto a 42”. The title bar height,
+left toolbar width and bottom toolbar height are 42 CSS pixels on desktop and
+narrow layouts. Toolbar buttons are 36 pixels, with padding inside the region.
+The first side button stays below the title bar. Placement preferences and
+aspect-ratio switching remain unchanged.
+
+
+<a id="ge-010-380"></a>
+## 380 · Embedded-page scrolling
+
+Block ID: **GE-010-380**.
+
+Full-height introduction and category iframes are block elements: they occupy
+the available panel without reserving an inline text baseline. The embedded
+lesson scrolls when needed; its gallery panel and the outer document do not
+add redundant scrollbars. Layout fixes preserve access to the entire lesson
+and do not hide scrollbars globally.

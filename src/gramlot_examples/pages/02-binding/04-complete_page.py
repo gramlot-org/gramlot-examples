@@ -25,11 +25,6 @@ class Page(BasePage):
         self.map(main_content)
         self.faq(main_content)
         pane.footer().small("^.footer")
-        pane.dataSetter(".title", "A day of small interfaces")
-        pane.dataSetter(".footer", "Gramlot binding examples · Data-driven content")
-        pane.dataSetter(".show", {"mira": True, "theo": True})
-        pane.dataSetter(".stop", {"entrance": False, "studio": True, "hall": False})
-        pane.dataSetter(".faq_open", False)
 
     def header(self, pane):
         header = pane.header(class_="complete-header")

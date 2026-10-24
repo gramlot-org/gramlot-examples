@@ -1,5 +1,7 @@
 # 02 · Variable datapath
 
+**Sample data:** `02-variable_datapath_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 One card can show different records. Change its Data context and watch all its fields switch together: you learn how a variable `datapath` avoids rebuilding the card.
 
 **Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
@@ -26,7 +28,7 @@ card.h2("^.name", id="name")
 card.input(value="^.name", id="name-field")
 ```
 
-The dictionary becomes a nested Data Bag through `dataSetter`.
+The records are loaded as a nested Bag from `02-variable_datapath_data.tytx`. The select uses `default="people.ada"` for its initial context.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
 

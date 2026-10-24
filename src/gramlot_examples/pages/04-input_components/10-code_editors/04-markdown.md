@@ -1,5 +1,7 @@
 # Markdown: code, preview and rich text
 
+**Sample data:** `04-markdown_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 `codeMirror`, `markdownPreview` and `markdownEditor` bind to one Markdown string.
 ProseMirror edits supported blocks and provides Bold, Italic, Code, Undo and Redo.
 Tables, embedded HTML, strikethrough and task-list blocks retain their source as

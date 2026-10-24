@@ -1,17 +1,14 @@
+import tree from '../../../gallery/dist/tree/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 import {Bag} from '@gramlot/gramlot';
 export class Page extends BasePage {
+    static gramlots = [tree];
     static title = 'Tree callbacks, HTML and icons';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'treeLabels'});
         main_content.h1('Computed labels and icons');
         main_content.p('Both trees share one Bag. The first uses labelCb; the second uses getLabel, custom icon and caption classes. Open Documents, select a row and toggle its rich caption.');
-        const nodes = new Bag({documents: new Bag({readme: 'Welcome', notes: 'Notes'}), starred: 'Favorite', plain: 'Text'});
-        nodes.getNode('documents').setAttr({caption: 'Documents', rich: true});
-        nodes.getNode('starred').setAttr({caption: 'Favorite', rich: true});
-        main_content.dataSetter({destination_path: '.nodes', value: nodes});
-        main_content.dataSetter({destination_path: '.selection', value: null});
         main_content.h2('labelCb: computed text');
         main_content.tree({storepath: '.nodes', hideValues: true, labelCb: 'plainCaption', id: 'text-callback-tree', class: 'callback-tree'});
         main_content.h2('getLabel: explicit text or HTML');

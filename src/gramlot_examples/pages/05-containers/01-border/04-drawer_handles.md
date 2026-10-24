@@ -1,5 +1,7 @@
 # Make room without losing your work
 
+**Sample data:** `04-drawer_handles_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Imagine editing a customer while keeping filters, customer details and a short output summary nearby. You need those tools, but you do not need them all on screen all the time. A **drawer** is a panel you can tuck away and bring back with a small handle.
 
 This example has one on each side. Search is above the workspace, Filters is on the left, Details is on the right, and Output is below. Details starts closed.

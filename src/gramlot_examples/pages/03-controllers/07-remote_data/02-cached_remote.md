@@ -1,5 +1,7 @@
 # 13 · Cached remote
 
+**Sample data:** `02-cached_remote_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Revisit **Remote** with caching. Request the same content again and watch the mounted-fragment counter: you learn how unchanged inputs can reuse the current fragment. The counter measures mounts, not network calls.
 
 **Uses:** Data binding and cached remote Source — core 0.2.16. The request rule and the readiness condition `_if` are those of the current core.
@@ -51,7 +53,7 @@ c12 declared reactive Source replacement. Here one `_cachedRemote=True` declarat
 Run these separately after the basic trial. Reload between source edits so each trial has a known starting state.
 
 1. **Delayed A → B → A.** Let Lamp/lighting (A) finish mounting. Slow responses in the HTTP environment, choose Chair/seating (B), then Lamp before B finishes. Expected: the request in flight is never cancelled, so B’s answer mounts the seating rules (mounts 2) although Lamp is selected. The change back to Lamp waits while B is in flight and is sent when B answers; `_cachedRemote` does not skip it, because when it was made it differed from B, the request in flight. Its answer mounts the lighting rules (mounts 3), and the content ends matching the Data. Until then the page shows B’s rules next to Lamp. Observe the three `rules` requests in Network: the counter alone does not show their order.
-2. **Mutable parameters.** Add `pane.dataSetter("context", {"revision": 1})`, an input bound to `^context.revision`, and `context="=context"` to the remote declaration. After Lamp mounts, change revision to 2 and leave the field, then choose Spotlight. Expected: the `=` parameter alone is not a trigger, but the subsequent context switch reads the modified Bag and sends a new rules call. The fragment method already ignores unused keyword/object fields; the visible text stays the same and mounts become 2. This is a snapshot comparison, not a same-object comparison.
+2. **Mutable parameters.** Add an input with `value="^context.revision", default=1`, and `context="=context"` to the remote declaration. After Lamp mounts, change revision to 2 and leave the field, then choose Spotlight. Expected: the `=` parameter alone is not a trigger, but the subsequent context switch reads the modified Bag and sends a new rules call. The fragment method already ignores unused keyword/object fields; the visible text stays the same and mounts become 2. This is a snapshot comparison, not a same-object comparison.
 
 For `_if`, add a boolean Data checkbox and `enabled="^enabled", _if="enabled"` to the declaration in a separate copy. `_if` is a readiness condition: after one mount, disabling it makes no request, cancels nothing and leaves the content as it is; enable it to resume. `_else` would run as inline code while the condition is false. Test request lifetime through observation, not by adding networking or cache state to the application.
 

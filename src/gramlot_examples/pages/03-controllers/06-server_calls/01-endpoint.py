@@ -19,8 +19,6 @@ class Page(BasePage):
             facts.dd(f"^.{key}", id=key)
 
         pane.dataRpc("with_vat", result_path=".gross", price="=.price", rate="=.rate", _init=True)
-        pane.dataSetter(".price", 12.5)
-        pane.dataSetter(".rate", 22)
 
     @endpoint
     def with_vat(self, price, rate, **kwargs):

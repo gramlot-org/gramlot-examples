@@ -23,7 +23,6 @@ class Page(BasePage):
         pane.dataRpc("quote", result_path=".total", quantity="^.quantity", _delay=500, _init=True,
                      _onCalling="this.SET('.status', 'Asking the server for ' + quantity)",
                      _onResult="this.SET('.status', 'Answered ' + result + ' for ' + quantity)")
-        pane.dataSetter(".quantity", 1)
 
     @endpoint
     def quote(self, quantity, **kwargs):

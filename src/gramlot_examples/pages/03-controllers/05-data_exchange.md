@@ -1,5 +1,7 @@
 # 17 · Data exchange
 
+**Sample data:** `05-data_exchange_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Edit a record, save it as TYTX, change it again and restore the file. You learn how to save a whole Data Bag with its supported types. JSON/XML exports are for interchange, not Restore TYTX.
 
 The record contains text, numbers, a boolean, a null value and a nested address. The email button previews text only.

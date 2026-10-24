@@ -21,9 +21,6 @@ export class Page extends BasePage {
             observed.dataController({func: 'record', stage, [hook]: true});
         }
         observed.dataController({func: 'tick', _timing: 1, _onStart: true});
-        pane.dataSetter({destination_path: '.trace', value: ''});
-        pane.dataSetter({destination_path: '.ticks', value: 0});
-        pane.dataSetter({destination_path: '.lookup', value: 'Press Inspect'});
     }
 }
 

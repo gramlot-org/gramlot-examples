@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Validation rules and callbacks';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
@@ -13,9 +16,9 @@ export class Page extends BasePage {
         fields.textbox({id:'code',value:'^.code',lbl:'Code (2–6 letters)',validate_case:'upper',validate_regex:'(?:^[A-Z]{2,6}$)',validate_regex_error:'Use 2–6 letters.'});
         fields.textbox({id:'fallback',value:'^.fallback',lbl:'Empty becomes Guest',validate_empty:'Guest'});
         fields.numberTextBox({id:'quantity',value:'^.quantity',lbl:'Quantity: 0–10',validate_min:0,validate_max:10});
-        fields.checkbox({id:'strict',value:'^.strict',lbl:'Email',label:'Make the warning blocking'});
+        fields.checkbox({default: false, id:'strict',value:'^.strict',lbl:'Email',label:'Make the warning blocking'});
         fields.textbox({id:'email',value:'^.email',lbl:'Email format',validate_email:true,validate_email_iswarning:'^.strict:=!{}'});
-        fields.checkbox({value:'^.check_length',lbl:'Length',label:'Require at least four characters'});
+        fields.checkbox({default: false, value:'^.check_length',lbl:'Length',label:'Require at least four characters'});
         fields.textbox({id:'conditional',value:'^.conditional',lbl:'Conditional length',validate_len:'4:',validate_len_if:'enabled',validate_enabled:'^.check_length'});
         fields.textbox({id:'nickname',value:'^.nickname',lbl:'Nickname',validate_call:'checkNickname',validate_onAccept:'accepted',validate_onReject:'rejected'});
         fields.textbox({id:'remote-name',value:'^.remote_name',lbl:'Remote name',validate_remote:'check_name',validate_timeout:5000});
@@ -33,7 +36,6 @@ export class Page extends BasePage {
         values.dt('Appointment');
         values.dd('^profile.appointment',{format:'short'});
         accepted.p('^profile.validation_status',{id:'validation-status'});
-        for (const [destination_path,value] of [['full_name','Ada Lovelace'],['notes','Please ring the bell.'],['appointment',new Date('2026-10-17T00:00:00Z')],['delivery','standard'],['code','AB'],['fallback','Guest'],['quantity',2],['email',''],['strict',false],['check_length',false],['conditional','Ada'],['nickname','Ada'],['remote_name','AVAILABLE'],['validation_status','Edit a nickname.']]) main_content.dataSetter({destination_path:'profile.'+destination_path,value});
     }
     check_name({value}) {
         return value.toLowerCase() === 'taken' ? {errorcode:'reserved',message:'That name is reserved.'} : {value:value.toUpperCase()};

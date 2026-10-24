@@ -30,7 +30,3 @@ class Page(BasePage):
         for key in ("newsletter", "invoice", "plan.basic", "plan.plus", "plan.team"):
             facts.dt(key)
             facts.dd(f"^.{key}", id=f"out-{key.replace('.', '-')}")
-
-        pane.dataSetter(".newsletter", True)
-        pane.dataSetter(".invoice", False)
-        pane.dataSetter(".plan.plus", True)

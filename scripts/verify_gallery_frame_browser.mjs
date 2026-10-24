@@ -12,9 +12,9 @@ for(const url of process.argv.slice(2))for(const engine of [chromium,webkit]){
  assert.equal(requests.filter(x=>x.includes('navigation_section')).length,0);
  assert.equal(await page.locator('#index-navigation-toggle,#index-code-toggle,#gallery-mobile-menu').count(),0);
  const regions=page.locator('#gallery-regions');
- await regions.locator('[data-side="bottom"] .drawer').click();await page.locator('#index-theme').selectOption('dark');
- assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');await page.locator('#index-theme').selectOption('light');
- await regions.locator('[data-side="bottom"] .drawer').click();
+ await page.locator('#gallery-settings-button button').click();await page.locator('#index-theme input').fill('Dark'); await page.locator('#index-theme').getByRole('option',{name:'Dark',exact:true}).click();
+ assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');await page.locator('#index-theme input').fill('Light'); await page.locator('#index-theme').getByRole('option',{name:'Light',exact:true}).click();
+ await page.locator('#gallery-settings-button button').click();
  await tree.locator('[data-path="html_svg"] > .row > button').click();
  await tree.locator('[data-path="html_svg.06-nested"]').waitFor();
  assert.equal(requests.filter(x=>x.includes('navigation_section')).length,1);
@@ -41,7 +41,7 @@ for(const url of process.argv.slice(2))for(const engine of [chromium,webkit]){
  await frame.locator('#tree-selected-path').filter({hasText:'documents.notes'}).waitFor();
  await page.screenshot({path:`/tmp/frame-gallery-${engine.name()}.png`});
  await page.setViewportSize({width:390,height:844});
- await regions.locator('[data-side="left"] .drawer').click();await tree.waitFor({state:'visible'});
+ await page.locator('#gallery-navigation-button button').click();await tree.waitFor({state:'visible'});
  await tree.locator('[data-path="components.09-tree.w26"] > .row').click();
  await frame.locator('#example-tree').waitFor({state:'visible'});
  assert.deepEqual(errors,[]);console.log('PASS',url,engine.name(),'frame hooks, URL tabs, nested resolvers/index pages, gallery code/inspector/settings, mobile drawers');

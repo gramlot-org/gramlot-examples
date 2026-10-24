@@ -1,5 +1,7 @@
 # 24 · Dropdown commands and persistence
 
+**Sample data:** `03-dropdown_button_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 The main surface executes; the arrow opens the menu. Shift-select a command to run it and make it the default.
 
 **Uses:** built-in command components, Source, Data and the shared action engine. No endpoints or database.

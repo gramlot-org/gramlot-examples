@@ -17,4 +17,3 @@ class Page(BasePage):
         menu.menuline("-")
         menu.menuline(caption="Unavailable", code="unavailable", disabled=True, action="this.SET('result', 'Unavailable')")
         main_content.p("^result", id="dropdown-result")
-        main_content.dataSetter("result", "No command yet")

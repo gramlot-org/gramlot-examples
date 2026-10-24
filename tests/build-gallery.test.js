@@ -22,8 +22,10 @@ const environment = families => ({environment: 'test', families: families.map(fa
 test('common gallery', () => {
     const gallery = buildGallery();
     assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
-    assert.equal(Object.keys(gallery.routes).length, 117);
+    assert.equal(Object.keys(gallery.routes).length, 119);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
+    assert.match(gallery.routes.b12.data, /foo_data\.tytx$/);
+    assert.ok(gallery.assets['/pages/02-binding/01-paths_and_updates/foo_data.tytx']);
     assert.equal(gallery.routes.c03.logic, gallery.routes.c03.page, 'the page module holds the Logic');
     for (const [url, asset] of Object.entries(gallery.assets)) assert.ok(existsSync(asset.file), url);
 });
@@ -41,6 +43,7 @@ test('environment catalogue', () => {
     assert.equal(gallery.families.at(-1).key, 'test_family');
     assert.equal(gallery.families.at(-1).path, join(PAGES, 'test_family'));
     assert.deepEqual(gallery.routes['test-01'], {
+        data: null,
         url: 'pages/test_family/01_demo',
         page: join(PAGES, 'test_family', '01_demo.js'),
         stylesheet: join(PAGES, 'test_family', '01_demo.css'),

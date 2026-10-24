@@ -14,28 +14,22 @@ export class Page extends BasePage {
             controls.input({type: 'range', min: low, max: high, value: `^.${key}`, live: true, id: key});
         }
         controls.html_label('Triangle color', {for: 'triangle'});
-        controls.input({type: 'color', value: '^.triangle', id: 'triangle'});
+        controls.input({default: "#456bc4", type: 'color', value: '^.triangle', id: 'triangle'});
         controls.html_label('Label', {for: 'label'});
-        controls.input({value: '^.label', live: true, id: 'label'});
+        controls.input({default: "rectangle · circle · ellipse · line · polyline · polygon", value: '^.label', live: true, id: 'label'});
 
         const figure = pane.figure({class: 'card'});
         const art = figure.svg({viewBox: '0 0 480 200', role: 'img', aria_labelledby: 'shapes-title', class: 'example-art'});
         art.title('Six geometric shapes', {id: 'shapes-title'});
-        art.rect({x: 15, y: 20, width: '^.width', height: 75, rx: 14, fill: 'var(--gramlot-action)', id: 'rect'});
-        art.circle({cx: 172, cy: 58, r: '^.radius', fill: 'var(--gramlot-warning)', id: 'circle'});
-        art.ellipse({cx: 263, cy: 58, rx: 26, ry: '^.ry', fill: 'var(--gramlot-selected)', id: 'ellipse'});
-        art.line({x1: 294, y1: 20, x2: 315, y2: 98, stroke: 'currentColor', stroke_width: '^.stroke', stroke_linecap: 'round'});
+        art.rect({default_width: 95, x: 15, y: 20, width: '^.width', height: 75, rx: 14, fill: 'var(--gramlot-action)', id: 'rect'});
+        art.circle({default_r: 38, cx: 172, cy: 58, r: '^.radius', fill: 'var(--gramlot-warning)', id: 'circle'});
+        art.ellipse({default_ry: 38, cx: 263, cy: 58, rx: 26, ry: '^.ry', fill: 'var(--gramlot-selected)', id: 'ellipse'});
+        art.line({default_stroke_width: 7, x1: 294, y1: 20, x2: 315, y2: 98, stroke: 'currentColor', stroke_width: '^.stroke', stroke_linecap: 'round'});
         art.polyline({points: '325,95 345,25 365,70 385,25 405,95', fill: 'none', stroke: 'var(--gramlot-success)',
             stroke_width: '^.stroke', stroke_linejoin: 'round', id: 'polyline'});
         art.polygon({points: '430,95 450,20 470,95', fill: '^.triangle', id: 'polygon'});
         art.text('^.label', {x: 18, y: 150, fill: 'currentColor', font_size: 17, id: 'caption'});
         figure.figcaption('The shape attributes are pointers into the Data.');
 
-        pane.dataSetter({destination_path: '.width', value: 95});
-        pane.dataSetter({destination_path: '.radius', value: 38});
-        pane.dataSetter({destination_path: '.ry', value: 38});
-        pane.dataSetter({destination_path: '.stroke', value: 7});
-        pane.dataSetter({destination_path: '.triangle', value: '#456bc4'});
-        pane.dataSetter({destination_path: '.label', value: 'rectangle · circle · ellipse · line · polyline · polygon'});
     }
 }

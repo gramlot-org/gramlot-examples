@@ -1,5 +1,7 @@
 # Internal tree drag and drop
 
+**Sample data:** `04-internal_drag_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Drag Project brief or Meeting notes onto Inbox or Projects, then open that folder. Locked archive rejects the same payload. Dropping onto a copied document also rejects it: only the two writable folders accept documents.
 
 ## Data first

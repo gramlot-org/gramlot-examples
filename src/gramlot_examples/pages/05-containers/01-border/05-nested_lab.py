@@ -1,8 +1,10 @@
-from datetime import date
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Nested regions playground"
     devices = ("desktop", "tablet", "phone")
 
@@ -12,9 +14,9 @@ class Page(BasePage):
         main_content.p("Move the sliders, drag separators and close drawers. The same widgets and their values stay in place.")
         settings = main_content.section(display="flex", flex_wrap="wrap", gap="12px", align_items="end")
         settings.filteringSelect(id="lab-design", value="^design", lbl="Outer design", width="10rem",
-                                 values="headline:Headline,sidebar:Sidebar")
-        settings.checkbox(id="lab-minimize", value="^minimize", lbl="Drawer captions", label="Minimize")
-        settings.horizontalSlider(id="lab-radius", value="^radius", lbl="Corner radius", min=0, max=28, live=True, width="12rem")
+                                 values="headline:Headline,sidebar:Sidebar", default='headline')
+        settings.checkbox(id="lab-minimize", value="^minimize", lbl="Drawer captions", label="Minimize", default=True)
+        settings.horizontalSlider(id="lab-radius", value="^radius", lbl="Corner radius", min=0, max=28, live=True, width="12rem", default=12)
         sliders = main_content.section(display="flex", flex_wrap="wrap", gap="12px")
         sizes = (("outer.top", "Header height", 40, 110, 58),
                  ("outer.bottom", "Footer height", 35, 130, 46),
@@ -26,7 +28,6 @@ class Page(BasePage):
         for path, caption, minimum, maximum, initial in sizes:
             sliders.horizontalSlider(id="size-" + path.replace(".", "-"), value="^regions." + path,
                                      lbl=f"^regions.{path}:{caption} · {{}} px", min=minimum, max=maximum, step=1, live=True, width="12rem")
-            main_content.dataSetter("regions." + path, initial)
         surface = "var(--gramlot-surface, #fff)"
         edge = "1px solid var(--gramlot-border-control, #8192aa)"
         fills = {"nav": "color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #4488cc)",
@@ -37,22 +38,22 @@ class Page(BasePage):
         outer = main_content.borderContainer(id="lab-outer", height="700px", max_width="78rem", design="^design",
                                     rounded="^radius", border=edge, background=surface)
         header = outer.contentPane(region="top", height="^regions.outer.top", minSize=40, maxSize=110,
-                                   drawer_label="Header", padding="10px", background=fills["nav"], **drawer)
+                                   drawer_label="Header", padding="10px", background=fills["nav"], **drawer, default_height=58)
         header.strong("Customer workspace · ")
         header.span("^customer")
         footer = outer.contentPane(region="bottom", height="^regions.outer.bottom", minSize=35, maxSize=130,
-                                   drawer_label="Status", padding="10px", background=fills["preview"], **drawer)
+                                   drawer_label="Status", padding="10px", background=fills["preview"], **drawer, default_height=46)
         footer.span("^customer", mask="Customer: {}")
         footer.span("^delivery", mask=" · Delivery: {}")
         nav = outer.borderContainer(id="lab-navigation", region="left", width="^regions.outer.left",
-                                    minSize=90, maxSize=240, drawer_label="Navigation", background=fills["nav"], **drawer)
+                                    minSize=90, maxSize=240, drawer_label="Navigation", background=fills["nav"], **drawer, default_width=150)
         nav.contentPane(region="top", height="40px", padding="10px").strong("Navigation")
         navbody = nav.contentPane(region="center", padding="12px")
-        navbody.textbox(id="lab-search", value="^search", lbl="Search", width="100%")
-        navbody.radioButtonText(value="^section", lbl="Section", values="profile:Profile,orders:Orders,history:History", cols=1)
+        navbody.textbox(id="lab-search", value="^search", lbl="Search", width="100%", default='')
+        navbody.radioButtonText(value="^section", lbl="Section", values="profile:Profile,orders:Orders,history:History", cols=1, default='profile')
         nav.contentPane(region="bottom", height="54px", padding="10px").span("^section", mask="Section: {}")
         details = outer.borderContainer(id="lab-details", region="right", width="^regions.outer.right",
-                                        minSize=90, maxSize=240, drawer_label="Details", background=fills["details"], **drawer)
+                                        minSize=90, maxSize=240, drawer_label="Details", background=fills["details"], **drawer, default_width=170)
         details.contentPane(region="top", height="40px", padding="10px").strong("Details")
         detailfields = details.contentPane(region="center", padding="12px").formlet(columns=1)
         detailfields.checkbox(value="^active", lbl="Active", mode="switch")
@@ -61,12 +62,12 @@ class Page(BasePage):
         details.contentPane(region="bottom", height="60px", padding="10px").p("An independent nested container.")
         work = outer.borderContainer(id="lab-workspace", region="center", rounded="^radius", border=edge)
         tools = work.contentPane(region="left", width="^regions.workspace.left", minSize=70, maxSize=200,
-                                 drawer_label="Tools", padding="10px", background=fills["tools"], **drawer)
+                                 drawer_label="Tools", padding="10px", background=fills["tools"], **drawer, default_width=105)
         tools.strong("Tools")
         tools.checkbox(value="^active", lbl="Enabled", mode="switch")
-        tools.checkbox(value="^readonly", lbl="Editor", label="Read only")
+        tools.checkbox(value="^readonly", lbl="Editor", label="Read only", default=False)
         preview = work.contentPane(region="bottom", height="^regions.workspace.bottom", minSize=50, maxSize=180,
-                                   drawer_label="Preview", padding="12px", background=fills["preview"], **drawer)
+                                   drawer_label="Preview", padding="12px", background=fills["preview"], **drawer, default_height=90)
         preview.strong("Shared note")
         preview.p("^note")
         editor = work.borderContainer(id="lab-editor", region="center", rounded="^radius", border=edge, background=surface)
@@ -78,11 +79,5 @@ class Page(BasePage):
                                values="standard:Standard,express:Express,pickup:Pick up")
         fields.numberTextBox(id="lab-quantity", value="^quantity", lbl="Quantity", width="100%")
         notes = editor.contentPane(region="bottom", height="^regions.editor.bottom", minSize=60, maxSize=180,
-                                   drawer_label="Notes", padding="10px 24px", background=fills["tools"], **drawer)
+                                   drawer_label="Notes", padding="10px 24px", background=fills["tools"], **drawer, default_height=100)
         notes.textBoxArea(id="lab-note", value="^note", lbl="Retained draft", rows=2, live=True, width="100%")
-        for key, value in (("design", "headline"), ("minimize", True), ("radius", 12),
-                           ("customer", "Ada Lovelace"), ("search", ""), ("section", "profile"),
-                           ("active", True), ("readonly", False), ("delivery", "standard"),
-                           ("quantity", 3), ("appointment", date(2026, 10, 18)),
-                           ("note", "Resize any region: this note stays here.")):
-            main_content.dataSetter(key, value)

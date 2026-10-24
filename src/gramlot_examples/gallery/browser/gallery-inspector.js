@@ -11,7 +11,7 @@ export function mountGalleryInspector(renderer, root, destination = renderer.des
     let docked = false, desktopVisible = false;
     const ready = new Set();
     const connections = new Map();
-    const buttonState = () => buttonNode.setAttr({disabled: false, aria_pressed: String(!!palette && !palette.hidden)});
+    const buttonState = () => buttonNode.setAttr({disabled: false, checked: !!palette && !palette.hidden});
     const close = () => {
         palette?.remove(); palette = null;
         for (const connection of connections.values()) connection.close();

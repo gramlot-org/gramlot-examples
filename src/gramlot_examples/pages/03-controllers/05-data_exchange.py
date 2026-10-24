@@ -23,7 +23,3 @@ class Page(BasePage):
         pane.p("^.status", id="status")
         pane.pre("^.types", id="types")
         pane.pre("^.mail", id="mail")
-        pane.dataSetter(".record", {"name": "Ada", "seats": 2, "confirmed": True,
-                                   "note": None,
-                                   "address": {"city": "Rome"}})
-        pane.dataSetter(".status", "Choose an action; files stay under your control.")

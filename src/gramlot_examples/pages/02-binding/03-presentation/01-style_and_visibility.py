@@ -28,20 +28,11 @@ class Page(BasePage):
             for option in options:
                 select.option(option, value=option)
         controls.html_label("style", for_="style")
-        controls.input(value="^.style", id="style")
+        controls.input(value="^.style", id="style", default='border: 4px dashed #ffc400')
 
         stage = pane.div(class_="stack")
         stage.p("The box keeps its place when it is not visible.", class_="muted")
         stage.div("A styled box", id="box", class_="^.tone", style="^.style",
                   color="^.color", background_color="^.background", font_size="^.size",
-                  rounded="^.radius", padding="1rem", visible="^.show", hidden="^.hide")
+                  rounded="^.radius", padding="1rem", visible="^.show", hidden="^.hide", default_background_color='#456bc4', default_class_='card', default_color='#ffffff', default_font_size='1.5rem', default_hidden=False, default_rounded='8px', default_visible=True)
         stage.p("This line follows the box.", class_="muted")
-
-        pane.dataSetter(".show", True)
-        pane.dataSetter(".hide", False)
-        pane.dataSetter(".color", "#ffffff")
-        pane.dataSetter(".background", "#456bc4")
-        pane.dataSetter(".tone", "card")
-        pane.dataSetter(".size", "1.5rem")
-        pane.dataSetter(".radius", "8px")
-        pane.dataSetter(".style", "border: 4px dashed #ffc400")

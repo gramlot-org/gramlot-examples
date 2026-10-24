@@ -33,8 +33,5 @@ export class Page extends BasePage {
             facts.dd(`^.${key}`, {id: `out-${key.replace('.', '-')}`});
         }
 
-        pane.dataSetter({destination_path: '.newsletter', value: true});
-        pane.dataSetter({destination_path: '.invoice', value: false});
-        pane.dataSetter({destination_path: '.plan.plus', value: true});
     }
 }

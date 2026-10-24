@@ -22,7 +22,6 @@ export class Page extends BasePage {
 
         pane.dataFormula({result_path: '.final', func: 'finalPrice', price: '^.price', threshold: 100, _init: true});
         pane.dataController({func: 'countChange', price: '^.price'});
-        pane.dataSetter({destination_path: '.price', value: 80});
     }
 }
 

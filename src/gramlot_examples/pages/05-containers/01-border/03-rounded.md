@@ -1,5 +1,7 @@
 # Rounded panels that still let you work
 
+**Sample data:** `03-rounded_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Rounded corners can make a workspace feel softer, but they should never get in the way of a calendar, a choice list or a helpful error message. This example lets you try those things together.
 
 The outer layout and the layout inside it share a corner-radius setting. You will see both respond to one control.

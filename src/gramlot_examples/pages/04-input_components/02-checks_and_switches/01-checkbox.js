@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = "Checkbox and labelbox";
 
     main(root) {
@@ -11,11 +14,8 @@ export class Page extends BasePage {
         fields.checkbox({id: "newsletter", value: "^newsletter", lbl: "Contact preferences", label: "Send me the newsletter", lbl_color: "#315fa8", box_padding: "8px", disabled: "^locked"});
         fields.checkbox({id: "newsletter-copy", value: "^newsletter", lbl: "Same preference", label: "Newsletter", disabled: "^locked"});
         const controls = main_content.formlet({class: "card stack", width: "100%", max_width: "24rem"});
-        controls.checkbox({value: "^locked", lbl: "State", label: "Disable the preference"});
+        controls.checkbox({default: false, value: "^locked", lbl: "State", label: "Disable the preference"});
         main_content.p("Subscribed", {hidden: "^newsletter:=!{}", id: "subscribed"});
         main_content.p("Not subscribed", {hidden: "^newsletter", id: "not-subscribed"});
-        for (const [path, value] of [["newsletter", false], ["locked", false], ]) {
-            main_content.dataSetter({destination_path: path, value});
-        }
     }
 }

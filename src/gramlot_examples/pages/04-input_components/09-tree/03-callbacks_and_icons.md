@@ -1,5 +1,7 @@
 # Tree callbacks, HTML and icons
 
+**Sample data:** `03-callbacks_and_icons_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Compare computed text, structured HTML labels and icons chosen by named Logic methods.
 
 ## Try it

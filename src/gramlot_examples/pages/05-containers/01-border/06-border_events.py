@@ -1,18 +1,15 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Border events and controllers"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="events")
-        for name, value in (("drawerCount", 0), ("resizeCount", 0),
-                            ("drawerMessage", "No visibility change yet"),
-                            ("resizeMessage", "No completed resize yet"),
-                            ("drawerPayload", "{}"), ("resizePayload", "{}"),
-                            ("hideFilters", False), ("name", "Ada"), ("note", "Keep this draft")):
-            main_content.dataSetter(f".{name}", value)
         main_content.dataController(
             "this.SET('.drawerCount', count + 1); "
             "this.SET('.drawerMessage', region + ': ' + (open ? 'open' : 'closed')); "
@@ -26,7 +23,7 @@ class Page(BasePage):
 
         main_content.h1("Observe a drawer and a splitter")
         main_content.p("Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.")
-        main_content.checkbox(id="events-hide", value="^.hideFilters", label="Hide Filters from Data")
+        main_content.checkbox(id="events-hide", value="^.hideFilters", label="Hide Filters from Data", default=False)
         border = main_content.borderContainer(id="events-border", nodeId="eventWorkspace",
                                               height="360px", max_width="48rem", rounded=10,
                                               border="1px solid var(--gramlot-border-control, #aaa)")

@@ -1,5 +1,7 @@
 # Give each part of your page its own space
 
+**Sample data:** `01-border_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Imagine a customer screen: filters on the left, a form in the middle, and a summary on the right. You want people to give the form more room without having to close their work. This is what a **borderContainer** helps you build.
 
 A *region* is simply one of its areas: top, bottom, left, right or center. The center takes the space that remains. You do not have to calculate its width yourself.

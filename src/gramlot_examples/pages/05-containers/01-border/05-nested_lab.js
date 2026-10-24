@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Nested regions playground';
     static devices = ['desktop', 'tablet', 'phone'];
 
@@ -16,20 +19,20 @@ export class Page extends BasePage {
             gap: '12px',
             align_items: 'end',
         });
-        settings.filteringSelect({
+        settings.filteringSelect({default: "headline",
             id: 'lab-design',
             value: '^design',
             lbl: 'Outer design',
             width: '10rem',
             values: 'headline:Headline,sidebar:Sidebar',
         });
-        settings.checkbox({
+        settings.checkbox({default: true,
             id: 'lab-minimize',
             value: '^minimize',
             lbl: 'Drawer captions',
             label: 'Minimize',
         });
-        settings.horizontalSlider({
+        settings.horizontalSlider({default: 12,
             id: 'lab-radius',
             value: '^radius',
             lbl: 'Corner radius',
@@ -59,7 +62,6 @@ export class Page extends BasePage {
                 live: true,
                 width: '12rem',
             });
-            main_content.dataSetter({ destination_path: 'regions.' + path, value: initial });
         }
         const surface = 'var(--gramlot-surface, #fff)';
         const edge = '1px solid var(--gramlot-border-control, #8192aa)';
@@ -79,7 +81,7 @@ export class Page extends BasePage {
             border: edge,
             background: surface,
         });
-        const header = outer.contentPane({
+        const header = outer.contentPane({default_height: 58,
             region: 'top',
             height: '^regions.outer.top',
             minSize: 40,
@@ -91,7 +93,7 @@ export class Page extends BasePage {
         });
         header.strong('Customer workspace · ');
         header.span('^customer');
-        const footer = outer.contentPane({
+        const footer = outer.contentPane({default_height: 46,
             region: 'bottom',
             height: '^regions.outer.bottom',
             minSize: 35,
@@ -103,7 +105,7 @@ export class Page extends BasePage {
         });
         footer.span('^customer', { mask: 'Customer: {}' });
         footer.span('^delivery', { mask: ' · Delivery: {}' });
-        const nav = outer.borderContainer({
+        const nav = outer.borderContainer({default_width: 150,
             id: 'lab-navigation',
             region: 'left',
             width: '^regions.outer.left',
@@ -115,8 +117,8 @@ export class Page extends BasePage {
         });
         nav.contentPane({ region: 'top', height: '40px', padding: '10px' }).strong('Navigation');
         const navbody = nav.contentPane({ region: 'center', padding: '12px' });
-        navbody.textbox({ id: 'lab-search', value: '^search', lbl: 'Search', width: '100%' });
-        navbody.radioButtonText({
+        navbody.textbox({default: "",  id: 'lab-search', value: '^search', lbl: 'Search', width: '100%' });
+        navbody.radioButtonText({default: "profile",
             value: '^section',
             lbl: 'Section',
             values: 'profile:Profile,orders:Orders,history:History',
@@ -125,7 +127,7 @@ export class Page extends BasePage {
         nav.contentPane({ region: 'bottom', height: '54px', padding: '10px' }).span('^section', {
             mask: 'Section: {}',
         });
-        const details = outer.borderContainer({
+        const details = outer.borderContainer({default_width: 170,
             id: 'lab-details',
             region: 'right',
             width: '^regions.outer.right',
@@ -156,7 +158,7 @@ export class Page extends BasePage {
             rounded: '^radius',
             border: edge,
         });
-        const tools = work.contentPane({
+        const tools = work.contentPane({default_width: 105,
             region: 'left',
             width: '^regions.workspace.left',
             minSize: 70,
@@ -168,8 +170,8 @@ export class Page extends BasePage {
         });
         tools.strong('Tools');
         tools.checkbox({ value: '^active', lbl: 'Enabled', mode: 'switch' });
-        tools.checkbox({ value: '^readonly', lbl: 'Editor', label: 'Read only' });
-        const preview = work.contentPane({
+        tools.checkbox({default: false,  value: '^readonly', lbl: 'Editor', label: 'Read only' });
+        const preview = work.contentPane({default_height: 90,
             region: 'bottom',
             height: '^regions.workspace.bottom',
             minSize: 50,
@@ -210,7 +212,7 @@ export class Page extends BasePage {
             values: 'standard:Standard,express:Express,pickup:Pick up',
         });
         fields.numberTextBox({ id: 'lab-quantity', value: '^quantity', lbl: 'Quantity', width: '100%' });
-        const notes = editor.contentPane({
+        const notes = editor.contentPane({default_height: 100,
             region: 'bottom',
             height: '^regions.editor.bottom',
             minSize: 60,
@@ -228,21 +230,5 @@ export class Page extends BasePage {
             live: true,
             width: '100%',
         });
-        for (const [key, value] of [
-            ['design', 'headline'],
-            ['minimize', true],
-            ['radius', 12],
-            ['customer', 'Ada Lovelace'],
-            ['search', ''],
-            ['section', 'profile'],
-            ['active', true],
-            ['readonly', false],
-            ['delivery', 'standard'],
-            ['quantity', 3],
-            ['appointment', new Date(Date.UTC(2026, 9, 18))],
-            ['note', 'Resize any region: this note stays here.'],
-        ]) {
-            main_content.dataSetter({ destination_path: key, value: value });
-        }
     }
 }

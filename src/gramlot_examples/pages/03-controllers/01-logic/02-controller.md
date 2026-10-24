@@ -1,5 +1,7 @@
 # 02 · Controller
 
+**Sample data:** `02-controller_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A controller reacts to Data changes and writes other values. You learn when to use a controller for an action rather than a formula for a result. Its path filter distinguishes where a change occurred, not who made it.
 
 **Uses:** Data binding and local controllers — core 0.2.0.

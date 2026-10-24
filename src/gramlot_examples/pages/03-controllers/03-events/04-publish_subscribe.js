@@ -6,7 +6,6 @@ export class Page extends BasePage {
         const main_content = root.main({class: 'example-page stack', datapath: 'messages'});
         main_content.h1('The same action, two entry points');
         main_content.p('Compare the direct controller with a page topic. Both update the same summary.');
-        main_content.dataSetter({destination_path: '.text', value: 'Hello'});
         main_content.html_label('Message', {for: 'message'});
         main_content.input({id: 'message', value: '^.text', live: true});
         main_content.button('Direct controller', {id: 'direct'}).dataController({func: 'save', text: '=.text'});
@@ -22,7 +21,6 @@ export class Page extends BasePage {
             const target = box.dataController({func: 'receive', selfsubscribe_refresh: true});
             box.button(`Send to ${name}`, {id: `send-${name}`}).dataController({func: 'sendToNode', target, text: '=.text'});
             box.p('^.received', {id: `received-${name}`});
-            box.dataSetter({destination_path: '.text', value: `Hello ${name}`});
         }
     }
 }

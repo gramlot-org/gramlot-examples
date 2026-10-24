@@ -1,5 +1,7 @@
 # 05 · Checkbox and radio
 
+**Sample data:** `02-checkbox_radio_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Checkboxes and radio buttons control boolean values. You learn how to represent yes/no choices and how radio buttons keep a single choice selected.
 
 **Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.

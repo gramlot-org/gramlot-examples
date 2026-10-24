@@ -4,6 +4,7 @@ import re
 import unittest
 
 from genro_tytx import from_tytx, to_tytx
+from genro_bag import Bag
 from gramlot.server import GramlotFileServer as BaseFileServer
 
 class GramlotFileServer(BaseFileServer):
@@ -33,6 +34,12 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn(f'{{"url":"/{page.stem}.js","group":null}}', opened.html)
                 response = await call(server, opened.page_id, "source", "main")
                 self.assertNotIn("error", response)
+                if route["data"] is not None:
+                    self.assertIsInstance(response["data"], Bag)
+                    expected = from_tytx(route["data"].read_text())
+                    self.assertEqual(to_tytx(response["data"]), to_tytx(expected))
+                else:
+                    self.assertNotIn("data", response)
                 tree = response["value"]
                 self.assertGreater(len(tree.nodes), 0)
                 server.close_page(opened.page_id)

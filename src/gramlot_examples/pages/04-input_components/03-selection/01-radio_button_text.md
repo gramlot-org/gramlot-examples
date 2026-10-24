@@ -1,5 +1,7 @@
 # 03 · RadioButtonText and labelbox
 
+**Sample data:** `01-radio_button_text_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Choose one delivery option in each group. Change the column count, and try the arrow keys inside a group.
 
 **Uses:** the first 0.3 input components, shared labelbox, Source, Data and bindings. No endpoints or validation engine.

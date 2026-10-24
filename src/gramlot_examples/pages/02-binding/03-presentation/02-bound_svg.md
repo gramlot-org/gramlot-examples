@@ -35,7 +35,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Add a range bound to `.cy` (min 40, max 160), initialize it with `pane.dataSetter(".cy", 100)`, and replace the circle’s `cy=100` with `cy="^.cy"`.
+Add a range bound to `.cy` (min 40, max 160), give that range `default=100`, and replace the circle’s `cy=100` with `cy="^.cy"`.
 
 **Answer:** moving the new range moves the same circle vertically; radius remains controlled independently. There is no new Source lookup or attribute-setting action.
 

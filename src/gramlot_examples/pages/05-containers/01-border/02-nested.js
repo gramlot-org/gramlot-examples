@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Nested borders and layout designs';
     static devices = ['desktop', 'tablet', 'phone'];
 
@@ -8,7 +11,7 @@ export class Page extends BasePage {
         const main_content = root.main({ class: 'example-page stack' });
         main_content.h1('One layout inside another');
         const controls = main_content.formlet({ max_width: '24rem', columns: 1 });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "headline",
             id: 'design',
             value: '^design',
             lbl: 'Outer design',
@@ -43,7 +46,7 @@ export class Page extends BasePage {
             background: 'var(--gramlot-surface-subtle, #eef1f5)',
         });
         left.h3('Workspace');
-        left.radioButtonText({ value: '^section', values: 'profile:Profile,history:History', cols: 1 });
+        left.radioButtonText({default: "profile",  value: '^section', values: 'profile:Profile,history:History', cols: 1 });
         left.p('A fixed-width drawer: open and close without dragging.');
         const nested = bc.borderContainer({ region: 'center' });
         nested
@@ -84,13 +87,5 @@ export class Page extends BasePage {
                 background: 'var(--gramlot-surface-subtle, #eef1f5)',
             })
             .p('^note');
-        main_content.dataSetter({ destination_path: 'name', value: 'Ada Lovelace' });
-        main_content.dataSetter({ destination_path: 'active', value: true });
-        main_content.dataSetter({ destination_path: 'section', value: 'profile' });
-        main_content.dataSetter({ destination_path: 'design', value: 'headline' });
-        main_content.dataSetter({
-            destination_path: 'note',
-            value: 'Resize the inner bottom region, then change the outer design.',
-        });
     }
 }

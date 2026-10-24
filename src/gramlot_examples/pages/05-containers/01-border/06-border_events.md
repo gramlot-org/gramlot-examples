@@ -1,5 +1,7 @@
 # Let another part of your page know what happened
 
+**Sample data:** `06-border_events_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Suppose you want a small status message whenever someone closes a panel. You should not have to watch the browser's HTML or write a second click handler for the drawer. The container can announce the change, and your page can listen.
 
 Those announcements are **events**. A **dataController** is a small piece of page logic that runs when an event it subscribes to arrives. Here, controllers turn drawer and splitter events into counters and readable messages.

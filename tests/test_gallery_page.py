@@ -36,7 +36,7 @@ class GalleryPageTests(unittest.TestCase):
     def test_mobile_controls_are_source_authored(self):
         page = Page()
         builder = page.source_builder("main", collections=GRAMMARS)
-        page.header(builder.root)
+        page.main(builder.root)
         def walk(bag):
             for node in bag.nodes:
                 yield node
@@ -46,7 +46,7 @@ class GalleryPageTests(unittest.TestCase):
         self.assertNotIn("gallery-mobile-menu", ids)
         self.assertNotIn("index-navigation-toggle", ids)
         self.assertNotIn("index-code-toggle", ids)
-        self.assertEqual(ids["gallery-inspector"].node_tag, "html_button")
+        self.assertEqual(ids["gallery-inspector"].node_tag, "menuline")
         self.assertNotIn("gallery-view-inspector", ids)
 
     def test_default_urls(self):
@@ -68,14 +68,19 @@ class GalleryPageTests(unittest.TestCase):
         appearance = controls["index-appearance"]
         color = controls["index-theme"]
         self.assertLess(nodes.index(appearance), nodes.index(color))
-        self.assertEqual(appearance.attr["value"], "compact")
-        self.assertEqual(color.attr["value"], "light")
-        self.assertEqual([node.attr["value"] for node in appearance.value.nodes], ["base", "compact", "mimi", "joanna"])
-        self.assertEqual(controls["gallery-settings"].attr["region"], "bottom")
-        self.assertEqual(controls["gallery-settings"].attr["drawer"], "close")
+        self.assertEqual(appearance.attr["value"], "^galleryIndex.appearance")
+        self.assertEqual(color.attr["value"], "^galleryIndex.theme")
+        self.assertEqual([choice.split(":")[0] for choice in appearance.attr["values"].split(",")], ["base", "compact", "mimi", "joanna", "mela"])
+        self.assertEqual(controls["gallery-settings"].node_tag, "floatingPane")
+        self.assertEqual(controls["gallery-settings-form"].node_tag, "formlet")
+        self.assertEqual(controls["index-sidebar"].attr["drawer_display"], "none")
+        self.assertEqual(controls["gallery-settings"].attr["open"], "^galleryIndex.settingsOpen")
+        self.assertEqual(controls["gallery-toolbar-position"].attr["value"], "^galleryIndex.toolbarPosition")
+        self.assertEqual(controls["gallery-toolbar-position"].attr["default"], "auto")
+        self.assertEqual(controls["gallery-toolbar-position"].attr["values"], "auto:Automatic,left:Left,bottom:Bottom")
         self.assertNotIn("popover", controls["gallery-settings"].attr)
         self.assertNotIn("gallery-settings-toggle", controls)
-        self.assertEqual(controls["gallery-label-position"].attr["value"], "example")
+        self.assertEqual(controls["gallery-label-position"].attr["value"], "^galleryIndex.labelPosition")
         self.assertEqual(controls["gallery-regions"].node_tag.lower(), "bordercontainer")
         for id_, region in (("index-sidebar", "left"), ("index-code", "right")):
             self.assertEqual(controls[id_].attr["region"], region)
@@ -117,6 +122,30 @@ class GalleryPageTests(unittest.TestCase):
             logoUrl = "/py/assets/branding/gramlot-logo-dark.svg"
 
         self.assertEqual(sources(MountedPage()), {"img": "/py/assets/branding/gramlot-logo-dark.svg", "iframe": "pages/00-index"})
+
+
+    def test_icon_rail_is_a_single_framepane_toolbar(self):
+        page = Page()
+        builder = page.source_builder("main", collections=GRAMMARS)
+        page.main(builder.root)
+        def walk(bag):
+            for node in bag.nodes:
+                yield node
+                if isinstance(node.value, type(bag)):
+                    yield from walk(node.value)
+        nodes = list(walk(builder.source))
+        controls = {node.attr["id"]: node for node in nodes if node.attr.get("id")}
+        self.assertEqual(controls["gallery-frame"].node_tag, "framePane")
+        self.assertEqual(controls["gallery-rail-region"].attr["region"], "left")
+        rail = controls["gallery-rail"]
+        self.assertEqual(rail.node_tag, "menu")
+        self.assertEqual(rail.attr["orientation"], "vertical")
+        self.assertEqual([n.node_tag for n in rail.value.nodes], ["menuline", "spacer", "menuline", "menuline"])
+        self.assertEqual(rail.value.nodes[1].attr["flex"], 1)
+        for name in ("navigation", "settings"):
+            button = controls[f"gallery-{name}-button"]
+            self.assertTrue(button.attr["iconSrc"].startswith("data:image/svg+xml,"))
+            self.assertFalse(button.attr["overflowable"])
 
 
 if __name__ == "__main__":

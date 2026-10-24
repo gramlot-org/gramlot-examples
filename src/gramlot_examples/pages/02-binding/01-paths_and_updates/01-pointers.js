@@ -33,11 +33,6 @@ export class Page extends BasePage {
         child.p('^.name', {id: 'local-name'});
         child.p('^#ANCHOR.name', {id: 'anchor-name'});
         child.p('^.#parent.name', {id: 'parent-name'});
-        pane.dataSetter({destination_path: 'contexts.name', value: 'Outer'});
-        pane.dataSetter({destination_path: 'contexts.child.name', value: 'Inner'});
 
-        pane.dataSetter({destination_path: 'settings.caption', value: 'Pointers'});
-        pane.dataSetter({destination_path: 'settings.intro', value: 'Type in the fields: every ^ pointer follows the Data.'});
-        pane.dataSetter({destination_path: 'person.name', value: 'Ada Lovelace', role: 'Mathematician'});
     }
 }

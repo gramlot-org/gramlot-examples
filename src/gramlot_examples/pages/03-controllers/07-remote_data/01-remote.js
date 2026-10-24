@@ -17,7 +17,6 @@ export class Page extends BasePage {
         const details = pane.section('Waiting for the server', {class: 'card stack', id: 'details'});
         details.remote('details', {record_id: '^.record_id'});
 
-        pane.dataSetter({destination_path: '.record_id', value: 'lamp'});
     }
 
     details(root, {record_id}) {

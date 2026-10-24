@@ -38,7 +38,7 @@ async function mount(family, example, {hold = null} = {}) {
 
     // A page module that names no client method exports no Logic.
     const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
-    const server = new GramlotFileServer(fileURLToPath(folder(family.key)), {collections:buildGallery().collections});
+    const server = new GramlotFileServer(fileURLToPath(folder(family.key)));
     const {pageId} = await server.registerPage(`/${example.folder}`);
     const calls = [];
     // `hold(request)` true keeps the answer of that request until `release()`, to observe a request in flight.
@@ -68,6 +68,42 @@ const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    async b12({byId, data, app, edit, click}) {
+        assert.equal(byId('customer-name').value, 'Ada Lovelace');
+        assert.equal(byId('draft-name').value, '');
+        assert.equal(byId('draft-city').value, '');
+        edit('draft-name', 'Manual draft', 'input');
+        assert.equal(byId('draft-preview').textContent, 'Manual draft');
+        assert.equal(data('customer.name'), 'Ada Lovelace');
+        click('fill-sample');
+        assert.equal(byId('draft-name').value, 'Ada Lovelace');
+        assert.equal(byId('draft-city').value, '', 'the second field waits');
+        await tick(350);
+        assert.equal(byId('draft-city').value, 'London');
+        assert.notEqual(data('draft'), data('customer'));
+        assert.equal(data('draft.credit').toString(), '1250.5');
+        assert.equal(app.data.getNode('draft.name').getAttr('caption'), 'Customer name');
+        edit('draft-name', 'Grace', 'input');
+        assert.equal(data('customer.name'), 'Ada Lovelace');
+        click('clear-draft');
+        assert.equal(byId('draft-name').value, '');
+        assert.equal(byId('draft-city').value, '');
+        click('fill-sample');
+        assert.equal(byId('draft-preview').textContent, 'Ada Lovelace');
+        click('clear-draft');
+        await tick(350);
+        assert.equal(byId('draft-city').value, '', 'Clear cancels the pending field');
+        click('fill-sample');
+        await tick(100);
+        app.data.setItem('customer.city', 'Paris');
+        click('fill-sample');
+        await tick(220);
+        assert.equal(byId('draft-city').value, '', 'a new Play restarts the pause');
+        app.data.setItem('customer.city', 'Rome');
+        await tick(130);
+        assert.equal(byId('draft-city').value, 'Paris', 'Play uses its own snapshot');
+        assert.equal(data('ui.playSample'), null);
+    },
     async w29({byId, data, window}) {
         const row = (id, path) => byId(id).shadowRoot.querySelector(`[data-path="${path}"] > .row`);
         const values = new Map();

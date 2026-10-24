@@ -1,5 +1,7 @@
 # 15 · Combo box
 
+**Sample data:** `05-combo_box_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write.
 
 **Uses:** the 0.3 input collection, labelbox, Source and Data bindings. No endpoints or validation engine.

@@ -19,8 +19,6 @@ export class Page extends BasePage {
         const items = board.ul({nodeId: 'items', id: 'items'});
         for (const number of [1, 2, 3]) items.li(`Item ${number}`);
 
-        pane.dataSetter({destination_path: '.count', value: 0});
-        pane.dataSetter({destination_path: '.frozen', value: false});
     }
 }
 

@@ -1,5 +1,7 @@
 # 07 · Events
 
+**Sample data:** `01-events_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Elements declare how they respond to browser events. You learn where an event is handled and how the declaring Source node updates Data.
 
 **Uses:** Data and inline event handlers — core 0.2.0. Named event groups need the separate Kajenn resource host.

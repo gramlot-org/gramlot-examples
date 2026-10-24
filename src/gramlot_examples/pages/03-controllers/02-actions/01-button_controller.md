@@ -1,5 +1,7 @@
 # 06 · Button controller
 
+**Sample data:** `01-button_controller_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A controller inside a button runs when you click it. You learn how the button supplies click parameters, including modifier keys, to the action.
 
 **Uses:** Data binding and local button controllers — core 0.2.0.

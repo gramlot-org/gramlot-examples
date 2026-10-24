@@ -1,29 +1,14 @@
+import inputs from '../../gallery/dist/inputs/descriptor.js';
+import layout from '../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Tabs, selection and closing';
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {
         const main_content = root.main({ class: 'example-page stack', datapath: 'tabsDemo' });
-        for (const [key, value] of [
-            ['page', 'customer'],
-            ['index', 0],
-            ['name', 'Ada'],
-            ['notes', 'These Data survive closing Notes.'],
-            ['variantMessage', 'Please confirm the delivery address.'],
-            ['mode', 'tabs'],
-            ['position', 'top'],
-            ['align', 'start'],
-            ['unread', 3],
-            ['badgeColor', 'crimson'],
-            ['notesIcon', '✉'],
-            ['locked', false],
-            ['events', ''],
-            ['closed', 'None'],
-        ]) {
-            main_content.dataSetter({ destination_path: `.${key}`, value: value });
-        }
         for (const topic of ['hiding', 'showing', 'selected', 'closing', 'closed']) {
             main_content.dataController({
                 script: "this.SET('.events', history + topic + ': ' + JSON.stringify(_subscription_kwargs) + '\\n');",
@@ -40,25 +25,25 @@ export class Page extends BasePage {
             'Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.',
         );
         const controls = main_content.formlet({ col_min_width: '14rem', max_width: '36rem' });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "customer",
             id: 'tabs-choice',
             value: '^.page',
             lbl: 'Selected page',
             values: 'customer:Customer,notes:Notes,layout:Nested border',
         });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "tabs",
             id: 'tabs-mode',
             value: '^.mode',
             lbl: 'Presentation',
             values: 'tabs:Tabs,underline:Underline',
         });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "top",
             id: 'tabs-position',
             value: '^.position',
             lbl: 'Tab position',
             values: 'top:Top,bottom:Bottom,left:Left,right:Right',
         });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "start",
             id: 'tabs-align',
             value: '^.align',
             lbl: 'Alignment along the strip',
@@ -75,19 +60,19 @@ export class Page extends BasePage {
             width: '14rem',
             max_width: '100%',
         });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "crimson",
             id: 'tabs-badge-color',
             value: '^.badgeColor',
             lbl: 'Badge color',
             values: 'crimson:Crimson,seagreen:Green,royalblue:Blue',
         });
-        controls.filteringSelect({
+        controls.filteringSelect({default: "✉",
             id: 'tabs-icon',
             value: '^.notesIcon',
             lbl: 'Notes icon',
             values: '✉:Envelope,●:Dot,★:Star',
         });
-        controls.checkbox({
+        controls.checkbox({default: false,
             id: 'tabs-lock',
             value: '^.locked',
             label: 'Prevent closing Notes',
@@ -97,7 +82,7 @@ export class Page extends BasePage {
             'Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.',
         );
         main_content.p('^.index', { id: 'tabs-index', mask: 'Selected index: {}' });
-        const tabs = main_content.tabContainer({
+        const tabs = main_content.tabContainer({default_selected: 0,
             id: 'tabs-demo',
             nodeId: 'editor',
             selectedPage: '^.page',

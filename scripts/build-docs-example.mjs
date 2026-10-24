@@ -35,6 +35,7 @@ export class Page extends Example {
 `);
     // A lesson module that names no client method exports no Logic and needs no companion.
     if ((await import(pathToFileURL(route.logic))).Logic) await writeFile(join(folder, 'index_aux.js'), `export {Logic} from ${JSON.stringify(route.logic)};\n`);
+    if (route.data) await copyFile(route.data, join(folder, 'index_data.tytx'));
     if (route.stylesheet) await copyFile(route.stylesheet, join(folder, 'index.css'));
     pages[key] = join(folder, 'index.js');
 }

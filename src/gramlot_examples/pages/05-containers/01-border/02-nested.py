@@ -1,7 +1,10 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Nested borders and layout designs"
     devices = ("desktop", "tablet", "phone")
 
@@ -10,7 +13,7 @@ class Page(BasePage):
         main_content.h1("One layout inside another")
         controls = main_content.formlet(max_width="24rem", columns=1)
         controls.filteringSelect(id="design", value="^design", lbl="Outer design",
-                                 values="headline:Headline,sidebar:Sidebar", width="10rem")
+                                 values="headline:Headline,sidebar:Sidebar", width="10rem", default='headline')
         bc = main_content.borderContainer(id="nested-demo", height="440px", design="^design", max_width="64rem",
                                           border="1px solid var(--gramlot-border-control, #aaa)")
         bc.contentPane(region="top", border_bottom="1px solid var(--gramlot-border-control, #aaa)", height="48px", splitter=True, minSize=30, maxSize=100,
@@ -18,7 +21,7 @@ class Page(BasePage):
         left = bc.contentPane(region="left", border_right="1px solid var(--gramlot-border-control, #aaa)", width="130px", drawer=True, splitter=False,
                               drawer_title="Side", padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)")
         left.h3("Workspace")
-        left.radioButtonText(value="^section", values="profile:Profile,history:History", cols=1)
+        left.radioButtonText(value="^section", values="profile:Profile,history:History", cols=1, default='profile')
         left.p("A fixed-width drawer: open and close without dragging.")
         nested = bc.borderContainer(region="center")
         nested.contentPane(region="top", border_bottom="1px solid var(--gramlot-border-control, #aaa)", height="40px", padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("Inner header")
@@ -29,8 +32,3 @@ class Page(BasePage):
         nested.contentPane(region="bottom", border_top="1px solid var(--gramlot-border-control, #aaa)", height="80px", splitter=True, minSize=36, maxSize=180,
                            drawer=True, drawer_title="Output",
                            padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("^note")
-        main_content.dataSetter("name", "Ada Lovelace")
-        main_content.dataSetter("active", True)
-        main_content.dataSetter("section", "profile")
-        main_content.dataSetter("design", "headline")
-        main_content.dataSetter("note", "Resize the inner bottom region, then change the outer design.")

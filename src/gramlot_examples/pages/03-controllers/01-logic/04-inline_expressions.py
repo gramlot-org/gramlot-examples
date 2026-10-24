@@ -27,9 +27,3 @@ class Page(BasePage):
         result.button("Start", disabled="==!accepted", accepted="^.accepted", id="start",
                       action="this.SET('.started', true)")
         result.p("Started", visible="^.started", id="started", class_="muted")
-
-        pane.dataSetter(".first", "Ada")
-        pane.dataSetter(".last", "Lovelace")
-        pane.dataSetter(".score", 40)
-        pane.dataSetter(".accepted", False)
-        pane.dataSetter(".started", False)

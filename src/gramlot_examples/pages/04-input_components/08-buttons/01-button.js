@@ -11,6 +11,5 @@ export class Page extends BasePage {
         actions.button('Delayed command',{id:'command-delay',_delay:300,action:"this.SET('result', 'Delayed: ' + _counter)"});
         actions.html_button('Plain HTML',{type:'button',id:'command-native',connect_onclick:"this.SET('result', 'Explicit HTML event')"});
         main_content.p('^result',{id:'command-result'});
-        main_content.dataSetter({destination_path:'result',value:'No command yet'});
     }
 }

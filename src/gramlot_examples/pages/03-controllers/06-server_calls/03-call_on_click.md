@@ -1,5 +1,7 @@
 # 11 · Call on click
 
+**Sample data:** `03-call_on_click_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Buttons call endpoints and display errors. You learn how application failure differs from a refused request; both preserve the previous result. The later **0.2.15** section compares protected Source with merely hidden content. This gallery demonstrates anonymous refusal; the Kajenn guide covers authenticated access.
 
 **Uses:** Button-triggered `dataRpc` and endpoint authorization (0.2.14); Source authorization in the later part (0.2.15).
@@ -35,7 +37,7 @@ Python builds Source on the server; its JavaScript counterpart builds it on Node
 
 ## Change it and check yourself
 
-Initialize `.reserved` to `"unchanged"` with a setter and repeat both failures.
+Add `stock.reserved` with value `"unchanged"` to `03-call_on_click_data.tytx` and repeat both failures.
 
 **Answer:** the existing value remains unchanged; a failed call is not a successful null/false result. The error display changes instead.
 

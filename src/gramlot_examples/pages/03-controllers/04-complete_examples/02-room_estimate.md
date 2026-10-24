@@ -1,5 +1,7 @@
 # Plan your stay
 
+**Sample data:** `02-room_estimate_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Choose Classic or Superior, 1–4 guests and 1–30 nights. Two guests are included;
 each extra guest costs €25 per night. The illustrative rates are €90 and €140.
 

@@ -1,5 +1,7 @@
 # Tree labels and classes
 
+**Sample data:** `02-labels_and_classes_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Style captions and rows from Bag metadata, with separate opened, closed and selected states.
 
 ## Try it

@@ -21,6 +21,3 @@ class Page(BasePage):
         for hook, stage in (("_init", "init"), ("_onBuilt", "built"), ("_onStart", "start")):
             observed.dataController(func="record", stage=stage, **{hook: True})
         observed.dataController(func="tick", _timing=1, _onStart=True)
-        pane.dataSetter(".trace", "")
-        pane.dataSetter(".ticks", 0)
-        pane.dataSetter(".lookup", "Press Inspect")

@@ -1,5 +1,7 @@
 # 05 · Password and labelbox
 
+**Sample data:** `03-passwordbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Two password fields share a sample value. The browser masks the characters; changing either field updates the other.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source, Data and bindings. No endpoint calls, stores or validation engine.

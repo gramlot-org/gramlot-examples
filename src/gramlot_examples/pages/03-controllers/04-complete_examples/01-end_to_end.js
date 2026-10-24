@@ -15,13 +15,12 @@ export class Page extends BasePage {
 
         const form = pane.form({class: 'card stack', nodeId: 'form'});
         form.html_label('Caption', {for: 'caption-field'});
-        form.input({value: '^.settings.caption', live: '^.live', id: 'caption-field'});
+        form.input({default: "A first caption", value: '^.settings.caption', live: '^.live', id: 'caption-field'});
         const row = form.div();
-        row.input({type: 'checkbox', value: '^.live', id: 'live'});
+        row.input({default: false, type: 'checkbox', value: '^.live', id: 'live'});
         row.html_label('live', {for: 'live'});
         form.html_label('Quantity', {for: 'quantity'});
         form.input({type: 'number', min: 0, value: '^.quantity', default: 2, id: 'quantity'});
-        form.dataSetter({destination_path: '.settings.caption', value: 'A first caption'});
         const sizes = form.fieldset();
         sizes.legend('Size');
         for (const [key, label] of [['small', 'Small'], ['large', 'Large']]) {
@@ -49,15 +48,11 @@ export class Page extends BasePage {
         const later = pane.section({class: 'card stack', nodeId: 'later'});
         later.h2('0.2.0 · Optional freeze exercise');
         const notes = later.ul({nodeId: 'notes', id: 'notes'});
-        for (const text of ['Setters live here too', 'This note can be removed under freeze']) notes.li(text);
+        for (const text of ['This branch can be frozen', 'This note can be removed under freeze']) notes.li(text);
         const actions = later.div({class: 'actions'});
         for (const [label, method] of [['Freeze', 'freeze'], ['Remove a note', 'removeNote'], ['Thaw', 'thaw']]) {
             actions.button(label, {id: method}).dataController({func: method});
         }
-        later.dataSetter({destination_path: '.settings.caption', value: 'The story of a page'});
-        later.dataSetter({destination_path: '.size', value: {small: true, large: false}});
-        later.dataSetter({destination_path: '.gift', value: false});
-        later.dataSetter({destination_path: '.live', value: false});
 
         // Return here after c09/c11: the original local stage above remains independent.
         const quotes = pane.section({class: 'card stack'});

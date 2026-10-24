@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Border regions and splitters';
     static devices = ['desktop', 'tablet', 'phone'];
 
@@ -33,7 +36,7 @@ export class Page extends BasePage {
             padding: '12px',
             background: 'var(--gramlot-surface-subtle, #eef1f5)',
         });
-        left.textbox({ value: '^filter', lbl: 'Filter', width: '100%' });
+        left.textbox({default: "",  value: '^filter', lbl: 'Filter', width: '100%' });
         const right = bc.contentPane({
             region: 'right',
             border_left: '1px solid var(--gramlot-border-control, #aaa)',
@@ -65,13 +68,5 @@ export class Page extends BasePage {
         center.p('Accepted name:');
         center.p('^customer.name', { id: 'accepted-name' });
         center.p('Try an invalid one-character name, then resize the panes. The draft stays in the field.');
-        for (const [path, value] of [
-            ['customer.active', true],
-            ['filter', ''],
-            ['customer.name', 'Ada'],
-            ['customer.notes', 'Same fields, same Data'],
-        ]) {
-            main_content.dataSetter({ destination_path: path, value: value });
-        }
     }
 }

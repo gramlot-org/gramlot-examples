@@ -1,5 +1,7 @@
 # Bag tree
 
+**Sample data:** `01-basics_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 The tree always reads a Data Bag. `storepath` identifies the Bag; `selectedPath` binds the selected node path relative to that store. `labelAttribute` uses a node attribute for its caption and otherwise retains the label.
 
 The Documents branch is already loaded. Catalog is installed with `dataRemote(cacheTime=-1)` and loads only when expanded. Its endpoint returns a Bag. Rendering and unrelated Data updates do not evaluate the resolver. Reopening uses the resolver cache. The gallery itself uses the same mechanism for its sections.

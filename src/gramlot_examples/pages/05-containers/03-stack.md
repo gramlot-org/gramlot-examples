@@ -1,27 +1,27 @@
 # Browse a gallery without losing your place
 
-A **stackContainer** holds several panels but shows just one at a time. Unlike a tabContainer, it does not add a row of tabs. You choose how people move between panels. This example uses a slider, so you can quickly browse many demos.
-
-There are two viewing areas. The left drawer is a small preview browser. The center is a full-size demo you can actually use.
+A **stackContainer** holds several panels but shows just one at a time. Unlike a tabContainer, it does not add tabs. Here a slider sits above one central stack: each demo has one iframe and one set of Data, with no separate miniature.
 
 ## Try it
 
-Move the slider slowly. Watch the title and miniature change as you move. Stop on a demo that interests you. After a short pause, the center opens that demo at its normal size.
+Move the slider and pause on a demo. After 350 milliseconds, the central view and its title switch to that demo. While you are moving, the previous demo remains visible.
 
-Now sweep quickly past several entries. The center waits until you settle instead of opening every demo you pass. This small delay makes browsing calmer and avoids loading pages you never intended to try.
+Sweep quickly past several entries. Only the choice you settle on loads; skipped demos do not start in the background.
 
-Choose a demo with a text field. Enter something in the full-size view, visit another demo, then return. The first page is still there with your edit. Choosing a different stack panel hid it; it did not reload it.
+Choose a demo with a text field. Enter something, visit another demo, then return. Your edit is still there: the stack hid the page without reloading it. The slider remains above the full-width demo on narrow screens too.
 
-Close the carousel drawer when you want more room for the center. Open it again when you want to browse further.
+## One stack, one instance per demo
 
-## Why the miniature and the large view differ
+The top region of the borderContainer contains the title and slider. Its center contains the only stackContainer. Each panel holds a single iframe, whose `src` is absent until the demo is first selected after a pause. This prevents unused applications from starting, including when the gallery is exported and opened from a file. The carousel excludes itself to avoid recursive nesting.
 
-Each is a separate embedded page, called an **iframe**. They show the same example, but they do not share its Data. Typing in the large view will not type into the miniature. Each view keeps its own edits when you leave and return.
-
-Full-size demos are loaded on their first settled visit. A demo you skip quickly is not loaded in the center. Miniatures use the browser's lazy loading, so the browser decides when to fetch them. This carousel excludes itself to avoid opening another carousel inside every preview.
+Visited panels remain mounted so their Data and edits survive selection changes. Only one panel is visible; visiting another demo does not create a second copy of an existing one.
 
 ## How the pause works
 
-The slider changes the preview selection immediately. A dataController waits 350 milliseconds after the latest selection change before updating the center. This is called **debouncing**: wait until the user pauses, then act on their final choice.
+The slider writes `.panel`, defaulting to zero. A dataController watches that index with `_delay=350`, resolves the corresponding catalogue key, installs its URL in `.opened`, and updates `.active` and `.activeCaption`. The stack binds `selectedPage` to `.active`.
 
-In **Code**, look for the two stackContainers and the controller with _delay=350. Read them as three jobs: browse now, wait briefly, then show the chosen page. You can use the same idea for a search field that waits for someone to stop typing before searching.
+This is **debouncing**: wait until the user pauses, then act on their final choice. It keeps the current page visible while the slider moves and avoids loading demos the user merely passes over.
+
+## Why this example still initializes Data explicitly
+
+The host supplies deployment-specific URLs for Python, Node or static exports. The current catalogue supplies titles and the initial active demo. These dynamic values use dataSetter; they must not be frozen in a `_data.tytx` fixture. The slider's interface state uses `default=0`. Ordinary sample-record lessons use companion Bags.

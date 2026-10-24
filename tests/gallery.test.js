@@ -12,7 +12,7 @@ import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
 import {Gramlot, GramlotBuilder} from '@gramlot/gramlot';
-import {mountGallery, initializeNavigation} from '../src/gramlot_examples/gallery/browser/gallery.js';
+import {mountGallery, initializeNavigation, toggleGalleryPanel} from '../src/gramlot_examples/gallery/browser/gallery.js';
 import {logicSource} from '../src/gramlot_examples/gallery/browser/code-highlight.js';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -23,6 +23,8 @@ import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/th
 
 function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }', prepare = () => {}) {
     const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://gallery.test/py/index', pretendToBeVisual: true}).window.document;
+    document.defaultView.HTMLDialogElement.prototype.show = function () { this.open=true; };
+    document.defaultView.HTMLDialogElement.prototype.close = function () { this.open=false; };
     const media = new document.defaultView.EventTarget();
     media.matches = false;
     document.defaultView.matchMedia = () => media;
@@ -74,6 +76,8 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     }, close() {}, dispose() {}};
     const app = new Gramlot({document, pageId: 'gallery', transport, collections: [inputs, layout, tree]});
     app.src.logicRegistry.register(class Logic {
+        galleryToggleNavigation() { toggleGalleryPanel(this.page.src.builder, 'galleryNavigation', 'galleryIndex.navigationOpen'); }
+        galleryToggleSettings() { const data=this.page.src.builder.data; data.setItem('galleryIndex.settingsOpen',!data.getItem('galleryIndex.settingsOpen')); }
         galleryInitialize() { const renderer=this.page.src.renderer; initializeNavigation(renderer,renderer.elements.get(document.getElementById('gallery')).node); }
         galleryMount() {}
     }, {resource:'/index_aux.js'});
@@ -95,8 +99,8 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
     return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state, calls, transport, visible, navigation};
 }
 const change = (f, id, value) => {
-    f.get(id).value = value;
-    f.get(id).dispatchEvent(new f.document.defaultView.Event('change', {bubbles: true}));
+    const caption = f.source(id).getAttr('values').split(',').find(choice => choice.split(':')[0] === value).split(':')[1];
+    f.get(id).choose({id:value, caption});
 };
 const drawer = (f, side) => f.get('gallery-regions').shadowRoot.querySelector(`[data-side="${side}"] .drawer`);
 const key = (f, id, value) => f.get(id).dispatchEvent(new f.document.defaultView.KeyboardEvent('keydown', {key: value, bubbles: true}));
@@ -172,7 +176,7 @@ test('every shared example displays exactly its exported Logic class, never the 
             shown++;
         } else assert.equal(excerpt, null, example.key);
     }
-    assert.equal(shown, 16);
+    assert.equal(shown, 17);
 });
 
 test('built frame inspector uses the example runtime classes without another core', async () => {
@@ -249,7 +253,7 @@ test('frame settings override Source label positions and restore authored pointe
 test('the gallery footer omits the ZIP link even when a deployment URL is supplied', () => {
     for (const url of [null, '/downloads/gallery.zip']) {
         class HostedPage extends GalleryPage { static serverlessDownloadUrl = url; }
-        const builder = new GramlotBuilder();
+        const builder = new GramlotBuilder(null, {collections:[layout.toDocument(),inputs.toDocument()]});
         new HostedPage().footer(builder.root);
         const links = builder.source.getNodes().filter(node => node.nodeTag === 'a');
         assert.equal(links.length, 0);
@@ -317,7 +321,7 @@ test('families auto-collapse siblings; small-screen navigation stays open until 
     assert.equal(family.getAttribute('aria-expanded'), 'true');
     assert.equal(f.navigation('html_svg').parentElement.getAttribute('aria-expanded'), 'false');
     f.media.matches = true; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
-    drawer(f, 'left').click(); await settle();
+    f.get('gallery-navigation-button').click(); await settle();
     f.navigation('controllers').click(); await settle();
     assert.equal(drawer(f, 'left').getAttribute('aria-expanded'), 'true');
     f.navigation('controllers').querySelector('button').click(); await settle();
@@ -368,7 +372,7 @@ test('tabs and the tree retain built-in keyboard navigation independently of the
     await settle();
     assert.equal(f.state.getItem('active'), 'e01');
     assert.equal(f.get('gallery-navigation-tree').shadowRoot.querySelectorAll('[role=treeitem][tabindex="0"]').length, 1);
-    f.get('keyboard-navigation').click();
+    f.get('keyboard-navigation').control.click();
     await settle();
     assert.equal(f.get('gallery-navigation-tree').shadowRoot.querySelectorAll('[role=treeitem][tabindex="0"]').length, 1);
     pressTab(f, 'index-pages', 'e01', 'End');
@@ -384,7 +388,7 @@ test('drawer visibility and file selection survive switching pages and preferenc
     f.visible('codepane-c01'); await settle();
     f.tab('code-tabs-c01', 'logic.js').click();
     await settle();
-    drawer(f, 'right').click(); drawer(f, 'left').click();
+    drawer(f, 'right').click(); f.get('gallery-navigation-button').click();
     await settle();
     assert.equal(f.source('index-code').getAttr('drawer'), 'close');
     assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
@@ -421,21 +425,21 @@ test('theme, color and label settings persist and reject foreign frame messages'
     assert.deepEqual(messages.at(-1).data, {type: THEME_SET, theme: 'dark', appearance: 'mimi', palette: 'joanna'});
     const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.preferences:/py/index');
     const g = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
-    assert.equal(g.get('index-appearance').value, 'mimi');
-    assert.equal(g.get('index-theme').value, 'dark');
-    assert.equal(g.get('index-palette').value, 'joanna');
+    assert.equal(g.get('index-appearance').readControlValue(), 'mimi');
+    assert.equal(g.get('index-theme').readControlValue(), 'dark');
+    assert.equal(g.get('index-palette').readControlValue(), 'joanna');
     change(g, 'index-palette', 'default');
-    assert.equal(g.get('index-appearance').value, 'mimi');
-    assert.equal(g.get('index-theme').value, 'dark');
+    assert.equal(g.get('index-appearance').readControlValue(), 'mimi');
+    assert.equal(g.get('index-theme').readControlValue(), 'dark');
     assert.equal(g.state.getItem('palette'), 'default');
 });
 
 test('invalid or unavailable browser storage leaves valid defaults and usable controls', async t => {
     for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}', '{"palette":["mimi"]}', '{"palette":"__proto__"}']) {
         const f = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
-        assert.equal(f.get('index-appearance').value, 'compact');
-        assert.equal(f.get('index-theme').value, 'light');
-        assert.equal(f.get('index-palette').value, 'default');
+        assert.equal(f.get('index-appearance').readControlValue(), 'compact');
+        assert.equal(f.get('index-theme').readControlValue(), 'light');
+        assert.equal(f.get('index-palette').readControlValue(), 'default');
         assert.equal(f.source('index-sidebar').getAttr('width'), '240px');
     }
     for (const name of ['SecurityError', 'QuotaExceededError']) {
@@ -451,7 +455,7 @@ test('invalid or unavailable browser storage leaves valid defaults and usable co
 
 test('phone views preserve the same frame, Data and Source and restore desktop drawers', async t => {
     const f = await setup(t, null, w => { w.matchMedia().matches = true; });
-    drawer(f, 'left').click(); f.navigation('e01').click();
+    f.get('gallery-navigation-button').click(); f.navigation('e01').click();
     await settle();
     const frame = f.get('frame-e01'), source = f.source('frame-e01'), win = frame.contentWindow;
     win.retainedDraft = 'Unsaved';
@@ -463,7 +467,7 @@ test('phone views preserve the same frame, Data and Source and restore desktop d
         assert.equal(f.get('frame-e01'), frame); assert.equal(f.source('frame-e01'), source);
         assert.equal(frame.contentWindow, win); assert.equal(win.retainedDraft, 'Unsaved');
     }
-    drawer(f, 'left').click(); key(f, 'gallery-inspector', 'Escape');
+    f.get('gallery-navigation-button').click(); key(f, 'gallery-inspector', 'Escape');
     await settle();
     assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
     f.media.matches = false; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
@@ -619,22 +623,28 @@ test('gallery sections are unresolved until tree expansion and use the resolver 
 });
 
 
-test('settings open directly in the bottom drawer and inspector belongs to the toolbar', async t => {
+test('settings use a nonmodal floating formlet and close back into the toolbar', async t => {
     const f = await setup(t);
     const settings = f.get('gallery-settings');
-    assert.equal(f.source('gallery-settings').getAttr('region'), 'bottom');
+    assert.equal(settings.localName, 'gramlot-floating-pane');
+    assert.equal(f.get('gallery-settings-form').localName, 'gramlot-formlet');
+    assert.equal(f.source('gallery-settings').getAttr('open'), '^galleryIndex.settingsOpen');
+    assert.equal(drawer(f, 'left').style.display, 'none');
     assert.equal(settings.hasAttribute('popover'), false);
     assert.equal(f.get('gallery-settings-toggle'), null);
-    assert.ok(f.get('gallery-inspector').closest('.gallery-toolbar'));
-    assert.match(f.get('gallery-inspector').textContent, /Inspector/);
-    const drawer = f.get('gallery-regions').shadowRoot.querySelector('[data-side="bottom"] .drawer');
-    assert.equal(drawer.getAttribute('aria-expanded'), 'false');
-    drawer.click();
-    assert.equal(drawer.getAttribute('aria-expanded'), 'true');
+    assert.ok(f.get('gallery-inspector').closest('#gallery-rail'));
+    assert.equal(f.source('gallery-inspector').getAttr('caption'), 'Inspector');
+    assert.equal(f.get('gallery-inspector').nextElementSibling.id, 'gallery-settings-button');
+    assert.equal(f.source('gallery-settings').getAttr('region'), null);
+    f.get('gallery-settings-button').click(); await settle();
+    assert.equal(settings.shell.open, true);
     change(f, 'index-theme', 'dark');
     assert.equal(f.state.getItem('theme'), 'dark');
-    drawer.click();
-    assert.equal(drawer.getAttribute('aria-expanded'), 'false');
+    settings.closeButton.click(); await settle();
+    assert.equal(settings.shell.open, false);
+    assert.equal(f.state.getItem('settingsOpen'), false);
+    assert.equal(f.get('gallery-settings-button').getAttribute('aria-checked'), 'false');
+
 });
 
 
@@ -660,4 +670,77 @@ test('logicSource: a module without Logic, or with an empty one, shows no tab', 
     assert.equal(logicSource('export class Page {}\n\nexport class Logic {}\n'), null);
     assert.equal(logicSource('export class Page {}\nexport class Logic { total() {} }\n'), 'export class Logic { total() {} }');
     assert.throws(() => logicSource('export class Logic {}\nexport class Logic {}\n'), /one final exported Logic/);
+});
+
+
+test('one icon toolbar moves between left and bottom without recreating open lessons', async t => {
+    const f = await setup(t);
+    const rail = f.get('gallery-rail');
+    assert.equal(f.get('gallery-frame').localName, 'gramlot-frame-pane');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'), 'left');
+    assert.equal(f.get('gallery-navigation-button').getAttribute('aria-checked'), 'true');
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
+    assert.equal(f.state.getItem('navigationOpen'), false);
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.source('index-sidebar').getAttr('drawer'), true);
+    f.navigation('e01').click(); await settle();
+    const frame = f.get('frame-e01'), source = f.source('frame-e01');
+    frame.contentWindow.retainedDraft = 'Still here';
+    f.get('gallery-settings-button').click();
+    assert.equal(f.state.getItem('settingsOpen'), true);
+    await settle(); f.get('gallery-settings').closeButton.click(); await settle();
+    assert.equal(f.state.getItem('settingsOpen'), false);
+    f.get('gallery-settings-button').click();
+    assert.equal(f.state.getItem('settingsOpen'), true, 'toolbar reopens a floating closed by its titlebar');
+    f.get('gallery-settings-button').click();
+    assert.equal(f.state.getItem('settingsOpen'), false);
+    Object.assign(f.document.defaultView, {innerWidth:390, innerHeight:844});
+    f.media.matches = true; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.get('gallery-rail'), rail);
+    assert.equal(f.source('gallery-rail-region').getAttr('region'), 'bottom');
+    assert.equal(rail.getAttribute('aria-orientation'), 'horizontal');
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.state.getItem('menu'), true);
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.state.getItem('menu'), false);
+    f.media.matches = false; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'), 'left');
+    assert.equal(rail.getAttribute('aria-orientation'), 'vertical');
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(f.source('frame-e01'), source);
+    assert.equal(frame.contentWindow.retainedDraft, 'Still here');
+});
+
+
+test('toolbar placement uses proportions and explicit choices without resetting the active mobile view', async t => {
+    const f = await setup(t, null, w => {w.matchMedia().matches=true;Object.assign(w,{innerWidth:390,innerHeight:844});});
+    const window=f.document.defaultView,rail=f.get('gallery-rail');
+    assert.equal(f.state.getItem('toolbarPosition'),'auto');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.state.getItem('menu'),true);
+    Object.assign(window,{innerWidth:844,innerHeight:390});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'left');
+    assert.equal(f.source('gallery-navigation-button').getAttr('width'),'36px');
+    assert.equal(f.state.getItem('menu'),true,'rotation within the narrow layout keeps the current panel');
+    change(f,'gallery-toolbar-position','bottom');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
+    f.media.matches=false;Object.assign(window,{innerWidth:1280,innerHeight:850});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom','explicit Bottom overrides desktop width');
+    change(f,'gallery-toolbar-position','left');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'left');
+    assert.equal(f.source('gallery-navigation-button').getAttr('width'),'36px');
+    change(f,'gallery-toolbar-position','auto');
+    f.media.matches=true;Object.assign(window,{innerWidth:768,innerHeight:768});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom','square narrow windows use Bottom');
+    change(f,'gallery-toolbar-position','left');
+    assert.equal(f.get('gallery-rail'),rail,'the toolbar is never recreated');
+    f.behavior.dispose();
+    f.state.setItem('toolbarPosition','bottom');
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'left','preference and resize listeners are released');
 });

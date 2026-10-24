@@ -30,4 +30,3 @@ class Page(BasePage):
 
         pane.dataController("this.SET('.saved_with', 'fired with ' + saved)", saved="^.saved")
         pane.dataController("this.SET('.log', (log ? log + ', ' : '') + command)", command="^.command", log="=.log")
-        pane.dataSetter(".clicks", 0)

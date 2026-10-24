@@ -1,5 +1,7 @@
 # 03 · Named logic
 
+**Sample data:** `03-named_logic_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 A price calculation and a change counter call methods in a `Logic` class. You learn how to reuse named browser behavior instead of repeating inline code. In a Python gallery, open **logic.js** to see those methods.
 
 **Uses:** Local formulas, controllers and named Logic (0.2.0); shared Page/Logic module layout from 0.2.5.

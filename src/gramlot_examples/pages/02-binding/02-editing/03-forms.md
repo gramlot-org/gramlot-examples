@@ -1,5 +1,7 @@
 # 09 · Forms with binding
 
+**Sample data:** `03-forms_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 The form from **Native forms** returns with its fields connected to one Data record. Edit a value and watch other views follow. You learn how binding replaces code that would otherwise copy values between controls and displays.
 
 **Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
@@ -18,7 +20,7 @@ The form from **Native forms** returns with its fields connected to one Data rec
 
 ## Read the page
 
-The fieldsets are inherited conceptually from e06. Most initial values now live in `RECORD`; `dataSetter("form", RECORD)` populates it. The multiple select needs a list: `dataSetter(".topics", ["html"])` sets it directly. Putting that list inside `RECORD` would convert it recursively into a Bag. Each control and each summary entry bind to the same relative path. Intensity is live; ordinary text fields update on change.
+The fieldsets are inherited conceptually from e06. The sample values live in `03-forms_data.tytx`. The multiple select receives a list at `form.topics`; the TYTX Bag retains that list as well as nested Bags and scalar types. Each control and each summary entry bind to the same relative path. Intensity is live; ordinary text fields update on change.
 
 ```python
 parent.input(type=kind, id=key, name=key, value=f"^.{key}", **attrs)

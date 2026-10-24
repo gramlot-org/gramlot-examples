@@ -1,5 +1,7 @@
 # 22 · Button commands
 
+**Sample data:** `01-button_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Compare the Gramlot command button with plain HTML. Try confirmation and a delayed command.
 
 **Uses:** built-in command components, Source, Data and the shared action engine. No endpoints or database.

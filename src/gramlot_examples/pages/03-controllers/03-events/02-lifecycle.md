@@ -1,5 +1,7 @@
 # 15 · Lifecycle
 
+**Sample data:** `02-lifecycle_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Start and stop a branch, then remove it. You learn when its lifecycle actions run and which work ends with that branch.
 
 **Uses:** Source, Data, controllers and lifecycle (0.2.0); module layout from 0.2.5.
@@ -26,7 +28,7 @@ observed.dataController(func="record", stage="built", _onBuilt=True)
 observed.dataController(func="record", stage="start", _onStart=True)
 ```
 
-Data setters run before these hooks. `_init` installs initial behavior, `_onBuilt` follows the first successful build, and `_onStart` follows readiness. A separate timer controller uses `_timing=1` (seconds). Hook delays, if numeric, are milliseconds. The trace and tick count are ordinary Data, displayed outside the removable branch.
+The sample companion supplies the initial trace and tick count before these hooks. `_init` installs initial behavior, `_onBuilt` follows the first successful build, and `_onStart` follows readiness. A separate timer controller uses `_timing=1` (seconds). Hook delays, if numeric, are milliseconds. The trace and tick count are ordinary Data, displayed outside the removable branch.
 
 Inspect finds the branch by its `nodeId` with `gramlot.src.builder.nodeById('observed')`, which throws once the branch is removed, and then uses `gramlot.dom.getDomNode(sourceNode)` and `getBaseSourceNode(domNode)` for read-only identity lookup. It does not mutate the DOM. `nodeId` locates Source; the separate HTML `id` locates the rendered element.
 

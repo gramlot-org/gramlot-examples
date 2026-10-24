@@ -28,10 +28,5 @@ export class Page extends BasePage {
             action: "this.SET('.started', true)"});
         result.p('Started', {visible: '^.started', id: 'started', class: 'muted'});
 
-        pane.dataSetter({destination_path: '.first', value: 'Ada'});
-        pane.dataSetter({destination_path: '.last', value: 'Lovelace'});
-        pane.dataSetter({destination_path: '.score', value: 40});
-        pane.dataSetter({destination_path: '.accepted', value: false});
-        pane.dataSetter({destination_path: '.started', value: false});
     }
 }

@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = 'Drawers: handles, content and retained Data';
     static devices = ['desktop', 'tablet', 'phone'];
 
@@ -25,7 +28,7 @@ export class Page extends BasePage {
             rounded: 12,
         });
         const surface = 'var(--gramlot-surface-subtle, #eef1f5)';
-        const search = border.contentPane({
+        const search = border.contentPane({default_drawer: true,
             region: 'top',
             nodeId: 'drawerSearch',
             height: '64px',
@@ -39,14 +42,14 @@ export class Page extends BasePage {
             padding: '10px',
             background: surface,
         });
-        search.textbox({
+        search.textbox({default: "",
             value: '^search',
             lbl: 'Search customers',
             placeholder: 'Type a name',
             width: '100%',
             max_width: '20rem',
         });
-        const filters = border.contentPane({
+        const filters = border.contentPane({default_width: "180px", default_drawer: true,
             region: 'left',
             nodeId: 'drawerFilters',
             width: '^filtersWidth',
@@ -65,7 +68,7 @@ export class Page extends BasePage {
             values: 'standard:Standard,express:Express,pickup:Pick up',
             cols: 1,
         });
-        const details = border.contentPane({
+        const details = border.contentPane({default_drawer: "close",
             region: 'right',
             nodeId: 'drawerDetails',
             width: '180px',
@@ -82,7 +85,7 @@ export class Page extends BasePage {
         details.textbox({ value: '^customer', lbl: 'Customer', width: '100%' });
         details.p('Pull the closed handle inward to open this panel.');
         border
-            .contentPane({
+            .contentPane({default_drawer: true,
                 region: 'bottom',
                 nodeId: 'drawerOutput',
                 height: '64px',
@@ -117,21 +120,11 @@ export class Page extends BasePage {
             'Click to toggle. Drag to resize, even from closed. On touch devices the captions remain visible and compact at rest.',
         );
         for (const title of ['Search', 'Filters', 'Details', 'Output']) {
-            main_content.dataSetter({
-                destination_path: `drawer${title}`,
-                value: title === 'Details' ? 'close' : true,
-            });
             main_content.dataController({
                 script: "this.SET(path, open ? true : 'close')",
                 path: `drawer${title}`,
                 ...{ [`subscribe_drawer${title}_closable_change`]: true },
             });
         }
-        main_content.dataSetter({ destination_path: 'filtersWidth', value: '180px' });
-        main_content.dataSetter({ destination_path: 'customer', value: 'Ada Lovelace' });
-        main_content.dataSetter({ destination_path: 'search', value: '' });
-        main_content.dataSetter({ destination_path: 'active', value: true });
-        main_content.dataSetter({ destination_path: 'delivery', value: 'standard' });
-        main_content.dataSetter({ destination_path: 'note', value: 'Same Data, every presentation' });
     }
 }

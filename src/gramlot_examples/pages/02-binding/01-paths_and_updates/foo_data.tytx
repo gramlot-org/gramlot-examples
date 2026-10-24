@@ -1,0 +1,1 @@
+{"rows":[[[],"customer",null,"::X",{}],[["customer"],"name",null,"Ada Lovelace",{"caption":"Customer name"}],[["customer"],"city",null,"London",{}],[["customer"],"credit",null,"1250.50::N",{}],[["customer"],"active",null,true,{}]]}::JS::X

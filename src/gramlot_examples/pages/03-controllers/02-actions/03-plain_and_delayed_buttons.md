@@ -1,5 +1,7 @@
 # 21 · Plain and delayed buttons
 
+**Sample data:** `03-plain_and_delayed_buttons_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Reset an ordinary HTML form, then compare the same Gramlot action with and without a delay. Several quick clicks become one execution, with the size of the group displayed below.
 
 **Uses:** Source, Data and button actions/controllers; core 0.2.19 additions: `html_button` and button `_delay`. No Web Components or endpoint calls. Earlier lessons keep their original release scope.

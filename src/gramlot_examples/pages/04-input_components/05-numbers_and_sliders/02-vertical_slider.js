@@ -1,6 +1,9 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
+    static gramlots = [inputs, layout];
     static title = "Vertical slider";
 
     main(root) {
@@ -8,13 +11,12 @@ export class Page extends BasePage {
         main_content.h1("Vertical slider");
         main_content.p("Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top.");
         const controls = main_content.formlet({class: "card stack", width: "100%", max_width: "24rem"});
-        controls.checkbox({id: "live", value: "^live", lbl: "Editing", label: "Update while editing"});
-        controls.checkbox({id: "locked", value: "^locked", lbl: "State", label: "Disable controls"});
+        controls.checkbox({default: true, id: "live", value: "^live", lbl: "Editing", label: "Update while editing"});
+        controls.checkbox({default: false, id: "locked", value: "^locked", lbl: "State", label: "Disable controls"});
         const fields = main_content.formlet({class: "card stack", width: "100%", max_width: "24rem"});
-        fields.verticalSlider({id: "level", value: "^level", lbl: "Vertical level", min: 0, max: 100, step: 5,
+        fields.verticalSlider({default: 50, id: "level", value: "^level", lbl: "Vertical level", min: 0, max: 100, step: 5,
             live: "^live", disabled: "^locked", box_padding: "8px"});
         fields.horizontalSlider({id: "level-copy", value: "^level", lbl: "Same level horizontally", min: 0, max: 100, step: 5, live: "^live", disabled: "^locked"});
         main_content.p("^level", {id: "level-value"});
-        for (const [path, value] of [["level", 50], ["locked", false], ["live", true]]) main_content.dataSetter({destination_path: path, value});
     }
 }

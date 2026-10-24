@@ -1,18 +1,15 @@
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "Tabs, selection and closing"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="tabsDemo")
-        for key, value in (("page", "customer"), ("index", 0), ("name", "Ada"),
-                           ("notes", "These Data survive closing Notes."),
-                           ("variantMessage", "Please confirm the delivery address."),
-                           ("mode", "tabs"), ("position", "top"), ("align", "start"), ("unread", 3),
-                           ("badgeColor", "crimson"), ("notesIcon", "✉"), ("locked", False), ("events", ""), ("closed", "None")):
-            main_content.dataSetter(f".{key}", value)
         for topic in ("hiding", "showing", "selected", "closing", "closed"):
             main_content.dataController(
                 "this.SET('.events', history + topic + ': ' + JSON.stringify(_subscription_kwargs) + '\\n');",
@@ -25,25 +22,25 @@ class Page(BasePage):
         main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
         controls = main_content.formlet(col_min_width="14rem", max_width="36rem")
         controls.filteringSelect(id="tabs-choice", value="^.page", lbl="Selected page",
-                                 values="customer:Customer,notes:Notes,layout:Nested border")
+                                 values="customer:Customer,notes:Notes,layout:Nested border", default='customer')
         controls.filteringSelect(id="tabs-mode", value="^.mode", lbl="Presentation",
-                                 values="tabs:Tabs,underline:Underline")
+                                 values="tabs:Tabs,underline:Underline", default='tabs')
         controls.filteringSelect(id="tabs-position", value="^.position", lbl="Tab position",
-                                 values="top:Top,bottom:Bottom,left:Left,right:Right")
+                                 values="top:Top,bottom:Bottom,left:Left,right:Right", default='top')
         controls.filteringSelect(id="tabs-align", value="^.align", lbl="Alignment along the strip",
-                                 values="start:Start,center:Center,end:End")
+                                 values="start:Start,center:Center,end:End", default='start')
         controls.horizontalSlider(id="tabs-unread", value="^.unread", lbl="Unread messages", min=0, max=12,
                                   step=1, live=True, width="14rem", max_width="100%")
         controls.filteringSelect(id="tabs-badge-color", value="^.badgeColor", lbl="Badge color",
-                                 values="crimson:Crimson,seagreen:Green,royalblue:Blue")
+                                 values="crimson:Crimson,seagreen:Green,royalblue:Blue", default='crimson')
         controls.filteringSelect(id="tabs-icon", value="^.notesIcon", lbl="Notes icon",
-                                 values="✉:Envelope,●:Dot,★:Star")
-        controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch")
+                                 values="✉:Envelope,●:Dot,★:Star", default='✉')
+        controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch", default=False)
         main_content.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
         main_content.p("^.index", id="tabs-index", mask="Selected index: {}")
         tabs = main_content.tabContainer(id="tabs-demo", nodeId="editor", selectedPage="^.page",
                                   selected="^.index", tabMode="^.mode", tabPosition="^.position", tabAlign="^.align", height="300px", max_width="44rem",
-                                  border="1px solid var(--gramlot-border-control, #aaa)", rounded=6)
+                                  border="1px solid var(--gramlot-border-control, #aaa)", rounded=6, default_selected=0)
         customer = tabs.contentPane(id="customer-panel", pageName="customer", title="Customer", icon="👤", padding="12px")
         customer.textbox(id="tabs-name", value="^.name", lbl="Name (2–20)", validate_len="2:20", live=True, width="15rem")
         customer.p("The accepted Data value:")

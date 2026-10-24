@@ -1,5 +1,7 @@
 # 01 · Pointers
 
+**Sample data:** `01-pointers_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Fields and text share the same values. Edit a field and see which text follows it. You learn the difference between `^` (keep following) and `=` (read once), and how a Data path locates a value.
 
 **Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
@@ -18,7 +20,7 @@ Fields and text share the same values. Edit a field and see which text follows i
 
 ## Read the page
 
-`^` reads and subscribes; `=` reads without subscribing. `datapath="settings"` makes `.caption` relative to `settings`. Setters initialize Data before the first display.
+`^` reads and subscribes; `=` reads without subscribing. `datapath="settings"` makes `.caption` relative to `settings`. The same-name `_data.tytx` companion initializes the sample Data before the first display.
 
 ```python
 settings.input(value="^.caption", id="caption-field")
@@ -50,7 +52,7 @@ Earlier e01 rendered a literal heading. Here the declaration is `pane.h1("^setti
 
 The added section has an `_anchor` at Data context `contexts`, then a child with `.child`. Read the three paragraphs: the local `.name` reads Inner; `#ANCHOR.name` reads Outer. `^.#parent.name` starts from the resolved local Data context `contexts.child`, cancels its last segment and reads Outer. `#parent` is a Data-path segment, not a Source-node lookup. A bare leading `^#parent.name` is not the declaration used here.
 
-Change `contexts.name` to Outside in the initial setter and reload. **Answer:** the anchor and parent-path paragraphs change; the local read stays Inner. Now change `contexts.child.name`: only the local paragraph changes. The `nodeId`, HTML `id`, and Data context are distinct identities.
+Change `contexts.name` to Outside in `01-pointers_data.tytx` and reload. **Answer:** the anchor and parent-path paragraphs change; the local read stays Inner. Now change `contexts.child.name`: only the local paragraph changes. The `nodeId`, HTML `id`, and Data context are distinct identities.
 
 ## Limits and next step
 

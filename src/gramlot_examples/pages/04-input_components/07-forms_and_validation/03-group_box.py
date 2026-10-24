@@ -1,9 +1,10 @@
-from datetime import date
-from decimal import Decimal
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     title = "GroupBox and typed copy"
     devices = ("desktop", "tablet", "phone")
     locale = "it-IT"
@@ -17,11 +18,7 @@ class Page(BasePage):
         fields.textbox(value="^.name", lbl="Name")
         fields.dateTextBox(value="^.date", lbl="Date", format="short")
         fields.numberTextBox(value="^.amount", lbl="Exact amount", dtype="N")
-        fields.checkbox(value="^.enabled", lbl="Active")
+        fields.checkbox(value="^.enabled", lbl="Active", default=True)
         other = main_content.groupBox(lbl="Outside the copied group", datapath="other", lbl_variant="underline", max_width="24rem")
         other.textbox(value="^.note", lbl="Note", box_c_width="100%")
         main_content.p("JSON is values-only: use TYTX when types and Bag node attributes must survive the round trip.")
-        for path, value in (("customer.name", "Ada"), ("customer.date", date(2026, 10, 17)),
-                            ("customer.amount", Decimal("1234.50")), ("customer.enabled", True),
-                            ("other.note", "This text is not copied")):
-            main_content.dataSetter(path, value)

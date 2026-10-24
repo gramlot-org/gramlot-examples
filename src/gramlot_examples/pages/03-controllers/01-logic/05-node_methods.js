@@ -31,8 +31,5 @@ export class Page extends BasePage {
         pane.dataController({script: "this.SET('.notified', notified + 1)", value: '^.value', notified: '=.notified'});
         pane.dataController({script: "this.SET('.pings', pings + 1); this.SET('.last', ping)", ping: '^.ping',
             pings: '=.pings'});
-        pane.dataSetter({destination_path: '.value', value: 0});
-        pane.dataSetter({destination_path: '.notified', value: 0});
-        pane.dataSetter({destination_path: '.pings', value: 0});
     }
 }

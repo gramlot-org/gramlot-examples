@@ -1,5 +1,7 @@
 # Choose the presentation by looking at it
 
+**Sample data:** `02-tabs_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 The first eight cards compare two presentations on all four sides. **Shaped tabs** give each label a visible outline; **Underline** leaves a lighter row or list of text, with a line marking the selected panel. You can click every card: these are real containers, not pictures.
 
 **Top** and **Bottom** place the labels in a horizontal row. **Left** and **Right** place them in a vertical list. The text itself stays horizontal: a vertical tab list does not require rotated words. Each card prints the mode, position and alignment options that create it.

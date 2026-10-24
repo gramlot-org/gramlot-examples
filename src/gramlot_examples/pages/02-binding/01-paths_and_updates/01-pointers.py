@@ -34,9 +34,3 @@ class Page(BasePage):
         child.p("^.name", id="local-name")
         child.p("^#ANCHOR.name", id="anchor-name")
         child.p("^.#parent.name", id="parent-name")
-        pane.dataSetter("contexts.name", "Outer")
-        pane.dataSetter("contexts.child.name", "Inner")
-
-        pane.dataSetter("settings.caption", "Pointers")
-        pane.dataSetter("settings.intro", "Type in the fields: every ^ pointer follows the Data.")
-        pane.dataSetter("person.name", "Ada Lovelace", role="Mathematician")

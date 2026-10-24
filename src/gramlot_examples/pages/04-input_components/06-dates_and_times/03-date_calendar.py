@@ -1,8 +1,10 @@
-from datetime import date
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
+    gramlots = [inputs, layout]
     devices = ("desktop", "tablet", "phone")
     title = "Date calendar"
     locale = "it-IT"
@@ -12,7 +14,7 @@ class Page(BasePage):
         main_content.h1("One date, three editors")
         main_content.p("Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value.")
         controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        controls.checkbox(id="locked", value="^locked", lbl="State", label="Read only")
+        controls.checkbox(id="locked", value="^locked", lbl="State", label="Read only", default=False)
         fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
         fields.dateTextBox(id="date", value="^date", lbl="With popup",
                            readonly="^locked", box_c_width="14rem", box_c_max_width="100%")
@@ -21,5 +23,3 @@ class Page(BasePage):
         fields.dateCalendar(id="calendar", value="^date", lbl="Choose a day",  readonly="^locked", lbl_color="#4369c5",
                             box_c_max_width="100%")
         main_content.p("^date", id="date-value", format="long", dtype="D")
-        main_content.dataSetter("date", date(2026, 10, 16))
-        main_content.dataSetter("locked", False)

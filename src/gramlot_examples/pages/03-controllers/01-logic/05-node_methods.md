@@ -1,5 +1,7 @@
 # 05 · Node methods
 
+**Sample data:** `05-node_methods_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+
 Buttons read and change Data in different ways. You learn the difference between notifying writes, quiet writes, reads and fired events.
 
 **Uses:** Source, Data and local node methods — core 0.2.0.
