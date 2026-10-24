@@ -33,7 +33,8 @@ def main():
     run(*install, cwd=core / "tools/gramlot-builder")
     run("npm", "run", "build", cwd=core / "js")
     core_package = f"@gramlot/gramlot@file:{core / 'js'}"
-    run(*install, "--no-save", core_package, cwd=hosts)
+    run(*install, "--no-save", core_package,
+        f"@gramlot/gramlot-examples@file:{ROOT}", cwd=hosts)
     run(*install, "--no-save", core_package,
         f"@gramlot/builder@file:{core / 'tools/gramlot-builder'}",
         f"@gramlot/gramlot-serverless@file:{hosts / 'serverless'}", "playwright", cwd=ROOT)
