@@ -1,4 +1,4 @@
-# Explore a layout by moving one thing at a time
+# Nested regions playground
 
 **Sample data:** `05-nested_lab_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

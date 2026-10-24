@@ -1,4 +1,4 @@
-# Put a workspace inside a workspace
+# Nested borders and layout designs
 
 **Sample data:** `02-nested_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

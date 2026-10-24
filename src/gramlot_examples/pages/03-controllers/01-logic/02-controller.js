@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Controller';
+    static title = "React to Data changes with dataController";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'demo'});

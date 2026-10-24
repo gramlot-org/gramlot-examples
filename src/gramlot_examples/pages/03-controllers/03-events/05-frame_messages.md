@@ -1,4 +1,4 @@
-# 19 · Parent and child messages
+# Exchange messages between frames
 
 **Sample data:** `05-frame_messages_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

@@ -19,13 +19,13 @@ for(const url of process.argv.slice(2))for(const engine of [chromium,webkit]){
  await tree.locator('[data-path="html_svg.06-nested"]').waitFor();
  assert.equal(requests.filter(x=>x.includes('navigation_section')).length,1);
  await tree.locator('[data-path="html_svg.06-nested"] > .row').click();
- await page.frameLocator('iframe[src="pages/01-html_elements/06-nested/00-index"]').getByRole('heading',{name:'Nested directory'}).waitFor();
+ await page.frameLocator('iframe[src="pages/08-html_svg/06-nested/00-index"]').getByRole('heading',{name:'Nested directory'}).waitFor();
  assert.equal(requests.filter(x=>x.includes('navigation_section')).length,1);
  await tree.locator('[data-path="html_svg.06-nested"] > .row > button').click();
  await tree.locator('[data-path="html_svg.06-nested.01-child"]').waitFor();
  assert.equal(requests.filter(x=>x.includes('navigation_section')).length,2);
  await tree.locator('[data-path="html_svg.06-nested.01-child"] > .row').click();
- await page.frameLocator('iframe[src="pages/01-html_elements/06-nested/01-child"]').getByRole('heading',{name:'Nested child page'}).waitFor();
+ await page.frameLocator('iframe[src="pages/08-html_svg/06-nested/01-child"]').getByRole('heading',{name:'Nested child page'}).waitFor();
  await tree.locator('[data-path="components"] > .row > button').click();
  await tree.locator('[data-path="components.09-tree"] > .row > button').click();
  await tree.locator('[data-path="components.09-tree.w26"]').waitFor();

@@ -1,4 +1,4 @@
-# Give each part of your page its own space
+# Border regions and splitters
 
 **Sample data:** `01-border_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

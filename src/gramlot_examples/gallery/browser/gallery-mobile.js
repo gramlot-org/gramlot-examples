@@ -6,6 +6,7 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
     const center=byId('gallery-center'), panel=byId('gallery-inspector-panel');
     const node=element=>renderer.elements.get(element).node;
     const set=(element,attrs)=>node(element).setAttr(attrs);
+    let navigationBesideContent=false;
     let mobile=false, disposed=false, active=null, changing=false, desktopWidths, railLayout;
     state.setItem('menu',false);state.setItem('view','example');
     const releases=[];
@@ -17,11 +18,11 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
             const view=state.getItem('view'), menu=state.getItem('menu');
             set(sidebar,{drawer:menu?true:'close'});
             set(code,{drawer:!menu&&view==='code'?true:'close'});
-            set(center,{hidden:menu||view!=='example'});
+            set(center,{hidden:(menu&&!navigationBesideContent)||view!=='example'});
             set(shell,{data_mobile_view:view});
             set(panel,{hidden:view!=='inspector'});
             inspector.setPresentation(true,view==='inspector');
-            onExampleVisibility(view==='example'&&!menu);
+            onExampleVisibility(view==='example'&&(!menu||navigationBesideContent));
         } finally {changing=false;}
     };
     const gramlot=renderer.binding.gramlot;
@@ -64,12 +65,19 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
                 set(byId(id), {width:'36px', height:'36px'});
             }
         }
-        if(narrow===mobile)return;
+        // Keep a useful content column beside navigation whenever the viewport allows it.
+        // Toolbar orientation is independent of the width needed by the navigation tree.
+        navigationBesideContent=window.innerWidth-(bottom?0:42)>=260+360;
+        const navigationWidth=navigationBesideContent?'260px':'100%';
+        if(narrow===mobile){
+            if(mobile){set(sidebar,{width:navigationWidth});apply();}
+            return;
+        }
         mobile=narrow;
         if(mobile){
             desktopWidths=[node(sidebar).getAttr('width'),node(code).getAttr('width')];
             changing=true;
-            set(sidebar,{width:'100%'});set(code,{width:'100%'});
+            set(sidebar,{width:navigationWidth});set(code,{width:'100%'});
             changing=false;
             state.setItem('menu',false);state.setItem('view','example');apply();
         }else{

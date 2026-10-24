@@ -1,4 +1,4 @@
-# 06 · Button controller
+# Run a controller from a button
 
 **Sample data:** `01-button_controller_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 
@@ -45,7 +45,7 @@ Add another click to the first button without modifiers.
 
 ## The same example across stages
 
-In the later **0.2.14** [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/06-server_calls/03-call_on_click.md), the same nested-button pattern uses `dataRpc` for a server call. The framework supplies dispatch, response/error handling and result placement, so a click controller does not have to coordinate the request itself. Both stages remain explicit; local actions do not suddenly imply server persistence.
+In the later **0.2.14** [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md), the same nested-button pattern uses `dataRpc` for a server call. The framework supplies dispatch, response/error handling and result placement, so a click controller does not have to coordinate the request itself. Both stages remain explicit; local actions do not suddenly imply server persistence.
 
 ## Limits and next step
 

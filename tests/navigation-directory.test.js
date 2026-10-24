@@ -6,19 +6,19 @@ test('filesystem navigation is one level per request, with independent directory
     const root = navigationDirectory();
     const html = root.getNode('html_svg');
     assert.equal(html.staticValue, null);
-    assert.equal(html.attr.directory, '01-html_elements');
-    assert.equal(html.attr.url, 'pages/01-html_elements/00-index');
-    const children = navigationDirectory('01-html_elements');
+    assert.equal(html.attr.directory, '08-html_svg');
+    assert.equal(html.attr.url, 'pages/08-html_svg/00-index');
+    const children = navigationDirectory('08-html_svg');
     assert.equal(children.getNode('06-nested').staticValue, null);
-    assert.equal(children.getNode('06-nested').attr.url, 'pages/01-html_elements/06-nested/00-index');
-    assert.equal(children.getNode('01-html_basics').attr.directory, '01-html_elements/01-html_basics');
-    assert.equal(navigationDirectory('01-html_elements/01-html_basics').getNode('e01').attr.url, 'pages/01-html_elements/01-html_basics/01-hello_world');
+    assert.equal(children.getNode('06-nested').attr.url, 'pages/08-html_svg/06-nested/00-index');
+    assert.equal(children.getNode('01-html_basics').attr.directory, '08-html_svg/01-html_basics');
+    assert.equal(navigationDirectory('08-html_svg/01-html_basics').getNode('e01').attr.url, 'pages/08-html_svg/01-html_basics/01-hello_world');
     assert.equal(children.getNode('00-index'), null);
-    const nested = navigationDirectory('01-html_elements/06-nested');
+    const nested = navigationDirectory('08-html_svg/06-nested');
     assert.deepEqual(nested.getNodes().map(node=>node.label), ['01-child']);
-    assert.equal(nested.getNode('01-child').attr.url, 'pages/01-html_elements/06-nested/01-child');
+    assert.equal(nested.getNode('01-child').attr.url, 'pages/08-html_svg/06-nested/01-child');
     const routes = buildGallery().routes;
-    for (const url of ['pages/00-index','pages/01-html_elements/00-index','pages/01-html_elements/06-nested/00-index','pages/01-html_elements/06-nested/01-child']) assert.ok(routes[url]);
+    for (const url of ['pages/00-index','pages/08-html_svg/00-index','pages/08-html_svg/06-nested/00-index','pages/08-html_svg/06-nested/01-child']) assert.ok(routes[url]);
     for (const path of ['../', '/tmp', 'html_svg/../../', 'html_svg//nested']) assert.throws(()=>navigationDirectory(path), /Invalid navigation directory/);
 });
 
@@ -52,6 +52,7 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
         const directory = [family.folder,...parts.slice(0,-1)].join('/');
         const node = navigationDirectory(directory).getNode(example.key);
         assert.equal(node.attr.title,pageTitle(gallery.routes[example.key].page));
+        assert.equal(node.attr.title,example.title);
         assert.equal(node.attr.url,`pages/${family.folder}/${example.folder}`);
         assert.equal(seen.has(node.label),false); seen.add(node.label);
         if (parts.length > 1) {
@@ -65,12 +66,12 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
 
 
 test('numbered siblings mix directories and pages, hide indexes and use Markdown headings', () => {
-    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
-    const branch = navigationDirectory('01-html_elements');
+    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['components', 'binding', 'controllers', 'rpc', 'layout', 'editors', 'html_svg']);
+    const branch = navigationDirectory('08-html_svg');
     assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', '02-native_controls', '03-svg', '04-page_composition', 'e13', '06-nested', '07-markdown_index']);
     const md = branch.getNode('07-markdown_index');
     assert.equal(md.attr.title, 'Descriptive directory index');
-    assert.equal(md.attr.url, 'pages/01-html_elements/07-markdown_index/00-index');
+    assert.equal(md.attr.url, 'pages/08-html_svg/07-markdown_index/00-index');
     assert.ok(md.attr.markdown.startsWith('# Descriptive directory index'));
     assert.equal(navigationDirectory(md.attr.directory).length, 0);
 });

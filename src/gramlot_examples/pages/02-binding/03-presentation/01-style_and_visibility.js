@@ -7,7 +7,7 @@ const CHOICES = [
 ];
 
 export class Page extends BasePage {
-    static title = 'Style and visibility';
+    static title = "Control styles and visibility from Data";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'look'});

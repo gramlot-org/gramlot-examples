@@ -1,4 +1,4 @@
-# 03 · Setters and defaults
+# Initialize values: defaults and dataSetter
 
 Fields start with values supplied by setters and defaults. You learn when those values are applied and why an existing zero differs from a missing value.
 

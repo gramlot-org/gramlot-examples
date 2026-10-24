@@ -18,7 +18,7 @@ for (const [engineName, engine] of Object.entries({chromium, webkit})) {
             try {
                 await page.goto(new URL(base.startsWith('file:') ? 'l08/index.html' : routes.l08.url, base).href);
                 await page.waitForFunction(() => window.gramlot?.state === 'started');
-                assert.equal(await page.locator('#live-w01').getAttribute('src'), null);
+                assert.equal(await page.locator('#live-e02').getAttribute('src'), null);
                 assert.equal(await page.locator('gramlot-stack-container').count(), 1);
                 assert.equal(await page.locator('iframe[id^="mini-"]').count(), 0);
                 assert.equal(await page.locator('#carousel-drawer').count(), 0);
@@ -36,6 +36,8 @@ for (const [engineName, engine] of Object.entries({chromium, webkit})) {
                     }, demos.findIndex(demo => demo.key === key));
                     await page.waitForFunction(key => gramlot.data.getItem('stackDemo.active') === key, key);
                 };
+                await choose('e02');
+                await page.frameLocator('#live-e02').locator('#gramlot-root > *').first().waitFor();
                 // A rapid sweep must not start every embedded application.
                 await page.locator('#stack-panel input').evaluate((input, count) => {
                     for (let index = 0; index < count; index++) {
@@ -44,7 +46,8 @@ for (const [engineName, engine] of Object.entries({chromium, webkit})) {
                     }
                 }, demos.length);
                 await choose('w01');
-                assert.equal(await page.locator('iframe[id^="live-"][src]').count(), 2);
+                const visitedKeys = [...new Set([initialKey, 'e02', 'w01'])];
+                assert.equal(await page.locator('iframe[id^="live-"][src]').count(), visitedKeys.length);
                 const frame = await page.locator('#live-w01').contentFrame();
                 const field = frame.locator('#customer input');
                 await field.fill('Retained carousel edit');
@@ -57,8 +60,8 @@ for (const [engineName, engine] of Object.entries({chromium, webkit})) {
                 assert.equal(await frameElement.evaluate(element => element === document.getElementById('live-w01')), true);
                 assert.equal(await page.locator('#live-w01').getAttribute('src'), base.startsWith('file:') ? '../w01/index.html' : new URL(routes.w01.url, base).pathname);
                 const loaded = await page.locator('iframe[id^="live-"][src]').evaluateAll(frames => frames.map(frame => frame.id));
-                assert.deepEqual(loaded.sort(), [initialKey, 'w01', 'e02'].map(key => `live-${key}`).sort());
-                assert.equal(await page.locator('iframe[id^="live-"][src]').count(), 3);
+                assert.deepEqual(loaded.sort(), visitedKeys.map(key => `live-${key}`).sort());
+                assert.equal(await page.locator('iframe[id^="live-"][src]').count(), visitedKeys.length);
                 await page.setViewportSize({width:390,height:844});
                 assert.equal(await page.locator('gramlot-stack-container').count(),1);
                 assert.ok(await page.locator('#carousel-layout').evaluate(el=>el.getBoundingClientRect().right<=innerWidth));

@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Pointer templates and expressions"
+    title = "Transform bound values with pointer expressions"
     locale = "it-IT"
     time_zone = "Europe/Rome"
 

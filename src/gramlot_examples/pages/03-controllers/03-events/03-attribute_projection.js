@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Attribute projection';
+    static title = "Project attributes and preview HTML";
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'projection'});
         pane.h1('Attribute projection');

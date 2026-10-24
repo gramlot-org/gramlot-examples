@@ -1,4 +1,4 @@
-# Make room without losing your work
+# Drawers: handles, content and retained Data
 
 **Sample data:** `04-drawer_handles_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

@@ -1,4 +1,4 @@
-# 16 · Attribute projection
+# Project attributes and preview HTML
 
 **Sample data:** `03-attribute_projection_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

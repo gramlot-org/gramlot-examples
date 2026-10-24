@@ -1,4 +1,4 @@
-# 01 · Pointers
+# Bind values with absolute and relative paths
 
 **Sample data:** `01-pointers_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 
@@ -14,7 +14,7 @@ Fields and text share the same values. Edit a field and see which text follows i
 
 **Goal:** Resolve Data paths and predict which texts follow an edit.
 
-**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/01-html_elements/01-html_basics/01-hello_world.md), [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/01-html_elements/02-native_controls/01-forms.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
+**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/01-html_basics/01-hello_world.md), [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/02-native_controls/01-forms.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
 
 **Open and edit:** select **b01 · Pointers** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
 

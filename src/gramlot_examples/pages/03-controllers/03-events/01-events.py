@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Events"
+    title = "Handle browser and component events"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="events")

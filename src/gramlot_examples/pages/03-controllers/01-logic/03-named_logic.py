@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Named logic"
+    title = "Organize behavior in a Logic class"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="cart")

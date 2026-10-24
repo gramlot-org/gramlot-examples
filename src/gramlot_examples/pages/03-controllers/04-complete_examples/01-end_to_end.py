@@ -6,7 +6,7 @@ class EmptyOrder(Exception):
 
 
 class Page(BasePage):
-    title = "End-to-end story"
+    title = "Combine inputs, calculations and server calls"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="story")

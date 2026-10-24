@@ -1,4 +1,4 @@
-# 20 · Actions, confirmations and references
+# Confirm actions and target references
 
 **Sample data:** `02-actions_ask_references_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

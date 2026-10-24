@@ -1,4 +1,4 @@
-# 01 · Formula
+# Calculate a value with dataFormula
 
 **Sample data:** `01-formula_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

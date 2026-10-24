@@ -1,4 +1,4 @@
-# 10 · SVG shapes with binding
+# Bind SVG geometry and color
 
 The six shapes from **SVG shapes** now have editable dimensions and stroke settings. You learn how pointers connect controls to the drawing without a separate update routine for each shape.
 
@@ -12,7 +12,7 @@ The six shapes from **SVG shapes** now have editable dimensions and stroke setti
 
 **Goal:** Revisit the six-shape SVG with bound dimensions and shared stroke state.
 
-**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/01-html_elements/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
+**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
 
 **Open and edit:** select **b10 · SVG shapes with binding** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
 

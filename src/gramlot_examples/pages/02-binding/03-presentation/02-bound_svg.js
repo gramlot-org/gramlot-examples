@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Bound SVG';
+    static title = "Update SVG from Data";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'drawing'});

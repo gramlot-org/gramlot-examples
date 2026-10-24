@@ -1,4 +1,4 @@
-# Choose the presentation by looking at it
+# Tabs: select, close and retain content
 
 **Sample data:** `02-tabs_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

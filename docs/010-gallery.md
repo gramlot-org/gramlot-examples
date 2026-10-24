@@ -1140,7 +1140,7 @@ The catalogue now has 84 lessons in 22 groups. All 144 JavaScript tests and 19 P
 
 ## 310 · Numbered filesystem navigation — 2026-10-21
 
-Owner confirms numeric sibling prefixes in physical names, lowercase and underscores (`01-html_elements`), nested paths, `00-index` as the hidden directory index, `Page.title` for executable titles and the first Markdown H1 for `00-index.md`. This supersedes the physical naming and short public URL descriptions in blocks 290–300. Catalogue keys remain lesson identities; required family `folder` and lesson `folder` locate the files. No route aliases or core loader extensions are introduced.
+Owner confirms numeric sibling prefixes in physical names, lowercase and underscores (`08-html_svg`), nested paths, `00-index` as the hidden directory index, `Page.title` for executable titles and the first Markdown H1 for `00-index.md`. This supersedes the physical naming and short public URL descriptions in blocks 290–300. Catalogue keys remain lesson identities; required family `folder` and lesson `folder` locate the files. No route aliases or core loader extensions are introduced.
 
 All 84 lessons retain their Python, JavaScript, prose and stylesheet companions. Navigation sorts directories and pages together by filename, resolves one level on expansion, and opens the directory index on label selection. The root introduction appears when no tab is selected and is not a tree leaf. Markdown-only indexes use the existing sanitized gallery prose renderer. A dedicated descriptive-index directory demonstrates this path.
 
@@ -1406,6 +1406,8 @@ in the existing nonmodal floating formlet. This trial changes only the gallery;
 it does not redefine the framework's device classification or touch policy.
 
 
+In the narrow layout, navigation uses a 260 px column whenever at least 360 px remain for the example, after subtracting a lateral toolbar. This applies with either toolbar orientation, including portrait tablets. Smaller windows keep the full-width, single-panel navigation. Resizing updates both the width and content visibility without rebuilding the active lesson. These dimensions are provisional gallery presentation settings.
+
 <a id="ge-010-370"></a>
 ## 370 · Single-view demo carousel
 
@@ -1448,3 +1450,25 @@ the available panel without reserving an inline text baseline. The embedded
 lesson scrolls when needed; its gallery panel and the outer document do not
 add redundant scrollbars. Layout fixes preserve access to the entire lesson
 and do not hide scrollbars globally.
+
+<a id="ge-010-385"></a>
+## 385 · Find examples by task
+
+Block ID: **GE-010-385**.
+
+The navigation starts with **Fields and input widgets**, then **Data and bindings**,
+**Logic, actions and events**, **RPC and data exchange**, **Containers and layout**,
+**Document and code editors**, and **HTML, SVG and page structure**. Titles name the
+behavior to try, such as “Call the server when a value changes” or “Edit Markdown:
+source, preview and rich text”. Every section provides an introduction before its
+individual lessons. Example keys remain stable; reorganized filesystem paths and
+page URLs change together. Old paths are not aliases.
+
+The Python host additionally supplies **Tools and IDE**. The IDE opens a workspace
+page without the lesson's source-code column. Its sample documents live in this
+package's `documents/` directory, outside executable `pages/`. The host creates a
+disposable copy and exposes only that directory through the existing filesystem
+RPCs. Users can edit drafts and use Undo, Redo and Revert. Save is disabled unless
+the host enables Remote Edit; direct RPC writes are rejected too. Restarting the
+gallery restores the sample files. This host-backed IDE is not included in the
+JavaScript or offline gallery; those still include the document-editor lessons.

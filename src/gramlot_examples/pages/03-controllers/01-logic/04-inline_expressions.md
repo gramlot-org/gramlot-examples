@@ -1,4 +1,4 @@
-# 04 · Inline expressions
+# Use short inline expressions
 
 **Sample data:** `04-inline_expressions_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

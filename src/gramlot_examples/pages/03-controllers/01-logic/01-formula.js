@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Formula';
+    static title = "Calculate a value with dataFormula";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'order'});

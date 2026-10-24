@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Parent and child messages"
+    title = "Exchange messages between frames"
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="frames")

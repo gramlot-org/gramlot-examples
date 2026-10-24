@@ -1,4 +1,4 @@
-# Automatic initial data
+# Load example data and replay field edits
 
 The customer is loaded from **foo_data.tytx**, a typed Data Bag beside
 **foo.py** and **foo.js**. The page needs no dataRemote, file-reading endpoint

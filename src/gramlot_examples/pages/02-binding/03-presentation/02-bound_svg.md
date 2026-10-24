@@ -1,4 +1,4 @@
-# 07 · Bound SVG
+# Update SVG from Data
 
 Controls and an SVG drawing share the same values. Change a value and watch the shape follow: binding works for SVG geometry as well as HTML text.
 
@@ -12,7 +12,7 @@ Controls and an SVG drawing share the same values. Change a value and watch the 
 
 **Goal:** Use the same Data value for a native control and SVG geometry.
 
-**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/01-html_elements/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
+**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
 
 **Open and edit:** select **b07 · Bound SVG** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
 

@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'SVG shapes with binding';
+    static title = "Bind SVG geometry and color";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'shapes'});

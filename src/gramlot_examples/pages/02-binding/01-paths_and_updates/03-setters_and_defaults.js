@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Setters and defaults';
+    static title = "Initialize values: defaults and dataSetter";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'order'});

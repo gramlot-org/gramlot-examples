@@ -9,7 +9,7 @@ ACTIONS = (
 
 
 class Page(BasePage):
-    title = "Node methods"
+    title = "Call methods on a Source node"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="methods")

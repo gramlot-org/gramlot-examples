@@ -2,7 +2,7 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Formula"
+    title = "Calculate a value with dataFormula"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="order")

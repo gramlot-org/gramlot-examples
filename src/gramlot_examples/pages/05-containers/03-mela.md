@@ -1,4 +1,4 @@
-# Mela: desktop and touch
+# Compare desktop and touch themes
 
 Choose **Mela** under Gallery Settings → Theme and **Theme default** under Colors.
 Mela uses Apple-inspired neutral surfaces, system typography and blue accents.

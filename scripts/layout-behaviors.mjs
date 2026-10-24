@@ -1,5 +1,9 @@
 /** Small behavioral checks for every container lesson; detailed geometry has dedicated suites. */
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+
+const catalog = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
+const carouselDemos = catalog.families.flatMap(family => family.examples).filter(example => example.key !== 'l08');
 
 async function edit(page, selector, value) {
     const field = page.locator(selector);
@@ -111,7 +115,7 @@ export const layoutBehaviors = {
         await page.waitForFunction(() => !gramlot.data.getItem('mela.floatingOpen'));
     },
     async l08(page) {
-        await range(page, '#stack-panel input', 1);
+        await range(page, '#stack-panel input', carouselDemos.findIndex(example => example.key === 'e02'));
         await page.waitForFunction(() => gramlot.data.getItem('stackDemo.active') === 'e02');
         await page.frameLocator('#live-e02').locator('#gramlot-root > *').first().waitFor();
         assert.equal(await page.locator('#stack-active-title').textContent(), await page.evaluate(() => gramlot.data.getItem('stackDemo.activeCaption')));

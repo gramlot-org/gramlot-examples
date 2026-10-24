@@ -8,7 +8,7 @@ CHOICES = (
 
 
 class Page(BasePage):
-    title = "Style and visibility"
+    title = "Control styles and visibility from Data"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="look")

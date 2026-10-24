@@ -1,4 +1,4 @@
-# 03 · Named logic
+# Organize behavior in a Logic class
 
 **Sample data:** `03-named_logic_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 

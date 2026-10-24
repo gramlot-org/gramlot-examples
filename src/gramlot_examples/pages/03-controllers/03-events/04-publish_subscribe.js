@@ -1,7 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Publish and subscribe';
+    static title = "Publish and subscribe to messages";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'messages'});
         main_content.h1('The same action, two entry points');

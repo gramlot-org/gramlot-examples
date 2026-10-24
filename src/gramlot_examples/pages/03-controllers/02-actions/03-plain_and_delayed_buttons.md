@@ -1,4 +1,4 @@
-# 21 · Plain and delayed buttons
+# Run immediate and delayed button actions
 
 **Sample data:** `03-plain_and_delayed_buttons_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
 
