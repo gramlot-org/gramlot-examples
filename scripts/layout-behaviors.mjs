@@ -114,6 +114,7 @@ export const layoutBehaviors = {
         await range(page, '#stack-panel input', 1);
         await page.waitForFunction(() => gramlot.data.getItem('stackDemo.active') === 'e02');
         await page.frameLocator('#live-e02').locator('#gramlot-root > *').first().waitFor();
-        assert.equal(await page.locator('#stack-page').textContent(), 'Demo: e02');
+        assert.equal(await page.locator('#stack-active-title').textContent(), await page.evaluate(() => gramlot.data.getItem('stackDemo.activeCaption')));
+        assert.ok(await page.locator('#stack-active-title').textContent());
     },
 };
