@@ -1,12 +1,12 @@
-body { margin: 0; background: #f6f5ef; color: #182c36; font: 15px/1.5 system-ui, sans-serif; }
+body { margin: 0; background: var(--gramlot-background); color: var(--gramlot-ink); font: 15px/1.5 system-ui, sans-serif; }
 .estimate-page { box-sizing: border-box; max-width: 660px; padding: 26px 30px; margin: auto; }
 .estimate-page h1 { font: 36px/1.15 Georgia, serif; margin: 0 0 12px; }
-.estimate-page > p { margin: 12px 0 20px; color: #52646d; }
+.estimate-page > p { margin: 12px 0 20px; color: var(--gramlot-text-secondary); }
 .estimate-page gramlot-formlet { margin-block: 20px; gap: 12px; }
-.estimate-costs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; border-block: 1px solid #cdd5d0; padding-block: 10px; margin-block: 20px; }
+.estimate-costs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; border-block: 1px solid var(--gramlot-border-control); padding-block: 10px; margin-block: 20px; }
 .estimate-costs p { margin: 5px 0; }
-.estimate-costs #total { grid-column: 1 / -1; grid-row: 4; font-size: 25px; font-weight: 650; color: #2455cd; }
-.estimate-costs #deposit { grid-column: 1 / -1; grid-row: 5; color: #286b63; }
-.estimate-page #summary:not(:empty) { padding: 12px 16px; background: #e5eee9; color: #182c36; border-left: 3px solid #2e827f; }
+.estimate-costs #total { grid-column: 1 / -1; grid-row: 4; font-size: 25px; font-weight: 650; color: var(--gramlot-action); }
+.estimate-costs #deposit { grid-column: 1 / -1; grid-row: 5; color: var(--gramlot-success); }
+.estimate-page #summary:not(:empty) { padding: 12px 16px; background: var(--gramlot-surface); color: var(--gramlot-ink); border-left: 3px solid var(--gramlot-success); }
 .estimate-page > p:last-of-type { font-size: 12px; }
 @media (max-width: 420px) { .estimate-page { padding: 22px 18px; } .estimate-page h1 { font-size: 31px; } .estimate-costs { display: block; } }

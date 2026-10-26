@@ -1,6 +1,6 @@
 # Checkbox group: select several values
 
-**Sample data:** `02-checkbox_text_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Select several channels, then clear them all. Compare the comma-separated codes with the null value produced by an empty selection.
 
 Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null.
 
@@ -21,5 +21,7 @@ Compare **RadioButtonText**: it uses the same option and labelbox structure, but
 Change the number of columns; label layout variants are in Settings (⚙) in the gallery footer. The group keeps its controls and selection. `values`, `cols`, `lbl_position` and `readonly` can follow Data pointers; the readonly switch locks both groups. Shared `lbl_` and `box_` attributes style the same labelbox parts as earlier lessons.
 
 This lesson uses an inline group. Popup selection and Bag/store-backed options are separate features. Cards stay within 24rem and the column slider within 16rem.
+
+**Sample data:** `02-checkbox_text_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

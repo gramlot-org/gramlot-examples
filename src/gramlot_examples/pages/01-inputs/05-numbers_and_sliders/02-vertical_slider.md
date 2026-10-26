@@ -1,5 +1,7 @@
 # Vertical slider: orientation and values
 
+**Try this:** Move the vertical slider from bottom to top. The horizontal slider and numeric readout follow the same value from 0 to 100.
+
 Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source, Data and bindings. No endpoint calls, stores or validation engine.

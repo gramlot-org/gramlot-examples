@@ -9,7 +9,9 @@ export class Page extends BasePage {
         const main_content = root.main({class:'example-page stack'});
         main_content.h1('One layout, shared label settings');
         main_content.p('Change the columns. The fields keep their values and their own label overrides.');
-        const controls = main_content.formlet({class:'card stack',max_width:'24rem'});
+        const options = main_content.details({max_width: "32rem"});
+        options.summary("Options · change the behavior");
+        const controls = options.formlet({class: "stack",max_width:'24rem'});
         controls.html_label('Columns',{for:'columns'});
         const select = controls.select({default: "2", id:'columns',value:'^columns',width:'6rem'});
         select.option('One',{value:'1'});select.option('Two',{value:'2'});

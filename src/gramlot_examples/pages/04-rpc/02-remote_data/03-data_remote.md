@@ -1,22 +1,17 @@
 # Fetch Data with dataRemote
 
-**Sample data:** `03-data_remote_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Compare the live menu with Read current value. Changing the table updates the bound view; the explicit snapshot stays unchanged until you read again.
 
 A menu loads when its Data path is read. You learn how `dataRemote` supplies values on demand. The read button copies the value the read returns. After the five-second cache expires, the next read calls again; expiry alone makes no call.
 
-**Uses:** Data binding and an endpoint-backed resolver — core 0.2.16. An in-memory example, not a database service.
+**Uses:** Data binding and an endpoint-backed resolver. An in-memory example, not a database service.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Remote Source and lazy Data (core 0.2.16), after the 0.2.14 endpoint lessons.
-
 **Goal:** Distinguish resolver installation, first read, response and later refresh.
 
-**Before this lesson:** [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md), [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/02-cached_remote.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c14 · Data remote** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md), [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/02-cached_remote.md).
 
 ## Read the page
 
@@ -26,7 +21,7 @@ A menu loads when its Data path is read. You learn how `dataRemote` supplies val
 pane.dataRemote(".menu", "load_menu", cacheTime=5, table="^.table")
 ```
 
-`sync` is true by default, as in the legacy. On HTTP the read then waits: a synchronous request returns the answer, and the value is stored at the path without announcing it to the consumers, because the reader already has it. The page is blocked until the answer arrives, and browsers deprecate the synchronous request on the main thread. In a serverless Worker, or with `sync=False`, a read never waits: it returns the stored value (null before the first call), starts the call, and the answer is written at the path and announced to the `^` consumers. The Read current value button calls named Logic: `node.GET('.menu')` reads the path and `node.SET('.read_value', ...)` displays that snapshot. A later answer updates Menu; it does not retroactively change an already copied snapshot. Read `readMenu` in the gallery’s **logic.js** tab (the Logic class from `14_data_remote.js`) beside the Python source.
+`sync` is true by default, as in the legacy. On HTTP the read then waits: a synchronous request returns the answer, and the value is stored at the path without announcing it to the consumers, because the reader already has it. The page is blocked until the answer arrives, and browsers deprecate the synchronous request on the main thread. In a serverless Worker, or with `sync=False`, a read never waits: it returns the stored value (null before the first call), starts the call, and the answer is written at the path and announced to the `^` consumers. The Read current value button calls named Logic: `node.GET('.menu')` reads the path and `node.SET('.read_value', ...)` displays that snapshot. A later answer updates Menu; it does not retroactively change an already copied snapshot. Read `readMenu` in the gallery’s **logic.js** tab (the Logic class from `03-data_remote.js`) beside the Python source.
 
 Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Endpoint/fragment methods execute there too; bindings and any Logic execute in the browser. A Worker is not a private server.
 
@@ -67,5 +62,7 @@ On HTTP a read with an expired cache waits for the fresh answer; with `sync=Fals
 `dataRemote` accepts `_onCalling` (a result `false` makes no call, and a later read tries again), but do not copy dataRpc’s `_onResult` or `_onError` onto it, or use `_init`, `_onBuilt`, `_onStart` there. An auth-aware environment is still needed for protected methods. This in-memory menu is not a database service.
 
 Continue with [setup and release sequence](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+
+**Sample data:** `03-data_remote_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

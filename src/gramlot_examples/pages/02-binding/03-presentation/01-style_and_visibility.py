@@ -13,8 +13,10 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="look")
         pane.h1("Style and visibility")
+        pane.p("Change the color and dimensions, then toggle visibility. Notice that an invisible box still reserves its place in the layout.")
 
-        controls = pane.form(class_="card stack")
+        work = pane.div(class_="grid lesson-workbench")
+        controls = work.form(class_="card stack")
         for label, key in (("visible", "show"), ("hidden", "hide")):
             row = controls.div()
             row.input(type="checkbox", value=f"^.{key}", id=key)
@@ -30,7 +32,7 @@ class Page(BasePage):
         controls.html_label("style", for_="style")
         controls.input(value="^.style", id="style", default='border: 4px dashed #ffc400')
 
-        stage = pane.div(class_="stack")
+        stage = work.div(class_="stack")
         stage.p("The box keeps its place when it is not visible.", class_="muted")
         stage.div("A styled box", id="box", class_="^.tone", style="^.style",
                   color="^.color", background_color="^.background", font_size="^.size",

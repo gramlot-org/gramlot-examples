@@ -1,0 +1,5 @@
+.event-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.event-chips .status { padding: .4rem .8rem; border: 1px solid currentColor; border-radius: 999px; cursor: pointer; }
+#chip-red { color: var(--gramlot-error); }
+#chip-green { color: var(--gramlot-success); }
+#chip-blue { color: var(--gramlot-action); }

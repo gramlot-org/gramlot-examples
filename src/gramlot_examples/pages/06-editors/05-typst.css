@@ -1,0 +1,2 @@
+.typst-workbench { grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); align-items: start; }
+.typst-workbench > * { min-width: 0; }

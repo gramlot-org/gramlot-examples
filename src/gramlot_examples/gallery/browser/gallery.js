@@ -32,23 +32,22 @@ export function mountGallery(renderer, root, inspector) {
         if(entry.code)content.observe(entry.key);
     };
     const index=mountIndexPage(renderer,root,(entries,active)=>{
+        source('gallery-load-status').setValue(entries.get(active)?.loading ? 'Loading page…' : '');
         source('gallery-introduction').setAttr({hidden:active!==null});
         source('index-pages').setAttr({hidden:active===null});
         presentation.update(entries,active);inspector.update(entries,active);mobile.update(entries,active);guide?.update(entries,active);
     },prepare,{state,async createEntry(entry){
         const key=entry.node.attr.key??entry.pane.label;
         entry.pane.setAttr({id:`panel-${key}`,class:'gallery-panel'});
-        const code=entry.node.attr.category||entry.node.attr.key==null?null:source('gallery-code-pages').div({id:`codepane-${key}`,
-            class:'gallery-codepane',hidden:true,height:'100%'});
-        if(code)code.tabContainer({id:`code-tabs-${key}`,class:'gallery-source-tabs',height:'100%',tabMode:'underline'})
-            .contentPane({title:'Code'}).p('Loading code…',{role:'status'});
         const selection=new Bag();selection.setItem(entry.node.label,null,{...entry.node.attr});
-        try {
-            const mounted=await renderer.binding.gramlot.src.remoteSource(entry.pane,'index_panel',{selection});
-            if(!mounted)throw new Error('Panel loading was cancelled');
-        }catch(error){if(code?.parentBag)code.parentBag.popNode(code.label);throw error;}
+        const mounted=await renderer.binding.gramlot.src.remoteSource(entry.pane,'index_panel',{selection});
+        if(!mounted)throw new Error('Panel loading was cancelled');
     },onLoad(url,status){
-        source('gallery-load-status').setValue(status==='loading'?'Loading page…':status==='error'?'Could not load this page. Select it again to retry.':'');
+        if(root.indexContext.disposed)return;
+        const active=state.getItem('active');
+        const loading=root.indexContext.entries.get(active)?.loading;
+        source('gallery-load-status').setValue(loading?'Loading page…':
+            status==='error'&&(active===url||active===null)?'Could not load this page. Select it again to retry.':'');
     }});
     return {dispose(){guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
 }

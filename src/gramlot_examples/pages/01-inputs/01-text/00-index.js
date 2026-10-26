@@ -11,7 +11,7 @@ export class Page extends BasePage {
         main_content.p("Expand this group in the navigation and choose a lesson. Each lesson includes a working example, an explanation and its source code.");
         const lessons = main_content.ul();
         { const item = lessons.li(); item.strong("Textbox and labelbox"); item.p("Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field."); }
-        { const item = lessons.li(); item.strong("Multiline text and labelbox"); item.p("Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection."); }
-        { const item = lessons.li(); item.strong("Password and labelbox"); item.p("Two password fields share a sample value. The browser masks the characters; changing either field updates the other."); }
+        { const item = lessons.li(); item.strong("One note, two editors"); item.p("Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection."); }
+        { const item = lessons.li(); item.strong("One password, two masked fields"); item.p("Two password fields share a sample value. The browser masks the characters; changing either field updates the other."); }
     }
 }

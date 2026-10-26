@@ -9,7 +9,8 @@ class Page(BasePage):
         pane.h1("Setters and defaults")
         pane.p("Every value below was in the Data before the first render.", class_="muted")
 
-        form = pane.form(class_="card stack")
+        work = pane.div(class_="grid lesson-workbench")
+        form = work.form(class_="card stack")
         form.html_label("Customer", for_="customer")
         form.input(value="^.customer", id="customer")
         form.html_label("Quantity (default 1)", for_="quantity")
@@ -19,7 +20,7 @@ class Page(BasePage):
         form.html_label("Price", for_="price")
         form.input(type="number", value="^.price", attr_currency="EUR", id="price")
 
-        summary = pane.section(class_="card stack")
+        summary = work.section(class_="card stack")
         summary.h2("The Data")
         facts = summary.dl()
         for label, pointer, key in (("Customer", "^.customer", "out-customer"),

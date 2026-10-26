@@ -18,7 +18,9 @@ export class Page extends BasePage {
             values: 'headline:Headline,sidebar:Sidebar',
             width: '10rem',
         });
-        const bc = main_content.borderContainer({
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const bc = canvas.borderContainer({
             id: 'nested-demo',
             height: '440px',
             design: '^design',
@@ -60,7 +62,7 @@ export class Page extends BasePage {
             .p('Inner header');
         const editor = nested.contentPane({
             region: 'center',
-            padding: '12px 40px',
+            padding: '12px',
             background: 'var(--gramlot-surface, #fff)',
         });
         editor.textbox({ value: '^name', lbl: 'Customer', width: '100%', max_width: '24rem' });

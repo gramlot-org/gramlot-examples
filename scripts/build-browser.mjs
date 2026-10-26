@@ -47,11 +47,12 @@ const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/
     }}]});
 Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
 // Copy prepared browser resources byte-for-byte to preserve their fingerprints.
-for (const name of ['inputs','layout','tree','editors','typst']) {
+for (const name of ['inputs','layout','tree','editors','typst','menu-trial']) {
     await rm(new URL(name+'/',output),{recursive:true,force:true});
-    await cp(join(dirname(require.resolve('@gramlot/gramlot/runtime')),'components',name),
-        new URL(name+'/',output),{recursive:true});
-    const artifact = join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name);
+    const artifact = name === 'menu-trial'
+        ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))
+        : join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name);
+    await cp(artifact, new URL(name+'/',output), {recursive:true, filter:path => !path.endsWith('__pycache__')});
     const {default: collection, buildId} = await import(pathToFileURL(join(artifact,'assets/index.js')).href);
     const root = pathToFileURL(artifact + '/');
     const hostRoot = `/gramlot/collections/${encodeURIComponent(name)}/${buildId.slice(7)}/`;

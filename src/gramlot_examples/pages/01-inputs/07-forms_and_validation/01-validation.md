@@ -1,6 +1,6 @@
 # Validate required values and text length
 
-**Sample data:** `01-validation_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Enter a one-character name and leave the field. The invalid draft stays visible while the accepted value below remains unchanged; correct it to two or more characters.
 
 Try a missing, short or long name. You learn the difference between the draft visible in a field and the last accepted value in Data.
 
@@ -23,6 +23,8 @@ Turn **Validate while typing** on to use `live=True`. The same rules now run on 
 The error messages can be customized with `validate_notnull_error` and `validate_len_error`; they are marked as localizable strings for the future localization service. Rules and messages may follow Data pointers. The next edit uses the current rules. Changing a label does not discard an invalid draft; a different external Data value replaces it. Validation does not filter writes performed directly by application logic.
 
 The shared message also drives ARIA and native custom validity. Gramlot remains the rule owner; `maxlength` is not imposed because that would prevent the invalid draft from being entered and inspected. Required quantity demonstrates that clearing a typed editor is rejected while zero is accepted.
+
+**Sample data:** `01-validation_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>
 

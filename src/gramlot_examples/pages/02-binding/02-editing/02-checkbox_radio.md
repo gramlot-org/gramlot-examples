@@ -1,22 +1,17 @@
 # Bind boolean and single-choice values
 
-**Sample data:** `02-checkbox_radio_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.
 
 Checkboxes and radio buttons control boolean values. You learn how to represent yes/no choices and how radio buttons keep a single choice selected.
 
-**Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
+**Uses:** Source, Data, pointers and native binding. No endpoint calls.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0).
-
 **Goal:** Model checkboxes and a radio group as boolean Data.
 
-**Before this lesson:** [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **b05 · Checkbox and radio** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md).
 
 ## Read the page
 
@@ -46,6 +41,8 @@ Add `("pro", "Pro")` to `PLANS` and include `plan.pro` in the displayed key list
 
 A radio’s bound value is not a string enum. Unselected paths need not all have been written false. Use the existing `group` contract rather than assigning a shared native name manually.
 
-Continue with [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/06_style_and_visibility.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/01-style_and_visibility.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+
+**Sample data:** `02-checkbox_radio_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

@@ -6,6 +6,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'quote'});
         pane.h1('Call on change');
+        pane.p("Change the quantity several times quickly. A request starts after you pause typing; compare the status and returned quote.");
 
         const form = pane.form({class: 'card stack'});
         form.html_label('Quantity', {for: 'quantity'});

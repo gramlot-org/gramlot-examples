@@ -1,0 +1,3 @@
+.lesson-workbench { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; }
+.lesson-workbench > * { min-width: 0; margin: 0; }
+.lesson-workbench input[type="checkbox"], .lesson-workbench input[type="radio"] { margin-inline-end: .45rem; }

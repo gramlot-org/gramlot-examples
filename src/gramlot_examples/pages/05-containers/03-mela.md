@@ -1,5 +1,7 @@
 # Compare desktop and touch themes
 
+**Try this:** Compare the theme previews, open a menu and edit a field. Open dialog and floating windows to compare modality while keeping the same controls.
+
 Choose **Mela** under Gallery Settings → Theme and **Theme default** under Colors.
 Mela uses Apple-inspired neutral surfaces, system typography and blue accents.
 It is a web theme, not a native macOS/iOS implementation or an Apple asset pack.

@@ -1,0 +1,4 @@
+.layout-canvas { min-width: 0; min-height: 0; overflow-x: auto; flex: 1; }
+.layout-canvas > gramlot-border-container { min-width: 760px; }
+.layout-pan-hint { display: none; }
+@media (max-width: 810px) { .layout-pan-hint { display: block; color: var(--gramlot-text-secondary); font-size: .9rem; } }

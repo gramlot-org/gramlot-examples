@@ -6,6 +6,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'order'});
         pane.h1('Formula');
+        pane.p("Change price or quantity and follow the calculated results. Changing VAT alone does not recalculate Gross: its = pointer is read on the next total change.");
         const form = pane.form({class: 'card stack'});
         for (const [label, key] of [['Price', 'price'], ['Quantity', 'quantity'], ['VAT rate', 'vat']]) {
             form.html_label(label, {for: key});

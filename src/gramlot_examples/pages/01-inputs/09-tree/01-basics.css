@@ -4,3 +4,6 @@
 .example-bag-tree::part(icon) { color:#597baf; }
 .tree-actions { display:flex; flex-wrap:wrap; gap:8px; }
 [data-theme="dark"] .example-bag-tree { --gramlot-tree-hover-background:#273348; --gramlot-tree-selected-background:#314b70; --gramlot-tree-selected-color:#f0f5ff; }
+
+.example-page > code { width: fit-content; max-width: 100%; overflow-wrap: anywhere; }
+.example-page > code:empty { display: none; }

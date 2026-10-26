@@ -13,9 +13,9 @@ class TrialServer(GramlotFileServer):
 
 class MenuTrialTests(unittest.IsolatedAsyncioTestCase):
     async def test_page_source_and_lazy_bag_endpoint(self):
-        folder = Path(gramlot_examples.__file__).parent / 'trials/menu/pages/menu'
+        folder = Path(gramlot_examples.__file__).parent / 'pages/05-menus'
         server = TrialServer(str(folder))
-        opened = await server.open_page('/01_menu_trial')
+        opened = await server.open_page('/08_workspace')
         self.addCleanup(server.close_page, opened.page_id)
         self.assertIn('menu-trial', opened.html)
 
@@ -39,8 +39,8 @@ class MenuTrialTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_chapter_catalogue_pages_and_nested_resolver(self):
         from gramlot_examples import build_gallery
-        chapter = Path(gramlot_examples.__file__).parent / 'trials/menu'
-        gallery = build_gallery([(chapter / 'catalog.json', chapter / 'pages')])
+        chapter = Path(gramlot_examples.__file__).parent / 'pages/05-menus'
+        gallery = build_gallery()
         keys = [f'menu-{i:02d}' for i in range(1, 15)]
         for key in keys:
             with self.subTest(key=key):
@@ -55,10 +55,10 @@ class MenuTrialTests(unittest.IsolatedAsyncioTestCase):
                 self.assertIn('frameTarget', wire)
                 self.assertIn('framePane', wire)
                 self.assertTrue(path.with_suffix('.md').is_file())
-                self.assertTrue(path.with_name(path.stem + '_aux.js').is_file())
+                self.assertTrue(path.with_suffix('.js').is_file())
 
-        server = TrialServer(str(chapter / 'pages/menu'))
-        opened = await server.open_page('/06_resolver')
+        server = TrialServer(str(chapter))
+        opened = await server.open_page('/07_resolver')
         self.addCleanup(server.close_page, opened.page_id)
         async def call(name, **params):
             return from_tytx(await server.call(to_tytx(dict(id='resolver', pageId=opened.page_id,

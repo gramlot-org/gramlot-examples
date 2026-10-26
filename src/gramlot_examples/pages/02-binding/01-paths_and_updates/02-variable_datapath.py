@@ -9,6 +9,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack")
         pane.h1("Variable datapath")
+        pane.p("Choose Ada, edit her name, then select Alan and come back. One card follows the selected datapath; each record keeps its own values.")
         pane.html_label("Record", for_="record")
         choice = pane.select(id="record", value="^current", default='people.ada')
         for key, caption in OPTIONS:

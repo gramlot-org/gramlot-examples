@@ -1,6 +1,6 @@
 # Nested regions playground
 
-**Sample data:** `05-nested_lab_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Move one size control, then drag its corresponding splitter. Both update the same dimension; nested levels keep their own sizes.
 
 This is a small customer workspace with several layouts inside it. It is deliberately busier than the first examples: navigation, details, an editor and output all need space. The sliders let you see which container owns which area.
 
@@ -41,3 +41,5 @@ The nested containers still have a simple responsibility: each lays out its own 
 ## What to take into your own page
 
 Build the outer layout first, then give a region its own container only when it needs independent areas. Connect sizes to Data if users or application logic need to control them. Ordinary splitters are enough when you only want people to resize by dragging.
+
+**Sample data:** `05-nested_lab_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

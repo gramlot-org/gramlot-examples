@@ -1,6 +1,6 @@
 # Calculate a room estimate
 
-**Sample data:** `02-room_estimate_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change room, guests and nights. Follow the rate, subtotal, discount, total and deposit; Prepare summary captures a snapshot when clicked.
 
 Choose Classic or Superior, 1–4 guests and 1–30 nights. Two guests are included;
 each extra guest costs €25 per night. The illustrative rates are €90 and €140.
@@ -48,3 +48,5 @@ mount-smoke-tested; it is not a substitute for the Python browser checks.
 ## Inspect, edit Python, reload
 
 Open the gallery inspector, select Data → estimate, and follow subtotal, discount, total and deposit while changing nights. For Classic / two guests / five nights, the original rule gives 450 / 0 / 450 / 135. Change `nights >= 7` to `nights >= 5` in Python, save, let the development server reload, then reload the page and enter five nights again. The new results are 450 / 45 / 405 / 122. The inspector follows Data; it does not execute a formula edited in live Source. The existing activation contract is unchanged.
+
+**Sample data:** `02-room_estimate_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

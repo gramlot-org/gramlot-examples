@@ -12,6 +12,14 @@ class Page(BasePage):
         main_content = root.main(class_="example-page stack")
         main_content.h1("Five containers, one live workspace")
         main_content.p("Move the sliders, drag separators and close drawers. The same widgets and their values stay in place.")
+        options = main_content.details()
+        options.summary("Options · sizes, design and drawer captions")
+        self.size_controls(options)
+
+        self.workspace(main_content)
+
+
+    def size_controls(self, main_content):
         settings = main_content.section(display="flex", flex_wrap="wrap", gap="12px", align_items="end")
         settings.filteringSelect(id="lab-design", value="^design", lbl="Outer design", width="10rem",
                                  values="headline:Headline,sidebar:Sidebar", default='headline')
@@ -28,6 +36,8 @@ class Page(BasePage):
         for path, caption, minimum, maximum, initial in sizes:
             sliders.horizontalSlider(id="size-" + path.replace(".", "-"), value="^regions." + path,
                                      lbl=f"^regions.{path}:{caption} · {{}} px", min=minimum, max=maximum, step=1, live=True, width="12rem")
+
+    def workspace(self, main_content):
         surface = "var(--gramlot-surface, #fff)"
         edge = "1px solid var(--gramlot-border-control, #8192aa)"
         fills = {"nav": "color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #4488cc)",
@@ -35,7 +45,9 @@ class Page(BasePage):
                  "details": "color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #bb8844)",
                  "preview": "color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #9977bb)"}
         drawer = dict(splitter=True, drawer=True, drawer_minimize="^minimize")
-        outer = main_content.borderContainer(id="lab-outer", height="700px", max_width="78rem", design="^design",
+        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
+        canvas = main_content.div(class_="layout-canvas")
+        outer = canvas.borderContainer(id="lab-outer", height="700px", max_width="78rem", design="^design",
                                     rounded="^radius", border=edge, background=surface)
         header = outer.contentPane(region="top", height="^regions.outer.top", minSize=40, maxSize=110,
                                    drawer_label="Header", padding="10px", background=fills["nav"], **drawer, default_height=58)

@@ -1,3 +1,4 @@
+import menuCommands from '../src/gramlot_examples/collections/menu_trial/assets/index.js';
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
@@ -35,6 +36,10 @@ async function mount(family, example, {hold = null} = {}) {
     // jsdom has no native popover API; real positioning is covered in browser checks.
     dom.window.HTMLElement.prototype.showPopover = function () {};
     dom.window.HTMLElement.prototype.hidePopover = function () {};
+    // Floating windows use the native non-modal dialog API (absent in JSDOM).
+    dom.window.HTMLDialogElement.prototype.show = function () { this.open = true; };
+    dom.window.HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+    dom.window.HTMLDialogElement.prototype.close = function () { this.open = false; };
 
     // A page module that names no client method exports no Logic.
     const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
@@ -49,7 +54,8 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst,menuCommands]});
+    menuCommands.registerCommands(app);
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
@@ -66,8 +72,154 @@ async function mount(family, example, {hold = null} = {}) {
 
 const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
+async function checkWindowExample({dom, app, data}, tag, label) {
+    const document = dom.window.document;
+    const press = caption => [...document.querySelectorAll('gramlot-button')]
+        .find(button => button.textContent.trim() === caption).shadowRoot.querySelector('button').click();
+    const status = document.querySelector('[role="status"]');
+    assert.equal(data('workspace.clicks'), 0);
+    assert.equal(status.textContent, 'Background clicks: 0');
+    press('Background counter');
+    assert.equal(data('workspace.clicks'), 1);
+    assert.equal(status.textContent, 'Background clicks: 1');
+    press(label);
+    const window = document.querySelector(tag);
+    const field = window.querySelector('gramlot-textbox');
+    assert.equal(data('workspace.open'), true);
+    app.data.setItem('workspace.title', 'Retained draft');
+    assert.match(document.body.textContent, /Shared title: Retained draft/);
+    app.data.setItem('workspace.open', false);
+    press(label);
+    assert.equal(window.querySelector('gramlot-textbox'), field);
+    assert.equal(data('workspace.title'), 'Retained draft');
+}
+
+async function checkMenuEditor({dom, byId, app, data}) {
+    byId('open-editor').shadowRoot.querySelector('button').click();
+    assert.equal(data('editor.open'), true);
+    assert.equal(byId('editor-window').querySelectorAll('[role="toolbar"]').length, 3);
+    app.data.setItem('editor.draft.title', 'Saved through the toolbar');
+    byId('editor-save').shadowRoot.querySelector('button').click();
+    await tick();
+    assert.equal(data('editor.saved.title'), 'Saved through the toolbar');
+    assert.equal(data('editor.open'), false);
+    byId('open-editor').shadowRoot.querySelector('button').click();
+    app.data.setItem('editor.draft.title', 'Discard this draft');
+    byId('editor-cancel').shadowRoot.querySelector('button').click();
+    await tick();
+    assert.equal(data('editor.saved.title'), 'Saved through the toolbar');
+    assert.equal(data('editor.open'), false);
+}
+
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    'menu-10': checkMenuEditor,
+    'menu-14': checkMenuEditor,
+    dialog_window: ctx => checkWindowExample(ctx, 'gramlot-dialog', 'Open dialog'),
+    floating_window: ctx => checkWindowExample(ctx, 'gramlot-floating-pane', 'Open floating'),
+    async sieve({app, dom, byId, data}) {
+        const press = name => byId(`sieve-${name}`).shadowRoot.querySelector('button').click();
+        const grid = dom.window.document.querySelector('.sieve-grid');
+        const originalCells = [...grid.children];
+        assert.equal(originalCells.length, 100);
+        assert.equal(data('sieve.cells.n1'), 'excluded');
+        assert.equal(data('sieve.running'), false);
+        assert.equal(data('sieve.interval'), 0);
+        assert.equal(data('sieve.count'), 0);
+        press('step');
+        await tick();
+        assert.equal(data('sieve.prime'), 2);
+        assert.equal(data('sieve.cells.n2'), 'prime');
+        press('step');
+        await tick();
+        assert.equal(data('sieve.cells.n4'), 'composite');
+        assert.ok(originalCells[3].classList.contains('sieve-composite'));
+        assert.equal(originalCells[3].getAttribute('aria-current'), 'step');
+        app.data.setItem('sieve.delay', 0.05);
+        press('start');
+        assert.equal(data('sieve.interval'), 0.05);
+        const beforePlay = data('sieve.steps');
+        for (let i = 0; i < 30 && data('sieve.steps') === beforePlay; i++) await tick(20);
+        assert.ok(data('sieve.steps') > beforePlay, 'the framework timer advances Data');
+        press('pause');
+        const pausedSteps = data('sieve.steps');
+        await tick(120);
+        assert.equal(data('sieve.steps'), pausedSteps);
+        assert.equal(data('sieve.interval'), 0);
+        press('start');
+        press('reset');
+        await tick(120);
+        assert.equal(data('sieve.steps'), 0);
+        assert.equal(data('sieve.running'), false);
+        assert.equal(data('sieve.delay'), 0.05, 'reset preserves the UI speed');
+        assert.equal(data('sieve.cells.n2'), 'pending');
+        for (let i = 0; i < 200 && data('sieve.count') < 25; i++) { press('step'); await tick(); }
+        press('start');
+        for (let i = 0; i < 30 && !data('sieve.done'); i++) await tick(20);
+        assert.equal(data('sieve.done'), true);
+        const primes = Array.from({length: 100}, (_, i) => i + 1).filter(n => data(`sieve.cells.n${n}`) === 'prime');
+        assert.deepEqual(primes, [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]);
+        assert.equal(data('sieve.count'), 25);
+        assert.equal(data('sieve.running'), false);
+        assert.equal(byId('sieve-start').disabled, true);
+        assert.equal(byId('sieve-step').disabled, true);
+        assert.equal(byId('sieve-pause').disabled, true);
+        for (const n of Array.from({length: 99}, (_, i) => i + 2).filter(n => !primes.includes(n))) {
+            assert.equal(data(`sieve.cells.n${n}`), 'composite');
+        }
+        assert.deepEqual([...grid.children], originalCells, 'bindings preserve the existing grid nodes');
+        press('reset');
+        assert.equal(data('sieve.done'), false);
+        assert.equal(byId('sieve-start').disabled, false);
+        press('start');
+        app.dispose();
+        const disposedSteps = data('sieve.steps');
+        await tick(120);
+        assert.equal(data('sieve.steps'), disposedSteps, 'disposal stops the owned timer');
+    },
+    async color_maker({app, dom, data}) {
+        assert.equal(data('maker.background.rgb'), 'rgb(242, 184, 110)');
+        assert.equal(data('maker.ink.rgb'), 'rgb(49, 47, 78)');
+        assert.equal(data('maker.shadow.rgb'), 'rgb(117, 79, 131)');
+        const poster = dom.window.document.querySelector('.maker-poster');
+        const panels = dom.window.document.querySelectorAll('.maker-panel');
+        assert.equal(panels.length, 3);
+        app.data.setItem('maker.background.red', 10);
+        await tick();
+        assert.equal(data('maker.background.rgb'), 'rgb(10, 184, 110)');
+        assert.equal(poster.style.backgroundColor, 'rgb(10, 184, 110)');
+        assert.equal(data('maker.ink.rgb'), 'rgb(49, 47, 78)');
+        app.data.setItem('maker.ink.blue', 200);
+        app.data.setItem('maker.shadow.green', 20);
+        await tick();
+        assert.equal(poster.style.color, 'rgb(49, 47, 200)');
+        assert.match(dom.window.document.querySelector('.maker-shadow').style.boxShadow, /rgb\(117, 20, 131\)/);
+        assert.equal(data('maker.background.rgb'), 'rgb(10, 184, 110)');
+        assert.equal(data('maker.selected'), 'background');
+        assert.equal(dom.window.document.querySelectorAll('.maker-selected').length, 1);
+        const random = dom.window.document.querySelector('.maker-palette-bar gramlot-button').shadowRoot.querySelector('button');
+        assert.equal(dom.window.document.querySelectorAll('.maker-palette-bar gramlot-button').length, 1);
+        dom.window.document.querySelector('.maker-header gramlot-button').shadowRoot.querySelector('button').click();
+        await tick();
+        assert.equal(data('maker.paletteOpen'), true);
+        const contexts = ['background', 'ink', 'shadow'];
+        for (const [i, context] of contexts.entries()) {
+            const others = contexts.filter(name => name !== context).map(name => [name, data(`maker.${name}.rgb`)]);
+            for (const channel of ['red', 'green', 'blue']) app.data.setItem(`maker.${context}.${channel}`, -1);
+            panels[i].dispatchEvent(new dom.window.MouseEvent('click', {bubbles: true}));
+            await tick();
+            assert.equal(data('maker.selected'), context);
+            assert.ok(panels[i].classList.contains('maker-selected'));
+            assert.equal(dom.window.document.querySelectorAll('.maker-selected').length, 1);
+            random.click();
+            await tick();
+            for (const channel of ['red', 'green', 'blue']) {
+                const value = data(`maker.${context}.${channel}`);
+                assert.ok(Number.isInteger(value) && value >= 0 && value <= 255);
+            }
+            for (const [name, rgb] of others) assert.equal(data(`maker.${name}.rgb`), rgb);
+        }
+    },
     async b12({byId, data, app, edit, click}) {
         assert.equal(byId('customer-name').value, 'Ada Lovelace');
         assert.equal(byId('draft-name').value, '');
@@ -336,7 +488,7 @@ const CHECKS = {
     b08({byId, click}) {
         const items = () => byId('items').querySelectorAll('li').length;
         click('freeze');
-        assert.equal(byId('frozen').textContent, 'true');
+        assert.equal(byId('frozen').textContent, 'Structural updates frozen: true');
         click('add');
         assert.equal(byId('count').textContent, '1', 'built elements follow the Data under freeze');
         click('removeLast');
@@ -345,7 +497,7 @@ const CHECKS = {
         click('thaw');
         assert.equal(items(), 1);
         assert.equal(byId('count').textContent, '1');
-        assert.equal(byId('frozen').textContent, 'false');
+        assert.equal(byId('frozen').textContent, 'Structural updates frozen: false');
     },
     b09({byId, edit, click, data}) {
         assert.deepEqual(data('form.topics'), ['html']);
@@ -483,7 +635,7 @@ const CHECKS = {
         // 1. first render
         assert.equal(byId('caption').textContent, 'The story of a page');
         assert.equal(byId('quantity').value, '2');
-        assert.equal(byId('total').textContent, '2');
+        assert.equal(byId('total').textContent, 'Local total: 2');
         assert.equal(byId('circle').getAttribute('r'), '28');
         assert.equal(byId('circle').getAttribute('fill'), '#23745b');
         assert.equal(byId('small').checked, true);
@@ -496,9 +648,9 @@ const CHECKS = {
         // 3, 4. formula, controller, radio
         click('large');
         assert.deepEqual([data('story.size.small'), data('story.size.large')], [false, true]);
-        assert.equal(byId('total').textContent, '6');
+        assert.equal(byId('total').textContent, 'Local total: 6');
         edit('quantity', '4');
-        assert.equal(byId('total').textContent, '12');
+        assert.equal(byId('total').textContent, 'Local total: 12');
         assert.equal(byId('circle').getAttribute('fill'), '#b13d48');
         // 5. button
         click('press', {shiftKey: true});
@@ -511,7 +663,7 @@ const CHECKS = {
         assert.equal(byId('notes').children.length, 2);
         click('thaw');
         assert.equal(byId('notes').children.length, 1);
-        assert.equal(byId('total').textContent, '3');
+        assert.equal(byId('total').textContent, 'Local total: 3');
         // 7. later 0.2.14 stage: only explicit requests update the server quote.
         const requests = () => calls.filter(({contentType, name}) => contentType === 'data' && name === 'quote');
         assert.equal(requests().length, 0, 'the complete local trial needed no endpoint call');
@@ -520,7 +672,7 @@ const CHECKS = {
         click('request-quote'); await tick(0);
         assert.equal(data('story.quote'), 2);
         click('large'); click('gift');
-        assert.equal(byId('total').textContent, '11');
+        assert.equal(byId('total').textContent, 'Local total: 11');
         assert.equal(byId('quote').textContent, '2');
         assert.equal(requests().length, 1, 'editing does not trigger the click-only RPC');
         click('request-quote'); await tick(0);
@@ -748,7 +900,7 @@ test('c13: a request in flight is never cancelled, and the change made during th
 });
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['components', 'binding', 'controllers', 'rpc', 'layout', 'editors', 'html_svg']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'menus', 'editors', 'tools', 'composition']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);

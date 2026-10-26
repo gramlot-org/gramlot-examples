@@ -8,6 +8,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'kitchen'});
         pane.h1('Data remote');
+        pane.p("Compare the live menu with Read current value. Changing the table updates the bound view; the explicit snapshot stays unchanged until you read again.");
 
         const form = pane.form({class: 'card stack'});
         form.html_label('Table', {for: 'table'});

@@ -8,6 +8,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="quote")
         pane.h1("Call on change")
+        pane.p("Change the quantity several times quickly. A request starts after you pause typing; compare the status and returned quote.")
 
         form = pane.form(class_="card stack")
         form.html_label("Quantity", for_="quantity")

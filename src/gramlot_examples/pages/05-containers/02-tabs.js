@@ -18,13 +18,13 @@ export class Page extends BasePage {
             });
         }
         main_content.dataController({ script: "this.SET('.closed', pageName)", subscribe_editor_closed: true });
-        this.tab_variants(main_content);
-        this.tab_alignment(main_content);
-        main_content.h2('Try the controls, selection and closing');
+        main_content.h1('Tabs: one workspace, several views');
         main_content.p(
             'Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.',
         );
-        const controls = main_content.formlet({ col_min_width: '14rem', max_width: '36rem' });
+        const options = main_content.details();
+        options.summary("Options · presentation, badges and closing");
+        const controls = options.formlet({ col_min_width: '14rem', max_width: '36rem' });
         controls.filteringSelect({default: "customer",
             id: 'tabs-choice',
             value: '^.page',
@@ -78,7 +78,7 @@ export class Page extends BasePage {
             label: 'Prevent closing Notes',
             mode: 'switch',
         });
-        main_content.p(
+        options.p(
             'Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.',
         );
         main_content.p('^.index', { id: 'tabs-index', mask: 'Selected index: {}' });
@@ -90,7 +90,7 @@ export class Page extends BasePage {
             tabMode: '^.mode',
             tabPosition: '^.position',
             tabAlign: '^.align',
-            height: '300px',
+            height: '240px',
             max_width: '44rem',
             border: '1px solid var(--gramlot-border-control, #aaa)',
             rounded: 6,
@@ -153,18 +153,23 @@ export class Page extends BasePage {
             .textbox({ value: '^.name', lbl: 'Same accepted name', width: '15rem' });
         main_content.p('^.closed', { id: 'tabs-closed', mask: 'Last closed: {}' });
         main_content.p('^.notes', { id: 'tabs-saved-notes', mask: 'Saved notes: {}' });
-        main_content.h2('Container events');
-        main_content.pre('^.events', {
+        const events = main_content.details();
+        events.summary("Inspect container events");
+        events.pre('^.events', {
             id: 'tabs-events',
             max_height: '12rem',
             overflow: 'auto',
             white_space: 'pre-wrap',
             overflow_wrap: 'anywhere',
         });
+        const reference = main_content.details();
+        reference.summary("Compare tab styles, positions and alignment");
+        this.tab_variants(reference);
+        this.tab_alignment(reference);
     }
 
     tab_variants(main_content) {
-        main_content.h1('See the tab variants side by side');
+        main_content.h2('See the tab variants side by side');
         main_content.p(
             'Compare shaped tabs with a light underline, on each of the four sides. Every card is a working editor. Change the name in one: the others show the same Data.',
         );

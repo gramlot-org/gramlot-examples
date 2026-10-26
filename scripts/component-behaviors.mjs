@@ -137,12 +137,13 @@ export const componentBehaviors = {
     async w19(page) {
         await edit(page, '#first-name input', 'Grace');
         assert.equal(await data(page, 'customer.name'), 'Grace');
+        await page.getByText('Options · change the behavior', {exact:true}).click();
         await page.selectOption('#columns', '2');
         assert.equal(await page.locator('#first-name input').inputValue(), 'Grace');
     },
     async w20(page) {
         await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', {configurable: true, value: {writeText: async text => { window.copied = text; }}}));
-        await page.locator('#customer-group').getByRole('button', {name: 'Copy TYTX', exact: true}).click();
+        await page.locator('.gramlot-group-labelbox').filter({has: page.locator('#customer-group')}).getByRole('button', {name: 'Copy TYTX', exact: true}).click();
         await page.waitForFunction(() => Boolean(window.copied));
         assert.equal(await page.evaluate(() => gramlot.data.constructor.fromTytx(window.copied).getItem('name')), 'Ada');
     },

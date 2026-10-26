@@ -1,4 +1,7 @@
 .callback-tree { display:block; max-width:42rem; border:1px solid var(--gramlot-border,#8997ab); border-radius:8px; padding:8px; }
-.callback-tree::part(favorite-icon) { background:#bd9022; mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m12 2 3 6 7 1-5 5 1 8-6-4-6 4 1-8-5-5 7-1z'/%3E%3C/svg%3E"); }
-.callback-tree::part(expanded-caption) { color:#269b76; }
+.callback-tree::part(favorite-icon) { background:var(--gramlot-warning); mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m12 2 3 6 7 1-5 5 1 8-6-4-6 4 1-8-5-5 7-1z'/%3E%3C/svg%3E"); }
+.callback-tree::part(expanded-caption) { color:var(--gramlot-success); }
 .callback-tree::part(selected-caption) { text-decoration:underline; text-underline-offset:4px; }
+
+.example-page > code { width: fit-content; max-width: 100%; overflow-wrap: anywhere; }
+.example-page > code:empty { display: none; }

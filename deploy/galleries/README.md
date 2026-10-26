@@ -180,3 +180,54 @@ node scripts/verify_gallery_visible_content.mjs https://gallery-py.gramlot.dev/ 
 ```
 
 This verifies that hidden Code/Explanation panels make no Source request, first visibility requests content once, and switching pages preserves iframe identity and edited Data. Controlled first-click measurements are in `reports/2026-10-18-visible-content.json`.
+
+## Mobile beta deployment (2026-10-25)
+
+The separate mobile module is staged by `serve-mobile.py`; it is not selected by
+`update.py`. Current receiver contract: [GE-020](../../docs/020-mobile-modules.md).
+From this repository, after building the matching core and gallery resources and
+running `npm run device:build` in the owning Capacitor repository:
+
+```sh
+python deploy/galleries/prepare-mobile.py \
+  ../gramlot-capacitor/examples/mobile_application \
+  /tmp/gramlot-public-modules/mobile_application
+python deploy/galleries/serve-mobile.py --modules /tmp/gramlot-public-modules
+```
+
+Use a fresh output directory. The script copies a public allowlist only. The
+provider imports the same core runtime as its page; use the qualified matching
+runtime, not the older public package. This preview is HTTP on loopback; native
+catalogue/broker activation requires the eventual same-origin HTTPS deployment.
+The optional `Dockerfile.python-mobile` expects this artifact under `public-module/`
+and `serve-mobile.py` in its build context. It intentionally fails when installed
+packages lack the integration; do not bypass that prerequisite. The image itself
+and public deployment remain unqualified until explicitly authorized.
+
+Public verification must cover `/mobile-application/catalog.json`, all eligible
+mobile pages/assets, normal gallery examples and
+`/pages/01-inputs/04-colorpicker`. The module landing route is
+`/mobile-application/index`. Remote Edit remains disabled. Production APNs is not
+configured; push and top-level shortcut entry are omitted. No Mac LAN origin,
+local push service, APNs credentials or signing material belongs in this build.
+Physical iPhone acceptance away from the Mac network and TestFlight upload are
+separate steps, not consequences of preparing this recipe.
+
+
+The explicitly authorized deployment is live as `mobile-20261025`. Its coherent
+local wheels/public artifact are installed in image
+`gramlot-gallery-python:mobile-20261025`; this is not a registry release. Python
+uses loopback 19186; the preceding 19182 container remains running for rollback.
+Only the Python nginx block changed. The release baseline in `current.json` is
+retained, with `python_override` pointing at the new receipt. Before the next
+normal automatic package promotion, integrate the mobile startup/resources into
+that generation; the current updater otherwise regenerates the baseline recipe.
+
+The host directory `/opt/gramlot-galleries/trials/mobile-20261025` contains the
+verified context manifest, build log, `nginx.before.conf`, `nginx.after.conf`,
+`current.before.json` and `receipt.json`. For an authorized rollback, take the
+existing update lock, ensure the preceding Python container is healthy, restore
+`nginx.before.conf`, run `nginx -t`, reload nginx and verify the prior endpoints
+before restoring `current.before.json`. Do not stop either container until the
+selected configuration passes public checks. Preserve the Apple association.
+The ordinary JS gallery and its archive do not belong to this bounded update.

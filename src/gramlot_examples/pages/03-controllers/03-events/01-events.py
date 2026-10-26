@@ -7,13 +7,15 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="events")
         pane.h1("Events")
+        pane.p("Click a chip, type in the field and move over the pointer area. The visible readouts show which event reached each declaring Source node.")
 
         clicks = pane.section(class_="card stack", id="click-area",
                               connect_onclick="this.SET('.clicked', event.target.id || event.target.localName)")
         clicks.h2("connect_onclick on a section")
         clicks.p("Click anywhere in this card, or on one of the chips.")
+        chips = clicks.div(class_="actions event-chips")
         for name in ("red", "green", "blue"):
-            clicks.span(name, id=f"chip-{name}", class_="status")
+            chips.span(name, id=f"chip-{name}", class_="status")
         clicks.p("^.clicked", id="clicked", class_="muted")
 
         typing = pane.section(class_="card stack")

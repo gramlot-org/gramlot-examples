@@ -9,6 +9,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'edit'});
         pane.h1('Native editing');
+        pane.p("Edit a field, then leave it. Compare the accepted Data below; enable live editing to see updates while typing.");
         pane.html_label('Write at every keystroke (live)', {for: 'live'});
         pane.input({default: false, type: 'checkbox', value: '^.live', id: 'live'});
 

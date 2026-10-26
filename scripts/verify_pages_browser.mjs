@@ -13,6 +13,7 @@ import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 import {componentBehaviors} from './component-behaviors.mjs';
 import {layoutBehaviors} from './layout-behaviors.mjs';
+import {workspaceBehaviors} from './workspace-behaviors.mjs';
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 
@@ -20,7 +21,7 @@ const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/cata
 const LOGIC = {
     async b08(page, text) {
         await page.click('#freeze');
-        assert.equal(await text('#frozen'), 'true');
+        assert.equal(await text('#frozen'), 'Structural updates frozen: true');
         await page.click('#add');
         await page.click('#removeLast');
         await page.click('#removeLast');
@@ -56,7 +57,7 @@ const ENDPOINTS = {
         await page.click('#request-quote');
         await page.waitForFunction(() => document.getElementById('quote').textContent === '2');
         await page.click('#large'); await page.click('#gift');
-        assert.equal(await text('#total'), '11'); assert.equal(await text('#quote'), '2');
+        assert.equal(await text('#total'), 'Local total: 11'); assert.equal(await text('#quote'), '2');
         assert.equal(requests(), 1);
         await page.click('#request-quote');
         await page.waitForFunction(() => document.getElementById('quote').textContent === '11');
@@ -484,7 +485,7 @@ LOGIC.c23 = async (page, text) => {
     assert.equal(await text('#summary'), 'Stay estimate: €567');
 };
 
-Object.assign(LOGIC, componentBehaviors, layoutBehaviors);
+Object.assign(LOGIC, componentBehaviors, layoutBehaviors, workspaceBehaviors);
 
 for (const family of families) for (const example of family.examples) {
     assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);

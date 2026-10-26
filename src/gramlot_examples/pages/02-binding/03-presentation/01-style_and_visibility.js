@@ -12,8 +12,10 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'look'});
         pane.h1('Style and visibility');
+        pane.p("Change the color and dimensions, then toggle visibility. Notice that an invisible box still reserves its place in the layout.");
 
-        const controls = pane.form({class: 'card stack'});
+        const work = pane.div({class: 'grid lesson-workbench'});
+        const controls = work.form({class: 'card stack'});
         for (const [label, key] of [['visible', 'show'], ['hidden', 'hide']]) {
             const row = controls.div();
             row.input({type: 'checkbox', value: `^.${key}`, id: key});
@@ -31,7 +33,7 @@ export class Page extends BasePage {
         controls.html_label('style', {for: 'style'});
         controls.input({default: "border: 4px dashed #ffc400", value: '^.style', id: 'style'});
 
-        const stage = pane.div({class: 'stack'});
+        const stage = work.div({class: 'stack'});
         stage.p('The box keeps its place when it is not visible.', {class: 'muted'});
         stage.div('A styled box', {default_rounded: "8px", default_font_size: "1.5rem", default_class: "card", default_background_color: "#456bc4", default_color: "#ffffff", default_hidden: false, default_visible: true, id: 'box', class: '^.tone', style: '^.style',
             color: '^.color', background_color: '^.background', font_size: '^.size',

@@ -14,7 +14,9 @@ class Page(BasePage):
         controls = main_content.formlet(max_width="24rem", columns=1)
         controls.filteringSelect(id="design", value="^design", lbl="Outer design",
                                  values="headline:Headline,sidebar:Sidebar", width="10rem", default='headline')
-        bc = main_content.borderContainer(id="nested-demo", height="440px", design="^design", max_width="64rem",
+        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
+        canvas = main_content.div(class_="layout-canvas")
+        bc = canvas.borderContainer(id="nested-demo", height="440px", design="^design", max_width="64rem",
                                           border="1px solid var(--gramlot-border-control, #aaa)")
         bc.contentPane(region="top", border_bottom="1px solid var(--gramlot-border-control, #aaa)", height="48px", splitter=True, minSize=30, maxSize=100,
                        padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("Outer header")
@@ -25,7 +27,7 @@ class Page(BasePage):
         left.p("A fixed-width drawer: open and close without dragging.")
         nested = bc.borderContainer(region="center")
         nested.contentPane(region="top", border_bottom="1px solid var(--gramlot-border-control, #aaa)", height="40px", padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("Inner header")
-        editor = nested.contentPane(region="center", padding="12px 40px", background="var(--gramlot-surface, #fff)")
+        editor = nested.contentPane(region="center", padding="12px", background="var(--gramlot-surface, #fff)")
         editor.textbox(value="^name", lbl="Customer", width="100%", max_width="24rem")
         editor.checkbox(value="^active", label="Active", mode="switch")
         editor.textBoxArea(id="nested-note", value="^note", lbl="Retained draft", rows=3, width="100%", max_width="24rem")

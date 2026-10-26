@@ -5,6 +5,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'exchange'});
         pane.h1('Data exchange');
+        pane.p("Edit the sample record, save it as TYTX, change a value and load the saved file. The typed values and nested Bag are restored together.");
         const form = pane.section({class: 'card stack', datapath: '.record'});
         form.html_label('Name', {for: 'name'});
         form.input({value: '^.name', id: 'name'});

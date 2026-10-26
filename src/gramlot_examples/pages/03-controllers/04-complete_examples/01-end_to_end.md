@@ -1,6 +1,6 @@
 # Combine inputs, calculations and server calls
 
-**Sample data:** `01-end_to_end_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change quantity and options, then request a quote. The local total follows edits immediately; the last server quote stays visible until the next successful request.
 
 A small order form combines fields, a total and an SVG preview. Start with the **0.2.0 local part**, where bindings and controllers update the page.
 
@@ -11,14 +11,9 @@ After **Endpoint** and **Call on click**, return to the **0.2.14 quote section**
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** first the local core 0.2.0 story, then a separately labelled core 0.2.14 endpoint extension. The maintained Page/Logic module arrangement is from 0.2.5; it does not move the original local behavior into that release.
-
 **Goal:** Explain the local page first, then revisit the same inputs to request a server result and handle its failure.
 
 **Before this lesson:** [b03 · Setters and defaults](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/03-setters_and_defaults.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md), [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/04-freeze.md), [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md). These prerequisites support the local stage. Return for the 0.2.14 section only after [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md) and [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md).
-
-**Open and edit:** select **c08 · End-to-end story** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands. This lesson executes authored inline JavaScript and needs the gallery’s permissive CSP profile; a strict named-Logic starter needs the corresponding named form.
 
 ## Read the page
 
@@ -31,7 +26,7 @@ pane.dataFormula(".total", "quantity * (large ? 3 : 1) + (gift ? 5 : 0)",
 
 The caption comes from `01-end_to_end_data.tytx` before render. It does not arrive late over a network. The SVG and freeze sections are optional local depth: neither is required for the later server request. Leave the separately labelled quote section alone during this first pass; it sends no request at startup or when fields change.
 
-Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `08_end_to_end.js`) beside the Python source.
+Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `01-end_to_end.js`) beside the Python source.
 
 ## Try it and predict the result
 
@@ -140,5 +135,7 @@ After returning for the **0.2.14 extension**, continue with c11's separately
 labelled 0.2.15 Source-auth section, then c12–c14 at 0.2.16. The
 [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080)
 provides the full contract. Do not install old packages to perform these stages.
+
+**Sample data:** `01-end_to_end_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

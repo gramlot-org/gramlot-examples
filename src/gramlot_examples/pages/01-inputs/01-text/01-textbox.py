@@ -12,7 +12,9 @@ class Page(BasePage):
         main_content = root.main(class_="example-page stack")
         main_content.h1("One value, two textboxes")
         main_content.p("Type in either field. Both share the same Data value.")
-        controls = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
+        options = main_content.details(max_width="32rem")
+        options.summary("Options · change the behavior")
+        controls = options.formlet(class_="stack", width="100%", max_width="24rem")
         controls.html_label("Label position", for_="position")
         position = controls.select(id="position", value="^position", width="8rem", max_width="100%", default='TL')
         for code in ("TL", "TC", "TR", "L", "R", "BL", "BC", "BR"):
@@ -22,8 +24,7 @@ class Page(BasePage):
         fields = main_content.formlet(class_="card stack", width="100%", max_width="32rem")
         fields.textbox(id="customer", value="^customer", lbl="Customer",
                        lbl_position="^position", live="^live", readonly="^readonly",
-                       placeholder="Enter a name", lbl_color="#315fa8",
-                       box_padding="8px", box_l_padding="4px", box_c_width="240px")
+                       placeholder="Enter a name", box_c_width="100%")
         fields.textbox(id="customer-copy", value="^customer", lbl="Same customer",
                        live="^live", readonly="^readonly")
         main_content.h2("The Data")

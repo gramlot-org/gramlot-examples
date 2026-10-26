@@ -10,6 +10,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="invoice")
         pane.h1("Endpoint")
+        pane.p("The page sends price and VAT rate once at startup. The server returns the gross amount, which appears below through a Data binding.")
 
         result = pane.section(class_="card stack")
         result.h2("Total with VAT, computed by the server")

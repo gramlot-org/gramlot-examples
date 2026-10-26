@@ -1,5 +1,7 @@
 # Horizontal slider: range and steps
 
+**Try this:** Move a slider or use its arrow keys. The other slider follows in steps of five; Options lets you compare live and committed updates.
+
 Two horizontal sliders share a numeric level. Drag or use the arrow keys; switch live editing to compare immediate and committed updates.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source, Data and bindings. No endpoint calls, stores or validation engine.

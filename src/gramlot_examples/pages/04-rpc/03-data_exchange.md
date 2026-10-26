@@ -1,6 +1,6 @@
 # Export and restore typed Data
 
-**Sample data:** `05-data_exchange_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Edit the sample record, save it as TYTX, change a value and load the saved file. The typed values and nested Bag are restored together.
 
 Edit a record, save it as TYTX, change it again and restore the file. You learn how to save a whole Data Bag with its supported types. JSON/XML exports are for interchange, not Restore TYTX.
 
@@ -11,14 +11,9 @@ The record contains text, numbers, a boolean, a null value and a nested address.
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** core 0.2.5; the public `gramlot.utl.inout` spelling is from 0.2.10.
-
 **Goal:** Save and restore a typed Data Bag, and distinguish round-trip files from interchange exports.
 
 **Before this lesson:** [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/03-forms.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md).
-
-**Open and edit:** open this page in your environment's gallery. Read Python first; Python builds Source on the host and named JavaScript Logic runs in the browser. The JavaScript Page is the equivalent host/Worker declaration. The gallery shows source; to change it, copy the page into your editable project following the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md). Read the **logic.js** tab (the Logic class from `17_data_exchange.js`) when using Python. Reload after source edits.
 
 ## Read the page
 
@@ -58,6 +53,8 @@ b09 made a form share one Data record with its display. This later release lets 
 
 TYTX Save/Restore preserves supported types. JSON/XML exports are for other programs; the `.json` suffix alone does not make a file restorable. File dialogs require a user gesture. If you cancel a picker, the existing Data remains; start a new Restore action when ready. Browser download settings may prompt or save automatically. Named Logic handles these actions without an inline-code CSP requirement. The catalogue entry is a local file lesson; mail and HTTP environment checks are separately classified.
 
-Continue with [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/09_endpoint.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-095) provides the full contract.
+Continue with [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-095) provides the full contract.
+
+**Sample data:** `03-data_exchange_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

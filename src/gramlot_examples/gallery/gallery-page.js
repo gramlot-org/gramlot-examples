@@ -5,7 +5,7 @@ import {guidedDemo} from './guided-demo.js';
 const NAVIGATION_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M9%204v16M5.5%208h1M5.5%2012h1M5.5%2016h1%22%2F%3E%3C%2Fsvg%3E";
 const SETTINGS_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m10%203-.5%202-2%20.9-1.9-.6-2%203.4L5%2010v2l-1.4%201.3%202%203.4%201.9-.6%202%20.9.5%202h4l.5-2%202-.9%201.9.6%202-3.4L19%2012v-2l1.4-1.3-2-3.4-1.9.6-2-.9L14%203Z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2211%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E";
 
-const INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%227%22%2F%3E%3Cpath%20d%3D%22m15%2015%206%206M7%208h6M10%208v5M7%2013h6%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%228%22%20r%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%228%22%20r%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2213%22%20r%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%22.7%22%2F%3E%3C%2Fsvg%3E";
+const INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%221%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%227.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%226.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220.5%22%20stroke%3D%22%23404448%22%2F%3E%3C%2Fsvg%3E";
 
 export class GalleryPage extends IndexPage {
     static title = 'Gramlot examples';
@@ -26,28 +26,34 @@ export class GalleryPage extends IndexPage {
         return navigation;
     }
     main(root) {
-        const frame = root.framePane({id:'gallery-frame', height:'100dvh', min_height:0});
+        const frame = root.framePane({id:'gallery-frame', height:'100%', min_height:0});
         frame.left.setAttr({id:'gallery-rail-region', width:'42px', padding:'45px 3px 3px', class:'gallery-rail-region'});
         const rail = frame.left.menu({id:'gallery-rail', presentation:'bar', orientation:'vertical',
             labelPosition:'tooltip', iconSize:24, width:'100%', height:'100%', aria_label:'Gallery tools'});
-        rail.menuline({caption:'Navigation', tooltip:'Show or hide navigation', iconSrc:NAVIGATION_ICON,
+        rail.menuline({caption:'Navigation', tooltip:'Navigation — browse examples and documentation', iconSrc:NAVIGATION_ICON,
             checked:'^galleryIndex.navigationOpen', action:'galleryToggleNavigation', overflowable:false,
             id:'gallery-navigation-button', width:'36px', height:'36px'});
         rail.spacer({flex:1});
-        rail.menuline({caption:'Inspector', tooltip:'Open inspector', iconSrc:INSPECTOR_ICON,
+        rail.menuline({caption:'Inspector', tooltip:'Inspector — explore the current page’s Source and Data', iconSrc:INSPECTOR_ICON,
             checked:false, disabled:true, overflowable:false,
             id:'gallery-inspector', width:'36px', height:'36px'});
-        rail.menuline({caption:'Settings', tooltip:'Show or hide settings', iconSrc:SETTINGS_ICON,
+        rail.menuline({caption:'Settings', tooltip:'Settings — change theme, colors and toolbar position', iconSrc:SETTINGS_ICON,
             checked:'^galleryIndex.settingsOpen', action:'galleryToggleSettings', overflowable:false,
             id:'gallery-settings-button', width:'36px', height:'36px'});
         super.main(frame.center);
     }
     left(pane) {
         pane.setAttr({id:'index-sidebar', class:'index-sidebar', nodeId:'galleryNavigation'});
-        pane.header().img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
+        const header=pane.header({class:'gallery-navigation-header'});
+        header.img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
+        const search=header.menu({presentation:'bar',class:'gallery-navigation-search',aria_label:'Search navigation'});
+        const field=search.menuline({group:true,overflowable:false,flex:1,min_width:0}).div({class:'gallery-search-field'});
+        field.span({class:'gallery-search-icon',aria_hidden:'true'});
+        field.input({type:'search',value:'^galleryIndex.search',default:'',live:true,placeholder:'Search examples',aria_label:'Search examples'});
+        field.html_button({type:'button',class:'gallery-search-clear',aria_label:'Clear search',title:'Clear search',hidden:"^galleryIndex.search:={} === ''",connect_onclick:"this.SET('galleryIndex.search', '')"});
         super.left(pane);
         pane.setAttr({drawer_minimize:true, drawer_label:'', drawer_display:'none'});
-        pane.value.getNode('tree').setAttr({id:'gallery-navigation-tree', class:'gallery-navigation-tree', autoCollapse:true, hideValues:true});
+        pane.value.getNode('tree').setAttr({id:'gallery-navigation-tree', class:'gallery-navigation-tree', autoCollapse:true, hideValues:true, searchText:'^galleryIndex.search'});
 
     }
     center(pane) {
@@ -56,12 +62,7 @@ export class GalleryPage extends IndexPage {
         pane.value.getNode('tabs').setAttr({id:'index-pages', class:'index-main', hidden:true});
         pane.div({id:'gallery-introduction',height:'100%'}).iframe({src:this.constructor.introductionUrl,title:'Example gallery',width:'100%',height:'100%',border:0});
     }
-    right(pane) {
-        pane.setAttr({id:'index-code', nodeId:'galleryCode', width:'420px', minSize:220, maxSize:900, splitter:true,
-            drawer:'close', drawer_label:'Code', drawer_minimize:true, aria_label:'Example source code', hidden:true});
-        pane.div({id:'gallery-code-pages', height:'100%'});
-    }
-    top(pane) { pane.setAttr({height:'42px'}); this.header(pane); }
+    top(pane) { pane.setAttr({height:'var(--gallery-toolbar-size,42px)'}); this.header(pane); }
     navigation_section({directory}) {
         const family = directory;
         const group = this.constructor.groups.find(item => item.key === family);
@@ -74,7 +75,7 @@ export class GalleryPage extends IndexPage {
     introduction(intro) {
         intro.h2("Example gallery");
         intro.p("This gallery shows each example page beside the code that creates it. The Python and JavaScript integrations have the same examples.");
-        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. Use the Navigation toolbar button and the Code drawer label to show or hide their panels; drag their splitters to resize them. Each lesson has Example and Explanation tabs; switching them preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
+        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Drag the icon beside Code to open it in a floating window; close that window to return Code to its tab. Switching tabs preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
     }
     groupPanel(pane, group) { pane.div(group.readme, {id: `readme-${group.key}`}); }
     footer(footer) {
@@ -164,6 +165,9 @@ export class GalleryPage extends IndexPage {
         stage.iframe({title: `${example.title} preview`, name: `example-${key}`, id: `frame-${key}`});
         preview.contentPane({title: 'Explanation', pageName: 'explanation', class: 'gallery-lesson', overflow: 'auto', id: `description-${key}`})
             .p('Loading explanation…', {role: 'status'});
+        preview.contentPane({title:'Code', pageName:'code', detachable:true, class:'gallery-codepane', id:`codepane-${key}`})
+            .tabContainer({id:`code-tabs-${key}`, class:'gallery-source-tabs', height:'100%', tabMode:'underline'})
+            .contentPane({title:'Code'}).p('Loading code…', {role:'status'});
     }
     codePanel(parent, example) {
         const key = example.key;

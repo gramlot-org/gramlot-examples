@@ -16,14 +16,12 @@ class PreviewPage(BasePage):
     density = "28px controls / 13px text"
 
     def main(self, root):
-        root.dataSetter("preview", dict(open=False, floating=False, details=True, locked=False,
-                                       name="North studio", reference="PO-1048", status="Ready", notice="Ready to edit", selected="record"))
         page = root.main(class_="example-page stack", max_width="1000px", gap="var(--gramlot-space-4)")
         page.h1(self.profile + " · workspace")
         page.p(self.density + ". Compare forms, menus, tables and windows.", class_="muted")
         links = page.nav(display="flex", gap="var(--gramlot-space-3)", flex_wrap="wrap", aria_label="Compare appearance profiles")
         for caption, path in (("Joanna · 32px", "11_joanna"), ("Compact · 28px", "12_compact"), ("Mimi · 24px", "13_mimi")):
-            links.a(caption, href="/pages/menu/"+path, target="_top")
+            links.a(caption, href="/pages/05-menus/"+path, target="_top")
         page.p("Profile links open a standalone preview. Gallery Settings let you combine theme, colors and light/dark independently. Save is local only.", class_="muted")
         page.a("Open gallery · Settings", href="/", target="_top")
         frame = page.framePane(height="360px", border="1px solid var(--gramlot-border)", border_radius="var(--gramlot-radius-lg)", overflow="hidden")

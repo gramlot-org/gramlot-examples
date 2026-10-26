@@ -1,22 +1,17 @@
 # React to Data changes with dataController
 
-**Sample data:** `02-controller_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change the name, send a request and try the delayed input. Each section shows a different reason for a controller to run; the counters make those triggers visible.
 
 A controller reacts to Data changes and writes other values. You learn when to use a controller for an action rather than a formula for a result. Its path filter distinguishes where a change occurred, not who made it.
 
-**Uses:** Data binding and local controllers — core 0.2.0.
+**Uses:** Data binding and local controllers.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0).
-
 **Goal:** Choose a controller for an effect and identify its trigger.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c02 · Controller** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands. This lesson executes authored inline JavaScript and needs the gallery’s permissive CSP profile; a strict named-Logic starter needs the corresponding named form.
+**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md).
 
 ## Read the page
 
@@ -46,10 +41,9 @@ Change `_delay=400` to `_delay=800`, reload and type another query.
 
 e13 uses the same `_timing` on a controller to move an SVG circle through Source attributes. For a repeated controller effect, the provider owns timer cleanup, so the page authors no timer handle and no `clearInterval`. Here the controller writes Data; e13’s controller writes Source attributes.
 
-
 ## Advanced: filter the changed path (0.2.0)
 
-The optional section uses named Logic from `02_controller.js`. Two controllers watch `.filter.name`, and two watch the Bag `.filter.address`; each pair differs only in `_userChanges`. Start from a reload: all counters are zero.
+The optional section uses named Logic from `02-controller.js`. Two controllers watch `.filter.name`, and two watch the Bag `.filter.address`; each pair differs only in `_userChanges`. Start from a reload: all counters are zero.
 
 1. Edit Tracked name, then leave the field: name_exact/name_all become 1/1.
 2. Press SET the name: both become 2/2. Programmatic writes to the exact path qualify too.
@@ -62,6 +56,8 @@ Exercise: change `_userChanges=True` to False on an exact watcher, reload and re
 
 `requests` in this page counts fired local events. The advanced `_userChanges` counters are separate from `requests`: they filter exact-path changes, including programmatic writes, not human versus code identity.
 
-Continue with [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/03_named_logic.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
+Continue with [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
+
+**Sample data:** `02-controller_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

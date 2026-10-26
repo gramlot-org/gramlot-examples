@@ -24,7 +24,9 @@ export class Page extends BasePage {
             'Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.',
         );
         main_content.checkbox({default: false,  id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
-        const border = main_content.borderContainer({
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const border = canvas.borderContainer({
             id: 'events-border',
             nodeId: 'eventWorkspace',
             height: '360px',
@@ -46,7 +48,7 @@ export class Page extends BasePage {
             background: 'var(--gramlot-surface-subtle, #eef1f5)',
             border_right: '1px solid var(--gramlot-border-control, #aaa)',
         });
-        filters.p('This pane publishes closable_change.');
+        filters.p('Filters');
         filters.textbox({
             id: 'events-name',
             value: '^.name',

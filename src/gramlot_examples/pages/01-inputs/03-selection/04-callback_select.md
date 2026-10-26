@@ -1,5 +1,7 @@
 # Load choices with a browser callback
 
+**Try this:** Search for Sample 02 and choose a result. The browser callback reads a local Bag; the selected code appears in both fields without a server call.
+
 Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source and Data bindings and named browser Logic. No endpoints or validation engine.

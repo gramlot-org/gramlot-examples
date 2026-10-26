@@ -18,6 +18,33 @@ async function range(page, selector, value) {
     }, value);
 }
 export const layoutBehaviors = {
+    async 'tray-workspace'(page) {
+        const owner = page.locator('#composed-workspace gramlot-textbox input');
+        await owner.fill('Grace');
+        const original = await owner.elementHandle();
+        await page.getByRole('menuitem', {name:'Save layout', exact:true}).click();
+        const snapshot = await page.evaluate(() => window.gramlot.data.getItem('layout').toTytx());
+        const title = page.locator('[data-tray-block]:has(#composed-workspace) > .label-box label');
+        const rect = await title.boundingBox();
+        await page.mouse.move(rect.x+rect.width/2, rect.y+rect.height/2);
+        await page.mouse.down();
+        await page.mouse.move(rect.x+rect.width/2+25, rect.y+rect.height/2+30, {steps:8});
+        await page.mouse.up();
+        assert.equal(await page.evaluate(() => window.gramlot.data.getItem('layout.workspace.left')),45);
+        await page.evaluate(() => {
+            const bag=window.gramlot.data;
+            for(const [key,value] of Object.entries({layer:1,rotation:3,scale:.9,width:420,height:410}))
+                bag.setItem('layout.workspace.'+key,value);
+        });
+        await page.getByRole('menuitem', {name:'Restore', exact:true}).click();
+        assert.equal(await page.evaluate(() => window.gramlot.data.getItem('layout').toTytx()), snapshot);
+        assert.equal(await owner.inputValue(), 'Grace');
+        assert.equal(await original.evaluate(el => el === document.querySelector('#composed-workspace gramlot-textbox').control),true);
+        await page.getByRole('menuitemcheckbox', {name:'Lock layout'}).click();
+        await page.waitForFunction(() => window.gramlot.data.getItem('ui.locked') === true);
+        assert.equal(await page.locator('.tray-rotate:visible').count(),0);
+        await owner.fill('Ada');
+    },
     async l01(page) {
         await edit(page, '#customer-name input', 'Grace');
         assert.equal(await page.locator('#accepted-name').textContent(), 'Grace');

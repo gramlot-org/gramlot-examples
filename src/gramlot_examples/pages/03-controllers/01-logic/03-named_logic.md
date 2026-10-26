@@ -1,6 +1,6 @@
 # Organize behavior in a Logic class
 
-**Sample data:** `03-named_logic_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change the price and compare the discounted result and change counter. The page declares the fields; two named Logic methods provide the behavior.
 
 A price calculation and a change counter call methods in a `Logic` class. You learn how to reuse named browser behavior instead of repeating inline code. In a Python gallery, open **logic.js** to see those methods.
 
@@ -9,18 +9,13 @@ A price calculation and a change counter call methods in a `Logic` class. You le
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0). The maintained Page/Logic module arrangement is from 0.2.5; it does not move the original behavior into a later release.
-
 **Goal:** Reuse browser behavior by naming a Logic method.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c03 · Named logic** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md).
 
 ## Read the page
 
-The Python Page declares `func="finalPrice"`; `03_named_logic.js` exports the browser `Logic` used by both languages. A formula method takes resolved parameters and returns a value. A controller method receives `(node, kwargs)` and writes Data with `node.SET`.
+The Python Page declares `func="finalPrice"`; `03-named_logic.js` exports the browser `Logic` used by both languages. A formula method takes resolved parameters and returns a value. A controller method receives `(node, kwargs)` and writes Data with `node.SET`.
 
 ```python
 pane.dataFormula(".final", func="finalPrice", price="^.price", threshold=100, _init=True)
@@ -28,7 +23,7 @@ pane.dataFormula(".final", func="finalPrice", price="^.price", threshold=100, _i
 
 `finalPrice` applies 10% off at/above the threshold. In Logic, `this` is the logic group, `this.page` is the browser Gramlot instance, and `this.changes` is local browser state. It is not a server Page field.
 
-Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `03_named_logic.js`) beside the Python source.
+Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `03-named_logic.js`) beside the Python source.
 
 ## Try it and predict the result
 
@@ -54,7 +49,7 @@ The server already links the shared theme. In your editable project, create
 Reload the page and inspect its stylesheet requests. **Answer:** the matching
 stylesheet is served as a companion and the heading changes without adding a
 resource group or browser style-writing code. The Python page already obtains
-its root Logic from `03_named_logic.js`. Remove the temporary style afterwards.
+its root Logic from `03-named_logic.js`. Remove the temporary style afterwards.
 
 This common path covers Page.css, the same-name stylesheet and root Logic.
 `css_requires`/`js_requires` and dotted named native-event handlers need the
@@ -65,6 +60,8 @@ that host. Do not simulate it by loading scripts in the example.
 
 Named Logic works without runtime inline compilation. A root `func` method does not become a named `connect_on` group: dotted event names need a resource group unavailable in the common FileServer gallery. Server-only imports cannot be placed in a module that the browser imports for Logic.
 
-Continue with [c04 · Inline expressions](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/04_inline_expressions.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-060) explains the full contract.
+Continue with [c04 · Inline expressions](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/04-inline_expressions.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-060) explains the full contract.
+
+**Sample data:** `03-named_logic_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

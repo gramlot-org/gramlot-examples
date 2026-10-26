@@ -1,6 +1,6 @@
 # Search a list and select a value
 
-**Sample data:** `03-filtering_select_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Search for a delivery caption and select it. The second field follows; the readout contains its code rather than the displayed caption.
 
 Search a caption, store its code. Two fields share the same choice and the same list.
 
@@ -18,5 +18,7 @@ fields.filteringSelect(value="^choice", values="^choices", lbl="Delivery")
 ```
 
 Enable read-only mode without replacing the input; label layout variants are in Settings (⚙) in the gallery footer. Both fields use the same `lbl_` and `box_` contract as the earlier controls, with compact cards and bounded field widths.
+
+**Sample data:** `03-filtering_select_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

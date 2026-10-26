@@ -14,6 +14,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack'});
         pane.h1('Cached remote');
+        pane.p("Switch from Lamp to Spotlight, then to Chair. The first two share a category, so the mounted-fragment counter stays unchanged until Chair.");
         pane.html_label('Product', {for: 'product'});
         const choice = pane.select({default: "products.lamp", id: 'product', value: '^current'});
         for (const [key, product] of Object.entries(PRODUCTS)) choice.option(product.name, {value: `products.${key}`});

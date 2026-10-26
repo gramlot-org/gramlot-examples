@@ -1,3 +1,4 @@
+import {mountGalleryModules} from './gallery-modules.js';
 import {GalleryCodeLogic} from './gallery-code-logic.js';
 import {mountGallery, initializeNavigation, toggleGalleryPanel} from './gallery.js';
 import {mountGalleryInspector} from './gallery-inspector.js';
@@ -25,5 +26,8 @@ export class Logic {
         const root = renderer.elements.get(document.getElementById('gallery')).node;
         const inspector = mountGalleryInspector(renderer, root, document.getElementById('gallery-inspector-panel'));
         mountGallery(renderer, root, inspector);
+        void mountGalleryModules(this.page, root).catch(error => {
+            if (this.page.state !== 'disposed') root.builder.nodeById('gallery-load-status').setValue(`Mobile application: ${error.message}`);
+        });
     }
 }

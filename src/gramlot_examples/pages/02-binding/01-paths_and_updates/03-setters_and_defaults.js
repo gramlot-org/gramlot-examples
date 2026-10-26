@@ -8,7 +8,8 @@ export class Page extends BasePage {
         pane.h1('Setters and defaults');
         pane.p('Every value below was in the Data before the first render.', {class: 'muted'});
 
-        const form = pane.form({class: 'card stack'});
+        const work = pane.div({class: 'grid lesson-workbench'});
+        const form = work.form({class: 'card stack'});
         form.html_label('Customer', {for: 'customer'});
         form.input({value: '^.customer', id: 'customer'});
         form.html_label('Quantity (default 1)', {for: 'quantity'});
@@ -18,7 +19,7 @@ export class Page extends BasePage {
         form.html_label('Price', {for: 'price'});
         form.input({type: 'number', value: '^.price', attr_currency: 'EUR', id: 'price'});
 
-        const summary = pane.section({class: 'card stack'});
+        const summary = work.section({class: 'card stack'});
         summary.h2('The Data');
         const facts = summary.dl();
         for (const [label, pointer, key] of [['Customer', '^.customer', 'out-customer'],

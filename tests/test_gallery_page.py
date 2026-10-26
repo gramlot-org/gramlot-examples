@@ -50,7 +50,7 @@ class GalleryPageTests(unittest.TestCase):
         self.assertNotIn("gallery-view-inspector", ids)
 
     def test_default_urls(self):
-        self.assertEqual(sources(Page()), {"img": "/assets/branding/gramlot-logo-dark.svg", "iframe": "pages/00-index"})
+        self.assertEqual(sources(Page()), {"img": "/assets/branding/svg/gramlot-horizontal-primary.svg", "iframe": "pages/00-index"})
 
     def test_theme_choices_and_sidebar_separator(self):
         page = Page()
@@ -82,13 +82,15 @@ class GalleryPageTests(unittest.TestCase):
         self.assertNotIn("gallery-settings-toggle", controls)
         self.assertEqual(controls["gallery-label-position"].attr["value"], "^galleryIndex.labelPosition")
         self.assertEqual(controls["gallery-regions"].node_tag.lower(), "bordercontainer")
-        for id_, region in (("index-sidebar", "left"), ("index-code", "right")):
+        for id_, region in (("index-sidebar", "left"),):
             self.assertEqual(controls[id_].attr["region"], region)
             self.assertTrue(controls[id_].attr["splitter"])
             self.assertTrue(controls[id_].attr["drawer"])
+        self.assertNotIn("index-code", controls)
         pages = controls["index-pages"]
         self.assertEqual(pages.node_tag.lower(), "tabcontainer")
-        self.assertEqual(pages.attr["selectedPage"], "^galleryIndex.active")
+        self.assertEqual(pages.attr["selectedPage"], "^.active")
+        self.assertTrue(any(n.attr.get("datapath") == "galleryIndex" for n in nodes))
         self.assertIsNone(pages.value)
         self.assertNotIn("panel-l04", controls)
         self.assertNotIn("codepane-l04", controls)
@@ -119,9 +121,9 @@ class GalleryPageTests(unittest.TestCase):
 
     def test_subclass_sets_the_urls(self):
         class MountedPage(Page):
-            logoUrl = "/py/assets/branding/gramlot-logo-dark.svg"
+            logoUrl = "/py/assets/branding/svg/gramlot-horizontal-primary.svg"
 
-        self.assertEqual(sources(MountedPage()), {"img": "/py/assets/branding/gramlot-logo-dark.svg", "iframe": "pages/00-index"})
+        self.assertEqual(sources(MountedPage()), {"img": "/py/assets/branding/svg/gramlot-horizontal-primary.svg", "iframe": "pages/00-index"})
 
 
     def test_icon_rail_is_a_single_framepane_toolbar(self):

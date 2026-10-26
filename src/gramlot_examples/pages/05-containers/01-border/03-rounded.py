@@ -17,7 +17,9 @@ class Page(BasePage):
                                  values="headline:Headline,sidebar:Sidebar", width="10rem", default='headline')
         controls.horizontalSlider(id="rounded-slider", value="^rounded", lbl="Corner radius (px)",
                                   min=0, max=48, step=1, live=True, width="14rem", default=24)
-        border = main_content.borderContainer(id="rounded-border", height="560px", max_width="64rem",
+        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
+        canvas = main_content.div(class_="layout-canvas")
+        border = canvas.borderContainer(id="rounded-border", height="480px", max_width="64rem",
                                               design="^design", rounded="^rounded",
                                               border="2px solid var(--gramlot-border-control, #8192aa)",
                                               background="var(--gramlot-surface, #fff)")
@@ -31,7 +33,7 @@ class Page(BasePage):
                                         padding="16px", background="var(--gramlot-surface-subtle, #e5ebf3)",
                                         **dimensions)
             region.strong(label)
-        center = border.contentPane(region="center", padding="24px 32px")
+        center = border.contentPane(region="center", padding="16px")
         inner = center.borderContainer(id="rounded-inner", height="100%", rounded="^rounded",
                                        background="var(--gramlot-surface, #fff)",
                                        border="2px solid var(--gramlot-border-control, #8192aa)")
