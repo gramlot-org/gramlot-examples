@@ -106,8 +106,10 @@ const change = (f, id, value) => {
 const drawer = (f, side) => f.get('gallery-regions').shadowRoot.querySelector(`[data-side="${side}"] .drawer`);
 const key = (f, id, value) => f.get(id).dispatchEvent(new f.document.defaultView.KeyboardEvent('keydown', {key: value, bubbles: true}));
 
-test('frame theme bridge is gallery-owned and removed with its Source script', () => {
-    const parent = new JSDOM('<iframe src="https://gallery.test/frame"></iframe>', {url:'https://gallery.test/'}).window;
+for (const url of ['https://gallery.test/', 'file:///gallery/']) {
+test(`frame theme bridge is owned and disposed with Source (${url})`, () => {
+    const origin = url.startsWith('file:') ? 'null' : 'https://gallery.test';
+    const parent = new JSDOM(`<iframe src="${url}frame"></iframe>`, {url}).window;
     const child = parent.document.querySelector('iframe').contentWindow;
     child.document.write('<html><body><main id="gramlot-root"></main></body></html>');
     const builder = new GramlotBuilder();
@@ -120,9 +122,9 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     const style = [...child.document.querySelectorAll('style')].find(item=>app.src.renderer.elements.has(item));
     assert.ok(style.textContent.includes('font-size: 13px'));
     assert.ok(app.src.renderer.elements.get(style), 'preview CSS belongs to Source');
-    assert.deepEqual(ready, [{data: {type: THEME_READY, devices: []}, target: 'https://gallery.test'}]);
+    assert.deepEqual(ready, [{data: {type: THEME_READY, devices: []}, target: origin === 'null' ? '*' : origin}]);
     const message = (source, theme, appearance = 'compact', palette = 'default') => child.dispatchEvent(new child.MessageEvent('message',
-        {source, origin:'https://gallery.test', data: {type: THEME_SET, theme, appearance, palette}}));
+        {source, origin, data: {type: THEME_SET, theme, appearance, palette}}));
     message(new JSDOM('').window, 'dark'); message(parent, 'system');
     assert.equal(child.document.documentElement.hasAttribute('data-theme'), false);
     app.data.setItem('draft.name', 'Unsaved draft');
@@ -162,6 +164,7 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     app.dispose();
 });
+}
 
 test('every shared example displays exactly its exported Logic class, never the alternative Page', async () => {
     const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url)));

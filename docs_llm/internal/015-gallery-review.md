@@ -164,3 +164,13 @@ Publication remains pending until the coordinated release checks complete.
 Final rebuilt candidate: all 296 JavaScript tests pass after integrating the shared
 Toolbox parser through core. The tray browser checks retain widget identity,
 restore all geometry and keep field editing available when the layout is locked.
+
+
+Release-gate follow-up: all 110 catalogue lessons pass their interactive browser
+checks through both Python and JavaScript hosts, including the new window, menu,
+Color Maker, sieve and tray lessons. Checks now follow the shared Labelbox copy
+action and the visible lesson captions. The mobile-artifact regression uses the
+stdlib unittest runner required by CI. File-export theme messages compare against
+the opaque `null` event origin while retaining parent/registered-frame ownership
+checks; HTTPS checks remain exact-origin. The serverless file gallery passes all
+111 exported examples with no HTTP(S) requests. No package has been published yet.

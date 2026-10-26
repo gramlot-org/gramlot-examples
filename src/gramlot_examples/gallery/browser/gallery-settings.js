@@ -21,7 +21,7 @@ export function mountGallerySettings(renderer, root, state) {
         for (const frame of frames()) if (frame.hasAttribute('src')) send(frame);
     };
     const message = event => {
-        if (event.origin !== window.location.origin || event.data?.type !== THEME_READY) return;
+        if (event.origin !== (window.location.protocol === 'file:' ? 'null' : window.location.origin) || event.data?.type !== THEME_READY) return;
         const frame = frames().find(item => item.contentWindow === event.source);
         if (frame) send(frame);
     };

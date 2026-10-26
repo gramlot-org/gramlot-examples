@@ -10,7 +10,7 @@ export function mountFrameTheme(renderer, node) {
     if (appearance != null && !APPEARANCES.has(appearance)) throw new Error('Unknown frame appearance');
     const style = node.builder.wrapSource(node.parentBag).style(appearanceStyles[appearance ?? 'compact']);
     const message = event => {
-        if (event.origin !== window.location.origin || event.source !== window.parent || event.data?.type !== THEME_SET ||
+        if (event.origin !== (window.location.protocol === 'file:' ? 'null' : window.location.origin) || event.source !== window.parent || event.data?.type !== THEME_SET ||
             !THEMES.has(event.data.theme) || !APPEARANCES.has(event.data.appearance) || typeof event.data.palette !== 'string' || !Object.hasOwn(paletteStyles, event.data.palette)) return;
         window.document.documentElement.setAttribute('data-theme', event.data.theme);
         style.setValue(appearanceStyles[event.data.appearance] + '\n' + paletteStyles[event.data.palette]);

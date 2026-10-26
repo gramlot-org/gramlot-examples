@@ -37,7 +37,7 @@ export function mountGalleryPresentation(renderer, root, state) {
         if (['theme','appearance','palette'].includes(event.node.label)) { apply(); save(); }
     }});
     releases.push(() => state.unsubscribe('gallery-presentation', {any:true}));
-    listen(window,'message',event => { if (event.origin === window.location.origin && event.data?.type === THEME_READY) {
+    listen(window,'message',event => { if (event.origin === (window.location.protocol === 'file:' ? 'null' : window.location.origin) && event.data?.type === THEME_READY) {
         const frame = frames().find(frame => frame.contentWindow === event.source);
         if (frame) send(frame);
     }});
