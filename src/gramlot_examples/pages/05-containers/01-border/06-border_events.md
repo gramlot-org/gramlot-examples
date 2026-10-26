@@ -1,6 +1,6 @@
 # Border events and controllers
 
-**Sample data:** `06-border_events_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Open or close a drawer and resize a region. Compare the event counters and payloads to see the notifications received by controllers.
 
 Suppose you want a small status message whenever someone closes a panel. You should not have to watch the browser's HTML or write a second click handler for the drawer. The container can announce the change, and your page can listen.
 
@@ -25,3 +25,5 @@ The Filters pane has a nodeId of eventFilters. The controller's subscribe_eventF
 Read the name in three parts: subscribe, the component's identity, and the event. The controller receives the details and writes its result into Data. The counters on screen then update through normal bindings.
 
 No event is counted just because the page starts. Try an action and watch the result: this is a conversation between existing components, not a replacement for their normal behavior.
+
+**Sample data:** `06-border_events_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

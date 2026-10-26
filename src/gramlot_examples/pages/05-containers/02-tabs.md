@@ -1,6 +1,6 @@
 # Tabs: select, close and retain content
 
-**Sample data:** `02-tabs_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Write an invalid one-character customer name, switch tabs and return. The draft remains. Close Notes and compare the retained Data; expand the reference to compare styles.
 
 The first eight cards compare two presentations on all four sides. **Shaped tabs** give each label a visible outline; **Underline** leaves a lighter row or list of text, with a line marking the selected panel. You can click every card: these are real containers, not pictures.
 
@@ -37,3 +37,5 @@ After closing Notes, it is no longer a selectable tab. Reload this example when 
 Each panel has a pageName, a stable name such as customer or notes. The container's selectedPage can bind to Data, which is why **Selected page** and clicking a tab can control the same selection. The numeric selected value is its position in the list, starting at zero.
 
 The event report lets you see which panel is being hidden, shown or closed. It is useful when another part of your application needs to react, but you do not need a controller just to switch ordinary tabs: the container already does that.
+
+**Sample data:** `02-tabs_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

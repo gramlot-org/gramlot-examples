@@ -1,22 +1,17 @@
-# Freeze and resume bound updates
+# Defer structural updates with freeze
 
-**Sample data:** `04-freeze_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Freeze the branch, increment the count and remove an item. The count updates immediately; item removal appears only after Thaw.
 
-Freeze a list, add or remove items, then thaw it. You learn that structural changes can wait while existing Data bindings keep working. Return here after **Named logic** and **Button controller**.
+Freeze a list, increment the counter or remove items, then thaw it. You learn that structural changes can wait while existing Data bindings keep working. Return here after **Named logic** and **Button controller**.
 
 **Uses:** Source freeze/thaw, Data binding and local controllers (0.2.0); shared Page/Logic module layout from 0.2.5.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0). The maintained Page/Logic module arrangement is from 0.2.5; it does not move the original behavior into a later release.
-
 **Goal:** Observe immediate Data updates and deferred structural rendering separately.
 
-**Before this lesson:** [e10 · Cards with icons](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/04-page_composition/01-cards_with_icons.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **b08 · Freeze** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [e10 · Cards with icons](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/01-cards_with_icons.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md).
 
 ## Read the page
 
@@ -28,7 +23,7 @@ actions.button(label, id=method).dataController(func=method)
 
 Existing Data bindings continue while the branch is frozen. Source removal takes effect semantically at once; DOM rebuilding waits until unfreeze.
 
-Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `08_freeze.js`) beside the Python source.
+Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python. Read the gallery’s **logic.js** tab (the Logic class from `04-freeze.js`) beside the Python source.
 
 ## Try it and predict the result
 
@@ -46,6 +41,8 @@ Reload, freeze, increment twice, remove once, then thaw.
 
 Freeze is not a transaction, a Data pause or a persistence mechanism. Removed nodes stop participating even while old DOM waits for thaw. Avoid adding arbitrary DOM operations to “force” the visual change.
 
-Continue with [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/09_forms.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-030) explains the full contract.
+Continue with [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/03-forms.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-030) explains the full contract.
+
+**Sample data:** `04-freeze_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

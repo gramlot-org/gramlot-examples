@@ -1,6 +1,6 @@
 # Numeric fields: format and constraints
 
-**Sample data:** `03-number_textbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Enter a decimal, then try invalid text and leave the field. Compare the editable draft with the accepted numeric value and its formatted copy.
 
 Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data.
 
@@ -14,5 +14,7 @@ The page locale is `it-IT`: enter `38,25`, without thousands separators. The amo
 Try `38x`: it stays visible with an error while the previous Data value remains intact. Clear a field to write null. Enter or leaving the field commits a valid draft; Escape restores the last accepted value. With live editing, each complete valid input updates Data. Partial or invalid input never writes a replacement value.
 
 Make the fields read-only; try label layout variants from Settings (⚙) in the gallery footer. All the number fields keep the shared labelbox contract (`lbl_` and `box_`). The cards stay within 24rem.
+
+**Sample data:** `03-number_textbox_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

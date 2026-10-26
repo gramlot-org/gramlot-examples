@@ -1,22 +1,17 @@
 # Call the server when a value changes
 
-**Sample data:** `02-call_on_change_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change the quantity several times quickly. A request starts after you pause typing; compare the status and returned quote.
 
 A field requests a result when its value changes. You learn how a delay groups nearby edits and how the page distinguishes a pending request from the last received result.
 
-**Uses:** Data binding and delayed reactive `dataRpc` calls — core 0.2.14.
+**Uses:** Data binding and delayed reactive `dataRpc` calls.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Endpoint calls (core 0.2.14), after the local 0.2.0 lessons.
-
 **Goal:** Debounce an endpoint call and distinguish pending from received values.
 
-**Before this lesson:** [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md), [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c10 · Call on change** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands. This lesson executes authored inline JavaScript and needs the gallery’s permissive CSP profile; a strict named-Logic starter needs the corresponding named form.
+**Before this lesson:** [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md), [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md).
 
 ## Read the page
 
@@ -50,6 +45,8 @@ c02 used `_delay` for a local search-status effect. c10 reuses that declaration 
 
 Debounce is not a guarantee of one request for all typing patterns. `_delay` replaces the call that is scheduled, never the call in flight: one call is in flight at a time, its answer is always written, the first trigger during the flight waits with its arguments and is sent when the answer arrives, and later triggers do nothing while one waits. A result `false` from `_onCalling` makes no call. Callbacks here are inline and need the permitted CSP profile.
 
-Continue with [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/11_call_on_click.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+Continue with [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+
+**Sample data:** `02-call_on_change_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

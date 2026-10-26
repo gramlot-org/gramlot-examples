@@ -10,6 +10,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="buttons")
         pane.h1("Button controller")
+        pane.p("Press the first button normally, then with Shift or Alt. Its nested controller receives the click count and modifiers; the other buttons fire Data paths.")
 
         nested = pane.section(class_="card stack")
         nested.h2("A controller nested in the button")

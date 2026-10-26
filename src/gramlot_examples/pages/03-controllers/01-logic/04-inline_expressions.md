@@ -1,22 +1,17 @@
 # Use short inline expressions
 
-**Sample data:** `04-inline_expressions_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Edit the name and score. Short expressions update the greeting and pass/fail message directly from the other attributes of their node.
 
 Small expressions calculate what an element displays directly from its inputs. You learn how to format a local result without adding another calculated Data field.
 
-**Uses:** Data binding and inline expressions — core 0.2.0.
+**Uses:** Data binding and inline expressions.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0).
-
 **Goal:** Compute a local display value without storing another derived Data field.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c04 · Inline expressions** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands. This lesson executes authored inline JavaScript and needs the gallery’s permissive CSP profile; a strict named-Logic starter needs the corresponding named form.
+**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md).
 
 ## Read the page
 
@@ -50,8 +45,10 @@ For a value used only by one display, compare a `.full_name` dataFormula plus a 
 
 Inline expressions/scripts require the permitted CSP profile and are not code loaded from Data. Do not teach deprecated SET macros. An expression cannot use another `==` attribute as a computed dependency; use a Data formula when several nodes need one result.
 
-For attribute templates, compare [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md): the slot `{name}` after the `:` of a pointer reads a declared sibling attribute, and ordinary `${name}` text stays literal. Neither permits chains of `==` attributes.
+For attribute templates, compare [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/03-attribute_projection.md): the slot `{name}` after the `:` of a pointer reads a declared sibling attribute, and ordinary `${name}` text stays literal. Neither permits chains of `==` attributes.
 
-Continue with [c05 · Node methods](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/05_node_methods.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-065) explains the full contract.
+Continue with [c05 · Node methods](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/05-node_methods.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-065) explains the full contract.
+
+**Sample data:** `04-inline_expressions_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

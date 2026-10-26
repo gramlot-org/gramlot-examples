@@ -7,6 +7,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="exchange")
         pane.h1("Data exchange")
+        pane.p("Edit the sample record, save it as TYTX, change a value and load the saved file. The typed values and nested Bag are restored together.")
         form = pane.section(class_="card stack", datapath=".record")
         form.html_label("Name", for_="name")
         form.input(value="^.name", id="name")

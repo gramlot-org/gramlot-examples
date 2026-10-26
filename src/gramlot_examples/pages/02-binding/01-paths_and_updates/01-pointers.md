@@ -1,22 +1,17 @@
 # Bind values with absolute and relative paths
 
-**Sample data:** `01-pointers_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Compare the same value through an absolute path, a relative path and an anchor. Edit a field and watch only the views bound to that path change.
 
 Fields and text share the same values. Edit a field and see which text follows it. You learn the difference between `^` (keep following) and `=` (read once), and how a Data path locates a value.
 
-**Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
+**Uses:** Source, Data, pointers and native binding. No endpoint calls.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0).
-
 **Goal:** Resolve Data paths and predict which texts follow an edit.
 
-**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/01-html_basics/01-hello_world.md), [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/02-native_controls/01-forms.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **b01 · Pointers** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/01-hello_world.md), [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/02-native_controls/01-forms.md).
 
 ## Read the page
 
@@ -47,7 +42,6 @@ Change only the paragraph from `"=.caption"` to `"^.caption"` and reload; edit t
 
 Earlier e01 rendered a literal heading. Here the declaration is `pane.h1("^settings.caption")` plus initialized Data. On an edit, no authored Source lookup/`setValue` is needed: the pointer provides that connection. Initial state and runtime behavior are now separate.
 
-
 ## Advanced: the same name from different origins (0.2.0)
 
 The added section has an `_anchor` at Data context `contexts`, then a child with `.child`. Read the three paragraphs: the local `.name` reads Inner; `#ANCHOR.name` reads Outer. `^.#parent.name` starts from the resolved local Data context `contexts.child`, cancels its last segment and reads Outer. `#parent` is a Data-path segment, not a Source-node lookup. A bare leading `^#parent.name` is not the declaration used here.
@@ -58,6 +52,8 @@ Change `contexts.name` to Outside in `01-pointers_data.tytx` and reload. **Answe
 
 Inputs here use `change`, not live keystrokes. Do not prefix Data paths with the Source `main` path. The advanced section distinguishes `#ANCHOR` from the Data-path segment `.#parent`; do not treat `#parent` as a Source-node identifier.
 
-Continue with [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/02_variable_datapath.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-040) explains the full contract.
+Continue with [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/02-variable_datapath.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-040) explains the full contract.
+
+**Sample data:** `01-pointers_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

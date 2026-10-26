@@ -6,12 +6,14 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'events'});
         pane.h1('Events');
+        pane.p("Click a chip, type in the field and move over the pointer area. The visible readouts show which event reached each declaring Source node.");
 
         const clicks = pane.section({class: 'card stack', id: 'click-area',
             connect_onclick: "this.SET('.clicked', event.target.id || event.target.localName)"});
         clicks.h2('connect_onclick on a section');
         clicks.p('Click anywhere in this card, or on one of the chips.');
-        for (const name of ['red', 'green', 'blue']) clicks.span(name, {id: `chip-${name}`, class: 'status'});
+        const chips = clicks.div({class: 'actions event-chips'});
+        for (const name of ['red', 'green', 'blue']) chips.span(name, {id: `chip-${name}`, class: 'status'});
         clicks.p('^.clicked', {id: 'clicked', class: 'muted'});
 
         const typing = pane.section({class: 'card stack'});

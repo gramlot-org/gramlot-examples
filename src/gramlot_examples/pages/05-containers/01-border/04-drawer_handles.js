@@ -18,7 +18,9 @@ export class Page extends BasePage {
         });
         main_content.h1('Small handles, readable labels');
         main_content.p('Open and resize the regions; the fields share the same Data.');
-        const border = main_content.borderContainer({
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const border = canvas.borderContainer({
             id: 'handles-demo',
             height: '100%',
             min_height: 0,
@@ -31,7 +33,7 @@ export class Page extends BasePage {
         const search = border.contentPane({default_drawer: true,
             region: 'top',
             nodeId: 'drawerSearch',
-            height: '64px',
+            height: '80px',
             splitter: true,
             drawer: '^drawerSearch',
             drawer_icon: '⌕',

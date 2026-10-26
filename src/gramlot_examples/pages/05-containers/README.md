@@ -6,7 +6,7 @@ You can start by playing with a page. Its **Explanation** tab tells you what to 
 
 ## Navigation
 
-In the gallery, expand **Containers → border** to find the six borderContainer lessons. Select **border** itself for a general introduction and a small five-region layout. Tabs and Demo carousel remain directly under Containers. The border branch loads its children only when expanded.
+In the gallery, expand **Containers → border** to find the six borderContainer lessons. Select **border** itself for a general introduction and a small five-region layout. Tabs, Stack, Dialog, Floating and groupBox remain directly under Containers and layout. The border branch loads its children only when expanded.
 
 ## A route through the lessons
 
@@ -21,3 +21,10 @@ The same lessons run in the Python, JavaScript and offline galleries. Code shows
 ## Compare appearances
 
 **Mela: desktop and touch** brings a toolbar, hierarchical menu, fields, dialog and floating window together. Choose Mela in Gallery Settings and compare Light/Dark or resize to phone width.
+
+
+## Windows and groups
+
+**Dialog: modal editing** makes the background unavailable until the dialog closes, even while collapsed. **Floating: keep the page usable** uses the same form and frame composition without blocking the background. Edit, move, resize, maximize and reopen the windows to see retained Data.
+
+**groupBox: group fields and copy Data** groups related fields under one label and datapath. Its copy command exports only that group, preserving types with TYTX.

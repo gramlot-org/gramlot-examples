@@ -8,6 +8,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack'});
         pane.h1('Variable datapath');
+        pane.p("Choose Ada, edit her name, then select Alan and come back. One card follows the selected datapath; each record keeps its own values.");
         pane.html_label('Record', {for: 'record'});
         const choice = pane.select({default: "people.ada", id: 'record', value: '^current'});
         for (const [key, caption] of OPTIONS) {

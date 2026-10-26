@@ -1,6 +1,6 @@
 # Call the server from a button
 
-**Sample data:** `03-call_on_click_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Reserve the unavailable item, then try the protected action. The error messages distinguish an application error from missing authentication.
 
 Buttons call endpoints and display errors. You learn how application failure differs from a refused request; both preserve the previous result. The later **0.2.15** section compares protected Source with merely hidden content. This gallery demonstrates anonymous refusal; the Kajenn guide covers authenticated access.
 
@@ -9,14 +9,9 @@ Buttons call endpoints and display errors. You learn how application failure dif
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Endpoint calls (core 0.2.14), after the local 0.2.0 lessons.
-
 **Goal:** Compare application failure and default-deny authorization on the same button pattern.
 
-**Before this lesson:** [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md), [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c11 · Call on click** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands. This lesson executes authored inline JavaScript and needs the gallery’s permissive CSP profile; a strict named-Logic starter needs the corresponding named form.
+**Before this lesson:** [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md), [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md).
 
 ## Read the page
 
@@ -45,7 +40,6 @@ Add `stock.reserved` with value `"unchanged"` to `03-call_on_click_data.tytx` an
 
 c06 nested a local controller in a button. This 0.2.14 stage nests `dataRpc` instead: dispatch and result/error plumbing belong to the provider. You do not write a local controller solely to construct an HTTP request.
 
-
 At the end of the 0.2.14 endpoint stage, return to [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/04-complete_examples/01-end_to_end.md) for its separately labelled quote/result/error extension before continuing below.
 
 ## Later stage: Source authorization (0.2.15)
@@ -60,6 +54,8 @@ Authenticated allow/deny and a subsequent anonymous request belong to the [Kajen
 
 An identity-aware adapter can produce different auth outcomes according to the user’s tags. This page demonstrates default refusal, not login or an authenticated allow/deny matrix. The separately labelled 0.2.15 section demonstrates Source omission; the endpoint buttons remain the earlier 0.2.14 step. Without `_onError`, failures reach the console.
 
-Continue with [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/12_remote.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+Continue with [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/01-remote.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+
+**Sample data:** `03-call_on_click_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

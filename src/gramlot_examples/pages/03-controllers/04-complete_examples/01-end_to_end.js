@@ -11,7 +11,17 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'story'});
         pane.h1('^.settings.caption', {id: 'caption'});
-        pane.h2('0.2.0 · Local page');
+        pane.p('Change quantity, size or gift wrap: the total and circle update together. Then try pausing a branch and requesting a server quote.');
+        pane.h2('1. Calculate locally');
+        const work = pane.div({class: 'grid order-workbench'});
+        this.order_fields(work);
+        this.local_result(work);
+        this.freeze_exercise(pane);
+        this.server_quote(pane);
+
+    }
+
+    order_fields(pane) {
 
         const form = pane.form({class: 'card stack', nodeId: 'form'});
         form.html_label('Caption', {for: 'caption-field'});
@@ -30,9 +40,11 @@ export class Page extends BasePage {
         const gift = form.div();
         gift.input({type: 'checkbox', value: '^.gift', id: 'gift'});
         gift.html_label('Gift wrap', {for: 'gift'});
+    }
 
+    local_result(pane) {
         const result = pane.section({class: 'card stack'});
-        result.p('^.total', {id: 'total'});
+        result.p('^.total', {id: 'total', mask: 'Local total: {}'});
         // Optional: the same local total also drives an SVG projection.
         const drawing = result.svg({viewBox: '0 0 200 200', role: 'img', aria_label: 'Total as a circle', class: 'example-art'});
         drawing.circle({cx: 100, cy: 100, r: '^.radius', fill: '^.color', id: 'circle'});
@@ -44,19 +56,23 @@ export class Page extends BasePage {
             large: '^.size.large', gift: '^.gift', _init: true});
         pane.dataFormula({result_path: '.radius', formula: 'Math.min(20 + total * 4, 90)', total: '^.total', _init: true});
         pane.dataController({func: 'paint', total: '^.total', _init: true});
+    }
 
+    freeze_exercise(pane) {
         const later = pane.section({class: 'card stack', nodeId: 'later'});
-        later.h2('0.2.0 · Optional freeze exercise');
+        later.h2('2. Pause presentation updates');
         const notes = later.ul({nodeId: 'notes', id: 'notes'});
         for (const text of ['This branch can be frozen', 'This note can be removed under freeze']) notes.li(text);
         const actions = later.div({class: 'actions'});
         for (const [label, method] of [['Freeze', 'freeze'], ['Remove a note', 'removeNote'], ['Thaw', 'thaw']]) {
             actions.button(label, {id: method}).dataController({func: method});
         }
+    }
 
+    server_quote(pane) {
         // Return here after c09/c11: the original local stage above remains independent.
         const quotes = pane.section({class: 'card stack'});
-        quotes.h2('0.2.14 · Ask the server for a quote');
+        quotes.h2('3. Request a server quote');
         quotes.p('The local total follows edits. The server quote changes only after a request.');
         quotes.button('Request quote', {type: 'button', id: 'request-quote'}).dataRpc({
             method: 'quote', result_path: '.quote', quantity: '=.quantity',
@@ -71,6 +87,7 @@ export class Page extends BasePage {
         quotes.p('Try quantity 0: the server refuses it and the previous quote remains. Then use 3 and request again.',
             {class: 'muted'});
     }
+
 
     quote({quantity, large, gift}) {
         if (quantity == null || quantity < 1) throw new EmptyOrder('Choose at least one item');

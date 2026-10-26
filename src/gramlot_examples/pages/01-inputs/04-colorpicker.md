@@ -1,5 +1,7 @@
 # Choose and bind a color
 
+**Try this:** Choose a color and compare both pickers with the swatch. All three read the same color value.
+
 Choose a color in either picker. Both controls and the swatch follow the same Data value.
 
 **Uses:** the 0.3 input collection, shared labelbox, Source, Data and bindings. No endpoint calls, stores or validation engine.

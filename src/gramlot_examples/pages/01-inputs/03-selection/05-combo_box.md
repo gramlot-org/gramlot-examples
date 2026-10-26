@@ -1,6 +1,6 @@
 # Combine free text and suggestions
 
-**Sample data:** `05-combo_box_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Choose a suggested city, then enter a city outside the list. Both are accepted: suggestions assist free text rather than restricting it.
 
 Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write.
 
@@ -20,5 +20,7 @@ fields.comboBox(value="^choice", values="Rome,Paris,Berlin", lbl="City")
 The arrow opens all suggestions. Up/Down moves the highlight; Enter or a click chooses it. Escape cancels an uncommitted draft. Empty text writes an empty string; an untouched initial null stays null. `live=True` enables text updates while typing, through the same binding and IME handling as textbox.
 
 `values`, `lbl_position` and readonly can follow Data pointers. Changing the label preserves the input and caret. Cards and fields remain compact, using the shared `lbl_` and `box_` styling contract.
+
+**Sample data:** `05-combo_box_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

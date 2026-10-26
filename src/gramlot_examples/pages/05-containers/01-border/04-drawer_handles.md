@@ -1,6 +1,6 @@
 # Drawers: handles, content and retained Data
 
-**Sample data:** `04-drawer_handles_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Close and reopen the four drawers. The workspace gains space while the fields and their Data remain available when you return.
 
 Imagine editing a customer while keeping filters, customer details and a short output summary nearby. You need those tools, but you do not need them all on screen all the time. A **drawer** is a panel you can tuck away and bring back with a small handle.
 
@@ -33,3 +33,5 @@ A click opens or closes a drawer. When a splitter is enabled, you can also drag 
 In **Code**, look for the contentPane declarations. The region chooses a side; drawer enables opening and closing; drawer_label gives the handle a name. The values beginning with a caret connect those choices to Data. The small controllers below keep that Data up to date when you operate a handle yourself.
 
 You do not need to understand every line to use a drawer. Start with a panel that opens and closes, then add resizing and bindings when your application needs them.
+
+**Sample data:** `04-drawer_handles_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

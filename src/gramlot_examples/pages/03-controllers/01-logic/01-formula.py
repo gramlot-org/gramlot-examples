@@ -7,6 +7,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="order")
         pane.h1("Formula")
+        pane.p("Change price or quantity and follow the calculated results. Changing VAT alone does not recalculate Gross: its = pointer is read on the next total change.")
         form = pane.form(class_="card stack")
         for label, key in (("Price", "price"), ("Quantity", "quantity"), ("VAT rate", "vat")):
             form.html_label(label, for_=key)

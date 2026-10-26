@@ -13,7 +13,9 @@ export class Page extends BasePage {
         main_content.p(
             'Drag a separator or use its arrow keys. Resize Filters and Details while editing the customer.',
         );
-        const bc = main_content.borderContainer({
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const bc = canvas.borderContainer({
             id: 'border-demo',
             height: '440px',
             max_width: '64rem',
@@ -54,7 +56,7 @@ export class Page extends BasePage {
         const center = bc.contentPane({
             region: 'center',
             background: 'var(--gramlot-surface, #fff)',
-            padding: '16px 48px',
+            padding: '16px',
         });
         const fields = center.formlet({ columns: 1, max_width: '22rem', gap: '12px' });
         fields.textbox({

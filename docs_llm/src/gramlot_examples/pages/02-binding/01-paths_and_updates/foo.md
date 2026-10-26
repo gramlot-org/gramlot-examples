@@ -1,4 +1,6 @@
-# Automatic initial data
+# Load example data and replay field edits
+
+**Try this:** Edit the initialized customer, then use Play to fill the separate draft. Clear interrupts playback; editing the draft leaves the original customer untouched.
 
 The customer is loaded from **foo_data.tytx**, a typed Data Bag beside
 **foo.py** and **foo.js**. The page needs no dataRemote, file-reading endpoint

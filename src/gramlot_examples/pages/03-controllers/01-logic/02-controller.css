@@ -1,0 +1,3 @@
+.controller-triggers { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.controller-triggers > * { min-width: 0; }
+@media (max-width: 650px) { .controller-triggers { grid-template-columns: 1fr; } }

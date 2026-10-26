@@ -13,6 +13,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'methods'});
         pane.h1('Node methods');
+        pane.p("Try SET, PUT and FIRE and compare the value with the notification counter. GET reads the stored value, including a silent PUT.");
         const actions = pane.div({class: 'actions'});
         for (const [label, key, script] of ACTIONS) actions.button(label, {action: script, id: key});
 

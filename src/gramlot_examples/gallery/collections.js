@@ -5,4 +5,6 @@ import tree from './dist/tree/descriptor.js';
 import editors from './dist/editors/descriptor.js';
 import typst from './dist/typst/descriptor.js';
 
-export const collections = [inputs, layout, tree, editors, typst];
+import menuCommands from './dist/menu-trial/descriptor.js';
+
+export const collections = [inputs, layout, tree, editors, typst, menuCommands];

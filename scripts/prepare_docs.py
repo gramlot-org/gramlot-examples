@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = "src/gramlot_examples/pages"
-GUIDES = ("docs/005-repository-map.md", "docs/010-gallery.md")
+GUIDES = ("docs/005-repository-map.md", "docs/010-gallery.md", "docs/020-mobile-modules.md")
 REPOSITORY = "https://github.com/gramlot-org/gramlot-examples/blob/main/"
 
 

@@ -13,10 +13,12 @@ class Page(BasePage):
                                  display="flex", flex_direction="column", overflow="hidden")
         main_content.h1("Small handles, readable labels")
         main_content.p("Open and resize the regions; the fields share the same Data.")
-        border = main_content.borderContainer(id="handles-demo", height="100%", min_height=0, flex="1", max_width="64rem",
+        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
+        canvas = main_content.div(class_="layout-canvas")
+        border = canvas.borderContainer(id="handles-demo", height="100%", min_height=0, flex="1", max_width="64rem",
                                               border="1px solid var(--gramlot-border-control, #aaa)", rounded=12)
         surface = "var(--gramlot-surface-subtle, #eef1f5)"
-        search = border.contentPane(region="top", nodeId="drawerSearch", height="64px", splitter=True, drawer="^drawerSearch",
+        search = border.contentPane(region="top", nodeId="drawerSearch", height="80px", splitter=True, drawer="^drawerSearch",
                            drawer_icon="⌕", drawer_label="Search", drawer_title="Search", drawer_minimize=True,
                            minSize=36,
                            padding="10px", background=surface, default_drawer=True)

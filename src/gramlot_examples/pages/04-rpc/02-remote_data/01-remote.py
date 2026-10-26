@@ -10,6 +10,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="catalog")
         pane.h1("Remote")
+        pane.p("Choose Lamp, Desk or Chair. The server builds the selected detail fragment; the page replaces only that section.")
 
         form = pane.form(class_="card stack")
         form.html_label("Record", for_="record")

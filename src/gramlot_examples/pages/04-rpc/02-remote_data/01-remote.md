@@ -1,22 +1,17 @@
 # Load a remote Source fragment
 
-**Sample data:** `01-remote_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Choose Lamp, Desk or Chair. The server builds the selected detail fragment; the page replaces only that section.
 
 A choice loads a page fragment built by the host. You learn when to request structure with `remote` rather than a value with `dataRpc`. The fragment method stays fixed; its parameters can change.
 
-**Uses:** Data binding and declarative remote Source — core 0.2.16.
+**Uses:** Data binding and declarative remote Source.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Remote Source and lazy Data (core 0.2.16), after the 0.2.14 endpoint lessons.
-
 **Goal:** Choose Source replacement when the server owns the content structure.
 
-**Before this lesson:** [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c12 · Remote** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md).
 
 ## Read the page
 
@@ -57,6 +52,8 @@ For nested fragments, the owning method can declare another `.remote(...)` in th
 
 A fragment is typed Source, not an endpoint returning HTML text. One request is in flight for the element and its answer always mounts: the first change during the flight waits with its parameters and is sent when the answer arrives, and later changes do nothing while one waits. A slow answer can therefore leave the content one choice behind the select until the next answer. Removing the owning element cancels its request. A failure retains already mounted content and is reported to the console; remote has no dataRpc-style `_onError` callback.
 
-Continue with [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/13_cached_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+Continue with [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/02-cached_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+
+**Sample data:** `01-remote_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

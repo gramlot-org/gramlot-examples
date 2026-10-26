@@ -5,12 +5,13 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'frames'});
         main_content.h1('Parent and child messages');
+        main_content.p("Send a message to the child, then reply from it. Compare the two logs to see which frame received each message.");
         main_content.html_label('Message', {for: 'message'});
         main_content.input({id: 'message', value: '^.text', live: true});
-        const parent = main_content.section({hidden: '^.child'});
+        const parent = main_content.section({hidden: '^.child', class: 'stack'});
         const frame = parent.iframe({id: 'detail', title: 'Child page', src: '^.frame_url', class: 'frame-preview'});
         parent.button('Send to child', {id: 'send-child'}).dataController({func: 'sendChild', target: frame, text: '=.text'});
-        main_content.button('Reply to parent', {id: 'reply'}).dataController({func: 'reply', text: '=.text', child: '=.child'});
+        main_content.button('Reply to parent', {id: 'reply', visible: '^.child'}).dataController({func: 'reply', text: '=.text', child: '=.child'});
         main_content.p('^.received', {id: 'received'});
         main_content.dataController({func: 'receive', subscribe_message: true});
         main_content.dataController({func: 'setup', _onStart: true});

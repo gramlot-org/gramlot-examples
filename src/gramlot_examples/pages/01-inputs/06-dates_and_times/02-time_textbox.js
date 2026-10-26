@@ -10,7 +10,9 @@ export class Page extends BasePage {
         const main_content = root.main({class:"example-page stack"});
         main_content.h1("Time editing");
         main_content.p("Edit a civil time with hours, minutes and optional seconds. The two fields keep the same typed value.");
-        const controls = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});
+        const options = main_content.details({max_width: "24rem"});
+        options.summary("Options · change the behavior");
+        const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});
         controls.checkbox({default: false, id:"live",value:"^live",lbl:"Editing",label:"Update while typing"});
         controls.checkbox({default: false, id:"locked",value:"^locked",lbl:"State",label:"Read only"});
         const fields = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});

@@ -1,6 +1,6 @@
 # Border regions and splitters
 
-**Sample data:** `01-border_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Resize Filters and Details while editing the customer. The center takes the remaining space and the summary follows accepted Data.
 
 Imagine a customer screen: filters on the left, a form in the middle, and a summary on the right. You want people to give the form more room without having to close their work. This is what a **borderContainer** helps you build.
 
@@ -23,3 +23,5 @@ Minimum and maximum sizes keep a pane useful when someone drags too far. A keybo
 ## Take one idea with you
 
 A container organizes space; the fields continue to own their editing state. Use **Code** when you want to find the region declarations, then return to the example and try a different width. Next, **Nested borders** shows how one area can contain a layout of its own.
+
+**Sample data:** `01-border_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

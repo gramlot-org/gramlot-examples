@@ -1,10 +1,10 @@
 # Transform bound values with pointer expressions
 
-**Sample data:** `06-pointer_transforms_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change the number and compare its CSS width and formatted text. The presentation changes; the stored number keeps its type.
 
 Resize a bar, enable a field and display an amount. The same typed Data drives all three: you learn when to produce text and when to keep a boolean or number.
 
-**Uses:** Source, Data, attribute pointers and the page formatter — core 0.2.20. No Web Components or endpoint calls. Earlier lessons retain their release scope.
+**Uses:** Source, Data, attribute pointers and the page formatter. No Web Components or endpoint calls. Earlier lessons retain their release scope.
 
 **Try it:** enter 80 in Width, then clear it. Turn Draft on to edit Name. Change Amount and compare the displayed text with the title shown on hover.
 
@@ -19,7 +19,7 @@ A number becomes CSS text with a template after the pointer:
 main_content.div(width="^.width:{}px")
 ```
 
-Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. Ordinary `${...}` text is literal: `width="${pixels}px"` would set that exact string and read nothing. To use another attribute of the same node, write its name in a slot after the `:`, as [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md) shows.
+Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. Ordinary `${...}` text is literal: `width="${pixels}px"` would set that exact string and read nothing. To use another attribute of the same node, write its name in a slot after the `:`, as [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/03-attribute_projection.md) shows.
 
 ## An expression keeps its result type
 
@@ -56,5 +56,7 @@ An ordinary template slot requires a nonempty value. Null or an empty string mak
 Expressions receive typed values, including null. The standalone `mask` wraps formatted text; `gramlot.format(None)` returns empty text without applying the mask.
 
 **Exercise:** change only `readonly="^.draft:=!{}"` to `readonly="^.draft"`. **Result:** the checkbox now has the opposite effect; the name binding does not change.
+
+**Sample data:** `06-pointer_transforms_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

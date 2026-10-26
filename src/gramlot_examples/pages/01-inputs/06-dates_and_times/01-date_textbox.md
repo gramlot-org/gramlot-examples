@@ -1,6 +1,6 @@
 # Date fields: entry and display formats
 
-**Sample data:** `01-date_textbox_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Type domani and leave the field. Compare the long and short Italian date formats: they represent the same civil date.
 
 Enter a calendar date or a word such as oggi or domani. Two fields share one civil date.
 
@@ -14,6 +14,8 @@ The page locale is `it-IT`. Focus a field to edit its short date; leave it to se
 The Data value is a Python `date`, transported as TYTX `D`; JavaScript represents it as a Date at UTC midnight. It remains a civil date, independent of the page timezone. `31/02/2026` is invalid and does not change Data. Period expressions are rejected: this field edits one complete date. Clearing writes null; Escape cancels the draft. The control is a text editor first; the calendar popup of the first field is described below.
 
 Make the fields read-only; try label layout variants from Settings (⚙) in the gallery footer. Both controls keep the shared labelbox contract (`lbl_` and `box_`). The cards stay within 24rem.
+
+**Sample data:** `01-date_textbox_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>
 

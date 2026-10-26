@@ -1,20 +1,17 @@
 # Bind SVG geometry and color
 
+**Try this:** Move the geometry controls and change the color. The same six SVG shapes update through bound attributes without rebuilding the scene.
+
 The six shapes from **SVG shapes** now have editable dimensions and stroke settings. You learn how pointers connect controls to the drawing without a separate update routine for each shape.
 
-**Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
+**Uses:** Source, Data, pointers and native binding. No endpoint calls.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0).
-
 **Goal:** Revisit the six-shape SVG with bound dimensions and shared stroke state.
 
-**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **b10 · SVG shapes with binding** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md).
 
 ## Read the page
 
@@ -49,6 +46,6 @@ Compare e08’s `r=38` with this page’s `r="^.radius", default_r=38`. Static s
 
 Not every control is live: the color field uses change. SVG presentation values retain their own types/units. This is a maintained current-API comparison, not an old-package installation exercise.
 
-Continue with [b11 · Complete page with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/11_complete_page.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b11 · Complete page with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/04-complete_page.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
 
 </details>

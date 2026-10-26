@@ -57,13 +57,15 @@ export function buildGallery({catalogs = []} = {}) {
     const filesByUrl = [
         ['/catalog.json', join(PACKAGE, 'catalog.json')],
         ['/themes/gramlot-base/theme.css', resolve('@gramlot/gramlot/themes/gramlot-base/theme.css')],
-        ['/assets/branding/gramlot-logo-dark.svg', resolve('@gramlot/gramlot/assets/branding/gramlot-logo-dark.svg')],
+        ...['gramlot-horizontal-primary', 'gramlot-horizontal-inverse'].map(name =>
+            [`/assets/branding/svg/${name}.svg`, resolve(`@gramlot/gramlot/assets/branding/svg/${name}.svg`)]),
         ['/assets/branding/app-icon.png', resolve('@gramlot/gramlot/assets/branding/app-icon.png')],
         ['/gallery/gallery.css', join(gallery, 'gallery.css')],
         ...['page.py', 'page.js'].filter(name => existsSync(join(gallery, name)))
             .map(name => [`/gallery/${name}`, join(gallery, name)]),
     ];
     const assets = Object.fromEntries(filesByUrl.map(([url, path]) => [url, {file: path, type: mediaType(path)}]));
+    assets['/trials/menu/theme_preview.js'] = {file:join(PACKAGE,'trials/menu/theme_preview.js'),type:'text/javascript'};
     for (const name of DIST) {
         const path = join(gallery, 'dist', name);
         assets[`/gallery/dist/${name}`] = {file: path, type: mediaType(path, extname(path) === '.js')};
@@ -140,7 +142,8 @@ export function navigationDirectory(directory = '', catalogs = []) {
     const folder = join(boundary, ...(parts.length && groups.has(parts[0]) ? parts.slice(1) : parts));
     const rel = relative(realpathSync(boundary), realpathSync(folder));
     if (rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) throw new Error('Navigation directory is outside its pages root');
-    const files = new Map(readdirSync(folder).map(name => [name, join(folder, name)]));
+    const folders = parts.length ? families.filter(family => family.folder === parts[0]).map(family => join(family.path, ...parts.slice(1))) : [folder];
+    const files = new Map(folders.flatMap(directory => readdirSync(directory).map(name => [name, join(directory, name)])));
     if (!parts.length) for (const [name, group] of groups) files.set(name, group.path);
     const bag = new Bag();
     for (const [name, path] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
@@ -153,7 +156,7 @@ export function navigationDirectory(directory = '', catalogs = []) {
             bag.setItem(!parts.length && groups.has(name) ? groups.get(name).key : name, null, attrs);
         } else if (extname(path) === '.js' && basename(name, '.js') !== '00-index' && !name.endsWith('_aux.js')) {
             const stem = basename(name, '.js');
-            const example = groups.get(parts[0])?.examples.find(item => item.folder === [...parts.slice(1), stem].join('/'));
+            const example = families.filter(family => family.folder === parts[0]).flatMap(family => family.examples).find(item => item.folder === [...parts.slice(1), stem].join('/'));
             const attrs = {title: pageTitle(path), url: `pages/${[...parts, stem].join('/')}`, category: false};
             if (example) attrs.key = example.key;
             bag.setItem(example ? example.key : stem, null, attrs);

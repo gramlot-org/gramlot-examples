@@ -6,6 +6,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'invoice'});
         pane.h1('Endpoint');
+        pane.p("The page sends price and VAT rate once at startup. The server returns the gross amount, which appears below through a Data binding.");
 
         const result = pane.section({class: 'card stack'});
         result.h2('Total with VAT, computed by the server');

@@ -13,6 +13,15 @@ export class Page extends BasePage {
         main_content.p(
             'Move the sliders, drag separators and close drawers. The same widgets and their values stay in place.',
         );
+        const options = main_content.details();
+        options.summary('Options · sizes, design and drawer captions');
+        this.size_controls(options);
+
+        this.workspace(main_content);
+
+    }
+
+    size_controls(main_content) {
         const settings = main_content.section({
             display: 'flex',
             flex_wrap: 'wrap',
@@ -63,6 +72,9 @@ export class Page extends BasePage {
                 width: '12rem',
             });
         }
+    }
+
+    workspace(main_content) {
         const surface = 'var(--gramlot-surface, #fff)';
         const edge = '1px solid var(--gramlot-border-control, #8192aa)';
         const fills = {
@@ -72,7 +84,9 @@ export class Page extends BasePage {
             preview: 'color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #9977bb)',
         };
         const drawer = { splitter: true, drawer: true, drawer_minimize: '^minimize' };
-        const outer = main_content.borderContainer({
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const outer = canvas.borderContainer({
             id: 'lab-outer',
             height: '700px',
             max_width: '78rem',
@@ -231,4 +245,5 @@ export class Page extends BasePage {
             width: '100%',
         });
     }
+
 }

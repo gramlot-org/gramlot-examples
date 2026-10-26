@@ -24,7 +24,9 @@ class Page(BasePage):
         main_content.h1("Observe a drawer and a splitter")
         main_content.p("Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.")
         main_content.checkbox(id="events-hide", value="^.hideFilters", label="Hide Filters from Data", default=False)
-        border = main_content.borderContainer(id="events-border", nodeId="eventWorkspace",
+        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
+        canvas = main_content.div(class_="layout-canvas")
+        border = canvas.borderContainer(id="events-border", nodeId="eventWorkspace",
                                               height="360px", max_width="48rem", rounded=10,
                                               border="1px solid var(--gramlot-border-control, #aaa)")
         filters = border.contentPane(nodeId="eventFilters", region="left", width="130px",
@@ -32,7 +34,7 @@ class Page(BasePage):
                                      drawer_label="Filters", hidden="^.hideFilters", padding="12px",
                                      background="var(--gramlot-surface-subtle, #eef1f5)",
                                      border_right="1px solid var(--gramlot-border-control, #aaa)")
-        filters.p("This pane publishes closable_change.")
+        filters.p("Filters")
         filters.textbox(id="events-name", value="^.name", lbl="Name (2–20)",
                         validate_len="2:20", width="100%")
         center = border.contentPane(region="center", padding="16px",

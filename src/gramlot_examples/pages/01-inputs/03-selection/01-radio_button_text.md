@@ -1,6 +1,6 @@
 # Radio group: choose one value
 
-**Sample data:** `01-radio_button_text_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Choose a delivery option and compare the stored code below. The alternative group is independent; changing one group leaves the other untouched.
 
 Choose one delivery option in each group. Change the column count, and try the arrow keys inside a group.
 
@@ -14,5 +14,7 @@ Choose one delivery option in each group. Change the column count, and try the a
 The controls stay above the groups so changing the number of rows does not move the slider while you drag it. The number beside **Columns** shows the current Data value, from 1 to 3.
 
 **Try it:** choose a delivery option in each group and read the two codes below them, then drag Columns to change the layout of the first group. For label layout variants, use Settings (⚙) in the gallery footer.
+
+**Sample data:** `01-radio_button_text_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

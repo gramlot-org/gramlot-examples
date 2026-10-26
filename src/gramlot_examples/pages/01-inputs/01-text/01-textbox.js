@@ -11,7 +11,9 @@ export class Page extends BasePage {
         const main_content = root.main({class: "example-page stack"});
         main_content.h1("One value, two textboxes");
         main_content.p("Type in either field. Both share the same Data value.");
-        const controls = main_content.formlet({class: "card stack", width: "100%", max_width: "24rem"});
+        const options = main_content.details({max_width: "32rem"});
+        options.summary("Options · change the behavior");
+        const controls = options.formlet({class: "stack", width: "100%", max_width: "24rem"});
         controls.html_label("Label position", {for: "position"});
         const position = controls.select({default: "TL", id: "position", value: "^position", width: "8rem", max_width: "100%"});
         for (const code of ["TL", "TC", "TR", "L", "R", "BL", "BC", "BR"]) {
@@ -20,7 +22,7 @@ export class Page extends BasePage {
         controls.checkbox({default: true, value: "^live", lbl: "Editing", label: "Update while typing"});
         controls.checkbox({default: false, value: "^readonly", lbl: "State", label: "Read only"});
         const fields = main_content.formlet({class: "card stack", width: "100%", max_width: "32rem"});
-        fields.textbox({id: "customer", value: "^customer", lbl: "Customer", lbl_position: "^position", live: "^live", readonly: "^readonly", placeholder: "Enter a name", lbl_color: "#315fa8", box_padding: "8px", box_l_padding: "4px", box_c_width: "240px"});
+        fields.textbox({id: "customer", value: "^customer", lbl: "Customer", lbl_position: "^position", live: "^live", readonly: "^readonly", placeholder: "Enter a name", box_c_width: "100%"});
         fields.textbox({id: "customer-copy", value: "^customer", lbl: "Same customer", live: "^live", readonly: "^readonly"});
         main_content.h2("The Data");
         main_content.p("^customer", {id: "customer-value"});

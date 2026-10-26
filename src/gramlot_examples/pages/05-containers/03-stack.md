@@ -1,5 +1,7 @@
 # Switch pages in a single stack
 
+**Try this:** Use the slider above the stack to visit a demo, edit it and return later. There is one central stack; a visited page keeps its state.
+
 A **stackContainer** holds several panels but shows just one at a time. Unlike a tabContainer, it does not add tabs. Here a slider sits above one central stack: each demo has one iframe and one set of Data, with no separate miniature.
 
 ## Try it

@@ -24,8 +24,8 @@ class BuildGalleryTests(unittest.TestCase):
 
     def test_common_gallery(self):
         gallery = build_gallery()
-        self.assertEqual([family["key"] for family in gallery["families"]], ["components", "binding", "controllers", "rpc", "layout", "editors", "html_svg"])
-        self.assertEqual(len(gallery["routes"]), 119)
+        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "binding", "controllers", "rpc", "layout", "menus", "editors", "tools", "composition"])
+        self.assertEqual(len(gallery["routes"]), 138)
         self.assertEqual(gallery["routes"]["index"]["page"].name, "page.py")
         self.assertEqual(gallery["routes"]["c03"]["logic"].name, "03-named_logic.js")
         self.assertEqual(gallery["routes"]["c23"]["page"].name, "02-room_estimate.py")
@@ -37,6 +37,8 @@ class BuildGalleryTests(unittest.TestCase):
         self.assertEqual(assets["/gallery/dist/gallery.js"]["type"], "application/javascript")
         self.assertEqual(assets["/pages/03-controllers/01-logic/03-named_logic.js"]["type"], "text/plain")
         self.assertEqual(assets["/gallery/gallery.css"]["type"], "text/css")
+        self.assertEqual(assets["/trials/menu/theme_preview.js"]["type"], "text/javascript")
+        self.assertIn("/gallery/dist/menu-trial/descriptor.js", assets)
         self.assertEqual(assets["/gallery/dist/LICENSE"]["type"], "text/plain")
 
     def test_environment_catalogue(self):

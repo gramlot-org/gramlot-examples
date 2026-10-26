@@ -16,11 +16,11 @@ class Page(BasePage):
                 history="=.events", topic=topic,
                 **{f"subscribe_editor_{topic}": True})
         main_content.dataController("this.SET('.closed', pageName)", subscribe_editor_closed=True)
-        self.tab_variants(main_content)
-        self.tab_alignment(main_content)
-        main_content.h2("Try the controls, selection and closing")
+        main_content.h1("Tabs: one workspace, several views")
         main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
-        controls = main_content.formlet(col_min_width="14rem", max_width="36rem")
+        options = main_content.details()
+        options.summary("Options · presentation, badges and closing")
+        controls = options.formlet(col_min_width="14rem", max_width="36rem")
         controls.filteringSelect(id="tabs-choice", value="^.page", lbl="Selected page",
                                  values="customer:Customer,notes:Notes,layout:Nested border", default='customer')
         controls.filteringSelect(id="tabs-mode", value="^.mode", lbl="Presentation",
@@ -36,10 +36,10 @@ class Page(BasePage):
         controls.filteringSelect(id="tabs-icon", value="^.notesIcon", lbl="Notes icon",
                                  values="✉:Envelope,●:Dot,★:Star", default='✉')
         controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch", default=False)
-        main_content.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
+        options.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
         main_content.p("^.index", id="tabs-index", mask="Selected index: {}")
         tabs = main_content.tabContainer(id="tabs-demo", nodeId="editor", selectedPage="^.page",
-                                  selected="^.index", tabMode="^.mode", tabPosition="^.position", tabAlign="^.align", height="300px", max_width="44rem",
+                                  selected="^.index", tabMode="^.mode", tabPosition="^.position", tabAlign="^.align", height="240px", max_width="44rem",
                                   border="1px solid var(--gramlot-border-control, #aaa)", rounded=6, default_selected=0)
         customer = tabs.contentPane(id="customer-panel", pageName="customer", title="Customer", icon="👤", padding="12px")
         customer.textbox(id="tabs-name", value="^.name", lbl="Name (2–20)", validate_len="2:20", live=True, width="15rem")
@@ -55,11 +55,17 @@ class Page(BasePage):
         nested.contentPane(region="center", padding="12px").textbox(value="^.name", lbl="Same accepted name", width="15rem")
         main_content.p("^.closed", id="tabs-closed", mask="Last closed: {}")
         main_content.p("^.notes", id="tabs-saved-notes", mask="Saved notes: {}")
-        main_content.h2("Container events")
-        main_content.pre("^.events", id="tabs-events", max_height="12rem", overflow="auto", white_space="pre-wrap", overflow_wrap="anywhere")
+        events = main_content.details()
+        events.summary("Inspect container events")
+        events.pre("^.events", id="tabs-events", max_height="12rem", overflow="auto", white_space="pre-wrap", overflow_wrap="anywhere")
+
+        reference = main_content.details()
+        reference.summary("Compare tab styles, positions and alignment")
+        self.tab_variants(reference)
+        self.tab_alignment(reference)
 
     def tab_variants(self, main_content):
-        main_content.h1("See the tab variants side by side")
+        main_content.h2("See the tab variants side by side")
         main_content.p("Compare shaped tabs with a light underline, on each of the four sides. "
                        "Every card is a working editor. Change the name in one: the others show the same Data.")
         main_content.p("Top and bottom use a horizontal row. Left and right use a vertical list; "

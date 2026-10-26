@@ -764,6 +764,8 @@ The l08 carousel now occupies a resizable borderContainer drawer. Its slider upd
 <a id="ge-010-225"></a>
 ## 225. Container-based Python gallery and explanations
 
+> Historical record — the Code drawer described here is replaced by [the detachable third tab (§395)](#ge-010-395).
+
 The Python development gallery uses a borderContainer for Navigation, the running lesson and Code. Navigation and Code have live splitters and compact drawer handles; toolbar switches operate the same panes. Resizing and closing preserve the mounted examples. The general IndexPage still supports its original layout; this gallery explicitly selects component-based layout.
 
 Each lesson has **Example** and **Explanation** tabs. Explanation presents the lesson Markdown as a readable, scrollable document instead of a compact header. Switching does not reload the iframe or reset Data. The old **Normal / Mobile** preview choice is removed; responsive behavior and phone views for Example, Code and Inspector remain.
@@ -1024,7 +1026,7 @@ The catalogue now has 84 lessons in 22 groups. All 144 JavaScript tests and 19 P
 
 ## 310 · Numbered filesystem navigation — 2026-10-21
 
-Owner confirms numeric sibling prefixes in physical names, lowercase and underscores (`08-html_svg`), nested paths, `00-index` as the hidden directory index, `Page.title` for executable titles and the first Markdown H1 for `00-index.md`. This supersedes the physical naming and short public URL descriptions in blocks 290–300. Catalogue keys remain lesson identities; required family `folder` and lesson `folder` locate the files. No route aliases or core loader extensions are introduced.
+Owner confirms numeric sibling prefixes in physical names, lowercase and underscores (`00-html_svg`), nested paths, `00-index` as the hidden directory index, `Page.title` for executable titles and the first Markdown H1 for `00-index.md`. This supersedes the physical naming and short public URL descriptions in blocks 290–300. Catalogue keys remain lesson identities; required family `folder` and lesson `folder` locate the files. No route aliases or core loader extensions are introduced.
 
 All 84 lessons retain their Python, JavaScript, prose and stylesheet companions. Navigation sorts directories and pages together by filename, resolves one level on expansion, and opens the directory index on label selection. The root introduction appears when no tab is selected and is not a tree leaf. Markdown-only indexes use the existing sanitized gallery prose renderer. A dedicated descriptive-index directory demonstrates this path.
 
@@ -1340,9 +1342,9 @@ and do not hide scrollbars globally.
 
 Block ID: **GE-010-385**.
 
-The navigation starts with **Fields and input widgets**, then **Data and bindings**,
-**Logic, actions and events**, **RPC and data exchange**, **Containers and layout**,
-**Document and code editors**, and **HTML, SVG and page structure**. Titles name the
+The navigation starts with **HTML, SVG and page structure**, then **Fields and input
+widgets**, **Data and bindings**, **Logic, actions and events**, **RPC and data
+exchange**, **Containers and layout**, and **Document and code editors**. Titles name the
 behavior to try, such as “Call the server when a value changes” or “Edit Markdown:
 source, preview and rich text”. Every section provides an introduction before its
 individual lessons. Example keys remain stable; reorganized filesystem paths and
@@ -1356,3 +1358,99 @@ RPCs. Users can edit drafts and use Undo, Redo and Revert. Save is disabled unle
 the host enables Remote Edit; direct RPC writes are rejected too. Restarting the
 gallery restores the sample files. This host-backed IDE is not included in the
 JavaScript or offline gallery; those still include the document-editor lessons.
+
+The **Tools** category contains **Live Source playground** (`e13`,
+`07-tools/01-live_source`). The Python host stages the same category with its
+sample-document IDE. Common lesson keys and URLs remain available in that category.
+
+The **Composition and reuse** branch introduces reusable Source blocks. Its Color
+Maker calls one RGB helper under three datapaths, with equivalent Python and JS
+pages and responsive CSS. The branch guide explains extracting the helper into an
+ordinary importable module, without introducing a collection or a new widget.
+
+The same branch includes the Sieve of Eratosthenes. It separates the fixed Source
+grid from reactive algorithm state and explains `_timing` in seconds, the shared
+manual/timed step, pause/resume and reset. Both pages use the same browser Logic.
+
+
+<a id="ge-010-390"></a>
+## 390 · Lesson presentation and review
+
+Each catalogue lesson starts with a concrete task and the result to observe.
+The companion explanation repeats that trial before deeper reference material.
+Small examples teach one mechanism; complete examples demonstrate composition.
+Python and JavaScript build equivalent Source, including bindings and controllers.
+Repeated structures use loops, and larger pages separate named methods.
+
+Secondary field/editor settings and the tab-style catalogue are collapsible.
+Where comparison matters, controls and results sit side by side and stack on
+narrow screens. Examples inherit the selected palette instead of forcing a light
+surface around dark fields. Source-editor notices use the same theme.
+
+The border laboratories deliberately preserve their multi-region workspace.
+Below its useful width, only that canvas scrolls horizontally; the page stays
+within the viewport. This is an explicit teaching presentation, not automatic
+mobile conversion of arbitrary border containers. The nested laboratory keeps
+its size controls in a collapsible section.
+
+The dated review ledger records coverage and limitations in
+[GE-015 · Gallery review](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/internal/015-gallery-review.md). Visual review and
+passing regressions do not imply owner acceptance or publication.
+
+
+See [Native mobile modules](020-mobile-modules.md) for the separate Capacitor catalogue, frame broker, theme propagation and beta limits.
+
+
+<a id="ge-010-395"></a>
+## 395 · Code as a detachable third tab
+
+Each lesson now has **Example · Explanation · Code**. Code loads on first use and
+retains the selected Python/JavaScript/Logic file. Open **Code**, then drag the
+small icon inside the panel to place it in a floating window, or click/activate
+it from the keyboard. The outer tab has no detach icon; the handle is visible
+only while Code is open.
+The example becomes visible underneath. Move or resize the floating as needed;
+closing it returns to Code in the same lesson. The editor and the running example
+remain mounted, including drafts and Data. Remote Edit still controls saving on
+the host and remains disabled on the public gallery.
+
+This replaces the old right-hand Code drawer and its phone-only view. The same
+three tabs work on desktop and phone. The native component owns detachment;
+the gallery only declares `detachable=True` on the Code contentPane. Navigation,
+settings, inspector and iframe theme synchronization retain their existing roles.
+
+
+<a id="ge-010-400"></a>
+## 400 · Search navigation and close pages
+
+The navigation toolbar contains one rounded **Search examples** field with a leading magnifier and an internal **Clear search** button, visible only when the field contains text. Type part of a title: the shared tree searches closed and unresolved branches, shows the ancestors of matches, and highlights matching text. Clear restores the previous expansions. Search never opens an example by itself; select a result as usual. Core `searchText` owns filtering and resolver reads; the gallery only declares the bound field and toolbar.
+
+The outer page tabs are visible on narrow screens too, with their close buttons. Closing a page disposes its Source and iframe, removes the opened-page record and selects another open page. Selecting the same example in the tree can then open a fresh page. The inner Example, Explanation and Code tabs remain persistent views of that page.
+
+
+<a id="ge-010-405"></a>
+## 405 · Menus and toolbars in the main gallery
+
+The owner requested all menu/slotbar examples in the main gallery and dialog/floating windows with frame toolbars at left, top and bottom. The **Menus and toolbars** family now follows **Containers and layout**. Its fourteen lessons cover popup, horizontal/vertical and contextual presentations, grouped overflow and scrolling, label/icon modes, classic hierarchy, reactive checked/disabled/hidden states, frame recipients, nested resolvers, a complete workspace, windows and three appearance profiles.
+
+The main catalogue is the only lesson list; the former trial catalogue is retired. Page keys remain menu-01 through menu-14. Python and JavaScript twins use the same companion Data Bags and explanations. The existing menu-trial collection supplies registered SVG commands; its verified artifact, descriptor and the shared theme-preview helper are served by both gallery asset maps. No command registry is duplicated in pages.
+
+Complete dialog and floating editors show three real frame regions: a vertical icon bar at left, a command bar above, and Cancel/Save below. They share the center recipient and draft Data. The simple Containers lessons also demonstrate all three regions with a stage selector in the left toolbar. Save in these examples is local Data only. Dialog blocks its page; floating leaves it usable. Each lesson explains the actions and expected result before the interactive area and in Explanation.
+
+This integration is a local development preview, not a publication or a declaration that all gallery examples are visually accepted.
+
+Verification (2026-10-25): 117 JavaScript tests and 18 Python tests plus 18 subtests pass. All fourteen pages rendered in the browser; gallery navigation, nested resolver command delivery, Save/Cancel, side-toolbar state and nonmodal background interaction were checked. Local preview: port 8099.
+
+
+<a id="ge-010-410"></a>
+## 410 · Loading indicators and cancelled tabs
+
+The gallery uses the core IndexPage load outcomes: `loading`, then exactly one of
+`ready`, `error` or `cancelled`. Its indicator follows the active Source-owned
+entry on both selection changes and load outcomes. A background completion or
+failure cannot hide another tab's loading indicator. Closing a pending tab clears
+its indicator or shows the remaining selected load; reopening starts a separate
+attempt, unaffected by late replies from the closed one. An active failure with
+no remaining page retains the retry hint. Cancellation does not show an error.
+No state is added to Logic or a separate registry. Requires the corresponding
+updated core runtime; this local correction does not publish either package.

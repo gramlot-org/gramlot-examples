@@ -1,22 +1,17 @@
 # Edit shared Data with native fields
 
-**Sample data:** `01-native_editing_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Edit a field, then leave it. Compare the accepted Data below; enable live editing to see updates while typing.
 
 A form displays the Data written by each control. Switch **live** on and off: you learn when typing updates Data and whether each control writes text, a number or a list.
 
-**Uses:** Source, Data, pointers and native binding — core 0.2.0. No endpoint calls.
+**Uses:** Source, Data, pointers and native binding. No endpoint calls.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Data binding and browser behavior (core 0.2.0).
-
 **Goal:** Observe when a control writes Data and which type it writes.
 
-**Before this lesson:** [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/08-html_svg/02-native_controls/01-forms.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **b04 · Native editing** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/02-native_controls/01-forms.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md).
 
 ## Read the page
 
@@ -50,6 +45,8 @@ In e06 the browser edits native control values only. Here `value="^.text"` plus 
 
 Use `change`/leaving the field for the non-live trial; do not rely on Enter having identical behavior in every native control. Browser validation and picker presentation vary.
 
-Continue with [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/binding/05_checkbox_radio.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+
+**Sample data:** `01-native_editing_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

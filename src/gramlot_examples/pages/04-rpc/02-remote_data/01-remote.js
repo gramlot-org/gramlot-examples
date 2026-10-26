@@ -8,6 +8,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'catalog'});
         pane.h1('Remote');
+        pane.p("Choose Lamp, Desk or Chair. The server builds the selected detail fragment; the page replaces only that section.");
 
         const form = pane.form({class: 'card stack'});
         form.html_label('Record', {for: 'record'});

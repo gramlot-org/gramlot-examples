@@ -8,11 +8,15 @@ learning prerequisites, not the release chronology.
 
 | Family | Lessons | What you learn |
 | --- | --- | --- |
-| [HTML / SVG](08-html_svg/README.md) | 13 | HTML structure, native controls and SVG before reactive Data. |
-| [Binding](02-binding/README.md) | 11 | Pointers, live and committed editing, Boolean values, styles and shared Data. |
-| [Controllers](03-controllers/README.md) | 23 | Formulas, named Logic, events, commands, endpoints, remote Source and lazy Data. |
-| [Input components](01-inputs/README.md) | 34 | Fields, choices, typed values, validation, labels, tree and document editors. |
-| [Containers](05-containers/README.md) | 8 | Regions, splitters, drawers, nested layouts, tabs and stacked panels. |
+| [HTML, SVG and page structure](00-html_svg/README.md) | 12 | HTML structure, native controls and SVG before reactive Data. |
+| [Fields and input widgets](01-inputs/README.md) | 29 | Fields, choices, typed values, validation and input widgets. |
+| [Data and bindings](02-binding/README.md) | 12 | Pointers, live updates, styles and shared Data. |
+| [Logic, actions and events](03-controllers/README.md) | 16 | Formulas, named Logic, events and commands. |
+| [RPC and data exchange](04-rpc/README.md) | 7 | Server calls, remote Source and lazy Data. |
+| [Containers and layout](05-containers/README.md) | 9 | Regions, drawers, tabs, stacks, dialog and floating panes. |
+| [Document and code editors](06-editors/README.md) | 5 | Edit source documents and compare their previews. |
+| [Tools](07-tools/README.md) | 1 | Live Source playground; the Python host adds its sample IDE. |
+| [Composition and reuse](08-composition/README.md) | 2 | Reusable blocks, independent datapaths, imports and timer-driven Data. |
 
 Each lesson says what to observe and provides complete Python and JavaScript
 source. Start with its small example, change one value, then compare the visible

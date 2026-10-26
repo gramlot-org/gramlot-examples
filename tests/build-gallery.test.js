@@ -21,8 +21,8 @@ const environment = families => ({environment: 'test', families: families.map(fa
 
 test('common gallery', () => {
     const gallery = buildGallery();
-    assert.deepEqual(gallery.families.map(({key}) => key), ['components', 'binding', 'controllers', 'rpc', 'layout', 'editors', 'html_svg']);
-    assert.equal(Object.keys(gallery.routes).length, 119);
+    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'menus', 'editors', 'tools', 'composition']);
+    assert.equal(Object.keys(gallery.routes).length, 138);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
     assert.match(gallery.routes.b12.data, /foo_data\.tytx$/);
     assert.ok(gallery.assets['/pages/02-binding/01-paths_and_updates/foo_data.tytx']);
@@ -35,6 +35,8 @@ test('media types', () => {
     assert.equal(assets['/gallery/dist/gallery.js'].type, 'application/javascript');
     assert.equal(assets['/pages/03-controllers/01-logic/03-named_logic.js'].type, 'text/plain');
     assert.equal(assets['/gallery/gallery.css'].type, 'text/css');
+    assert.equal(assets['/trials/menu/theme_preview.js'].type, 'text/javascript');
+    assert.ok(assets['/gallery/dist/menu-trial/descriptor.js']);
     assert.equal(assets['/gallery/dist/LICENSE'].type, 'text/plain');
 });
 

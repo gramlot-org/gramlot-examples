@@ -13,6 +13,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'stock'});
         pane.h1('Call on click');
+        pane.p("Reserve the unavailable item, then try the protected action. The error messages distinguish an application error from missing authentication.");
 
         const calls = pane.section({class: 'card stack'});
         calls.h2('A dataRpc nested in the button');
@@ -27,7 +28,7 @@ export class Page extends BasePage {
         }
 
         const auth = pane.section({class: 'card stack'});
-        auth.h2('0.2.15: Source authorization versus visibility');
+        auth.h2('Authorization and visibility');
         auth.p('Source-auth marker', {auth: 'admin', id: 'protected-source'});
         auth.p('Hidden marker is still delivered', {hidden: true, id: 'hidden-source'});
         auth.p('Without an authorized identity, the protected paragraph is omitted from Source.');

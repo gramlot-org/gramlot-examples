@@ -1,5 +1,10 @@
-.complete-page { display: grid; gap: 2rem; }
+.complete-page { display: grid; gap: 1.25rem; }
 .complete-header { display: grid; gap: .55rem; }
 .complete-header nav { display: flex; flex-wrap: wrap; gap: 1rem; padding-top: .5rem; }
 .complete-hero { display: grid; gap: 1rem; text-align: center; }
 .complete-grid { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+
+.complete-hero svg { max-height: 180px; }
+
+.complete-page input[type="checkbox"], .complete-page input[type="radio"] { margin-inline-end: .4rem; }
+.complete-page input + label { margin-inline-end: 1rem; }

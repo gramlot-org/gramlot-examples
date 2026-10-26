@@ -14,14 +14,14 @@ export function mountGallerySettings(renderer, root, state) {
     state.setItem('labelPosition', LABEL_POSITIONS.has(saved) ? saved : 'example');
     const frames = () => [...renderer.records.get(root).element.querySelectorAll('.gallery-preview iframe')];
     const send = frame => frame.contentWindow.postMessage({type: SETTINGS_SET,
-        labelPosition: state.getItem('labelPosition'), touchMode: 'auto'}, '*');
+        labelPosition: state.getItem('labelPosition'), touchMode: 'auto'}, window.location.protocol === 'file:' ? '*' : window.location.origin);
     const change = () => {
         try { window.localStorage.setItem(key, state.getItem('labelPosition')); }
         catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
         for (const frame of frames()) if (frame.hasAttribute('src')) send(frame);
     };
     const message = event => {
-        if (event.data?.type !== THEME_READY) return;
+        if (event.origin !== window.location.origin || event.data?.type !== THEME_READY) return;
         const frame = frames().find(item => item.contentWindow === event.source);
         if (frame) send(frame);
     };

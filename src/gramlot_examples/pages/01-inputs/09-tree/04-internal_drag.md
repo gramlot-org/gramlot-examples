@@ -1,6 +1,6 @@
-# Reorder tree nodes with drag and drop
+# Copy tree nodes with drag and drop
 
-**Sample data:** `04-internal_drag_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Drag a document onto Inbox or Projects, then expand that folder. A copy appears there and the original stays put; Locked archive rejects the drop.
 
 Drag Project brief or Meeting notes onto Inbox or Projects, then open that folder. Locked archive rejects the same payload. Dropping onto a copied document also rejects it: only the two writable folders accept documents.
 
@@ -15,3 +15,5 @@ Python declares the Bags and both trees. `onDrag` adds an `app/document` snapsho
 `effectAllowed='copy'` and `dropEffect='copy'` agree on the browser operation. `onDragEnd` updates the gesture status; the Source-local `endDrag` notification follows even if that callback fails. The browser effect does not certify application-operation success. An accepted drop also publishes Source-local `onDrop` before the action completes. Callback errors are reported and transient feedback is cleaned; Data changes already made are not rolled back.
 
 This increment handles native mouse drag inside one page/renderer. Separate browser windows of the same application, typed callbacks, custom Source previews and external files are not implemented here. Touch and keyboard drag interactions are not included. Payloads must use supported TYTX values; unsupported nested JavaScript values remain a deferred dependency edge case.
+
+**Sample data:** `04-internal_drag_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

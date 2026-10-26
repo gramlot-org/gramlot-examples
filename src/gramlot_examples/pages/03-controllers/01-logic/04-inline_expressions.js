@@ -6,6 +6,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'player'});
         pane.h1('Inline expressions');
+        pane.p("Edit the name and score. Short expressions update the greeting and pass/fail message directly from the other attributes of their node.");
         const form = pane.form({class: 'card stack'});
         for (const [label, key] of [['First name', 'first'], ['Last name', 'last']]) {
             form.html_label(label, {for: key});

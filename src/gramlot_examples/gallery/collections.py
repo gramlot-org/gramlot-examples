@@ -5,6 +5,7 @@ from gramlot.collections.tree import mygramlot as tree
 from gramlot.collections.editors import mygramlot as editors
 from gramlot.collections.typst import mygramlot as typst
 
+from gramlot_examples.collections.menu_trial import mygramlot as menu_commands
 
 def collections():
-    return [inputs, layout, tree, editors, typst]
+    return [inputs, layout, tree, editors, typst, menu_commands]

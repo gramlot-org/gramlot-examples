@@ -10,7 +10,9 @@ export class Page extends BasePage {
         const main_content = root.main({class:"example-page stack"});
         main_content.h1("Date editing");
         main_content.p("Enter a calendar date or a word such as oggi or domani. Two fields share one civil date.");
-        const controls = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});
+        const options = main_content.details({max_width: "24rem"});
+        options.summary("Options · change the behavior");
+        const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});
         controls.checkbox({default: false, id:"live",value:"^live",lbl:"Editing",label:"Update while typing"});
         controls.checkbox({default: false, id:"locked",value:"^locked",lbl:"State",label:"Read only"});
         const fields = main_content.formlet({class:"card stack",width:"100%",max_width:"24rem"});

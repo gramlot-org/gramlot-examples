@@ -1,6 +1,6 @@
 # Run immediate and delayed button actions
 
-**Sample data:** `03-plain_and_delayed_buttons_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Click a delayed button several times quickly, then wait. Compare its single grouped execution with the immediate action and native form reset.
 
 Reset an ordinary HTML form, then compare the same Gramlot action with and without a delay. Several quick clicks become one execution, with the size of the group displayed below.
 
@@ -18,5 +18,7 @@ Both immediate and delayed buttons render as `<button>`. The delayed example add
 A container can supply inherited `_delay`; an explicit zero on a button makes it immediate. Button delay precedes action, ask, fire and the nested provider. A controller's own `_delay` separately delays its Data/subscription triggers. Explicit native event listeners still run on each click. Removing the button or closing its page cancels pending work. The old legacy 200 ms disabled guard for immediate clicks is not introduced.
 
 **Exercise:** change only `_delay` from 600 to 1200. **Result:** the last click postpones the same action for 1.2 seconds; the action and its count logic do not change.
+
+**Sample data:** `03-plain_and_delayed_buttons_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

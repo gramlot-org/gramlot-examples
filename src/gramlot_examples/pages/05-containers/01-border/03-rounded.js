@@ -31,9 +31,11 @@ export class Page extends BasePage {
             live: true,
             width: '14rem',
         });
-        const border = main_content.borderContainer({
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const border = canvas.borderContainer({
             id: 'rounded-border',
-            height: '560px',
+            height: '480px',
             max_width: '64rem',
             design: '^design',
             rounded: '^rounded',
@@ -65,7 +67,7 @@ export class Page extends BasePage {
             });
             region.strong(label);
         }
-        const center = border.contentPane({ region: 'center', padding: '24px 32px' });
+        const center = border.contentPane({ region: 'center', padding: '16px' });
         const inner = center.borderContainer({
             id: 'rounded-inner',
             height: '100%',

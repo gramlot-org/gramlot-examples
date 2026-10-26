@@ -1,17 +1,18 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Freeze and resume bound updates";
+    static title = "Defer structural updates with freeze";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'board'});
         pane.h1('Freeze');
+        pane.p("Freeze the branch, increment the count and remove an item. The count updates immediately; item removal appears only after Thaw.");
         const actions = pane.div({class: 'actions'});
         for (const [label, method] of [['Freeze', 'freeze'], ['Increment Data count', 'add'],
             ['Remove last item', 'removeLast'], ['Thaw', 'thaw']]) {
             actions.button(label, {id: method}).dataController({func: method});
         }
-        pane.p('^.frozen', {id: 'frozen', class: 'muted'});
+        pane.p('^.frozen', {id: 'frozen', mask: 'Structural updates frozen: {}', class: 'muted'});
 
         const board = pane.section({nodeId: 'board', class: 'card stack'});
         board.h2('A branch that can be frozen');
@@ -22,7 +23,7 @@ export class Page extends BasePage {
     }
 }
 
-/** Logic of 08_freeze.py and 08_freeze.js: each button's nested controller calls one method. */
+/** Logic of 04-freeze.py and 04-freeze.js: each button's nested controller calls one method. */
 export class Logic {
     sourceNode(nodeId) {
         return this.page.src.builder.nodeById(nodeId);

@@ -1,6 +1,6 @@
 # Rounded borders and popups
 
-**Sample data:** `03-rounded_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Change the corner radius, then open a date or choice popup. Compare the nested container edges and the controls inside them.
 
 Rounded corners can make a workspace feel softer, but they should never get in the way of a calendar, a choice list or a helpful error message. This example lets you try those things together.
 
@@ -25,3 +25,5 @@ The rounded background and the popup have different jobs. The background stays w
 ## Your next experiment
 
 Try mimi and joanna from Settings. The appearance changes, but the layout and the values you entered remain the same. Then visit **Drawers** to explore how a panel can get out of your way without throwing away your work.
+
+**Sample data:** `03-rounded_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

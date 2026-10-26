@@ -10,7 +10,8 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("A boolean command with an LED")
+        main_content.h1("One button, one boolean")
+        main_content.p("Toggle Enabled and compare the checkbox: both edit the same boolean. Read only prevents changes; Disabled also removes the command from normal interaction.")
         fields = main_content.formlet(columns=1, max_width="26rem", lbl_position="L")
         fields.toggleButton("Enabled", id="toggle-command", value="^enabled", readonly="^readonly", disabled="^disabled", action="this.SET('result', this.GET('enabled') ? 'Enabled' : 'Disabled')", default=False)
         fields.checkbox(value="^enabled", lbl="Same Data", id="toggle-checkbox")

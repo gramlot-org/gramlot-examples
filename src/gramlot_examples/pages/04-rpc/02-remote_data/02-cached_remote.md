@@ -1,22 +1,17 @@
 # Cache remote fragments
 
-**Sample data:** `02-cached_remote_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Switch from Lamp to Spotlight, then to Chair. The first two share a category, so the mounted-fragment counter stays unchanged until Chair.
 
 Revisit **Remote** with caching. Request the same content again and watch the mounted-fragment counter: you learn how unchanged inputs can reuse the current fragment. The counter measures mounts, not network calls.
 
-**Uses:** Data binding and cached remote Source — core 0.2.16. The request rule and the readiness condition `_if` are those of the current core.
+**Uses:** Data binding and cached remote Source. The request rule and the readiness condition `_if` are those of the current core.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Remote Source and lazy Data (core 0.2.16), after the 0.2.14 endpoint lessons.
-
 **Goal:** Reuse the last mounted fragment when the relevant inputs stay the same.
 
-**Before this lesson:** [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/02-variable_datapath.md), [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/01-remote.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c13 · Cached remote** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands. This lesson executes authored inline JavaScript and needs the gallery’s permissive CSP profile; a strict named-Logic starter needs the corresponding named form.
+**Before this lesson:** [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/02-variable_datapath.md), [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/01-remote.md).
 
 ## Read the page
 
@@ -61,7 +56,8 @@ For `_if`, add a boolean Data checkbox and `enabled="^enabled", _if="enabled"` t
 
 `_onRemote` and conditional code require the inline CSP profile. A false `_if` makes no request, cancels nothing and can run `_else`. This lesson keeps the method name fixed: `remote("rules", category="^.category", ...)` varies the category while always calling `rules`. The name can also be a pointer such as `remote("^method", ...)`: the method is then read from Data and a reader of the Source no longer sees which method runs. An empty or null name rejects the request with an error, so write `_if` to make no request while no method is chosen. Live Source-attribute-mutation semantics remain outside this lesson.
 
+Continue with [c14 · Data remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/03-data_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
 
-Continue with [c14 · Data remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/14_data_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+**Sample data:** `02-cached_remote_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

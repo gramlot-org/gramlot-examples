@@ -10,6 +10,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="kitchen")
         pane.h1("Data remote")
+        pane.p("Compare the live menu with Read current value. Changing the table updates the bound view; the explicit snapshot stays unchanged until you read again.")
 
         form = pane.form(class_="card stack")
         form.html_label("Table", for_="table")

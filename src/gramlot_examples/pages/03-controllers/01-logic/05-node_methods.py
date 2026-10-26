@@ -14,6 +14,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="methods")
         pane.h1("Node methods")
+        pane.p("Try SET, PUT and FIRE and compare the value with the notification counter. GET reads the stored value, including a silent PUT.")
         actions = pane.div(class_="actions")
         for label, key, script in ACTIONS:
             actions.button(label, action=script, id=key)

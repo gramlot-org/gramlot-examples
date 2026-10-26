@@ -1,6 +1,6 @@
 # Browse hierarchical Data with a tree
 
-**Sample data:** `01-basics_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Expand Catalog to request its children, then select a row. Add or rename a document and watch the tree follow changes in its Bag.
 
 The tree always reads a Data Bag. `storepath` identifies the Bag; `selectedPath` binds the selected node path relative to that store. `labelAttribute` uses a node attribute for its caption and otherwise retains the label.
 
@@ -12,7 +12,8 @@ Style through the host class and CSS parts: `tree`, `group`, `node`, `branch`, `
 
 This increment does not yet implement icon callbacks, badges, hover actions, checkbox/search, or expandAll. Resolver expiry and request errors retain the existing resolver/provider contract; the tree does not introduce a request service.
 
-
 ## Scalar values
 
 `hideValues` defaults to false: expand a scalar node to read its value as a visual child. Toggle **Hide scalar values** to remove these children. Clicking a value selects its owning Bag node; the store and selectedPath contain no synthetic node. Rendering never loads a resolver; expanding one does.
+
+**Sample data:** `01-basics_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

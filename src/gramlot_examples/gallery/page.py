@@ -7,13 +7,14 @@ from gramlot import IndexPage, source, endpoint
 from genro_bag import Bag
 from gramlot_examples import build_gallery, navigation_directory
 from gramlot_examples.gallery.guided_demo import guided_demo
+from gramlot_examples.gallery.modules import module_bag, registered_modules
 
 
 NAVIGATION_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M9%204v16M5.5%208h1M5.5%2012h1M5.5%2016h1%22%2F%3E%3C%2Fsvg%3E"
 SETTINGS_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m10%203-.5%202-2%20.9-1.9-.6-2%203.4L5%2010v2l-1.4%201.3%202%203.4%201.9-.6%202%20.9.5%202h4l.5-2%202-.9%201.9.6%202-3.4L19%2012v-2l1.4-1.3-2-3.4-1.9.6-2-.9L14%203Z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2211%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E"
 
 
-INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%227%22%2F%3E%3Cpath%20d%3D%22m15%2015%206%206M7%208h6M10%208v5M7%2013h6%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%228%22%20r%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%228%22%20r%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%227%22%20cy%3D%2213%22%20r%3D%22.7%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%22.7%22%2F%3E%3C%2Fsvg%3E"
+INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%221%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%227.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%226.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220.5%22%20stroke%3D%22%23404448%22%2F%3E%3C%2Fsvg%3E"
 
 
 class Page(IndexPage):
@@ -23,26 +24,27 @@ class Page(IndexPage):
     app_icon = "/assets/branding/app-icon.png"
     css = (*IndexPage.css, "/themes/gramlot-index/theme.css", "/gallery/gallery.css")
     shell_id = "gallery"
-    logoUrl = "/assets/branding/gramlot-logo-dark.svg"
+    logoUrl = "/assets/branding/svg/gramlot-horizontal-primary.svg"
     datapath = "galleryIndex"
     catalogs = ()
+    gallery_modules = ()
     serverless_download_url = None
 
     def main(self, root):
-        frame = root.framePane(id="gallery-frame", height="100dvh", min_height=0)
+        frame = root.framePane(id="gallery-frame", height="100%", min_height=0)
         frame.left.setAttr({"id": "gallery-rail-region", "width": "42px", "padding": "45px 3px 3px",
                             "class": "gallery-rail-region"})
         rail = frame.left.menu(id="gallery-rail", presentation="bar", orientation="vertical",
                                labelPosition="tooltip", iconSize=24, width="100%", height="100%",
                                aria_label="Gallery tools")
-        rail.menuline(caption="Navigation", tooltip="Show or hide navigation", iconSrc=NAVIGATION_ICON,
+        rail.menuline(caption="Navigation", tooltip="Navigation — browse examples and documentation", iconSrc=NAVIGATION_ICON,
                       checked="^galleryIndex.navigationOpen", action="galleryToggleNavigation",
                       overflowable=False, id="gallery-navigation-button", width="36px", height="36px")
         rail.spacer(flex=1)
-        rail.menuline(caption="Inspector", tooltip="Open inspector", iconSrc=INSPECTOR_ICON,
+        rail.menuline(caption="Inspector", tooltip="Inspector — explore the current page’s Source and Data", iconSrc=INSPECTOR_ICON,
                       checked=False, disabled=True, overflowable=False,
                       id="gallery-inspector", width="36px", height="36px")
-        rail.menuline(caption="Settings", tooltip="Show or hide settings", iconSrc=SETTINGS_ICON,
+        rail.menuline(caption="Settings", tooltip="Settings — change theme, colors and toolbar position", iconSrc=SETTINGS_ICON,
                       checked="^galleryIndex.settingsOpen", action="galleryToggleSettings",
                       overflowable=False, id="gallery-settings-button", width="36px", height="36px")
         super().main(frame.center)
@@ -69,10 +71,18 @@ class Page(IndexPage):
 
     def left(self, pane):
         pane.set_attr({"id": "index-sidebar", "class": "index-sidebar", "nodeId": "galleryNavigation"})
-        pane.header().img(src=self.logo_url, alt=self.title, class_="index-logo")
+        header = pane.header(class_="gallery-navigation-header")
+        header.img(src=self.logo_url, alt=self.title, class_="index-logo")
+        search = header.menu(presentation="bar", class_="gallery-navigation-search", aria_label="Search navigation")
+        field = search.menuline(group=True, overflowable=False, flex=1, min_width=0).div(class_="gallery-search-field")
+        field.span(class_="gallery-search-icon", aria_hidden="true")
+        field.input(type="search", value="^galleryIndex.search", default="", live=True,
+                    placeholder="Search examples", aria_label="Search examples")
+        field.html_button(type="button", class_="gallery-search-clear", aria_label="Clear search", title="Clear search",
+                     hidden="^galleryIndex.search:={} === ''", connect_onclick="this.SET('galleryIndex.search', '')")
         super().left(pane)
         pane.set_attr({"drawer_minimize": True, "drawer_label": "", "drawer_display": "none"})
-        pane.value.get_node("tree").set_attr({"id": "gallery-navigation-tree", "class": "gallery-navigation-tree", "autoCollapse": True, "hideValues": True})
+        pane.value.get_node("tree").set_attr({"id": "gallery-navigation-tree", "class": "gallery-navigation-tree", "autoCollapse": True, "hideValues": True, "searchText": "^galleryIndex.search"})
 
     def center(self, pane):
         pane.set_attr({"id": "gallery-center", "overflow": "hidden"})
@@ -80,15 +90,8 @@ class Page(IndexPage):
         pane.value.get_node("tabs").set_attr({"id": "index-pages", "class": "index-main", "hidden": True})
         pane.div(id="gallery-introduction", height="100%").iframe(src="pages/00-index", title="Example gallery", width="100%", height="100%", border=0)
 
-    def right(self, pane):
-        pane.set_attr({"id": "index-code", "nodeId": "galleryCode", "width": "420px",
-                       "minSize": 220, "maxSize": 900, "splitter": True,
-                       "drawer": "close", "drawer_label": "Code", "drawer_minimize": True,
-                       "aria_label": "Example source code", "hidden": True})
-        pane.div(id="gallery-code-pages", height="100%")
-
     def top(self, pane):
-        pane.set_attr({"height": "42px"})
+        pane.set_attr({"height": "var(--gallery-toolbar-size,42px)"})
         self.header(pane)
 
     @endpoint
@@ -101,7 +104,7 @@ class Page(IndexPage):
                 "The Python and JavaScript integrations have the same examples.")
         intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. "
                 "Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. "
-                "Use the Navigation toolbar button and the Code drawer label to show or hide their panels; drag their splitters to resize them. Each lesson has Example and Explanation tabs; switching them preserves the running example. "
+                "Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Open Code and drag its internal icon to open it in a floating window; close that window to return Code to its tab. Switching tabs preserves the running example. "
                 "Choose the theme, color combination and light/dark mode independently in Settings.")
 
     def group_panel(self, pane, group):
@@ -151,6 +154,8 @@ class Page(IndexPage):
                                       open="^galleryIndex.settingsOpen", width="390px", height="420px")
         settings.frame.center.setAttr({"padding": "12px", "overflow": "auto"})
         self.footer(settings.frame.center)
+        if self.gallery_modules:
+            shell.dataSetter("galleryIndex.modules", module_bag(self.gallery_modules))
         shell.dataController(func="galleryInitialize", _onBuilt=True)
         shell.dataController(func="galleryMount", _onStart=True)
 
@@ -179,6 +184,13 @@ class Page(IndexPage):
             raise ValueError(f"Unknown gallery view: {key}/{view}")
 
     def panel(self, pane, node):
+        if node.attr.get("module") is not None:
+            for module in registered_modules(self.gallery_modules):
+                for entry in module['entries']:
+                    if module['id'] == node.attr['module'] and entry['id'] == node.attr.get('moduleEntry'):
+                        pane.iframe(src=entry['url'], title=entry['title'], width="100%", height="100%", border=0)
+                        return
+            raise ValueError("Unknown registered module entry")
         key = node.attr.get("key")
         if "markdown" in node.attr:
             pane.div(node.attr["markdown"], class_="gallery-directory-markdown", padding="24px")
@@ -207,6 +219,10 @@ class Page(IndexPage):
         explanation = preview.contentPane(title="Explanation", pageName="explanation",
                                           class_="gallery-lesson", overflow="auto", id=f"description-{key}")
         explanation.p("Loading explanation…", role="status")
+        code = preview.contentPane(title="Code", pageName="code", detachable=True,
+                                   class_="gallery-codepane", id=f"codepane-{key}")
+        code.tabContainer(id=f"code-tabs-{key}", class_="gallery-source-tabs", height="100%",
+                          tabMode="underline").contentPane(title="Code").p("Loading code…", role="status")
 
     def source_document(self, key):
         """Read-only default; the serving integration supplies write authorization."""
@@ -233,7 +249,8 @@ class Page(IndexPage):
             func="galleryCodeRevert", key=key)
         body.div("^.status", role="status", padding="6px", white_space="pre-wrap", flex_shrink=0,
                  id=f"code-status-{key}")
-        body.codeMirror(value="^.content", language="python", readonly="^.readonly", flex="1", min_height=0,
+        body.codeMirror(value="^.content", language="python", readonly="^.readonly", fontSize=12,
+                        fontFamily="var(--gramlot-font-code)", flex="1", min_height=0,
                         id=f"code-{key}", nodeId=f"galleryCodeEditor_{key}")
         body.dataController(func="galleryCodeMount", key=key, _onStart=True)
         body.dataController(func="galleryCodeSave", key=key, **{f"subscribe_galleryCodeEditor_{key}_save": True})

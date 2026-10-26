@@ -1,6 +1,6 @@
 # Start and dispose page behavior
 
-**Sample data:** `02-lifecycle_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** Compare the startup trace, freeze the branch and remove it. Observe which updates wait for thaw and which cleanup runs on removal.
 
 Start and stop a branch, then remove it. You learn when its lifecycle actions run and which work ends with that branch.
 
@@ -9,14 +9,9 @@ Start and stop a branch, then remove it. You learn when its lifecycle actions ru
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** core 0.2.0; the maintained Page/Logic file layout is from 0.2.5.
-
 **Goal:** Predict when a branch starts and which work ends when it is removed.
 
 **Before this lesson:** [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md), [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/04-freeze.md).
-
-**Open and edit:** open this page in your environment's gallery. Read Python first; Python builds Source on the host and named JavaScript Logic runs in the browser. The JavaScript Page is the equivalent host/Worker declaration. The gallery shows source; to change it, copy the page into your editable project following the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md). Read the **logic.js** tab (the Logic class from `15_lifecycle.js`) when using Python. Reload after source edits.
 
 ## Read the page
 
@@ -56,6 +51,8 @@ b08 introduced a frozen visual branch. This lesson revisits it with explicit lif
 
 Freeze defers structural projection and insertion/rebuild work; existing nodes still follow Data. Removing a branch is different from hiding it. This page uses named Logic; no new lifecycle hook or timer implementation is invented. Full page disposal also ends its providers. Late startup and insertion while frozen are advanced contract cases, not extra steps needed for the basic trace.
 
-Continue with [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/16_attribute_projection.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080) provides the full contract.
+Continue with [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/03-attribute_projection.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080) provides the full contract.
+
+**Sample data:** `02-lifecycle_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

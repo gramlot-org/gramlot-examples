@@ -9,6 +9,7 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'buttons'});
         pane.h1('Button controller');
+        pane.p("Press the first button normally, then with Shift or Alt. Its nested controller receives the click count and modifiers; the other buttons fire Data paths.");
 
         const nested = pane.section({class: 'card stack'});
         nested.h2('A controller nested in the button');

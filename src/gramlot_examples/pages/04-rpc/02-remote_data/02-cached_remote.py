@@ -16,6 +16,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack")
         pane.h1("Cached remote")
+        pane.p("Switch from Lamp to Spotlight, then to Chair. The first two share a category, so the mounted-fragment counter stays unchanged until Chair.")
         pane.html_label("Product", for_="product")
         choice = pane.select(id="product", value="^current", default='products.lamp')
         for key, product in PRODUCTS.items():

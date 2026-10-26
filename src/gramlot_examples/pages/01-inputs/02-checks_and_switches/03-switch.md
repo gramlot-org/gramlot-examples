@@ -1,5 +1,7 @@
 # Show a boolean as a switch
 
+**Try this:** Click the switch or focus it and press Space. The ordinary checkbox follows the same boolean; compare read-only and disabled behavior.
+
 A switch and a checkbox share one boolean. Compare their appearance, captions and read-only state.
 
 **Uses:** the 0.3 inputs and layout collections, labelbox and Source/Data bindings. No database, form-save service or endpoints.

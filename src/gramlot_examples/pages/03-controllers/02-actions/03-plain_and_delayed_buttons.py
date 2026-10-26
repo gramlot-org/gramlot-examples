@@ -10,7 +10,7 @@ class Page(BasePage):
         form = main_content.form(class_="card stack")
         form.html_label("Native value", for_="native-value")
         form.input(id="native-value", value="Original")
-        form.html_button("Native reset", type="reset", id="native-reset")
+        form.html_button("Native reset", type="reset", width="fit-content", id="native-reset")
         main_content.p("Edit the field and Reset: the browser restores its initial value, without a Data controller.")
         main_content.button("Immediate action", id="immediate",
                             action="this.SET('.count', _counter); this.SET('.runs', this.GET('.runs') + 1)")

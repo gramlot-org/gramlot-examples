@@ -1,22 +1,17 @@
 # Define and call a server endpoint
 
-**Sample data:** `01-endpoint_data.tytx` supplies the initial Bag for both Python and JavaScript. Interface controls use defaults where shown; edits and remote updates use the normal Data bindings.
+**Try this:** The page sends price and VAT rate once at startup. The server returns the gross amount, which appears below through a Data binding.
 
 An endpoint receives parameters and returns a value that appears in the page. You learn how `dataRpc` puts the result in Data without writing request and response handling yourself.
 
-**Uses:** Data binding and `dataRpc` — core 0.2.14. The host runs the endpoint: Python, Node/Bun or the standalone Worker.
+**Uses:** Data binding and `dataRpc`. The host runs the endpoint: Python, Node/Bun or the standalone Worker.
 
 <details>
 <summary>More detail</summary>
 
-
-**Release stage:** Endpoint calls (core 0.2.14), after the local 0.2.0 lessons.
-
 **Goal:** Follow a declarative endpoint call from parameters to Data.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/04-complete_examples/01-end_to_end.md). These prerequisites support the release sequence; later comparisons are explicitly labelled below.
-
-**Open and edit:** select **c09 · Endpoint** in your environment’s gallery. For source changes, copy/edit the matching page in your own project using the [setup guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md); the gallery is a source viewer. Save, then reload/reopen as that guide explains. The snippets below are excerpts/edits within that Page, not standalone launch commands.
+**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/04-complete_examples/01-end_to_end.md).
 
 ## Read the page
 
@@ -51,6 +46,8 @@ Revisit c01’s computed gross. There the browser owns the formula; here the Pag
 
 This lesson sends one initial call; it has no live price control or persistence. VAT is a percentage, unlike c01’s fractional rate. Do not infer login or database integration from an endpoint.
 
-Continue with [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/controllers/10_call_on_change.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+Continue with [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+
+**Sample data:** `01-endpoint_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>

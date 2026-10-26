@@ -10,6 +10,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="edit")
         pane.h1("Native editing")
+        pane.p("Edit a field, then leave it. Compare the accepted Data below; enable live editing to see updates while typing.")
         pane.html_label("Write at every keystroke (live)", for_="live")
         pane.input(type="checkbox", value="^.live", id="live", default=False)
 

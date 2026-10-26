@@ -20,7 +20,7 @@ const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/cata
 const LOGIC = {
     async b08(page, text) {
         await page.click('#freeze');
-        assert.equal(await text('#frozen'), 'true');
+        assert.equal(await text('#frozen'), 'Structural updates frozen: true');
         await page.click('#add');
         await page.click('#removeLast');
         await page.click('#removeLast');

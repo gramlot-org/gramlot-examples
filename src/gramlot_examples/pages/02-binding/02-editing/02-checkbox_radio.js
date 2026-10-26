@@ -8,8 +8,10 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'choice'});
         pane.h1('Checkbox and radio');
+        pane.p("Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.");
 
-        const options = pane.fieldset({class: 'card stack'});
+        const work = pane.div({class: 'grid lesson-workbench'});
+        const options = work.fieldset({class: 'card stack'});
         options.legend('Options');
         for (const [key, label] of [['newsletter', 'Newsletter'], ['invoice', 'Paper invoice']]) {
             const row = options.div();
@@ -17,7 +19,7 @@ export class Page extends BasePage {
             row.html_label(label, {for: key});
         }
 
-        const plans = pane.fieldset({class: 'card stack'});
+        const plans = work.fieldset({class: 'card stack'});
         plans.legend('Plan');
         for (const [key, label] of PLANS) {
             const row = plans.div();
@@ -25,7 +27,7 @@ export class Page extends BasePage {
             row.html_label(label, {for: key});
         }
 
-        const values = pane.section({class: 'card stack'});
+        const values = work.section({class: 'card stack'});
         values.h2('The Data');
         const facts = values.dl();
         for (const key of ['newsletter', 'invoice', 'plan.basic', 'plan.plus', 'plan.team']) {

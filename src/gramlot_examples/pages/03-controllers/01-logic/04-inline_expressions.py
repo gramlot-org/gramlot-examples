@@ -7,6 +7,7 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="player")
         pane.h1("Inline expressions")
+        pane.p("Edit the name and score. Short expressions update the greeting and pass/fail message directly from the other attributes of their node.")
         form = pane.form(class_="card stack")
         for label, key in (("First name", "first"), ("Last name", "last")):
             form.html_label(label, for_=key)

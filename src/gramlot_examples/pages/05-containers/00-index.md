@@ -17,3 +17,7 @@ Start with **Border regions and splitters**. Learn what a region is and how the 
 **Border events** explains how your page can hear about a change and react. **Tabs** introduces switching between panels and the different meaning of closing one. Finally, **Demo carousel** uses a slider to browse a stack of pages, with a short pause before opening the chosen page at full size.
 
 The same lessons run in the Python, JavaScript and offline galleries. Code shows the language of the gallery you are using.
+
+## Arrange a workspace
+
+**Tray workspace** combines tabs, fields, sliders and notes in movable cards. Select and move several cards, try collision layers, then save and restore the arrangement from a Data Bag. The Explanation tab gives a short guided route through each interaction.

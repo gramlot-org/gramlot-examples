@@ -61,12 +61,14 @@ def build_gallery(catalogs=()):
     files_by_url = [
         ("/catalog.json", PACKAGE / "catalog.json"),
         ("/themes/gramlot-base/theme.css", resources / "themes" / "gramlot-base" / "theme.css"),
-        ("/assets/branding/gramlot-logo-dark.svg", resources / "assets" / "branding" / "gramlot-logo-dark.svg"),
+        *((f"/assets/branding/svg/{name}.svg", resources / "assets" / "branding" / "svg" / f"{name}.svg")
+          for name in ("gramlot-horizontal-primary", "gramlot-horizontal-inverse")),
         ("/assets/branding/app-icon.png", resources / "assets" / "branding" / "app-icon.png"),
         ("/gallery/gallery.css", gallery / "gallery.css"),
         *((f"/gallery/{name}", gallery / name) for name in ("page.py", "page.js") if (gallery / name).is_file()),
     ]
     assets = {url: {"file": path, "type": media_type(path)} for url, path in files_by_url}
+    assets["/trials/menu/theme_preview.js"] = {"file": PACKAGE / "trials/menu/theme_preview.js", "type": "text/javascript"}
     for name in DIST:
         path = gallery / "dist" / name
         assets[f"/gallery/dist/{name}"] = {"file": path, "type": media_type(path, path.suffix == ".js")}
@@ -141,7 +143,9 @@ def navigation_directory(directory="", catalogs=()):
     folder = boundary.joinpath(*(parts[1:] if parts and parts[0] in groups else parts))
     if not folder.resolve().is_relative_to(boundary.resolve()) or not folder.is_dir():
         raise ValueError("Navigation directory is outside its pages root")
-    files = {p.name:p for p in folder.iterdir()}
+    folders = [family["path"].joinpath(*parts[1:]) for family in families
+               if parts and family["folder"] == parts[0]] if parts else [folder]
+    files = {p.name: p for directory in folders for p in directory.iterdir()}
     if not parts:
         files.update({name:group["path"] for name,group in groups.items()})
     result = Bag()
@@ -158,8 +162,9 @@ def navigation_directory(directory="", catalogs=()):
             key = groups[name]["key"] if not parts and name in groups else name
             result.set_item(key, None, **attrs)
         elif child.suffix == ".py" and child.stem != "00-index" and not child.stem.endswith("_aux"):
-            group = groups.get(parts[0], {}) if parts else {}
-            example = next((item for item in group.get("examples", []) if item["folder"] == "/".join([*parts[1:], child.stem])), None)
+            examples = [item for family in families if parts and family["folder"] == parts[0]
+                        for item in family["examples"]]
+            example = next((item for item in examples if item["folder"] == "/".join([*parts[1:], child.stem])), None)
             attrs = dict(title=page_title(child), url=f"pages/{'/'.join([*parts, child.stem])}", category=False)
             if example:
                 attrs["key"] = example["key"]

@@ -11,7 +11,15 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="story")
         pane.h1("^.settings.caption", id="caption")
-        pane.h2("0.2.0 · Local page")
+        pane.p("Change quantity, size or gift wrap: the total and circle update together. Then try pausing a branch and requesting a server quote.")
+        pane.h2("1. Calculate locally")
+        work = pane.div(class_="grid order-workbench")
+        self.order_fields(work)
+        self.local_result(work)
+        self.freeze_exercise(pane)
+        self.server_quote(pane)
+
+    def order_fields(self, pane):
 
         form = pane.form(class_="card stack", nodeId="form")
         form.html_label("Caption", for_="caption-field")
@@ -30,8 +38,9 @@ class Page(BasePage):
         gift.input(type="checkbox", value="^.gift", id="gift")
         gift.html_label("Gift wrap", for_="gift")
 
+    def local_result(self, pane):
         result = pane.section(class_="card stack")
-        result.p("^.total", id="total")
+        result.p("^.total", id="total", mask="Local total: {}")
         # Optional: the same local total also drives an SVG projection.
         drawing = result.svg(viewBox="0 0 200 200", role="img", aria_label="Total as a circle", class_="example-art")
         drawing.circle(cx=100, cy=100, r="^.radius", fill="^.color", id="circle")
@@ -44,8 +53,9 @@ class Page(BasePage):
         pane.dataFormula(".radius", "Math.min(20 + total * 4, 90)", total="^.total", _init=True)
         pane.dataController(func="paint", total="^.total", _init=True)
 
+    def freeze_exercise(self, pane):
         later = pane.section(class_="card stack", nodeId="later")
-        later.h2("0.2.0 · Optional freeze exercise")
+        later.h2("2. Pause presentation updates")
         notes = later.ul(nodeId="notes", id="notes")
         for text in ("This branch can be frozen", "This note can be removed under freeze"):
             notes.li(text)
@@ -53,9 +63,10 @@ class Page(BasePage):
         for label, method in (("Freeze", "freeze"), ("Remove a note", "removeNote"), ("Thaw", "thaw")):
             actions.button(label, id=method).dataController(func=method)
 
+    def server_quote(self, pane):
         # Return here after c09/c11: the original local stage above remains independent.
         quotes = pane.section(class_="card stack")
-        quotes.h2("0.2.14 · Ask the server for a quote")
+        quotes.h2("3. Request a server quote")
         quotes.p("The local total follows edits. The server quote changes only after a request.")
         quotes.button("Request quote", type="button", id="request-quote").dataRpc(
             "quote", result_path=".quote", quantity="=.quantity",
