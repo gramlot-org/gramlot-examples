@@ -71,7 +71,7 @@ catalogue, module Python, page companions/CSS, generated provider and two synthe
 scanner images are copied. Mac configuration, APNs material, user media and
 `__pycache__` are excluded. `deploy/galleries/prepare-mobile.py` prepares this
 artifact; `serve-mobile.py` stages and runs the gallery with Remote Edit disabled.
-The optional `Dockerfile.python-mobile` is not wired into the automatic updater.
+The optional `Dockerfile.python-mobile` is selected during host installation; the public host now uses this profile (see the deployment record below).
 It requires public packages that actually contain this integration; it is not an
 instruction to publish or deploy the unaccepted candidate.
 
@@ -115,3 +115,12 @@ Public checks pass catalogue/assets, all thirteen eligible main responses,
 color-picker/IDE routes, unchanged Apple association and explicit write denials.
 Refresh an existing app page to load the new runtime. Off-LAN native plugin,
 media and Universal Link delivery testing remains a physical-device check.
+
+
+Public deployment profile (2026-10-27): owner approved installing the prepared
+configuration to retain the existing Mobile application module during automatic
+release updates. The Python host selects the existing mobile Dockerfile/entry
+point and public artifact, with backups and update.lock. CI remains responsible
+for candidate verification and promotion. Remote Edit remains false; the
+serverless download link is retained. The generic Dockerfile remains available
+for deployments without the mobile module. See deploy/galleries/README.md.

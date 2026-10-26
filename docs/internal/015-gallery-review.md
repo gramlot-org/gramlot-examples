@@ -174,3 +174,11 @@ stdlib unittest runner required by CI. File-export theme messages compare agains
 the opaque `null` event origin while retaining parent/registered-frame ownership
 checks; HTTPS checks remain exact-origin. The serverless file gallery passes all
 111 exported examples with no HTTP(S) requests. No package has been published yet.
+
+
+Publication (2026-10-27): v0.3.17 is consolidated on main and available on npm and
+PyPI. The release workflow passed all eight verification jobs, built both
+packages and published the GitHub release. All 297 JavaScript tests and all 31
+stdlib Python tests pass; each of the 110 lessons passes interactive checks
+through both language hosts. The public mobile profile is preserved as recorded
+in GE-020 and the deployment operations guide.
