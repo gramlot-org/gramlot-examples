@@ -3,12 +3,16 @@ import {chromium} from 'playwright';
 const browser = await chromium.launch({headless: true});
 try {
   for (const base of process.argv.slice(2)) {
-    const page = await browser.newPage();
+    let page;
     const errors = [];
-    page.on('pageerror', error => errors.push(error.message));
     const offline = base.startsWith('file:');
     let routes = {};
     const visit = async key => {
+      // Independent examples must release their embedded offline bundles between checks.
+      // Keep interaction assertions on the current page until the next visit.
+      if (page) await page.close();
+      page = await browser.newPage();
+      page.on('pageerror', error => errors.push(error.message));
       const path = key ? routes[key] : '';
       await page.goto(`${base}/${path}${offline ? (key ? '/index.html' : 'index.html') : ''}`);
       await page.waitForFunction(() => ['started', 'failed'].includes(window.gramlot?.state));
