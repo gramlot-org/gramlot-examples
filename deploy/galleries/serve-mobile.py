@@ -24,7 +24,8 @@ def main():
                         integration=mount + '/device-provider.js', prerequisites=[])
     with TemporaryDirectory(prefix='gramlot-mobile-gallery-') as temporary:
         root = Path(temporary)
-        resources = stage(root, [], '', remote_edit=False, modules=[registration])
+        resources = stage(root, [], '', serverless_download_url='/downloads/gramlot-gallery-serverless.zip',
+                          remote_edit=False, modules=[registration])
         module = stage_module(root / 'mobile-application', pages=PAGES, assets=ASSETS,
                               catalog_file=ROOT / 'catalog.json', prefix=mount,
                               frame_script_url='/gallery/dist/frame.js')

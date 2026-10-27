@@ -231,3 +231,21 @@ existing update lock, ensure the preceding Python container is healthy, restore
 before restoring `current.before.json`. Do not stop either container until the
 selected configuration passes public checks. Preserve the Apple association.
 The ordinary JS gallery and its archive do not belong to this bounded update.
+
+
+## Public mobile profile selected for 0.3.17
+
+Owner approval, 2026-10-27: “Sì, installa la configurazione”, referring to the
+prepared deployment plan for preserving Mobile application during automatic
+updates. The public Python host uses the existing mobile-aware entry point and
+public module artifact, while installing official released packages. On that
+host, install the mobile Dockerfile as `automation/Dockerfile.python`, copy only
+the existing public module into `automation/public-module`, and install
+`serve-mobile.py`. Hold `update.lock` and back up the previous profile before
+changing these files. Do not replace this selected profile with the generic
+Python Dockerfile during a later automation update.
+
+The CI updater still builds, verifies and atomically promotes candidates. Remote
+Edit stays disabled, the serverless ZIP link remains available, and no private
+APNs configuration or TestFlight upload is involved. The verifier image must
+exist before promotion; rebuild it from `Dockerfile.check` if it was removed.
