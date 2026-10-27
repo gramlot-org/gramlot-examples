@@ -1,0 +1,40 @@
+{
+  "environment": "pagestore",
+  "families": [
+    {
+      "key": "pagestore-lessons",
+      "folder": "90-page_store",
+      "title": "PageStore and WebSocket",
+      "examples": [
+        {
+          "key": "pagestore-01",
+          "title": "Bidirectional Bag binding",
+          "folder": "01_bidirectional",
+          "description": "Two client Bags share one server branch through dataBinder.",
+          "explanation": "Edit either quantity and leave the field. Both copies agree; the server controller calculates the total. Try a negative quantity to see a business error in Data."
+        },
+        {
+          "key": "pagestore-02",
+          "title": "Publish a customer request",
+          "folder": "02_customer_lookup",
+          "description": "Publish a key; a subscribed PageStore controller puts the record and outcome in its Bag.",
+          "explanation": "Load customer 1 or 2, then try 99. A missing customer preserves the previous record and key. The publication acknowledges acceptance; the binder carries the business outcome."
+        },
+        {
+          "key": "pagestore-03",
+          "title": "Publish from a page family",
+          "folder": "03_family",
+          "description": "Direct and nested iframes and connected windows publish through the primary's single WebSocket.",
+          "explanation": "Load different customers in each frame or window. Each has its own PageStore. The gallery owns the connection; closing it closes connected descendant windows."
+        },
+        {
+          "key": "pagestore-04",
+          "title": "Publish to another page",
+          "folder": "05_cross_page",
+          "description": "A child window publishes to the PageStore of another page owned by the same owner.",
+          "explanation": "Copy the recipient's page ID into the connected sender window. The recipient's PageStore updates its Bag and publishes customer_loaded back to the sender, where a subscribed dataController displays the event separately from acceptance."
+        }
+      ]
+    }
+  ]
+}
