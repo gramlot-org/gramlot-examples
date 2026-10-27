@@ -1,4 +1,4 @@
-# Configure language, wrapping and editor options
+# Editor options
 
 **Try this:** Open the editor's Options drawer and change wrapping or font size. The draft remains; changing Language and sample intentionally replaces it.
 

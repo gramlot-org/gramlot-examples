@@ -11,6 +11,15 @@ export class Page extends BasePage {
         const main_content = root.main({padding: "24px", max_width: "1200px", margin: "auto"});
         main_content.h1("Toolbar: groups, priority and overflow");
         main_content.p("This is still a menu. Its menuline entries become toolbar slots: commands, groups and a search input share the same row. The first level fills the frame; submenus and overflow open as compact menus.");
+        this.button_styles(main_content);
+        this.priority_overflow(main_content);
+        this.moving_input(main_content);
+        this.retained_groups(main_content);
+        this.vertical_overflow(main_content);
+
+    }
+
+    button_styles(main_content) {
         main_content.h2("Three toolbar button styles");
         main_content.p("The same commands appear below with labels beside the icon, small labels below, or icons only. Hover a button for its tooltip. All use larger 28 px toolbar icons and a subtle hover background. In the overflow menu every entry returns to an icon with its label beside it.");
         const previews = main_content.div({display: "grid", grid_template_columns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap: "14px", margin_bottom: "24px"});
@@ -25,8 +34,23 @@ export class Page extends BasePage {
             this.recipient(preview_frame, `style_${mode}_editor`);
         }
         main_content.p("These are presentation settings only. Command labels, checked/disabled state and recipients are preserved. A group or individual menuline can override labelPosition and iconSize.");
+    }
+
+    priority_overflow(main_content) {
         main_content.h2("1. Make the toolbar narrower");
         main_content.p("Move the width slider. Flexible space shrinks first. Export and Copy (priority 10) move together into the overflow menu before Details (40) and Save/Undo (80). At equal priority the last group leaves first. Documents and Search always remain in the toolbar.");
+        this.width_controls(main_content);
+        const shell = main_content.div({width: "^toolbar.width:={} + 'px'", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", overflow: "hidden", id: "responsive-frame"});
+        const frame = shell.framePane({height: "245px"});
+        frame.top.setAttr({background: "var(--gramlot-field-background)", padding: "6px"});
+        this.priority_bar(frame);
+        this.recipient(frame, "document_editor");
+        main_content.p("Type in Search, resize, open the overflow menu, then choose a command. The query below stays bound to the same Data value. Save follows the checkbox; Details remains checked in both presentations. No server save or search is performed.");
+        main_content.div().strong("Query: ");
+        main_content.p("^document.query", {id: "query-result", min_height: "22px", margin: "0 0 20px"});
+    }
+
+    width_controls(main_content) {
         const controls = main_content.div({display: "flex", align_items: "center", gap: "12px", flex_wrap: "wrap", margin: "12px 0"});
         controls.html_label("Toolbar width", {for: "toolbar-width"});
         controls.input({type: "range", min: 280, max: 1080, step: 20, value: "^toolbar.width", live: true, id: "toolbar-width", aria_label: "Toolbar width", width: "280px"});
@@ -34,9 +58,9 @@ export class Page extends BasePage {
         controls.span("px");
         controls.input({type: "checkbox", value: "^document.locked", id: "toolbar-lock", aria_label: "Disable Save"});
         controls.html_label("Disable Save", {for: "toolbar-lock"});
-        const shell = main_content.div({width: "^toolbar.width:={} + 'px'", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", overflow: "hidden", id: "responsive-frame"});
-        const frame = shell.framePane({height: "245px"});
-        frame.top.setAttr({background: "var(--gramlot-field-background)", padding: "6px"});
+    }
+
+    priority_bar(frame) {
         const bar = frame.top.menu({presentation: "bar", id: "responsive-toolbar"});
         const title = bar.menuline({group: true, overflowable: false, id: "title-group"});
         title.span("Documents", {font_weight: "600", padding: "0 8px"});
@@ -51,10 +75,9 @@ export class Page extends BasePage {
         const search = bar.menuline({group: true, overflowable: false, id: "search-group"});
         search.span("⌕", {font_size: "22px", aria_hidden: true});
         search.input({value: "^document.query", live: true, placeholder: "Search documents", aria_label: "Search documents", width: "190px", id: "toolbar-search"});
-        this.recipient(frame, "document_editor");
-        main_content.p("Type in Search, resize, open the overflow menu, then choose a command. The query below stays bound to the same Data value. Save follows the checkbox; Details remains checked in both presentations. No server save or search is performed.");
-        main_content.div().strong("Query: ");
-        main_content.p("^document.query", {id: "query-result", min_height: "22px", margin: "0 0 20px"});
+    }
+
+    moving_input(main_content) {
         main_content.h2("2. An input can move into the menu too");
         main_content.p("Here the search group is allowed to overflow at priority 0. Use the same width slider. Enter text, then narrow the bar: open the overflow menu and continue editing the same input. Its value and binding are preserved; the Search label and input always move together.");
         const second_shell = main_content.div({width: "^toolbar.width:={} + 'px'", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", padding: "6px", box_sizing: "border-box"});
@@ -68,6 +91,9 @@ export class Page extends BasePage {
         moving.span("Search", {white_space: "nowrap"});
         moving.input({value: "^document.query", live: true, placeholder: "Same query", aria_label: "Movable search", width: "220px", id: "moving-search"});
         this.recipient(second_frame, "secondary_editor");
+    }
+
+    retained_groups(main_content) {
         main_content.h2("3. Retained groups scroll without breaking");
         main_content.p("Every group in this narrow bar is retained. Scroll horizontally to reach the final search field: groups do not split, wrap or disappear into the overflow menu. This is the fallback when retained content alone cannot fit.");
         const scroll_shell = main_content.div({width: "400px", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", padding: "6px", box_sizing: "border-box"});
@@ -80,6 +106,9 @@ export class Page extends BasePage {
         }
         retained.menuline({group: true, overflowable: false}).input({value: "^document.query", live: true, placeholder: "Search", aria_label: "Retained search", width: "190px"});
         this.recipient(scroll_frame, "retained_editor");
+    }
+
+    vertical_overflow(main_content) {
         main_content.h2("4. The same policy on a vertical toolbar");
         main_content.p("Move the height slider. Groups leave from the bottom at equal priority; the overflow button opens their menu beside the bar. The retained heading stays in the toolbar.");
         main_content.input({type: "range", min: 80, max: 300, step: 20, value: "^toolbar.height", live: true, aria_label: "Vertical toolbar height", id: "toolbar-height", width: "260px"});
@@ -112,6 +141,7 @@ export class Page extends BasePage {
         center.p("^document.result", {role: "status", margin: "0 0 8px"});
         center.p("Document details are visible", {hidden: "^document.details:=!{}", margin: "0", opacity: "0.7"});
     }
+
 }
 
 /** Example business behavior: commands update Data through their Source recipient. */

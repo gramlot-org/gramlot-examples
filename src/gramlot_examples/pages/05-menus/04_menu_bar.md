@@ -35,3 +35,7 @@ A registered command may supply iconSrc alongside label/publish. An occurrence
 with an explicit icon or iconSrc replaces that registered icon choice; iconSrc
 wins when both are supplied. Bindings can change either image source or text.
 Toolbar checked state uses background only; popup checked state retains a tick.
+
+## Read the composition
+
+`main` creates one bar and calls `file_menu`, `edit_menu` and `view_menu`. Follow `file_menu` to see the nesting: File → Export → Image. `item` removes repeated action wiring; the hierarchy itself stays visible in the code. `entry_style` is an optional styling comparison.

@@ -21,3 +21,7 @@ The visible details paragraph uses the existing boolean expression suffix:
 
 Use the Python tab for the bindings and the logic.js tab for the state change.
 No resolver reload is needed to update these states.
+
+## Read the composition
+
+`commands` is reused for the menu presentations. Change the controls before and after opening a menu: `checked`, `disabled` and `hidden` remain bound to Data. These are live values, not conditions used only while Python builds the page.

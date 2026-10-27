@@ -6,7 +6,7 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [inputs, layout, editors]
-    title = "Edit HTML: source, preview and rich text"
+    title = "HTML editor"
 
     def main(self, root):
         main_content = root.main(datapath="htmlDemo", padding="24px", class_="example-page stack")

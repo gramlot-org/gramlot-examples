@@ -1,4 +1,4 @@
-# Edit Typst and generate a PDF
+# Typst and PDF
 
 **Try this:** Edit the sample document and inspect its preview, then generate the PDF. Compilation runs locally; this example uses bundled fonts and no external includes.
 

@@ -1,3 +1,4 @@
+import {openFeatureExample} from './gallery-features.js';
 import {mountGalleryModules} from './gallery-modules.js';
 import {GalleryCodeLogic} from './gallery-code-logic.js';
 import {mountGallery, initializeNavigation, toggleGalleryPanel} from './gallery.js';
@@ -5,6 +6,11 @@ import {mountGalleryInspector} from './gallery-inspector.js';
 
 /** The gallery uses the ordinary Page Logic lifecycle. */
 export class Logic {
+    galleryOpenFeature(node) {
+        const renderer = this.page.src.renderer;
+        const root = renderer.elements.get(renderer.destination.ownerDocument.getElementById('gallery')).node;
+        return openFeatureExample(root, node.label);
+    }
     galleryToggleNavigation() {
         toggleGalleryPanel(this.page.src.builder, 'galleryNavigation', 'galleryIndex.navigationOpen');
     }

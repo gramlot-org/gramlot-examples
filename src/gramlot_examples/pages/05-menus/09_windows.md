@@ -43,3 +43,7 @@ same modal session through these transitions; floating stays nonmodal. Close/reo
 retains state and content. Geometry bindings continue to describe the normal
 rectangle, not the maximized viewport. Disabling maximizable restores normal size.
 Persistent geometry across reloads and stable maturity remain outside this trial.
+
+## Read the composition
+
+Both windows call `contents` to build their frame. Open each and try the background controls: modality is the deliberate difference. Then move, resize, collapse and maximize; closing and reopening must retain the page Data.

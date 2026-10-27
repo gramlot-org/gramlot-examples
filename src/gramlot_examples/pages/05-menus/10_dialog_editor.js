@@ -18,33 +18,58 @@ export class Page extends BasePage {
         const main_content = root.main({padding: "20px", max_width: "900px", margin: "auto"});
         main_content.h1("A complete dialog editor");
         main_content.p("Edit a document inside a modal dialog containing a real framePane. The left icon bar and top toolbar control the same draft; the bottom bar keeps Cancel and Save at the right. Only Save updates the saved document shown below.");
+        this.instructions(main_content);
+        main_content.button("Edit document", {action: "openEditor", id: "open-editor"});
+        this.saved_document(main_content);
+        const window = root.dialog({title: "Edit document", open: "^editor.open", beforeClose: "discardOnClose", movable: true, resizable: true, collapsible: true, collapsed: "^editor.collapsed", maximizable: true, maximized: "^editor.maximized", width: "620px", height: "380px", id: "editor-window"});
+        const frame = window.frame;
+        this.side_tools(frame);
+        this.top_toolbar(frame);
+        this.draft_fields(frame);
+        this.footer(frame);
+
+    }
+
+    instructions(main_content) {
         const steps = main_content.ol();
         steps.li("Open the editor and change the title or notes. Save copies the draft to the saved document and closes the dialog. This is local page Data, not a server or disk save.");
         steps.li("Open it again, make another change and choose Cancel: the saved document must stay unchanged. X and Escape also discard the current draft.");
         steps.li("Reset draft restores the last saved values without closing. Details toggles an extra field and its menu checkmark. Document opens a hierarchical menu using the same commands.");
         steps.li("Drag, resize, maximize and collapse the dialog. Its toolbars stay in their frame regions; the center scrolls when space is limited. The page stays blocked, including while collapsed.");
-        main_content.button("Edit document", {action: "openEditor", id: "open-editor"});
+    }
+
+    saved_document(main_content) {
         const summary = main_content.section({margin_top: "20px", padding: "16px", border: "1px solid var(--gramlot-border-control)", border_radius: "8px"});
         summary.h2("Saved document");
         summary.h3("^editor.saved.title", {id: "saved-title"});
         summary.p("^editor.saved.author", {id: "saved-author"});
         summary.p("^editor.saved.notes", {id: "saved-notes", white_space: "pre-wrap"});
         main_content.p("^editor.notice", {role: "status", id: "editor-result"});
-        const window = root.dialog({title: "Edit document", open: "^editor.open", beforeClose: "discardOnClose", movable: true, resizable: true, collapsible: true, collapsed: "^editor.collapsed", maximizable: true, maximized: "^editor.maximized", width: "620px", height: "380px", id: "editor-window"});
-        const frame = window.frame;
+    }
+
+    side_tools(frame) {
         frame.left.setAttr({width:'44px', background:'var(--gramlot-surface-subtle)', border_right:'1px solid var(--gramlot-border)'});
         const tools = frame.left.menu({presentation:'bar', orientation:'vertical', labelPosition:'tooltip', iconSize:20});
         tools.menuline('documenti:toggleDetails', {caption:'Details', iconSrc:ICONS.details, checked:'^editor.details'});
         tools.menuline('documenti:undo', {caption:'Reset draft', iconSrc:ICONS.reset, parameters:{close:false}});
         tools.spacer({flex:1});
         tools.menuline('documenti:save', {iconSrc:ICONS.save});
+    }
+
+    top_toolbar(frame) {
         const toolbar = frame.top.menu({presentation: "bar", padding: "2px 6px", iconSize: 18, background: "var(--gramlot-surface-subtle)", border_bottom: "1px solid var(--gramlot-border-control)", id: "editor-toolbar"});
-        toolbar.menuline("documenti:undo", {caption: "Reset draft", iconSrc: ICONS["reset"], parameters: {close: false}});
-        toolbar.menuline("documenti:toggleDetails", {caption: "Details", iconSrc: ICONS["details"], checked: "^editor.details"});
+        this.draft_commands(toolbar);
         toolbar.spacer({flex: 1});
         const commands = toolbar.menuline({caption: "Document"}).menu();
-        commands.menuline("documenti:undo", {caption: "Reset draft", iconSrc: ICONS["reset"], parameters: {close: false}});
-        commands.menuline("documenti:toggleDetails", {caption: "Details", iconSrc: ICONS["details"], checked: "^editor.details"});
+        this.draft_commands(commands);
+    }
+
+    draft_commands(menu) {
+        menu.menuline("documenti:undo", {caption: "Reset draft", iconSrc: ICONS["reset"], parameters: {close: false}});
+        menu.menuline("documenti:toggleDetails", {caption: "Details", iconSrc: ICONS["details"], checked: "^editor.details"});
+    }
+
+    draft_fields(frame) {
         const center = frame.center.contentPane({frameTarget: true, node_label: "document_editor", padding: "var(--gramlot-space-4)", overflow: "auto", selfsubscribe_save: "save", selfsubscribe_undo: "undo", selfsubscribe_toggleDetails: "toggleDetails"});
         center.p("Draft — changes are committed only by Save.", {margin_top: "0"});
         center.html_label("Title (required)", {for: "editor-title", display: "block", margin_bottom: "4px"});
@@ -55,12 +80,16 @@ export class Page extends BasePage {
         details.html_label("Author", {for: "editor-author", display: "block", margin_bottom: "4px"});
         details.input({value: "^editor.draft.author", live: true, id: "editor-author", width: "100%", box_sizing: "border-box"});
         center.p("^editor.error", {role: "alert", id: "editor-error", color: "var(--gramlot-error, #b22)"});
+    }
+
+    footer(frame) {
         const footer = frame.bottom.menu({presentation: "bar", padding: "2px 8px", iconSize: 18, background: "var(--gramlot-surface-subtle)", border_top: "1px solid var(--gramlot-border-control)", id: "editor-footer"});
         footer.spacer({flex: 1});
         const actions = footer.menuline({group: true, overflowable: false});
         actions.menuline("documenti:undo", {caption: "Cancel", iconSrc: ICONS["cancel"], parameters: {close: true}, id: "editor-cancel"});
         actions.menuline("documenti:save", {caption: "Save", iconSrc: ICONS["save"], id: "editor-save"});
     }
+
 }
 
 /** Page-local editing behavior; all state is in Data and commands target the frame center. */

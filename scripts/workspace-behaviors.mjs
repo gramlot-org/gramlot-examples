@@ -32,6 +32,37 @@ async function theme(page) {
     assert.ok(await page.locator('#theme-tabs table:visible tbody tr').count() > 0);
 }
 export const workspaceBehaviors = {
+    async 'gallery-tray'(page) {
+  await page.locator('#tray-example').waitFor();
+  assert.equal(await page.locator('#gallery-tray iframe').count(),0);
+  assert.equal(await page.locator('#tray-add button').isDisabled(),true);
+  assert.equal(await page.locator('option[value=gallery-tray], option[value=l08]').count(),0);
+  await page.locator('#tray-example').selectOption('w01');
+  await page.locator('#tray-add').click();
+  const cards=page.locator('#gallery-tray [data-tray-block]');
+  const firstFrame=page.frameLocator('#gallery-tray iframe').first();
+  await firstFrame.locator('#customer input').fill('Kept after arrangement');
+  await page.locator('#tray-add').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#gallery-tray iframe').length===2);
+  assert.equal(await firstFrame.locator('#customer-copy input').inputValue(),'Kept after arrangement');
+  const secondFrame=page.frameLocator('#gallery-tray iframe').nth(1);
+  await secondFrame.locator('#customer input').waitFor();
+  assert.notEqual(await secondFrame.locator('#customer input').inputValue(),'Kept after arrangement');
+  const identity=await page.locator('#gallery-tray iframe').first().elementHandle();
+  const title=cards.first().locator('.labelbox-label');
+  const rect=await cards.first().boundingBox();
+  await page.mouse.move(rect.x+rect.width/2,rect.y+8);await page.mouse.down();await page.mouse.move(rect.x+rect.width/2,rect.y+48,{steps:8});await page.mouse.up();
+  const moved=await page.evaluate(()=>gramlot.data.getItem('galleryTray.layout.card_1.top'));
+  assert.ok(moved>20,'drag changes Data');
+  const grip=await cards.first().locator('.tray-resize').boundingBox();
+  await page.mouse.move(grip.x+grip.width/2,grip.y+grip.height/2);await page.mouse.down();await page.mouse.move(grip.x+grip.width/2+20,grip.y+grip.height/2+25,{steps:8});await page.mouse.up();
+  assert.ok(await page.evaluate(()=>gramlot.data.getItem('galleryTray.layout.card_1.height'))>460,'resize changes Data');
+  assert.equal(await firstFrame.locator('#customer input').inputValue(),'Kept after arrangement');
+  assert.equal(await identity.evaluate(el=>el===document.querySelector('#gallery-tray iframe')),true);
+  for(let i=0;i<3;i++)await page.locator('#tray-add').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#gallery-tray iframe').length===5);
+  assert.ok(await page.locator('#gallery-tray').evaluate(el=>el.getBoundingClientRect().height)>1000,'tray grows');
+    },
     dialog_window: page => windowExample(page,'gramlot-dialog','Open dialog'),
     floating_window: page => windowExample(page,'gramlot-floating-pane','Open floating'),
     'menu-10': editor, 'menu-14': editor,

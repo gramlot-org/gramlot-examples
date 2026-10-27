@@ -2,7 +2,7 @@
   "families": [
     {
       "key": "html_svg",
-      "title": "HTML, SVG and page structure",
+      "title": "HTML and SVG",
       "examples": [
         {
           "key": "e01",
@@ -607,6 +607,12 @@
           "folder": "07-tray",
           "title": "Tray workspace",
           "description": "Arrange live cards, select and move groups, change layers, snap to a grid, and restore a saved Data Bag layout."
+        },
+        {
+          "key": "gallery-tray",
+          "folder": "08-gallery_tray",
+          "title": "Gallery tray",
+          "description": "Start with an empty tray. Add live examples at reduced zoom, arrange their cards, and keep each page’s edits while moving or resizing."
         }
       ],
       "folder": "05-containers"
@@ -718,38 +724,38 @@
     },
     {
       "key": "editors",
-      "title": "Document and code editors",
+      "title": "Editors",
       "folder": "06-editors",
       "examples": [
         {
           "key": "code_mirror",
-          "title": "Edit source code with CodeMirror",
+          "title": "Code editor",
           "folder": "01-base",
           "description": "Edit the draft and save a snapshot. Keep typing: the live draft changes while the saved version stays unchanged until you save again.",
           "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
         },
         {
           "key": "code_mirror_options",
-          "title": "Configure language, wrapping and editor options",
+          "title": "Editor options",
           "folder": "02-options",
           "description": "Open the editor's Options drawer and change wrapping or font size. The draft remains; changing Language and sample intentionally replaces it.",
           "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
         },
         {
           "key": "html_editor",
-          "title": "Edit HTML: source, preview and rich text",
+          "title": "HTML editor",
           "folder": "03-html",
           "description": "Edit the code, then switch to Preview and Rich text. The three views share one draft; Preview displays the HTML without running its scripts."
         },
         {
           "key": "markdown_editor",
-          "title": "Edit Markdown: source, preview and rich text",
+          "title": "Markdown editor",
           "folder": "04-markdown",
           "description": "Edit a heading and compare Code, Preview and Rich text. The views share the same Markdown; use Code for complex blocks."
         },
         {
           "key": "typst_editor",
-          "title": "Edit Typst and generate a PDF",
+          "title": "Typst and PDF",
           "folder": "05-typst",
           "description": "Edit the sample document and inspect its preview, then generate the PDF. Compilation runs locally; this example uses bundled fonts and no external includes."
         }

@@ -39,13 +39,13 @@ gramlot-examples/
 
 The [Read the Docs manual](https://gramlot-examples.readthedocs.io/en/latest/)
 builds from `main` using `.readthedocs.yaml`. It uses the classic Read the Docs
-theme and the project logo. `scripts/prepare_docs.py` stages the README, the two
+theme and the project logo. `scripts/prepare_docs.py` stages the README, the current
 GE guides and every common lesson in catalogue order, with its Python and
 JavaScript source (and CSS when present). The lesson text remains authored beside
 the runnable pages; no second copy is maintained. Internal notes and concise
 mirrors are not part of the site. The documentation build uses the serverless exporter as a build tool to package
 every catalogue example with its own inspector palette, without the gallery shell or code pane.
-Each lesson embeds its example before the detailed explanation. The small 🔍 button
+Each lesson embeds its runnable example with its explanation. The small 🔍 button
 opens the Inspector; the complete source remains below the lesson. Page Logic,
 stylesheets, endpoints and remote fragments use the standard Worker export. It adds no serverless dependency
 to the examples package. Sphinx copies the complete export unchanged through

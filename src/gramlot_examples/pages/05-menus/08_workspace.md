@@ -11,3 +11,7 @@ a delay. Resolver error deliberately fails the endpoint; turn it off to recover.
 
 This is a provisional Python integration trial, not a stable menu API or release.
 It uses the existing extra-catalog mechanism; common cross-host lessons are unchanged.
+
+## Read the composition
+
+`document_menu` is the reusable command list. The same list appears in the workspace presentations. `export_menu` supplies the lazy content. Follow the central recipient to see where commands update Data; menu layout does not contain business state.

@@ -1,4 +1,4 @@
-# HTML, SVG and page structure
+# HTML and SVG
 
 Learn the underlying page vocabulary: text, links, lists, tables, native controls and SVG. Build up to complete page compositions.
 

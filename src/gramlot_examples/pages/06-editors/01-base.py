@@ -5,7 +5,7 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [inputs, editors]
-    title = "Edit source code with CodeMirror"
+    title = "Code editor"
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="editorDemo", padding="24px")

@@ -74,3 +74,7 @@ and Dark. Source and Data stay local to each lesson; saving is not a server save
 
 
 **Three toolbar regions:** the window owns one `framePane`. Its left region holds a vertical icon toolbar, its top region holds the main toolbar and its bottom region holds the closing or Save/Cancel actions. The center keeps the editable fields. Try a left-hand command and watch the same Data update in the center; toolbar direction changes presentation, not command ownership.
+
+## Read the composition
+
+The frame is composed by `side_tools`, `top_toolbar`, `draft_fields` and `footer`, just as in the dialog lesson. `draft_commands` is reused by the top bar and Document submenu. The difference to test is that the background note remains editable while the floating is open. Save and Cancel still operate on a separate draft.

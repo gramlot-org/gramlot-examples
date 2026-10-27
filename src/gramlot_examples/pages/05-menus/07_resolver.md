@@ -37,3 +37,7 @@ Try document 0 for **Nessuna voce**. Enable Resolver error and open Export for
 **Impossibile caricare / Riprova**. Retry is explicit, not automatic. Disable the
 error and reopen to recover. The endpoint and Bag schema are visible in Python;
 the receiver's local effects are shown in logic.js.
+
+## Read the composition
+
+`main` reuses `commands` for both presentations. `export_menu` returns the first Bag; `recent_menu` is called only when its submenu opens. Keep the three responsibilities separate: Python creates Source, the endpoint returns menu data, and browser Logic handles a chosen command.

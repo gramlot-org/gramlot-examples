@@ -3,7 +3,7 @@ import typst from '../../gallery/dist/typst/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static gramlots = [editors, typst];
-    static title="Edit Typst and generate a PDF";
+    static title="Typst and PDF";
     main(root) {
         const main_content=root.main({datapath:'typstDemo',padding:'24px',class:'example-page stack'});
         main_content.h1(Page.title);

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = "src/gramlot_examples/pages"
-GUIDES = ("docs/005-repository-map.md", "docs/010-gallery.md", "docs/020-mobile-modules.md")
+GUIDES = ("docs/030-using-the-gallery.md", "docs/035-feature-coverage.md", "docs/005-repository-map.md", "docs/020-mobile-modules.md", "docs/010-gallery.md")
 REPOSITORY = "https://github.com/gramlot-org/gramlot-examples/blob/main/"
 
 
@@ -44,6 +44,16 @@ def stage():
 
     for source, target in documents.items():
         text = (ROOT / source).read_text()
+        if source == "docs/010-gallery.md":
+            # Keep old block URLs usable, but do not teach superseded implementations.
+            anchors = re.findall(r'<a id="([^"]+)"></a>', text)
+            text = ("# Historical gallery engineering record\n\n"
+                    "These dated notes describe earlier implementations. For current behavior, "
+                    "read [Using the gallery](030-using-the-gallery.md).\n\n"
+                    "The complete record remains [in the repository](" + REPOSITORY + source + ").\n\n")
+            for anchor in anchors:
+                text += (f'<a id="{anchor}"></a>\n\n'
+                         f'[Historical block {anchor}]({REPOSITORY}{source}#{anchor})\n\n')
         text = re.sub(r'<a id="([^"]+)"></a>', r'(\1)=', text)
         def link(match):
             label, url = match.groups()

@@ -33,3 +33,7 @@ The local message has exactly five fields: `sender`, `target`, `command`,
 and modifiers are captured at activation. No DOM lookup or page-global message
 bus is added by the example. Window title bars, dragging, resizing and modality
 belong to the later dialog/floating increment, not to this frame contract.
+
+## Read the composition
+
+`main` declares the outer frame and its central recipient. `region_tools` populates the surrounding regions; `nested_frame` gives its inner commands a separate recipient. Compare the reported target after clicking an outer command and then Inner Save.

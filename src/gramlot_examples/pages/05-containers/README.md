@@ -28,3 +28,7 @@ The same lessons run in the Python, JavaScript and offline galleries. Code shows
 **Dialog: modal editing** makes the background unavailable until the dialog closes, even while collapsed. **Floating: keep the page usable** uses the same form and frame composition without blocking the background. Edit, move, resize, maximize and reopen the windows to see retained Data.
 
 **groupBox: group fields and copy Data** groups related fields under one label and datapath. Its copy command exports only that group, preserving types with TYTX.
+
+## Live pages on a tray
+
+**Gallery tray** starts empty. Pick a lesson in its toolbar and add it as an independent live card at reduced zoom. This complements **Tray workspace**, which composes widgets directly in the same page and demonstrates layout snapshots.

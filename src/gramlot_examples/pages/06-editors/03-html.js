@@ -4,7 +4,7 @@ import editors from '../../gallery/dist/editors/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static gramlots = [inputs, layout, editors];
-    static title = "Edit HTML: source, preview and rich text";
+    static title = "HTML editor";
     main(root) {
         const main_content = root.main({datapath:'htmlDemo',padding:'24px',class:'example-page stack'});
         main_content.h1(Page.title);

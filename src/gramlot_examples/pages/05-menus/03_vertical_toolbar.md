@@ -43,3 +43,7 @@ A registered command may supply iconSrc alongside label/publish. An occurrence
 with an explicit icon or iconSrc replaces that registered icon choice; iconSrc
 wins when both are supplied. Bindings can change either image source or text.
 Toolbar checked state uses background only; popup checked state retains a tick.
+
+## Read the composition
+
+`main` joins a height control, `vertical_toolbar` and `horizontal_toolbar`. Both bars call `section`: it associates an icon and label with one selection value. The selected section lives in Data, not in an icon or DOM class.

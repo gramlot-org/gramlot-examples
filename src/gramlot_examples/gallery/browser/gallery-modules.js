@@ -32,7 +32,7 @@ export async function mountGalleryModules(page, root, {load = url => import(url)
             }
             const key = `module_${node.label}`;
             if (navigation.getNode(key)) throw new Error('Module navigation identity collision');
-            navigation.setItem(key, node.value.deepcopy(), {title:node.attr.title});
+            navigation.setItem(key, node.value.deepcopy(), {title:node.attr.title}, '<features');
             mounted.push(key);
         }
     } catch (error) {

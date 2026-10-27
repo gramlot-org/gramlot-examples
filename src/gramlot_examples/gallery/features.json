@@ -1,0 +1,1320 @@
+[
+  {
+    "id": "markup",
+    "title": "HTML and SVG",
+    "features": [
+      {
+        "id": "behavior_html_nesting_and_text",
+        "title": "HTML nesting and text",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "One builder call creates one element; change a paragraph.",
+        "examples": [
+          "e01"
+        ],
+        "label": "HTML structure"
+      },
+      {
+        "id": "behavior_text_links_and_literal_escaping",
+        "title": "Text, links and literal escaping",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare emphasis, inline code and links; text is not parsed markup.",
+        "examples": [
+          "e02"
+        ],
+        "label": "Text and links"
+      },
+      {
+        "id": "behavior_lists_tables_and_meaningful_html_regions",
+        "title": "Lists, tables and meaningful HTML regions",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare the declarations with nested content and landmarks.",
+        "examples": [
+          "e03",
+          "e05",
+          "e04"
+        ],
+        "label": "Lists and tables"
+      },
+      {
+        "id": "behavior_native_html_versus_gramlot_component_names",
+        "title": "Native HTML versus Gramlot component names",
+        "kind": "behavior",
+        "status": "Review",
+        "description": "Add one explicit side-by-side html_button/input versus button/textbox comparison.",
+        "examples": [
+          "e06",
+          "w01",
+          "w22"
+        ],
+        "label": "Tags and components"
+      }
+    ]
+  },
+  {
+    "id": "data",
+    "title": "Data and binding",
+    "features": [
+      {
+        "id": "behavior_absolute_relative_and_symbolic_data_paths",
+        "title": "Absolute, relative and symbolic Data paths",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare subscribed ^ with non-subscribed = and anchor paths.",
+        "examples": [
+          "b01"
+        ],
+        "label": "Data paths"
+      },
+      {
+        "id": "behavior_data_node_attributes_attribute",
+        "title": "Data node attributes (?attribute)",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Observe the displayed role attribute independently of the node value.",
+        "examples": [
+          "b01"
+        ],
+        "label": "Node attributes"
+      },
+      {
+        "id": "behavior_default_versus_explicit_datasetter",
+        "title": "Default versus explicit dataSetter",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Distinguish missing Data from an existing value and an installation write.",
+        "examples": [
+          "b03"
+        ],
+        "label": "Initial values"
+      },
+      {
+        "id": "behavior_same_name_initial_tytx_bag_and_paced_play",
+        "title": "Same-name initial TYTX Bag and paced Play",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Load/replay the sample values and compare manual edits.",
+        "examples": [
+          "b12"
+        ],
+        "label": "TYTX data and Play"
+      },
+      {
+        "id": "behavior_two_way_editing_and_input_change_timing",
+        "title": "Two-way editing and input/change timing",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Type and blur; compare live updates and accepted values.",
+        "examples": [
+          "b04"
+        ],
+        "label": "Two-way binding"
+      },
+      {
+        "id": "behavior_checkbox_and_radio_grouping",
+        "title": "Checkbox and radio grouping",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Observe selection and the Data values, including exclusivity.",
+        "examples": [
+          "b05",
+          "w06"
+        ],
+        "label": "Choice groups"
+      },
+      {
+        "id": "behavior_bound_svg_attributes",
+        "title": "Bound SVG attributes",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change Data and observe the same drawing update.",
+        "examples": [
+          "b07",
+          "b10"
+        ],
+        "label": "SVG bindings"
+      },
+      {
+        "id": "behavior_freeze_versus_ordinary_reactive_updates",
+        "title": "Freeze versus ordinary reactive updates",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Freeze structural projection; observe continued Data updates and thaw.",
+        "examples": [
+          "b08",
+          "c15"
+        ],
+        "label": "Freeze updates"
+      },
+      {
+        "id": "behavior_endpoint_calls_on_demand_and_on_data_change",
+        "title": "Endpoint calls on demand and on Data change",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Observe the request result and trigger, not only the initial render.",
+        "examples": [
+          "c09",
+          "c10",
+          "c11"
+        ],
+        "label": "RPC calls"
+      },
+      {
+        "id": "behavior_remote_source_caching_and_remote_data",
+        "title": "Remote Source, caching and remote Data",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Distinguish structure from values; compare first read, cache and refresh.",
+        "examples": [
+          "c12",
+          "c13",
+          "c14"
+        ],
+        "label": "Remote data and Source"
+      },
+      {
+        "id": "behavior_data_exchange_and_typed_values",
+        "title": "Data exchange and typed values",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Serialize/reload a Data snapshot; do not mistake it for server persistence.",
+        "examples": [
+          "c17"
+        ],
+        "label": "Typed data exchange"
+      }
+    ]
+  },
+  {
+    "id": "logic",
+    "title": "Logic and events",
+    "features": [
+      {
+        "id": "behavior_formula_dependencies_and_non_triggering_reads",
+        "title": "Formula dependencies and non-triggering reads",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change a ^ argument, then a = argument; compare recomputation.",
+        "examples": [
+          "c01"
+        ],
+        "label": "Formulas"
+      },
+      {
+        "id": "behavior_controllers_and_named_logic",
+        "title": "Controllers and named Logic",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Trigger named behavior from Data; distinguish server Page from browser Logic.",
+        "examples": [
+          "c02",
+          "c03"
+        ],
+        "label": "Controllers"
+      },
+      {
+        "id": "behavior_inline_expressions_and_pointer_transforms",
+        "title": "Inline expressions and pointer transforms",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare expressions with formatted presentation and unchanged Data.",
+        "examples": [
+          "c04",
+          "c22"
+        ],
+        "label": "Expressions"
+      },
+      {
+        "id": "behavior_get_set_put_fire_and_fire_after",
+        "title": "GET, SET, PUT, FIRE and FIRE_AFTER",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Predict notification counts and delayed fire cancellation.",
+        "examples": [
+          "c05"
+        ],
+        "label": "Read, write and fire"
+      },
+      {
+        "id": "behavior_events_and_attribute_projection",
+        "title": "Events and attribute projection",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Observe event payloads and bound DOM attributes.",
+        "examples": [
+          "c07",
+          "c16"
+        ],
+        "label": "Events"
+      },
+      {
+        "id": "behavior_lifecycle_and_provider_cleanup",
+        "title": "Lifecycle and provider cleanup",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare init/built/start, then remove the branch and observe its timer stop.",
+        "examples": [
+          "c15"
+        ],
+        "label": "Lifecycle"
+      },
+      {
+        "id": "behavior_publish_subscribe_and_iframe_messages",
+        "title": "Publish/subscribe and iframe messages",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Publish and compare local versus frame delivery.",
+        "examples": [
+          "c18",
+          "c19"
+        ],
+        "label": "Messages"
+      },
+      {
+        "id": "behavior_action_confirmation_references_and_delay",
+        "title": "Action confirmation, references and delay",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Confirm or cancel and compare immediate/delayed actions.",
+        "examples": [
+          "c20",
+          "c21"
+        ],
+        "label": "Actions"
+      },
+      {
+        "id": "behavior_live_source_insertion_updates_and_removal",
+        "title": "Live Source insertion, updates and removal",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Add/remove nodes and compare attributes, data and timer lifetime.",
+        "examples": [
+          "e13"
+        ],
+        "label": "Live Source"
+      }
+    ]
+  },
+  {
+    "id": "inputs",
+    "title": "Fields",
+    "features": [
+      {
+        "id": "component_textbox",
+        "title": "textbox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Type a customer name and watch the second field follow. Open Options, turn off live editing, then type again: the shared value changes when you leave the field.",
+        "examples": [
+          "w01"
+        ],
+        "label": "textbox"
+      },
+      {
+        "id": "component_checkbox",
+        "title": "checkbox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Toggle either newsletter checkbox. Both views and the subscription message follow one boolean; Options lets you disable editing.",
+        "examples": [
+          "w02"
+        ],
+        "label": "checkbox"
+      },
+      {
+        "id": "component_radiobuttontext",
+        "title": "radioButtonText",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Choose a delivery option and compare the stored code below. The alternative group is independent; changing one group leaves the other untouched.",
+        "examples": [
+          "w03"
+        ],
+        "label": "radioButtonText"
+      },
+      {
+        "id": "component_textboxarea",
+        "title": "textBoxArea",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit either note. Both multiline fields share the same text; Options lets you compare live editing with updates after leaving the field.",
+        "examples": [
+          "w04"
+        ],
+        "label": "textBoxArea"
+      },
+      {
+        "id": "component_passwordbox",
+        "title": "passwordbox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Enter a made-up password in one field. The other follows while both mask the text; this is a binding example, not a sign-in form.",
+        "examples": [
+          "w05"
+        ],
+        "label": "passwordbox"
+      },
+      {
+        "id": "component_radiobutton",
+        "title": "radioButton",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Select Standard, Express and Pick up in turn. Their booleans are exclusive within one group; the independent choice belongs to another group.",
+        "examples": [
+          "w06"
+        ],
+        "label": "radioButton"
+      },
+      {
+        "id": "component_colorpicker",
+        "title": "colorpicker",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Choose a color and compare both pickers with the swatch. All three read the same color value.",
+        "examples": [
+          "w07"
+        ],
+        "label": "colorpicker"
+      },
+      {
+        "id": "component_horizontalslider",
+        "title": "horizontalSlider",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Move a slider or use its arrow keys. The other slider follows in steps of five; Options lets you compare live and committed updates.",
+        "examples": [
+          "w08"
+        ],
+        "label": "horizontalSlider"
+      },
+      {
+        "id": "component_verticalslider",
+        "title": "verticalSlider",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Move the vertical slider from bottom to top. The horizontal slider and numeric readout follow the same value from 0 to 100.",
+        "examples": [
+          "w09"
+        ],
+        "label": "verticalSlider"
+      },
+      {
+        "id": "component_numbertextbox",
+        "title": "numberTextBox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Enter a decimal, then try invalid text and leave the field. Compare the editable draft with the accepted numeric value and its formatted copy.",
+        "examples": [
+          "w10"
+        ],
+        "label": "numberTextBox"
+      },
+      {
+        "id": "component_datetextbox",
+        "title": "dateTextBox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Type domani and leave the field. Compare the long and short Italian date formats: they represent the same civil date.",
+        "examples": [
+          "w11"
+        ],
+        "label": "dateTextBox"
+      },
+      {
+        "id": "component_timetextbox",
+        "title": "timeTextBox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Change hours and minutes, then leave the field. Compare the second view; the stored value is a civil time, not a timestamp.",
+        "examples": [
+          "w12"
+        ],
+        "label": "timeTextBox"
+      },
+      {
+        "id": "component_filteringselect",
+        "title": "filteringSelect",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Search for a delivery caption and select it. The second field follows; the readout contains its code rather than the displayed caption.",
+        "examples": [
+          "w13"
+        ],
+        "label": "filteringSelect"
+      },
+      {
+        "id": "component_callbackselect",
+        "title": "callbackSelect",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Search for Sample 02 and choose a result. The browser callback reads a local Bag; the selected code appears in both fields without a server call.",
+        "examples": [
+          "w14"
+        ],
+        "label": "callbackSelect"
+      },
+      {
+        "id": "component_combobox",
+        "title": "comboBox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Choose a suggested city, then enter a city outside the list. Both are accepted: suggestions assist free text rather than restricting it.",
+        "examples": [
+          "w15"
+        ],
+        "label": "comboBox"
+      },
+      {
+        "id": "component_checkboxtext",
+        "title": "checkBoxText",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Select several channels, then clear them all. Compare the comma-separated codes with the null value produced by an empty selection.",
+        "examples": [
+          "w16"
+        ],
+        "label": "checkBoxText"
+      },
+      {
+        "id": "component_datecalendar",
+        "title": "dateCalendar",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Choose a day in the inline calendar, then open the popup calendar. Both calendars and the text field follow the same date.",
+        "examples": [
+          "w17"
+        ],
+        "label": "dateCalendar"
+      },
+      {
+        "id": "component_button",
+        "title": "button",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Confirm the first command, then click the delayed command several times quickly. Its result reports one execution for the burst of clicks.",
+        "examples": [
+          "w22"
+        ],
+        "label": "button"
+      },
+      {
+        "id": "component_togglebutton",
+        "title": "toggleButton",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Toggle Enabled and compare its checkbox. Then try Read only and Disabled: the command's state and whether you can edit it are separate concerns.",
+        "examples": [
+          "w23"
+        ],
+        "label": "toggleButton"
+      },
+      {
+        "id": "component_dropdownbutton",
+        "title": "dropDownButton",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Open Export and choose CSV. Repeat with Shift held: the command also becomes the main action. The unavailable item cannot execute.",
+        "examples": [
+          "w24"
+        ],
+        "label": "dropDownButton"
+      }
+    ]
+  },
+  {
+    "id": "validation",
+    "title": "Validation",
+    "features": [
+      {
+        "id": "behavior_validation_required_length_and_invalid_drafts",
+        "title": "Validation: required, length and invalid drafts",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Keep accepted Data separate from a rejected field draft.",
+        "examples": [
+          "w18",
+          "w25"
+        ],
+        "label": "Required and length"
+      },
+      {
+        "id": "behavior_validation_normalization_warning_and_blocking_rule",
+        "title": "Validation: normalization, warning and blocking rule",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Try uppercase normalization and switch a warning to a blocking error.",
+        "examples": [
+          "w25"
+        ],
+        "label": "Warnings and errors"
+      },
+      {
+        "id": "behavior_validation_callbacks_remote_checks_and_lifecycle",
+        "title": "Validation: callbacks, remote checks and lifecycle",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Try reserved names; observe pending, accept and reject behavior.",
+        "examples": [
+          "w25"
+        ],
+        "label": "Validation callbacks"
+      }
+    ]
+  },
+  {
+    "id": "layout",
+    "title": "Layout",
+    "features": [
+      {
+        "id": "component_framepane",
+        "title": "framePane",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Click Top, Left and Bottom; compare sender and target, then test the nested frame.",
+        "examples": [
+          "menu-05"
+        ],
+        "label": "framePane"
+      },
+      {
+        "id": "component_formlet",
+        "title": "formlet",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Switch between one and two columns. The same fields move without losing their values; the note keeps its own label-position override.",
+        "examples": [
+          "w19"
+        ],
+        "label": "formlet"
+      },
+      {
+        "id": "behavior_formlet_columns_and_shared_label_alignment",
+        "title": "Formlet columns and shared label alignment",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change columns without losing fields or drafts.",
+        "examples": [
+          "w19"
+        ],
+        "label": "Columns and labels"
+      },
+      {
+        "id": "component_groupbox",
+        "title": "groupBox",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit the customer, then use the group's copy command. Only that datapath is copied; the note in the other group is excluded. TYTX preserves types.",
+        "examples": [
+          "w20"
+        ],
+        "label": "groupBox"
+      },
+      {
+        "id": "component_contentpane",
+        "title": "contentPane",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Resize Filters and Details while editing the customer. The center takes the remaining space and the summary follows accepted Data.",
+        "examples": [
+          "l01"
+        ],
+        "label": "contentPane"
+      },
+      {
+        "id": "component_bordercontainer",
+        "title": "borderContainer",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Resize Filters and Details while editing the customer. The center takes the remaining space and the summary follows accepted Data.",
+        "examples": [
+          "l01"
+        ],
+        "label": "borderContainer"
+      },
+      {
+        "id": "component_stackcontainer",
+        "title": "stackContainer",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Use the slider above the stack to visit a demo, edit it and return later. There is one central stack; a visited page keeps its state.",
+        "examples": [
+          "l08"
+        ],
+        "label": "stackContainer"
+      },
+      {
+        "id": "component_tabcontainer",
+        "title": "tabContainer",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Write an invalid one-character customer name, switch tabs and return. The draft remains. Close Notes and compare the retained Data; expand the reference to compare styles.",
+        "examples": [
+          "l07"
+        ],
+        "label": "tabContainer"
+      },
+      {
+        "id": "behavior_shared_lbl_box_on_ordinary_html_div_and_components",
+        "title": "Shared lbl/box on ordinary HTML, div and components",
+        "kind": "behavior",
+        "status": "Used",
+        "description": "Tray and formlet use labels; add a minimal standalone HTML Labelbox exercise.",
+        "examples": [
+          "tray-workspace",
+          "w19"
+        ],
+        "label": "Label boxes"
+      },
+      {
+        "id": "behavior_groupbox_copy_to_tytx_json",
+        "title": "GroupBox copy to TYTX/JSON",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Copy the group Data only; compare type/attribute preservation.",
+        "examples": [
+          "w20"
+        ],
+        "label": "Copy a group"
+      },
+      {
+        "id": "behavior_border_regions_splitters_and_nested_layouts",
+        "title": "Border regions, splitters and nested layouts",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Resize regions and compare remaining center space.",
+        "examples": [
+          "l01",
+          "l02",
+          "l05"
+        ],
+        "label": "Regions and splitters"
+      },
+      {
+        "id": "behavior_drawers_and_retained_data",
+        "title": "Drawers and retained Data",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Close/reopen a drawer and retain the edited content.",
+        "examples": [
+          "l04"
+        ],
+        "label": "Drawers"
+      },
+      {
+        "id": "behavior_container_events",
+        "title": "Container events",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Observe region notifications and their payloads.",
+        "examples": [
+          "l06"
+        ],
+        "label": "Container events"
+      },
+      {
+        "id": "behavior_tabs_orientation_badges_closing_and_veto",
+        "title": "Tabs: orientation, badges, closing and veto",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Switch/close tabs and compare retained content and close guards.",
+        "examples": [
+          "l07"
+        ],
+        "label": "Tabs"
+      },
+      {
+        "id": "behavior_stack_selection",
+        "title": "Stack selection",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change the selected page in one retained stack.",
+        "examples": [
+          "l08"
+        ],
+        "label": "Stacks"
+      },
+      {
+        "id": "component_transformpane",
+        "title": "transformPane",
+        "kind": "component",
+        "status": "Gap",
+        "description": "Add a retained-content translation/rotation/scale exercise; tray gestures do not teach this component.",
+        "examples": [],
+        "label": "transformPane"
+      }
+    ]
+  },
+  {
+    "id": "windows",
+    "title": "Windows",
+    "features": [
+      {
+        "id": "component_dialog",
+        "title": "dialog",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Open the dialog and try the background counter: it is blocked until you close the dialog. Edit the title, close and reopen: the draft is retained.",
+        "examples": [
+          "dialog_window"
+        ],
+        "label": "dialog"
+      },
+      {
+        "id": "component_floatingpane",
+        "title": "floatingPane",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Open the floating window, then use the background counter. Both remain usable. Edit the title and watch the page update; close and reopen to keep the same draft.",
+        "examples": [
+          "floating_window"
+        ],
+        "label": "floatingPane"
+      },
+      {
+        "id": "behavior_dialog_modality_versus_nonmodal_floating",
+        "title": "Dialog modality versus nonmodal floating",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Try the background while each window is open.",
+        "examples": [
+          "dialog_window",
+          "floating_window"
+        ],
+        "label": "Modal and floating"
+      },
+      {
+        "id": "behavior_window_move_resize_collapse_maximize_and_restore",
+        "title": "Window move, resize, collapse, maximize and restore",
+        "kind": "behavior",
+        "status": "Review",
+        "description": "Recheck each interaction explicitly, including collapsed modal behavior.",
+        "examples": [
+          "menu-09",
+          "menu-10",
+          "menu-14"
+        ],
+        "label": "Window controls"
+      },
+      {
+        "id": "behavior_detach_reattach_without_rebuilding_content",
+        "title": "Detach/reattach without rebuilding content",
+        "kind": "behavior",
+        "status": "Used",
+        "description": "Gallery Code has this behavior; add a dedicated retained-state example.",
+        "examples": [],
+        "label": "Detach and reattach"
+      }
+    ]
+  },
+  {
+    "id": "menus",
+    "title": "Menus and commands",
+    "features": [
+      {
+        "id": "component_menu",
+        "title": "menu",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Compare one hierarchy in four presentations, opening nested submenus.",
+        "examples": [
+          "menu-02"
+        ],
+        "label": "menu"
+      },
+      {
+        "id": "component_menuline",
+        "title": "menuline",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Compare one hierarchy in four presentations, opening nested submenus.",
+        "examples": [
+          "menu-02"
+        ],
+        "label": "menuline"
+      },
+      {
+        "id": "behavior_menu_hierarchy_separators_icons_and_keyboard",
+        "title": "Menu hierarchy, separators, icons and keyboard",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Open nested submenus and navigate with arrows/Escape.",
+        "examples": [
+          "menu-02",
+          "menu-08"
+        ],
+        "label": "Hierarchy and keyboard"
+      },
+      {
+        "id": "behavior_context_menu_and_exact_opening_modifiers",
+        "title": "Context menu and exact opening modifiers",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare right-click, ordinary click and Shift+click.",
+        "examples": [
+          "menu-02"
+        ],
+        "label": "Context menus"
+      },
+      {
+        "id": "behavior_menu_checked_disabled_and_hidden_bindings",
+        "title": "Menu checked, disabled and hidden bindings",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change Data and compare popup and toolbar states.",
+        "examples": [
+          "menu-04"
+        ],
+        "label": "Menu states"
+      },
+      {
+        "id": "behavior_command_registration_and_namespace",
+        "title": "Command registration and namespace",
+        "kind": "behavior",
+        "status": "Used",
+        "description": "Collection supplies commands; add a tiny registration-to-receiver lesson.",
+        "examples": [
+          "menu-01"
+        ],
+        "label": "Command registry"
+      },
+      {
+        "id": "behavior_command_sender_target_parameters_and_modifiers",
+        "title": "Command sender, target, parameters and modifiers",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare outer and nested frame recipients and Shift activation.",
+        "examples": [
+          "menu-05"
+        ],
+        "label": "Command messages"
+      },
+      {
+        "id": "behavior_menu_resolver_and_lazy_submenus",
+        "title": "Menu resolver and lazy submenus",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Open lazy submenus; compare loaded Bags and retry.",
+        "examples": [
+          "menu-06"
+        ],
+        "label": "Lazy submenus"
+      }
+    ]
+  },
+  {
+    "id": "toolbars",
+    "title": "Toolbars",
+    "features": [
+      {
+        "id": "component_spacer",
+        "title": "spacer",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Shrink horizontal and vertical bars; compare priority, retained groups and overflow.",
+        "examples": [
+          "menu-03"
+        ],
+        "label": "spacer"
+      },
+      {
+        "id": "behavior_toolbar_groups_spacers_priorities_overflow_and_scroll",
+        "title": "Toolbar groups, spacers, priorities, overflow and scroll",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Shrink the available area and preserve each indivisible group.",
+        "examples": [
+          "menu-03"
+        ],
+        "label": "Groups and overflow"
+      },
+      {
+        "id": "behavior_toolbar_icon_modes_svg_and_selected_appearance",
+        "title": "Toolbar icon modes, SVG and selected appearance",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare large icons, tooltip labels and selection in a vertical bar.",
+        "examples": [
+          "menu-07"
+        ],
+        "label": "Icons and labels"
+      }
+    ]
+  },
+  {
+    "id": "trees",
+    "title": "Trees",
+    "features": [
+      {
+        "id": "component_tree",
+        "title": "tree",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Expand Catalog to request its children, then select a row. Add or rename a document and watch the tree follow changes in its Bag.",
+        "examples": [
+          "w26"
+        ],
+        "label": "tree"
+      },
+      {
+        "id": "behavior_tree_bag_selection_lazy_branches_and_data_changes",
+        "title": "Tree Bag, selection, lazy branches and Data changes",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Expand Catalog, select, then insert or rename a document.",
+        "examples": [
+          "w26"
+        ],
+        "label": "Data and lazy branches"
+      },
+      {
+        "id": "behavior_tree_caption_icon_callbacks_and_sanitized_labels",
+        "title": "Tree caption/icon callbacks and sanitized labels",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare captions, classes, callback icons and Data.",
+        "examples": [
+          "w27",
+          "w28"
+        ],
+        "label": "Labels and icons"
+      },
+      {
+        "id": "behavior_tree_drag_drop_types_and_target_acceptance",
+        "title": "Tree drag/drop types and target acceptance",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Copy a document to an accepted folder; reject the locked destination.",
+        "examples": [
+          "w29"
+        ],
+        "label": "Drag and drop"
+      },
+      {
+        "id": "behavior_tree_searchtext_and_restoration_of_unloaded_branches",
+        "title": "Tree searchText and restoration of unloaded branches",
+        "kind": "behavior",
+        "status": "Used",
+        "description": "Gallery navigation uses it; add a lesson showing lazy search, clear and restoration.",
+        "examples": [],
+        "label": "Search"
+      }
+    ]
+  },
+  {
+    "id": "workspace",
+    "title": "Workspace",
+    "features": [
+      {
+        "id": "component_traypane",
+        "title": "trayPane",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Move, resize, select, collide, change layers, snap, lock, save and restore cards.",
+        "examples": [
+          "tray-workspace",
+          "gallery-tray"
+        ],
+        "label": "trayPane"
+      },
+      {
+        "id": "behavior_tray_movement_resize_layer_collision_rotation_and_zoom",
+        "title": "Tray movement, resize, layer collision, rotation and zoom",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Move transformed cards; same-layer contact differs from cross-layer overlap.",
+        "examples": [
+          "tray-workspace",
+          "gallery-tray"
+        ],
+        "label": "Move and transform"
+      },
+      {
+        "id": "behavior_tray_multi_selection_marquee_snapping_and_lock",
+        "title": "Tray multi-selection, marquee, snapping and lock",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Move a selection together, use Shift snapping, then lock only arrangement.",
+        "examples": [
+          "tray-workspace"
+        ],
+        "label": "Selection and snapping"
+      },
+      {
+        "id": "behavior_tray_layout_bag_save_restore",
+        "title": "Tray layout Bag save/restore",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Restore geometry and settings while retaining card contents; no disk persistence.",
+        "examples": [
+          "tray-workspace"
+        ],
+        "label": "Save a layout"
+      },
+      {
+        "id": "behavior_persist_restore_layout_across_a_page_reload",
+        "title": "Persist/restore layout across a page reload",
+        "kind": "behavior",
+        "status": "Gap",
+        "description": "Tray Save is page-local. Server persistence is an application responsibility, not silently demonstrated.",
+        "examples": [],
+        "label": "Restore after reload"
+      }
+    ]
+  },
+  {
+    "id": "editors",
+    "title": "Editors",
+    "features": [
+      {
+        "id": "component_codemirror",
+        "title": "codeMirror",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit the draft and save a snapshot. Keep typing: the live draft changes while the saved version stays unchanged until you save again.",
+        "examples": [
+          "code_mirror"
+        ],
+        "label": "codeMirror"
+      },
+      {
+        "id": "component_htmleditor",
+        "title": "htmlEditor",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit the code, then switch to Preview and Rich text. The three views share one draft; Preview displays the HTML without running its scripts.",
+        "examples": [
+          "html_editor"
+        ],
+        "label": "htmlEditor"
+      },
+      {
+        "id": "component_htmlpreview",
+        "title": "htmlPreview",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit the code, then switch to Preview and Rich text. The three views share one draft; Preview displays the HTML without running its scripts.",
+        "examples": [
+          "html_editor"
+        ],
+        "label": "htmlPreview"
+      },
+      {
+        "id": "component_markdowneditor",
+        "title": "markdownEditor",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit a heading and compare Code, Preview and Rich text. The views share the same Markdown; use Code for complex blocks.",
+        "examples": [
+          "markdown_editor"
+        ],
+        "label": "markdownEditor"
+      },
+      {
+        "id": "component_markdownpreview",
+        "title": "markdownPreview",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit a heading and compare Code, Preview and Rich text. The views share the same Markdown; use Code for complex blocks.",
+        "examples": [
+          "markdown_editor"
+        ],
+        "label": "markdownPreview"
+      },
+      {
+        "id": "component_typstpreview",
+        "title": "typstPreview",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Edit the sample document and inspect its preview, then generate the PDF. Compilation runs locally; this example uses bundled fonts and no external includes.",
+        "examples": [
+          "typst_editor"
+        ],
+        "label": "typstPreview"
+      },
+      {
+        "id": "behavior_code_editor_options_and_retained_draft",
+        "title": "Code editor options and retained draft",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change wrapping/font; distinguish configuration from document replacement.",
+        "examples": [
+          "code_mirror_options"
+        ],
+        "label": "Code editing"
+      },
+      {
+        "id": "behavior_html_editing_preview_and_protected_content",
+        "title": "HTML editing, preview and protected content",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare Code, Preview and Rich text bound to one value.",
+        "examples": [
+          "html_editor"
+        ],
+        "label": "HTML editing"
+      },
+      {
+        "id": "behavior_markdown_editing_preview_undo_and_embedded_html",
+        "title": "Markdown editing, preview, undo and embedded HTML",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare shared views; toggle sanitized embedded HTML.",
+        "examples": [
+          "markdown_editor"
+        ],
+        "label": "Markdown editing"
+      },
+      {
+        "id": "behavior_typst_pdf_preview",
+        "title": "Typst/PDF preview",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Edit the source and observe the compiled preview.",
+        "examples": [
+          "typst_editor"
+        ],
+        "label": "PDF preview"
+      }
+    ]
+  },
+  {
+    "id": "reuse",
+    "title": "Composition",
+    "features": [
+      {
+        "id": "behavior_svg_shapes_and_reusable_drawing_helpers",
+        "title": "SVG shapes and reusable drawing helpers",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change shape attributes; reuse the drawing helper.",
+        "examples": [
+          "e08",
+          "e09"
+        ],
+        "label": "SVG shapes"
+      },
+      {
+        "id": "behavior_relocatable_datapath",
+        "title": "Relocatable datapath",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change the current record or reuse a helper with independent Data.",
+        "examples": [
+          "b02",
+          "color_maker"
+        ],
+        "label": "Relative datapaths"
+      },
+      {
+        "id": "behavior_timer_driven_animation",
+        "title": "Timer-driven animation",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Start, pause, single-step and reset; store writes drive the drawing.",
+        "examples": [
+          "sieve"
+        ],
+        "label": "Timers and animation"
+      },
+      {
+        "id": "behavior_reusable_helpers_and_loops",
+        "title": "Reusable helpers and loops",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Trace small helpers and independent datapaths in Python and JavaScript.",
+        "examples": [
+          "color_maker",
+          "sieve"
+        ],
+        "label": "Helpers and loops"
+      },
+      {
+        "id": "behavior_per_instance_state_isolation_across_several_ides",
+        "title": "Per-instance state isolation across several IDEs",
+        "kind": "behavior",
+        "status": "Gap",
+        "description": "Host IDE is outside this catalogue; add a focused isolation exercise if teaching this contract.",
+        "examples": [],
+        "label": "Instance isolation"
+      }
+    ]
+  },
+  {
+    "id": "resources",
+    "title": "Collections",
+    "features": [
+      {
+        "id": "behavior_custom_component_definition_and_collection_packaging",
+        "title": "Custom component definition and collection packaging",
+        "kind": "behavior",
+        "status": "Gap",
+        "description": "Core manual has the tutorial; add a runnable authoring example when a bounded scope is agreed.",
+        "examples": [],
+        "label": "Custom components"
+      },
+      {
+        "id": "behavior_collection_overrides_and_dependency_resource_failures",
+        "title": "Collection overrides and dependency/resource failures",
+        "kind": "behavior",
+        "status": "Gap",
+        "description": "Covered by contracts/tests, not by a common gallery exercise.",
+        "examples": [],
+        "label": "Overrides and dependencies"
+      }
+    ]
+  },
+  {
+    "id": "appearance",
+    "title": "Appearance",
+    "features": [
+      {
+        "id": "behavior_separate_style_attributes_versus_html_attributes",
+        "title": "Separate style attributes versus HTML attributes",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change class, width and visibility through Data.",
+        "examples": [
+          "b06"
+        ],
+        "label": "Style attributes"
+      },
+      {
+        "id": "behavior_theme_palette_light_dark_and_touch_density",
+        "title": "Theme, palette, light/dark and touch density",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare fields, menus and windows without changing their Data.",
+        "examples": [
+          "l09"
+        ],
+        "label": "Themes"
+      }
+    ]
+  },
+  {
+    "id": "quarantine",
+    "title": "Quarantine",
+    "features": [
+      {
+        "id": "component_dbselect",
+        "title": "dbSelect",
+        "kind": "component",
+        "status": "Quarantine",
+        "description": "Prototype only. No new gallery exercise or recommendation until a full implementation review and comparison with legacy APIs.",
+        "examples": [],
+        "label": "dbSelect"
+      },
+      {
+        "id": "component_dbcombobox",
+        "title": "dbComboBox",
+        "kind": "component",
+        "status": "Quarantine",
+        "description": "Prototype only. No new gallery exercise or recommendation until a full implementation review and comparison with legacy APIs.",
+        "examples": [],
+        "label": "dbComboBox"
+      }
+    ]
+  }
+]

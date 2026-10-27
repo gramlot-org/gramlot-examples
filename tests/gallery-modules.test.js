@@ -10,7 +10,8 @@ function fixture(t, native=true, origin='https://gallery.test/') {
     const app=new Gramlot({document:window.document,transport:false});app.src.startSource(builder.source);
     const entries=new Bag();entries.setItem('app',null,{title:'App info',url:'/mobile-application/app',module:'mobileApplication',moduleEntry:'app'});
     const modules=new Bag();modules.setItem('mobileApplication',entries,{title:'Mobile application',integration:'/mobile-application/device-provider.js'});
-    app.data.setItem('galleryIndex.navigation',new Bag());app.data.setItem('galleryIndex.modules',modules);
+    const navigation=new Bag();navigation.setItem('features',null,{title:'Features'});
+    app.data.setItem('galleryIndex.navigation',navigation);app.data.setItem('galleryIndex.modules',modules);
     const root=app.src.renderer.elements.get(window.document.getElementById('gallery')).node;
     t.after(()=>{app.dispose();window.close();});
     return {app,root,window,navigation:app.data.getItem('galleryIndex.navigation')};
@@ -18,7 +19,7 @@ function fixture(t, native=true, origin='https://gallery.test/') {
 test('ordinary browsers do not import native integration or expose the catalogue',async t=>{
     const f=fixture(t,false);let loaded=0;
     await mountGalleryModules(f.app,f.root,{load:async()=>{loaded++;}});
-    assert.equal(loaded,0);assert.equal(f.navigation.getNodes().length,0);
+    assert.equal(loaded,0);assert.equal(f.navigation.getNodes().length,1);
     f.window.Capacitor={isNativePlatform:()=>false,getPlatform:()=> 'web'};
     assert.equal(nativeApplication(f.window),false);
 });
@@ -28,14 +29,15 @@ test('broker installed before entries appear, same-origin only; root disposal re
         assert.equal(url,'https://gallery.test/mobile-application/device-provider.js');
         return {installDeviceFrameHost(page,{origins}) {
             assert.equal(page,f.app);assert.deepEqual(origins,['https://gallery.test']);
-            assert.equal(f.navigation.getNodes().length,0);installed++;
+            assert.equal(f.navigation.getNodes().length,1);installed++;
             return {dispose(){disposed++;}};
         }};
     }});
     assert.equal(installed,1);
+    assert.deepEqual(f.navigation.getNodes().map(node=>node.label),['module_mobileApplication','features']);
     assert.equal(f.navigation.getNode('module_mobileApplication.app').attr.url,'/mobile-application/app');
     f.root.parentBag.popNode(f.root.label);
-    assert.equal(disposed,1);assert.equal(f.navigation.getNodes().length,0);
+    assert.equal(disposed,1);assert.equal(f.navigation.getNodes().length,1);
 });
 test('late load cannot install after disposal and insecure origins fail',async t=>{
     const f=fixture(t);let resolve,installed=0;

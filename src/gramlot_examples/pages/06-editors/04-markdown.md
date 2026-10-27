@@ -1,4 +1,4 @@
-# Edit Markdown: source, preview and rich text
+# Markdown editor
 
 **Try this:** Edit a heading and compare Code, Preview and Rich text. The views share the same Markdown; use Code for complex blocks.
 

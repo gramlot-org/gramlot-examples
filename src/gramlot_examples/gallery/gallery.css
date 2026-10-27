@@ -221,3 +221,29 @@
 .gallery-search-clear:hover { background:var(--gramlot-selected); }
 .gallery-search-clear:focus-visible { outline:2px solid var(--gramlot-action);outline-offset:1px; }
 .gallery-search-clear[hidden] { display:none; }
+
+/* Feature-first learning index: the same lessons, a second way to discover them. */
+.gallery-features { height:100%; overflow:auto; box-sizing:border-box; padding:16px; }
+.gallery-features > h2 { margin:0 0 8px; }
+.gallery-features > p { max-width:80ch; margin:6px 0; }
+.feature-summary { font-weight:600; }
+.feature-layout { display:flex; align-items:stretch; gap:16px; min-height:400px; }
+.feature-tree { flex:0 0 310px; min-width:0; }
+.feature-details { flex:1; min-width:0; min-height:360px; }
+.feature-tree::part(caption) { color:var(--gramlot-text); font-weight:400; }
+.feature-tree::part(feature-seen) { color:#217443; }
+.feature-tree::part(feature-tried) { color:#217443; font-weight:600; }
+:root[data-theme="dark"] .feature-tree::part(feature-seen),
+:root[data-theme="dark"] .feature-tree::part(feature-tried) { color:#87d9a6; }
+.feature-card { min-width:0; padding:12px; border:1px solid var(--gramlot-border); border-radius:6px; background:var(--gramlot-field-background); }
+.feature-card h3 { font-size:1rem; margin:0 0 8px; }
+.feature-card p { margin:6px 0; font-size:.92rem; }
+.feature-evidence { color:var(--gramlot-muted); font-style:italic; }
+.feature-links { display:flex; flex-direction:column; align-items:flex-start; gap:5px; margin:10px 0; }
+.feature-links button { text-align:left; white-space:normal; }
+.feature-card select { max-width:100%; }
+@media(max-width:650px) {
+    .feature-layout { flex-direction:column; gap:12px; }
+    .feature-tree { flex:auto; max-height:42vh; overflow:auto; }
+    .feature-details { flex:auto; min-height:300px; }
+}

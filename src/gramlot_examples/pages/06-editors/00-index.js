@@ -1,6 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static title = "Document and code editors";
+    static title = "Editors";
     main(root) {
         const pane = root.main({class:'example-page stack',padding:'24px'});
         pane.h1(this.constructor.title);
