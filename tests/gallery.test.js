@@ -448,24 +448,27 @@ test('theme, color and label settings persist and reject foreign frame messages'
     assert.equal(g.state.getItem('palette'), 'default');
 });
 
-test('invalid or unavailable browser storage leaves valid defaults and usable controls', {timeout: 30000}, async t => {
-    for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}', '{"palette":["mimi"]}', '{"palette":"__proto__"}']) {
+// Give each storage case its own fixture lifetime and timeout budget.
+for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}', '{"palette":["mimi"]}', '{"palette":"__proto__"}']) {
+    test(`invalid browser preferences retain usable defaults: ${saved}`, {timeout: 30000}, async t => {
         const f = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
         assert.equal(f.get('index-appearance').readControlValue(), 'compact');
         assert.equal(f.get('index-theme').readControlValue(), 'light');
         assert.equal(f.get('index-palette').readControlValue(), 'default');
         assert.equal(f.source('index-sidebar').getAttr('width'), '240px');
-    }
-    for (const name of ['SecurityError', 'QuotaExceededError']) {
+    });
+}
+for (const name of ['SecurityError', 'QuotaExceededError']) {
+    test(`unavailable browser storage retains usable controls: ${name}`, {timeout: 30000}, async t => {
         const f = await setup(t, undefined, w => Object.defineProperty(w, 'localStorage', {value: {
             getItem() { if (name === 'SecurityError') throw new w.DOMException('Unavailable', name); return null; },
             setItem() { throw new w.DOMException('Unavailable', name); },
         }}));
         change(f, 'index-theme', 'dark'); f.navigation('e01').click();
-    await settle();
+        await settle();
         assert.equal(f.get('panel-e01').hidden, false);
-    }
-});
+    });
+}
 
 test('phone Code tab and inspector retain the same frame and restore desktop navigation', {timeout: 30000}, async t => {
     const f = await setup(t, null, w => { w.matchMedia().matches = true; });
