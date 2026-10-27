@@ -10,7 +10,11 @@ export class Page extends GalleryPage {
     static gramlots = collections.filter(item=>item.name !== 'typst');
     static logoUrl = '/assets/branding/svg/gramlot-horizontal-primary.svg';
     static catalogs = [];
-    static get navigation() { return navigationDirectory('', this.catalogs); }
+    static get navigation() {
+        const navigation = navigationDirectory('', this.catalogs);
+        navigation.setItem('features', null, {title:'Features', key:'features', category:false});
+        return navigation;
+    }
     navigation_section({directory}) { return navigationDirectory(directory, this.constructor.catalogs); }
 
     static get families() {

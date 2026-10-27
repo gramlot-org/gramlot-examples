@@ -160,3 +160,18 @@ test('feature tree follows capabilities and updates leaf and completed branch co
     for (const item of entries) assert.ok(item.label.length <= 30, item.label);
     mounted.dispose();
 });
+
+
+test('hosted JavaScript navigation ends with Features while keeping directory branches lazy', async () => {
+    const {Page} = await import('../src/gramlot_examples/gallery/page.js');
+    const nodes = Page.navigation.getNodes();
+    assert.equal(nodes.at(-1).label, 'features');
+    assert.equal(nodes.at(-1).attr.title, 'Features');
+    assert.equal(nodes.at(-1).attr.category, false);
+    assert.equal(nodes.at(-1).attr.key, 'features');
+    const directory = nodes.find(node => node.attr.category);
+    assert.ok(directory.attr.directory);
+    const children = new Page().navigation_section({directory: directory.attr.directory});
+    assert.ok(children.getNodes().length);
+    assert.equal(children.getNode('features'), null, 'Features is only a root entry');
+});
