@@ -1533,3 +1533,15 @@ The sender's **Server event — PageStore ID** shows the reverse event's verifie
 origin: its subscribed dataController reads _subscription_metadata.pageId into
 notification.sender. This is the recipient PageStore's ID, not the original
 sending child or the primary gallery. The server supplies it outside payload.
+
+
+Current-base release qualification, 2026-10-27: the complete example suites pass
+62 Python tests and 178 subtests (one existing skip), and 316 JavaScript tests
+against the integrated core artifact. The manual validates 111 shared lessons
+and all local links. Chromium and WebKit pass the complete PageStore trial
+catalogue from clean installed candidate wheels, including sender metadata,
+reverse publications, owner refusal/recovery and one primary WebSocket.
+The owner authorizes publication and both hosted-gallery updates. The required
+core is consolidated on main; consumer source-based CI can now verify the
+release candidate. These Python trials remain an explicit additional catalogue;
+the standard hosted galleries keep their common cross-environment catalogue.
