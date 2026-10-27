@@ -1,8 +1,8 @@
 /** Build the provisional gallery's scripts separately from Gramlot's runtime. */
 import {build} from 'esbuild';
-import {copyFile, mkdir, readFile, readdir, writeFile} from 'node:fs/promises';
-import {fileURLToPath} from 'node:url';
-import {resolve} from 'node:path';
+import {copyFile, cp, mkdir, readFile, readdir, writeFile, rm} from 'node:fs/promises';
+import {fileURLToPath, pathToFileURL} from 'node:url';
+import {resolve, dirname, join} from 'node:path';
 import {createRequire} from 'node:module';
 
 const directory = new URL('../src/gramlot_examples/gallery/', import.meta.url);
@@ -13,14 +13,17 @@ await mkdir(output, {recursive: true});
 const require = createRequire(import.meta.url);
 const compactStyle = await readFile(require.resolve('@gramlot/gramlot/themes/gramlot-compact/theme.css'), 'utf8');
 const appearanceStyles = {base:'', compact:compactStyle};
-for (const name of ['mimi', 'joanna']) {
+for (const name of ['mimi', 'joanna', 'mela']) {
     appearanceStyles[name] = compactStyle + '\n' + await readFile(require.resolve(`@gramlot/gramlot/themes/${name}/theme.css`), 'utf8');
 }
+const paletteStyles = {default: ''};
+for (const name of ['compact', 'mimi', 'joanna']) {
+    paletteStyles[name] = await readFile(require.resolve(`@gramlot/gramlot/themes/palettes/${name}.css`), 'utf8');
+}
 await writeFile(new URL('theme-styles.js', output),
-    `// Generated from canonical Gramlot themes.\nexport const appearanceStyles = ${JSON.stringify(appearanceStyles)};\n`);
+    `// Generated from canonical Gramlot themes.\nexport const appearanceStyles = ${JSON.stringify(appearanceStyles)};\nexport const paletteStyles = ${JSON.stringify(paletteStyles)};\n`);
 const result = await build({
     entryPoints: {
-        gallery: fileURLToPath(new URL('browser/entry.js', directory)),
         inspector: fileURLToPath(new URL('browser/inspector-entry.js', directory)),
         frame: fileURLToPath(new URL('browser/frame-entry.js', directory)),
     },
@@ -37,6 +40,33 @@ const result = await build({
         `}));
     }}],
 });
+const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/entry.js', directory))],
+    outfile:fileURLToPath(new URL('gallery.js',output)), bundle:true, format:'esm', platform:'browser',
+    target:'es2022', legalComments:'inline', metafile:true, plugins:[{name:'shared-runtime',setup(plugin){
+        plugin.onResolve({filter:/^@gramlot\/gramlot$/},args=>({path:args.path,external:true}));
+    }}]});
+Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
+// Copy prepared browser resources byte-for-byte to preserve their fingerprints.
+for (const name of ['inputs','layout','tree','editors','typst','menu-trial']) {
+    await rm(new URL(name+'/',output),{recursive:true,force:true});
+    const artifact = name === 'menu-trial'
+        ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))
+        : join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name);
+    await cp(artifact, new URL(name+'/',output), {recursive:true, filter:path => !path.endsWith('__pycache__')});
+    const {default: collection, buildId} = await import(pathToFileURL(join(artifact,'assets/index.js')).href);
+    const root = pathToFileURL(artifact + '/');
+    const hostRoot = `/gramlot/collections/${encodeURIComponent(name)}/${buildId.slice(7)}/`;
+    const descriptor = {name, grammar:collection.toDocument(), buildId,
+        module:hostRoot+'assets/index.js', dependencies:collection.dependencies.map(item=>item.name),
+        css:collection.css.map(url=>{
+            if(!url.href.startsWith(root.href)) throw new Error('Collection stylesheet escapes its artifact');
+            return hostRoot+url.href.slice(root.href.length);
+        })};
+    await writeFile(new URL(name+'/descriptor.js',output),
+        '// Prepared metadata only; widget implementations load through the bootstrap.\nexport default '+JSON.stringify(descriptor)+';\n');
+
+}
+
 // Keep notices for every bundled dependency, including transitive Bag dependencies.
 const packages = new Set();
 for (const input of Object.keys(result.metafile.inputs)) {
@@ -58,8 +88,3 @@ for (const name of ['LICENSE', 'NOTICE']) {
     await copyFile(new URL(`../${name}`, import.meta.url), new URL(name, output));
 }
 console.log('Gallery browser scripts built.');
-
-// Independent collection module: no second runtime, only descriptors and controls.
-for (const name of ['inputs', 'layout']) await build({entryPoints: [require.resolve(`@gramlot/gramlot/components/${name}`)],
-    outfile: fileURLToPath(new URL(`${name}.js`, output)), bundle: true, format: 'esm',
-    platform: 'browser', target: 'es2022', legalComments: 'inline'});

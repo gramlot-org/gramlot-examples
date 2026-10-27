@@ -20,22 +20,26 @@ class BuildGalleryTests(unittest.TestCase):
         return path
 
     def environment(self, families):
-        return {"environment": "test", "families": families}
+        return {"environment": "test", "families": [{**family, "folder": family["key"]} for family in families]}
 
     def test_common_gallery(self):
         gallery = build_gallery()
-        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "binding", "controllers", "components", "layout"])
-        self.assertEqual(len(gallery["routes"]), 80)
+        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "binding", "controllers", "rpc", "layout", "menus", "editors", "tools", "composition"])
+        self.assertEqual(len(gallery["routes"]), 139)
+        self.assertEqual(gallery["routes"]["gallery-tray"]["data"].name, "08-gallery_tray_data.tytx")
         self.assertEqual(gallery["routes"]["index"]["page"].name, "page.py")
-        self.assertEqual(gallery["routes"]["c03"]["logic"].name, "03_named_logic.js")
+        self.assertEqual(gallery["routes"]["c03"]["logic"].name, "03-named_logic.js")
+        self.assertEqual(gallery["routes"]["c23"]["page"].name, "02-room_estimate.py")
         for url, asset in gallery["assets"].items():
             self.assertTrue(asset["file"].is_file(), url)
 
     def test_media_types(self):
         assets = build_gallery()["assets"]
         self.assertEqual(assets["/gallery/dist/gallery.js"]["type"], "application/javascript")
-        self.assertEqual(assets["/pages/controllers/03_named_logic.js"]["type"], "text/plain")
+        self.assertEqual(assets["/pages/03-controllers/01-logic/03-named_logic.js"]["type"], "text/plain")
         self.assertEqual(assets["/gallery/gallery.css"]["type"], "text/css")
+        self.assertEqual(assets["/trials/menu/theme_preview.js"]["type"], "text/javascript")
+        self.assertIn("/gallery/dist/menu-trial/descriptor.js", assets)
         self.assertEqual(assets["/gallery/dist/LICENSE"]["type"], "text/plain")
 
     def test_environment_catalogue(self):

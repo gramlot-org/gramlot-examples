@@ -1,0 +1,57 @@
+# Build a form with shared Data
+
+**Try this:** Change the registration fields and compare the Data record alongside them. The password and unbound controls are deliberately absent from that summary.
+
+The form from **Native forms** returns with its fields connected to one Data record. Edit a value and watch other views follow. You learn how binding replaces code that would otherwise copy values between controls and displays.
+
+**Uses:** Source, Data, pointers and native binding. No endpoint calls.
+
+<details>
+<summary>More detail</summary>
+
+**Goal:** Revisit the native form with one authoritative Data record.
+
+**Before this lesson:** [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/02-native_controls/01-forms.md), [b03 · Setters and defaults](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/03-setters_and_defaults.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md).
+
+## Read the page
+
+The fieldsets are inherited conceptually from e06. The sample values live in `03-forms_data.tytx`. The multiple select receives a list at `form.topics`; the TYTX Bag retains that list as well as nested Bags and scalar types. Each control and each summary entry bind to the same relative path. Intensity is live; ordinary text fields update on change.
+
+```python
+parent.input(type=kind, id=key, name=key, value=f"^.{key}", **attrs)
+record.h2("The Data record")
+```
+
+Password is bound but deliberately absent from the summary, and so is the `frequency.daily` path: the summary lists only `frequency.weekly`. The file input, the read-only code and the disabled field are not bound. Boolean radio paths use the `frequency` group.
+
+Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
+
+## Try it and predict the result
+
+1. Compare initial Name, Quantity, Region and Topics with e06. They still describe Ada, 3, South and HTML.
+2. Change Name and leave the field: the Data record shows the edit. Drag Intensity: its summary follows live.
+3. Choose daily: weekly becomes false in Data.
+
+## Change it and check yourself
+
+Change `RECORD["quantity"]` from 3 to 5 and reload.
+
+**Answer:** both Quantity and its summary begin at 5. You edit the initial record once; neither the input declaration nor its summary contains another copied numeric default.
+
+## The same example across stages
+
+**Earlier, e06:** the field call supplies `value="Ada Lovelace"`; checkbox/option declarations carry `checked`/`selected` flags.
+
+**Later, 0.2.0:** the shared field helper supplies `value=f"^.{key}"`; defaults move to `RECORD`. A select supplies `value="^.region"` and its options no longer choose the selection individually.
+
+The same initial information is declared centrally and reflected in multiple places. This removes duplicated state/update responsibility; it does not claim fewer total lines after adding the summary and interaction.
+
+## Limits and next step
+
+No native Reset is offered: native reset does not emit the input/change events needed to synchronize Data. Submit remains disabled. File selection has no bound Data value or upload; this is not a record/form persistence framework.
+
+Continue with [b10 · SVG shapes with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/03-svg_shapes.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+
+**Sample data:** `03-forms_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
+
+</details>

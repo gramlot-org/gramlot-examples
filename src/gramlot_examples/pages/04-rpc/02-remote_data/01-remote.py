@@ -1,0 +1,29 @@
+from gramlot import Page as BasePage
+from gramlot import source
+
+RECORDS = {"lamp": ("Lamp", 3), "desk": ("Desk", 0), "chair": ("Chair", 12)}
+
+
+class Page(BasePage):
+    title = "Load a remote Source fragment"
+
+    def main(self, root):
+        pane = root.div(class_="example-page stack", datapath="catalog")
+        pane.h1("Remote")
+        pane.p("Choose Lamp, Desk or Chair. The server builds the selected detail fragment; the page replaces only that section.")
+
+        form = pane.form(class_="card stack")
+        form.html_label("Record", for_="record")
+        choice = form.select(value="^.record_id", id="record")
+        for key, (name, _stock) in RECORDS.items():
+            choice.option(name, value=key)
+
+        details = pane.section("Waiting for the server", class_="card stack", id="details")
+        details.remote("details", record_id="^.record_id")
+
+
+    @source
+    def details(self, root, record_id, **kwargs):
+        name, stock = RECORDS[record_id]
+        root.h2(name, id="name")
+        root.p(f"{stock} in stock", id="stock")

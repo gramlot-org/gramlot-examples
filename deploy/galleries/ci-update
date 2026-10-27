@@ -3,4 +3,4 @@
 set -eu
 [ "$#" -eq 0 ] || exit 126
 exec /usr/bin/timeout --signal=TERM --kill-after=60 40m \
-    /usr/bin/python3 /opt/gramlot-galleries/automation/update.py --wait-seconds 900
+    /usr/bin/python3 /opt/gramlot-galleries/automation/update.py --wait-seconds 900 --github-token-stdin

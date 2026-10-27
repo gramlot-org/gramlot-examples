@@ -1,0 +1,21 @@
+.sieve-page { max-width: 760px; margin: auto; padding: clamp(12px, 3vw, 28px); }
+.sieve-page h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin: 0 0 6px; letter-spacing: -.035em; }
+.sieve-page > .muted { margin: 0 0 18px; }
+.sieve-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; padding: 10px; border: 1px solid var(--gramlot-border); border-radius: 10px; background: var(--gramlot-surface); }
+.sieve-speed { flex: 1; min-width: 140px; }
+.sieve-speed-value { min-width: 4ch; font-size: .8rem; align-self: center; font-variant-numeric: tabular-nums; }
+.sieve-facts { display: flex; flex-wrap: wrap; gap: 6px 20px; padding: 12px 0 0; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.sieve-message { min-height: 2.5em; margin: 8px 0; font-size: .9rem; }
+.sieve-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; font-size: .7rem; }
+.sieve-key { padding: 3px 7px; border: 1px solid var(--gramlot-border); border-radius: 5px; }
+.sieve-grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: clamp(3px, .8vw, 7px); }
+.sieve-cell { display: grid; place-items: center; height: clamp(27px, 5vw, 46px); font-size: clamp(.75rem, 2vw, 1rem); font-variant-numeric: tabular-nums; border: 1px solid var(--gramlot-border); border-radius: 6px; }
+.sieve-pending { background: var(--gramlot-surface); color: var(--gramlot-ink); }
+.sieve-prime { background: var(--gramlot-success-background); color: var(--gramlot-success); border-color: var(--gramlot-success); font-weight: 700; }
+.sieve-composite { background: var(--gramlot-surface-subtle); color: var(--gramlot-text-secondary); text-decoration: line-through; }
+.sieve-excluded { background: var(--gramlot-surface-subtle); color: var(--gramlot-text-secondary); opacity: .55; }
+.sieve-cell[aria-current="step"] { outline: 2px solid var(--gramlot-action); outline-offset: 1px; }
+.sieve-guide { margin-top: 18px; font-size: .85rem; border-top: 1px solid var(--gramlot-border); padding-top: 12px; }
+.sieve-guide summary { cursor: pointer; font-weight: 600; }
+.sieve-guide p { line-height: 1.5; }
+@media (prefers-reduced-motion: reduce) { .sieve-cell { transition: none; } }

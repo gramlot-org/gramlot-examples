@@ -4,7 +4,13 @@ import re
 import unittest
 
 from genro_tytx import from_tytx, to_tytx
-from gramlot.server import GramlotFileServer
+from genro_bag import Bag
+from gramlot.server import GramlotFileServer as BaseFileServer
+
+class GramlotFileServer(BaseFileServer):
+    def collection_url(self, collection, path):
+        return f"/gramlot/collections/{collection.name}/{collection.build_id[7:]}/{path}"
+
 
 from gramlot_examples import build_gallery
 
@@ -28,6 +34,12 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn(f'{{"url":"/{page.stem}.js","group":null}}', opened.html)
                 response = await call(server, opened.page_id, "source", "main")
                 self.assertNotIn("error", response)
+                if route["data"] is not None:
+                    self.assertIsInstance(response["data"], Bag)
+                    expected = from_tytx(route["data"].read_text())
+                    self.assertEqual(to_tytx(response["data"]), to_tytx(expected))
+                else:
+                    self.assertNotIn("data", response)
                 tree = response["value"]
                 self.assertGreater(len(tree.nodes), 0)
                 server.close_page(opened.page_id)
@@ -52,13 +64,13 @@ class PageTests(unittest.IsolatedAsyncioTestCase):
             "c08": ("quote", {"quantity": 2, "large": False, "gift": False, "button_counter": 1}, {"value": 2}),
             "c08 options": ("quote", {"quantity": 2, "large": True, "gift": True}, {"value": 11}),
             "c08 invalid": ("quote", {"quantity": 0, "large": True, "gift": True},
-                            {"error": {"code": "application_error", "name": "ValueError", "message": "Choose at least one item"}}),
+                            {"error": {"code": "application_error", "name": "EmptyOrder", "message": "Choose at least one item"}}),
             "c08 empty": ("quote", {"quantity": None, "large": False, "gift": False},
-                          {"error": {"code": "application_error", "name": "ValueError", "message": "Choose at least one item"}}),
+                          {"error": {"code": "application_error", "name": "EmptyOrder", "message": "Choose at least one item"}}),
             "c09": ("with_vat", {"price": 12.5, "rate": 22}, {"value": 15.25}),
             "c10": ("quote", {"quantity": 12}, {"value": 96}),
             "c11": ("reserve", {"item": "Lamp", "button_counter": 1},
-                    {"error": {"code": "application_error", "name": "LookupError", "message": "Lamp is out of stock"}}),
+                    {"error": {"code": "application_error", "name": "OutOfStock", "message": "Lamp is out of stock"}}),
             "c11 auth": ("cancel", {"item": "Lamp"},
                          {"error": {"code": "not_authenticated", "name": "NotAuthenticated",
                                     "message": "Access refused: cancel"}}),

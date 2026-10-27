@@ -1,0 +1,65 @@
+from gramlot import Page as BasePage
+
+
+class Page(BasePage):
+    title = "React to Data changes with dataController"
+
+    def main(self, root):
+        pane = root.div(class_="example-page stack", datapath="demo")
+        pane.h1("Controller")
+        pane.p("Change the name, send a request and try the delayed input. Each section shows a different reason for a controller to run; the counters make those triggers visible.")
+
+        triggers = pane.div(class_="grid controller-triggers")
+        self.value_changes(triggers)
+        self.fired_events(triggers)
+        self.delayed_search(triggers)
+        self.timed_updates(triggers)
+        self.path_filters(pane)
+
+
+    def value_changes(self, pane):
+        check = pane.section(class_="card stack")
+        check.h2("React to a value")
+        check.html_label("Name", for_="name")
+        check.input(value="^.name", live=True, id="name")
+        check.p("The name is empty", id="warning", class_="status status--warning", visible="^.invalid")
+        check.dataController("this.SET('.invalid', !name.trim())", name="^.name", _init=True)
+
+    def fired_events(self, pane):
+        fired = pane.section(class_="card stack")
+        fired.h2("React to a fired path")
+        fired.button("Send a request", fire=".request", id="request")
+        fired.p("^.requests", id="requests")
+        fired.dataController("this.SET('.requests', requests + 1)", _fired="^.request", requests="=.requests")
+
+    def delayed_search(self, pane):
+        delayed = pane.section(class_="card stack")
+        delayed.h2("Wait for a pause (_delay)")
+        delayed.html_label("Search", for_="query")
+        delayed.input(value="^.query", live=True, id="query")
+        delayed.p("^.searched", id="searched")
+        delayed.dataController("this.SET('.searched', 'Searching for ' + query)", query="^.query", _delay=400)
+
+    def timed_updates(self, pane):
+        timed = pane.section(class_="card stack")
+        timed.h2("Run at start and at intervals (_onStart, _timing)")
+        timed.html_label("Interval in seconds", for_="interval")
+        interval = timed.select(value="^.interval", id="interval", default='1')
+        for seconds in (0, 1, 5):
+            interval.option(str(seconds), value=str(seconds))
+        timed.p("^.ticks", id="ticks")
+        timed.dataController("this.SET('.ticks', (ticks ?? 0) + 1)", ticks="=.ticks", _timing="^.interval",
+                             _onStart=True)
+
+    def path_filters(self, pane):
+        filtered = pane.section(class_="card stack")
+        filtered.h2("Advanced: _userChanges filters paths, not input origin")
+        filtered.html_label("Tracked name", for_="tracked-name")
+        filtered.input(value="^.filter.name", id="tracked-name")
+        for label, method in (("SET the name", "setName"), ("Replace containing Bag", "replaceFilter"),
+                              ("Change address child", "changeCity")):
+            filtered.button(label, id=method, type="button").dataController(func=method)
+        for key, path, exact in (("name_exact", ".filter.name", True), ("name_all", ".filter.name", False),
+                                 ("address_exact", ".filter.address", True), ("address_all", ".filter.address", False)):
+            filtered.p(f"^.{key}", mask=key + ": {}", id=key)
+            filtered.dataController(func="countPath", watched="^" + path, counter="." + key, _userChanges=exact)

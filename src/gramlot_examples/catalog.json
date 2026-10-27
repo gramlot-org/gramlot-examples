@@ -2,543 +2,797 @@
   "families": [
     {
       "key": "html_svg",
-      "title": "HTML / SVG",
+      "title": "HTML and SVG",
       "examples": [
         {
           "key": "e01",
-          "title": "Hello World",
-          "folder": "01_hello_world",
-          "description": "A heading and a paragraph: the smallest Gramlot page.",
+          "title": "Your first page: headings and text",
+          "folder": "01-html_basics/01-hello_world",
+          "description": "Compare the two element calls with the heading and paragraph. In your own copy, add a second paragraph and reload: one extra call creates one extra element.",
           "explanation": "The Page class defines main(root). Each builder call adds a typed Source node; the integration hosts the page and Gramlot renders it."
         },
         {
           "key": "e02",
           "title": "Text and links",
-          "folder": "02_text_and_links",
-          "description": "Headings, inline text, quotations, code and links.",
+          "folder": "01-html_basics/02-text_and_links",
+          "description": "Follow the local link and compare emphasis, quoted text and the code sample. The literal <tag> remains text rather than becoming an HTML element.",
           "explanation": "Follow the nested builder calls to see how text and child elements coexist. The example includes an internal anchor and literal text that is escaped rather than interpreted as markup."
         },
         {
           "key": "e03",
-          "title": "Lists",
-          "folder": "03_lists",
-          "description": "Ordered, unordered and nested lists, plus a glossary.",
+          "title": "Ordered, nested and definition lists",
+          "folder": "01-html_basics/03-lists",
+          "description": "Match each visible list to its loop. Add one item in your own copy; the loop supplies its markup without another hand-written block.",
           "explanation": "Local sequences supply the content. Loops create the repeated list items, while nesting expresses the document hierarchy."
         },
         {
           "key": "e04",
           "title": "Semantic page",
-          "folder": "04_semantic_page",
-          "description": "A page composed from meaningful HTML landmarks.",
-          "explanation": "Header, navigation, article, aside and footer give the content structure. Ordinary page methods divide construction into readable sections."
+          "folder": "01-html_basics/04-semantic_page",
+          "description": "Use Story and Notes to move between sections. Compare header, navigation, main, article and footer with the structure in the source.",
+          "explanation": "Header, navigation, main, article, aside and footer give the content structure; the markup stays meaningful without decoration."
         },
         {
           "key": "e05",
-          "title": "Tables",
-          "folder": "05_tables",
-          "description": "A catalogue with headings, rows and totals.",
-          "explanation": "A row helper and a loop build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the calculated total."
+          "title": "Tables with headings and totals",
+          "folder": "01-html_basics/05-tables",
+          "description": "Check a row total and the final totals. In your own copy, add a region to ROWS: the loop and calculations include it automatically.",
+          "explanation": "Loops build the table from fixed data. Caption and scoped headings describe its structure; the footer presents the totals computed before Source is built."
         },
         {
           "key": "e06",
-          "title": "Forms",
-          "folder": "06_forms",
-          "description": "Native fields, choices, buttons and a slider.",
+          "title": "Native form controls",
+          "folder": "02-native_controls/01-forms",
+          "description": "Fill a few native controls, then reset the form. These are browser controls; this lesson deliberately has no Data bindings.",
           "explanation": "Try typing, selecting options and moving the slider. Reset restores defaults. The submit button is disabled: this example has no save endpoint or application event handlers."
         },
         {
           "key": "e07",
-          "title": "Native disclosure",
-          "folder": "07_native_disclosure",
-          "description": "Expandable questions and native progress indicators.",
+          "title": "Expandable sections and progress indicators",
+          "folder": "02-native_controls/02-native_disclosure",
+          "description": "Open and close each question. The progress bar and meter show fixed example values; opening a question does not start a task.",
           "explanation": "The browser supplies details/summary interaction. Progress and meter values are static; the example introduces no bindings or controllers."
         },
         {
           "key": "e08",
-          "title": "SVG shapes",
-          "folder": "08_svg_shapes",
-          "description": "The basic SVG vocabulary inside an HTML page.",
+          "title": "Draw basic SVG shapes",
+          "folder": "03-svg/01-svg_shapes",
+          "description": "Identify each of the six shapes, then match its coordinates and color to the SVG calls. Resize the preview and notice the shared viewBox.",
           "explanation": "The SVG builder creates shapes within a viewBox. Coordinates determine geometry, while the shared theme supplies colors through semantic CSS variables."
         },
         {
           "key": "e09",
-          "title": "SVG composition",
-          "folder": "09_svg_composition",
-          "description": "A scene assembled with groups, paths and repeated objects.",
+          "title": "Compose an SVG scene",
+          "folder": "03-svg/02-svg_composition",
+          "description": "Find the repeated houses, trees and flowers. Each small method receives a position; loops reuse those methods to create one scene.",
           "explanation": "Helper methods build houses, trees and flowers. Loops place repeated elements, and group transformations position their local coordinates."
         },
         {
           "key": "e10",
           "title": "Cards with icons",
-          "folder": "10_cards_with_icons",
-          "description": "HTML cards with SVG icons and live Source removal.",
+          "folder": "04-page_composition/01-cards_with_icons",
+          "description": "Compare the cards and their SVG icons. Change a card's content in your own copy; the shared card method keeps the presentation consistent.",
           "explanation": "Helpers and loops build the cards. Each × button removes its labelled Source node through the browser Builder; Gramlot updates the DOM without reloading. Reload restores the initial cards. No Data binding or server synchronization is involved."
         },
         {
           "key": "e11",
           "title": "Static report",
-          "folder": "11_static_report",
-          "description": "A summary, chart, legend and table from the same data.",
+          "folder": "04-page_composition/02-static_report",
+          "description": "Read the report from summary to detail. Follow how rows and totals become tables and charts; these are fixed sample results, not a live service.",
           "explanation": "Separate methods build each section. SVG bar lengths and table cells use one local dataset, making the connection between values and geometry explicit."
         },
         {
           "key": "e12",
-          "title": "Complete page",
-          "folder": "12_complete_page",
-          "description": "An event page with a programme, speakers, map and FAQ.",
+          "title": "Build a complete event page",
+          "folder": "04-page_composition/03-complete_page",
+          "description": "Use the page navigation, inspect the schedule and open a question. This complete static page combines the small HTML and SVG techniques from the earlier lessons.",
           "explanation": "The main method assembles named sections. Helpers and nested loops compose the schedule, speaker cards and SVG map from fixed local data."
+        }
+      ],
+      "folder": "00-html_svg"
+    },
+    {
+      "key": "components",
+      "title": "Fields and input widgets",
+      "examples": [
+        {
+          "key": "w01",
+          "title": "Text fields: live updates and labels",
+          "folder": "01-text/01-textbox",
+          "description": "Type a customer name and watch the second field follow. Open Options, turn off live editing, then type again: the shared value changes when you leave the field."
         },
         {
-          "key": "e13",
-          "title": "Live Source playground",
-          "folder": "13_live_source",
-          "description": "Create, update and remove Source nodes, with a small SVG animation.",
-          "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in every gallery command and in the static gallery opened from disk."
+          "key": "w02",
+          "title": "Checkbox: a boolean value",
+          "folder": "02-checks_and_switches/01-checkbox",
+          "description": "Toggle either newsletter checkbox. Both views and the subscription message follow one boolean; Options lets you disable editing."
+        },
+        {
+          "key": "w03",
+          "title": "Radio group: choose one value",
+          "folder": "03-selection/01-radio_button_text",
+          "description": "Choose a delivery option and compare the stored code below. The alternative group is independent; changing one group leaves the other untouched."
+        },
+        {
+          "key": "w04",
+          "title": "Multiline text fields",
+          "folder": "01-text/02-text_box_area",
+          "description": "Edit either note. Both multiline fields share the same text; Options lets you compare live editing with updates after leaving the field."
+        },
+        {
+          "key": "w05",
+          "title": "Password fields",
+          "folder": "01-text/03-passwordbox",
+          "description": "Enter a made-up password in one field. The other follows while both mask the text; this is a binding example, not a sign-in form."
+        },
+        {
+          "key": "w06",
+          "title": "Individual radio buttons",
+          "folder": "03-selection/02-radio_button",
+          "description": "Select Standard, Express and Pick up in turn. Their booleans are exclusive within one group; the independent choice belongs to another group."
+        },
+        {
+          "key": "w07",
+          "title": "Choose and bind a color",
+          "folder": "04-colorpicker",
+          "description": "Choose a color and compare both pickers with the swatch. All three read the same color value."
+        },
+        {
+          "key": "w08",
+          "title": "Horizontal slider: range and steps",
+          "folder": "05-numbers_and_sliders/01-horizontal_slider",
+          "description": "Move a slider or use its arrow keys. The other slider follows in steps of five; Options lets you compare live and committed updates."
+        },
+        {
+          "key": "w09",
+          "title": "Vertical slider: orientation and values",
+          "folder": "05-numbers_and_sliders/02-vertical_slider",
+          "description": "Move the vertical slider from bottom to top. The horizontal slider and numeric readout follow the same value from 0 to 100."
+        },
+        {
+          "key": "w10",
+          "title": "Numeric fields: format and constraints",
+          "folder": "05-numbers_and_sliders/03-number_textbox",
+          "description": "Enter a decimal, then try invalid text and leave the field. Compare the editable draft with the accepted numeric value and its formatted copy."
+        },
+        {
+          "key": "w11",
+          "title": "Date fields: entry and display formats",
+          "folder": "06-dates_and_times/01-date_textbox",
+          "description": "Type domani and leave the field. Compare the long and short Italian date formats: they represent the same civil date."
+        },
+        {
+          "key": "w12",
+          "title": "Time fields: entry and display formats",
+          "folder": "06-dates_and_times/02-time_textbox",
+          "description": "Change hours and minutes, then leave the field. Compare the second view; the stored value is a civil time, not a timestamp."
+        },
+        {
+          "key": "w13",
+          "title": "Search a list and select a value",
+          "folder": "03-selection/03-filtering_select",
+          "description": "Search for a delivery caption and select it. The second field follows; the readout contains its code rather than the displayed caption."
+        },
+        {
+          "key": "w14",
+          "title": "Load choices with a browser callback",
+          "folder": "03-selection/04-callback_select",
+          "description": "Search for Sample 02 and choose a result. The browser callback reads a local Bag; the selected code appears in both fields without a server call."
+        },
+        {
+          "key": "w15",
+          "title": "Combine free text and suggestions",
+          "folder": "03-selection/05-combo_box",
+          "description": "Choose a suggested city, then enter a city outside the list. Both are accepted: suggestions assist free text rather than restricting it."
+        },
+        {
+          "key": "w16",
+          "title": "Checkbox group: select several values",
+          "folder": "02-checks_and_switches/02-checkbox_text",
+          "description": "Select several channels, then clear them all. Compare the comma-separated codes with the null value produced by an empty selection."
+        },
+        {
+          "key": "w17",
+          "title": "Inline and popup calendars",
+          "folder": "06-dates_and_times/03-date_calendar",
+          "description": "Choose a day in the inline calendar, then open the popup calendar. Both calendars and the text field follow the same date."
+        },
+        {
+          "key": "w18",
+          "title": "Validate required values and text length",
+          "folder": "07-forms_and_validation/01-validation",
+          "description": "Enter a one-character name and leave the field. The invalid draft stays visible while the accepted value below remains unchanged; correct it to two or more characters."
+        },
+        {
+          "key": "w19",
+          "folder": "07-forms_and_validation/02-formlet",
+          "title": "Arrange fields with formlet",
+          "description": "Switch between one and two columns. The same fields move without losing their values; the note keeps its own label-position override."
+        },
+        {
+          "key": "w21",
+          "folder": "02-checks_and_switches/03-switch",
+          "title": "Show a boolean as a switch",
+          "description": "Click the switch or focus it and press Space. The ordinary checkbox follows the same boolean; compare read-only and disabled behavior."
+        },
+        {
+          "key": "w22",
+          "folder": "08-buttons/01-button",
+          "title": "Buttons: icons, labels and commands",
+          "description": "Confirm the first command, then click the delayed command several times quickly. Its result reports one execution for the burst of clicks."
+        },
+        {
+          "key": "w23",
+          "folder": "08-buttons/02-toggle_button",
+          "title": "Toggle buttons and selection state",
+          "description": "Toggle Enabled and compare its checkbox. Then try Read only and Disabled: the command's state and whether you can edit it are separate concerns."
+        },
+        {
+          "key": "w24",
+          "folder": "08-buttons/03-dropdown_button",
+          "title": "Dropdown buttons and command menus",
+          "description": "Open Export and choose CSV. Repeat with Shift held: the command also becomes the main action. The unavailable item cannot execute."
+        },
+        {
+          "key": "w25",
+          "folder": "07-forms_and_validation/04-validation_engine",
+          "title": "Validation rules, warnings and callbacks",
+          "description": "Try an empty name, quantity 11 and a malformed email. Compare drafts with Accepted Data, then make the email warning blocking and retry."
+        },
+        {
+          "key": "w26",
+          "folder": "09-tree/01-basics",
+          "title": "Browse hierarchical Data with a tree",
+          "description": "Expand Catalog to request its children, then select a row. Add or rename a document and watch the tree follow changes in its Bag."
+        },
+        {
+          "key": "w27",
+          "folder": "09-tree/02-labels_and_classes",
+          "title": "Customize tree labels and row styles",
+          "description": "Select Notes and rename it. The caption changes while its node key and selected path remain stable.",
+          "explanation": "Use caption attributes and separate open, closed, selected and node classes."
+        },
+        {
+          "key": "w28",
+          "folder": "09-tree/03-callbacks_and_icons",
+          "title": "Tree icons and computed captions",
+          "description": "Expand Documents in both trees and toggle the rich caption. Both read the same Bag; the named callbacks choose different labels and icons.",
+          "explanation": "Use named Logic for computed labels, explicit sanitized HTML and custom icons."
+        },
+        {
+          "key": "w29",
+          "folder": "09-tree/04-internal_drag",
+          "title": "Copy tree nodes with drag and drop",
+          "description": "Drag a document onto Inbox or Projects, then expand that folder. A copy appears there and the original stays put; Locked archive rejects the drop."
         }
-      ]
+      ],
+      "folder": "01-inputs"
     },
     {
       "key": "binding",
-      "title": "Binding",
+      "title": "Data and bindings",
       "examples": [
         {
+          "key": "b12",
+          "title": "Load example data and replay field edits",
+          "folder": "01-paths_and_updates/foo",
+          "description": "Edit the initialized customer, then use Play to fill the separate draft. Clear interrupts playback; editing the draft leaves the original customer untouched.",
+          "explanation": "foo_data.tytx supplies the customer before rendering; default initializes only the accent. Edit the name to see the binding update."
+        },
+        {
           "key": "b01",
-          "title": "Pointers",
-          "folder": "01_pointers",
-          "description": "Read Data with ^, =, relative, symbolic and ?attr pointers.",
-          "explanation": "Each ^ pointer subscribes its attribute or text to a Data path; = reads once. A datapath makes .paths relative, #node_id reaches the context of a named node, and ?attr reads an attribute of a Data node."
+          "title": "Bind values with absolute and relative paths",
+          "folder": "01-paths_and_updates/01-pointers",
+          "description": "Compare the same value through an absolute path, a relative path and an anchor. Edit a field and watch only the views bound to that path change.",
+          "explanation": "Each ^ pointer subscribes its attribute or text to a Data path; = reads once. A datapath makes .paths relative, #nodeId reaches the context of a named node, and ?attr reads an attribute of a Data node."
         },
         {
           "key": "b02",
-          "title": "Variable datapath",
-          "folder": "02_variable_datapath",
-          "description": "One card follows the record chosen in a select.",
+          "title": "Change the current record with datapath",
+          "folder": "01-paths_and_updates/02-variable_datapath",
+          "description": "Choose Ada, edit her name, then select Alan and come back. One card follows the selected datapath; each record keeps its own values.",
           "explanation": "The card's datapath is itself a pointer. Choosing another record changes the context of every relative pointer below it; the DOM follows without rebuilding the page."
         },
         {
           "key": "b03",
-          "title": "Setters and defaults",
-          "folder": "03_setters_and_defaults",
-          "description": "dataSetter values and control defaults, all in place at the first render.",
+          "title": "Initialize values: defaults and dataSetter",
+          "folder": "01-paths_and_updates/03-setters_and_defaults",
+          "description": "Compare the initialized values below. Defaults fill missing values; dataSetter writes explicitly and is then removed from Source. This lesson demonstrates that distinction deliberately.",
           "explanation": "dataSetter nodes sit after the controls and in a later branch, yet the first DOM already shows their values. Controls fill an empty path with default or default_value; attr_ writes an attribute on the Data node."
         },
         {
           "key": "b04",
-          "title": "Native editing",
-          "folder": "04_native_editing",
-          "description": "Text, number, range, select, date and color fields bound both ways.",
+          "title": "Edit shared Data with native fields",
+          "folder": "02-editing/01-native_editing",
+          "description": "Edit a field, then leave it. Compare the accepted Data below; enable live editing to see updates while typing.",
           "explanation": "Each control's value is a ^ pointer. Editing writes the Data at change, or at every input when live is true; here live itself follows a checkbox."
         },
         {
           "key": "b05",
-          "title": "Checkbox and radio",
-          "folder": "05_checkbox_radio",
-          "description": "Booleans in the Data, one per checkbox and radio button.",
+          "title": "Bind boolean and single-choice values",
+          "folder": "02-editing/02-checkbox_radio",
+          "description": "Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.",
           "explanation": "A checkbox writes true or false. Radio buttons of one group each own a boolean: choosing one writes true there and false in the others."
         },
         {
           "key": "b06",
-          "title": "Style and visibility",
-          "folder": "06_style_and_visibility",
-          "description": "visible, class, style and reactive style shortcuts.",
+          "title": "Control styles and visibility from Data",
+          "folder": "03-presentation/01-style_and_visibility",
+          "description": "Change the color and dimensions, then toggle visibility. Notice that an invisible box still reserves its place in the layout.",
           "explanation": "Attributes such as color, background_color, font_size and rounded compose one style attribute and follow the Data. visible hides an element and keeps its space; hidden removes it from the layout."
         },
         {
           "key": "b07",
-          "title": "Bound SVG",
-          "folder": "07_bound_svg",
-          "description": "SVG geometry and paint follow range and color fields.",
+          "title": "Update SVG from Data",
+          "folder": "03-presentation/02-bound_svg",
+          "description": "Move the controls and watch the drawing change. SVG attributes use the same Data bindings as text and form fields.",
           "explanation": "SVG presentation attributes take ^ pointers like HTML attributes. The circle's radius, the bar's width and both fills are Data values edited by native controls."
         },
         {
           "key": "b08",
-          "title": "Freeze",
-          "folder": "08_freeze",
-          "description": "Freeze structural rendering while Data keeps updating; increment a counter, remove Source items, then thaw.",
+          "title": "Defer structural updates with freeze",
+          "folder": "01-paths_and_updates/04-freeze",
+          "description": "Freeze the branch, increment the count and remove an item. The count updates immediately; item removal appears only after Thaw.",
           "explanation": "A frozen branch keeps reacting to Data but defers structural DOM work. Removing a child under freeze takes effect at the thaw, which builds the current Source once."
         },
         {
           "key": "b09",
-          "title": "Forms with binding",
-          "folder": "09_forms",
-          "description": "The native form of example 06, bound to a record.",
-          "explanation": "The same fieldsets as HTML / SVG example 06, with every value bound to one Data record. The summary beside the form shows the record while you type."
+          "title": "Build a form with shared Data",
+          "folder": "02-editing/03-forms",
+          "description": "Change the registration fields and compare the Data record alongside them. The password and unbound controls are deliberately absent from that summary.",
+          "explanation": "The same fieldsets as HTML / SVG example 06, with most fields bound to one Data record. The summary beside the form shows the record while you type; it leaves out the password and the daily radio, and the file input, the read-only code and the disabled field are not bound."
         },
         {
           "key": "b10",
-          "title": "SVG shapes with binding",
-          "folder": "10_svg_shapes",
-          "description": "The six shapes of example 08, resized and recolored by controls.",
+          "title": "Bind SVG geometry and color",
+          "folder": "03-presentation/03-svg_shapes",
+          "description": "Move the geometry controls and change the color. The same six SVG shapes update through bound attributes without rebuilding the scene.",
           "explanation": "The shapes of HTML / SVG example 08 read their size and color from the Data; sliders and a color field change them."
         },
         {
           "key": "b11",
-          "title": "Complete page with binding",
-          "folder": "11_complete_page",
-          "description": "The event page of example 12, with a bound heading, filter and map.",
-          "explanation": "The event page of HTML / SVG example 12 reads its heading from settings, filters the schedule by speaker through visible, and highlights the chosen map stop."
+          "title": "A complete page driven by Data",
+          "folder": "04-complete_page",
+          "description": "Edit the page's bound controls and follow the repeated values in the complete page. Compare this live version with the earlier static page.",
+          "explanation": "The event page of HTML / SVG example 12 reads its heading from the event Data record, filters the schedule and the speaker cards by speaker through visible, highlights the chosen map stop and opens the FAQ answers from one flag."
         }
-      ]
+      ],
+      "folder": "02-binding"
     },
     {
       "key": "controllers",
-      "title": "Controllers",
+      "title": "Logic, actions and events",
       "examples": [
         {
           "key": "c01",
-          "title": "Formula",
-          "folder": "01_formula",
-          "description": "dataFormula computes a result path from its parameters.",
+          "title": "Calculate a value with dataFormula",
+          "folder": "01-logic/01-formula",
+          "description": "Change price or quantity and follow the calculated results. Changing VAT alone does not recalculate Gross: its = pointer is read on the next total change.",
           "explanation": "The formula runs when a ^ parameter changes and writes its result; a = parameter is read without triggering. _if and _else choose between two results."
         },
         {
           "key": "c02",
-          "title": "Controller",
-          "folder": "02_controller",
-          "description": "dataController reacts to Data, to a fired path and to time.",
+          "title": "React to Data changes with dataController",
+          "folder": "01-logic/02-controller",
+          "description": "Change the name, send a request and try the delayed input. Each section shows a different reason for a controller to run; the counters make those triggers visible.",
           "explanation": "A controller runs code for its effects: here it validates a value, counts fired requests, debounces with _delay and ticks a clock with _timing."
         },
         {
           "key": "c03",
-          "title": "Named logic",
-          "folder": "03_named_logic",
-          "description": "Formula and controller bodies in class Logic of 03_named_logic.js.",
-          "explanation": "The page module exports class Logic beside Page. func names one of its methods; the method receives the resolved parameters, and a controller also its node. Named logic runs under a strict CSP."
+          "title": "Organize behavior in a Logic class",
+          "folder": "01-logic/03-named_logic",
+          "description": "Change the price and compare the discounted result and change counter. The page declares the fields; two named Logic methods provide the behavior.",
+          "explanation": "The page module exports Logic beside Page. func names a method; the framework supplies its resolved parameters. Compare the calculation with the change counter."
         },
         {
           "key": "c04",
-          "title": "Inline expressions",
-          "folder": "04_inline_expressions",
-          "description": "== expressions in text and attributes, and inline scripts.",
+          "title": "Use short inline expressions",
+          "folder": "01-logic/04-inline_expressions",
+          "description": "Edit the name and score. Short expressions update the greeting and pass/fail message directly from the other attributes of their node.",
           "explanation": "An attribute starting with == is an expression over the other attributes of its node. It follows the pointers it reads, like a formula without a result path."
         },
         {
           "key": "c05",
-          "title": "Node methods",
-          "folder": "05_node_methods",
-          "description": "SET, GET, PUT, FIRE and FIRE_AFTER from button actions.",
+          "title": "Call methods on a Source node",
+          "folder": "01-logic/05-node_methods",
+          "description": "Try SET, PUT and FIRE and compare the value with the notification counter. GET reads the stored value, including a silent PUT.",
           "explanation": "Each button action calls a method of its Source node. SET notifies observers, PUT writes silently, FIRE fires also with an equal value, FIRE_AFTER fires after a delay."
         },
         {
           "key": "c06",
-          "title": "Button controller",
-          "folder": "06_button_controller",
-          "description": "A button with a nested controller, click counter, modifiers and fire.",
+          "title": "Run a controller from a button",
+          "folder": "02-actions/01-button_controller",
+          "description": "Press the first button normally, then with Shift or Alt. Its nested controller receives the click count and modifiers; the other buttons fire Data paths.",
           "explanation": "A dataController nested in a button runs once per click, with button_counter and the modifier keys. fire and fire_<name> write a Data path instead of running code."
         },
         {
           "key": "c07",
-          "title": "Events",
-          "folder": "07_events",
-          "description": "connect_on<event> attributes for click, input, key and pointer events.",
+          "title": "Handle browser and component events",
+          "folder": "03-events/01-events",
+          "description": "Click a chip, type in the field and move over the pointer area. The visible readouts show which event reached each declaring Source node.",
           "explanation": "connect_onclick, connect_oninput, connect_onkeydown and connect_onmouseover add one listener each. The handler runs with this set to the declaring node."
         },
         {
           "key": "c08",
-          "title": "End-to-end story",
-          "folder": "08_end_to_end",
-          "description": "First the local 0.2.0 story; return after the endpoint lessons for a separate 0.2.14 quote, error and recovery step.",
+          "title": "Combine inputs, calculations and server calls",
+          "folder": "04-complete_examples/01-end_to_end",
+          "description": "Change quantity and options, then request a quote. The local total follows edits immediately; the last server quote stays visible until the next successful request.",
           "explanation": "First compare setters, live editing, radio flags, formulas, SVG and freeze. After c09/c11, revisit the same inputs with a click-only dataRpc: the server quote is a snapshot, errors retain it and a successful retry clears the error."
         },
         {
           "key": "c15",
-          "title": "Lifecycle",
-          "folder": "15_lifecycle",
-          "description": "Core 0.2.0: observe hook order, freeze, removal and Source/DOM lookup."
+          "title": "Start and dispose page behavior",
+          "folder": "03-events/02-lifecycle",
+          "description": "Compare the startup trace, freeze the branch and remove it. Observe which updates wait for thaw and which cleanup runs on removal."
         },
         {
           "key": "c16",
-          "title": "Attribute projection",
-          "folder": "16_attribute_projection",
-          "description": "Core 0.2.0 templates/masks, then the 0.2.3 sandboxed Data preview."
+          "title": "Project attributes and preview HTML",
+          "folder": "03-events/03-attribute_projection",
+          "description": "Edit the bound value and compare its text, attributes and HTML preview. The preview is sandboxed and does not execute scripts."
         },
         {
+          "key": "c18",
+          "title": "Publish and subscribe to messages",
+          "folder": "03-events/04-publish_subscribe",
+          "description": "Run the direct controller, then Publish. Both reach the same summary; the independent receivers show where each message was delivered."
+        },
+        {
+          "key": "c19",
+          "title": "Exchange messages between frames",
+          "folder": "03-events/05-frame_messages",
+          "description": "Send a message to the child, then reply from it. Compare the two logs to see which frame received each message."
+        },
+        {
+          "key": "c20",
+          "title": "Confirm actions and target references",
+          "folder": "02-actions/02-actions_ask_references",
+          "description": "Run an action directly, then with confirmation. Cancel a question to leave the result unchanged; the reference examples pass an existing Source or DOM object."
+        },
+        {
+          "key": "c21",
+          "title": "Run immediate and delayed button actions",
+          "folder": "02-actions/03-plain_and_delayed_buttons",
+          "description": "Click a delayed button several times quickly, then wait. Compare its single grouped execution with the immediate action and native form reset."
+        },
+        {
+          "key": "c22",
+          "title": "Transform bound values with pointer expressions",
+          "folder": "01-logic/06-pointer_transforms",
+          "description": "Change the number and compare its CSS width and formatted text. The presentation changes; the stored number keeps its type."
+        },
+        {
+          "key": "c23",
+          "title": "Calculate a room estimate",
+          "folder": "04-complete_examples/02-room_estimate",
+          "description": "Change room, guests and nights. Follow the rate, subtotal, discount, total and deposit; Prepare summary captures a snapshot when clicked.",
+          "explanation": "Follow room rate and extra guests through nightly price, subtotal, long-stay discount, total and deposit. Change one rule and inspect its downstream effects."
+        }
+      ],
+      "folder": "03-controllers"
+    },
+    {
+      "key": "rpc",
+      "title": "RPC and data exchange",
+      "folder": "04-rpc",
+      "examples": [
+        {
           "key": "c17",
-          "title": "Data exchange",
-          "folder": "17_data_exchange",
-          "description": "Core 0.2.5: save/restore typed Data and export JSON/XML; current utility path from 0.2.10."
+          "title": "Export and restore typed Data",
+          "folder": "03-data_exchange",
+          "description": "Edit the sample record, save it as TYTX, change a value and load the saved file. The typed values and nested Bag are restored together."
         },
         {
           "key": "c09",
-          "title": "Endpoint",
-          "folder": "09_endpoint",
-          "description": "dataRpc calls an endpoint of the page and writes the value at its result path.",
+          "title": "Define and call a server endpoint",
+          "folder": "01-server_calls/01-endpoint",
+          "description": "The page sends price and VAT rate once at startup. The server returns the gross amount, which appears below through a Data binding.",
           "explanation": "The page declares with_vat with @endpoint in Python and Page.registerEndpoint in JavaScript. The author attributes of the dataRpc are the arguments; _init=True makes the call when the page starts."
         },
         {
           "key": "c10",
-          "title": "Call on change",
-          "folder": "10_call_on_change",
-          "description": "dataRpc follows a ^ argument, with _delay, _onCalling and _onResult.",
+          "title": "Call the server when a value changes",
+          "folder": "01-server_calls/02-call_on_change",
+          "description": "Change the quantity several times quickly. A request starts after you pause typing; compare the status and returned quote.",
           "explanation": "Each change of the quantity calls the endpoint 500 ms after the last edit. _onCalling and _onResult are inline code that write the status; the latest call wins."
         },
         {
           "key": "c11",
-          "title": "Call on click",
-          "folder": "11_call_on_click",
-          "description": "A dataRpc nested in a button, with _onError for a failing and a protected endpoint.",
+          "title": "Call the server from a button",
+          "folder": "01-server_calls/03-call_on_click",
+          "description": "Reserve the unavailable item, then try the protected action. The error messages distinguish an application error from missing authentication.",
           "explanation": "Each click calls the endpoint. An exception answers application_error; an endpoint with auth answers not_authenticated on a server that knows no identity. _onError receives the error."
         },
         {
           "key": "c12",
-          "title": "Remote",
-          "folder": "12_remote",
-          "description": "remote makes the content of an element a fragment built by the server.",
+          "title": "Load a remote Source fragment",
+          "folder": "02-remote_data/01-remote",
+          "description": "Choose Lamp, Desk or Chair. The server builds the selected detail fragment; the page replaces only that section.",
           "explanation": "The section declares remote('details', record_id='^.record_id'). The page builds the fragment with @source in Python and Page.registerSource in JavaScript; each change of the record requests it again."
         },
         {
           "key": "c13",
-          "title": "Cached remote",
-          "folder": "13_cached_remote",
-          "description": "Revisit remote with a last-result cache; distinguish mounted fragments from observed calls.",
+          "title": "Cache remote fragments",
+          "folder": "02-remote_data/02-cached_remote",
+          "description": "Switch from Lamp to Spotlight, then to Chair. The first two share a category, so the mounted-fragment counter stays unchanged until Chair.",
           "explanation": "The rules fragment depends on the category of the product. _cachedRemote makes no request when the category is the same; _onRemote is inline code that counts the mounted fragments and writes the status."
         },
         {
           "key": "c14",
-          "title": "Data remote",
-          "folder": "14_data_remote",
-          "description": "Revisit endpoint values with lazy Data; compare a bound read, an explicit snapshot and cache expiry.",
+          "title": "Fetch Data with dataRemote",
+          "folder": "02-remote_data/03-data_remote",
+          "description": "Compare the live menu with Read current value. Changing the table updates the bound view; the explicit snapshot stays unchanged until you read again.",
           "explanation": "The menu path holds a resolver of the endpoint load_menu with cacheTime 5. The ^.menu paragraph reads it: the answer arrives with the Data event. A change of the table loads the menu again."
-        },
-        {
-          "key": "c18",
-          "title": "Publish and subscribe",
-          "folder": "18_publish_subscribe",
-          "description": "Core 0.2.18: revisit button actions with page topics, self receivers, references and native ask."
-        },
-        {
-          "key": "c19",
-          "title": "Parent and child messages",
-          "folder": "19_frame_messages",
-          "description": "Core 0.2.18: local-first publish and direct parent/child postMessage exchange."
-        },
-        {
-          "key": "c20",
-          "title": "Actions, confirmations and references",
-          "folder": "20_actions_ask_references",
-          "description": "Core 0.2.18: action, conditional ask and explicit Source/DOM references."
-        },
-        {
-          "key": "c21",
-          "title": "Plain and delayed buttons",
-          "folder": "21_plain_and_delayed_buttons",
-          "description": "Core 0.2.19: native html_button and grouped clicks with _delay."
-        },
-        {
-          "key": "c22",
-          "title": "Pointer templates and expressions",
-          "folder": "22_pointer_transforms",
-          "description": "Core 0.2.20: revisit CSS lengths, boolean state and formatted text with attribute pointer transforms."
-        }
-      ]
-    },
-    {
-      "key": "components",
-      "title": "Input components",
-      "examples": [
-        {
-          "key": "w01",
-          "title": "Textbox and labelbox",
-          "folder": "01_textbox",
-          "description": "Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field."
-        },
-        {
-          "key": "w02",
-          "title": "Checkbox and labelbox",
-          "folder": "02_checkbox",
-          "description": "Two checkboxes share one boolean preference. Click either caption, then disable both using the State checkbox."
-        },
-        {
-          "key": "w03",
-          "title": "RadioButtonText and labelbox",
-          "folder": "03_radio_button_text",
-          "description": "Choose one delivery option in each group. Change the column count and label position, and try the arrow keys inside a group."
-        },
-        {
-          "key": "w04",
-          "title": "Multiline text and labelbox",
-          "folder": "04_text_box_area",
-          "description": "Two multiline fields share one note. Switch live editing and move the label while keeping the text and selection."
-        },
-        {
-          "key": "w05",
-          "title": "Password and labelbox",
-          "folder": "05_passwordbox",
-          "description": "Two password fields share a sample value. The browser masks the characters; changing either field updates the other."
-        },
-        {
-          "key": "w06",
-          "title": "Single radio buttons",
-          "folder": "06_radio_button",
-          "description": "Each radio binds its own boolean. A shared group makes the choices exclusive; a separate group stays independent."
-        },
-        {
-          "key": "w07",
-          "title": "Color and labelbox",
-          "folder": "07_colorpicker",
-          "description": "Choose a color in either picker. Both controls and the swatch follow the same Data value."
-        },
-        {
-          "key": "w08",
-          "title": "Horizontal slider",
-          "folder": "08_horizontal_slider",
-          "description": "Two horizontal sliders share a numeric level. Drag or use the arrow keys; switch live editing to compare immediate and committed updates."
-        },
-        {
-          "key": "w09",
-          "title": "Vertical slider",
-          "folder": "09_vertical_slider",
-          "description": "Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top."
-        },
-        {
-          "key": "w10",
-          "title": "Number editing",
-          "folder": "10_number_textbox",
-          "description": "Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data."
-        },
-        {
-          "key": "w11",
-          "title": "Date editing",
-          "folder": "11_date_textbox",
-          "description": "Enter a calendar date or a word such as oggi or domani. Two fields share one civil date."
-        },
-        {
-          "key": "w12",
-          "title": "Time editing",
-          "folder": "12_time_textbox",
-          "description": "Edit a civil time with hours, minutes and optional seconds. The two fields keep the same typed value."
-        },
-        {
-          "key": "w13",
-          "title": "Filtering select",
-          "folder": "13_filtering_select",
-          "description": "Search a caption, store its code. Two fields share the same choice and the same list."
-        },
-        {
-          "key": "w14",
-          "title": "Callback select",
-          "folder": "14_callback_select",
-          "description": "Search 100 random samples generated once in this page. The callback reads a Data Bag, without a server request."
-        },
-        {
-          "key": "w15",
-          "title": "Combo box",
-          "folder": "15_combo_box",
-          "description": "Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write."
-        },
-        {
-          "key": "w16",
-          "title": "Checkbox group",
-          "folder": "16_checkbox_text",
-          "description": "Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null."
-        },
-        {
-          "key": "w17",
-          "title": "Date calendar",
-          "folder": "17_date_calendar",
-          "description": "Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value."
-        },
-        {
-          "key": "w18",
-          "title": "Required values and length",
-          "folder": "18_validation",
-          "description": "Invalid drafts remain visible with a message while Data keeps the last accepted value."
-        },
-        {
-          "key": "w19",
-          "folder": "19_formlet",
-          "title": "Formlet and shared labels",
-          "description": "Arrange fields in columns and share label settings. Changing the layout preserves each field and its draft."
-        },
-        {
-          "key": "w20",
-          "folder": "20_group_box",
-          "title": "GroupBox and typed copy",
-          "description": "Group customer data under a heading. Copy TYTX with its types or choose plain JSON from the copy menu."
-        },
-        {
-          "key": "w21",
-          "folder": "21_switch",
-          "title": "Checkbox as a switch",
-          "description": "A switch and a checkbox share one boolean. Compare their appearance, captions and read-only state."
-        },
-        {
-          "key": "w22",
-          "folder": "22_button",
-          "title": "Button commands",
-          "description": "Compare the Gramlot command button with plain HTML. Try confirmation and a delayed command."
-        },
-        {
-          "key": "w23",
-          "folder": "23_toggle_button",
-          "title": "Toggle button with LED",
-          "description": "A command button and a checkbox share a boolean. The LED and aria-pressed follow Data."
-        },
-        {
-          "key": "w24",
-          "folder": "24_dropdown_button",
-          "title": "Dropdown commands and persistence",
-          "description": "The main surface executes; the arrow opens the menu. Shift-select a command to run it and make it the default."
-        },
-        {
-          "key": "w25",
-          "folder": "25_validation_engine",
-          "title": "Validation rules and callbacks",
-          "description": "Transformations, conditions, warnings, local callbacks and remote validation."
         }
       ]
     },
     {
       "key": "layout",
-      "title": "Containers",
+      "title": "Containers and layout",
       "examples": [
         {
           "key": "l01",
-          "folder": "01_border",
+          "folder": "01-border/01-border",
           "title": "Border regions and splitters",
-          "description": "A customer workspace divided into a header, filters, an editor and a live summary. The center uses the space left by the other regions."
+          "description": "Resize Filters and Details while editing the customer. The center takes the remaining space and the summary follows accepted Data."
         },
         {
           "key": "l02",
-          "folder": "02_nested",
+          "folder": "01-border/02-nested",
           "title": "Nested borders and layout designs",
-          "description": "An outer workspace contains another independent borderContainer. This separates application navigation from the editor and its output."
+          "description": "Resize an outer region, then a region inside the editor. Each borderContainer owns its layout independently."
         },
         {
           "key": "l03",
-          "folder": "03_rounded",
+          "folder": "01-border/03-rounded",
           "title": "Rounded borders and popups",
-          "description": "Two nested containers share a reactive corner radius, while date and choice popups open inside the editor."
+          "description": "Change the corner radius, then open a date or choice popup. Compare the nested container edges and the controls inside them."
         },
         {
           "key": "l04",
-          "folder": "04_drawer_handles",
+          "folder": "01-border/04-drawer_handles",
           "title": "Drawers: handles, content and retained Data",
-          "description": "Four drawers surround one customer workspace. Each contains useful controls or shared output, so closing a pane has a visible purpose."
+          "description": "Close and reopen the four drawers. The workspace gains space while the fields and their Data remain available when you return."
         },
         {
           "key": "l05",
-          "folder": "05_nested_lab",
+          "folder": "01-border/05-nested_lab",
           "title": "Nested regions playground",
-          "description": "A small application workspace built from five nested containers. Size controls let you inspect several levels of layout while real widgets keep working."
+          "description": "Move one size control, then drag its corresponding splitter. Both update the same dimension; nested levels keep their own sizes."
         },
         {
           "key": "l06",
-          "folder": "06_border_events",
+          "folder": "01-border/06-border_events",
           "title": "Border events and controllers",
-          "description": "The example makes container notifications visible as counters and payloads, using ordinary dataController subscriptions."
+          "description": "Open or close a drawer and resize a region. Compare the event counters and payloads to see the notifications received by controllers."
         },
         {
           "key": "l07",
-          "folder": "07_tabs",
-          "title": "Tabs, selection and closing",
-          "description": "Compare fourteen working tab presentations: styles on four sides, horizontal and vertical alignment, then selection, icons, badges and closing."
+          "folder": "02-tabs",
+          "title": "Tabs: select, close and retain content",
+          "description": "Write an invalid one-character customer name, switch tabs and return. The draft remains. Close Notes and compare the retained Data; expand the reference to compare styles."
         },
         {
           "key": "l08",
-          "folder": "08_stack",
-          "title": "Demo carousel and live preview",
-          "description": "The left drawer browses every other demo as a miniature; the center lets you try the chosen demo at its normal size."
+          "folder": "03-stack",
+          "title": "Switch pages in a single stack",
+          "description": "Use the slider above the stack to visit a demo, edit it and return later. There is one central stack; a visited page keeps its state."
+        },
+        {
+          "key": "l09",
+          "folder": "03-mela",
+          "title": "Compare desktop and touch themes",
+          "description": "Compare the theme previews, open a menu and edit a field. Open dialog and floating windows to compare modality while keeping the same controls."
+        },
+        {
+          "key": "dialog_window",
+          "folder": "04-dialog",
+          "title": "Dialog: modal editing",
+          "description": "Open the dialog and try the background counter: it is blocked until you close the dialog. Edit the title, close and reopen: the draft is retained."
+        },
+        {
+          "key": "floating_window",
+          "folder": "05-floating",
+          "title": "Floating: keep the page usable",
+          "description": "Open the floating window, then use the background counter. Both remain usable. Edit the title and watch the page update; close and reopen to keep the same draft."
+        },
+        {
+          "key": "w20",
+          "folder": "06-group_box",
+          "title": "groupBox: group fields and copy Data",
+          "description": "Edit the customer, then use the group's copy command. Only that datapath is copied; the note in the other group is excluded. TYTX preserves types."
+        },
+        {
+          "key": "tray-workspace",
+          "folder": "07-tray",
+          "title": "Tray workspace",
+          "description": "Arrange live cards, select and move groups, change layers, snap to a grid, and restore a saved Data Bag layout."
+        },
+        {
+          "key": "gallery-tray",
+          "folder": "08-gallery_tray",
+          "title": "Gallery tray",
+          "description": "Start with an empty tray. Add live examples at reduced zoom, arrange their cards, and keep each page’s edits while moving or resizing."
+        }
+      ],
+      "folder": "05-containers"
+    },
+    {
+      "key": "menus",
+      "title": "Menus and toolbars",
+      "folder": "05-menus",
+      "examples": [
+        {
+          "key": "menu-02",
+          "title": "One hierarchical menu, four presentations",
+          "folder": "01_presentations",
+          "description": "One hierarchy with icons, separators, checked and disabled, reused in four presentations plus exact opening modifiers.",
+          "explanation": "Read the instructions above each example. The shared controls update every presentation."
+        },
+        {
+          "key": "menu-03",
+          "title": "Toolbar: groups, priority and overflow",
+          "folder": "02_toolbar",
+          "description": "Compact toolbar, retained search, indivisible groups, priority overflow and scrolling.",
+          "explanation": "Use the width slider. Instructions above each example explain what moves and what stays."
+        },
+        {
+          "key": "menu-07",
+          "title": "Vertical icon toolbar",
+          "folder": "03_vertical_toolbar",
+          "description": "Large icons, tooltip, selected state, separators and priority overflow in a narrow rail.",
+          "explanation": "Use the height slider, select an icon, and open Tools or overflow. Chevrons follow toolbar orientation."
+        },
+        {
+          "key": "menu-08",
+          "title": "Classic menu bar and hierarchy",
+          "folder": "04_menu_bar",
+          "description": "Named top-level menus, nested side-opening submenus, checked and disabled entries.",
+          "explanation": "Try File → Export → Image and View → Show details."
+        },
+        {
+          "key": "menu-04",
+          "title": "Reactive menu states",
+          "folder": "05_live_states",
+          "description": "Shared checked, disabled and hidden bindings in popup and toolbar.",
+          "explanation": "Shared checked, disabled and hidden bindings in popup and toolbar."
+        },
+        {
+          "key": "menu-05",
+          "title": "FramePane regions and command recipients",
+          "folder": "06_frame_pane",
+          "description": "Five regions, multiple bars, five-field messages and nested frame isolation.",
+          "explanation": "Five regions, multiple bars, five-field messages and nested frame isolation."
+        },
+        {
+          "key": "menu-06",
+          "title": "Resolver menus and nested Bags",
+          "folder": "07_resolver",
+          "description": "Direct resolver, nested Bags, lazy submenus, live states, empty results and retry.",
+          "explanation": "Direct resolver, nested Bags, lazy submenus, live states, empty results and retry."
+        },
+        {
+          "key": "menu-01",
+          "title": "Complete document workspace",
+          "folder": "08_workspace",
+          "description": "Popup and toolbar together, central content, bindings, remote export, confirmation and delay.",
+          "explanation": "Popup and toolbar together, central content, bindings, remote export, confirmation and delay."
+        },
+        {
+          "key": "menu-09",
+          "title": "FramePane, dialog and floating windows",
+          "folder": "09_windows",
+          "description": "Modal and nonmodal windows around a retained frame, with movement, resize and collapse.",
+          "explanation": "Compare defaults, collapsed modality, close guards and background interaction."
+        },
+        {
+          "key": "menu-10",
+          "title": "Complete dialog editor",
+          "folder": "10_dialog_editor",
+          "description": "A modal framePane with a top toolbar, editable draft and bottom Save/Cancel actions.",
+          "explanation": "Follow the steps above the editor. Compare the saved document after Save and Cancel; try reset, details, validation and window controls."
+        },
+        {
+          "key": "menu-11",
+          "title": "Joanna appearance review",
+          "folder": "11_joanna",
+          "description": "32px controls / 14px text — forms, tabs, menus, table and windows.",
+          "explanation": "Compare the three profiles on the same specimen; try focus, disabled states, menus and window controls."
+        },
+        {
+          "key": "menu-12",
+          "title": "Compact appearance review",
+          "folder": "12_compact",
+          "description": "28px controls / 13px text — forms, tabs, menus, table and windows.",
+          "explanation": "Compare the three profiles on the same specimen; try focus, disabled states, menus and window controls."
+        },
+        {
+          "key": "menu-13",
+          "title": "Mimi appearance review",
+          "folder": "13_mimi",
+          "description": "24px controls / 12.5px text — forms, tabs, menus, table and windows.",
+          "explanation": "Compare the three profiles on the same specimen; try focus, disabled states, menus and window controls."
+        },
+        {
+          "key": "menu-14",
+          "title": "Complete floating editor",
+          "folder": "14_floating_editor",
+          "description": "The same editor in a nonmodal floating window, with top toolbar, fields and bottom Save/Cancel.",
+          "explanation": "Compare with Complete dialog editor using the same gallery theme and colors. Move or collapse the window and edit Background note to verify the page remains usable."
+        }
+      ]
+    },
+    {
+      "key": "editors",
+      "title": "Editors",
+      "folder": "06-editors",
+      "examples": [
+        {
+          "key": "code_mirror",
+          "title": "Code editor",
+          "folder": "01-base",
+          "description": "Edit the draft and save a snapshot. Keep typing: the live draft changes while the saved version stays unchanged until you save again.",
+          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
+        },
+        {
+          "key": "code_mirror_options",
+          "title": "Editor options",
+          "folder": "02-options",
+          "description": "Open the editor's Options drawer and change wrapping or font size. The draft remains; changing Language and sample intentionally replaces it.",
+          "explanation": "Use the base editor or the Source composition with a settings drawer. Save copies a draft snapshot in Data."
+        },
+        {
+          "key": "html_editor",
+          "title": "HTML editor",
+          "folder": "03-html",
+          "description": "Edit the code, then switch to Preview and Rich text. The three views share one draft; Preview displays the HTML without running its scripts."
+        },
+        {
+          "key": "markdown_editor",
+          "title": "Markdown editor",
+          "folder": "04-markdown",
+          "description": "Edit a heading and compare Code, Preview and Rich text. The views share the same Markdown; use Code for complex blocks."
+        },
+        {
+          "key": "typst_editor",
+          "title": "Typst and PDF",
+          "folder": "05-typst",
+          "description": "Edit the sample document and inspect its preview, then generate the PDF. Compilation runs locally; this example uses bundled fonts and no external includes."
+        }
+      ]
+    },
+    {
+      "key": "tools",
+      "title": "Tools",
+      "folder": "07-tools",
+      "examples": [
+        {
+          "key": "e13",
+          "title": "Live Source playground",
+          "folder": "01-live_source",
+          "description": "Create an item, change its content and remove it. Compare the Source tree and rendered page; removing the animated section also disposes its timer.",
+          "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in every gallery command and in the static gallery opened from disk."
+        }
+      ]
+    },
+    {
+      "key": "composition",
+      "title": "Composition and reuse",
+      "folder": "08-composition",
+      "examples": [
+        {
+          "key": "color_maker",
+          "title": "Color Maker: one block, three contexts",
+          "folder": "01-color_maker",
+          "description": "Open the palette, select Background, Text or Shadow and move a slider. Random changes only the selected block; the three editors use the same method under different datapaths.",
+          "explanation": "Open the floating palette, select Background, Text or Shadow, and move a slider. Random changes only the selected block. The same RGB method is reused under three independent datapaths."
+        },
+        {
+          "key": "sieve",
+          "title": "Sieve of Eratosthenes: animate reactive Data",
+          "folder": "02-sieve",
+          "description": "Press Step to discover 2, then again to cross out 4. Start animates the same operation; Pause preserves progress and Reset restores the grid while keeping the chosen speed.",
+          "explanation": "The grid is built once. Every tick calls the same step method as the Step button; that method updates only the Data Bag. Follow one prime and its multiples, change the interval, and reset while running."
         }
       ]
     }

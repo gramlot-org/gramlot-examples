@@ -139,13 +139,14 @@ export function mountGuidedDemo(renderer, root) {
     renderer.onDispose(root, dispose);
     return {
         update(entries, selected) {
-            const nextFrame = entries.get('l04')?.panel.querySelector('iframe');
+            const entry = [...entries.values()].find(item => item.node.attr.key === 'l04');
+            const nextFrame = entry?.frame;
             if (nextFrame !== frame) {
                 frame?.removeEventListener('load', loaded);
                 frame = nextFrame;
                 frame?.addEventListener('load', loaded);
             }
-            active = selected === 'l04';
+            active = entry !== undefined && selected === entry.url;
             if (!active) player.pause();
             const example = frame?.contentWindow.gramlot;
             player.target = example?.state === 'started' ? example.data : null;

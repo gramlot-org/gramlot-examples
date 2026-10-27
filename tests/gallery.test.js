@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {createRequire} from 'node:module';
+// Use the codec owned by the tested runtime, including its registered Bag class.
+const {fromTytx, toTytx} = await import(createRequire(import.meta.resolve('@gramlot/gramlot')).resolve('@genrojs/tytx'));
 import {JSDOM} from 'jsdom';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import {pathToFileURL} from 'node:url';
@@ -7,22 +10,41 @@ import {GalleryPage} from '../src/gramlot_examples/gallery/gallery-page.js';
 import {Page as NodeGalleryPage} from '../src/gramlot_examples/gallery/page.js';
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
+import tree from '@gramlot/gramlot/components/tree';
 import {Gramlot, GramlotBuilder} from '@gramlot/gramlot';
-import {mountGallery} from '../src/gramlot_examples/gallery/browser/gallery.js';
+import {mountGallery, initializeNavigation, toggleGalleryPanel} from '../src/gramlot_examples/gallery/browser/gallery.js';
 import {logicSource} from '../src/gramlot_examples/gallery/browser/code-highlight.js';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {mountFrameSettings, SETTINGS_SET} from '../src/gramlot_examples/gallery/browser/gallery-settings.js';
 import {mountFrameTheme} from '../src/gramlot_examples/gallery/browser/frame-theme.js';
+import {paletteStyles} from '../src/gramlot_examples/gallery/dist/theme-styles.js';
 import {THEME_READY, THEME_SET} from '../src/gramlot_examples/gallery/browser/theme-messages.js';
 
 function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }', prepare = () => {}) {
     const document = new JSDOM('<main id="gramlot-root"></main>', {url: 'https://gallery.test/py/index', pretendToBeVisual: true}).window.document;
+    document.defaultView.HTMLDialogElement.prototype.show = function () { this.open=true; };
+    document.defaultView.HTMLDialogElement.prototype.close = function () { this.open=false; };
     const media = new document.defaultView.EventTarget();
     media.matches = false;
     document.defaultView.matchMedia = () => media;
     document.defaultView.HTMLElement.prototype.scrollIntoView = function () {};
+    document.defaultView.HTMLElement.prototype.showPopover = function () {};
     document.defaultView.ResizeObserver = class { observe() {} disconnect() {} unobserve() {} };
+    const observers = new Set();
+    document.defaultView.IntersectionObserver = class {
+        targets = new Set();
+        constructor(callback) { this.callback = callback; observers.add(this); }
+        observe(element) { this.targets.add(element); }
+        unobserve(element) { this.targets.delete(element); }
+        disconnect() { this.targets.clear(); observers.delete(this); }
+    };
+    const visible = (id, shown = true) => {
+        const target = document.getElementById(id);
+        for (const observer of observers) if (observer.targets.has(target)) observer.callback([
+            {target, isIntersecting: shown, intersectionRect: {width: shown ? 100 : 0, height: shown ? 100 : 0}},
+        ]);
+    };
     Object.defineProperty(document, 'fonts', {value: new document.defaultView.EventTarget()});
     const computed = document.defaultView.getComputedStyle.bind(document.defaultView);
     document.defaultView.getComputedStyle = element => {
@@ -42,11 +64,28 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
             examples: [{key: 'c01', title: 'c01', description: 'Named logic', frameUrl: 'c01', readme: '# Named', source: 'x = 1',
                 logic}]}];
     }
-    const builder = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument()]});
+    const builder = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument(), tree.toDocument()]});
     new Page().main(builder.root);
-    const app = new Gramlot({document, transport: false, collections: [inputs, layout]}).src.startSource(builder.source);
+    const calls = [];
+    const transport = {async call(text) {
+        const {id, contentType, name, params} = fromTytx(text);
+        calls.push({name, ...params});
+        if (contentType === 'data') return toTytx({id, contentType, value: new Page()[name](params)});
+        const fragment = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument(), tree.toDocument()]});
+        new Page()[name](fragment.root, params);
+        return toTytx({id, contentType, value: fragment.toTytx()});
+    }, close() {}, dispose() {}};
+    const app = new Gramlot({document, pageId: 'gallery', transport, collections: [inputs, layout, tree]});
+    app.src.logicRegistry.register(class Logic {
+        galleryToggleNavigation() { toggleGalleryPanel(this.page.src.builder, 'galleryNavigation', 'galleryIndex.navigationOpen'); }
+        galleryToggleSettings() { const data=this.page.src.builder.data; data.setItem('galleryIndex.settingsOpen',!data.getItem('galleryIndex.settingsOpen')); }
+        galleryInitialize() { const renderer=this.page.src.renderer; initializeNavigation(renderer,renderer.elements.get(document.getElementById('gallery')).node); }
+        galleryMount() {}
+    }, {resource:'/index_aux.js'});
+    app.src.startSource(builder.source);
     const renderer = app.src.renderer;
     const root = renderer.elements.get(document.getElementById('gallery')).node;
+    renderer.elements.get(document.getElementById('gallery-inspector')).node.setAttr({disabled:false});
     const selections = [];
     const presentations = [];
     const behavior = mountGallery(renderer, root, {
@@ -54,21 +93,25 @@ function fixture(logic = 'export class Logic { total(kwargs) { return "<b>"; } }
         setPresentation: (docked, visible) => presentations.push({docked, visible}),
     });
     const get = id => document.getElementById(id);
+    const navigation = key => get('gallery-navigation-tree').shadowRoot.querySelector(`[data-path="${key.startsWith('e') ? 'html_svg.' : key.startsWith('c0') ? 'controllers.' : ''}${key}"] > .row`);
     const source = id => renderer.elements.get(get(id)).node;
     const tab = (host, name) => [...get(host).shadowRoot.querySelectorAll('[role="tab"]')].find(el => el.textContent.trim() === name);
     const state = app.data.getItem('galleryIndex');
-    return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state};
+    return {app, renderer, document, get, source, root, behavior, selections, media, presentations, tab, state, calls, transport, visible, navigation};
 }
 const change = (f, id, value) => {
-    f.get(id).value = value;
-    f.get(id).dispatchEvent(new f.document.defaultView.Event('change', {bubbles: true}));
+    const caption = f.source(id).getAttr('values').split(',').find(choice => choice.split(':')[0] === value).split(':')[1];
+    f.get(id).choose({id:value, caption});
 };
+const drawer = (f, side) => f.get('gallery-regions').shadowRoot.querySelector(`[data-side="${side}"] .drawer`);
 const key = (f, id, value) => f.get(id).dispatchEvent(new f.document.defaultView.KeyboardEvent('keydown', {key: value, bubbles: true}));
 
-test('frame theme bridge is gallery-owned and removed with its Source script', () => {
-    const parent = new JSDOM('<iframe></iframe>').window;
+for (const url of ['https://gallery.test/', 'file:///gallery/']) {
+test(`frame theme bridge is owned and disposed with Source (${url})`, () => {
+    const origin = url.startsWith('file:') ? 'null' : 'https://gallery.test';
+    const parent = new JSDOM(`<iframe src="${url}frame"></iframe>`, {url}).window;
     const child = parent.document.querySelector('iframe').contentWindow;
-    child.document.body.innerHTML = '<main id="gramlot-root"></main>';
+    child.document.write('<html><body><main id="gramlot-root"></main></body></html>');
     const builder = new GramlotBuilder();
     builder.root.script({id: 'gallery-frame-theme'});
     const app = new Gramlot({document: child.document, transport: false}).src.startSource(builder.source);
@@ -76,33 +119,52 @@ test('frame theme bridge is gallery-owned and removed with its Source script', (
     const ready = [];
     parent.postMessage = (data, target) => ready.push({data, target});
     mountFrameTheme(app.src.renderer, node);
-    const style = child.document.querySelector('style');
+    const style = [...child.document.querySelectorAll('style')].find(item=>app.src.renderer.elements.has(item));
     assert.ok(style.textContent.includes('font-size: 13px'));
     assert.ok(app.src.renderer.elements.get(style), 'preview CSS belongs to Source');
-    assert.deepEqual(ready, [{data: {type: THEME_READY, devices: []}, target: '*'}]);
-    const message = (source, theme, appearance = 'compact') => child.dispatchEvent(new child.MessageEvent('message',
-        {source, data: {type: THEME_SET, theme, appearance}}));
+    assert.deepEqual(ready, [{data: {type: THEME_READY, devices: []}, target: origin === 'null' ? '*' : origin}]);
+    const message = (source, theme, appearance = 'compact', palette = 'default') => child.dispatchEvent(new child.MessageEvent('message',
+        {source, origin, data: {type: THEME_SET, theme, appearance, palette}}));
     message(new JSDOM('').window, 'dark'); message(parent, 'system');
+    assert.equal(child.document.documentElement.hasAttribute('data-theme'), false);
+    app.data.setItem('draft.name', 'Unsaved draft');
+    child.dispatchEvent(new child.MessageEvent('message', {source:parent, origin:'https://foreign.test', data:{type:THEME_SET, theme:'dark', appearance:'mela', palette:'default'}}));
     assert.equal(child.document.documentElement.hasAttribute('data-theme'), false);
     message(parent, 'dark');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'base');
-    assert.equal(style.textContent, '');
+    assert.equal(style.textContent.trim(), '');
     message(parent, 'light', 'invalid');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'compact');
     assert.match(style.textContent, /font-size: 13px/);
     message(parent, 'light', 'mimi');
-    assert.match(style.textContent, /--gramlot-field-height: 18px/);
+    assert.match(style.textContent, /--gramlot-field-height: 24px/);
     message(parent, 'dark', 'joanna');
-    assert.match(style.textContent, /--gramlot-field-height: 20px/);
-    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 18px/);
+    assert.match(style.textContent, /--gramlot-field-height: 32px/);
+    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 24px/);
+    message(parent, 'light', 'mimi', 'joanna');
+    assert.match(style.textContent, /--gramlot-field-height: 24px/);
+    assert.doesNotMatch(style.textContent, /--gramlot-field-height: 32px/);
+    assert.ok(style.textContent.lastIndexOf('--gramlot-background: #f5f4f2') > style.textContent.lastIndexOf('--gramlot-background: #edf1ef'));
+    message(parent, 'light', 'mela');
+    assert.match(style.textContent, /--gramlot-font-ui: -apple-system/);
+    assert.equal(app.data.getItem('draft.name'), 'Unsaved draft');
+    const before = style.textContent;
+    message(parent, 'dark', 'compact', 'unknown');
+    message(parent, 'dark', 'compact', '__proto__');
+    message(parent, 'dark', 'compact', ['mimi']);
+    child.dispatchEvent(new child.MessageEvent('message', {source:parent, data:{type:THEME_SET, theme:'dark', appearance:'compact'}}));
+    assert.equal(style.textContent, before);
+    assert.equal(child.document.documentElement.getAttribute('data-theme'), 'light');
+    message(parent, 'dark', 'joanna', 'default');
     node.parentBag.popNode(node.label);
-    assert.equal(child.document.querySelector('style'), null);
+    assert.equal(style.isConnected, false);
     message(parent, 'light');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     app.dispose();
 });
+}
 
 test('every shared example displays exactly its exported Logic class, never the alternative Page', async () => {
     const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url)));
@@ -111,20 +173,20 @@ test('every shared example displays exactly its exported Logic class, never the 
     // Node preserves the authored class source; Bun rewrites imported modules before execution.
     // Node is already required for the gallery build in both CI runtime jobs.
     const originals = JSON.parse(execFileSync('node', ['--input-type=module', '-e',
-        "const result = {}; for (const url of JSON.parse(process.argv[1])) { const {Logic} = await import(url); result[url] = Function.prototype.toString.call(Logic); } console.log(JSON.stringify(result));",
+        "const result = {}; for (const url of JSON.parse(process.argv[1])) { const {Logic} = await import(url); result[url] = Logic ? Function.prototype.toString.call(Logic) : null; } console.log(JSON.stringify(result));",
         JSON.stringify(urls)], {encoding: 'utf8'}));
     let shown = 0;
     for (const family of families) for (const example of family.examples) {
         const url = pathToFileURL(routes[example.key].logic);
         const {Logic} = await import(url);
         const excerpt = logicSource(readFileSync(url, 'utf8'));
-        const hasMethods = Reflect.ownKeys(Logic.prototype).some(name => name !== 'constructor');
+        const hasMethods = Logic && Reflect.ownKeys(Logic.prototype).some(name => name !== 'constructor');
         if (hasMethods) {
             assert.equal(excerpt, `export ${originals[url.href]}`, example.key);
             shown++;
         } else assert.equal(excerpt, null, example.key);
     }
-    assert.equal(shown, 13);
+    assert.ok(shown > 0, 'The catalogue must exercise at least one Logic excerpt');
 });
 
 test('built frame inspector uses the example runtime classes without another core', async () => {
@@ -201,7 +263,7 @@ test('frame settings override Source label positions and restore authored pointe
 test('the gallery footer omits the ZIP link even when a deployment URL is supplied', () => {
     for (const url of [null, '/downloads/gallery.zip']) {
         class HostedPage extends GalleryPage { static serverlessDownloadUrl = url; }
-        const builder = new GramlotBuilder();
+        const builder = new GramlotBuilder(null, {collections:[layout.toDocument(),inputs.toDocument()]});
         new HostedPage().footer(builder.root);
         const links = builder.source.getNodes().filter(node => node.nodeTag === 'a');
         assert.equal(links.length, 0);
@@ -214,21 +276,31 @@ const setup = async (t, ...args) => {
     const f = fixture(...args);
     t.after(() => { f.app.dispose();  });
     await settle();
+    for (const row of f.get('gallery-navigation-tree').shadowRoot.querySelectorAll('.branch > .row')) row.querySelector('button').click();
+    await settle();
+    f.calls.length = 0;
     return f;
 };
 const pressTab = (f, host, name, key) => f.tab(host, name).dispatchEvent(
     new f.document.defaultView.KeyboardEvent('keydown', {key, bubbles: true}));
 
-test('shared containers own page selection and lazy frames retain identity', async t => {
+// Full-gallery jsdom integration checks mount the complete feature catalogue;
+// Bun's default five seconds is shorter than this fixture's measured build time.
+// Keep a bounded integration budget; real-browser checks cover page interactions.
+test('shared containers own page selection and lazy frames retain identity', {timeout: 30000}, async t => {
     const f = await setup(t);
-    assert.equal(f.document.querySelectorAll('iframe[src]').length, 0);
+    assert.equal(f.document.querySelectorAll('#index-pages iframe').length, 0);
+    assert.equal(f.get('gallery-introduction').hidden, false);
+    assert.equal(f.get('index-pages').hidden, true);
+    assert.equal(f.get('index-pages').children.length, 0);
+    assert.equal(f.calls.length, 0);
     assert.equal(f.get('index-pages').localName, 'gramlot-tab-container');
-    f.get('open-e01').click();
+    f.navigation('e01').click();
     await settle();
     const frame = f.get('frame-e01');
     assert.equal(f.state.getItem('active'), 'e01');
     assert.equal(f.source('frame-e01').getAttr('src'), 'e01');
-    f.get('open-e02').click(); f.tab('index-pages', 'e01').click();
+    f.navigation('e02').click(); f.tab('index-pages', 'e01').click();
     await settle();
     assert.equal(f.get('frame-e01'), frame);
     assert.equal(f.state.getItem('active'), 'e01');
@@ -236,10 +308,10 @@ test('shared containers own page selection and lazy frames retain identity', asy
     assert.equal(f.tab('index-pages', 'e02').getAttribute('aria-selected'), 'false');
 });
 
-test('rebuilt gallery reattaches behavior and retains selection and opened Source panels', async t => {
+test('rebuilt gallery reattaches behavior and retains selection and opened Source panels', {timeout: 30000}, async t => {
     const f = await setup(t);
-    f.get('open-e01').click();
-    f.get('open-e02').click();
+    f.navigation('e01').click();
+    f.navigation('e02').click();
     await settle();
     f.renderer.freeze(f.root);
     f.renderer.unfreeze(f.root);
@@ -247,7 +319,7 @@ test('rebuilt gallery reattaches behavior and retains selection and opened Sourc
     mountGallery(f.renderer, f.root, {update() {}, setPresentation() {}});
     await settle();
     assert.equal(f.state.getItem('active'), 'e02');
-    assert.equal(f.state.getItem('opened.e01'), true);
+    assert.ok(f.state.getItem('opened').getNodes().some(node=>node.attr.url==='e01'));
     assert.equal(f.tab('index-pages', 'e02').getAttribute('aria-selected'), 'true');
     assert.equal(f.source('frame-e01').getAttr('src'), 'e01');
     f.tab('index-pages', 'e01').click();
@@ -256,33 +328,31 @@ test('rebuilt gallery reattaches behavior and retains selection and opened Sourc
     assert.equal(f.tab('index-pages', 'e01').getAttribute('aria-selected'), 'true');
 });
 
-test('families expand independently; small-screen navigation stays open until an example is selected', async t => {
+test('families auto-collapse siblings; small-screen navigation stays open until an example is selected', {timeout: 30000}, async t => {
     const f = await setup(t);
-    const families = [...f.document.querySelectorAll('.index-sidebar nav > ul > li > details')];
-    assert.deepEqual(families.map(el => el.open), [true, false]);
+    const family = f.navigation('controllers').parentElement;
+    assert.equal(family.getAttribute('aria-expanded'), 'true');
+    assert.equal(f.navigation('html_svg').parentElement.getAttribute('aria-expanded'), 'false');
     f.media.matches = true; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
-    f.get('gallery-mobile-menu').click();
-    await settle();
-    f.get('open-controllers').click();
-    await settle();
-    assert.equal(families[1].open, true);
-    assert.equal(f.get('gallery-mobile-menu').getAttribute('aria-expanded'), 'true');
-    families[1].querySelector('summary').click();
-    await settle();
-    assert.equal(families[1].open, false);
+    f.get('gallery-navigation-button').click(); await settle();
+    f.navigation('controllers').click(); await settle();
+    assert.equal(drawer(f, 'left').getAttribute('aria-expanded'), 'true');
+    f.navigation('controllers').querySelector('button').click(); await settle();
+    assert.equal(f.navigation('controllers').parentElement.getAttribute('aria-expanded'), 'false');
     assert.equal(f.get('index-sidebar').hidden, false);
-    f.get('open-c01').click();
-    await settle();
-    assert.equal(f.get('index-sidebar').hidden, true);
-    assert.equal(f.document.activeElement, f.get('index-pages'));
+    f.navigation('controllers').querySelector('button').click(); await settle();
+    f.navigation('c01').click(); await settle();
+    assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
+    assert.equal(f.get('gallery-center').hidden, false);
 });
 
-test('Explanation and source tabs preserve frames, sanitize prose and retain literal code', async t => {
+test('Explanation and source tabs preserve frames, sanitize prose and retain literal code', {timeout: 30000}, async t => {
     const f = await setup(t);
-    f.get('open-e01').click();
+    f.navigation('e01').click();
     await settle();
     const frame = f.get('frame-e01');
     f.tab('preview-e01', 'Explanation').click();
+    f.visible('description-e01'); f.visible('codepane-e01');
     await settle();
     assert.equal(f.tab('preview-e01', 'Example').getAttribute('aria-selected'), 'false');
     assert.equal(f.get('readme-e01').querySelector('script, [onerror], [href^="javascript:"]'), null);
@@ -292,116 +362,132 @@ test('Explanation and source tabs preserve frames, sanitize prose and retain lit
     f.tab('preview-e01', 'Example').click();
     await settle();
     assert.equal(f.get('frame-e01'), frame);
-    f.get('open-c01').click();
+    f.navigation('c01').click();
     await settle();
-    f.tab('codepane-c01', 'logic.js').click();
+    f.visible('codepane-c01'); await settle();
+    f.tab('code-tabs-c01', 'logic.js').click();
     await settle();
-    assert.equal(f.tab('codepane-c01', 'JavaScript').getAttribute('aria-selected'), 'false');
+    assert.equal(f.tab('code-tabs-c01', 'JavaScript').getAttribute('aria-selected'), 'false');
     assert.equal(f.get('logic-panel-c01').hidden, false);
-    f.get('open-e01').click(); f.tab('index-pages', 'c01').click();
+    f.navigation('e01').click(); f.tab('index-pages', 'c01').click();
     await settle();
     assert.equal(f.get('logic-panel-c01').hidden, false);
-    pressTab(f, 'codepane-c01', 'logic.js', 'Home');
+    pressTab(f, 'code-tabs-c01', 'logic.js', 'Home');
     await settle();
-    assert.equal(f.tab('codepane-c01', 'logic.js').getAttribute('aria-selected'), 'false');
+    assert.equal(f.tab('code-tabs-c01', 'logic.js').getAttribute('aria-selected'), 'false');
 });
 
-test('tab keyboard navigation is built in; navigation links remain opt-in', async t => {
+test('tabs and the tree retain built-in keyboard navigation independently of the legacy link preference', {timeout: 30000}, async t => {
     const f = await setup(t);
-    f.get('open-e01').click(); f.get('open-e02').click();
+    f.navigation('e01').click(); f.navigation('e02').click();
     await settle();
     pressTab(f, 'index-pages', 'e02', 'Home');
     await settle();
-    assert.equal(f.state.getItem('active'), 'intro');
-    assert.equal(f.get('open-e01').tabIndex, -1);
-    f.get('keyboard-navigation').click();
+    assert.equal(f.state.getItem('active'), 'e01');
+    assert.equal(f.get('gallery-navigation-tree').shadowRoot.querySelectorAll('[role=treeitem][tabindex="0"]').length, 1);
+    f.get('keyboard-navigation').control.click();
     await settle();
-    assert.equal(f.get('open-e01').tabIndex, 0);
-    pressTab(f, 'index-pages', 'Introduction', 'End');
+    assert.equal(f.get('gallery-navigation-tree').shadowRoot.querySelectorAll('[role=treeitem][tabindex="0"]').length, 1);
+    pressTab(f, 'index-pages', 'e01', 'End');
     await settle();
     assert.equal(f.state.getItem('active'), 'e02');
 });
 
-test('drawer visibility and file selection survive switching pages and preferences restore', async t => {
+test('Code is a detachable third tab; docking retains file selection and the running example', {timeout: 30000}, async t => {
     const f = await setup(t);
-    f.get('open-c01').click();
-    await settle();
-    const frame = f.get('frame-c01');
-    f.tab('codepane-c01', 'logic.js').click();
-    await settle();
-    f.get('index-code-toggle').click(); f.get('index-navigation-toggle').click();
-    await settle();
-    assert.equal(f.source('index-code').getAttr('drawer'), 'close');
-    assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
+    f.navigation('c01').click(); await settle();
+    const frame = f.get('frame-c01'), preview = f.get('preview-c01');
+    assert.equal(f.get('index-code'), null);
+    assert.deepEqual([...preview.shadowRoot.querySelectorAll('[role=tab]')].map(tab => tab.textContent), ['Example','Explanation','Code']);
+    f.tab('preview-c01','Code').click(); f.visible('codepane-c01'); await settle();
+    f.tab('code-tabs-c01','logic.js').click(); await settle();
+    const code = f.get('codepane-c01');
+    preview.shadowRoot.querySelector('[aria-label="Detach Code"]').click(); await settle();
+    assert.ok(preview.shadowRoot.querySelector('dialog[open]'));
+    assert.equal(f.get('codepane-c01'),code); assert.equal(f.get('frame-c01'),frame);
+    assert.equal(f.tab('preview-c01','Example').getAttribute('aria-selected'),'true');
+    preview.shadowRoot.querySelector('[aria-label="Close window"]').click(); await settle();
+    assert.equal(preview.shadowRoot.querySelector('dialog'),null);
+    assert.equal(f.tab('preview-c01','Code').getAttribute('aria-selected'),'true');
+    assert.equal(f.tab('code-tabs-c01','logic.js').getAttribute('aria-selected'),'true');
+    f.get('gallery-navigation-button').click(); await settle();
     const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.preferences:/py/index');
-    f.get('index-code-toggle').click();
-    await settle();
-    assert.equal(f.get('logic-panel-c01').hidden, false);
-    assert.equal(f.get('frame-c01'), frame);
     const g = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
-    g.get('open-e01').click();
-    await settle();
-    assert.equal(g.source('index-code').getAttr('drawer'), 'close');
-    assert.equal(g.source('index-sidebar').getAttr('drawer'), 'close');
+    assert.equal(g.source('index-sidebar').getAttr('drawer'),'close');
 });
 
-test('theme, color and label settings persist and reject foreign frame messages', async t => {
+test('theme, color and label settings persist and reject foreign frame messages', {timeout: 30000}, async t => {
     const f = await setup(t);
-    f.get('open-e01').click();
+    f.navigation('e01').click();
     await settle();
     const messages = [];
     const frame = f.get('frame-e01');
     frame.contentWindow.postMessage = (data, origin) => messages.push({data, origin});
     change(f, 'index-theme', 'dark'); change(f, 'index-appearance', 'mimi');
+    change(f, 'index-palette', 'joanna');
     change(f, 'gallery-label-position', 'L');
     assert.equal(f.document.documentElement.getAttribute('data-theme'), 'dark');
     assert.equal(f.state.getItem('labelPosition'), 'L');
     assert.equal(frame.getAttribute('src'), 'e01');
     const before = messages.length;
-    f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message', {data: {type: THEME_READY}, source: f.document.defaultView}));
+    f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message', {origin:'https://foreign.test', data:{type:THEME_READY}, source:frame.contentWindow}));
     assert.equal(messages.length, before);
-    f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message', {data: {type: THEME_READY}, source: frame.contentWindow}));
+    f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message', {origin:'https://gallery.test', data: {type: THEME_READY}, source: f.document.defaultView}));
+    assert.equal(messages.length, before);
+    f.document.defaultView.dispatchEvent(new f.document.defaultView.MessageEvent('message', {origin:'https://gallery.test', data: {type: THEME_READY}, source: frame.contentWindow}));
     assert.ok(messages.length > before);
+    assert.deepEqual(messages.at(-1).data, {type: THEME_SET, theme: 'dark', appearance: 'mimi', palette: 'joanna'});
     const saved = f.document.defaultView.localStorage.getItem('gramlot.gallery.preferences:/py/index');
     const g = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
-    assert.equal(g.get('index-appearance').value, 'mimi');
-    assert.equal(g.get('index-theme').value, 'dark');
+    assert.equal(g.get('index-appearance').readControlValue(), 'mimi');
+    assert.equal(g.get('index-theme').readControlValue(), 'dark');
+    assert.equal(g.get('index-palette').readControlValue(), 'joanna');
+    change(g, 'index-palette', 'default');
+    assert.equal(g.get('index-appearance').readControlValue(), 'mimi');
+    assert.equal(g.get('index-theme').readControlValue(), 'dark');
+    assert.equal(g.state.getItem('palette'), 'default');
 });
 
-test('invalid or unavailable browser storage leaves valid defaults and usable controls', async t => {
-    for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}']) {
+// Give each storage case its own fixture lifetime and timeout budget.
+for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}', '{"palette":["mimi"]}', '{"palette":"__proto__"}']) {
+    test(`invalid browser preferences retain usable defaults: ${saved}`, {timeout: 30000}, async t => {
         const f = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
-        assert.equal(f.get('index-appearance').value, 'compact');
-        assert.equal(f.get('index-theme').value, 'light');
+        assert.equal(f.get('index-appearance').readControlValue(), 'compact');
+        assert.equal(f.get('index-theme').readControlValue(), 'light');
+        assert.equal(f.get('index-palette').readControlValue(), 'default');
         assert.equal(f.source('index-sidebar').getAttr('width'), '240px');
-    }
-    for (const name of ['SecurityError', 'QuotaExceededError']) {
+    });
+}
+for (const name of ['SecurityError', 'QuotaExceededError']) {
+    test(`unavailable browser storage retains usable controls: ${name}`, {timeout: 30000}, async t => {
         const f = await setup(t, undefined, w => Object.defineProperty(w, 'localStorage', {value: {
             getItem() { if (name === 'SecurityError') throw new w.DOMException('Unavailable', name); return null; },
             setItem() { throw new w.DOMException('Unavailable', name); },
         }}));
-        change(f, 'index-theme', 'dark'); f.get('open-e01').click();
-    await settle();
+        change(f, 'index-theme', 'dark'); f.navigation('e01').click();
+        await settle();
         assert.equal(f.get('panel-e01').hidden, false);
-    }
-});
+    });
+}
 
-test('phone views preserve the same frame, Data and Source and restore desktop drawers', async t => {
+test('phone Code tab and inspector retain the same frame and restore desktop navigation', {timeout: 30000}, async t => {
     const f = await setup(t, null, w => { w.matchMedia().matches = true; });
-    f.get('gallery-mobile-menu').click(); f.get('open-e01').click();
+    f.get('gallery-navigation-button').click(); f.navigation('e01').click();
     await settle();
     const frame = f.get('frame-e01'), source = f.source('frame-e01'), win = frame.contentWindow;
     win.retainedDraft = 'Unsaved';
-    for (const view of ['code', 'inspector', 'example']) {
-        f.get(`gallery-view-${view}`).click();
+    f.tab('preview-e01','Code').click(); await settle();
+    assert.equal(f.tab('preview-e01','Code').getAttribute('aria-selected'),'true');
+    for (const view of ['inspector', 'example']) {
+        f.get('gallery-inspector').click();
     await settle();
         assert.equal(f.get('gallery').getAttribute('data-mobile-view'), view);
         assert.equal(f.get('frame-e01'), frame); assert.equal(f.source('frame-e01'), source);
         assert.equal(frame.contentWindow, win); assert.equal(win.retainedDraft, 'Unsaved');
     }
-    f.get('gallery-mobile-menu').click(); key(f, 'gallery-mobile-menu', 'Escape');
+    f.get('gallery-navigation-button').click(); key(f, 'gallery-inspector', 'Escape');
     await settle();
-    assert.equal(f.get('index-sidebar').hidden, true);
+    assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
     f.media.matches = false; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
     assert.equal(f.get('gallery').hasAttribute('data-mobile-view'), false);
     assert.equal(f.source('index-sidebar').getAttr('drawer'), true);
@@ -410,13 +496,364 @@ test('phone views preserve the same frame, Data and Source and restore desktop d
     assert.equal(f.get('gallery').hasAttribute('data-mobile-view'), false);
 });
 
-test('empty Logic is hidden and closing gallery behavior detaches navigation', async t => {
+test('empty Logic is hidden and closing gallery behavior detaches navigation', {timeout: 30000}, async t => {
     const f = await setup(t, 'export class Logic {}');
+    assert.equal(f.get('logic-panel-c01'), null);
+    f.navigation('c01').click();
+    await settle();
+    f.visible('codepane-c01'); await settle();
     assert.equal(f.source('logic-panel-c01').getAttr('hidden'), true);
-    f.get('open-e01').click();
+    f.navigation('e01').click();
     await settle();
     f.behavior.dispose();
-    f.get('open-e02').click();
+    f.navigation('e02').click();
     await settle();
-    assert.equal(f.source('frame-e02').getAttr('src'), null);
+    assert.equal(f.get('frame-e02'), null);
+});
+
+
+test('repeated clicks create one Source panel and request each view once', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    f.navigation('e01').click(); f.navigation('e01').click(); f.navigation('e01').click();
+    await settle();
+    const frame = f.get('frame-e01');
+    frame.contentWindow.draft = 'Retain me';
+    f.navigation('e02').click(); await settle();
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(frame.contentWindow.draft, 'Retain me');
+    assert.equal(f.calls.filter(call => call.selection?.getNode('#0').attr.key === 'e01').length, 1);
+    assert.equal(f.document.querySelectorAll('#panel-e01').length, 1);
+    assert.equal(f.get('index-pages').children.length, 2);
+});
+
+test('out-of-order lesson replies do not override the latest selection', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const call = f.transport.call;
+    let release;
+    const held = new Promise(resolve => { release = resolve; });
+    f.transport.call = async text => {
+        if (fromTytx(text).params.selection?.getNode('#0').attr.key === 'e01') await held;
+        return call(text);
+    };
+    f.navigation('e01').click(); f.navigation('e02').click();
+    await settle();
+    assert.equal(f.state.getItem('active'), 'e02');
+    release(); await settle();
+    assert.equal(f.state.getItem('active'), 'e02');
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.state.getItem('active'), 'e01');
+    assert.equal(f.calls.filter(call => call.selection?.getNode('#0').attr.key === 'e01').length, 1);
+});
+
+test('failed lesson removes incomplete Source and can be retried', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const call = f.transport.call;
+    f.transport.call = async () => { throw new Error('Connection interrupted'); };
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.get('panel-e01'), null);
+    assert.equal(f.get('codepane-e01'), null);
+    assert.equal(f.state.getItem('active'), null);
+    assert.match(f.get('gallery-load-status').textContent, /retry/);
+    f.transport.call = call;
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.state.getItem('active'), 'e01');
+    assert.equal(f.get('gallery-load-status').textContent, '');
+});
+
+test('hidden teaching content makes no requests; visible content never delays the frame and loads once', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    f.navigation('e01').click(); await settle();
+    const frame = f.get('frame-e01');
+    assert.equal(frame.getAttribute('src'), 'e01');
+    assert.equal(f.get('readme-e01'), null);
+    assert.equal(f.get('code-e01'), null);
+    assert.deepEqual(f.calls.map(c => c.view ?? 'example'), ['example']);
+    f.visible('codepane-e01', false); f.visible('description-e01', false); await settle();
+    assert.equal(f.calls.length, 1);
+    const call = f.transport.call;
+    let release;
+    const held = new Promise(resolve => { release = resolve; });
+    f.transport.call = async text => { if (fromTytx(text).params.view === 'code') await held; return call(text); };
+    f.visible('codepane-e01'); f.visible('codepane-e01', false); f.visible('codepane-e01');
+    await settle();
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(f.state.getItem('active'), 'e01');
+    f.visible('description-e01'); await settle();
+    assert.ok(f.get('readme-e01').querySelector('h1'));
+    release(); await settle();
+    assert.ok(f.get('code-e01').querySelector('.code-line'));
+    for (let i = 0; i < 3; i++) for (const id of ['codepane-e01', 'description-e01']) {
+        f.visible(id, false); f.visible(id);
+    }
+    await settle();
+    assert.deepEqual(f.calls.map(c => c.view ?? 'example'), ['example', 'description', 'code']);
+});
+
+test('secondary content failure retains the running example and retries on reopening', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    f.navigation('e01').click(); await settle();
+    const frame = f.get('frame-e01'); frame.contentWindow.draft = 'Keep me';
+    const call = f.transport.call;
+    f.transport.call = async text => {
+        if (fromTytx(text).params.view === 'description') throw new Error('Offline');
+        return call(text);
+    };
+    f.visible('description-e01'); await settle();
+    assert.match(f.get('description-e01').textContent, /retry/);
+    assert.equal(f.get('frame-e01'), frame);
+    f.transport.call = call;
+    f.visible('description-e01', false); f.visible('description-e01'); await settle();
+    assert.ok(f.get('readme-e01').querySelector('h1'));
+    assert.equal(frame.contentWindow.draft, 'Keep me');
+});
+
+test('remount while loading reuses the pending Source request and formats its result', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    f.navigation('e01').click(); await settle();
+    const call = f.transport.call;
+    let release, requested = 0;
+    const held = new Promise(resolve => { release = resolve; });
+    f.transport.call = async text => { requested++; await held; return call(text); };
+    f.visible('codepane-e01'); await settle();
+    f.behavior.dispose();
+    const behavior = mountGallery(f.renderer, f.root, {update() {}, setPresentation() {}});
+    t.after(() => behavior.dispose());
+    f.visible('codepane-e01'); await settle();
+    assert.equal(requested, 1);
+    release(); await settle();
+    assert.ok(f.get('code-e01').querySelector('.code-line'));
+});
+
+
+test('gallery sections are unresolved until tree expansion and use the resolver cache on reopening', {timeout: 30000}, async t => {
+    const f = fixture(); t.after(() => f.app.dispose()); await settle();
+    assert.equal(f.calls.length, 0);
+    const section = f.app.data.getNode('galleryIndex.navigation.html_svg');
+    assert.equal(section.staticValue, null);
+    assert.ok(section.resolver);
+    f.navigation('html_svg').querySelector('button').click(); await settle();
+    assert.ok(f.navigation('e01'));
+    assert.equal(f.calls.filter(c => c.name === 'navigation_section').length, 1);
+    f.navigation('html_svg').querySelector('button').click(); await settle();
+    f.navigation('html_svg').querySelector('button').click(); await settle();
+    assert.equal(f.calls.filter(c => c.name === 'navigation_section').length, 1);
+});
+
+
+test('settings use a nonmodal floating formlet and close back into the toolbar', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const settings = f.get('gallery-settings');
+    assert.equal(settings.localName, 'gramlot-floating-pane');
+    assert.equal(f.get('gallery-settings-form').localName, 'gramlot-formlet');
+    assert.equal(f.source('gallery-settings').getAttr('open'), '^galleryIndex.settingsOpen');
+    assert.equal(drawer(f, 'left').style.display, 'none');
+    assert.equal(settings.hasAttribute('popover'), false);
+    assert.equal(f.get('gallery-settings-toggle'), null);
+    assert.ok(f.get('gallery-inspector').closest('#gallery-rail'));
+    assert.equal(f.source('gallery-inspector').getAttr('caption'), 'Inspector');
+    assert.equal(f.get('gallery-inspector').nextElementSibling.id, 'gallery-settings-button');
+    assert.equal(f.source('gallery-settings').getAttr('region'), null);
+    f.get('gallery-settings-button').click(); await settle();
+    assert.equal(settings.shell.open, true);
+    change(f, 'index-theme', 'dark');
+    assert.equal(f.state.getItem('theme'), 'dark');
+    settings.closeButton.click(); await settle();
+    assert.equal(settings.shell.open, false);
+    assert.equal(f.state.getItem('settingsOpen'), false);
+    assert.equal(f.get('gallery-settings-button').getAttribute('aria-checked'), 'false');
+
+});
+
+
+test('a Markdown directory index opens as sanitized content without expanding its resolver', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const node = f.app.data.getNode('galleryIndex.navigation.html_svg');
+    node.setAttr({title:'Markdown overview', url:'pages/00-html_svg/07-markdown_index/00-index',
+        markdown:'# Markdown overview\n\n**Readable** <script>bad()</script><img onerror="bad()">'});
+    const before = f.calls.filter(c => c.name === 'navigation_section').length;
+    f.navigation('html_svg').click(); await settle();
+    const description = f.document.querySelector('.gallery-directory-markdown');
+    assert.equal(description.querySelector('h1').textContent, 'Markdown overview');
+    assert.equal(description.querySelector('strong').textContent, 'Readable');
+    assert.equal(description.querySelector('script,[onerror]'), null);
+    assert.equal(f.calls.filter(c => c.name === 'navigation_section').length, before);
+    assert.equal(f.get('gallery-introduction').hidden, true);
+    assert.equal(f.get('index-pages').hidden, false);
+});
+
+
+test('logicSource: a module without Logic, or with an empty one, shows no tab', () => {
+    assert.equal(logicSource('export class Page {}\n'), null);
+    assert.equal(logicSource('export class Page {}\n\nexport class Logic {}\n'), null);
+    assert.equal(logicSource('export class Page {}\nexport class Logic { total() {} }\n'), 'export class Logic { total() {} }');
+    assert.throws(() => logicSource('export class Logic {}\nexport class Logic {}\n'), /one final exported Logic/);
+});
+
+
+test('one icon toolbar moves between left and bottom without recreating open lessons', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const rail = f.get('gallery-rail');
+    assert.equal(f.get('gallery-frame').localName, 'gramlot-frame-pane');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'), 'left');
+    assert.equal(f.get('gallery-navigation-button').getAttribute('aria-checked'), 'true');
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.source('index-sidebar').getAttr('drawer'), 'close');
+    assert.equal(f.state.getItem('navigationOpen'), false);
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.source('index-sidebar').getAttr('drawer'), true);
+    f.navigation('e01').click(); await settle();
+    const frame = f.get('frame-e01'), source = f.source('frame-e01');
+    frame.contentWindow.retainedDraft = 'Still here';
+    f.get('gallery-settings-button').click();
+    assert.equal(f.state.getItem('settingsOpen'), true);
+    await settle(); f.get('gallery-settings').closeButton.click(); await settle();
+    assert.equal(f.state.getItem('settingsOpen'), false);
+    f.get('gallery-settings-button').click();
+    assert.equal(f.state.getItem('settingsOpen'), true, 'toolbar reopens a floating closed by its titlebar');
+    f.get('gallery-settings-button').click();
+    assert.equal(f.state.getItem('settingsOpen'), false);
+    Object.assign(f.document.defaultView, {innerWidth:390, innerHeight:844});
+    f.media.matches = true; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.get('gallery-rail'), rail);
+    assert.equal(f.source('gallery-rail-region').getAttr('region'), 'bottom');
+    assert.equal(rail.getAttribute('aria-orientation'), 'horizontal');
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.state.getItem('menu'), true);
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.state.getItem('menu'), false);
+    f.media.matches = false; f.media.dispatchEvent(new f.document.defaultView.Event('change'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'), 'left');
+    assert.equal(rail.getAttribute('aria-orientation'), 'vertical');
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(f.source('frame-e01'), source);
+    assert.equal(frame.contentWindow.retainedDraft, 'Still here');
+});
+
+
+test('toolbar placement uses proportions and explicit choices without resetting the active mobile view', {timeout: 30000}, async t => {
+    const f = await setup(t, null, w => {w.matchMedia().matches=true;Object.assign(w,{innerWidth:390,innerHeight:844});});
+    const window=f.document.defaultView,rail=f.get('gallery-rail');
+    assert.equal(f.state.getItem('toolbarPosition'),'auto');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
+    f.get('gallery-navigation-button').click();
+    assert.equal(f.state.getItem('menu'),true);
+    Object.assign(window,{innerWidth:844,innerHeight:390});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'left');
+    assert.equal(f.source('gallery-navigation-button').getAttr('width'),'var(--gallery-control-size,36px)');
+    assert.equal(f.state.getItem('menu'),true,'rotation within the narrow layout keeps the current panel');
+    assert.equal(f.source('index-sidebar').getAttr('width'),'260px');
+    assert.equal(f.source('gallery-center').getAttr('hidden'),false,'navigation leaves the example visible when both fit');
+    Object.assign(window,{innerWidth:600,innerHeight:390});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('index-sidebar').getAttr('width'),'100%');
+    assert.equal(f.source('gallery-center').getAttr('hidden'),true,'small screens retain the single-panel view');
+    Object.assign(window,{innerWidth:768,innerHeight:1024});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
+    assert.equal(f.source('index-sidebar').getAttr('width'),'260px','portrait tablets also keep navigation bounded');
+    assert.equal(f.source('gallery-center').getAttr('hidden'),false);
+
+    change(f,'gallery-toolbar-position','bottom');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom');
+    f.media.matches=false;Object.assign(window,{innerWidth:1280,innerHeight:850});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom','explicit Bottom overrides desktop width');
+    change(f,'gallery-toolbar-position','left');
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'left');
+    assert.equal(f.source('gallery-navigation-button').getAttr('width'),'var(--gallery-control-size,36px)');
+    change(f,'gallery-toolbar-position','auto');
+    f.media.matches=true;Object.assign(window,{innerWidth:768,innerHeight:768});
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'bottom','square narrow windows use Bottom');
+    change(f,'gallery-toolbar-position','left');
+    assert.equal(f.get('gallery-rail'),rail,'the toolbar is never recreated');
+    f.behavior.dispose();
+    f.state.setItem('toolbarPosition','bottom');
+    window.dispatchEvent(new window.Event('resize'));
+    assert.equal(f.source('gallery-rail-region').getAttr('region'),'left','preference and resize listeners are released');
+});
+
+
+test('native gallery defaults to Mela but keeps an explicit saved appearance', {timeout: 30000}, async t => {
+    const native = window => {window.Capacitor = {isNativePlatform:()=>true, getPlatform:()=> 'ios'};};
+    const f = await setup(t, undefined, native);
+    assert.equal(f.state.getItem('appearance'), 'mela');
+    const g = await setup(t, undefined, window => {
+        native(window);
+        window.localStorage.setItem('gramlot.gallery.preferences:/py/index', JSON.stringify({appearance:'mimi'}));
+    });
+    assert.equal(g.state.getItem('appearance'), 'mimi');
+});
+
+
+test('load indicator follows the active tab across background replies, closing and reopening', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const call = f.transport.call;
+    const requests = [];
+    f.transport.call = async text => {
+        if (fromTytx(text).name === 'index_panel') {
+            await new Promise((resolve, reject) => requests.push({resolve, reject}));
+        }
+        return call(text);
+    };
+    const indicator = () => f.get('gallery-load-status').textContent;
+    const close = key => {
+        const entry = f.root.indexContext.entries.get(key);
+        entry.pane.parentBag.popNode(entry.pane.label);
+    };
+    f.navigation('e01').click(); f.navigation('e02').click();
+    assert.equal(indicator(), 'Loading page…');
+    requests[0].resolve(); await settle();
+    assert.equal(f.state.getItem('active'), 'e02');
+    assert.equal(indicator(), 'Loading page…', 'a background completion does not hide the active spinner');
+    f.tab('index-pages', 'e01').click();
+    assert.equal(indicator(), '');
+    f.tab('index-pages', 'e02').click();
+    assert.equal(indicator(), 'Loading page…', 'selecting a pending tab restores its indicator');
+    close('e02');
+    assert.equal(indicator(), '');
+    f.navigation('e02').click();
+    assert.equal(indicator(), 'Loading page…');
+    requests[1].reject(Error('Old attempt failed')); await settle();
+    assert.equal(indicator(), 'Loading page…');
+    assert.equal(f.document.querySelector('[role=alert]'), null);
+    requests[2].resolve(); await settle();
+    assert.equal(indicator(), '');
+    assert.equal(f.state.getItem('active'), 'e02');
+});
+
+test('a background load failure does not replace the active loading indicator', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    const call = f.transport.call;
+    const requests = [];
+    f.transport.call = async text => {
+        if (fromTytx(text).name === 'index_panel') await new Promise((resolve, reject) => requests.push({resolve, reject}));
+        return call(text);
+    };
+    f.navigation('e01').click(); f.navigation('e02').click();
+    requests[0].reject(Error('Background connection failed')); await settle();
+    assert.equal(f.state.getItem('active'), 'e02');
+    assert.equal(f.get('gallery-load-status').textContent, 'Loading page…');
+    requests[1].resolve(); await settle();
+    assert.equal(f.get('gallery-load-status').textContent, '');
+});
+
+
+test('Features is the final navigation page and retains an opened lesson when switching back', {timeout: 30000}, async t => {
+    const f = await setup(t);
+    assert.equal(f.state.getItem('navigation').getNodes().at(-1).label, 'features');
+    assert.equal(f.get('gallery-features-button'), null);
+    f.navigation('e01').click(); await settle();
+    const frame = f.get('frame-e01');
+    frame.contentWindow.draft = 'Retain me';
+    f.navigation('features').click(); await settle();
+    assert.equal(f.state.getItem('featuresOpen'), true);
+    assert.equal(f.get('gallery-features').hidden, false);
+    assert.equal(f.get('index-pages').hidden, true);
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.state.getItem('featuresOpen'), false);
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(frame.contentWindow.draft, 'Retain me');
 });

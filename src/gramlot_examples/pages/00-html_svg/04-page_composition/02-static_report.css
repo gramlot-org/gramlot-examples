@@ -1,0 +1,7 @@
+.report-summary { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+.report-number { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; margin: .2rem 0; }
+.report-legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; list-style: none; padding: 0; margin: 0; }
+
+.report-detail { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; }
+.report-detail figure { margin: 0 0 12px; }
+.report-detail section { min-width: 0; }

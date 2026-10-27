@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry,...urls]=process.argv.slice(2);
@@ -7,14 +8,14 @@ for(const [engineName,engine] of [['chromium',chromium],['webkit',webkit]]) {
  try {for(const url of urls) {
   const page=await browser.newPage({viewport:{width:1440,height:1050}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));await page.goto(url);
-  const appearance=page.locator('#index-appearance');await page.locator('#gallery-settings-toggle').click();await appearance.waitFor();
-  await page.locator('details').filter({has:page.locator('#open-w01')}).locator('summary').first().click();
-  const open=async key=>{await page.locator('#open-'+key).click();const frame=page.frameLocator('#frame-'+key);await frame.locator('main').first().waitFor();return frame;};
+  const appearance=page.locator('#index-appearance');await page.locator('.drawer[aria-label="Open bottom region"]').click();await appearance.waitFor();
+  await galleryRow(page, 'w01');
+  const open=async key=>{await (await galleryRow(page, key)).click();const frame=page.frameLocator('#frame-'+key);await frame.locator('main').first().waitFor();return frame;};
   const textbox=await open('w01');
   for(const [name,height] of [['mimi',18],['joanna',20]]) {
-   if(!await appearance.isVisible())await page.locator('#gallery-settings-toggle').click();await appearance.selectOption(name);
+   if(!await appearance.isVisible())await page.locator('.drawer[aria-label="Open bottom region"]').click();await appearance.selectOption(name);
    for(const mode of ['light','dark']) {
-    if(!await appearance.isVisible())await page.locator('#gallery-settings-toggle').click();await page.locator('#index-theme').selectOption(mode);await page.locator('[aria-label="Close settings"]').click();
+    if(!await appearance.isVisible())await page.locator('.drawer[aria-label="Open bottom region"]').click();await page.locator('#index-theme').selectOption(mode);await page.locator('.drawer[aria-label="Close bottom region"]').click();
     await textbox.locator('#customer input').waitFor();
     await page.waitForFunction(([key,value])=>getComputedStyle(document.documentElement).getPropertyValue(key).trim()===value,['--gramlot-field-height',height+'px']);
     await textbox.locator('html').evaluate(async(el)=>{await el.ownerDocument.fonts.ready;});
@@ -42,7 +43,7 @@ for(const [engineName,engine] of [['chromium',chromium],['webkit',webkit]]) {
   assert.deepEqual(await validation.locator('#name').boundingBox(),beforeError);
   assert.equal(await invalid.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(72, 37, 36)');
   assert.equal(await validation.locator('#name #field-message').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(72, 37, 36)');
-  if(!url.startsWith('file:')) {await page.reload();await page.locator('#gallery-settings-toggle').click();await appearance.waitFor();assert.equal(await appearance.inputValue(),'joanna');assert.equal(await page.locator('#index-theme').inputValue(),'dark');}
+  if(!url.startsWith('file:')) {await page.reload();await page.locator('.drawer[aria-label="Open bottom region"]').click();await appearance.waitFor();assert.equal(await appearance.inputValue(),'joanna');assert.equal(await page.locator('#index-theme').inputValue(),'dark');}
   assert.deepEqual(errors,[]);console.log(`PASS ${engineName} ${url}: both profiles/light/dark, shadow fields, Data editing, calendar, choice popup, error tooltip, hosted persistence`);
   await page.close();
  }}finally{await browser.close();}

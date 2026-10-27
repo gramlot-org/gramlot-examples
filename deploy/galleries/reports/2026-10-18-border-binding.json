@@ -1,0 +1,187 @@
+{
+  "date": "2026-10-18",
+  "scope": "Numeric border region dimensions: live splitter writes through the same Data binding used by sliders. Published core 0.3.4 and examples 0.3.7; both hosted galleries and the official offline archive verified.",
+  "ownerAuthorization": {
+    "publication": "bene, pubblica la correzione e aggiorna entrambe le gallery e lo zip serverless, poi verifica che anche online slider e splitter siano sincronizzati",
+    "temporaryCiAuthentication": "Sì, usa l’autenticazione temporanea della CI"
+  },
+  "registries": {
+    "core_pypi": {
+      "url": "https://pypi.org/pypi/gramlot/json",
+      "version": "0.3.4"
+    },
+    "examples_pypi": {
+      "url": "https://pypi.org/pypi/gramlot-examples/json",
+      "version": "0.3.7"
+    },
+    "core_npm": {
+      "url": "https://registry.npmjs.org/@gramlot%2Fgramlot/latest",
+      "version": "0.3.4"
+    },
+    "examples_npm": {
+      "url": "https://registry.npmjs.org/@gramlot%2Fgramlot-examples/latest",
+      "version": "0.3.7"
+    },
+    "core_jsr": {
+      "url": "https://jsr.io/@gramlot/gramlot/meta.json",
+      "version": "0.3.4"
+    }
+  },
+  "artifacts": {
+    "generation": {
+      "releases": {
+        "gramlot": {
+          "tag": "v0.3.4",
+          "version": "0.3.4",
+          "release_id": 416641979
+        },
+        "gramlot-examples": {
+          "tag": "v0.3.7",
+          "version": "0.3.7",
+          "release_id": 416645241
+        },
+        "gramlot-js-server": {
+          "tag": "v0.2.13",
+          "version": "0.2.13",
+          "release_id": 416488728
+        },
+        "gramlot-py-server": {
+          "tag": "v0.2.10",
+          "version": "0.2.10",
+          "release_id": 416002432
+        }
+      },
+      "slot": 1,
+      "generation": "20261018T193539Z",
+      "compose": "/opt/gramlot-galleries/generations/20261018T193539Z/compose.json",
+      "images": [
+        "gramlot-gallery-python:20261018T193539Z",
+        "gramlot-gallery-node:20261018T193539Z"
+      ],
+      "archive_sha256": "1173ba13e4ce4b2176d5afa1ac4d5efdd129a270f7da2a7132d36d6eb736afcc",
+      "previous": "20261018T180418Z"
+    },
+    "cache": [
+      {
+        "host": "https://gallery-py.gramlot.dev",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T193539Z:/gallery/dist/layout.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      },
+      {
+        "host": "https://gallery-js.gramlot.dev",
+        "oldValidatorStatus": 200,
+        "currentValidatorStatus": 304,
+        "etag": "W/\"20261018T193539Z:/gallery/dist/layout.js\"",
+        "gzip": true,
+        "cacheControl": "private, no-cache, must-revalidate"
+      }
+    ],
+    "zip": {
+      "sha256": "1173ba13e4ce4b2176d5afa1ac4d5efdd129a270f7da2a7132d36d6eb736afcc",
+      "bytes": 30900752,
+      "versions": {
+        "python": {
+          "gramlot": "0.3.4",
+          "gramlot-examples": "0.3.7",
+          "gramlot-py-server": "0.2.10"
+        },
+        "javascript": {
+          "@gramlot/gramlot": "0.3.4",
+          "@gramlot/gramlot-examples": "0.3.7",
+          "@gramlot/gramlot-js-server": "0.2.13",
+          "@gramlot/gramlot-serverless": "0.2.13"
+        }
+      }
+    }
+  },
+  "browser": [
+    {
+      "engine": "chromium",
+      "url": "https://gallery-py.gramlot.dev/l05",
+      "sevenBindings": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "url": "https://gallery-js.gramlot.dev/l05",
+      "sevenBindings": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "url": "file:///tmp/gramlot-border-published/gramlot-gallery-serverless/l05/index.html",
+      "sevenBindings": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "url": "https://gallery-py.gramlot.dev/l05",
+      "sevenBindings": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "url": "https://gallery-js.gramlot.dev/l05",
+      "sevenBindings": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "url": "file:///tmp/gramlot-border-published/gramlot-gallery-serverless/l05/index.html",
+      "sevenBindings": true,
+      "liveDragBeforeRelease": true,
+      "keyboard": true,
+      "sliderToRegion": true,
+      "retainedContent": true,
+      "errors": []
+    }
+  ],
+  "ci": {
+    "coreRelease": "https://github.com/gramlot-org/gramlot/actions/runs/39156891686",
+    "examplesRelease": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39157348538",
+    "galleryDeployment": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39159454181",
+    "idempotentCoreEvent": "https://github.com/gramlot-org/gramlot/actions/runs/39159300531"
+  },
+  "deploymentChecks": {
+    "updaterTestsOnServer": 28,
+    "nginxIntegrationPassed": true,
+    "pythonAdapterTests": 102,
+    "nodeServerTests": 33,
+    "serverlessTests": 35,
+    "createTests": 3,
+    "bunTests": 33
+  },
+  "recoveryNotes": [
+    "JSR publication remained pending after upload; the job was cancelled and only JSR retried. The retry waited for the existing upload and succeeded. No duplicate npm/PyPI publication was requested.",
+    "The first gallery update exhausted the server anonymous GitHub API allowance and failed before promotion. Owner approved ephemeral CI authentication.",
+    "All four workflows now send their job token over SSH stdin. Updater memory holds it only for exact HTTPS api.github.com requests, with authenticated redirects refused. No credentials are saved on the server or passed to build subprocesses or registries. Both readiness and post-build consistency checks use the authenticated client.",
+    "A too-restrictive initial token parser was corrected to the Bearer alphabet. In-flight pre-fix updaters were interrupted safely; the final deployment and repeated core event succeeded."
+  ],
+  "limitations": [
+    "Browser coverage is Chromium and WebKit on desktop for l05. This verification does not claim a new mobile or performance measurement.",
+    "The preceding public generation remains available for rollback."
+  ]
+}

@@ -17,13 +17,15 @@ function catalog(t, data) {
     writeFileSync(path, JSON.stringify(data));
     return path;
 }
-const environment = families => ({environment: 'test', families});
+const environment = families => ({environment: 'test', families: families.map(family => ({...family, folder: family.key}))});
 
 test('common gallery', () => {
     const gallery = buildGallery();
-    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
-    assert.equal(Object.keys(gallery.routes).length, 1 + gallery.families.reduce((n, family) => n + family.examples.length, 0));
+    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'menus', 'editors', 'tools', 'composition']);
+    assert.equal(Object.keys(gallery.routes).length, 139);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
+    assert.match(gallery.routes.b12.data, /foo_data\.tytx$/);
+    assert.ok(gallery.assets['/pages/02-binding/01-paths_and_updates/foo_data.tytx']);
     assert.equal(gallery.routes.c03.logic, gallery.routes.c03.page, 'the page module holds the Logic');
     for (const [url, asset] of Object.entries(gallery.assets)) assert.ok(existsSync(asset.file), url);
 });
@@ -31,8 +33,10 @@ test('common gallery', () => {
 test('media types', () => {
     const {assets} = buildGallery();
     assert.equal(assets['/gallery/dist/gallery.js'].type, 'application/javascript');
-    assert.equal(assets['/pages/controllers/03_named_logic.js'].type, 'text/plain');
+    assert.equal(assets['/pages/03-controllers/01-logic/03-named_logic.js'].type, 'text/plain');
     assert.equal(assets['/gallery/gallery.css'].type, 'text/css');
+    assert.equal(assets['/trials/menu/theme_preview.js'].type, 'text/javascript');
+    assert.ok(assets['/gallery/dist/menu-trial/descriptor.js']);
     assert.equal(assets['/gallery/dist/LICENSE'].type, 'text/plain');
 });
 
@@ -41,6 +45,8 @@ test('environment catalogue', () => {
     assert.equal(gallery.families.at(-1).key, 'test_family');
     assert.equal(gallery.families.at(-1).path, join(PAGES, 'test_family'));
     assert.deepEqual(gallery.routes['test-01'], {
+        data: null,
+        url: 'pages/test_family/01_demo',
         page: join(PAGES, 'test_family', '01_demo.js'),
         stylesheet: join(PAGES, 'test_family', '01_demo.css'),
         logic: join(PAGES, 'test_family', '01_demo.js'),

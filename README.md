@@ -12,7 +12,7 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.3.4.
+Current release: 0.3.19.
 
 [Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
 include every lesson, its Python and JavaScript source, and the gallery guide.
@@ -36,20 +36,20 @@ same-name README:
 
 - `html_svg/`: thirteen HTML and SVG pages, without binding (`e01`–`e13`);
 - `binding/`: eleven pages whose DOM follows the Data (`b01`–`b11`);
-- `controllers/`: twenty-two pages with formulas, controllers, named logic, events, the
+- `controllers/`: twenty-three pages with formulas, controllers, named logic, events, the
   end-to-end story, `dataRpc` calls to the endpoints of the page, `remote` fragments and
-  `dataRemote` values (`c01`–`c22`). Later lessons introduce topics, authored references, native ask,
+  `dataRemote` values (`c01`–`c23`). Later lessons introduce topics, authored references, native ask,
   parent/child messages, plain HTML buttons and delayed Gramlot clicks. The package
   requires the current core release; each lesson states which features it uses.
 
-- `components/`: twenty-five lessons for inputs, labelbox, formlet, group copy,
+- `components/`: thirty-four lessons for inputs, labelbox, formlet, group copy,
   command buttons and field validation (`w01`–`w25`), with compact controls.
 - `layout/`: eight container lessons (`l01`–`l08`), with live splitters, drawers,
   nested layouts, selection and closing events, fourteen tab presentations,
   a guided drawer tour and a lazy carousel with retained live previews.
 
-Each `NN_name.js` exports `Page` and `Logic`; the Python page `NN_name.py` takes its
-`Logic` from the module beside it.
+Each `NN_name.js` exports `Page`, and `Logic` when the page names client methods; the
+Python page `NN_name.py` takes that `Logic` from the module beside it.
 
 ## Gallery
 

@@ -1,0 +1,7 @@
+.actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+.order-workbench { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; }
+.order-workbench > * { min-width: 0; }
+.order-workbench svg { max-height: 180px; }
+.example-page input[type="checkbox"], .example-page input[type="radio"] { margin-inline-end: .4rem; }
+.example-page input + label { margin-inline-end: 1rem; }

@@ -1,0 +1,14 @@
+# Prepared opt-in recipe; not selected by the automatic public updater.
+# Build context contains only public-module/, serve-mobile.py and this Dockerfile.
+FROM python:3.12-slim
+WORKDIR /app
+RUN pip install --no-cache-dir --upgrade 'gramlot-py-server[uvicorn,gallery]' \
+    && pip check \
+    && python -c 'from gramlot_py_server.gallery.modules import stage_module' \
+    && useradd --uid 10001 --create-home gallery
+COPY public-module/ /app/modules/
+COPY serve-mobile.py /app/serve-mobile.py
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+USER gallery
+EXPOSE 8080
+CMD ["python", "/app/serve-mobile.py", "--modules", "/app/modules", "--host", "0.0.0.0", "--port", "8080"]

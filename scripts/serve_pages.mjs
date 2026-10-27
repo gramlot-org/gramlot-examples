@@ -5,8 +5,8 @@
  * core themes under `/themes/`, the `.js` and `.css` files below the pages folder (the page
  * modules, whose `Logic` the browser imports), the pages, and `rpc` (the request envelope,
  * answered by `call`) and `close` as POST.
- * No Content-Security-Policy, as with the default of the adapters: e13 puts an inline
- * `script` in its Source, and the inline expressions of the pages need eval.
+ * No Content-Security-Policy, as with the default of the adapters: the inline
+ * expressions and actions of the pages (for example the click of e10 and e13) need eval.
  */
 import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';
@@ -33,7 +33,7 @@ export function servePages(folder, port) {
     const pages = resolve(folder);
     const {assets, collections, families} = buildGallery();
     const pageRoutes = Object.fromEntries(families.flatMap(family => family.examples
-        .map(example => [example.key, `${family.key}/${example.folder}`])));
+        .map(example => [example.key, `${family.folder}/${example.folder}`])));
     const server = new GramlotFileServer(pages, {collections});
     return createServer(async (request, response) => {
         const reply = (status, body, type) => {

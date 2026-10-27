@@ -1,5 +1,9 @@
+import menuCommands from '../src/gramlot_examples/collections/menu_trial/assets/index.js';
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
+import tree from '@gramlot/gramlot/components/tree';
+import editors from '@gramlot/gramlot/components/editors';
+import typst from '@gramlot/gramlot/components/typst';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
@@ -14,13 +18,13 @@ const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gram
 const {GramlotFileServer} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/server')).href);
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
-const folder = key => new URL(`../src/gramlot_examples/pages/${key}/`, import.meta.url);
+const folder = key => new URL(`../src/gramlot_examples/pages/${families.find(f => f.key === key).folder}/`, import.meta.url);
 
 /**
  * Mount one JavaScript example as its server would: the core GramlotFileServer of the family folder answers
- * the request envelopes (`main` and the endpoints), the module's Logic is registered as the root group.
+ * the request envelopes (`main` and the endpoints), the module's Logic, when it has one, is registered as the root group.
  */
-async function mount(family, example) {
+async function mount(family, example, {hold = null} = {}) {
     const errors = [];
     const virtualConsole = new VirtualConsole();
     virtualConsole.on('jsdomError', error => errors.push(error));
@@ -32,17 +36,27 @@ async function mount(family, example) {
     // jsdom has no native popover API; real positioning is covered in browser checks.
     dom.window.HTMLElement.prototype.showPopover = function () {};
     dom.window.HTMLElement.prototype.hidePopover = function () {};
+    // Floating windows use the native non-modal dialog API (absent in JSDOM).
+    dom.window.HTMLDialogElement.prototype.show = function () { this.open = true; };
+    dom.window.HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+    dom.window.HTMLDialogElement.prototype.close = function () { this.open = false; };
 
+    // A page module that names no client method exports no Logic.
     const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
-    const server = new GramlotFileServer(fileURLToPath(folder(family.key)), {collections:buildGallery().collections});
+    const server = new GramlotFileServer(fileURLToPath(folder(family.key)));
     const {pageId} = await server.registerPage(`/${example.folder}`);
     const calls = [];
+    // `hold(request)` true keeps the answer of that request until `release()`, to observe a request in flight.
+    const held = [];
     const transport = {call(text) {
-        calls.push(JSON.parse(text));
-        return server.call(text);
-    }};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout]});
-    app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
+        const request = JSON.parse(text);
+        calls.push(request);
+        if (!hold?.(request)) return server.call(text);
+        return new Promise(resolve => held.push(() => resolve(server.call(text))));
+    }, close() {}, dispose() {}};
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst,menuCommands]});
+    menuCommands.registerCommands(app);
+    if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
     const byId = id => dom.window.document.getElementById(id);
     const data = path => app.data.getItem(path);
@@ -52,13 +66,269 @@ async function mount(family, example) {
     };
     const click = (id, options = {}) => byId(id).dispatchEvent(new dom.window.MouseEvent('click',
         {bubbles: true, cancelable: true, ...options}));
-    return {app, dom, window: dom.window, byId, data, edit, click, calls, errors};
+    const release = () => held.splice(0).forEach(answer => answer());
+    return {app, dom, window: dom.window, byId, data, edit, click, calls, errors, release};
 }
 
 const tick = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
+async function checkWindowExample({dom, app, data}, tag, label) {
+    const document = dom.window.document;
+    const press = caption => [...document.querySelectorAll('gramlot-button')]
+        .find(button => button.textContent.trim() === caption).shadowRoot.querySelector('button').click();
+    const status = document.querySelector('[role="status"]');
+    assert.equal(data('workspace.clicks'), 0);
+    assert.equal(status.textContent, 'Background clicks: 0');
+    press('Background counter');
+    assert.equal(data('workspace.clicks'), 1);
+    assert.equal(status.textContent, 'Background clicks: 1');
+    press(label);
+    const window = document.querySelector(tag);
+    const field = window.querySelector('gramlot-textbox');
+    assert.equal(data('workspace.open'), true);
+    app.data.setItem('workspace.title', 'Retained draft');
+    assert.match(document.body.textContent, /Shared title: Retained draft/);
+    app.data.setItem('workspace.open', false);
+    press(label);
+    assert.equal(window.querySelector('gramlot-textbox'), field);
+    assert.equal(data('workspace.title'), 'Retained draft');
+}
+
+async function checkMenuEditor({dom, byId, app, data}) {
+    byId('open-editor').shadowRoot.querySelector('button').click();
+    assert.equal(data('editor.open'), true);
+    assert.equal(byId('editor-window').querySelectorAll('[role="toolbar"]').length, 3);
+    app.data.setItem('editor.draft.title', 'Saved through the toolbar');
+    byId('editor-save').shadowRoot.querySelector('button').click();
+    await tick();
+    assert.equal(data('editor.saved.title'), 'Saved through the toolbar');
+    assert.equal(data('editor.open'), false);
+    byId('open-editor').shadowRoot.querySelector('button').click();
+    app.data.setItem('editor.draft.title', 'Discard this draft');
+    byId('editor-cancel').shadowRoot.querySelector('button').click();
+    await tick();
+    assert.equal(data('editor.saved.title'), 'Saved through the toolbar');
+    assert.equal(data('editor.open'), false);
+}
+
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    'menu-10': checkMenuEditor,
+    'menu-14': checkMenuEditor,
+    dialog_window: ctx => checkWindowExample(ctx, 'gramlot-dialog', 'Open dialog'),
+    floating_window: ctx => checkWindowExample(ctx, 'gramlot-floating-pane', 'Open floating'),
+    async sieve({app, dom, byId, data}) {
+        const press = name => byId(`sieve-${name}`).shadowRoot.querySelector('button').click();
+        const grid = dom.window.document.querySelector('.sieve-grid');
+        const originalCells = [...grid.children];
+        assert.equal(originalCells.length, 100);
+        assert.equal(data('sieve.cells.n1'), 'excluded');
+        assert.equal(data('sieve.running'), false);
+        assert.equal(data('sieve.interval'), 0);
+        assert.equal(data('sieve.count'), 0);
+        press('step');
+        await tick();
+        assert.equal(data('sieve.prime'), 2);
+        assert.equal(data('sieve.cells.n2'), 'prime');
+        press('step');
+        await tick();
+        assert.equal(data('sieve.cells.n4'), 'composite');
+        assert.ok(originalCells[3].classList.contains('sieve-composite'));
+        assert.equal(originalCells[3].getAttribute('aria-current'), 'step');
+        app.data.setItem('sieve.delay', 0.05);
+        press('start');
+        assert.equal(data('sieve.interval'), 0.05);
+        const beforePlay = data('sieve.steps');
+        for (let i = 0; i < 30 && data('sieve.steps') === beforePlay; i++) await tick(20);
+        assert.ok(data('sieve.steps') > beforePlay, 'the framework timer advances Data');
+        press('pause');
+        const pausedSteps = data('sieve.steps');
+        await tick(120);
+        assert.equal(data('sieve.steps'), pausedSteps);
+        assert.equal(data('sieve.interval'), 0);
+        press('start');
+        press('reset');
+        await tick(120);
+        assert.equal(data('sieve.steps'), 0);
+        assert.equal(data('sieve.running'), false);
+        assert.equal(data('sieve.delay'), 0.05, 'reset preserves the UI speed');
+        assert.equal(data('sieve.cells.n2'), 'pending');
+        for (let i = 0; i < 200 && data('sieve.count') < 25; i++) { press('step'); await tick(); }
+        press('start');
+        for (let i = 0; i < 30 && !data('sieve.done'); i++) await tick(20);
+        assert.equal(data('sieve.done'), true);
+        const primes = Array.from({length: 100}, (_, i) => i + 1).filter(n => data(`sieve.cells.n${n}`) === 'prime');
+        assert.deepEqual(primes, [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]);
+        assert.equal(data('sieve.count'), 25);
+        assert.equal(data('sieve.running'), false);
+        assert.equal(byId('sieve-start').disabled, true);
+        assert.equal(byId('sieve-step').disabled, true);
+        assert.equal(byId('sieve-pause').disabled, true);
+        for (const n of Array.from({length: 99}, (_, i) => i + 2).filter(n => !primes.includes(n))) {
+            assert.equal(data(`sieve.cells.n${n}`), 'composite');
+        }
+        assert.deepEqual([...grid.children], originalCells, 'bindings preserve the existing grid nodes');
+        press('reset');
+        assert.equal(data('sieve.done'), false);
+        assert.equal(byId('sieve-start').disabled, false);
+        press('start');
+        app.dispose();
+        const disposedSteps = data('sieve.steps');
+        await tick(120);
+        assert.equal(data('sieve.steps'), disposedSteps, 'disposal stops the owned timer');
+    },
+    async color_maker({app, dom, data}) {
+        assert.equal(data('maker.background.rgb'), 'rgb(242, 184, 110)');
+        assert.equal(data('maker.ink.rgb'), 'rgb(49, 47, 78)');
+        assert.equal(data('maker.shadow.rgb'), 'rgb(117, 79, 131)');
+        const poster = dom.window.document.querySelector('.maker-poster');
+        const panels = dom.window.document.querySelectorAll('.maker-panel');
+        assert.equal(panels.length, 3);
+        app.data.setItem('maker.background.red', 10);
+        await tick();
+        assert.equal(data('maker.background.rgb'), 'rgb(10, 184, 110)');
+        assert.equal(poster.style.backgroundColor, 'rgb(10, 184, 110)');
+        assert.equal(data('maker.ink.rgb'), 'rgb(49, 47, 78)');
+        app.data.setItem('maker.ink.blue', 200);
+        app.data.setItem('maker.shadow.green', 20);
+        await tick();
+        assert.equal(poster.style.color, 'rgb(49, 47, 200)');
+        assert.match(dom.window.document.querySelector('.maker-shadow').style.boxShadow, /rgb\(117, 20, 131\)/);
+        assert.equal(data('maker.background.rgb'), 'rgb(10, 184, 110)');
+        assert.equal(data('maker.selected'), 'background');
+        assert.equal(dom.window.document.querySelectorAll('.maker-selected').length, 1);
+        const random = dom.window.document.querySelector('.maker-palette-bar gramlot-button').shadowRoot.querySelector('button');
+        assert.equal(dom.window.document.querySelectorAll('.maker-palette-bar gramlot-button').length, 1);
+        dom.window.document.querySelector('.maker-header gramlot-button').shadowRoot.querySelector('button').click();
+        await tick();
+        assert.equal(data('maker.paletteOpen'), true);
+        const contexts = ['background', 'ink', 'shadow'];
+        for (const [i, context] of contexts.entries()) {
+            const others = contexts.filter(name => name !== context).map(name => [name, data(`maker.${name}.rgb`)]);
+            for (const channel of ['red', 'green', 'blue']) app.data.setItem(`maker.${context}.${channel}`, -1);
+            panels[i].dispatchEvent(new dom.window.MouseEvent('click', {bubbles: true}));
+            await tick();
+            assert.equal(data('maker.selected'), context);
+            assert.ok(panels[i].classList.contains('maker-selected'));
+            assert.equal(dom.window.document.querySelectorAll('.maker-selected').length, 1);
+            random.click();
+            await tick();
+            for (const channel of ['red', 'green', 'blue']) {
+                const value = data(`maker.${context}.${channel}`);
+                assert.ok(Number.isInteger(value) && value >= 0 && value <= 255);
+            }
+            for (const [name, rgb] of others) assert.equal(data(`maker.${name}.rgb`), rgb);
+        }
+    },
+    async b12({byId, data, app, edit, click}) {
+        assert.equal(byId('customer-name').value, 'Ada Lovelace');
+        assert.equal(byId('draft-name').value, '');
+        assert.equal(byId('draft-city').value, '');
+        edit('draft-name', 'Manual draft', 'input');
+        assert.equal(byId('draft-preview').textContent, 'Manual draft');
+        assert.equal(data('customer.name'), 'Ada Lovelace');
+        click('fill-sample');
+        assert.equal(byId('draft-name').value, 'Ada Lovelace');
+        assert.equal(byId('draft-city').value, '', 'the second field waits');
+        await tick(350);
+        assert.equal(byId('draft-city').value, 'London');
+        assert.notEqual(data('draft'), data('customer'));
+        assert.equal(data('draft.credit').toString(), '1250.5');
+        assert.equal(app.data.getNode('draft.name').getAttr('caption'), 'Customer name');
+        edit('draft-name', 'Grace', 'input');
+        assert.equal(data('customer.name'), 'Ada Lovelace');
+        click('clear-draft');
+        assert.equal(byId('draft-name').value, '');
+        assert.equal(byId('draft-city').value, '');
+        click('fill-sample');
+        assert.equal(byId('draft-preview').textContent, 'Ada Lovelace');
+        click('clear-draft');
+        await tick(350);
+        assert.equal(byId('draft-city').value, '', 'Clear cancels the pending field');
+        click('fill-sample');
+        await tick(100);
+        app.data.setItem('customer.city', 'Paris');
+        click('fill-sample');
+        await tick(220);
+        assert.equal(byId('draft-city').value, '', 'a new Play restarts the pause');
+        app.data.setItem('customer.city', 'Rome');
+        await tick(130);
+        assert.equal(byId('draft-city').value, 'Paris', 'Play uses its own snapshot');
+        assert.equal(data('ui.playSample'), null);
+    },
+    async w29({byId, data, window}) {
+        const row = (id, path) => byId(id).shadowRoot.querySelector(`[data-path="${path}"] > .row`);
+        const values = new Map();
+        const transfer = {dropEffect: 'none', effectAllowed: 'all', clearData: () => values.clear(),
+            setData: (type, value) => values.set(type, value), setDragImage() {}};
+        const send = (type, id, path) => {
+            const event = new window.Event(type, {bubbles: true, composed: true, cancelable: true});
+            Object.defineProperty(event, 'dataTransfer', {value: transfer});
+            row(id, path).dispatchEvent(event);
+        };
+        send('dragstart', 'drag-documents', 'brief');
+        assert.ok(values.has('app/document'));
+        send('dragover', 'drop-folders', 'inbox');
+        assert.equal(transfer.dropEffect, 'copy');
+        assert.ok(row('drop-folders', 'inbox').classList.contains('canBeDropped'));
+        send('drop', 'drop-folders', 'inbox'); await tick();
+        send('dragend', 'drag-documents', 'brief'); await tick();
+        assert.equal(data('treeDrag.folders.inbox.brief'), 'Project brief');
+        assert.equal(data('treeDrag.documents.brief'), 'Project brief');
+        assert.equal(byId('last-drop').textContent, 'Copied Project brief to Inbox');
+        assert.equal(byId('last-drag-end').textContent, 'Browser gesture: copy');
+        row('drop-folders', 'inbox').querySelector('button').click(); await tick();
+        assert.equal(row('drop-folders', 'inbox.brief').querySelector('.caption').textContent, 'Project brief');
+        send('dragstart', 'drag-documents', 'notes');
+        send('dragover', 'drop-folders', 'archive');
+        assert.equal(transfer.dropEffect, 'none');
+        assert.ok(row('drop-folders', 'archive').classList.contains('cannotBeDropped'));
+        send('drop', 'drop-folders', 'archive');
+        send('dragend', 'drag-documents', 'notes'); await tick();
+        assert.equal(data('treeDrag.folders.archive').getNodes().length, 0);
+        assert.equal(byId('last-drag-end').textContent, 'Browser gesture: none');
+        assert.equal(byId('drop-folders').shadowRoot.querySelector('.cannotBeDropped'), null);
+    },
+    async w27({byId, data}) {
+        const row = path => byId('styled-tree').shadowRoot.querySelector(`[data-path="${path}"]`);
+        row('documents').querySelector('button').click();
+        assert.ok(row('documents').querySelector('.caption').classList.contains('caption-open'));
+        row('documents.notes').querySelector('.row').click(); await tick();
+        assert.equal(data('treeStyle.selection'), 'documents.notes');
+        assert.ok(row('documents.notes').classList.contains('attention-node'));
+        assert.ok(row('documents.notes').querySelector('.caption').classList.contains('caption-selected'));
+        byId('styled-rename').click(); await tick();
+        assert.equal(row('documents.notes').querySelector('.caption').textContent, 'Updated notes');
+    },
+    async w28({byId, data}) {
+        const row = path => byId('rich-callback-tree').shadowRoot.querySelector(`[data-path="${path}"]`);
+        assert.equal(row('documents').querySelector('.caption strong').textContent, 'Documents');
+        assert.ok(row('starred').querySelector('.icon').classList.contains('favorite-icon'));
+        row('documents').querySelector('button').click();
+        assert.match(row('documents').querySelector('.caption').textContent, /open/);
+        row('documents.notes').querySelector('.row').click(); await tick();
+        assert.equal(data('treeLabels.selection'), 'documents.notes');
+        byId('toggle-rich').click(); await tick();
+        assert.equal(row('documents').querySelector('.caption strong'), null);
+        assert.equal(row('documents').querySelector('.caption').textContent, 'Documents');
+    },
+    async w26({app, byId, data, calls}) {
+        const host = byId('example-tree');
+        const row = path => host.shadowRoot.querySelector(`[data-path="${path}"]`);
+        assert.equal(app.data.getNode('treeDemo.nodes.catalog').staticValue, null);
+        assert.equal(calls.filter(call => call.name === 'catalog_children').length, 0);
+        byId('tree-select-notes').click(); await tick();
+        assert.equal(data('treeDemo.selection'), 'documents.notes');
+        assert.equal(row('documents').getAttribute('aria-expanded'), 'true');
+        byId('tree-rename').click(); await tick();
+        assert.equal(row('documents.notes').querySelector('.caption').textContent, 'Meeting notes');
+        row('catalog').querySelector('button').click(); await tick(); await tick();
+        assert.ok(row('catalog.books'));
+        assert.equal(calls.filter(call => call.name === 'catalog_children').length, 1);
+        row('catalog').querySelector('button').click();
+        row('catalog').querySelector('button').click(); await tick();
+        assert.equal(calls.filter(call => call.name === 'catalog_children').length, 1);
+    },
     async w25({byId, data: pageData, window}) {
         const data = path => pageData('profile.' + path);
         const edit = (id, value) => {
@@ -218,7 +488,7 @@ const CHECKS = {
     b08({byId, click}) {
         const items = () => byId('items').querySelectorAll('li').length;
         click('freeze');
-        assert.equal(byId('frozen').textContent, 'true');
+        assert.equal(byId('frozen').textContent, 'Structural updates frozen: true');
         click('add');
         assert.equal(byId('count').textContent, '1', 'built elements follow the Data under freeze');
         click('removeLast');
@@ -227,7 +497,7 @@ const CHECKS = {
         click('thaw');
         assert.equal(items(), 1);
         assert.equal(byId('count').textContent, '1');
-        assert.equal(byId('frozen').textContent, 'false');
+        assert.equal(byId('frozen').textContent, 'Structural updates frozen: false');
     },
     b09({byId, edit, click, data}) {
         assert.deepEqual(data('form.topics'), ['html']);
@@ -365,7 +635,7 @@ const CHECKS = {
         // 1. first render
         assert.equal(byId('caption').textContent, 'The story of a page');
         assert.equal(byId('quantity').value, '2');
-        assert.equal(byId('total').textContent, '2');
+        assert.equal(byId('total').textContent, 'Local total: 2');
         assert.equal(byId('circle').getAttribute('r'), '28');
         assert.equal(byId('circle').getAttribute('fill'), '#23745b');
         assert.equal(byId('small').checked, true);
@@ -378,9 +648,9 @@ const CHECKS = {
         // 3, 4. formula, controller, radio
         click('large');
         assert.deepEqual([data('story.size.small'), data('story.size.large')], [false, true]);
-        assert.equal(byId('total').textContent, '6');
+        assert.equal(byId('total').textContent, 'Local total: 6');
         edit('quantity', '4');
-        assert.equal(byId('total').textContent, '12');
+        assert.equal(byId('total').textContent, 'Local total: 12');
         assert.equal(byId('circle').getAttribute('fill'), '#b13d48');
         // 5. button
         click('press', {shiftKey: true});
@@ -393,7 +663,7 @@ const CHECKS = {
         assert.equal(byId('notes').children.length, 2);
         click('thaw');
         assert.equal(byId('notes').children.length, 1);
-        assert.equal(byId('total').textContent, '3');
+        assert.equal(byId('total').textContent, 'Local total: 3');
         // 7. later 0.2.14 stage: only explicit requests update the server quote.
         const requests = () => calls.filter(({contentType, name}) => contentType === 'data' && name === 'quote');
         assert.equal(requests().length, 0, 'the complete local trial needed no endpoint call');
@@ -402,7 +672,7 @@ const CHECKS = {
         click('request-quote'); await tick(0);
         assert.equal(data('story.quote'), 2);
         click('large'); click('gift');
-        assert.equal(byId('total').textContent, '11');
+        assert.equal(byId('total').textContent, 'Local total: 11');
         assert.equal(byId('quote').textContent, '2');
         assert.equal(requests().length, 1, 'editing does not trigger the click-only RPC');
         click('request-quote'); await tick(0);
@@ -600,8 +870,37 @@ CHECKS.c17 = async ({window, app, byId, edit, click, data}) => {
     assert.equal(links.length, 3, 'preview sends no mail');
 };
 
+test('c13: a request in flight is never cancelled, and the change made during the flight waits and is sent at the answer', async () => {
+    const family = families.find(({key}) => key === 'rpc');
+    const example = family.examples.find(({key}) => key === 'c13');
+    const page = await mount(family, example, {hold: ({contentType, name, params}) => contentType === 'source' && name === 'rules' && params.category === 'seating'});
+    try {
+        const {byId, edit, release, calls} = page;
+        const rules = () => calls.filter(({contentType, name}) => contentType === 'source' && name === 'rules').map(({params}) => params.category);
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting']);
+        assert.equal(byId('mounts').textContent, '1');
+        edit('product', 'products.chair');                    // B: sent, answer held
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting', 'seating']);
+        edit('product', 'products.lamp');                     // back to A during the flight: waits, sends nothing
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting', 'seating']);
+        assert.equal(byId('mounts').textContent, '1');
+        release();                                            // B answers: its fragment is mounted, then A is sent
+        await tick(0);
+        assert.deepEqual(rules(), ['lighting', 'seating', 'lighting']);
+        assert.equal(byId('mounts').textContent, '3');
+        assert.equal(byId('rule').textContent, 'Ships in two days, bulbs not included.');
+        assert.equal(byId('status').textContent, 'Mounted the lighting rules');
+        assert.deepEqual(page.errors, []);
+    } finally {
+        page.app.dispose();
+    }
+});
+
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'binding', 'controllers', 'components', 'layout']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'menus', 'editors', 'tools', 'composition']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);
@@ -616,25 +915,34 @@ test('every family folder has a README and every example its Python, JavaScript 
     }
 });
 
-test('every page module exports Page and Logic, and no page has a logic companion', async () => {
+test('every page module exports Page, and Logic only with methods; no page has a logic companion', async () => {
     for (const family of families) {
         assert.deepEqual(readdirSync(folder(family.key)).filter(name => name.endsWith('_aux.js')), [], family.key);
         for (const example of family.examples) {
             const module = await import(new URL(`${example.folder}.js`, folder(family.key)));
             assert.equal(typeof module.Page, 'function', `${example.key} Page`);
-            assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
+            if ('Logic' in module) {
+                assert.equal(typeof module.Logic, 'function', `${example.key} Logic`);
+                assert.ok(Reflect.ownKeys(module.Logic.prototype).some(name => name !== 'constructor'), `${example.key} exports an empty Logic`);
+            }
         }
+    }
+});
+
+test('the pages follow the naming and theme conventions (GC-225)', () => {
+    for (const family of families) for (const example of family.examples) for (const suffix of ['.py', '.js']) {
+        const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
+        const name = `${family.key}/${example.folder}${suffix}`;
+        assert.doesNotMatch(text, /\bpage\s*=/, `${name}: never page for an element`);
+        assert.doesNotMatch(text, /\bpane\s*=\s*root\.main\(/, `${name}: html_main is held in main_content`);
+        assert.doesNotMatch(text, /themes\/gramlot-base/, `${name}: the server links the base theme`);
     }
 });
 
 for (const family of families.filter(({key}) => key !== 'html_svg')) {
     for (const example of family.examples) {
         // c14 observes expiry of a five-second cache; Bun defaults to five seconds per test.
-        test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000}, async () => {
-            for (const suffix of ['.py', '.js']) {
-                const text = readFileSync(new URL(`${example.folder}${suffix}`, folder(family.key)), 'utf8');
-                assert.doesNotMatch(text, /\bpage\s*=/, 'never page for an element');
-            }
+        test(`${family.key}/${example.folder}: mounts without errors and behaves as its README says`, {timeout: 10000, skip: example.folder.startsWith('10-code_editors/') ? 'Qualified by the every-page Chromium suite: editor CSS and WASM require a browser' : false}, async () => {
             const page = await mount(family, example);
             try {
                 assert.ok(page.byId('gramlot-root').childElementCount > 0);

@@ -7,13 +7,13 @@
 gramlot-examples/
 ├── README.md                            Package entry point
 ├── LICENSE · NOTICE                     Apache 2.0
-├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.2.17
-├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.2.17
+├── pyproject.toml                       PyPI gramlot-examples · hatchling · gramlot>=0.3.6
+├── package.json                         npm @gramlot/gramlot-examples · @gramlot/gramlot>=0.3.6
 ├── src/gramlot_examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
 │   ├── catalog.json                     Common families
-│   ├── pages/                           README · html_svg (e) · binding (b) · controllers (c)
+│   ├── pages/                           README · 00-html_svg (e) · 02-binding (b) · 03-controllers (c)
 │   └── gallery/                         Gallery page
 │       ├── page.py · page.js            Python and JavaScript pages
 │       ├── gallery-page.js · gallery.css    Browser-safe UI · stylesheet
@@ -24,7 +24,7 @@ gramlot-examples/
 │   ├── serve_pages.py · serve_pages.mjs Serve one pages folder with the core GramlotFileServer
 │   ├── verify_pages_browser.mjs         Every page in Chromium, Python and JavaScript
 │   └── verify_e10_e13_browser.mjs       e10 and e13 in Chromium
-├── tests/                               Pages, gallery, build_gallery · fixtures/environment
+├── tests/                               Pages, gallery, build_gallery · Python/JS parity · fixtures/environment
 ├── .github/
 │   ├── workflows/tests.yml              Node, Bun, Python 3.11/3.12 · browser, every page · core main (informative)
 │   ├── workflows/publish.yml            Tag → GitHub release, PyPI, npm
@@ -39,13 +39,13 @@ gramlot-examples/
 
 The [Read the Docs manual](https://gramlot-examples.readthedocs.io/en/latest/)
 builds from `main` using `.readthedocs.yaml`. It uses the classic Read the Docs
-theme and the project logo. `scripts/prepare_docs.py` stages the README, the two
+theme and the project logo. `scripts/prepare_docs.py` stages the README, the current
 GE guides and every common lesson in catalogue order, with its Python and
 JavaScript source (and CSS when present). The lesson text remains authored beside
 the runnable pages; no second copy is maintained. Internal notes and concise
 mirrors are not part of the site. The documentation build uses the serverless exporter as a build tool to package
 every catalogue example with its own inspector palette, without the gallery shell or code pane.
-Each lesson embeds its example before the detailed explanation. The small 🔍 button
+Each lesson embeds its runnable example with its explanation. The small 🔍 button
 opens the Inspector; the complete source remains below the lesson. Page Logic,
 stylesheets, endpoints and remote fragments use the standard Worker export. It adds no serverless dependency
 to the examples package. Sphinx copies the complete export unchanged through

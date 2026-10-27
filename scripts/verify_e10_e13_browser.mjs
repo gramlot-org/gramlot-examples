@@ -34,10 +34,14 @@ async function started(page, errors) {
 
 /** e10: each × button removes its labelled card from the Source; reload restores the cards. */
 async function cards(browser, base) {
-    const {page, errors} = await open(browser, `${base}/10_cards_with_icons`);
+    const {page, errors} = await open(browser, `${base}/04-page_composition/01-cards_with_icons`);
     assert.equal(await page.locator('.icon-cards article').count(), 3);
+    // The × buttons are HTML buttons whose inline code reaches the Source through `this`, not through the window global.
+    assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll('.card-remove')].map(button => ({
+        tag: button.localName, global: /window\.gramlot/.test(window.gramlot.dom.getBaseSourceNode(button).getAttr('connect_onclick'))}))),
+        [{tag: 'button', global: false}, {tag: 'button', global: false}, {tag: 'button', global: false}]);
     await page.evaluate(() => {
-        window.originalCards = window.gramlot.src.builder.source.getItem('main.page.cards');
+        window.originalCards = window.gramlot.src.builder.source.getItem('main.main_content.cards');
         window.originalSibling = document.querySelector('.icon-cards article');
         window.removedCard = window.originalCards.getNode('drawing');
         window.recordCount = window.gramlot.src.renderer.records.size;
@@ -46,7 +50,7 @@ async function cards(browser, base) {
     assert.equal(await page.locator('.icon-cards article').count(), 2);
     assert.deepEqual(await page.evaluate(() => ({
         labels: window.originalCards.getNodes().map(node => node.label),
-        sameSource: window.originalCards === window.gramlot.src.builder.source.getItem('main.page.cards'),
+        sameSource: window.originalCards === window.gramlot.src.builder.source.getItem('main.main_content.cards'),
         sameSibling: window.originalSibling === document.querySelector('.icon-cards article'),
         removedRecord: !window.gramlot.src.renderer.records.has(window.removedCard),
         fewerRecords: window.gramlot.src.renderer.records.size < window.recordCount,
@@ -64,14 +68,23 @@ async function cards(browser, base) {
     await page.close();
 }
 
-/** e13: the buttons create, update and remove Source nodes; the animation timer ends with its section. */
+/** e13: the buttons create, update and remove Source nodes; the `_timing` controller of the animation ends with its section. */
 async function playground(browser, base) {
-    const {page, errors} = await open(browser, `${base}/13_live_source`, {timers: true});
+    const {page, errors} = await open(browser, new URL("../07-tools/01-live_source", `${base}/`).href, {timers: true});
+    // The animation is a controller with `_timing`, not a Source script; no inline code reads the window global.
+    assert.deepEqual(await page.evaluate(() => {
+        const source = window.gramlot.src.source;
+        const motion = source.getItem('main.main_content.motion').getNodes();
+        const handlers = [...document.querySelectorAll('button')].map(button => window.gramlot.dom.getBaseSourceNode(button).getAttr('connect_onclick'));
+        return {scripts: document.querySelectorAll('script:not([src]):not([type])').length,
+            controller: motion.filter(node => node.nodeTag === 'dataController').map(node => [node.getAttr('func'), node.getAttr('_timing')]),
+            globals: handlers.filter(code => /window\.gramlot/.test(code)).length, handlers: handlers.length};
+    }), {scripts: 0, controller: [['animate', 0.05]], globals: 0, handlers: 6});
     const list = page.locator('.live-items li');
     assert.equal(await list.count(), 2);
     await page.getByRole('button', {name: 'Add item', exact: true}).click();
     assert.equal(await list.count(), 3);
-    assert.equal(await page.evaluate(() => window.gramlot.src.source.getItem('main.page.work.items').getNodes().length), 3);
+    assert.equal(await page.evaluate(() => window.gramlot.src.source.getItem('main.main_content.work.items').getNodes().length), 3);
     await page.getByRole('button', {name: 'Remove last', exact: true}).click();
     assert.equal(await list.count(), 2);
     await page.getByRole('button', {name: 'Clear list', exact: true}).click();
@@ -83,7 +96,7 @@ async function playground(browser, base) {
     assert.equal(await page.locator('h1').innerText(), 'Source is alive!');
     const initial = await page.locator('circle').getAttribute('cx');
     await page.waitForFunction(value => document.querySelector('circle').getAttribute('cx') !== value, initial);
-    assert.equal(await page.evaluate(() => String(window.gramlot.src.source.getNode('main.page.motion.scene.ball').getAttr('cx'))
+    assert.equal(await page.evaluate(() => String(window.gramlot.src.source.getNode('main.main_content.motion.scene.ball').getAttr('cx'))
         === document.querySelector('circle').getAttribute('cx')), true);
     await page.getByRole('button', {name: 'Change ball color', exact: true}).click();
     assert.equal(await page.locator('circle').getAttribute('fill'), 'var(--gramlot-warning)');
@@ -104,9 +117,9 @@ const browser = await chromium.launch({headless: true});
 try {
     for (const base of bases) {
         await cards(browser, base);
-        console.log(`PASS ${base}/10_cards_with_icons: Source removal, DOM cleanup, sibling identity, keyboard and reload`);
+        console.log(`PASS ${base}/04-page_composition/01-cards_with_icons: Source removal, DOM cleanup, sibling identity, keyboard and reload`);
         await playground(browser, base);
-        console.log(`PASS ${base}/13_live_source: insert, delete, clear, text, SVG, animation and timer cleanup`);
+        console.log(`PASS ${base}/../07-tools/01-live_source: insert, delete, clear, text, SVG, animation and timer cleanup`);
     }
 } finally {
     await browser.close();

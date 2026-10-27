@@ -1,5 +1,9 @@
 /** Small behavioral checks for every container lesson; detailed geometry has dedicated suites. */
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+
+const catalog = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
+const carouselDemos = catalog.families.flatMap(family => family.examples).filter(example => example.key !== 'l08');
 
 async function edit(page, selector, value) {
     const field = page.locator(selector);
@@ -14,6 +18,33 @@ async function range(page, selector, value) {
     }, value);
 }
 export const layoutBehaviors = {
+    async 'tray-workspace'(page) {
+        const owner = page.locator('#composed-workspace gramlot-textbox input');
+        await owner.fill('Grace');
+        const original = await owner.elementHandle();
+        await page.getByRole('menuitem', {name:'Save layout', exact:true}).click();
+        const snapshot = await page.evaluate(() => window.gramlot.data.getItem('layout').toTytx());
+        const title = page.locator('[data-tray-block]:has(#composed-workspace) > .label-box label');
+        const rect = await title.boundingBox();
+        await page.mouse.move(rect.x+rect.width/2, rect.y+rect.height/2);
+        await page.mouse.down();
+        await page.mouse.move(rect.x+rect.width/2+25, rect.y+rect.height/2+30, {steps:8});
+        await page.mouse.up();
+        assert.equal(await page.evaluate(() => window.gramlot.data.getItem('layout.workspace.left')),45);
+        await page.evaluate(() => {
+            const bag=window.gramlot.data;
+            for(const [key,value] of Object.entries({layer:1,rotation:3,scale:.9,width:420,height:410}))
+                bag.setItem('layout.workspace.'+key,value);
+        });
+        await page.getByRole('menuitem', {name:'Restore', exact:true}).click();
+        assert.equal(await page.evaluate(() => window.gramlot.data.getItem('layout').toTytx()), snapshot);
+        assert.equal(await owner.inputValue(), 'Grace');
+        assert.equal(await original.evaluate(el => el === document.querySelector('#composed-workspace gramlot-textbox').control),true);
+        await page.getByRole('menuitemcheckbox', {name:'Lock layout'}).click();
+        await page.waitForFunction(() => window.gramlot.data.getItem('ui.locked') === true);
+        assert.equal(await page.locator('.tray-rotate:visible').count(),0);
+        await owner.fill('Ada');
+    },
     async l01(page) {
         await edit(page, '#customer-name input', 'Grace');
         assert.equal(await page.locator('#accepted-name').textContent(), 'Grace');
@@ -44,6 +75,43 @@ export const layoutBehaviors = {
         await range(page, '#lab-radius input', 18);
         assert.equal(await page.locator('#lab-outer').evaluate(el => getComputedStyle(el).borderTopLeftRadius), '18px');
         assert.equal(await page.locator('#lab-customer input').inputValue(), 'Grace Hopper');
+        const regions = [
+            ['lab-outer', 'outer.top', 'top'], ['lab-outer', 'outer.bottom', 'bottom'],
+            ['lab-outer', 'outer.left', 'left'], ['lab-outer', 'outer.right', 'right'],
+            ['lab-workspace', 'workspace.left', 'left'], ['lab-workspace', 'workspace.bottom', 'bottom'],
+            ['lab-editor', 'editor.bottom', 'bottom'],
+        ];
+        for (const [id, path, side] of regions) {
+            const slider = page.locator('#size-' + path.replace('.', '-') + ' input');
+            const separator = page.locator('#' + id + ' .separator[data-side=' + side + ']').first();
+            const before = Number(await slider.inputValue());
+            await separator.focus();
+            await separator.press(['top', 'bottom'].includes(side) ? 'ArrowDown' : 'ArrowRight');
+            const expected = before + (['left', 'top'].includes(side) ? 1 : -1);
+            assert.equal(await page.evaluate(path => gramlot.data.getItem('regions.' + path), path), expected);
+            assert.equal(Number(await slider.inputValue()), expected);
+            await range(page, '#size-' + path.replace('.', '-') + ' input', before);
+            assert.equal(await page.locator('#' + id).evaluate((el, side) => el.control.style.getPropertyValue('--' + side), side), before + 'px');
+            await page.evaluate(({path, value}) => gramlot.data.setItem('regions.' + path, value), {path, value: before + 0.37});
+            assert.equal(await page.evaluate(path => gramlot.data.getItem('regions.' + path), path), before, 'The slider quantizes external Data');
+            assert.equal(Number(await slider.inputValue()), before);
+            assert.equal(await page.locator('#' + id).evaluate((el, side) => el.control.style.getPropertyValue('--' + side), side), before + 'px');
+        }
+        // Assert writeback before pointerup: synchronization must be live.
+        const separator = page.locator('#lab-outer .separator[data-side=left]').first();
+        await separator.scrollIntoViewIfNeeded();
+        const box = await separator.boundingBox();
+        const before = Number(await page.locator('#size-outer-left input').inputValue());
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+        await page.mouse.down();
+        await page.mouse.move(box.x + box.width / 2 + 20.73, box.y + box.height / 2, {steps: 4});
+        const size = await page.evaluate(() => gramlot.data.getItem('regions.outer.left'));
+        assert(size > before, 'Dragging must update Data before release');
+        assert(Number.isInteger(size), 'The slider corrects fractional splitter writes');
+        assert.equal(await page.locator('#lab-outer').evaluate(el => el.control.style.getPropertyValue('--left')), size + 'px');
+        assert.equal(Number(await page.locator('#size-outer-left input').inputValue()), size);
+        await page.mouse.up();
+        assert.equal(await page.locator('#lab-customer input').inputValue(), 'Grace Hopper');
     },
     async l06(page) {
         await page.locator('#events-border .separator[data-side=left] .drawer').first().click();
@@ -59,10 +127,25 @@ export const layoutBehaviors = {
         assert.equal(await page.locator('#tabs-notes textarea').inputValue(), 'Retained notes');
         assert.equal(await page.locator('#tab-variants gramlot-tab-container').count(), 8);
     },
+    async l09(page) {
+        await page.locator('gramlot-textbox input').first().fill('Shared draft');
+        await page.locator('gramlot-textbox input').first().press('Tab');
+        await page.click('#mela-open-dialog');
+        await page.locator('#mela-dialog dialog[open]').waitFor();
+        assert.equal(await page.locator('#mela-dialog gramlot-textbox input').inputValue(), 'Shared draft');
+        await page.locator('#mela-dialog').getByText('Done', {exact: true}).click();
+        await page.waitForFunction(() => !gramlot.data.getItem('mela.dialogOpen'));
+        await page.click('#mela-open-floating');
+        await page.locator('#mela-floating gramlot-textbox input').waitFor({state:'visible'});
+        assert.equal(await page.locator('#mela-floating gramlot-textbox input').inputValue(), 'Shared draft');
+        await page.locator('#mela-floating').getByText('Done', {exact: true}).click();
+        await page.waitForFunction(() => !gramlot.data.getItem('mela.floatingOpen'));
+    },
     async l08(page) {
-        await range(page, '#stack-panel input', 1);
+        await range(page, '#stack-panel input', carouselDemos.findIndex(example => example.key === 'e02'));
         await page.waitForFunction(() => gramlot.data.getItem('stackDemo.active') === 'e02');
         await page.frameLocator('#live-e02').locator('#gramlot-root > *').first().waitFor();
-        assert.equal(await page.locator('#stack-page').textContent(), 'Demo: e02');
+        assert.equal(await page.locator('#stack-active-title').textContent(), await page.evaluate(() => gramlot.data.getItem('stackDemo.activeCaption')));
+        assert.ok(await page.locator('#stack-active-title').textContent());
     },
 };

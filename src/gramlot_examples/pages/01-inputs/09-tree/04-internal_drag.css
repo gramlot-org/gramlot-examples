@@ -1,0 +1,5 @@
+.drag-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.drag-panel { border: 1px solid currentColor; border-radius: 10px; padding: 1rem; }
+.drag-panel gramlot-tree { display: block; min-height: 150px; }
+#drag-documents::part(row) { cursor: grab; }
+@media (max-width: 560px) { .drag-columns { grid-template-columns: 1fr; } }

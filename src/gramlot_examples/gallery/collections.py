@@ -1,8 +1,11 @@
-"""Collections selected by the gallery application."""
-import json
-from importlib.resources import files
+"""Prepared collections selected by the gallery application."""
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
+from gramlot.collections.tree import mygramlot as tree
+from gramlot.collections.editors import mygramlot as editors
+from gramlot.collections.typst import mygramlot as typst
 
+from gramlot_examples.collections.menu_trial import mygramlot as menu_commands
 
 def collections():
-    return [{"grammar": json.loads(files("gramlot").joinpath(f"collections/{name}.json").read_text()),
-             "module": f"/gallery/dist/{name}.js"} for name in ("inputs", "layout")]
+    return [inputs, layout, tree, editors, typst, menu_commands]

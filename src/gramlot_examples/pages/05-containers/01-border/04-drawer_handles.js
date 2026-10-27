@@ -1,0 +1,132 @@
+import inputs from '../../../gallery/dist/inputs/descriptor.js';
+import layout from '../../../gallery/dist/layout/descriptor.js';
+import { Page as BasePage } from '@gramlot/gramlot/page';
+
+export class Page extends BasePage {
+    static gramlots = [inputs, layout];
+    static title = "Drawers: handles, content and retained Data";
+    static devices = ['desktop', 'tablet', 'phone'];
+
+    main(root) {
+        const main_content = root.main({
+            class: 'example-page stack',
+            height: '100dvh',
+            box_sizing: 'border-box',
+            display: 'flex',
+            flex_direction: 'column',
+            overflow: 'hidden',
+        });
+        main_content.h1('Small handles, readable labels');
+        main_content.p('Open and resize the regions; the fields share the same Data.');
+        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
+        const canvas = main_content.div({class: 'layout-canvas'});
+        const border = canvas.borderContainer({
+            id: 'handles-demo',
+            height: '100%',
+            min_height: 0,
+            flex: '1',
+            max_width: '64rem',
+            border: '1px solid var(--gramlot-border-control, #aaa)',
+            rounded: 12,
+        });
+        const surface = 'var(--gramlot-surface-subtle, #eef1f5)';
+        const search = border.contentPane({default_drawer: true,
+            region: 'top',
+            nodeId: 'drawerSearch',
+            height: '80px',
+            splitter: true,
+            drawer: '^drawerSearch',
+            drawer_icon: '⌕',
+            drawer_label: 'Search',
+            drawer_title: 'Search',
+            drawer_minimize: true,
+            minSize: 36,
+            padding: '10px',
+            background: surface,
+        });
+        search.textbox({default: "",
+            value: '^search',
+            lbl: 'Search customers',
+            placeholder: 'Type a name',
+            width: '100%',
+            max_width: '20rem',
+        });
+        const filters = border.contentPane({default_width: "180px", default_drawer: true,
+            region: 'left',
+            nodeId: 'drawerFilters',
+            width: '^filtersWidth',
+            splitter: true,
+            drawer: '^drawerFilters',
+            drawer_label: 'Filters',
+            drawer_title: 'Filters',
+            minSize: 70,
+            padding: '10px',
+            background: surface,
+        });
+        filters.h3('Filters');
+        filters.checkbox({ value: '^active', label: 'Active only', mode: 'switch' });
+        filters.radioButtonText({
+            value: '^delivery',
+            values: 'standard:Standard,express:Express,pickup:Pick up',
+            cols: 1,
+        });
+        const details = border.contentPane({default_drawer: "close",
+            region: 'right',
+            nodeId: 'drawerDetails',
+            width: '180px',
+            splitter: true,
+            drawer: '^drawerDetails',
+            drawer_label: 'Details',
+            drawer_title: 'Details',
+            drawer_minimize: true,
+            minSize: 70,
+            padding: '10px',
+            background: surface,
+        });
+        details.h3('Customer details');
+        details.textbox({ value: '^customer', lbl: 'Customer', width: '100%' });
+        details.p('Pull the closed handle inward to open this panel.');
+        border
+            .contentPane({default_drawer: true,
+                region: 'bottom',
+                nodeId: 'drawerOutput',
+                height: '64px',
+                splitter: true,
+                drawer: '^drawerOutput',
+                drawer_label: 'Output',
+                drawer_title: 'Output',
+                minSize: 36,
+                padding: '10px',
+                background: surface,
+            })
+            .p('^note', { mask: 'Shared note: {}' });
+        const center = border.contentPane({
+            region: 'center',
+            padding: '16px',
+            background: 'var(--gramlot-surface, #fff)',
+        });
+        center.h2('Customer workspace');
+        center.p('^customer', { mask: 'Customer: {}' });
+        center.p('^delivery', { mask: 'Delivery: {}' });
+        center.textbox({
+            id: 'handles-note',
+            value: '^note',
+            lbl: 'Retained value',
+            width: '100%',
+            max_width: '18rem',
+        });
+        center.p(
+            'Move over a handle or focus it with Tab. Its label grows over the panel; the fields do not move.',
+        );
+        center.p(
+            'Click to toggle. Drag to resize, even from closed. On touch devices the captions remain visible and compact at rest.',
+        );
+        for (const title of ['Search', 'Filters', 'Details', 'Output']) {
+            main_content.dataController({
+                script: "this.SET(path, open ? true : 'close')",
+                path: `drawer${title}`,
+                ...{ [`subscribe_drawer${title}_closable_change`]: true },
+            });
+        }
+    }
+}

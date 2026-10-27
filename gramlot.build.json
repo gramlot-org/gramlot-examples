@@ -1,0 +1,9 @@
+{
+  "output": "./src",
+  "collections": [
+    {
+      "entry": "./collections/menu-trial.js",
+      "pythonPackage": "gramlot_examples.collections.menu_trial"
+    }
+  ]
+}

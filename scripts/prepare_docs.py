@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = "src/gramlot_examples/pages"
-GUIDES = ("docs/005-repository-map.md", "docs/010-gallery.md")
+GUIDES = ("docs/030-using-the-gallery.md", "docs/035-feature-coverage.md", "docs/005-repository-map.md", "docs/020-mobile-modules.md", "docs/010-gallery.md")
 REPOSITORY = "https://github.com/gramlot-org/gramlot-examples/blob/main/"
 
 
@@ -20,11 +20,12 @@ def stage():
     lessons = {}
     for family in catalog["families"]:
         key = family["key"]
-        documents[f"{PAGES}/{key}/README.md"] = f"lessons/{key}/index.md"
+        folder = family["folder"]
+        documents[f"{PAGES}/{folder}/README.md"] = f"lessons/{key}/index.md"
         for example in family["examples"]:
             name = example["folder"]
-            documents[f"{PAGES}/{key}/{name}.md"] = f"lessons/{key}/{name}.md"
-            lessons[f"{PAGES}/{key}/{name}.md"] = example
+            documents[f"{PAGES}/{folder}/{name}.md"] = f"lessons/{key}/{name}.md"
+            lessons[f"{PAGES}/{folder}/{name}.md"] = example
     destination = ROOT / "build/docs-source"
     if destination.exists():
         shutil.rmtree(destination)
@@ -43,6 +44,16 @@ def stage():
 
     for source, target in documents.items():
         text = (ROOT / source).read_text()
+        if source == "docs/010-gallery.md":
+            # Keep old block URLs usable, but do not teach superseded implementations.
+            anchors = re.findall(r'<a id="([^"]+)"></a>', text)
+            text = ("# Historical gallery engineering record\n\n"
+                    "These dated notes describe earlier implementations. For current behavior, "
+                    "read [Using the gallery](030-using-the-gallery.md).\n\n"
+                    "The complete record remains [in the repository](" + REPOSITORY + source + ").\n\n")
+            for anchor in anchors:
+                text += (f'<a id="{anchor}"></a>\n\n'
+                         f'[Historical block {anchor}]({REPOSITORY}{source}#{anchor})\n\n')
         text = re.sub(r'<a id="([^"]+)"></a>', r'(\1)=', text)
         def link(match):
             label, url = match.groups()
@@ -67,11 +78,11 @@ def stage():
             text = add_toc(text, [f'{f["key"]}/index' for f in catalog["families"]], "Learning sequence")
         else:
             for family in catalog["families"]:
-                if source == f'{PAGES}/{family["key"]}/README.md':
+                if source == f'{PAGES}/{family["folder"]}/README.md':
                     text = add_toc(text, [e["folder"] for e in family["examples"]], family["title"])
         if source.startswith(PAGES + "/") and not source.endswith("README.md"):
             example = lessons[source]
-            url = f"../../playgrounds/{example['key']}/index.html"
+            url = posixpath.relpath(f"playgrounds/{example['key']}/index.html", posixpath.dirname(target))
             title = escape(f"Gramlot {example['title']} and inspector playground", quote=True)
             playground = ("\n\n```{raw} html\n"
                           f'<p><a href="{url}" target="_blank" rel="noopener">Open this example in a separate tab</a>'
@@ -87,6 +98,9 @@ def stage():
                     copied.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(original, copied)
                     text += f"\n```{{literalinclude}} {copied.name}\n:language: {language}\n:caption: {copied.name}\n```\n"
+            data_file = (ROOT / source).with_name(Path(source).stem + "_data.tytx")
+            if data_file.is_file():
+                text += "\n\n## Initial Data Bag\n\nThe same-name TYTX companion is loaded automatically before rendering.\n\n```text\n" + data_file.read_text().rstrip() + "\n```\n"
         output = destination / target
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(text)

@@ -1,19 +1,56 @@
 """Gallery content on Gramlot's reusable index page."""
-from gramlot import IndexPage
-from gramlot_examples import build_gallery
+from gramlot.collections.inputs import mygramlot as inputs
+from gramlot.collections.layout import mygramlot as layout
+from gramlot.collections.tree import mygramlot as tree
+from gramlot.collections.editors import mygramlot as editors
+from gramlot import IndexPage, source, endpoint
+from genro_bag import Bag
+from gramlot_examples import build_gallery, navigation_directory
 from gramlot_examples.gallery.guided_demo import guided_demo
+from gramlot_examples.gallery.features import feature_index
+from gramlot_examples.gallery.modules import module_bag, registered_modules
+
+
+NAVIGATION_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M9%204v16M5.5%208h1M5.5%2012h1M5.5%2016h1%22%2F%3E%3C%2Fsvg%3E"
+SETTINGS_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m10%203-.5%202-2%20.9-1.9-.6-2%203.4L5%2010v2l-1.4%201.3%202%203.4%201.9-.6%202%20.9.5%202h4l.5-2%202-.9%201.9.6%202-3.4L19%2012v-2l1.4-1.3-2-3.4-1.9.6-2-.9L14%203Z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2211%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E"
+
+
+INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%221%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%227.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%226.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220.5%22%20stroke%3D%22%23404448%22%2F%3E%3C%2Fsvg%3E"
+
+
 
 
 class Page(IndexPage):
+    gramlots = [inputs, layout, tree, editors]
     title = "Gramlot examples"
     installable = True
     app_icon = "/assets/branding/app-icon.png"
-    css = (*IndexPage.css, "/gallery/gallery.css")
+    css = (*IndexPage.css, "/themes/gramlot-index/theme.css", "/gallery/gallery.css")
     shell_id = "gallery"
-    logoUrl = "/assets/branding/gramlot-logo-dark.svg"
-    galleryScript = "/gallery/dist/gallery.js"
+    logoUrl = "/assets/branding/svg/gramlot-horizontal-primary.svg"
+    datapath = "galleryIndex"
     catalogs = ()
+    gallery_modules = ()
     serverless_download_url = None
+
+    def main(self, root):
+        frame = root.framePane(id="gallery-frame", height="100%", min_height=0)
+        frame.left.setAttr({"id": "gallery-rail-region", "width": "42px", "padding": "45px 3px 3px",
+                            "class": "gallery-rail-region"})
+        rail = frame.left.menu(id="gallery-rail", presentation="bar", orientation="vertical",
+                               labelPosition="tooltip", iconSize=24, width="100%", height="100%",
+                               aria_label="Gallery tools")
+        rail.menuline(caption="Navigation", tooltip="Navigation — browse examples and documentation", iconSrc=NAVIGATION_ICON,
+                      checked="^galleryIndex.navigationOpen", action="galleryToggleNavigation",
+                      overflowable=False, id="gallery-navigation-button", width="36px", height="36px")
+        rail.spacer(flex=1)
+        rail.menuline(caption="Inspector", tooltip="Inspector — explore the current page’s Source and Data", iconSrc=INSPECTOR_ICON,
+                      checked=False, disabled=True, overflowable=False,
+                      id="gallery-inspector", width="36px", height="36px")
+        rail.menuline(caption="Settings", tooltip="Settings — change theme, colors and toolbar position", iconSrc=SETTINGS_ICON,
+                      checked="^galleryIndex.settingsOpen", action="galleryToggleSettings",
+                      overflowable=False, id="gallery-settings-button", width="36px", height="36px")
+        super().main(frame.center)
 
     @property
     def logo_url(self):
@@ -24,121 +61,160 @@ class Page(IndexPage):
         return build_gallery(self.catalogs)
 
     @property
-    def navigation(self):
+    def groups(self):
         gallery = self.gallery
         return [{**family, "children": [
-            {**item, "url": item["key"], "path": family["path"],
+            {**item, "url": gallery["routes"][item["key"]]["url"], "path": family["path"],
              "logic": gallery["routes"][item["key"]]["logic"]}
             for item in family["examples"]]} for family in gallery["families"]]
 
-    def main(self, root):
-        families = self.navigation
-        shell = root.div(class_="index-shell gallery-containers", id=self.shell_id)
-        self.header(shell)
-        regions = shell.borderContainer(id="gallery-regions", node_id="galleryRegions",
-                                        data_index_regions=True, height="100%", min_height=0)
-        sidebar = regions.contentPane(region="left", width="240px", minSize=160, maxSize=420,
-                                      splitter=True, drawer=True, drawer_icon="☰", drawer_label="Navigation",
-                                      drawer_minimize=True, node_id="galleryNavigation",
-                                      class_="index-sidebar", id="index-sidebar")
-        brand = sidebar.header()
-        brand.img(src=self.logo_url, alt=self.title, class_="index-logo")
-        navigation = sidebar.nav(aria_label="Pages").ul(class_="index-list")
-        for family in families:
-            category = navigation.li().details(open=family is families[0])
-            category.summary(tabindex=-1).a(family["title"], id=f"open-{family['key']}",
-                href=f"#panel-{family['key']}", class_="index-family", tabindex=-1)
-            items = category.ul(class_="index-list")
-            for example in family["children"]:
-                items.li().a(example["title"], id=f"open-{example['key']}", href=example["url"], tabindex=-1)
-        center = regions.contentPane(region="center", id="gallery-center", overflow="hidden")
-        shell.dataSetter("galleryIndex.active", "intro")
-        panels = center.tabContainer(id="index-pages", class_="index-main", height="100%",
-                                     selectedPage="^galleryIndex.active", tabMode="tabs")
-        self.introduction(panels.contentPane(id="panel-intro", title="Introduction", pageName="intro",
-                                             class_="index-intro"))
-        for family in families:
-            self.group_panel(panels.contentPane(id=f"panel-{family['key']}", title=family["title"],
-                pageName=family["key"], class_="index-category", hidden=True), family)
-            for example in family["children"]:
-                self.panel(panels, example)
-        code = regions.contentPane(region="right", width="420px", minSize=220, maxSize=900,
-                                   splitter=True, drawer=True, drawer_icon="⌘", drawer_label="Code",
-                                   drawer_minimize=True, node_id="galleryCode", id="index-code",
-                                   aria_label="Example source code", hidden=True)
-        for family in families:
-            for example in family["children"]:
-                self.code_panel(code, example)
-        self.footer(shell.footer(class_="index-footer"))
-        self.behavior(shell)
+    @property
+    def navigation(self):
+        navigation = navigation_directory(catalogs=self.catalogs)
+        navigation.set_item("features", None, {"title": "Features", "key": "features", "category": False})
+        return navigation
+
+    def left(self, pane):
+        pane.set_attr({"id": "index-sidebar", "class": "index-sidebar", "nodeId": "galleryNavigation"})
+        header = pane.header(class_="gallery-navigation-header")
+        header.img(src=self.logo_url, alt=self.title, class_="index-logo")
+        search = header.menu(presentation="bar", class_="gallery-navigation-search", aria_label="Search navigation")
+        field = search.menuline(group=True, overflowable=False, flex=1, min_width=0).div(class_="gallery-search-field")
+        field.span(class_="gallery-search-icon", aria_hidden="true")
+        field.input(type="search", value="^galleryIndex.search", default="", live=True,
+                    placeholder="Search examples", aria_label="Search examples")
+        field.html_button(type="button", class_="gallery-search-clear", aria_label="Clear search", title="Clear search",
+                     hidden="^galleryIndex.search:={} === ''", connect_onclick="this.SET('galleryIndex.search', '')")
+        super().left(pane)
+        pane.set_attr({"drawer_minimize": True, "drawer_label": "", "drawer_display": "none"})
+        pane.value.get_node("tree").set_attr({"id": "gallery-navigation-tree", "class": "gallery-navigation-tree", "autoCollapse": True, "hideValues": True, "searchText": "^galleryIndex.search"})
+
+    def center(self, pane):
+        pane.set_attr({"id": "gallery-center", "overflow": "hidden"})
+        super().center(pane)
+        pane.value.get_node("tabs").set_attr({"id": "index-pages", "class": "index-main", "hidden": True})
+        pane.div(id="gallery-introduction", height="100%").iframe(src="pages/00-index", title="Example gallery", width="100%", height="100%", border=0)
+        feature_index(pane, {item["key"]: item for group in self.groups for item in group["children"]})
+
+    def top(self, pane):
+        pane.set_attr({"height": "var(--gallery-toolbar-size,42px)"})
+        self.header(pane)
+
+    @endpoint
+    def navigation_section(self, directory):
+        return navigation_directory(directory, self.catalogs)
 
     def introduction(self, intro):
         intro.h2("Example gallery")
         intro.p("This gallery shows each example page beside the code that creates it. "
                 "The Python and JavaScript integrations have the same examples.")
-        intro.p("Choose an example from the list. Its tab stays open so you can return to it. "
-                "Use the arrow keys on a focused tab to switch pages. In Settings (⚙), enable Keyboard navigation to include the navigation links in the Tab sequence. "
-                "Use the top bar to show or hide Navigation and Code; drag their splitters to resize them. The drawer handles keep both panels within reach. Each lesson has Example and Explanation tabs; switching them preserves the running example. "
-                "Choose Base, Compact, mimi or joanna independently of the color mode.")
+        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. "
+                "Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. "
+                "Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Open Code and drag its internal icon to open it in a floating window; close that window to return Code to its tab. Switching tabs preserves the running example. "
+                "Choose the theme, color combination and light/dark mode independently in Settings.")
 
     def group_panel(self, pane, group):
         pane.div((group["path"] / "README.md").read_text(), id=f"readme-{group['key']}")
 
     def footer(self, footer):
-        footer.html_button("⚙", type="button", id="gallery-settings-toggle", class_="gallery-settings-toggle",
-                      title="Settings", aria_label="Settings", popovertarget="gallery-settings")
-        settings = footer.div(id="gallery-settings", popover="auto", aria_labelledby="gallery-settings-title")
-        heading = settings.div(class_="gallery-settings-heading")
-        heading.h2("Settings", id="gallery-settings-title")
-        heading.html_button("×", type="button", aria_label="Close settings", popovertarget="gallery-settings",
-                       popovertargetaction="hide")
-        super().footer(settings)
-        labels = settings.div(class_="index-theme")
-        labels.html_label("Label position", for_="gallery-label-position")
-        position = labels.select(id="gallery-label-position", value="example")
-        position.option("As in the example", value="example", selected=True)
-        for code in ("TL", "TC", "TR", "L", "R", "BL", "BC", "BR"):
-            position.option(code, value=code)
-        settings.p("Label position applies to input components in the previews. "
-                   "Choose As in the example to restore the lesson's layout.")
-        inspector = footer.html_button(type="button", id="gallery-inspector", class_="gallery-inspector",
-                                  title="Open inspector", aria_label="Inspector",
-                                  aria_pressed="false", disabled=True)
-        inspector.span("🔍", aria_hidden="true")
+        settings = footer.div(class_="gallery-settings-content")
+        fields = settings.formlet(columns=1, lbl_position="L", lbl_text_align="right",
+                                  box_c_width="100%", gap="8px 12px", id="gallery-settings-form")
+        fields.filteringSelect(validate_notnull=True, lbl="Theme", id="index-appearance", value="^galleryIndex.appearance",
+                               values="base:Base,compact:Compact,mimi:mimi,joanna:joanna,mela:Mela")
+        fields.filteringSelect(validate_notnull=True, lbl="Colors", id="index-palette", value="^galleryIndex.palette",
+                               values="default:Theme default,compact:Blue & slate,mimi:Sage & green,joanna:Warm gray & blue")
+        fields.filteringSelect(validate_notnull=True, lbl="Color mode", id="index-theme", value="^galleryIndex.theme",
+                               values="light:Light,dark:Dark")
+        fields.filteringSelect(validate_notnull=True, lbl="Toolbar", id="gallery-toolbar-position",
+                               value="^galleryIndex.toolbarPosition", default="auto",
+                               values="auto:Automatic,left:Left,bottom:Bottom")
+        fields.filteringSelect(validate_notnull=True, lbl="Label position", id="gallery-label-position", value="^galleryIndex.labelPosition",
+                               values="example:As in the example,TL:Top left,TC:Top center,TR:Top right,L:Left,R:Right,BL:Bottom left,BC:Bottom center,BR:Bottom right")
+        fields.checkbox(lbl="Navigation", label="Keyboard shortcuts", id="keyboard-navigation",
+                        value="^galleryIndex.keyboard")
+        settings.p("Changes apply immediately. Colors do not change density; label position affects the example fields.")
+        settings.p("Automatic uses the bottom in narrow, portrait windows and the left otherwise. Choose Left or Bottom to compare.")
+        if self.installable:
+            app = settings.details(class_="index-install")
+            app.summary("Install app")
+            app.html_button("Install", type="button", id="index-install-button", hidden=True)
+            app.p("", id="index-install-status", role="status")
+            app.p("Chrome: use Install page as app in the browser menu. "
+                  "Safari on macOS Sonoma or later: File > Add to Dock.")
+            app.p("Use HTTPS or localhost. For a static export, serve the directory; "
+                  "direct file opening is not installable. Keep the server running for hosted pages.")
 
     def header(self, shell):
         header = shell.header(class_="gallery-toolbar")
-        header.html_button("☰ Navigation", type="button", id="index-navigation-toggle",
-                      aria_controls="index-sidebar", aria_expanded="true")
-        header.html_button("☰", type="button", id="gallery-mobile-menu", class_="gallery-mobile-only",
-                           aria_label="Navigation", aria_controls="index-sidebar", aria_expanded="false")
         header.h1(self.title)
-        header.html_button("Code ⟨/⟩", type="button", id="index-code-toggle",
-                      aria_controls="index-code", aria_expanded="false", disabled=True)
-
-        views = header.div(class_="gallery-mobile-views gallery-mobile-only", role="group", aria_label="Gallery view")
-        for view, caption in (("example", "Example"), ("code", "Code"), ("inspector", "Inspector")):
-            views.html_button(caption, type="button", id=f"gallery-view-{view}",
-                              aria_pressed="true" if view == "example" else "false")
+        header.span("", id="gallery-load-status", role="status", aria_live="polite")
 
     def behavior(self, shell):
-        shell.html_button("", type="button", id="gallery-mobile-backdrop", hidden=True,
-                          aria_label="Close navigation", tabindex=-1)
+        shell.set_attr({"height": "100%"})
+        shell.dataController("this.SET('galleryIndex.navigationOpen', open)", subscribe_galleryNavigation_closable_change=True)
+        shell.set_attr({"class": "frame-page index-shell gallery-containers"})
+        shell.value.get_node("frame").set_attr({"id": "gallery-regions", "nodeId": "galleryRegions"})
         shell.section(id="gallery-inspector-panel", aria_label="Inspector")
-        shell.script(src=self.galleryScript)
+        settings = shell.floatingPane(title="Settings", id="gallery-settings",
+                                      open="^galleryIndex.settingsOpen", width="390px", height="420px")
+        settings.frame.center.setAttr({"padding": "12px", "overflow": "auto"})
+        self.footer(settings.frame.center)
+        if self.gallery_modules:
+            shell.dataSetter("galleryIndex.modules", module_bag(self.gallery_modules))
+        shell.dataController(func="galleryInitialize", _onBuilt=True)
+        shell.dataController(func="galleryMount", _onStart=True)
 
-    def panel(self, parent, example):
-        examples = example["path"]
+    def gallery_item(self, key):
+        for family in self.groups:
+            if family["key"] == key:
+                return family
+            for example in family["children"]:
+                if example["key"] == key:
+                    return example
+        raise ValueError(f"Unknown gallery entry: {key}")
+
+    @source
+    def lesson(self, root, key, view="example", **kwargs):
+        item = self.gallery_item(key)
+        if view == "code" and "children" not in item:
+            self.code_panel(root, item)
+        elif view == "description" and "children" not in item:
+            root.div((item["path"] / f"{item['folder']}.md").read_text(), id=f"readme-{key}")
+        elif view == "example":
+            if "children" in item:
+                self.group_panel(root, item)
+            else:
+                self.example_panel(root, item)
+        else:
+            raise ValueError(f"Unknown gallery view: {key}/{view}")
+
+    def panel(self, pane, node):
+        if node.attr.get("module") is not None:
+            for module in registered_modules(self.gallery_modules):
+                for entry in module['entries']:
+                    if module['id'] == node.attr['module'] and entry['id'] == node.attr.get('moduleEntry'):
+                        pane.iframe(src=entry['url'], title=entry['title'], width="100%", height="100%", border=0)
+                        return
+            raise ValueError("Unknown registered module entry")
+        key = node.attr.get("key")
+        if "markdown" in node.attr:
+            pane.div(node.attr["markdown"], class_="gallery-directory-markdown", padding="24px")
+        elif node.attr.get("category") or key is None:
+            pane.iframe(src=node.attr["url"], title=node.attr.get("title", node.label),
+                        width="100%", height="100%", border=0)
+        else:
+            self.example_panel(pane, self.gallery_item(key))
+
+    def example_panel(self, parent, example):
         key = example["key"]
-        panel = parent.contentPane(id=f"panel-{key}", title=example["title"], pageName=key,
-                                   class_="gallery-panel", hidden=True)
-        panel = panel.div(class_="gallery-panel-layout")
+        panel = parent.div(class_="gallery-panel-layout")
         header = panel.header(class_="gallery-explanation")
         header.h2(example["title"])
         header.p("In this example: " + example.get("description", ""))
         preview = panel.tabContainer(class_="gallery-preview", id=f"preview-{key}",
                                      tabMode="underline", height="100%", min_height=0,
-                                     **({"node_id": "galleryGuidePreview"} if key == "l04" else {}))
+                                     **({"nodeId": "galleryGuidePreview"} if key == "l04" else {}))
         stage = preview.contentPane(title="Example", pageName="example",
                                     class_="gallery-preview-stage", id=f"preview-stage-{key}")
         if key == "l04":
@@ -147,17 +223,44 @@ class Page(IndexPage):
             guided_demo(layout)
         stage.iframe(title=f"{example['title']} preview", name=f"example-{key}", id=f"frame-{key}")
         explanation = preview.contentPane(title="Explanation", pageName="explanation",
-                                          class_="gallery-lesson", overflow="auto")
-        explanation.div((examples / f"{example['folder']}.md").read_text(), id=f"readme-{key}")
+                                          class_="gallery-lesson", overflow="auto", id=f"description-{key}")
+        explanation.p("Loading explanation…", role="status")
+        code = preview.contentPane(title="Code", pageName="code", detachable=True,
+                                   class_="gallery-codepane", id=f"codepane-{key}")
+        code.tabContainer(id=f"code-tabs-{key}", class_="gallery-source-tabs", height="100%",
+                          tabMode="underline").contentPane(title="Code").p("Loading code…", role="status")
+
+    def source_document(self, key):
+        """Read-only default; the serving integration supplies write authorization."""
+        example = self.gallery_item(key)
+        file = example["path"] / f"{example['folder']}.py"
+        return dict(content=file.read_text(), revision=None, writable=False)
 
     def code_panel(self, parent, example):
         key = example["key"]
-        source_path = example["path"] / f"{example['folder']}.py"
+        document = self.source_document(key)
+        pane = parent.contentPane(title="Python", pageName="python", id=f"code-panel-{key}")
+        scope = "galleryIndex.sourceDocuments.s_" + key.encode("utf-8").hex()
+        body = pane.div(datapath=scope, height="100%", display="flex", flex_direction="column")
+        for name, value in dict(content=document["content"], saved=document["content"],
+                                revision=document["revision"], readonly=not document["writable"],
+                                busy=False, saveDisabled=True, revertDisabled=True,
+                                status="" if document["writable"] else "Read only: remote editing is disabled.").items():
+            body.dataSetter(f".{name}", value)
+        toolbar = body.div(display="flex", gap="6px", padding="6px", flex_shrink=0,
+                           class_="gallery-code-toolbar", hidden="^.readonly")
+        toolbar.button("Save", class_="button--quiet", disabled="^.saveDisabled").dataController(
+            func="galleryCodeSave", key=key)
+        toolbar.button("Revert", class_="button--quiet", disabled="^.revertDisabled").dataController(
+            func="galleryCodeRevert", key=key)
+        body.div("^.status", role="status", padding="6px", white_space="pre-wrap", flex_shrink=0,
+                 id=f"code-status-{key}")
+        body.codeMirror(value="^.content", language="python", readonly="^.readonly", fontSize=12,
+                        fontFamily="var(--gramlot-font-code)", flex="1", min_height=0,
+                        id=f"code-{key}", nodeId=f"galleryCodeEditor_{key}")
+        body.dataController(func="galleryCodeMount", key=key, _onStart=True)
+        body.dataController(func="galleryCodeSave", key=key, **{f"subscribe_galleryCodeEditor_{key}_save": True})
         logic_path = example["logic"]
-        codepane = parent.tabContainer(class_="gallery-codepane gallery-source-tabs", id=f"codepane-{key}", hidden=True,
-                                       height="100%", tabMode="underline")
-        codepane.contentPane(title="Python", pageName="python", id=f"code-panel-{key}").pre(
-            tabindex=0).code(source_path.read_text(), class_="language-python", id=f"code-{key}")
         if logic_path is not None:
-            codepane.contentPane(title="logic.js", pageName="logic", id=f"logic-panel-{key}").pre(
+            parent.contentPane(title="logic.js", pageName="logic", id=f"logic-panel-{key}").pre(
                 tabindex=0).code(logic_path.read_text(), class_="language-javascript", id=f"logic-{key}")

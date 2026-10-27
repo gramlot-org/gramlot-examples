@@ -1,0 +1,9 @@
+.styled-tree { display:block; max-width:42rem; border:1px solid var(--gramlot-border,#8997ab); border-radius:8px; padding:8px; }
+.styled-tree::part(caption-base) { font-style:italic; }
+.styled-tree::part(caption-closed) { color:var(--gramlot-warning); }
+.styled-tree::part(caption-open) { color:var(--gramlot-success); font-weight:700; }
+.styled-tree::part(caption-selected) { text-decoration:underline; text-underline-offset:4px; }
+.styled-tree::part(attention-node) { border-inline-start:3px solid var(--gramlot-warning); padding-inline-start:6px; }
+
+.example-page > code { width: fit-content; max-width: 100%; overflow-wrap: anywhere; }
+.example-page > code:empty { display: none; }

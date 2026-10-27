@@ -1,0 +1,637 @@
+{
+  "date": "2026-10-18",
+  "scope": "Gallery content loaded on actual visibility; retain first-click pane/iframe creation. Core 0.3.3 unchanged; examples candidate 0.3.6.",
+  "owner": "contenut di codice e di descrizione possono essere \u00f2azy e scattare solo se sono visibili",
+  "method": "Three alternating before/after cold browser contexts for each gallery and Code visibility. Same remote server, one CPU/512 MiB per container, identical gzip/cache proxies, reached through a private SSH tunnel. Existing production examples 0.3.5 versus candidate. First click is measured from the click event to observed iframe runtime started; iframeStartMs is click to iframe src assignment. Host processes warm; no concurrent task test suites during the timing run. Small samples, not a public HTTPS performance guarantee.",
+  "verification": {
+    "javascriptTests": 112,
+    "pythonTests": 19,
+    "browser": "Chromium and WebKit, both hosted candidates and file export, desktop/mobile; no hidden-content RPC, first visibility, retained iframe/Data, no repeat requests. Existing offline guided playback file-origin restriction unchanged."
+  },
+  "summary": [
+    {
+      "environment": "Python",
+      "codeVisible": true,
+      "before": {
+        "firstClickMs": 1274,
+        "iframeStartMs": 523
+      },
+      "after": {
+        "firstClickMs": 1083,
+        "iframeStartMs": 279
+      }
+    },
+    {
+      "environment": "Python",
+      "codeVisible": false,
+      "before": {
+        "firstClickMs": 1250,
+        "iframeStartMs": 500
+      },
+      "after": {
+        "firstClickMs": 1040,
+        "iframeStartMs": 283
+      }
+    },
+    {
+      "environment": "JavaScript",
+      "codeVisible": true,
+      "before": {
+        "firstClickMs": 1316,
+        "iframeStartMs": 502
+      },
+      "after": {
+        "firstClickMs": 1003,
+        "iframeStartMs": 256
+      }
+    },
+    {
+      "environment": "JavaScript",
+      "codeVisible": false,
+      "before": {
+        "firstClickMs": 1351,
+        "iframeStartMs": 571
+      },
+      "after": {
+        "firstClickMs": 963,
+        "iframeStartMs": 230
+      }
+    }
+  ],
+  "samples": [
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1272,
+      "iframeStartMs": 528,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1051,
+      "iframeStartMs": 261,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1316,
+      "iframeStartMs": 571,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1003,
+      "iframeStartMs": 244,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1250,
+      "iframeStartMs": 479,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 1040,
+      "iframeStartMs": 302,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1484,
+      "iframeStartMs": 581,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 934,
+      "iframeStartMs": 225,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1274,
+      "iframeStartMs": 491,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1083,
+      "iframeStartMs": 279,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1348,
+      "iframeStartMs": 502,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 981,
+      "iframeStartMs": 271,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1293,
+      "iframeStartMs": 515,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 1095,
+      "iframeStartMs": 276,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1131,
+      "iframeStartMs": 463,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 963,
+      "iframeStartMs": 290,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1310,
+      "iframeStartMs": 523,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1166,
+      "iframeStartMs": 321,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": true,
+      "firstClickMs": 1151,
+      "iframeStartMs": 451,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": true,
+      "firstClickMs": 1020,
+      "iframeStartMs": 256,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1234,
+      "iframeStartMs": 500,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "Python",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 1026,
+      "iframeStartMs": 283,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "before",
+      "codeVisible": false,
+      "firstClickMs": 1351,
+      "iframeStartMs": 571,
+      "requests": [
+        {
+          "key": "w01"
+        },
+        {
+          "key": "w01",
+          "view": "code"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "environment": "JavaScript",
+      "version": "after",
+      "codeVisible": false,
+      "firstClickMs": 973,
+      "iframeStartMs": 230,
+      "requests": [
+        {
+          "key": "w01"
+        }
+      ]
+    }
+  ],
+  "publication": {
+    "release": "https://github.com/gramlot-org/gramlot-examples/releases/tag/v0.3.6",
+    "workflow": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39151985508",
+    "deployment": "https://github.com/gramlot-org/gramlot-examples/actions/runs/39152264322",
+    "receipt": {
+      "releases": {
+        "gramlot": {
+          "tag": "v0.3.3",
+          "version": "0.3.3",
+          "release_id": 416585968
+        },
+        "gramlot-examples": {
+          "tag": "v0.3.6",
+          "version": "0.3.6",
+          "release_id": 416610461
+        },
+        "gramlot-js-server": {
+          "tag": "v0.2.13",
+          "version": "0.2.13",
+          "release_id": 416488728
+        },
+        "gramlot-py-server": {
+          "tag": "v0.2.10",
+          "version": "0.2.10",
+          "release_id": 416002432
+        }
+      },
+      "slot": 0,
+      "generation": "20261018T180418Z",
+      "compose": "/opt/gramlot-galleries/generations/20261018T180418Z/compose.json",
+      "images": [
+        "gramlot-gallery-python:20261018T180418Z",
+        "gramlot-gallery-node:20261018T180418Z"
+      ],
+      "archive_sha256": "0e0ab2bd5eb86f9e4aea2a14f655213af88c64c0650e62e630007cfe8ff029c6",
+      "previous": "20261018T172328Z"
+    },
+    "cacheChecks": [
+      {
+        "host": "gallery-py.gramlot.dev",
+        "path": "/assets/gramlot.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/assets/gramlot.js\"",
+        "wire_bytes": 140371,
+        "decoded_bytes": 513391,
+        "sha256": "5fa010c251cec786da178f59aa9dd39f40cd6f8ce7b4a44c17e99f71e3cbe8dc"
+      },
+      {
+        "host": "gallery-py.gramlot.dev",
+        "path": "/gallery/dist/gallery.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/gallery/dist/gallery.js\"",
+        "wire_bytes": 91395,
+        "decoded_bytes": 399869,
+        "sha256": "d87b6f94de03512be0913837b18f2d2b1bab3a39335c62eac0cd5830bc118606"
+      },
+      {
+        "host": "gallery-js.gramlot.dev",
+        "path": "/assets/gramlot.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/assets/gramlot.js\"",
+        "wire_bytes": 140371,
+        "decoded_bytes": 513391,
+        "sha256": "5fa010c251cec786da178f59aa9dd39f40cd6f8ce7b4a44c17e99f71e3cbe8dc"
+      },
+      {
+        "host": "gallery-js.gramlot.dev",
+        "path": "/gallery/dist/gallery.js",
+        "old_validator_status": 200,
+        "current_validator_status": 304,
+        "etag": "W/\"20261018T180418Z:/gallery/dist/gallery.js\"",
+        "wire_bytes": 91395,
+        "decoded_bytes": 399869,
+        "sha256": "d87b6f94de03512be0913837b18f2d2b1bab3a39335c62eac0cd5830bc118606"
+      }
+    ],
+    "browser": "Both public HTTPS galleries and the actual downloaded ZIP passed Chromium/WebKit desktop/mobile visibility and retained Data checks. ZIP checksum matches receipt; Python/JavaScript examples versions are 0.3.6. Temporary candidate containers, image tags, proxy and tunnel were removed; production/rollback retained.",
+    "timingNote": "Three cold contexts per public gallery with Code visible, measured from click event. A final production observation, not a paired before/after comparison; temporary candidate cleanup overlapped the beginning of this observation. Use the controlled summary above for the comparison.",
+    "timings": [
+      {
+        "run": 1,
+        "environment": "Python",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1077,
+        "iframeStartMs": 303,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "environment": "JavaScript",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 827,
+        "iframeStartMs": 225,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "environment": "Python",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1022,
+        "iframeStartMs": 292,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "environment": "JavaScript",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1016,
+        "iframeStartMs": 294,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "environment": "Python",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1046,
+        "iframeStartMs": 316,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "environment": "JavaScript",
+        "version": "published",
+        "codeVisible": true,
+        "firstClickMs": 1075,
+        "iframeStartMs": 273,
+        "requests": [
+          {
+            "key": "w01"
+          },
+          {
+            "key": "w01",
+            "view": "code"
+          }
+        ]
+      }
+    ],
+    "medianFirstClickMs": {
+      "Python": 1046,
+      "JavaScript": 1016
+    }
+  }
+}

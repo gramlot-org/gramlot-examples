@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry, ...urls] = process.argv.slice(2);
@@ -11,12 +12,12 @@ for (const [name, engine] of [['chromium', chromium], ['webkit', webkit]]) {
             page.on('pageerror', error => errors.push(error.message));
             await page.goto(url);
             const settings = async position => {
-                await page.locator('#gallery-settings-toggle').click();
+                await page.locator('.drawer[aria-label="Open bottom region"]').click();
                 await page.locator('#gallery-label-position').selectOption(position);
-                await page.locator('[aria-label="Close settings"]').click();
+                await page.locator('.drawer[aria-label="Close bottom region"]').click();
             };
-            await page.locator('details').filter({has: page.locator('#open-w04')}).locator('summary').first().click();
-            await page.locator('#open-w04').click();
+            await galleryRow(page, 'w04');
+            await (await galleryRow(page, 'w04')).click();
             const notes = page.frameLocator('#frame-w04');
             await notes.locator('#notes textarea').fill('Preserve these notes');
             const originalPadding = await notes.locator('#notes .labelbox').evaluate(el => getComputedStyle(el).padding);
@@ -45,11 +46,11 @@ for (const [name, engine] of [['chromium', chromium], ['webkit', webkit]]) {
             assert.equal(await notes.locator('#notes textarea').inputValue(), 'Preserve these notes');
             await settings('L');
             for (const [key, first, second] of [['w01', 'customer', 'customer-copy'], ['w02', 'newsletter', 'newsletter-copy']]) {
-                await page.locator(`#open-${key}`).click();
+                await (await galleryRow(page, key)).click();
                 await aligned(page.frameLocator(`#frame-${key}`), first, second, 'input');
             }
             // The library aligns intrinsic labels; the gallery supplies no label widths.
-            await page.locator('#open-w19').click();
+            await (await galleryRow(page, 'w19')).click();
             const form = page.frameLocator('#frame-w19');
             await form.locator('#first-name .labelbox[data-position=L]').waitFor();
             const spacing = await form.locator('#first-name').evaluate(host => {

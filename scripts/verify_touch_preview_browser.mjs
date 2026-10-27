@@ -1,3 +1,4 @@
+import {galleryRow} from './gallery-navigation.mjs';
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 const [entry,...urls]=process.argv.slice(2);
@@ -8,11 +9,11 @@ for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
  try {for(const url of urls) {
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(url);await page.locator('#gallery-settings-toggle').click();
+  await page.goto(url);await page.locator('.drawer[aria-label="Open bottom region"]').click();
   await page.locator('#index-appearance').selectOption('mimi');
-  await page.locator('[aria-label="Close settings"]').click();
-  await page.locator('details').filter({has:page.locator('#open-w18')}).locator('summary').first().click();
-  await page.locator('#open-w18').click();
+  await page.locator('.drawer[aria-label="Close bottom region"]').click();
+  await galleryRow(page, 'w18');
+  await (await galleryRow(page, 'w18')).click();
   const preview=page.frameLocator('#frame-w18'), input=preview.locator('#name input');
   await input.fill('Grace');await input.press('Tab');
   await preview.locator('#accepted-name').filter({hasText:'Grace'}).waitFor();
@@ -31,14 +32,14 @@ for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
   assert.equal(await frame.evaluate(()=>gramlot.data.getItem('name')),'Grace');
   assert.deepEqual(await frame.evaluate(()=>[gramlot===previewSnapshot.app,gramlot.data===previewSnapshot.data,gramlot.src.source===previewSnapshot.source]),[true,true,true]);
   assert.deepEqual(await frame.evaluate(()=>[...gramlot.devices]),['desktop','tablet','phone']);
-  await page.locator('#gallery-settings-toggle').click();await page.locator('#index-appearance').selectOption('joanna');
-  await page.locator('[aria-label="Close settings"]').click();
+  await page.locator('.drawer[aria-label="Open bottom region"]').click();await page.locator('#index-appearance').selectOption('joanna');
+  await page.locator('.drawer[aria-label="Close bottom region"]').click();
   assert((await input.boundingBox()).height>=44);
   await page.locator('#preview-normal-w18').click();await preview.locator('html[data-gramlot-touch=off]').waitFor();
   assert((await input.boundingBox()).height<44);assert.equal(await input.inputValue(),'A');
   assert.equal(await frame.evaluate(()=>gramlot.data.getItem('name')),'Grace');
   await page.locator('#preview-mobile-w18').click();await page.screenshot({path:`/tmp/touch-${name}-${new URL(url).port||'static'}.png`});
-  await page.locator('#open-w17').click();const calendar=page.frameLocator('#frame-w17');
+  await (await galleryRow(page, 'w17')).click();const calendar=page.frameLocator('#frame-w17');
   await calendar.locator('#calendar .calendar').waitFor();await page.locator('#preview-mobile-w17').click();
   await calendar.locator('html[data-gramlot-touch=on]').waitFor();
   assert((await calendar.locator('#calendar .calendar button').first().boundingBox()).height>=44);
@@ -46,7 +47,7 @@ for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]) {
   assert.equal(overflow,false,'calendar fits mobile width');
   await page.locator('#tab-w18').click();assert.equal(await input.inputValue(),'A');
   assert.equal(await page.locator('#preview-mobile-w18').getAttribute('aria-pressed'),'true');
-  await page.locator('#open-w09').click();const sliders=page.frameLocator('#frame-w09');
+  await (await galleryRow(page, 'w09')).click();const sliders=page.frameLocator('#frame-w09');
   await sliders.locator('#level input').waitFor();await page.locator('#preview-mobile-w09').click();
   await sliders.locator('html[data-gramlot-touch=on]').waitFor();
   assert((await sliders.locator('#level input').boundingBox()).width>=44);

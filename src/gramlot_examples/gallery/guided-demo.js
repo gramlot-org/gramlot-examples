@@ -95,10 +95,11 @@ export function guidedDemo(parent) {
         minSize: 140,
         maxSize: 300,
         splitter: true,
-        drawer: true,
+        drawer: 'close',
         drawer_label: 'Guide',
-        drawer_icon: '▶',
-        node_id: 'galleryGuidePanel',
+        drawer_minimize: false,
+        drawer_title: 'Show or hide guide',
+        nodeId: 'galleryGuidePanel',
         id: 'gallery-guide',
         class: 'gallery-guide',
         padding: '12px 16px',
@@ -114,7 +115,7 @@ export function guidedDemo(parent) {
         ['Next', 'Next →', '^galleryGuide.position:= {} >= {count} - 1 || !{available}'],
     ]) {
         toolbar.button(caption, {
-            node_id: `galleryGuide${name}`,
+            nodeId: `galleryGuide${name}`,
             id: `gallery-guide-${name.toLowerCase()}`,
             action: "this.publish('command')",
             disabled: disabled,

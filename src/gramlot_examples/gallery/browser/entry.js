@@ -1,13 +1,39 @@
-import {mountGallery} from './gallery.js';
+import {openFeatureExample} from './gallery-features.js';
+import {mountGalleryModules} from './gallery-modules.js';
+import {GalleryCodeLogic} from './gallery-code-logic.js';
+import {mountGallery, initializeNavigation, toggleGalleryPanel} from './gallery.js';
 import {mountGalleryInspector} from './gallery-inspector.js';
 
-// The page authors this classic script as the last child of its gallery shell.
-// Wait until Source insertion completes before using the existing render records.
-const script = document.currentScript;
-queueMicrotask(() => {
-    const renderer = window.gramlot.src.renderer;
-    const record = renderer.elements.get(script.parentElement);
-    if (!record || renderer.disposed || renderer.records.get(record.node) !== record) return; // Removed while the script was loading.
-    const inspector = mountGalleryInspector(renderer, record.node, document.getElementById('gallery-inspector-panel'));
-    mountGallery(renderer, record.node, inspector);
-});
+/** The gallery uses the ordinary Page Logic lifecycle. */
+export class Logic {
+    galleryOpenFeature(node) {
+        const renderer = this.page.src.renderer;
+        const root = renderer.elements.get(renderer.destination.ownerDocument.getElementById('gallery')).node;
+        return openFeatureExample(root, node.label);
+    }
+    galleryToggleNavigation() {
+        toggleGalleryPanel(this.page.src.builder, 'galleryNavigation', 'galleryIndex.navigationOpen');
+    }
+    galleryToggleSettings() {
+        const data = this.page.src.builder.data;
+        data.setItem('galleryIndex.settingsOpen', !data.getItem('galleryIndex.settingsOpen'));
+    }
+    galleryCodeMount(node, args) { return GalleryCodeLogic.prototype.galleryCodeMount.call(this, node, args); }
+    galleryCodeSave(node, args) { return GalleryCodeLogic.prototype.galleryCodeSave.call(this, node, args); }
+    galleryCodeRevert(node, args) { return GalleryCodeLogic.prototype.galleryCodeRevert.call(this, node, args); }
+    galleryInitialize() {
+        const renderer = this.page.src.renderer;
+        const root = renderer.elements.get(renderer.destination.ownerDocument.getElementById('gallery')).node;
+        initializeNavigation(renderer, root);
+    }
+    galleryMount() {
+        const renderer = this.page.src.renderer;
+        const document = renderer.destination.ownerDocument;
+        const root = renderer.elements.get(document.getElementById('gallery')).node;
+        const inspector = mountGalleryInspector(renderer, root, document.getElementById('gallery-inspector-panel'));
+        mountGallery(renderer, root, inspector);
+        void mountGalleryModules(this.page, root).catch(error => {
+            if (this.page.state !== 'disposed') root.builder.nodeById('gallery-load-status').setValue(`Mobile application: ${error.message}`);
+        });
+    }
+}

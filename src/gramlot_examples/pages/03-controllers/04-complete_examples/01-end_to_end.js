@@ -1,0 +1,129 @@
+import {Page as BasePage} from '@gramlot/gramlot/page';
+
+/** The endpoint refuses an order without items; the class name reaches the page as error.remoteName. */
+class EmptyOrder extends Error {
+    name = 'EmptyOrder';
+}
+
+export class Page extends BasePage {
+    static title = "Combine inputs, calculations and server calls";
+
+    main(root) {
+        const pane = root.div({class: 'example-page stack', datapath: 'story'});
+        pane.h1('^.settings.caption', {id: 'caption'});
+        pane.p('Change quantity, size or gift wrap: the total and circle update together. Then try pausing a branch and requesting a server quote.');
+        pane.h2('1. Calculate locally');
+        const work = pane.div({class: 'grid order-workbench'});
+        this.order_fields(work);
+        this.local_result(work);
+        this.freeze_exercise(pane);
+        this.server_quote(pane);
+
+    }
+
+    order_fields(pane) {
+
+        const form = pane.form({class: 'card stack', nodeId: 'form'});
+        form.html_label('Caption', {for: 'caption-field'});
+        form.input({default: "A first caption", value: '^.settings.caption', live: '^.live', id: 'caption-field'});
+        const row = form.div();
+        row.input({default: false, type: 'checkbox', value: '^.live', id: 'live'});
+        row.html_label('live', {for: 'live'});
+        form.html_label('Quantity', {for: 'quantity'});
+        form.input({type: 'number', min: 0, value: '^.quantity', default: 2, id: 'quantity'});
+        const sizes = form.fieldset();
+        sizes.legend('Size');
+        for (const [key, label] of [['small', 'Small'], ['large', 'Large']]) {
+            sizes.input({type: 'radio', group: 'size', value: `^.size.${key}`, id: key});
+            sizes.html_label(label, {for: key});
+        }
+        const gift = form.div();
+        gift.input({type: 'checkbox', value: '^.gift', id: 'gift'});
+        gift.html_label('Gift wrap', {for: 'gift'});
+    }
+
+    local_result(pane) {
+        const result = pane.section({class: 'card stack'});
+        result.p('^.total', {id: 'total', mask: 'Local total: {}'});
+        // Optional: the same local total also drives an SVG projection.
+        const drawing = result.svg({viewBox: '0 0 200 200', role: 'img', aria_label: 'Total as a circle', class: 'example-art'});
+        drawing.circle({cx: 100, cy: 100, r: '^.radius', fill: '^.color', id: 'circle'});
+        result.button('Press, also with Shift', {id: 'press'}).dataController({func: 'press'});
+        result.p('^.presses', {id: 'presses'});
+        result.p('^.modifiers', {id: 'modifiers', class: 'muted'});
+
+        pane.dataFormula({result_path: '.total', formula: 'quantity * (large ? 3 : 1) + (gift ? 5 : 0)', quantity: '^.quantity',
+            large: '^.size.large', gift: '^.gift', _init: true});
+        pane.dataFormula({result_path: '.radius', formula: 'Math.min(20 + total * 4, 90)', total: '^.total', _init: true});
+        pane.dataController({func: 'paint', total: '^.total', _init: true});
+    }
+
+    freeze_exercise(pane) {
+        const later = pane.section({class: 'card stack', nodeId: 'later'});
+        later.h2('2. Pause presentation updates');
+        const notes = later.ul({nodeId: 'notes', id: 'notes'});
+        for (const text of ['This branch can be frozen', 'This note can be removed under freeze']) notes.li(text);
+        const actions = later.div({class: 'actions'});
+        for (const [label, method] of [['Freeze', 'freeze'], ['Remove a note', 'removeNote'], ['Thaw', 'thaw']]) {
+            actions.button(label, {id: method}).dataController({func: method});
+        }
+    }
+
+    server_quote(pane) {
+        // Return here after c09/c11: the original local stage above remains independent.
+        const quotes = pane.section({class: 'card stack'});
+        quotes.h2('3. Request a server quote');
+        quotes.p('The local total follows edits. The server quote changes only after a request.');
+        quotes.button('Request quote', {type: 'button', id: 'request-quote'}).dataRpc({
+            method: 'quote', result_path: '.quote', quantity: '=.quantity',
+            large: '=.size.large', gift: '=.gift',
+            _onResult: "this.SET('.quote_error', null)",
+            _onError: "this.SET('.quote_error', error.code + ': ' + error.message)"});
+        const facts = quotes.dl();
+        for (const [label, key, elementId] of [['Server quote', 'quote', 'quote'],
+            ['Request error', 'quote_error', 'quote-error']]) {
+            facts.dt(label); facts.dd(`^.${key}`, {id: elementId});
+        }
+        quotes.p('Try quantity 0: the server refuses it and the previous quote remains. Then use 3 and request again.',
+            {class: 'muted'});
+    }
+
+
+    quote({quantity, large, gift}) {
+        if (quantity == null || quantity < 1) throw new EmptyOrder('Choose at least one item');
+        return quantity * (large ? 3 : 1) + (gift ? 5 : 0);
+    }
+}
+Page.registerEndpoint('quote');
+
+/** Logic of 08_end_to_end.py and 08_end_to_end.js: the named logic of the story. */
+export class Logic {
+    sourceNode(nodeId) {
+        return this.page.src.builder.nodeById(nodeId);
+    }
+
+    /** Controller of the total: the circle turns red above 10. */
+    paint(node, kwargs) {
+        node.SET('.color', kwargs.total > 10 ? '#b13d48' : '#23745b');
+    }
+
+    /** The button's nested controller: one call per click, with its counter and modifiers. */
+    press(node, kwargs) {
+        node.SET('.presses', `Pressed ${kwargs.button_counter} times`);
+        node.SET('.modifiers', kwargs.button_shift ? 'with Shift' : 'without modifiers');
+    }
+
+    freeze() {
+        this.page.src.renderer.freeze(this.sourceNode('later'));
+    }
+
+    removeNote() {
+        const notes = this.sourceNode('notes').value;
+        const last = notes.getNodes().at(-1);
+        if (last) notes.popNode(last.label);
+    }
+
+    thaw() {
+        this.page.src.renderer.unfreeze(this.sourceNode('later'));
+    }
+}
