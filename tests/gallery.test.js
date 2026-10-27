@@ -284,7 +284,10 @@ const setup = async (t, ...args) => {
 const pressTab = (f, host, name, key) => f.tab(host, name).dispatchEvent(
     new f.document.defaultView.KeyboardEvent('keydown', {key, bubbles: true}));
 
-test('shared containers own page selection and lazy frames retain identity', async t => {
+// Full-gallery jsdom integration checks mount the complete feature catalogue;
+// Bun's default five seconds is shorter than this fixture's measured build time.
+// Keep a bounded integration budget; real-browser checks cover page interactions.
+test('shared containers own page selection and lazy frames retain identity', {timeout: 30000}, async t => {
     const f = await setup(t);
     assert.equal(f.document.querySelectorAll('#index-pages iframe').length, 0);
     assert.equal(f.get('gallery-introduction').hidden, false);
@@ -305,7 +308,7 @@ test('shared containers own page selection and lazy frames retain identity', asy
     assert.equal(f.tab('index-pages', 'e02').getAttribute('aria-selected'), 'false');
 });
 
-test('rebuilt gallery reattaches behavior and retains selection and opened Source panels', async t => {
+test('rebuilt gallery reattaches behavior and retains selection and opened Source panels', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click();
     f.navigation('e02').click();
@@ -325,7 +328,7 @@ test('rebuilt gallery reattaches behavior and retains selection and opened Sourc
     assert.equal(f.tab('index-pages', 'e01').getAttribute('aria-selected'), 'true');
 });
 
-test('families auto-collapse siblings; small-screen navigation stays open until an example is selected', async t => {
+test('families auto-collapse siblings; small-screen navigation stays open until an example is selected', {timeout: 30000}, async t => {
     const f = await setup(t);
     const family = f.navigation('controllers').parentElement;
     assert.equal(family.getAttribute('aria-expanded'), 'true');
@@ -343,7 +346,7 @@ test('families auto-collapse siblings; small-screen navigation stays open until 
     assert.equal(f.get('gallery-center').hidden, false);
 });
 
-test('Explanation and source tabs preserve frames, sanitize prose and retain literal code', async t => {
+test('Explanation and source tabs preserve frames, sanitize prose and retain literal code', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click();
     await settle();
@@ -374,7 +377,7 @@ test('Explanation and source tabs preserve frames, sanitize prose and retain lit
     assert.equal(f.tab('code-tabs-c01', 'logic.js').getAttribute('aria-selected'), 'false');
 });
 
-test('tabs and the tree retain built-in keyboard navigation independently of the legacy link preference', async t => {
+test('tabs and the tree retain built-in keyboard navigation independently of the legacy link preference', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click(); f.navigation('e02').click();
     await settle();
@@ -390,7 +393,7 @@ test('tabs and the tree retain built-in keyboard navigation independently of the
     assert.equal(f.state.getItem('active'), 'e02');
 });
 
-test('Code is a detachable third tab; docking retains file selection and the running example', async t => {
+test('Code is a detachable third tab; docking retains file selection and the running example', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('c01').click(); await settle();
     const frame = f.get('frame-c01'), preview = f.get('preview-c01');
@@ -413,7 +416,7 @@ test('Code is a detachable third tab; docking retains file selection and the run
     assert.equal(g.source('index-sidebar').getAttr('drawer'),'close');
 });
 
-test('theme, color and label settings persist and reject foreign frame messages', async t => {
+test('theme, color and label settings persist and reject foreign frame messages', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click();
     await settle();
@@ -445,7 +448,7 @@ test('theme, color and label settings persist and reject foreign frame messages'
     assert.equal(g.state.getItem('palette'), 'default');
 });
 
-test('invalid or unavailable browser storage leaves valid defaults and usable controls', async t => {
+test('invalid or unavailable browser storage leaves valid defaults and usable controls', {timeout: 30000}, async t => {
     for (const saved of ['{', 'null', '[]', '{"appearance":"unknown","theme":"system","sidebarWidth":"320"}', '{"palette":["mimi"]}', '{"palette":"__proto__"}']) {
         const f = await setup(t, undefined, w => w.localStorage.setItem('gramlot.gallery.preferences:/py/index', saved));
         assert.equal(f.get('index-appearance').readControlValue(), 'compact');
@@ -464,7 +467,7 @@ test('invalid or unavailable browser storage leaves valid defaults and usable co
     }
 });
 
-test('phone Code tab and inspector retain the same frame and restore desktop navigation', async t => {
+test('phone Code tab and inspector retain the same frame and restore desktop navigation', {timeout: 30000}, async t => {
     const f = await setup(t, null, w => { w.matchMedia().matches = true; });
     f.get('gallery-navigation-button').click(); f.navigation('e01').click();
     await settle();
@@ -490,7 +493,7 @@ test('phone Code tab and inspector retain the same frame and restore desktop nav
     assert.equal(f.get('gallery').hasAttribute('data-mobile-view'), false);
 });
 
-test('empty Logic is hidden and closing gallery behavior detaches navigation', async t => {
+test('empty Logic is hidden and closing gallery behavior detaches navigation', {timeout: 30000}, async t => {
     const f = await setup(t, 'export class Logic {}');
     assert.equal(f.get('logic-panel-c01'), null);
     f.navigation('c01').click();
@@ -506,7 +509,7 @@ test('empty Logic is hidden and closing gallery behavior detaches navigation', a
 });
 
 
-test('repeated clicks create one Source panel and request each view once', async t => {
+test('repeated clicks create one Source panel and request each view once', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click(); f.navigation('e01').click(); f.navigation('e01').click();
     await settle();
@@ -521,7 +524,7 @@ test('repeated clicks create one Source panel and request each view once', async
     assert.equal(f.get('index-pages').children.length, 2);
 });
 
-test('out-of-order lesson replies do not override the latest selection', async t => {
+test('out-of-order lesson replies do not override the latest selection', {timeout: 30000}, async t => {
     const f = await setup(t);
     const call = f.transport.call;
     let release;
@@ -540,7 +543,7 @@ test('out-of-order lesson replies do not override the latest selection', async t
     assert.equal(f.calls.filter(call => call.selection?.getNode('#0').attr.key === 'e01').length, 1);
 });
 
-test('failed lesson removes incomplete Source and can be retried', async t => {
+test('failed lesson removes incomplete Source and can be retried', {timeout: 30000}, async t => {
     const f = await setup(t);
     const call = f.transport.call;
     f.transport.call = async () => { throw new Error('Connection interrupted'); };
@@ -555,7 +558,7 @@ test('failed lesson removes incomplete Source and can be retried', async t => {
     assert.equal(f.get('gallery-load-status').textContent, '');
 });
 
-test('hidden teaching content makes no requests; visible content never delays the frame and loads once', async t => {
+test('hidden teaching content makes no requests; visible content never delays the frame and loads once', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click(); await settle();
     const frame = f.get('frame-e01');
@@ -584,7 +587,7 @@ test('hidden teaching content makes no requests; visible content never delays th
     assert.deepEqual(f.calls.map(c => c.view ?? 'example'), ['example', 'description', 'code']);
 });
 
-test('secondary content failure retains the running example and retries on reopening', async t => {
+test('secondary content failure retains the running example and retries on reopening', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click(); await settle();
     const frame = f.get('frame-e01'); frame.contentWindow.draft = 'Keep me';
@@ -602,7 +605,7 @@ test('secondary content failure retains the running example and retries on reope
     assert.equal(frame.contentWindow.draft, 'Keep me');
 });
 
-test('remount while loading reuses the pending Source request and formats its result', async t => {
+test('remount while loading reuses the pending Source request and formats its result', {timeout: 30000}, async t => {
     const f = await setup(t);
     f.navigation('e01').click(); await settle();
     const call = f.transport.call;
@@ -620,7 +623,7 @@ test('remount while loading reuses the pending Source request and formats its re
 });
 
 
-test('gallery sections are unresolved until tree expansion and use the resolver cache on reopening', async t => {
+test('gallery sections are unresolved until tree expansion and use the resolver cache on reopening', {timeout: 30000}, async t => {
     const f = fixture(); t.after(() => f.app.dispose()); await settle();
     assert.equal(f.calls.length, 0);
     const section = f.app.data.getNode('galleryIndex.navigation.html_svg');
@@ -635,7 +638,7 @@ test('gallery sections are unresolved until tree expansion and use the resolver 
 });
 
 
-test('settings use a nonmodal floating formlet and close back into the toolbar', async t => {
+test('settings use a nonmodal floating formlet and close back into the toolbar', {timeout: 30000}, async t => {
     const f = await setup(t);
     const settings = f.get('gallery-settings');
     assert.equal(settings.localName, 'gramlot-floating-pane');
@@ -660,7 +663,7 @@ test('settings use a nonmodal floating formlet and close back into the toolbar',
 });
 
 
-test('a Markdown directory index opens as sanitized content without expanding its resolver', async t => {
+test('a Markdown directory index opens as sanitized content without expanding its resolver', {timeout: 30000}, async t => {
     const f = await setup(t);
     const node = f.app.data.getNode('galleryIndex.navigation.html_svg');
     node.setAttr({title:'Markdown overview', url:'pages/00-html_svg/07-markdown_index/00-index',
@@ -685,7 +688,7 @@ test('logicSource: a module without Logic, or with an empty one, shows no tab', 
 });
 
 
-test('one icon toolbar moves between left and bottom without recreating open lessons', async t => {
+test('one icon toolbar moves between left and bottom without recreating open lessons', {timeout: 30000}, async t => {
     const f = await setup(t);
     const rail = f.get('gallery-rail');
     assert.equal(f.get('gallery-frame').localName, 'gramlot-frame-pane');
@@ -725,7 +728,7 @@ test('one icon toolbar moves between left and bottom without recreating open les
 });
 
 
-test('toolbar placement uses proportions and explicit choices without resetting the active mobile view', async t => {
+test('toolbar placement uses proportions and explicit choices without resetting the active mobile view', {timeout: 30000}, async t => {
     const f = await setup(t, null, w => {w.matchMedia().matches=true;Object.assign(w,{innerWidth:390,innerHeight:844});});
     const window=f.document.defaultView,rail=f.get('gallery-rail');
     assert.equal(f.state.getItem('toolbarPosition'),'auto');
@@ -770,7 +773,7 @@ test('toolbar placement uses proportions and explicit choices without resetting 
 });
 
 
-test('native gallery defaults to Mela but keeps an explicit saved appearance', async t => {
+test('native gallery defaults to Mela but keeps an explicit saved appearance', {timeout: 30000}, async t => {
     const native = window => {window.Capacitor = {isNativePlatform:()=>true, getPlatform:()=> 'ios'};};
     const f = await setup(t, undefined, native);
     assert.equal(f.state.getItem('appearance'), 'mela');
@@ -782,7 +785,7 @@ test('native gallery defaults to Mela but keeps an explicit saved appearance', a
 });
 
 
-test('load indicator follows the active tab across background replies, closing and reopening', async t => {
+test('load indicator follows the active tab across background replies, closing and reopening', {timeout: 30000}, async t => {
     const f = await setup(t);
     const call = f.transport.call;
     const requests = [];
@@ -818,7 +821,7 @@ test('load indicator follows the active tab across background replies, closing a
     assert.equal(f.state.getItem('active'), 'e02');
 });
 
-test('a background load failure does not replace the active loading indicator', async t => {
+test('a background load failure does not replace the active loading indicator', {timeout: 30000}, async t => {
     const f = await setup(t);
     const call = f.transport.call;
     const requests = [];
@@ -835,7 +838,7 @@ test('a background load failure does not replace the active loading indicator', 
 });
 
 
-test('Features is the final navigation page and retains an opened lesson when switching back', async t => {
+test('Features is the final navigation page and retains an opened lesson when switching back', {timeout: 30000}, async t => {
     const f = await setup(t);
     assert.equal(f.state.getItem('navigation').getNodes().at(-1).label, 'features');
     assert.equal(f.get('gallery-features-button'), null);
