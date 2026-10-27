@@ -820,3 +820,83 @@ Source parity tests compare the eight Python/JavaScript declarations and the gui
 ## 260. Settings dismissal and compact footer
 
 Owner requested removing the ZIP link from the index and closing Settings on an outside click. Python and JavaScript footers omit the link. The native auto popover dismisses on outside clicks in the main document. The gallery settings service also closes it when focus enters an example iframe, whose pointer events do not reach the parent document. Clicks inside keep Settings open; Escape and its Close button continue to work. The focus listener and scheduled frame are released on disposal; no parallel popup state is added.
+
+
+<a id="ge-010-945"></a>
+## 945 · PageStore WebSocket trial
+
+The additional Python catalogue at src/gramlot_examples/trials/page_store/catalog.json
+contains four lessons: bidirectional Bag binding, publication-driven customer lookup,
+publication from a family of iframes and connected windows, and publication to
+another same-owner page's PageStore.
+They use separate Page and PageStore classes, ordinary Source bindings and subscribed
+controllers. The customer example uses pkey/status node attributes, explicit error
+Data and preservation of the last valid record. There is no dataSetter or database dependency.
+
+Run the PageStore development branch of gramlot-py-server with:
+```sh
+gramlot uvicorn gallery --websocket --port 8766 --mount /py \
+  --catalog /absolute/path/to/trials/page_store/catalog.json \
+            /absolute/path/to/trials/page_store/pages
+```
+
+The installed common gallery supplies the shell. Expand **PageStore and WebSocket**;
+the ordinary source and explanation panels show the Python and teaching notes.
+The staging integration preserves PageStore and current route URLs. Every lesson
+has its own page ID and store, sharing the primary gallery socket. This trial does
+not claim released support in other adapters or the JavaScript gallery.
+
+The family lesson reuses the customer page in a direct iframe and inside an
+intermediate iframe. Every customer page can open another connected copy using
+an ordinary anchor with target=_blank and rel=opener. Each child publishes to
+its own PageStore without knowing the parent chain. The gallery remains the
+primary and owns the sole physical WebSocket. The supporting nested-branch
+page is available in the same section for source inspection.
+
+In **Publish to another page**, copy the recipient iframe's visible page ID into
+the connected sender window. The sender publishes with an explicit pageId and
+shows acceptance or refusal. The recipient's subscribed controller changes its
+own Bag, delivered through its binder; the sender's record stays unchanged.
+An accepted publication may still produce a business error in the recipient.
+Unknown or foreign-owner destinations are refused without closing the channel.
+
+Chromium and WebKit verify tree navigation, both binder directions, lookup success,
+missing-key preservation and recovery, source/explanation, and one shared socket.
+The fixtures use keys 1 and 2; 99 demonstrates a business error. No publication
+or deployment is authorized by this local gallery request.
+
+
+Family lesson verification, 2026-10-27: Chromium and WebKit exercise publication
+from direct/nested customer iframes, connected windows and a further popup
+generation. Distinct page IDs, isolated stores, error recovery and one WebSocket
+are verified, together with continued sibling operation after intermediate
+closure and recursive popup closure when the primary gallery closes.
+A false shutdown channel error was fixed in core with explicit owner approval;
+the final browser checks report no console errors.
+
+
+Cross-page verification, 2026-10-27: Chromium and WebKit confirm recipient-only
+changes, sender acceptance, business errors in recipient Data, refusal of unknown
+and foreign-owner destinations, recovery and one primary socket. The existing
+binder, family and recursive closure scenarios pass in the same browser run.
+
+
+Sender metadata, 2026-10-27: the cross-page lesson's recipient displays
+**Published by page**, copied by its controller from
+_subscription_metadata["pageId"] into customer?sender_page_id. It identifies
+the publishing child; the server supplies it separately from the payload.
+Chromium and WebKit verify the displayed ID on success, error and recovery.
+
+
+The cross-page lesson also demonstrates a server-to-browser event. On successful
+lookup the recipient PageStore publishes customer_loaded to the sender page_id.
+A subscribed browser dataController writes a separate notification branch and
+shows the returned key/name under **Server event**. The recipient retains its
+bound customer record; the sender's own bound record remains unchanged. A failed
+lookup updates recipient error Data and emits no customer_loaded event.
+
+
+The sender's **Server event — PageStore ID** shows the reverse event's verified
+origin: its subscribed dataController reads _subscription_metadata.pageId into
+notification.sender. This is the recipient PageStore's ID, not the original
+sending child or the primary gallery. The server supplies it outside payload.
