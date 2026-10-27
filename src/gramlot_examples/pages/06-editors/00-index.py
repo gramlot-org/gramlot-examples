@@ -1,7 +1,7 @@
 from gramlot import Page as BasePage
 
 class Page(BasePage):
-    title = 'Document and code editors'
+    title = 'Editors'
     def main(self, root):
         pane = root.main(class_="example-page stack", padding="24px")
         pane.h1(self.title)

@@ -10,7 +10,10 @@ The buttons use ordinary Gramlot Data writes: insertion and caption changes upda
 
 Style through the host class and CSS parts: `tree`, `group`, `node`, `branch`, `leaf`, `row`, `branch-row`, `leaf-row`, `selected-row`, `expander`, `spacer`, `icon`, `branch-icon`, `leaf-icon`, `opened-icon`, `closed-icon`, `caption`. The component keeps its own structure and lifecycle.
 
-This increment does not yet implement icon callbacks, badges, hover actions, checkbox/search, or expandAll. Resolver expiry and request errors retain the existing resolver/provider contract; the tree does not introduce a request service.
+This basic lesson does not teach every tree option. The following tree lessons
+cover caption/icon callbacks and drag/drop. The shared `searchText` feature is
+used by gallery navigation; it still needs its own focused lesson (see the
+[coverage checklist](https://gramlot-examples.readthedocs.io/en/latest/docs/035-feature-coverage.html)). Resolver expiry and request errors retain the existing resolver/provider contract; the tree does not introduce a request service.
 
 ## Scalar values
 

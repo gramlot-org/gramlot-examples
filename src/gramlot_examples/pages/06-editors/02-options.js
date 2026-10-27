@@ -4,7 +4,7 @@ import editors from '../../gallery/dist/editors/descriptor.js';
 import {Page as BasePage, codeMirrorWithOptions} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
     static gramlots = [inputs, layout, editors];
-    static title = "Configure language, wrapping and editor options";
+    static title = "Editor options";
     main(root) {
         const main_content = root.main({class:'example-page stack', datapath:'editorDemo', padding:'24px'});
         main_content.h1("CodeMirror with options");

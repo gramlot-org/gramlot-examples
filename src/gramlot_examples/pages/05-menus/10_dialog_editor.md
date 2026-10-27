@@ -59,3 +59,7 @@ regions visible without changing menu behavior.
 
 
 **Three toolbar regions:** the window owns one `framePane`. Its left region holds a vertical icon toolbar, its top region holds the main toolbar and its bottom region holds the closing or Save/Cancel actions. The center keeps the editable fields. Try a left-hand command and watch the same Data update in the center; toolbar direction changes presentation, not command ownership.
+
+## Read the composition
+
+`main` creates the dialog and composes `side_tools`, `top_toolbar`, `draft_fields` and `footer` around its frame. `draft_commands` is called for the top bar and its Document submenu. `saved_document` displays committed values; Logic copies the draft only on Save. Cancel restores it without committing.

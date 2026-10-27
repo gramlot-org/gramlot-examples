@@ -1,4 +1,4 @@
-# Edit HTML: source, preview and rich text
+# HTML editor
 
 **Try this:** Edit the code, then switch to Preview and Rich text. The three views share one draft; Preview displays the HTML without running its scripts.
 

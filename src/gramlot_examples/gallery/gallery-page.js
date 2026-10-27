@@ -2,10 +2,12 @@
 import {Bag} from '@gramlot/gramlot';
 import {IndexPage} from '@gramlot/gramlot/page';
 import {guidedDemo} from './guided-demo.js';
+import {featureIndex} from './features.js';
 const NAVIGATION_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M9%204v16M5.5%208h1M5.5%2012h1M5.5%2016h1%22%2F%3E%3C%2Fsvg%3E";
 const SETTINGS_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237b8795%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m10%203-.5%202-2%20.9-1.9-.6-2%203.4L5%2010v2l-1.4%201.3%202%203.4%201.9-.6%202%20.9.5%202h4l.5-2%202-.9%201.9.6%202-3.4L19%2012v-2l1.4-1.3-2-3.4-1.9.6-2-.9L14%203Z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2211%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E";
 
 const INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%221%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%227.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%226.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220.5%22%20stroke%3D%22%23404448%22%2F%3E%3C%2Fsvg%3E";
+
 
 export class GalleryPage extends IndexPage {
     static title = 'Gramlot examples';
@@ -23,6 +25,7 @@ export class GalleryPage extends IndexPage {
     static get navigation() {
         const navigation = new Bag();
         for (const family of this.groups) navigation.setItem(family.key, null, {title:family.title, key:family.key, category:true, directory:family.key});
+        navigation.setItem('features', null, {title:'Features', key:'features', category:false});
         return navigation;
     }
     main(root) {
@@ -61,6 +64,7 @@ export class GalleryPage extends IndexPage {
         super.center(pane);
         pane.value.getNode('tabs').setAttr({id:'index-pages', class:'index-main', hidden:true});
         pane.div({id:'gallery-introduction',height:'100%'}).iframe({src:this.constructor.introductionUrl,title:'Example gallery',width:'100%',height:'100%',border:0});
+        featureIndex(pane, Object.fromEntries(this.constructor.groups.flatMap(group => group.children.map(item => [item.key, item]))));
     }
     top(pane) { pane.setAttr({height:'var(--gallery-toolbar-size,42px)'}); this.header(pane); }
     navigation_section({directory}) {

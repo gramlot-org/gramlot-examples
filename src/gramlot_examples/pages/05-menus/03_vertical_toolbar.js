@@ -17,12 +17,24 @@ export class Page extends BasePage {
         const main_content = root.main({padding: "24px", max_width: "900px", margin: "auto"});
         main_content.h1("Vertical icon toolbar");
         main_content.p("A narrow rail with SVG icons and tooltips; selection uses only its background. Select Home, Documents or Activity: the highlighted button and central content follow the same Data value. Tools opens a menu to the right, marked ›.");
+        this.height_control(main_content);
+        main_content.p("Reduce the height to send lower-priority items into the › overflow menu. Home and Tools stay on the rail. Labels always appear beside icons inside a menu; selecting an overflow entry also updates the highlighted section.");
+        this.vertical_toolbar(main_content);
+        main_content.a("Try the classic menu bar and nested menus →", {href: "/pages/05-menus/04_menu_bar", display: "block", margin: "16px 0"});
+        main_content.p("The drawings are SVG images supplied through iconSrc. iconSize controls the icon independently of the button. The classic menu-bar lesson also shows emoji icons and per-entry styling.");
+        this.horizontal_toolbar(main_content);
+
+    }
+
+    height_control(main_content) {
         const controls = main_content.div({display: "flex", gap: "12px", align_items: "center", flex_wrap: "wrap", margin: "16px 0"});
         controls.html_label("Rail height", {for: "rail-height"});
         controls.input({type: "range", min: 180, max: 500, step: 20, value: "^navigation.height", live: true, id: "rail-height", aria_label: "Rail height", width: "190px"});
         controls.span("^navigation.height");
         controls.span("px");
-        main_content.p("Reduce the height to send lower-priority items into the › overflow menu. Home and Tools stay on the rail. Labels always appear beside icons inside a menu; selecting an overflow entry also updates the highlighted section.");
+    }
+
+    vertical_toolbar(main_content) {
         const frame = main_content.framePane({height: "^navigation.height:={} + 'px'", min_height: "180px", border: "1px solid #64748b", border_radius: "12px", overflow: "hidden", id: "rail-frame"});
         frame.left.setAttr({width: "64px", padding: "8px 3px", background: "#292929"});
         const rail = frame.left.menu({presentation: "bar", orientation: "vertical", labelPosition: "tooltip", iconSize: 32, width: "58px", id: "icon-rail"});
@@ -38,8 +50,9 @@ export class Page extends BasePage {
         const center = frame.center.contentPane({frameTarget: true, node_label: "navigation_content", padding: "18px"});
         center.h2("^navigation.selected", {id: "selected-section", margin: "0 0 12px", text_transform: "capitalize"});
         center.p("Selected section. Choose another icon or open Tools.");
-        main_content.a("Try the classic menu bar and nested menus →", {href: "/pages/05-menus/04_menu_bar", display: "block", margin: "16px 0"});
-        main_content.p("The drawings are SVG images supplied through iconSrc. iconSize controls the icon independently of the button. The classic menu-bar lesson also shows emoji icons and per-entry styling.");
+    }
+
+    horizontal_toolbar(main_content) {
         main_content.h2("The horizontal equivalent");
         main_content.p("Here Tools and the overflow trigger point down (▾). Popup descendants continue to open sideways.");
         const horizontal = main_content.menu({presentation: "bar", labelPosition: "tooltip", iconSize: 28, id: "horizontal-rail", padding: "8px", border: "1px solid #64748b", border_radius: "8px"});
@@ -54,6 +67,7 @@ export class Page extends BasePage {
     section(menu, key, caption, attributes = {}) {
         return menu.menuline({caption: caption, iconSrc: ICONS[key], tooltip: caption, checked: `^navigation.selected:={} === '${key}'`, action: "selectSection", parameters: {section: key}, ...attributes});
     }
+
 }
 
 /** The selected navigation section is ordinary page Data. */

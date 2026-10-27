@@ -13,3 +13,9 @@ All values are page-local; no server save or persistence is implied.
 Themes use existing semantic CSS variables. The profiles are intended for desktop
 work; the existing touch policy keeps touch targets larger. Source-authored fixed
 padding still takes precedence, so new examples use spacing tokens deliberately.
+
+## Optional comparison
+
+This short Page reuses the shared theme preview. It is a visual comparison, not a
+new menu API to learn. Use Gallery Settings to compare colors and light/dark mode;
+return to the toolbar lesson for groups, spacers and overflow.

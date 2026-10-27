@@ -5,7 +5,7 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [editors, typst]
-    title = "Edit Typst and generate a PDF"
+    title = "Typst and PDF"
 
     def main(self, root):
         main_content = root.main(datapath="typstDemo", padding="24px", class_="example-page stack")

@@ -2,7 +2,7 @@
 
 **Try this:** Compare the same value through an absolute path, a relative path and an anchor. Edit a field and watch only the views bound to that path change.
 
-Fields and text share the same values. Edit a field and see which text follows it. You learn the difference between `^` (keep following) and `=` (read once), and how a Data path locates a value.
+Fields and text share the same values. Edit a field and see which text follows it. You learn the difference between `^` (keep following) and `=` (read without subscribing), and how a Data path locates a value.
 
 **Uses:** Source, Data, pointers and native binding. No endpoint calls.
 

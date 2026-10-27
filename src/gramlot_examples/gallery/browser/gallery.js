@@ -1,3 +1,4 @@
+import {mountFeatureProgress, markFeatureExampleSeen} from './gallery-features.js';
 import {renderReadme} from './markdown.js';
 import {mountGuidedDemo} from './gallery-guide.js';
 import {mountGalleryMobile} from './gallery-mobile.js';
@@ -16,6 +17,22 @@ export function mountGallery(renderer, root, inspector) {
     const set=(element,attrs)=>renderer.elements.get(element).node.setAttr(attrs);
     const settings=mountGallerySettings(renderer,root,state);
     const presentation=mountGalleryPresentation(renderer,root,state);
+    const progress = mountFeatureProgress(renderer, root, state);
+    const showContent = () => {
+        const features = state.getItem('featuresOpen') === true;
+        const active = state.getItem('active');
+        source('gallery-features').setAttr({hidden:!features});
+        source('gallery-introduction').setAttr({hidden:features || active!==null});
+        source('index-pages').setAttr({hidden:features || active===null});
+    };
+    state.subscribe('gallery-feature-view', {any:event => {
+        if (event.node === state.getNode('navigationSelection')) {
+            state.setItem('featureRequest', null);
+            state.setItem('featuresOpen', state.getItem('navigationSelection') === 'features');
+        }
+        if (event.node.label === 'featuresOpen') showContent();
+    }});
+    renderer.onDispose(root, () => state.unsubscribe('gallery-feature-view', {any:true}));
     let guide=null;
     const content=mountGalleryContent(renderer,root);
     const mobile=mountGalleryMobile(renderer,root,inspector,state,visible=>{if(!visible)guide?.pause();});
@@ -33,8 +50,11 @@ export function mountGallery(renderer, root, inspector) {
     };
     const index=mountIndexPage(renderer,root,(entries,active)=>{
         source('gallery-load-status').setValue(entries.get(active)?.loading ? 'Loading page…' : '');
-        source('gallery-introduction').setAttr({hidden:active!==null});
-        source('index-pages').setAttr({hidden:active===null});
+        state.setItem('featureRequest', null);
+        state.setItem('featuresOpen', false);
+        showContent();
+        const entry = entries.get(active);
+        if (entry && !entry.loading) markFeatureExampleSeen(state, entry.key);
         presentation.update(entries,active);inspector.update(entries,active);mobile.update(entries,active);guide?.update(entries,active);
     },prepare,{state,async createEntry(entry){
         const key=entry.node.attr.key??entry.pane.label;
@@ -44,12 +64,13 @@ export function mountGallery(renderer, root, inspector) {
         if(!mounted)throw new Error('Panel loading was cancelled');
     },onLoad(url,status){
         if(root.indexContext.disposed)return;
+        if (status === 'ready') markFeatureExampleSeen(state, root.indexContext.entries.get(url).key);
         const active=state.getItem('active');
         const loading=root.indexContext.entries.get(active)?.loading;
         source('gallery-load-status').setValue(loading?'Loading page…':
             status==='error'&&(active===url||active===null)?'Could not load this page. Select it again to retry.':'');
     }});
-    return {dispose(){guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
+    return {dispose(){progress.dispose();state.unsubscribe('gallery-feature-view', {any:true});guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
 }
 
 /** Install directory resolvers during page build, before the tree first renders. */

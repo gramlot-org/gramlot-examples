@@ -1,4 +1,4 @@
-# Edit source code with CodeMirror
+# Code editor
 
 **Try this:** Edit the draft and save a snapshot. Keep typing: the live draft changes while the saved version stays unchanged until you save again.
 

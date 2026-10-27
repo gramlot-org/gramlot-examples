@@ -7,6 +7,7 @@ from gramlot import IndexPage, source, endpoint
 from genro_bag import Bag
 from gramlot_examples import build_gallery, navigation_directory
 from gramlot_examples.gallery.guided_demo import guided_demo
+from gramlot_examples.gallery.features import feature_index
 from gramlot_examples.gallery.modules import module_bag, registered_modules
 
 
@@ -15,6 +16,8 @@ SETTINGS_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%
 
 
 INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%221%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%227.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%226.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%224.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222.5%22%20stroke%3D%22%23404448%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%20stroke%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220.5%22%20stroke%3D%22%23404448%22%2F%3E%3C%2Fsvg%3E"
+
+
 
 
 class Page(IndexPage):
@@ -67,7 +70,9 @@ class Page(IndexPage):
 
     @property
     def navigation(self):
-        return navigation_directory(catalogs=self.catalogs)
+        navigation = navigation_directory(catalogs=self.catalogs)
+        navigation.set_item("features", None, {"title": "Features", "key": "features", "category": False})
+        return navigation
 
     def left(self, pane):
         pane.set_attr({"id": "index-sidebar", "class": "index-sidebar", "nodeId": "galleryNavigation"})
@@ -89,6 +94,7 @@ class Page(IndexPage):
         super().center(pane)
         pane.value.get_node("tabs").set_attr({"id": "index-pages", "class": "index-main", "hidden": True})
         pane.div(id="gallery-introduction", height="100%").iframe(src="pages/00-index", title="Example gallery", width="100%", height="100%", border=0)
+        feature_index(pane, {item["key"]: item for group in self.groups for item in group["children"]})
 
     def top(self, pane):
         pane.set_attr({"height": "var(--gallery-toolbar-size,42px)"})

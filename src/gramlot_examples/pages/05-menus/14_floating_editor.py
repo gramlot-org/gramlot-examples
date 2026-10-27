@@ -30,16 +30,31 @@ class Page(BasePage):
         main_content = root.main(padding="20px", max_width="900px", margin="auto")
         main_content.h1("A complete floating editor")
         main_content.p("Edit a document inside a nonmodal floating window containing a real framePane. The left icon bar and top toolbar control the same draft; the bottom bar keeps Cancel and Save at the right. Only Save updates the saved document shown below.")
-        steps = main_content.ol()
-        steps.li("Open the editor and change the title or notes. Save copies the draft to the saved document and closes the floating window. This is local page Data, not a server or disk save.")
-        steps.li("Open it again, make another change and choose Cancel: the saved document must stay unchanged. X and Escape also discard the current draft.")
-        steps.li("Reset draft restores the last saved values without closing. Details toggles an extra field and its menu checkmark. Document opens a hierarchical menu using the same commands.")
-        steps.li("Drag, resize, maximize and collapse the floating window. Its toolbars stay in their frame regions; the center scrolls when space is limited. The page remains usable: move or collapse the window and edit the Background note below. Compare with Complete dialog editor, which blocks its page.")
+        self.instructions(main_content)
         main_content.button("Open floating editor", action="openEditor", id="open-editor")
         main_content.html_label("Background note", for_="background-note", display="block", margin_top="var(--gramlot-space-3)")
         main_content.input(value="^editor.background", live=True, id="background-note", width="100%")
         main_content.p("^editor.background", role="status", id="background-result")
         main_content.p("In Gallery Settings, combine Theme, Colors and Color mode. The same settings apply to the dialog example; changing them preserves the open editor and its draft.")
+        self.saved_document(main_content)
+        window = root.floatingPane(title="Floating document editor", open="^editor.open", beforeClose="discardOnClose",
+                             movable=True, resizable=True, collapsible=True, collapsed="^editor.collapsed",
+                             maximizable=True, maximized="^editor.maximized", width="620px", height="380px",
+                             id="editor-window")
+        frame = window.frame
+        self.side_tools(frame)
+        self.top_toolbar(frame)
+        self.draft_fields(frame)
+        self.footer(frame)
+
+    def instructions(self, main_content):
+        steps = main_content.ol()
+        steps.li("Open the editor and change the title or notes. Save copies the draft to the saved document and closes the floating window. This is local page Data, not a server or disk save.")
+        steps.li("Open it again, make another change and choose Cancel: the saved document must stay unchanged. X and Escape also discard the current draft.")
+        steps.li("Reset draft restores the last saved values without closing. Details toggles an extra field and its menu checkmark. Document opens a hierarchical menu using the same commands.")
+        steps.li("Drag, resize, maximize and collapse the floating window. Its toolbars stay in their frame regions; the center scrolls when space is limited. The page remains usable: move or collapse the window and edit the Background note below. Compare with Complete dialog editor, which blocks its page.")
+
+    def saved_document(self, main_content):
         summary = main_content.section(margin_top="20px", padding="16px", border="1px solid var(--gramlot-border-control)", border_radius="8px")
         summary.h2("Saved document")
         summary.h3("^editor.saved.title", id="saved-title")
@@ -47,25 +62,26 @@ class Page(BasePage):
         summary.p("^editor.saved.notes", id="saved-notes", white_space="pre-wrap")
         main_content.p("^editor.notice", role="status", id="editor-result")
 
-        window = root.floatingPane(title="Floating document editor", open="^editor.open", beforeClose="discardOnClose",
-                             movable=True, resizable=True, collapsible=True, collapsed="^editor.collapsed",
-                             maximizable=True, maximized="^editor.maximized", width="620px", height="380px",
-                             id="editor-window")
-        frame = window.frame
+    def side_tools(self, frame):
         frame.left.set_attr(dict(width="44px", background="var(--gramlot-surface-subtle)", border_right="1px solid var(--gramlot-border)"))
         tools = frame.left.menu(presentation="bar", orientation="vertical", labelPosition="tooltip", iconSize=20)
         tools.menuline("documenti:toggleDetails", caption="Details", iconSrc=ICONS["details"], checked="^editor.details")
         tools.menuline("documenti:undo", caption="Reset draft", iconSrc=ICONS["reset"], parameters=dict(close=False))
         tools.spacer(flex=1)
         tools.menuline("documenti:save", iconSrc=ICONS["save"])
+
+    def top_toolbar(self, frame):
         toolbar = frame.top.menu(presentation="bar", padding="2px 6px", iconSize=18, background="var(--gramlot-surface-subtle)", border_bottom="1px solid var(--gramlot-border-control)", id="editor-toolbar")
-        toolbar.menuline("documenti:undo", caption="Reset draft", iconSrc=ICONS["reset"], parameters=dict(close=False))
-        toolbar.menuline("documenti:toggleDetails", caption="Details", iconSrc=ICONS["details"], checked="^editor.details")
+        self.draft_commands(toolbar)
         toolbar.spacer(flex=1)
         commands = toolbar.menuline(caption="Document").menu()
-        commands.menuline("documenti:undo", caption="Reset draft", iconSrc=ICONS["reset"], parameters=dict(close=False))
-        commands.menuline("documenti:toggleDetails", caption="Details", iconSrc=ICONS["details"], checked="^editor.details")
+        self.draft_commands(commands)
 
+    def draft_commands(self, menu):
+        menu.menuline("documenti:undo", caption="Reset draft", iconSrc=ICONS["reset"], parameters=dict(close=False))
+        menu.menuline("documenti:toggleDetails", caption="Details", iconSrc=ICONS["details"], checked="^editor.details")
+
+    def draft_fields(self, frame):
         center = frame.center.contentPane(frameTarget=True, node_label="document_editor", padding="var(--gramlot-space-4)", overflow="auto",
                                           selfsubscribe_save="save", selfsubscribe_undo="undo",
                                           selfsubscribe_toggleDetails="toggleDetails")
@@ -79,6 +95,7 @@ class Page(BasePage):
         details.input(value="^editor.draft.author", live=True, id="editor-author", width="100%", box_sizing="border-box")
         center.p("^editor.error", role="alert", id="editor-error", color="var(--gramlot-error, #b22)")
 
+    def footer(self, frame):
         footer = frame.bottom.menu(presentation="bar", padding="2px 8px", iconSize=18, background="var(--gramlot-surface-subtle)", border_top="1px solid var(--gramlot-border-control)", id="editor-footer")
         footer.spacer(flex=1)
         actions = footer.menuline(group=True, overflowable=False)

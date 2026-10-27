@@ -11,6 +11,13 @@ class Page(BasePage):
         main_content = root.main(padding="24px", max_width="1200px", margin="auto")
         main_content.h1("Toolbar: groups, priority and overflow")
         main_content.p("This is still a menu. Its menuline entries become toolbar slots: commands, groups and a search input share the same row. The first level fills the frame; submenus and overflow open as compact menus.")
+        self.button_styles(main_content)
+        self.priority_overflow(main_content)
+        self.moving_input(main_content)
+        self.retained_groups(main_content)
+        self.vertical_overflow(main_content)
+
+    def button_styles(self, main_content):
         main_content.h2("Three toolbar button styles")
         main_content.p("The same commands appear below with labels beside the icon, small labels below, or icons only. Hover a button for its tooltip. All use larger 28 px toolbar icons and a subtle hover background. In the overflow menu every entry returns to an icon with its label beside it.")
         previews = main_content.div(display="grid", grid_template_columns="repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap="14px", margin_bottom="24px")
@@ -24,8 +31,21 @@ class Page(BasePage):
             preview_bar.menuline("documenti:toggleDetails", checked="^document.details")
             self.recipient(preview_frame, f"style_{mode}_editor")
         main_content.p("These are presentation settings only. Command labels, checked/disabled state and recipients are preserved. A group or individual menuline can override labelPosition and iconSize.")
+
+    def priority_overflow(self, main_content):
         main_content.h2("1. Make the toolbar narrower")
         main_content.p("Move the width slider. Flexible space shrinks first. Export and Copy (priority 10) move together into the overflow menu before Details (40) and Save/Undo (80). At equal priority the last group leaves first. Documents and Search always remain in the toolbar.")
+        self.width_controls(main_content)
+        shell = main_content.div(width="^toolbar.width:={} + 'px'", max_width="100%", border="1px solid var(--gramlot-border)", border_radius="8px", overflow="hidden", id="responsive-frame")
+        frame = shell.framePane(height="245px")
+        frame.top.setAttr(dict(background="var(--gramlot-field-background)", padding="6px"))
+        self.priority_bar(frame)
+        self.recipient(frame, "document_editor")
+        main_content.p("Type in Search, resize, open the overflow menu, then choose a command. The query below stays bound to the same Data value. Save follows the checkbox; Details remains checked in both presentations. No server save or search is performed.")
+        main_content.div().strong("Query: ")
+        main_content.p("^document.query", id="query-result", min_height="22px", margin="0 0 20px")
+
+    def width_controls(self, main_content):
         controls = main_content.div(display="flex", align_items="center", gap="12px", flex_wrap="wrap", margin="12px 0")
         controls.html_label("Toolbar width", for_="toolbar-width")
         controls.input(type="range", min=280, max=1080, step=20, value="^toolbar.width", live=True, id="toolbar-width", aria_label="Toolbar width", width="280px")
@@ -33,9 +53,8 @@ class Page(BasePage):
         controls.span("px")
         controls.input(type="checkbox", value="^document.locked", id="toolbar-lock", aria_label="Disable Save")
         controls.html_label("Disable Save", for_="toolbar-lock")
-        shell = main_content.div(width="^toolbar.width:={} + 'px'", max_width="100%", border="1px solid var(--gramlot-border)", border_radius="8px", overflow="hidden", id="responsive-frame")
-        frame = shell.framePane(height="245px")
-        frame.top.setAttr(dict(background="var(--gramlot-field-background)", padding="6px"))
+
+    def priority_bar(self, frame):
         bar = frame.top.menu(presentation="bar", id="responsive-toolbar")
         title = bar.menuline(group=True, overflowable=False, id="title-group")
         title.span("Documents", font_weight="600", padding="0 8px")
@@ -50,11 +69,8 @@ class Page(BasePage):
         search = bar.menuline(group=True, overflowable=False, id="search-group")
         search.span("⌕", font_size="22px", aria_hidden=True)
         search.input(value="^document.query", live=True, placeholder="Search documents", aria_label="Search documents", width="190px", id="toolbar-search")
-        self.recipient(frame, "document_editor")
-        main_content.p("Type in Search, resize, open the overflow menu, then choose a command. The query below stays bound to the same Data value. Save follows the checkbox; Details remains checked in both presentations. No server save or search is performed.")
-        main_content.div().strong("Query: ")
-        main_content.p("^document.query", id="query-result", min_height="22px", margin="0 0 20px")
 
+    def moving_input(self, main_content):
         main_content.h2("2. An input can move into the menu too")
         main_content.p("Here the search group is allowed to overflow at priority 0. Use the same width slider. Enter text, then narrow the bar: open the overflow menu and continue editing the same input. Its value and binding are preserved; the Search label and input always move together.")
         second_shell = main_content.div(width="^toolbar.width:={} + 'px'", max_width="100%", border="1px solid var(--gramlot-border)", border_radius="8px", padding="6px", box_sizing="border-box")
@@ -69,6 +85,7 @@ class Page(BasePage):
         moving.input(value="^document.query", live=True, placeholder="Same query", aria_label="Movable search", width="220px", id="moving-search")
         self.recipient(second_frame, "secondary_editor")
 
+    def retained_groups(self, main_content):
         main_content.h2("3. Retained groups scroll without breaking")
         main_content.p("Every group in this narrow bar is retained. Scroll horizontally to reach the final search field: groups do not split, wrap or disappear into the overflow menu. This is the fallback when retained content alone cannot fit.")
         scroll_shell = main_content.div(width="400px", max_width="100%", border="1px solid var(--gramlot-border)", border_radius="8px", padding="6px", box_sizing="border-box")
@@ -80,6 +97,8 @@ class Page(BasePage):
             group.menuline("documenti:undo", labelPosition="tooltip", tooltip="Undo")
         retained.menuline(group=True, overflowable=False).input(value="^document.query", live=True, placeholder="Search", aria_label="Retained search", width="190px")
         self.recipient(scroll_frame, "retained_editor")
+
+    def vertical_overflow(self, main_content):
         main_content.h2("4. The same policy on a vertical toolbar")
         main_content.p("Move the height slider. Groups leave from the bottom at equal priority; the overflow button opens their menu beside the bar. The retained heading stays in the toolbar.")
         main_content.input(type="range", min=80, max=300, step=20, value="^toolbar.height", live=True, aria_label="Vertical toolbar height", id="toolbar-height", width="260px")

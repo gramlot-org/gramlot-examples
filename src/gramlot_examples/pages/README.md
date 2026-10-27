@@ -1,22 +1,23 @@
 # Gramlot examples
 
 Learn the current framework by building up one concept at a time: Source, Data
-binding, behavior, input components and containers. The lesson order follows
+HTML/SVG, input components, Data binding, behavior and containers. The lesson order follows
 learning prerequisites, not the release chronology.
 
 ## A route through the lessons
 
-| Family | Lessons | What you learn |
-| --- | --- | --- |
-| [HTML, SVG and page structure](00-html_svg/README.md) | 12 | HTML structure, native controls and SVG before reactive Data. |
-| [Fields and input widgets](01-inputs/README.md) | 29 | Fields, choices, typed values, validation and input widgets. |
-| [Data and bindings](02-binding/README.md) | 12 | Pointers, live updates, styles and shared Data. |
-| [Logic, actions and events](03-controllers/README.md) | 16 | Formulas, named Logic, events and commands. |
-| [RPC and data exchange](04-rpc/README.md) | 7 | Server calls, remote Source and lazy Data. |
-| [Containers and layout](05-containers/README.md) | 9 | Regions, drawers, tabs, stacks, dialog and floating panes. |
-| [Document and code editors](06-editors/README.md) | 5 | Edit source documents and compare their previews. |
-| [Tools](07-tools/README.md) | 1 | Live Source playground; the Python host adds its sample IDE. |
-| [Composition and reuse](08-composition/README.md) | 2 | Reusable blocks, independent datapaths, imports and timer-driven Data. |
+| Topic | Start here |
+| --- | --- |
+| [HTML and SVG](00-html_svg/README.md) | HTML tags and SVG, declared through Source. |
+| [Fields and input widgets](01-inputs/README.md) | Richer fields, typed values and shared validation. |
+| [Data and bindings](02-binding/README.md) | Paths, defaults and reactive values. |
+| [Logic, actions and events](03-controllers/README.md) | Formulas, Logic and events. |
+| [RPC and data exchange](04-rpc/README.md) | Server calls, remote Source and lazy Data. |
+| [Containers and layout](05-containers/README.md) | Regions, tabs, windows and tray workspaces. |
+| [Menus and toolbars](05-menus/README.md) | One command hierarchy, several presentations. |
+| [Document and code editors](06-editors/README.md) | Document content, editing and previews. |
+| [Tools](07-tools/README.md) | Inspect and compose Source; Python adds a sample IDE. |
+| [Composition and reuse](08-composition/README.md) | Reuse small helpers under different datapaths. |
 
 Each lesson says what to observe and provides complete Python and JavaScript
 source. Start with its small example, change one value, then compare the visible
@@ -31,13 +32,13 @@ standard serverless exporter; it does not execute a Python web server inside
 Read the Docs. Its Python source shows the equivalent authoring declarations.
 
 Use the local Python gallery for Python endpoints, filesystem features and the
-additional development chapters. A browser Worker can execute its own exported
+examples that require a live Python host. A browser Worker can execute its own exported
 JavaScript handlers; it does not provide a secret store or database connection.
 
 ## Use the gallery
 
 Choose a lesson in the navigation tree. **Example** shows the running page;
-**Explanation** describes what to try. The Code region shows the authoring source.
+**Explanation** describes what to try. **Code** shows the authoring source; its internal handle detaches it into a floating window.
 In **Settings**, choose Theme, Colors and Color mode independently. Compact,
 Mimi and Joanna provide different densities; color changes do not discard Data.
 
@@ -48,13 +49,17 @@ container's contract. Application Save/Cancel semantics remain application logic
 
 ## Look up a component or extend the framework
 
+See the [feature coverage checklist](../../../docs/035-feature-coverage.md) for
+what the lessons teach, what is only used, and what is still missing. Presence in
+the catalogue is not proof that an example is simple or fully tested.
+
 - [Widget and parameter reference](https://gramlot.readthedocs.io/en/latest/docs/public/345-widget-reference.html): declarations, defaults, bindings and collections.
 - [Components and collections](https://gramlot.readthedocs.io/en/latest/docs/public/340-components-and-collections-guide.html): JS definitions, generated Python descriptors, resources and overrides.
-- [Menus, toolbars, frames and windows](https://gramlot.readthedocs.io/en/latest/docs/public/350-menus-toolbars-and-windows.html): shared commands and development window composition.
+- [Menus, toolbars, frames and windows](https://gramlot.readthedocs.io/en/latest/docs/public/350-menus-toolbars-and-windows.html): shared commands and window composition.
 - [Themes and CSS](https://gramlot.readthedocs.io/en/latest/docs/public/096-themes-and-css.html): density, palette, labels and shared tokens.
 
-New development chapters may not yet be present in the latest published manual;
-use matching checkouts/packages when trying their APIs.
+Use matching core, examples and host packages when comparing a local installation
+with this manual. Historical engineering records are not the learning path.
 
 ## Setup and use
 

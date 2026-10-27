@@ -6,7 +6,7 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [inputs, layout, editors]
-    title = "Edit Markdown: source, preview and rich text"
+    title = "Markdown editor"
 
     def main(self, root):
         main_content = root.main(datapath="markdownDemo", padding="24px", class_="example-page stack")

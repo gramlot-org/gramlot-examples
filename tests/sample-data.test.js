@@ -30,9 +30,9 @@ test('sample records retain nested paths, types and attributes; UI preferences s
     for (const path of ['position', 'live', 'readonly']) assert.equal(textbox.getNode(path), null);
 });
 
-test('explicit setters in lessons are confined to setter teaching and host-generated carousel metadata', () => {
+test('explicit setters in lessons are confined to setter teaching and host-generated gallery metadata', () => {
     for (const [key, route] of Object.entries(gallery.routes)) {
-        if (!route.page.includes('/pages/') || ['b03', 'l08'].includes(key)) continue;
+        if (!route.page.includes('/pages/') || ['b03', 'l08', 'gallery-tray'].includes(key)) continue;
         const text = readFileSync(route.page, 'utf8');
         assert.doesNotMatch(text, /\.dataSetter\s*\(/, key);
     }

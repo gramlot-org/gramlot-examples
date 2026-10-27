@@ -33,3 +33,7 @@ Each frame has one central recipient. The menu sender is the selected occurrence
 the target is that frame's document content. This trial uses explicit parameter
 bindings for the document ID. Automatic tree/grid row context, `validclass` and
 attachment to a separate target are not implemented by this example.
+
+## One definition, several presentations
+
+Read `document_menu` first: it defines the hierarchy once. `example` chooses only where the menu is presented, and `document` declares the recipient. Both disabled and checked use the same Data paths, so changing the controls updates every presentation.

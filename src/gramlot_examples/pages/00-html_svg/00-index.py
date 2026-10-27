@@ -1,7 +1,7 @@
 from gramlot import Page as BasePage
 
 class Page(BasePage):
-    title = 'HTML, SVG and page structure'
+    title = 'HTML and SVG'
     def main(self, root):
         pane = root.main(class_="example-page stack", padding="24px")
         pane.h1(self.title)

@@ -833,3 +833,21 @@ test('a background load failure does not replace the active loading indicator', 
     requests[1].resolve(); await settle();
     assert.equal(f.get('gallery-load-status').textContent, '');
 });
+
+
+test('Features is the final navigation page and retains an opened lesson when switching back', async t => {
+    const f = await setup(t);
+    assert.equal(f.state.getItem('navigation').getNodes().at(-1).label, 'features');
+    assert.equal(f.get('gallery-features-button'), null);
+    f.navigation('e01').click(); await settle();
+    const frame = f.get('frame-e01');
+    frame.contentWindow.draft = 'Retain me';
+    f.navigation('features').click(); await settle();
+    assert.equal(f.state.getItem('featuresOpen'), true);
+    assert.equal(f.get('gallery-features').hidden, false);
+    assert.equal(f.get('index-pages').hidden, true);
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.state.getItem('featuresOpen'), false);
+    assert.equal(f.get('frame-e01'), frame);
+    assert.equal(frame.contentWindow.draft, 'Retain me');
+});

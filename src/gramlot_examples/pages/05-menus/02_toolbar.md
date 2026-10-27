@@ -1,7 +1,10 @@
-# Toolbar groups and responsive overflow
+# Toolbar groups and overflow
 
-This provisional Python lesson uses only menu, menuline and spacer. A toolbar is
-menu(presentation="bar"); its Source children remain in declaration order.
+**Learn:** turn a menu into a toolbar, keep related controls together and decide
+what happens when space runs out. A slotbar uses the same `menu` and `menuline`
+API; there is no second command system.
+
+Start with this small composition:
 
 ```python
 bar = frame.top.menu(presentation="bar")
@@ -13,40 +16,45 @@ search = bar.menuline(group=True, overflowable=False)
 search.input(value="^document.query", live=True)
 ```
 
-A group owns its overflow policy and moves as one unit. priority defaults to 0;
-lower values move first, ties start at the end. overflowable defaults to True;
-False retains the entry/group in the toolbar. Groups have no command of their
-own. A retained group may need scrolling to reach it: retained does not mean all
-content is simultaneously visible in a narrow viewport.
+`group=True` keeps its children together. `spacer(flex=1)` pushes Search to the
+far end. `overflowable=False` keeps that group in the toolbar. The commands are
+already registered by this page's collection, so their labels need not be repeated.
 
-Fixed spacers keep their declared size; elastic space gives way before entries
-move. Spacers never become overflow entries. The continuation button stays outside
-the scrollable strip so the menu remains reachable. Menu entries keep declaration
-order even when priority chooses a different transfer order.
+## Try one behavior at a time
 
-The first frame retains its title and search. The second allows its search group
-to move. The third retains every group, demonstrating horizontal scrolling. A fourth example applies the same policy along the vertical axis with a height slider. Values
-and binding remain attached to the original controls; the runtime uses named-slot
-projection, not duplicate Source nodes. If a focused input moves into overflow,
-the menu opens so editing can continue. Escape closes the menu and returns focus
-to its continuation button. These focus rules are provisional and require usability
-feedback alongside resize and keyboard testing.
+| Try | Expected result | Source helper |
+| --- | --- | --- |
+| Compare the three button styles and hover an icon | The label is beside, below or in a tooltip; commands and state stay the same | `button_styles` |
+| Reduce Toolbar width | Copy/Export (10) leave before Details (40), then Save/Undo (80); each group moves together | `priority_overflow`, `priority_bar` |
+| Type into Movable search, then reduce the width | The same input appears in overflow with its value and binding intact | `moving_input` |
+| Scroll the retained-only toolbar | All groups remain reachable and no group is split | `retained_groups` |
+| Reduce the vertical toolbar's height | The same priority policy applies vertically | `vertical_overflow` |
 
-All commands reach the explicit frameTarget in their own frame. The result reports
-local command delivery; Copy and Save are illustrative Data updates, not persistence
-or clipboard operations. Search is a bound input, not a server search. User-selected
-visibility/sessionStorage customization is deferred.
+Lower `priority` values overflow first; ties start at the end. The default is 0.
+Elastic space shrinks first. Fixed spacers retain their size; neither kind appears
+as an overflow entry. The overflow menu preserves declaration order.
 
+If retained groups cannot fit, the strip scrolls. Retained means reachable in the
+bar, not necessarily visible all at once. The continuation button remains reachable.
 
-## Toolbar icon and label styles
+## Shared state and command delivery
 
-menu(labelPosition="beside" | "below" | "tooltip", iconSize=24) sets toolbar
-defaults. menuline can override either setting, including on a group; the nearest
-group setting is inherited unless the entry overrides it. below uses a small
-caption beneath the icon, tooltip retains the full caption in the native tooltip
-and accessible name. Do not set caption="" to hide toolbar text.
+Disable Save and toggle Details, then open overflow: disabled/checked state must
+follow there too. Type in Search and watch Query below. Search only demonstrates
+binding; it does not query a server. Copy, Save and Export report command delivery;
+they do not use the clipboard, persist a document or download a file.
 
-Toolbar icons are 24 px by default (28 px in the comparison examples); buttons
-have a larger hit area, subtle hover background, focus outline and checked/open
-feedback. Popup and overflow entries always use compact icon-and-caption rows;
-custom tooltip text remains available without replacing the caption.
+Each frame calls `recipient` to declare its central `frameTarget`. The command
+arrives there with sender, target, command, parameters and modifiers. The browser
+`Logic` methods update Data; Python's methods compose the Source.
+
+## Icon and label choices
+
+`labelPosition="beside"`, `"below"` or `"tooltip"` changes toolbar presentation.
+`iconSize` controls the graphic independently of the button. A group or entry can
+override the bar's defaults. Keep the caption for accessibility, even in tooltip
+mode. Popup and overflow menus always show compact icon-and-label rows.
+
+The comparison loop reuses the same commands with three presentation settings.
+`export_group` creates the nested PDF/CSV menu; `recipient` reuses the message
+receiver. All initial values come from `02_toolbar_data.tytx`.

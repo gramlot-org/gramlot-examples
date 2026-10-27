@@ -7,7 +7,7 @@ from gramlot.page import code_mirror_with_options
 
 class Page(BasePage):
     gramlots = [inputs, layout, editors]
-    title = "Configure language, wrapping and editor options"
+    title = "Editor options"
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="editorDemo", padding="24px")
