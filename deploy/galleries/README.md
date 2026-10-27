@@ -60,7 +60,12 @@ The preceding generation stays live while images and ZIP are built. Candidate
 health checks and Chromium checks cover the gallery download, all 25 component
 pages starting, shared textbox binding, invalid drafts preserving accepted Data,
 and asynchronous validation; these run on both servers and file-based offline
-output. The ZIP contains all generated lessons, a README and a version receipt.
+output. Each independent example opens in a fresh page, closed before the next
+visit, as in the serverless browser suite. This releases embedded offline bundles
+instead of retaining a long file-navigation history in a single renderer. Binding
+and validation assertions still run in the same page they exercise; no page or
+assertion is skipped. The ZIP contains all generated lessons, a README and a
+version receipt.
 
 One nginx configuration selects both upstreams and the immutable shared ZIP.
 After `nginx -t` and reload, public HTTPS browser checks and both ZIP hashes must
