@@ -1,0 +1,26 @@
+{
+  "environment": "kajenn-db",
+  "families": [
+    {
+      "key": "kajenn-db-lessons",
+      "folder": "91-kajenn_db",
+      "title": "Kajenn and Asqueel",
+      "examples": [
+        {
+          "key": "kajenn-db-01",
+          "title": "Load and save a customer",
+          "folder": "01_customer",
+          "description": "A real SQLite record is loaded and saved by PageStore controllers.",
+          "explanation": "Change the key and leave the field. Edit and save; status and errors are Data. Unknown keys preserve the current record. Failed saves leave SQLite unchanged."
+        },
+        {
+          "key": "kajenn-db-02",
+          "title": "Customer editing across windows",
+          "folder": "02_family",
+          "description": "Frames and connected windows edit independent drafts backed by one SQLite database.",
+          "explanation": "Load the same customer in two pages. Save in one, then reload in the other. The gallery owns the only WebSocket. Changes are not pushed to other drafts automatically."
+        }
+      ]
+    }
+  ]
+}
