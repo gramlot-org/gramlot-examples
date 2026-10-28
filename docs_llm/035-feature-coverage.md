@@ -256,8 +256,11 @@ Do not delete a lesson until its unique coverage rows have another clear home.
 The owner's Semantic page screenshot shows Code using only part of the available
 height, a clipped first line and several header bands before the source. Treat
 this as a gallery presentation defect, independently of the lesson's API coverage.
-The screenshot establishes the symptom, not its CSS cause. No layout fix or
-public deployment is claimed by this checklist.
+The height defect is corrected: the gallery assigns remaining space to the
+renderer-owned Labelbox (`box_flex`) and fills it with CodeMirror (`height="100%"`).
+A 3 px inset remains. Chromium and WebKit checks cover viewport changes,
+detach/reattach and tab switching, with the same editor instance and no outer
+panel scrollbar. This correction does not redesign the header bands.
 
 <a id="ge-035-030"></a>
 ## 030 · Scope and maintenance

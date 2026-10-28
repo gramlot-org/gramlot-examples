@@ -256,7 +256,7 @@ class Page(IndexPage):
         body.div("^.status", role="status", padding="6px", white_space="pre-wrap", flex_shrink=0,
                  id=f"code-status-{key}")
         body.codeMirror(value="^.content", language="python", readonly="^.readonly", fontSize=12,
-                        fontFamily="var(--gramlot-font-code)", flex="1", min_height=0,
+                        fontFamily="var(--gramlot-font-code)", box_flex="1", box_padding="3px", height="100%",
                         id=f"code-{key}", nodeId=f"galleryCodeEditor_{key}")
         body.dataController(func="galleryCodeMount", key=key, _onStart=True)
         body.dataController(func="galleryCodeSave", key=key, **{f"subscribe_galleryCodeEditor_{key}_save": True})
