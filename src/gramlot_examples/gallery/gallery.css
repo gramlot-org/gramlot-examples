@@ -25,7 +25,6 @@
 .gallery-codepane gramlot-code-mirror {
   --gramlot-border-control: var(--gramlot-border);
   --gramlot-radius-sm: 3px;
-  margin: 3px;
 }
 #gallery > .index-footer { grid-row: 3; }
 #gallery [hidden] { display: none; }
