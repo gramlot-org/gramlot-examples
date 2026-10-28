@@ -9,14 +9,14 @@ class Page(BasePage):
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):
-        pane = root.main(class_="example-page stack", datapath="tabsDemo")
-        self.track_events(pane)
-        pane.h1("Tabs")
-        pane.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
-        self.options(pane)
-        self.workspace(pane)
-        self.event_report(pane)
-        self.reference(pane)
+        main_content = root.main(class_="example-page stack", datapath="tabsDemo")
+        self.track_events(main_content)
+        main_content.h1("Tabs")
+        main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
+        self.options(main_content)
+        self.workspace(main_content)
+        self.event_report(main_content)
+        self.reference(main_content)
 
     def track_events(self, main_content):
         for topic in ("hiding", "showing", "selected", "closing", "closed"):

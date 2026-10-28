@@ -9,16 +9,16 @@ class Page(BasePage):
     title = "HTML and components"
 
     def main(self, root):
-        pane = root.main(class_="example-page stack")
-        pane.h1("HTML and components")
-        pane.p("Edit any name: all three fields share one Data value. HTML tags and Gramlot components use the same bindings and labelbox.")
-        self.options(pane)
-        comparison = pane.div(display="grid", gap="12px", max_width="56rem",
+        main_content = root.main(class_="example-page stack")
+        main_content.h1("HTML and components")
+        main_content.p("Edit any name: all three fields share one Data value. HTML tags and Gramlot components use the same bindings and labelbox.")
+        self.options(main_content)
+        comparison = main_content.div(display="grid", gap="12px", max_width="56rem",
                               grid_template_columns="repeat(auto-fit, minmax(min(100%, 22rem), 1fr))")
         self.html_controls(comparison)
         self.components(comparison)
-        pane.h2("Shared Data")
-        pane.p("^customer", id="customer-value")
+        main_content.h2("Shared Data")
+        main_content.p("^customer", id="customer-value")
 
     def html_controls(self, parent):
         card = parent.section(class_="card stack", min_width=0)

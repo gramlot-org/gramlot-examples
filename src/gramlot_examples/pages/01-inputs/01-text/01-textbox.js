@@ -8,16 +8,16 @@ export class Page extends BasePage {
     static title = 'HTML and components';
 
     main(root) {
-        const pane = root.main({class: 'example-page stack'});
-        pane.h1('HTML and components');
-        pane.p('Edit any name: all three fields share one Data value. HTML tags and Gramlot components use the same bindings and labelbox.');
-        this.options(pane);
-        const comparison = pane.div({display: 'grid', gap: '12px', max_width: '56rem',
+        const main_content = root.main({class: 'example-page stack'});
+        main_content.h1('HTML and components');
+        main_content.p('Edit any name: all three fields share one Data value. HTML tags and Gramlot components use the same bindings and labelbox.');
+        this.options(main_content);
+        const comparison = main_content.div({display: 'grid', gap: '12px', max_width: '56rem',
             grid_template_columns: 'repeat(auto-fit, minmax(min(100%, 22rem), 1fr))'});
         this.html_controls(comparison);
         this.components(comparison);
-        pane.h2('Shared Data');
-        pane.p('^customer', {id: 'customer-value'});
+        main_content.h2('Shared Data');
+        main_content.p('^customer', {id: 'customer-value'});
     }
 
     html_controls(parent) {

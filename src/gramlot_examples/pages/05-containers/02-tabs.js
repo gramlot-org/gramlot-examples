@@ -8,14 +8,14 @@ export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {
-        const pane = root.main({class: 'example-page stack', datapath: 'tabsDemo'});
-        this.track_events(pane);
-        pane.h1('Tabs');
-        pane.p('Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.');
-        this.options(pane);
-        this.workspace(pane);
-        this.event_report(pane);
-        this.reference(pane);
+        const main_content = root.main({class: 'example-page stack', datapath: 'tabsDemo'});
+        this.track_events(main_content);
+        main_content.h1('Tabs');
+        main_content.p('Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.');
+        this.options(main_content);
+        this.workspace(main_content);
+        this.event_report(main_content);
+        this.reference(main_content);
     }
 
     track_events(main_content) {
