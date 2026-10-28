@@ -97,9 +97,9 @@
       "examples": [
         {
           "key": "w01",
-          "title": "Text fields: live updates and labels",
+          "title": "HTML and components",
           "folder": "01-text/01-textbox",
-          "description": "Type a customer name and watch the second field follow. Open Options, turn off live editing, then type again: the shared value changes when you leave the field."
+          "description": "Edit a name in either HTML or Gramlot controls. Compare their declarations, then try label positions, live editing and read only."
         },
         {
           "key": "w02",
@@ -337,10 +337,10 @@
         },
         {
           "key": "b09",
-          "title": "Build a form with shared Data",
+          "title": "Bound forms",
           "folder": "02-editing/03-forms",
-          "description": "Change the registration fields and compare the Data record alongside them. The password and unbound controls are deliberately absent from that summary.",
-          "explanation": "The same fieldsets as HTML / SVG example 06, with most fields bound to one Data record. The summary beside the form shows the record while you type; it leaves out the password and the daily radio, and the file input, the read-only code and the disabled field are not bound."
+          "description": "Edit a field and compare its Data value. Text updates on change; Intensity updates while dragging. Password and unbound controls are absent from the summary.",
+          "explanation": "The native form revisited with one Data record. Small methods build the field groups and the bound summary; relative pointers connect them."
         },
         {
           "key": "b10",
@@ -569,8 +569,8 @@
         {
           "key": "l07",
           "folder": "02-tabs",
-          "title": "Tabs: select, close and retain content",
-          "description": "Write an invalid one-character customer name, switch tabs and return. The draft remains. Close Notes and compare the retained Data; expand the reference to compare styles."
+          "title": "Tabs",
+          "description": "Switch panels without losing a draft. Try closing Notes, then expand Options and the style reference."
         },
         {
           "key": "l08",
