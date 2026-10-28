@@ -1,18 +1,44 @@
-# Text fields: live updates and labels
+# HTML and components
 
-**Try this:** Type a customer name and watch the second field follow. Open Options, turn off live editing, then type again: the shared value changes when you leave the field.
+**Try this:** edit any of the three names. They share `customer` in the Data Bag.
+Use either **Clear name** button: both declarations update that same value.
 
-Two textboxes share a customer name. Type in either one, switch live editing off and on, and move the label without rebuilding the field.
+## Two ways to declare a control
 
-**Uses:** the first 0.3 input components, shared labelbox, Source, Data and bindings. No endpoints or validation engine.
+| HTML tag | Gramlot component |
+| --- | --- |
+| `input(type="text", value="^customer")` | `textbox(value="^customer")` |
+| `html_button("Clear", connect_onclick="this.SET('customer', '')")` | `button("Clear", action="this.SET('customer', '')")` |
 
-<details>
-<summary>More detail</summary>
+An HTML tag exposes a browser element. A component adds a Gramlot interface for
+behavior such as validation, field state or command options. Use the `html_`
+prefix when the HTML name would otherwise select a component, as with
+`html_button` and `button`. `input` already names the HTML tag.
 
-`lbl_` styles the label; `box_` styles the whole labelbox. `box_l_` and `box_c_` address its label and control containers. Read only stops editing while Data updates can still reach the field.
+Both are authored in Source. Both can bind to Data. No application code reads the
+DOM to copy values between controls.
 
-**Try it:** choose each of `TL`, `TC`, `TR`, `L`, `R`, `BL`, `BC`, `BR`. The default is `TL`. Open the inspector to see the same values in Data.
+## Labels and styles are shared
 
-**Sample data:** `01-textbox_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
+Open **Options** and change the label position. The first HTML input and the first
+textbox use the same `lbl` and `lbl_position` mechanism: a labelbox wraps the
+control. Labels are not exclusive to components.
 
-</details>
+Style attributes can be written separately: `width="100%"`, `padding="8px"`,
+`color="..."`. `lbl_` targets the label, `box_` the wrapper, and `box_l_` / `box_c_`
+the label/control containers. Here `box_c_width="100%"` lets the control use its
+available space.
+
+Turn **Update while typing** off, edit a name, then leave the field. The Data
+changes on `change` instead of every keystroke. **Read only** stops typing; it does
+not stop Data updates, so either Clear button still updates the fields.
+
+## Read the code
+
+`main` composes the comparison. `html_controls`, `components` and `options` build
+one part each. The second textbox keeps the original two-component binding test;
+the HTML input adds the comparison without creating a second record.
+
+`01-textbox_data.tytx` supplies the sample customer. `default` initializes only
+the interface options. This page introduces components; the validation and button
+lessons demonstrate their richer behavior separately.

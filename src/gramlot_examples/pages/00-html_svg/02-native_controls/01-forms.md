@@ -39,7 +39,9 @@ Change the Name default to `"Grace Hopper"`, reload, type another name, then Res
 
 ## The same example across stages
 
-Return in **core 0.2.0** at [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/03-forms.md). The same fieldsets move their defaults into one Data record and replace literal values/checked/selected flags with pointers. The control and the record display share that state; no separate display-update handler is authored. The bound version adds a capability, so the whole file is not claimed to be shorter. Keep this native Reset example as the earlier stage.
+Continue with [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/03-forms.md). The same fieldsets move their defaults into one Data record and replace literal values/checked/selected flags with pointers. The control and the record display share that state; no separate display-update handler is authored. The bound version adds a capability, so the whole file is not claimed to be shorter. Keep this native Reset example as the earlier stage.
+
+For a direct comparison with Gramlot widgets, open [HTML and components](../../01-inputs/01-text/01-textbox.md). Both support bindings and labelbox styling; the component interface adds dedicated behavior.
 
 ## Limits and next step
 

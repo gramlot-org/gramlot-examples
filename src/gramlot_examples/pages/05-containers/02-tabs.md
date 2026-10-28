@@ -1,41 +1,59 @@
-# Tabs: select, close and retain content
+# Tabs
 
-**Try this:** Write an invalid one-character customer name, switch tabs and return. The draft remains. Close Notes and compare the retained Data; expand the reference to compare styles.
+**Try this:** type a one-letter customer name, switch to Notes and return.
+The invalid draft remains in the same field; the accepted Data value stays unchanged.
 
-The first eight cards compare two presentations on all four sides. **Shaped tabs** give each label a visible outline; **Underline** leaves a lighter row or list of text, with a line marking the selected panel. You can click every card: these are real containers, not pictures.
+## Switch, then close
 
-**Top** and **Bottom** place the labels in a horizontal row. **Left** and **Right** place them in a vertical list. The text itself stays horizontal: a vertical tab list does not require rotated words. Each card prints the mode, position and alignment options that create it.
+Each child declares a `pageName` and a `title`:
 
-Type a name in one **Profile** panel. The other cards update because their editors share the same Data path. Open **Messages**, edit its text, and return to Profile. Changing panels keeps the controls and their values. Each card has independent selection, so you can compare different panels at the same time.
+```python
+tabs = pane.tabContainer(selectedPage="^.page", height="240px")
+customer = tabs.contentPane(pageName="customer", title="Customer")
+customer.textbox(value="^.name", lbl="Name")
+```
 
-The next six cards separate **position** from **alignment**. Position chooses a side; `tabAlign` chooses where the labels sit along that side. With a horizontal bar, `start`, `center`, `end` mean left, middle, right. With a vertical bar they mean top, middle, bottom. The default is `start`. If the labels no longer fit, the strip keeps its beginning reachable and lets you scroll through the entries.
+Switching tabs hides a panel without discarding its controls or unfinished edits.
+Closing a `closable=True` panel removes its Source and controls. Those operations
+are different: neither automatically deletes the Data record.
 
-The controls below the comparison let you change the presentation of one larger editor, adjust icons and unread badges, and explore closing. The unread-message slider also updates the badges in the cards above.
+Write something in **Notes**, switch away and return. Next, close Notes. The
+**Saved notes** line keeps the text. Reload to recreate the closed panel.
 
-## Keep several tasks within reach
+## Options
 
-Tabs let someone move between parts of a task without opening a new page. Here you can edit a customer, write notes, and visit a nested layout. Only one panel is visible at a time, but changing tabs keeps the others ready for your return.
+The collapsed **Options** section controls the main workspace:
 
-There is an important distinction to learn: **switching away from a panel is not the same as closing it**.
+- **Selected page** changes the bound `selectedPage`; clicks on tabs update it too.
+  `selected` reports the zero-based index.
+- **Presentation** chooses shaped tabs or an underline. **Tab position** chooses
+  top, bottom, left or right. **Alignment** positions labels along that side.
+- **Unread messages**, **Badge color** and **Notes icon** update the tab even when
+  its panel is hidden.
+- **Prevent closing Notes** makes `onClose` refuse closure. Turn it off to close.
 
-## Try it
+**Nested border** shows that a tab can contain another layout: resize its Tools
+region, collapse its drawer, or edit the same accepted customer name.
 
-Write a note in **Notes**, select **Customer**, then return. Your note is still there. In Customer, try a one-letter name: it is too short, so it stays as an unfinished edit while the accepted name below remains unchanged. Switch away and return again. Even that unfinished edit survives.
+## Events and visual reference
 
-Now use **Presentation** and **Tab position**. Underline gives you a lighter row of labels; Tabs gives you shaped tabs. Move the row to the bottom or to either side. These are different presentations of the same panels.
+**Inspect container events** reports hiding, showing, selection, closing and
+closure. Controllers record these messages in Data; ordinary tab switching needs
+no application controller.
 
-While Notes is hidden, move **Unread messages**. The number beside Notes changes without opening the panel. That little number is a **badge**: a way to show that something deserves attention elsewhere. Try its color and icon controls as well.
+**Compare tab styles, positions and alignment** contains the advanced reference:
+8 cards for two styles on four sides, then 6 for horizontal/vertical alignment.
+All remain working editors. Their selection is independent, while their fields
+share relative Data paths. Left/right strips keep their text horizontal. If a
+strip is too short, its labels scroll.
 
-## Closing deserves a separate experiment
+## Read the code
 
-Turn on **Prevent closing Notes** and try its close button. The panel stays. Turn the lock off and try again: this time the tab and its panel are removed. The **Saved notes** line still contains the note, because removing an editor does not automatically erase the Data it was editing.
+`main` composes options, workspace, event report and reference. The three workspace
+panels have separate methods. `variant_card` is reused by two loops: there are no
+14 copied panel definitions. You can start with `workspace` and its three panel
+methods; the other methods demonstrate optional behavior.
 
-After closing Notes, it is no longer a selectable tab. Reload this example when you want to repeat that part of the lesson.
-
-## How selection connects to your page
-
-Each panel has a pageName, a stable name such as customer or notes. The container's selectedPage can bind to Data, which is why **Selected page** and clicking a tab can control the same selection. The numeric selected value is its position in the list, starting at zero.
-
-The event report lets you see which panel is being hidden, shown or closed. It is useful when another part of your application needs to react, but you do not need a controller just to switch ordinary tabs: the container already does that.
-
-**Sample data:** `02-tabs_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
+`02-tabs_data.tytx` supplies sample values. Interface `default` attributes initialize
+the options; bindings handle later changes. All 14 reference cards and the main
+workspace retain their original features.

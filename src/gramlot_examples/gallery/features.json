@@ -42,8 +42,8 @@
         "id": "behavior_native_html_versus_gramlot_component_names",
         "title": "Native HTML versus Gramlot component names",
         "kind": "behavior",
-        "status": "Review",
-        "description": "Add one explicit side-by-side html_button/input versus button/textbox comparison.",
+        "status": "Exercise",
+        "description": "Compare HTML and component controls on one Data value; try shared labels, editing modes and both Clear actions.",
         "examples": [
           "e06",
           "w01",
