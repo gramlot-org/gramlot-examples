@@ -5,14 +5,20 @@ SHOWN = ("name", "email", "search", "website", "telephone", "quantity", "date", 
 
 
 class Page(BasePage):
-    title = "Build a form with shared Data"
+    title = "Bound forms"
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="form")
-        pane.h1("Native form controls, bound")
-        pane.p("The same fields as HTML / SVG example 06, bound to the Data record on the right. The summary leaves out the password and the daily radio; the file input, the read-only code and the disabled field are not bound.")
+        pane.h1("Bound forms")
+        pane.p("Edit a field, then leave it: the Data record follows. Intensity updates while dragging.")
         layout = pane.div(class_="bound-form")
         form = layout.form()
+        self.identity_fields(form)
+        self.choice_fields(form)
+        self.flags_and_actions(form)
+        self.data_record(layout)
+
+    def identity_fields(self, form):
         identity = form.fieldset(class_="form-grid")
         identity.legend("Identity")
         self.field(identity, "Name", "name", "text", required=True)
@@ -22,13 +28,12 @@ class Page(BasePage):
         self.field(identity, "Telephone", "telephone", "tel", placeholder="+1 555 0100")
         self.field(identity, "Password", "password", "password", minlength=8)
 
+    def choice_fields(self, form):
         choices = form.fieldset(class_="form-grid")
         choices.legend("Choices and ranges")
         self.field(choices, "Quantity", "quantity", "number", min=1, max=20)
-        self.field(choices, "Date", "date", "date")
-        self.field(choices, "Time", "time", "time")
-        self.field(choices, "Month", "month", "month")
-        self.field(choices, "Week", "week", "week")
+        for kind in ("date", "time", "month", "week"):
+            self.field(choices, kind.title(), kind, kind)
         self.field(choices, "Accent", "accent", "color")
         self.field(choices, "Intensity", "intensity", "range", min=0, max=100, step=5, live=True)
         choices.html_label("Region", for_="region")
@@ -42,6 +47,7 @@ class Page(BasePage):
         choices.html_label("Note", for_="note")
         choices.textarea(id="note", name="note", rows=3, value="^.note")
 
+    def flags_and_actions(self, form):
         options = form.fieldset(class_="form-options")
         options.legend("Flags and states")
         options.html_label("Receive updates", for_="updates")
@@ -57,6 +63,7 @@ class Page(BasePage):
         options.input(type="file", id="attachment", name="attachment")
         form.html_button("Submit unavailable", type="submit", disabled=True)
 
+    def data_record(self, layout):
         record = layout.aside(class_="card stack")
         record.h2("The Data record")
         facts = record.dl()

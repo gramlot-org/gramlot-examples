@@ -5,19 +5,28 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     gramlots = [inputs, layout]
-    title = "Tabs: select, close and retain content"
+    title = "Tabs"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="tabsDemo")
+        self.track_events(main_content)
+        main_content.h1("Tabs")
+        main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
+        self.options(main_content)
+        self.workspace(main_content)
+        self.event_report(main_content)
+        self.reference(main_content)
+
+    def track_events(self, main_content):
         for topic in ("hiding", "showing", "selected", "closing", "closed"):
             main_content.dataController(
                 "this.SET('.events', history + topic + ': ' + JSON.stringify(_subscription_kwargs) + '\\n');",
                 history="=.events", topic=topic,
                 **{f"subscribe_editor_{topic}": True})
         main_content.dataController("this.SET('.closed', pageName)", subscribe_editor_closed=True)
-        main_content.h1("Tabs: one workspace, several views")
-        main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
+
+    def options(self, main_content):
         options = main_content.details()
         options.summary("Options · presentation, badges and closing")
         controls = options.formlet(col_min_width="14rem", max_width="36rem")
@@ -37,28 +46,43 @@ class Page(BasePage):
                                  values="✉:Envelope,●:Dot,★:Star", default='✉')
         controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch", default=False)
         options.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
+
+    def workspace(self, main_content):
         main_content.p("^.index", id="tabs-index", mask="Selected index: {}")
         tabs = main_content.tabContainer(id="tabs-demo", nodeId="editor", selectedPage="^.page",
                                   selected="^.index", tabMode="^.mode", tabPosition="^.position", tabAlign="^.align", height="240px", max_width="44rem",
                                   border="1px solid var(--gramlot-border-control, #aaa)", rounded=6, default_selected=0)
+        self.customer_panel(tabs)
+        self.notes_panel(tabs)
+        self.nested_panel(tabs)
+
+    def customer_panel(self, tabs):
         customer = tabs.contentPane(id="customer-panel", pageName="customer", title="Customer", icon="👤", padding="12px")
         customer.textbox(id="tabs-name", value="^.name", lbl="Name (2–20)", validate_len="2:20", live=True, width="15rem")
         customer.p("The accepted Data value:")
         customer.p("^.name", id="tabs-accepted")
+
+    def notes_panel(self, tabs):
         notes = tabs.contentPane(id="notes-panel", pageName="notes", title="Notes", icon="^.notesIcon", badge="^.unread",
                                  badge_color="^.badgeColor", closable=True,
                                  onClose="return !this.GET('.locked')", padding="12px")
         notes.textBoxArea(id="tabs-notes", value="^.notes", lbl="Notes", rows=3, width="100%", max_width="24rem")
+
+    def nested_panel(self, tabs):
         nested = tabs.borderContainer(id="tabs-border", pageName="layout", title="Nested border", icon="▦")
         nested.contentPane(region="left", width="100px", splitter=True, drawer=True,
                            drawer_label="Tools", padding="10px", background="var(--gramlot-surface-subtle, #eef1f5)").p("Resize me")
         nested.contentPane(region="center", padding="12px").textbox(value="^.name", lbl="Same accepted name", width="15rem")
+
+    def event_report(self, main_content):
         main_content.p("^.closed", id="tabs-closed", mask="Last closed: {}")
         main_content.p("^.notes", id="tabs-saved-notes", mask="Saved notes: {}")
         events = main_content.details()
         events.summary("Inspect container events")
         events.pre("^.events", id="tabs-events", max_height="12rem", overflow="auto", white_space="pre-wrap", overflow_wrap="anywhere")
 
+
+    def reference(self, main_content):
         reference = main_content.details()
         reference.summary("Compare tab styles, positions and alignment")
         self.tab_variants(reference)
