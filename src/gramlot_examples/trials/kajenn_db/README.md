@@ -1,7 +1,7 @@
 # Kajenn and Asqueel customer gallery
 
 This optional Python catalogue demonstrates real customer reads and saves in a
-dedicated SQLite file. It requires the matching development versions of Gramlot,
+dedicated SQLite file. It requires the matching released versions of Gramlot,
 gramlot-py-server and gramlot-examples, with Kajenn and `kajenn-db[asqueel]`.
 It is not part of the standard cross-environment or hosted gallery.
 

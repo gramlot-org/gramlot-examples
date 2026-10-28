@@ -1672,7 +1672,7 @@ customer read/save and page-family lessons. It uses a separate PageStore, ordina
 Data bindings and subscribed controllers. The model and Python pages live in this
 package; `scripts/serve_kajenn_db_gallery.py` in gramlot-py-server configures Kajenn,
 kajenn-db's Asqueel handler, a dedicated SQLite file and the gallery's WebSocket.
-Use the matching development versions; this increment is not yet published.
+Use the matching releases with host database access.
 
 From that adapter checkout, run `python scripts/serve_kajenn_db_gallery.py
 --database /absolute/path/demo/customers.sqlite --port 8768` and open
