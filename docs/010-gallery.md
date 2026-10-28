@@ -1661,3 +1661,40 @@ The owner authorizes publication and both hosted-gallery updates. The required
 core is consolidated on main; consumer source-based CI can now verify the
 release candidate. These Python trials remain an explicit additional catalogue;
 the standard hosted galleries keep their common cross-environment catalogue.
+
+
+<a id="ge-010-950"></a>
+
+## 950 · Kajenn and Asqueel SQLite trial
+
+The optional catalogue `src/gramlot_examples/trials/kajenn_db/catalog.json` contains
+customer read/save and page-family lessons. It uses a separate PageStore, ordinary
+Data bindings and subscribed controllers. The model and Python pages live in this
+package; `scripts/serve_kajenn_db_gallery.py` in gramlot-py-server configures Kajenn,
+kajenn-db's Asqueel handler, a dedicated SQLite file and the gallery's WebSocket.
+Use the matching development versions; this increment is not yet published.
+
+From that adapter checkout, run `python scripts/serve_kajenn_db_gallery.py
+--database /absolute/path/demo/customers.sqlite --port 8768` and open
+`http://127.0.0.1:8768/py/`. Expand **Kajenn and Asqueel**. A new database receives
+two customers; subsequent launches preserve all records. This is an explicit
+optional catalogue, not a change to the standard hosted galleries.
+
+Changing the requested key loads a record. Save publishes to a subscribed server
+controller, which validates and explicitly commits or rolls back. Loaded ID,
+record, status and error return as Data through binders. Missing IDs preserve the
+previous record; failed saves preserve the draft and stored data. Each iframe or
+connected window has an independent draft. Reload reads another window's committed
+save; the last successful save wins. The gallery owns one physical WebSocket,
+including nested frames and descendant windows. Synchronous controllers do not
+exercise the separate async database cancellation issue tracked in Kajenn #89.
+
+See the trial README for the full flow, test cases and verification commands.
+
+Local qualification, 2026-10-28: Chromium and WebKit pass reads, saves, missing
+keys, validation, duplicate-email rollback/recovery, nested frames and descendant
+windows with one primary WebSocket and cascading closure. The adapter startup
+test confirms existing records are preserved. Examples pass 62 Python tests and
+178 subtests (one existing skip); the manual validates 111 lessons and local links.
+The optional catalogue is implemented and locally verified, awaiting owner review;
+no package publication or hosted-gallery deployment was performed.
