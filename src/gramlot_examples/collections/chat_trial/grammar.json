@@ -1,0 +1,64 @@
+{
+  "abstracts": {},
+  "document_format": {
+    "name": "builder_grammar",
+    "version": "1.1"
+  },
+  "elements": {
+    "chatMessages": {
+      "_meta": {
+        "gramlot_component": {
+          "bagStore": true,
+          "command": false,
+          "dataScope": false,
+          "parameters": {
+            "storepath": {
+              "dtype": "T"
+            }
+          },
+          "presentationDefaults": []
+        },
+        "render_tag": "gramlot-chat-messages"
+      },
+      "attributes": {
+        "accepts_var_keyword": true,
+        "accepts_var_positional": false,
+        "parameters": [
+          {
+            "annotation": {
+              "dtype": "T",
+              "kind": "dtype"
+            },
+            "default": null,
+            "has_default": true,
+            "kind": "keyword_only",
+            "name": "storepath",
+            "role": "attribute"
+          },
+          {
+            "annotation": {
+              "kind": "any"
+            },
+            "has_default": false,
+            "kind": "var_keyword",
+            "name": "attr",
+            "role": "attribute"
+          }
+        ]
+      },
+      "collection_key": null,
+      "doc": null,
+      "inherits_from": null,
+      "node_label": null,
+      "ns": null,
+      "parent_tags": null,
+      "sub_tags": ""
+    }
+  },
+  "grammar": {
+    "description": null,
+    "name": "chat-trial",
+    "title": "chat-trial",
+    "version": null
+  }
+}

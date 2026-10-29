@@ -4,6 +4,10 @@
     {
       "entry": "./collections/menu-trial.js",
       "pythonPackage": "gramlot_examples.collections.menu_trial"
+    },
+    {
+      "entry": "./collections/chat-trial.js",
+      "pythonPackage": "gramlot_examples.collections.chat_trial"
     }
   ]
 }

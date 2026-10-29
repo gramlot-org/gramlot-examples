@@ -1,0 +1,19 @@
+{
+  "environment": "chat",
+  "families": [
+    {
+      "key": "chat-lessons",
+      "folder": "92-chat",
+      "title": "Chat",
+      "examples": [
+        {
+          "key": "chat-01",
+          "folder": "01-echo",
+          "title": "Echo and interactive replies",
+          "description": "A bound conversation with text, feedback and interactive Source replies.",
+          "explanation": "Send a message, then add two Source replies. Change one counter and note: the other reply stays independent. New conversation clears messages and keeps an unsent draft."
+        }
+      ]
+    }
+  ]
+}

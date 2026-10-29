@@ -11,6 +11,9 @@ license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = ["gramlot>=0.3.20"]
 
+[project.optional-dependencies]
+chat = ["anthropic>=2.0.0", "openai"]
+
 [project.urls]
 Documentation = "https://gramlot-examples.readthedocs.io/en/latest/"
 Homepage = "https://github.com/gramlot-org/gramlot-examples"

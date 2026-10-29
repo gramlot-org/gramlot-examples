@@ -1,0 +1,9 @@
+html,body{margin:0;height:100%;font:15px/1.5 system-ui,sans-serif;background:var(--gramlot-surface,Canvas);color:var(--gramlot-ink,CanvasText)}
+#base-chat{--gramlot-chat-bubble:var(--gramlot-surface-subtle);--gramlot-chat-assistant-background:var(--gramlot-surface-subtle)}
+#base-chat textarea,#base-chat input{font:inherit;background:var(--gramlot-field-background,Canvas);color:var(--gramlot-ink,CanvasText);border:1px solid var(--gramlot-border-control);border-radius:12px;padding:10px;box-sizing:border-box}
+#base-chat textarea:focus-visible,#base-chat input:focus-visible{outline:2px solid var(--gramlot-action);outline-offset:1px}
+.interactive-reply{padding:0}
+.interactive-reply h3{margin:0 0 12px;font-size:18px}
+.interactive-reply table{border-collapse:collapse;width:100%;margin:16px 0}
+.interactive-reply th,.interactive-reply td{text-align:left;padding:8px;border-bottom:1px solid var(--gramlot-border-control)}
+.interactive-reply input{margin-top:16px;width:100%}

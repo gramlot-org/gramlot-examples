@@ -47,7 +47,7 @@ const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/
     }}]});
 Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
 // Copy prepared browser resources byte-for-byte to preserve their fingerprints.
-for (const name of ['inputs','layout','tree','grid','editors','typst','menu-trial']) {
+for (const name of ['inputs','layout','tree','grid','chat','editors','typst','menu-trial']) {
     await rm(new URL(name+'/',output),{recursive:true,force:true});
     const artifact = name === 'menu-trial'
         ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))

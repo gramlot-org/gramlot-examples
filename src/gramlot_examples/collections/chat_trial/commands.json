@@ -1,0 +1,33 @@
+{
+  "document_format": {
+    "name": "gramlot_commands",
+    "version": "1.0"
+  },
+  "groups": {
+    "chat": {
+      "author": "Gramlot examples",
+      "commands": {
+        "clearDraft": {
+          "icon": "⌫",
+          "label": "Clear draft",
+          "publish": "clearDraft"
+        },
+        "newConversation": {
+          "icon": "+",
+          "label": "New conversation",
+          "publish": "newConversation"
+        },
+        "sendMessage": {
+          "icon": "↑",
+          "label": "Send",
+          "publish": "sendMessage"
+        },
+        "toggleContext": {
+          "icon": "⚙",
+          "label": "Settings",
+          "publish": "toggleContext"
+        }
+      }
+    }
+  }
+}
