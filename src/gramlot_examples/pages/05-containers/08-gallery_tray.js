@@ -16,13 +16,14 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({datapath:'galleryTray', class:'example-page stack',
             padding:'12px', max_width:'none', width:'100%'});
-        main_content.p('Choose an example and press Add. Each card opens a live page at 65% zoom. Drag its title, resize it, or try its controls.', {margin:'0'});
+        main_content.p('Choose an example and press Add. Each card opens a live page at 65% zoom. Drag its title or use rotation, zoom and layer on the left. The cross removes a card.', {margin:'0'});
         // Catalogue titles and host-specific URLs are generated, not sample records.
         main_content.dataSetter({destination_path:'.examples', value:Object.fromEntries(catalog.families.flatMap(family =>
             family.examples.filter(demo => !EXCLUDED.has(demo.key)).map(demo =>
                 [demo.key, {title:demo.title, url:this.constructor.galleryUrls[demo.key]}])))});
         const frame = main_content.framePane({height:'max(660px, calc(100dvh - 100px))',
             border:'1px solid var(--gramlot-border)', border_radius:'8px'});
+        main_content.dataFormula('.count', 'layout.getNodes().length', {layout:'^.layout', _init:true});
         examplePicker(frame.top);
         frame.center.setAttr({overflow:'auto'});
         frame.center.trayPane({nodeId:'galleryTray', id:'gallery-tray', storepath:'.layout',
@@ -48,17 +49,17 @@ function examplePicker(region) {
 export class Logic {
     addExample(node) {
         const example = node.GET('.examples.' + node.GET('.choice'));
-        const index = node.GET('.count') || 0;
+        const index = node.GET('.sequence') || 0;
         const key = `card_${index + 1}`;
         const row = Math.floor(index / 2);
         node.SET(`.layout.${key}`, new Bag({left:20 + (index % 2) * 430, top:20 + row * 340,
             width:600, height:460, layer:0, rotation:0, scale:0.65, selected:false}));
         const tray = node.builder.nodeById('galleryTray');
         tray.setAttr({min_height:`${Math.max(700, (row + 1) * 340 + 180)}px`});
-        const card = tray.div({node_label:key, lbl:example.getItem('title'), height:'100%',
+        const card = tray.div({node_label:key, lbl:example.getItem('title'), closable:true, height:'100%',
             minWidth:300, minHeight:220, box_c_padding:0});
         card.iframe({src:example.getItem('url'), title:example.getItem('title'),
             width:'100%', height:'100%', border:0, display:'block'});
-        node.SET('.count', index + 1);
+        node.SET('.sequence', index + 1);
     }
 }

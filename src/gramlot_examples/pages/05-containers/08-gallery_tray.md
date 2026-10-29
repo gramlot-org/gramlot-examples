@@ -23,3 +23,8 @@ The shared JavaScript `addExample` controller writes a geometry row into `galler
 Each card contains one iframe. That page owns its own Gramlot Source, Data and Logic; the parent owns only card arrangement. Moving or resizing changes the existing card's presentation, keeping the same iframe and its live page. Reloading the tray discards these pages; this example does not persist their contents.
 
 Catalogue titles and host-provided URLs are dynamic values, so they use a small `dataSetter`. Ordinary sample data stays in each chosen lesson's `_data.tytx`. The `gallery_urls`/`galleryUrls` mapping also lets the documentation exporter supply its standalone page URLs.
+
+Use the three controls at the left of a card title for rotation, zoom and layer.
+The cross at the right removes that card and its layout entry; other cards keep
+their live contents. The counter follows the layout Bag. Newly added cards have
+fresh keys, so adding after removal does not replace a surviving card.

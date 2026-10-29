@@ -95,3 +95,19 @@ Block ID: **GE-015-035**.
 Historical record: the compact Invoice template was reviewed in an earlier local
 checkpoint. It is not shipped in this candidate. Its separate preserved branch
 retains contact fields and model formulas for future evaluation.
+
+<a id="ge-015-040"></a>
+## 040 · Consolidated local candidate
+
+Block ID: **GE-015-040**.
+
+Owner accepted the Gallery tray correction into the local approach release on
+2026-10-29, explicitly keeping Invoice out. Gallery tray cards have rotation,
+zoom and layer tools on the left and an opt-in removal cross on the right.
+Removing a card removes its Source subtree and keyed layout row; remaining cards
+stay live. The displayed count follows the Bag, while fresh keys use a separate
+Data sequence. Python and JS lessons share the same Logic.
+
+Core's 46 targeted tests and the local browser add/remove/add check pass. Candidate
+wheels match installed package contents. The Base-only scope and preserved Invoice
+branch in §030 remain unchanged. This is local consolidation, not publication.
