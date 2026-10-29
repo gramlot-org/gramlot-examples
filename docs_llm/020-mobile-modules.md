@@ -1,12 +1,12 @@
 # Native mobile modules
 
-Document ID: **GE-020**. Updated: **2026-10-25**.
+Document ID: **GE-020**. Updated: **2026-10-29**.
 
 <a id="ge-020-005"></a>
 ## 005 · A separate catalogue, one gallery
 
 The Mobile application module stays in `gramlot-capacitor/examples/mobile_application`.
-Its `catalog.json` owns the fifteen example declarations. The host registers that
+Its `catalog.json` owns the example declarations (currently seventeen). The host registers that
 catalogue with a root-relative mount and integration resource; the gallery does
 not keep a second example list. Python registration uses `Page.gallery_modules`;
 the host's `stage(..., modules=[registration])` supplies it. This integration is deployed on the public Python gallery as `mobile-20261025`
@@ -75,7 +75,7 @@ The optional `Dockerfile.python-mobile` is selected during host installation; th
 It requires public packages that actually contain this integration; it is not an
 instruction to publish or deploy the unaccepted candidate.
 
-With no configured prerequisites, thirteen mobile entries are offered.
+With no configured prerequisites, fifteen mobile entries are offered, including motion and SQLite.
 **Server push is unavailable in this beta:** production APNs registration/delivery
 is not configured. The local sandbox backend is not reused. Shortcut entry also
 requires a top-level app integration and is omitted. The module index explains
@@ -124,3 +124,31 @@ point and public artifact, with backups and update.lock. CI remains responsible
 for candidate verification and promotion. Remote Edit remains false; the
 serverless download link is retained. The generic Dockerfile remains available
 for deployments without the mobile module. See deploy/galleries/README.md.
+
+<a id="ge-020-030"></a>
+## 030 · Common local base — 2026-10-29
+
+Owner: integrate `mobile-application-gallery` into the common base, preserve its
+original work and verify it; Grouplets follow separately and Invoice stays out.
+The older worktree's LAN-based, Italian prototype is superseded by GE-020's
+existing external catalogue and frame broker. It must not replace the current
+integration. The owning Capacitor module supplies the English pages, motion,
+SQLite and rebuilt provider; no page list is copied into this repository.
+
+The Python server's `scripts/serve_release_gallery.py --modules <parent>` adds the
+prepared `mobile_application` artifact to the common preview, retaining Base,
+Asqueel, PageStore/WebSocket, chat and ordinary gallery examples. The parent
+contains `mobile_application/`, prepared by `deploy/galleries/prepare-mobile.py`.
+Remote Edit is false. See GP-025 §020 for the complete command and prerequisites.
+
+The isolated Capacitor integration branch fixes SQLite resources stored on Logic:
+connection/query references now belong to the example's Source card, while note
+text, busy/error state and results remain in Data. DeviceHandler and the iframe
+broker retain resource lifetime ownership. Original worktrees are preserved.
+
+All fifteen eligible pages render in the local browser with English headings.
+Ordinary browsers hide the mobile branch; native mounting, origin/iframe checks,
+disposal, motion, database resources and theme contracts are covered by automated
+checks. A desktop browser does not verify native hardware or off-LAN operation.
+The previous deployment records above remain historical evidence; this local
+integration does not publish packages, deploy a site or upload TestFlight builds.
