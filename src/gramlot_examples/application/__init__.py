@@ -1,0 +1,1 @@
+"""Application gallery pages."""

@@ -1,0 +1,19 @@
+{
+  "environment": "base",
+  "families": [
+    {
+      "key": "base-database",
+      "folder": "80-database",
+      "title": "Base \u00b7 Database",
+      "examples": [
+        {
+          "key": "base-01",
+          "title": "Customers across adapters",
+          "folder": "01-customers",
+          "description": "Real PostgreSQL customers through Asqueel, SQLAlchemy or Django.",
+          "explanation": "Shared physical fields, auxiliary columns and selected values."
+        }
+      ]
+    }
+  ]
+}

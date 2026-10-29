@@ -1,0 +1,492 @@
+{
+  "source_database": "test_invoice_pg",
+  "schema": "invc",
+  "tables": {
+    "state": {
+      "physical": "invc_state",
+      "columns": [
+        {
+          "schema": "invc",
+          "table": "invc_state",
+          "name": "code",
+          "udt_name": "varchar",
+          "is_nullable": "NO",
+          "column_default": null,
+          "character_maximum_length": 5,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 5,
+          "meaning": "Source state identifier."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_state",
+          "name": "name",
+          "udt_name": "varchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 6,
+          "meaning": "Source state display name."
+        }
+      ],
+      "constraints": [
+        {
+          "schema": "invc",
+          "table": "invc_state",
+          "name": "invc_state_pkey",
+          "type": "p",
+          "definition": "PRIMARY KEY (code)",
+          "columns": [
+            "code"
+          ],
+          "related_schema": null,
+          "related_table": null,
+          "related_columns": [],
+          "on_update": " ",
+          "on_delete": " ",
+          "deferrable": false,
+          "initially_deferred": false
+        }
+      ]
+    },
+    "customer": {
+      "physical": "invc_customer",
+      "columns": [
+        {
+          "schema": "invc",
+          "table": "invc_customer",
+          "name": "id",
+          "udt_name": "bpchar",
+          "is_nullable": "NO",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 1,
+          "meaning": "Source customer identifier."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_customer",
+          "name": "account_name",
+          "udt_name": "text",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 6,
+          "meaning": "Source customer account name and selector caption."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_customer",
+          "name": "suburb",
+          "udt_name": "text",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 8,
+          "meaning": "Source customer locality."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_customer",
+          "name": "state",
+          "udt_name": "varchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 5,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 9,
+          "meaning": "Optional reference to state.code."
+        }
+      ],
+      "constraints": [
+        {
+          "schema": "invc",
+          "table": "invc_customer",
+          "name": "fk_0494e576",
+          "type": "f",
+          "definition": "FOREIGN KEY (state) REFERENCES invc.invc_state(code) ON UPDATE CASCADE",
+          "columns": [
+            "state"
+          ],
+          "related_schema": "invc",
+          "related_table": "invc_state",
+          "related_columns": [
+            "code"
+          ],
+          "on_update": "c",
+          "on_delete": "a",
+          "deferrable": false,
+          "initially_deferred": false
+        },
+        {
+          "schema": "invc",
+          "table": "invc_customer",
+          "name": "invc_customer_pkey",
+          "type": "p",
+          "definition": "PRIMARY KEY (id)",
+          "columns": [
+            "id"
+          ],
+          "related_schema": null,
+          "related_table": null,
+          "related_columns": [],
+          "on_update": " ",
+          "on_delete": " ",
+          "deferrable": false,
+          "initially_deferred": false
+        }
+      ]
+    },
+    "invoice": {
+      "physical": "invc_invoice",
+      "columns": [
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "id",
+          "udt_name": "bpchar",
+          "is_nullable": "NO",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 1,
+          "meaning": "Source invoice identifier."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "inv_number",
+          "udt_name": "bpchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 10,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 6,
+          "meaning": "Source invoice number; unique when present."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "customer_id",
+          "udt_name": "bpchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 7,
+          "meaning": "Optional reference to customer.id."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "date",
+          "udt_name": "date",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 8,
+          "meaning": "Source invoice date."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "total",
+          "udt_name": "numeric",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": 14,
+          "numeric_scale": 2,
+          "ordinal_position": 9,
+          "meaning": "Stored source invoice total, unchanged; not recalculated."
+        }
+      ],
+      "constraints": [
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "cst_74a8dffe",
+          "type": "u",
+          "definition": "UNIQUE (inv_number)",
+          "columns": [
+            "inv_number"
+          ],
+          "related_schema": null,
+          "related_table": null,
+          "related_columns": [],
+          "on_update": " ",
+          "on_delete": " ",
+          "deferrable": false,
+          "initially_deferred": false
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "fk_935fad9a",
+          "type": "f",
+          "definition": "FOREIGN KEY (customer_id) REFERENCES invc.invc_customer(id) ON UPDATE CASCADE",
+          "columns": [
+            "customer_id"
+          ],
+          "related_schema": "invc",
+          "related_table": "invc_customer",
+          "related_columns": [
+            "id"
+          ],
+          "on_update": "c",
+          "on_delete": "a",
+          "deferrable": false,
+          "initially_deferred": false
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice",
+          "name": "invc_invoice_pkey",
+          "type": "p",
+          "definition": "PRIMARY KEY (id)",
+          "columns": [
+            "id"
+          ],
+          "related_schema": null,
+          "related_table": null,
+          "related_columns": [],
+          "on_update": " ",
+          "on_delete": " ",
+          "deferrable": false,
+          "initially_deferred": false
+        }
+      ]
+    },
+    "product": {
+      "physical": "invc_product",
+      "columns": [
+        {
+          "schema": "invc",
+          "table": "invc_product",
+          "name": "id",
+          "udt_name": "bpchar",
+          "is_nullable": "NO",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 1,
+          "meaning": "Source product identifier."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_product",
+          "name": "code",
+          "udt_name": "varchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 10,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 6,
+          "meaning": "Source product code."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_product",
+          "name": "description",
+          "udt_name": "varchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 80,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 7,
+          "meaning": "Source product description."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_product",
+          "name": "unit_price",
+          "udt_name": "numeric",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": 14,
+          "numeric_scale": 2,
+          "ordinal_position": 11,
+          "meaning": "Stored source product unit price, unchanged."
+        }
+      ],
+      "constraints": [
+        {
+          "schema": "invc",
+          "table": "invc_product",
+          "name": "invc_product_pkey",
+          "type": "p",
+          "definition": "PRIMARY KEY (id)",
+          "columns": [
+            "id"
+          ],
+          "related_schema": null,
+          "related_table": null,
+          "related_columns": [],
+          "on_update": " ",
+          "on_delete": " ",
+          "deferrable": false,
+          "initially_deferred": false
+        }
+      ]
+    },
+    "invoice_row": {
+      "physical": "invc_invoice_row",
+      "columns": [
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "id",
+          "udt_name": "bpchar",
+          "is_nullable": "NO",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 1,
+          "meaning": "Source invoice-row identifier."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "invoice_id",
+          "udt_name": "bpchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 7,
+          "meaning": "Optional reference to invoice.id."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "product_id",
+          "udt_name": "bpchar",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": 22,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "ordinal_position": 8,
+          "meaning": "Optional reference to product.id."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "quantity",
+          "udt_name": "int4",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": 32,
+          "numeric_scale": 0,
+          "ordinal_position": 9,
+          "meaning": "Stored integer quantity."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "unit_price",
+          "udt_name": "numeric",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": 14,
+          "numeric_scale": 2,
+          "ordinal_position": 10,
+          "meaning": "Stored source row unit price, unchanged."
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "tot_price",
+          "udt_name": "numeric",
+          "is_nullable": "YES",
+          "column_default": null,
+          "character_maximum_length": null,
+          "numeric_precision": 14,
+          "numeric_scale": 2,
+          "ordinal_position": 11,
+          "meaning": "Stored source row total price, unchanged; not recalculated."
+        }
+      ],
+      "constraints": [
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "fk_1095e1e9",
+          "type": "f",
+          "definition": "FOREIGN KEY (product_id) REFERENCES invc.invc_product(id) ON UPDATE CASCADE",
+          "columns": [
+            "product_id"
+          ],
+          "related_schema": "invc",
+          "related_table": "invc_product",
+          "related_columns": [
+            "id"
+          ],
+          "on_update": "c",
+          "on_delete": "a",
+          "deferrable": false,
+          "initially_deferred": false
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "fk_invc_invoice_row_invoice_id",
+          "type": "f",
+          "definition": "FOREIGN KEY (invoice_id) REFERENCES invc.invc_invoice(id) ON UPDATE CASCADE",
+          "columns": [
+            "invoice_id"
+          ],
+          "related_schema": "invc",
+          "related_table": "invc_invoice",
+          "related_columns": [
+            "id"
+          ],
+          "on_update": "c",
+          "on_delete": "a",
+          "deferrable": false,
+          "initially_deferred": false
+        },
+        {
+          "schema": "invc",
+          "table": "invc_invoice_row",
+          "name": "invc_invoice_row_pkey",
+          "type": "p",
+          "definition": "PRIMARY KEY (id)",
+          "columns": [
+            "id"
+          ],
+          "related_schema": null,
+          "related_table": null,
+          "related_columns": [],
+          "on_update": " ",
+          "on_delete": " ",
+          "deferrable": false,
+          "initially_deferred": false
+        }
+      ]
+    }
+  }
+}
