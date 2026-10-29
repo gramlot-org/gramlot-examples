@@ -6,10 +6,9 @@ import pytest
 from gramlot.collection import page_collections
 from gramlot.server import GramlotFileServer
 from gramlot_examples import build_gallery
-from gramlot_examples.application.gallery_page import Page as ApplicationGallery
 
 
-@pytest.mark.parametrize(('name', 'key'), [('base', 'base-01'), ('application', 'application-01')])
+@pytest.mark.parametrize(('name', 'key'), [('base', 'base-01')])
 def test_database_page_builds_with_its_own_collections(name, key):
     root = Path(str(files('gramlot_examples'))) / name
     gallery = build_gallery([(root / 'catalog.json', root / 'pages')])
@@ -29,8 +28,6 @@ def test_database_page_builds_with_its_own_collections(name, key):
     assert all(asset['file'].is_file() for asset in gallery['assets'].values())
 
 
-def test_application_navigation_contains_only_invoice():
-    root = Path(str(files('gramlot_examples'))) / 'application'
-    page = ApplicationGallery()
-    page.catalogs = [(root / 'catalog.json', root / 'pages')]
-    assert [node.label for node in page.navigation.nodes] == ['application-invoice']
+def test_local_candidate_excludes_application_gallery():
+    root = Path(str(files('gramlot_examples')))
+    assert not (root / 'application').exists()

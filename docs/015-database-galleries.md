@@ -1,4 +1,4 @@
-# 015 · Base and Application galleries
+# 015 · Base database gallery
 
 Document ID: **GE-015**.
 
@@ -9,22 +9,21 @@ Document ID: **GE-015**.
 
 Block ID: **GE-015-005**.
 
-Base and Application are separate catalogs in this package, served by
-matching gramlot-py-server launchers. Base adds a shared customer lesson to the
-ordinary gallery; Application shows the Invoice branch. The pages contain Source,
-Data bindings and components. Connections, native models and dataset tooling belong
-to the server integration. See its GP-035 guide for setup.
+Base adds a shared customer lesson to the ordinary gallery, served by matching
+Python server launchers. Pages contain Source, Data bindings and components.
+Connections, native models and dataset tooling belong to the server integration.
+See GP-035 for setup. The Application/Invoice gallery is excluded from this local
+release candidate and preserved separately.
 
 ```sh
 python -m gramlot_py_server.gallery.base --backend asqueel --port 61401
 python -m gramlot_py_server.gallery.base --backend sqlalchemy --port 61402
 python -m gramlot_py_server.gallery.base --backend django --port 61403
-python -m gramlot_py_server.gallery.application --port 61404
 ```
 
 Each command serves the same-origin gallery on localhost. Open its port and select
 the customer lesson. Use Code to inspect the Python declaration. Remote Edit stays
-disabled. The two customer pages declare only the inputs collection.
+disabled. The customer page declares only the inputs collection.
 
 <a id="ge-015-010"></a>
 ## 010 · Base dataset
@@ -52,13 +51,8 @@ Block ID: **GE-015-015**.
 
 Search by account name, choose a record and inspect the caption, locality and state.
 Reopen and clear the selection. Type into dbComboBox: Enter keeps the text; arrows
-or a click explicitly choose a suggestion. Application additionally shows the
-invoice count and an HTML record template. All changes stay in the page Data.
-
-The Application model contains 76 physical tables and 808 columns. Customer has
-20 physical and 19 virtual fields; other application behavior is not yet ported.
-The SQL equivalent used for customer_score is documented in GP-035. This is a
-read-only selector trial, not a complete invoice application or form/save framework.
+or a click explicitly choose a suggestion. All changes stay in the page Data.
+This is a read-only selector trial, not a form/save framework.
 
 <a id="ge-015-020"></a>
 ## 020 · One page across providers
@@ -86,31 +80,18 @@ server integration accesses models and queries.
 
 Block ID: **GE-015-030**.
 
-The Base and Application example deliveries were 9962b09 and 610fe5b. Their separate
-worktrees remain preserved. This local consolidation uses the current gallery and
-shared server architecture, rather than recovering obsolete HTTP or staging code.
-The earlier requirement to register each Asqueel auxiliary field has been superseded
-by direct model resolution. Database pages do not activate every gallery collection.
-The owner selected codex/release-database-local-20261029 as the shared local
-release branch, starting from the verified integration commits. Existing develop
-worktrees remain untouched. Further integrations start from this candidate;
-publication and deployment are separate decisions. Grid, new form-state management and full legacy
-selector parity remain outside this tranche.
-
+The owner corrected the candidate scope on 2026-10-29: Invoice is outside the
+current release. Its pages and model remain on
+`codex/invoice-local-preserved-20261029`; this candidate contains Base only.
+Existing develop worktrees remain untouched. Common selector corrections remain
+qualified independently of Invoice. Publication and deployment are separate
+steps; grid, form-state management and full legacy parity remain outside this tranche.
 
 <a id="ge-015-035"></a>
-## 035 · Compact Invoice suggestions
+## 035 · Deferred Application trial
 
 Block ID: **GE-015-035**.
 
-The Application template shows name, contact details, address, state, invoice
-count and total. `auxColumns` requests the existing Asqueel model formulas
-`n_invoices` and `invoiced_total`; the page adds no query-specific endpoint.
-`templateNull='—'` makes null visible without changing a missing total to zero.
-The shared core supplies compact alternating rows and viewport-constrained
-template width through theme tokens. This is not direct `.aggr()` support.
-
-The separate chat's owner-authorized changes were reviewed and integrated into
-the local candidate. The current gallery shell is retained. The overview now
-uses the navigation label Invoice customers. Remote Edit remains disabled and
-all database connections remain read-only.
+Historical record: the compact Invoice template was reviewed in an earlier local
+checkpoint. It is not shipped in this candidate. Its separate preserved branch
+retains contact fields and model formulas for future evaluation.
