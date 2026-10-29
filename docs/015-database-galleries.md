@@ -91,6 +91,8 @@ worktrees remain preserved. This local consolidation uses the current gallery an
 shared server architecture, rather than recovering obsolete HTTP or staging code.
 The earlier requirement to register each Asqueel auxiliary field has been superseded
 by direct model resolution. Database pages do not activate every gallery collection.
-Local verification and acceptance precede develop consolidation; publication and
-deployment are separate decisions. Grid, new form-state management and full legacy
+The owner selected codex/release-database-local-20261029 as the shared local
+release branch, starting from the verified integration commits. Existing develop
+worktrees remain untouched. Further integrations start from this candidate;
+publication and deployment are separate decisions. Grid, new form-state management and full legacy
 selector parity remain outside this tranche.
