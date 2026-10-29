@@ -96,3 +96,21 @@ release branch, starting from the verified integration commits. Existing develop
 worktrees remain untouched. Further integrations start from this candidate;
 publication and deployment are separate decisions. Grid, new form-state management and full legacy
 selector parity remain outside this tranche.
+
+
+<a id="ge-015-035"></a>
+## 035 · Compact Invoice suggestions
+
+Block ID: **GE-015-035**.
+
+The Application template shows name, contact details, address, state, invoice
+count and total. `auxColumns` requests the existing Asqueel model formulas
+`n_invoices` and `invoiced_total`; the page adds no query-specific endpoint.
+`templateNull='—'` makes null visible without changing a missing total to zero.
+The shared core supplies compact alternating rows and viewport-constrained
+template width through theme tokens. This is not direct `.aggr()` support.
+
+The separate chat's owner-authorized changes were reviewed and integrated into
+the local candidate. The current gallery shell is retained. The overview now
+uses the navigation label Invoice customers. Remote Edit remains disabled and
+all database connections remain read-only.

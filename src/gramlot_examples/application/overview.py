@@ -12,6 +12,6 @@ class Page(BasePage):
         pane.p('Explore real customer selection on the complete Invoice physical model.', font_size='1.2rem')
         card = pane.section(class_='card stack', padding='28px', margin_top='24px')
         card.h2('Customer selectors')
-        card.p('Open Invoice in the navigation, then Real customer selectors. Compare a record selector with a combobox, inspect the HTML templates and see how selected fields update the page.')
+        card.p('Open Invoice in the navigation, then Invoice customers. Compare a record selector with a combobox, inspect the HTML templates and see how selected fields update the page.')
         card.p('Kajenn + Asqueel · PostgreSQL · 3,200 real customers', class_='muted')
         pane.p('Read-only access. This first application trial does not edit invoices or customer records.', class_='muted')

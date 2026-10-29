@@ -16,20 +16,24 @@ class Page(DatabaseSelectors, BasePage):
         header.p('test_invoice_pg · PostgreSQL, Kajenn and Asqueel', class_='muted')
         card = pane.section(class_='card stack', padding='24px', gap='24px')
         fields = card.div(display='grid', grid_template_columns='repeat(auto-fit,minmax(240px,1fr))', gap='24px')
-        template = ('<div>{display_name}</div>'
-                    '<div style="color:var(--gramlot-text-secondary);font-size:.85em;margin-top:.15em">'
-                    '{suburb} · {_state_name}</div>')
+        auxiliary = 'email,phone,full_address,@state.name,n_invoices,invoiced_total'
+        template = ('<div style="font-size:.78em;line-height:1.35;width:100%">'
+                    '<div style="display:flex;justify-content:space-between;gap:.75em;align-items:baseline">'
+                    '<strong>{display_name}</strong>'
+                    '<span style="color:var(--gramlot-text-secondary);white-space:nowrap">{n_invoices} invoices · Total {invoiced_total}</span></div>'
+                    '<div style="color:var(--gramlot-text-secondary)">{email} · {phone}</div>'
+                    '<div style="color:var(--gramlot-text-secondary)">{full_address} · {_state_name}</div></div>')
         select = fields.div(class_='stack', gap='8px')
         select.dbSelect(id='customer', value='^.id', dbtable='customers', lbl='Customer',
             placeholder='Search by account name', emptyLabel='No customer',
-            template=template, auxColumns='@state.name', selectedCaption='.caption', selected_suburb='.suburb',
+            template=template, auxColumns=auxiliary, templateNull='—', selectedCaption='.caption', selected_suburb='.suburb',
             selected__state_name='.state_name', selected_n_invoices='.n_invoices',
             box_c_width='100%')
         select.p('Choose a customer. Locality and state help distinguish records.',
                  class_='muted', font_size='.8rem')
         combo = fields.div(class_='stack', gap='8px')
         combo.dbComboBox(id='suggestion', value='^.free_name', dbtable='customers',
-            lbl='Free text', placeholder='Type a name or choose a customer', template=template, auxColumns='@state.name',
+            lbl='Free text', placeholder='Type a name or choose a customer', template=template, auxColumns=auxiliary, templateNull='—',
             selected_suburb='.free_suburb', box_c_width='100%')
         combo.p('Enter keeps your text; use the arrows or click to choose a suggestion.',
                 class_='muted', font_size='.8rem')
