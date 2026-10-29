@@ -1,48 +1,22 @@
 # Menus and toolbars
 
-A toolbar (or **slotbar**) is the permanently visible first level of a `menu`.
-Use `menuline` for commands and groups, and `spacer` for fixed or flexible space.
-Submenus and overflow remain compact hierarchical menus. The examples below use
-one shared command collection; Save and Export demonstrate local command delivery,
-not persistence or file downloads.
+A slotbar is the visible first level of a menu. Start with these three lessons:
 
-## Start with the menu
+1. [One menu, four presentations](01_presentations.md): reuse one hierarchy as a popup, horizontal bar, vertical bar and context menu.
+2. [Toolbar groups and overflow](02_toolbar.md): keep controls together, use spacers and make priorities observable by resizing.
+3. [Live states](05_live_states.md): bind checked, disabled and hidden to Data.
 
-1. **One menu, four presentations:** compare popup, horizontal, vertical and context
-   menus. Change the shared checkboxes, open Export and try Shift+click.
-2. **Toolbar groups, priority and overflow:** resize the toolbar; watch whole groups
-   move into overflow. Retained controls scroll when they cannot fit. Compare labels
-   beside icons, below icons and shown only as tooltips.
-3. **Vertical icon toolbar:** select an SVG icon and shorten the rail. Selection,
-   tooltips and submenu direction work in both orientations.
-4. **Classic menu bar:** open File → Export → Image. Compare separators, disabled
-   commands and checked View entries.
-5. **Reactive states:** change checked, disabled and hidden without rebuilding the menu.
+Then choose the behavior you need: [vertical icons](03_vertical_toolbar.md),
+[classic menu bar](04_menu_bar.md), [frame recipients](06_frame_pane.md),
+[resolver content](07_resolver.md) or a [complete workspace](08_workspace.md).
 
-## Connect commands to a workspace
+For composition, compare [dialog and floating](09_windows.md), then inspect the
+[dialog editor](10_dialog_editor.md) and [floating editor](14_floating_editor.md).
+The three theme pages are optional visual comparisons, not three new APIs.
 
-6. **FramePane:** top, bottom, left, right and center; multiple bars per region;
-   messages carry sender, target, command, parameters and modifiers.
-7. **Resolver menus:** load at opening, reuse cached results, return nested Bags,
-   change arguments and try empty/error/retry states.
-8. **Complete workspace:** combine the same commands, a resolver and a central recipient.
+Read `main` as a contents list, then the named method for the behavior you are
+trying. Helpers compose ordinary Source; browser Logic changes Data. Each lesson
+has Python and JavaScript sources and a sample TYTX Bag. Save and Export here
+show local command delivery, not server persistence or file downloads.
 
-## Put the workspace in a window
-
-9. **Dialog and floating:** compare modality, movement, resize, collapse, maximize,
-   close guards and retained Data.
-10. **Complete dialog editor:** use the left tools, top toolbar and bottom Save/Cancel.
-    Only Save commits the draft to the document displayed on the page.
-11–13. **Joanna, Compact and Mimi:** compare the same fields, menus, table and windows
-    at three densities. Gallery Settings controls theme and light/dark appearance.
-14. **Complete floating editor:** use the same three toolbar regions while continuing
-    to edit the background page.
-
-Each lesson has **Example**, **Explanation** and **Code** tabs. The source uses
-small reusable methods and loops; initial demonstration records come from the
-same-name `_data.tytx` Bag. Python is the primary authoring example and each lesson
-also has a JavaScript Page with the same behavior. The collection source is
-`collections/menu-trial.js`, loaded through `Page.gramlots`.
-
-These teaching examples exercise the current development API. Explore one behavior
-at a time; they are not production document editors.
+[FrameGrid](../05-grid/06_frame_grid.md) applies the same bars and command routing to a resident Bag grid. Use gallery Settings for its theme.

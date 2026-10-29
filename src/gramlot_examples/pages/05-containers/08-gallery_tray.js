@@ -23,7 +23,7 @@ export class Page extends BasePage {
                 [demo.key, {title:demo.title, url:this.constructor.galleryUrls[demo.key]}])))});
         const frame = main_content.framePane({height:'max(660px, calc(100dvh - 100px))',
             border:'1px solid var(--gramlot-border)', border_radius:'8px'});
-        main_content.dataFormula('.count', 'layout.getNodes().length', {layout:'^.layout', _init:true});
+        main_content.dataFormula({result_path:'.count', formula:'layout.getNodes().length', layout:'^.layout', _init:true});
         examplePicker(frame.top);
         frame.center.setAttr({overflow:'auto'});
         frame.center.trayPane({nodeId:'galleryTray', id:'gallery-tray', storepath:'.layout',

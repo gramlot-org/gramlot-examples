@@ -21,8 +21,8 @@ const environment = families => ({environment: 'test', families: families.map(fa
 
 test('common gallery', () => {
     const gallery = buildGallery();
-    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'menus', 'editors', 'tools', 'composition']);
-    assert.equal(Object.keys(gallery.routes).length, 139);
+    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition']);
+    assert.equal(Object.keys(gallery.routes).length, 147);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
     assert.match(gallery.routes.b12.data, /foo_data\.tytx$/);
     assert.ok(gallery.assets['/pages/02-binding/01-paths_and_updates/foo_data.tytx']);

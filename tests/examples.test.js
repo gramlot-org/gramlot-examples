@@ -1,4 +1,5 @@
 import menuCommands from '../src/gramlot_examples/collections/menu_trial/assets/index.js';
+import grid from '@gramlot/gramlot/components/grid';
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
@@ -54,7 +55,7 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst,menuCommands]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst,grid,menuCommands]});
     menuCommands.registerCommands(app);
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
@@ -113,6 +114,29 @@ async function checkMenuEditor({dom, byId, app, data}) {
 
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
 const CHECKS = {
+    async 'grid-05'({byId, data}) {
+        await tick();
+        const first = byId('grid-shared-first');
+        const second = byId('grid-shared-second');
+        const rows = host => [...host.shadowRoot.querySelectorAll('tbody tr')];
+        const chair = host => rows(host).find(row => row.textContent.includes('Linen chair'));
+        const originalOrder = data('sample.rows').getNodes().map(node => node.label);
+        assert.equal(rows(first).length, 4);
+        assert.equal(rows(second).length, 6);
+        assert.ok(chair(first));
+        assert.ok(chair(second));
+        byId('shared-update').shadowRoot.querySelector('button').click();
+        await tick();
+        assert.ok(chair(first), 'the category view retains the shared row');
+        assert.equal(chair(second), undefined, 'the quantity view removes it');
+        assert.equal(rows(second).length, 5);
+        assert.deepEqual(data('sample.rows').getNodes().map(node => node.label), originalOrder);
+        assert.equal(byId('grid-shared-first'), first);
+        assert.equal(byId('grid-shared-second'), second);
+        byId('shared-update').shadowRoot.querySelector('button').click();
+        await tick();
+        assert.ok(chair(second), 'a shared update restores the row to the filtered view');
+    },
     'menu-10': checkMenuEditor,
     'menu-14': checkMenuEditor,
     dialog_window: ctx => checkWindowExample(ctx, 'gramlot-dialog', 'Open dialog'),
@@ -900,7 +924,7 @@ test('c13: a request in flight is never cancelled, and the change made during th
 });
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'menus', 'editors', 'tools', 'composition']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);

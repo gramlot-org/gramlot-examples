@@ -2,9 +2,10 @@
 import inputs from './dist/inputs/descriptor.js';
 import layout from './dist/layout/descriptor.js';
 import tree from './dist/tree/descriptor.js';
+import grid from './dist/grid/descriptor.js';
 import editors from './dist/editors/descriptor.js';
 import typst from './dist/typst/descriptor.js';
 
 import menuCommands from './dist/menu-trial/descriptor.js';
 
-export const collections = [inputs, layout, tree, editors, typst, menuCommands];
+export const collections = [inputs, layout, tree, grid, editors, typst, menuCommands];

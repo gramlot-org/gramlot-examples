@@ -1582,3 +1582,71 @@ test confirms existing records are preserved. Examples pass 62 Python tests and
 178 subtests (one existing skip); the manual validates 111 lessons and local links.
 The optional catalogue is implemented and locally verified, awaiting owner review;
 no package publication or hosted-gallery deployment was performed.
+
+
+<a id="ge-010-form-state"></a>
+## Local form lifecycle trial — 2026-10-29
+
+`form-state` (Fields → Forms and validation → Form state) is the first bounded
+form lifecycle exercise. Python and JavaScript use the same TYTX record. A reusable
+field method and an action method keep the page small. `form=True` owns the local
+Source registers; the separate `ui` Data scope displays the derived status.
+
+Try Mario → Luigi → Mario, an empty required name, a negative amount, incomplete
+number/date text and the remote-reserved code `taken`. Save locally accepts a
+snapshot; Restore restores it through the existing controls. This does not save
+to a database and does not implement undo/redo or Invoice. Core contract: GC-380
+§060. The feature index links this lesson under Validation / Form state.
+
+Local verification: form-state Python/JS Source parity, feature-index/sample-data
+checks and Python gallery route/endpoint checks pass. Uvicorn/browser interaction
+covers clean/changed/error/pending, invalid typed Data, incomplete drafts and
+restore. These checks initially exposed a separate Gallery tray authoring error.
+
+Owner-requested follow-up, 2026-10-29: Gallery tray now passes `result_path` and
+`formula` as named JavaScript attributes instead of Python positional arguments.
+All 115 page-collection and Python/JavaScript Source-parity tests pass. Browser
+verification of the JavaScript lesson added a Form state card, edited its name,
+then added, removed and added a second card. The count updated and the first
+card retained its edited Data and changed status, with no console errors.
+This resolves the Gallery tray release follow-up; no runtime change was needed.
+
+## 950 · Progressive Grid family — 2026-10-28
+
+The gallery index now has a separate **Grid** family, under `pages/05-grid`.
+Its six lessons progress from Bag values and row attributes through grouped
+columns, multiline cells and row heights, multicolumn sorting and self row drag,
+a shared collection store displayed by two grids, and the complete FrameGrid.
+Each lesson has Python/JavaScript Source, explanatory Markdown and sample Data.
+The existing FrameGrid moves from Menus and toolbars; its stable lesson key
+`menu-15` is retained, with one implementation at `05-grid/06_frame_grid`.
+The five new lesson keys are `grid-01` through `grid-05`. The common catalogue
+now has 117 lessons. Themes remain selected in the gallery Settings.
+
+The shared-store lesson demonstrates shared order with distinct per-grid heights;
+it does not imply independently ordered child stores. Cells remain read-only.
+No framework capability is added by this gallery organization increment.
+
+
+<a id="ge-010-unified-consolidation-base"></a>
+## Unified local consolidation base — 2026-10-29
+
+Owner requested a combined worktree before further consolidation branches.
+The common catalogue now includes seven Grid lessons alongside the first form
+state example and the corrected Gallery tray. Optional Base/Asqueel, PageStore
+and Kajenn database catalogues are served by the common local Python preview at
+http://127.0.0.1:61505/. Invoice remains excluded; Remote Edit is disabled.
+
+The common catalogue has 147 routes. Grid imports and demo commands were rebuilt
+with the integrated core. Catalogue totals and naming checks were updated; the
+JavaScript fixture now loads the same Grid collection as the example pages.
+All 120 checks in the affected JavaScript files pass; the other 212 checks passed
+in the initial complete run. An additional shared-view regression verifies that
+an update affects both views, preserves the original Bag order and keeps both
+widget instances. All nine Python catalogue checks pass after the one stale
+count in the full run (65 passed, one skipped, 186 subtests).
+
+The browser shared-view exercise also passed: the same row remains in the
+category view and leaves/re-enters the quantity view as its value changes.
+This is a local checkpoint, not package publication or final release acceptance.
+Logs and the import manifest: /private/tmp/gramlot-grid-integration-20261029/.

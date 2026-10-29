@@ -264,6 +264,13 @@
           "folder": "09-tree/04-internal_drag",
           "title": "Copy tree nodes with drag and drop",
           "description": "Drag a document onto Inbox or Projects, then expand that folder. A copy appears there and the original stays put; Locked archive rejects the drop."
+        },
+        {
+          "key": "form-state",
+          "folder": "07-forms_and_validation/05-form_state",
+          "title": "Form state",
+          "description": "Track edits, incomplete drafts and pending checks; accept or restore a local snapshot.",
+          "explanation": "A Source-owned baseline and registers coordinate existing input components without recreating them."
         }
       ],
       "folder": "01-inputs"
@@ -616,6 +623,62 @@
         }
       ],
       "folder": "05-containers"
+    },
+    {
+      "key": "grid",
+      "title": "Grid",
+      "folder": "05-grid",
+      "examples": [
+        {
+          "key": "grid-01",
+          "folder": "01_basic",
+          "title": "Basic grid · Bag values",
+          "description": "Start with three columns and a Bag whose row values are Bags.",
+          "explanation": "Compare each visible row with the sample Data. This is the smallest grid: storepath, rowMode and a declared struct."
+        },
+        {
+          "key": "grid-02",
+          "folder": "02_attributes",
+          "title": "Rows as attributes",
+          "description": "Read the same kind of records from node attributes, with typed numeric and boolean cells.",
+          "explanation": "Inspect Data: the row value is empty and its fields are attributes. Zero and false remain visible."
+        },
+        {
+          "key": "grid-03",
+          "folder": "03_colgroups",
+          "title": "Column groups and row heights",
+          "description": "Group columns, display multiline notes and resize individual rows.",
+          "explanation": "Drag a column edge or a row-number edge. Move columns between visual positions: they keep their group membership."
+        },
+        {
+          "key": "grid-04",
+          "folder": "04_ordering",
+          "title": "Multicolumn sort and row drag",
+          "description": "Sort raw Bag values with multiple criteria, then set a manual row order.",
+          "explanation": "Click Category, then Shift-click Quantity. Compare equal categories. Drag a row to switch to manual order; the sort indicators clear."
+        },
+        {
+          "key": "grid-05",
+          "folder": "05_shared_store",
+          "title": "Two grids, independent views",
+          "description": "Two independently sorted and filtered views share the same Bag records.",
+          "explanation": "Sort, filter or drag in either grid: only that view changes. Update a shared record: both views recompute their own results."
+        },
+        {
+          "key": "menu-15",
+          "title": "FrameGrid · complete example",
+          "folder": "06_frame_grid",
+          "description": "A read-only Bag grid with shared top and bottom command bars. Choose its theme in the gallery Settings.",
+          "explanation": "The frame exposes its central grid, grouped columns and ordinary menu bars. Commands update Data; the visible count follows. No page-local theme selector."
+        },
+        {
+          "key": "grid-07",
+          "folder": "07_search",
+          "title": "Search · text, numbers and dates",
+          "description": "A focused guide to column search, typed comparisons and clearing.",
+          "explanation": "Choose All columns or a specific field. Try text, numbers and dates, then clear the filter without losing the sort."
+        }
+      ]
     },
     {
       "key": "menus",

@@ -15,6 +15,7 @@ learning prerequisites, not the release chronology.
 | [RPC and data exchange](04-rpc/README.md) | Server calls, remote Source and lazy Data. |
 | [Containers and layout](05-containers/README.md) | Regions, tabs, windows and tray workspaces. |
 | [Menus and toolbars](05-menus/README.md) | One command hierarchy, several presentations. |
+| [Grid](05-grid/README.md) | Progressive Bag grid examples, from basic columns to a complete FrameGrid. |
 | [Document and code editors](06-editors/README.md) | Document content, editing and previews. |
 | [Tools](07-tools/README.md) | Inspect and compose Source; Python adds a sample IDE. |
 | [Composition and reuse](08-composition/README.md) | Reuse small helpers under different datapaths. |

@@ -21,7 +21,7 @@ function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window) {
 
 test('feature inventory references catalogue keys and keeps quarantined selectors out of the lesson path', () => {
     const keys = new Set(catalog.families.flatMap(group => group.examples.map(item => item.key)));
-    assert.equal(entries.length, 110);
+    assert.equal(entries.length, 117);
     assert.equal(new Set(entries.map(item => item.id)).size, entries.length);
     for (const feature of entries) for (const key of feature.examples) assert.ok(keys.has(key), key);
     for (const name of ['dbSelect', 'dbComboBox']) {

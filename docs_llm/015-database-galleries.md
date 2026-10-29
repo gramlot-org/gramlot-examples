@@ -111,3 +111,18 @@ Data sequence. Python and JS lessons share the same Logic.
 Core's 46 targeted tests and the local browser add/remove/add check pass. Candidate
 wheels match installed package contents. The Base-only scope and preserved Invoice
 branch in §030 remain unchanged. This is local consolidation, not publication.
+
+
+<a id="ge-015-045"></a>
+## 045 · State and customer (Asqueel)
+
+The Asqueel runner adds base/asqueel-catalog.json to the common Base catalog.
+Open Asqueel selectors → State and customer. Choose State, then Customer. Changing
+State retains the old customer and displays an error when it no longer qualifies.
+The checkbox changes the hard filter into a preference: searches retry without it
+only when no match exists, and an outside selection is valid. Required dbSelect
+selects a sole candidate after a condition change; otherwise the old key remains.
+
+The declaration uses condition='$state=:state', condition_state='^.state' and
+weakCondition='^.weak'. This capability is Asqueel-only; no equivalent expression
+translator is installed for SQLAlchemy or Django. The database remains read-only.

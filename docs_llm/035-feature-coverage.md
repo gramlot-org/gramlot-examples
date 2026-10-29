@@ -7,7 +7,7 @@ Document ID: **GE-035**.
 
 This is a teaching-coverage baseline, not test coverage or a claim that all lessons
 have passed a visual/code-quality review. It maps the current common catalogue
-(**111 lessons**) to the six packaged component grammars (**43 declarations**),
+(**117 lessons**) to the six packaged component grammars (**43 declarations**),
 then tracks selected shared behaviors separately. The baseline was checked on
 2026-10-27 against the release checkout and both authoring languages.
 
@@ -137,6 +137,7 @@ verification remain separate work.
 | Two-way editing and input/change timing | **Exercise** | [b04 · Edit shared Data with native fields](../src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md) | Type and blur; compare live updates and accepted values. |
 | Checkbox and radio grouping | **Exercise** | [b05 · Bind boolean and single-choice values](../src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md), [w06 · Individual radio buttons](../src/gramlot_examples/pages/01-inputs/03-selection/02-radio_button.md) | Observe selection and the Data values, including exclusivity. |
 | Bound SVG attributes | **Exercise** | [b07 · Update SVG from Data](../src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md), [b10 · Bind SVG geometry and color](../src/gramlot_examples/pages/02-binding/03-presentation/03-svg_shapes.md) | Change Data and observe the same drawing update. |
+| FrameGrid with Bag rows | **Exercise** | [menu-15 · FrameGrid](../src/gramlot_examples/pages/05-grid/06_frame_grid.md) | Change the external gallery theme, scroll below the headers and update or remove an order through the shared bar. |
 | Freeze versus ordinary reactive updates | **Exercise** | [b08 · Defer structural updates with freeze](../src/gramlot_examples/pages/02-binding/01-paths_and_updates/04-freeze.md), [c15 · Start and dispose page behavior](../src/gramlot_examples/pages/03-controllers/03-events/02-lifecycle.md) | Freeze structural projection; observe continued Data updates and thaw. |
 | Formula dependencies and non-triggering reads | **Exercise** | [c01 · Calculate a value with dataFormula](../src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md) | Change a ^ argument, then a = argument; compare recomputation. |
 | Controllers and named Logic | **Exercise** | [c02 · React to Data changes with dataController](../src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md), [c03 · Organize behavior in a Logic class](../src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md) | Trigger named behavior from Data; distinguish server Page from browser Logic. |
@@ -153,6 +154,7 @@ verification remain separate work.
 | Validation: required, length and invalid drafts | **Exercise** | [w18 · Validate required values and text length](../src/gramlot_examples/pages/01-inputs/07-forms_and_validation/01-validation.md), [w25 · Validation rules, warnings and callbacks](../src/gramlot_examples/pages/01-inputs/07-forms_and_validation/04-validation_engine.md) | Keep accepted Data separate from a rejected field draft. |
 | Validation: normalization, warning and blocking rule | **Exercise** | [w25 · Validation rules, warnings and callbacks](../src/gramlot_examples/pages/01-inputs/07-forms_and_validation/04-validation_engine.md) | Try uppercase normalization and switch a warning to a blocking error. |
 | Validation: callbacks, remote checks and lifecycle | **Exercise** | [w25 · Validation rules, warnings and callbacks](../src/gramlot_examples/pages/01-inputs/07-forms_and_validation/04-validation_engine.md) | Try reserved names; observe pending, accept and reject behavior. |
+| Form state | **Exercise** | [form-state · Form state](../src/gramlot_examples/pages/01-inputs/07-forms_and_validation/05-form_state.md) | Compare net changes, required errors, incomplete typed text, pending validation and local snapshot restore. |
 | Formlet columns and shared label alignment | **Exercise** | [w19 · Arrange fields with formlet](../src/gramlot_examples/pages/01-inputs/07-forms_and_validation/02-formlet.md) | Change columns without losing fields or drafts. |
 | GroupBox copy to TYTX/JSON | **Exercise** | [w20 · groupBox: group fields and copy Data](../src/gramlot_examples/pages/05-containers/06-group_box.md) | Copy the group Data only; compare type/attribute preservation. |
 | Border regions, splitters and nested layouts | **Exercise** | [l01 · Border regions and splitters](../src/gramlot_examples/pages/05-containers/01-border/01-border.md), [l02 · Nested borders and layout designs](../src/gramlot_examples/pages/05-containers/01-border/02-nested.md), [l05 · Nested regions playground](../src/gramlot_examples/pages/05-containers/01-border/05-nested_lab.md) | Resize regions and compare remaining center space. |
@@ -189,6 +191,16 @@ verification remain separate work.
 | Collection overrides and dependency/resource failures | **Gap** | — | Covered by contracts/tests, not by a common gallery exercise. |
 | Per-instance state isolation across several IDEs | **Gap** | — | Host IDE is outside this catalogue; add a focused isolation exercise if teaching this contract. |
 | Persist/restore layout across a page reload | **Gap** | — | Tray Save is page-local. Server persistence is an application responsibility, not silently demonstrated. |
+
+### Grid
+
+| Feature | Status | Lessons | Exercise |
+| --- | --- | --- | --- |
+| Basic grid · Bag values | **Exercise** | [grid-01 · Basic grid · Bag values](../src/gramlot_examples/pages/05-grid/01_basic.md) | Start with three columns and a Bag whose row values are Bags. |
+| Rows as attributes | **Exercise** | [grid-02 · Rows as attributes](../src/gramlot_examples/pages/05-grid/02_attributes.md) | Read the same kind of records from node attributes, with typed numeric and boolean cells. |
+| Column groups and row heights | **Exercise** | [grid-03 · Column groups and row heights](../src/gramlot_examples/pages/05-grid/03_colgroups.md) | Group columns, display multiline notes and resize individual rows. |
+| Multicolumn sort and row drag | **Exercise** | [grid-04 · Multicolumn sort and row drag](../src/gramlot_examples/pages/05-grid/04_ordering.md) | Sort raw Bag values with multiple criteria, then set a manual row order. |
+| Two grids, one collection store | **Exercise** | [grid-05 · Two grids, one collection store](../src/gramlot_examples/pages/05-grid/05_shared_store.md) | Two grids share the indexed order while keeping independent row heights. |
 
 <a id="ge-035-020"></a>
 ## 020 · Code clarity is a separate checklist
@@ -265,7 +277,7 @@ panel scrollbar. This correction does not redesign the header bands.
 <a id="ge-035-030"></a>
 ## 030 · Scope and maintenance
 
-The 111 common lessons are the denominator for the catalogue inventory. Python
+The 112 common lessons are the denominator for the catalogue inventory. Python
 host IDE/directory tools, the separate Capacitor mobile catalogue, deployment,
 transport internals, all HTML/CSS vocabulary and every parameter combination are
 not included in the 43-component count. They need separate coverage inventories.
@@ -297,7 +309,7 @@ existing catalogue keys. Keep feature IDs stable when changing their display tit
 so saved session progress remains associated with the same feature. Titles and routes
 of examples still come from the normal
 catalogue. Keep that mapping and this audit aligned when adding or removing an
-example. Its 110 feature entries describe capabilities across 111 lessons; these are
+example. Its 111 feature entries describe capabilities across 112 lessons; these are
 different inventories, not interchangeable coverage counts. The common catalogue is covered; native mobile and host
 extensions still need their own feature inventories.
 
@@ -316,3 +328,15 @@ Storage failures are visible and keep current progress in Data.
 Quarantined dbSelect/dbComboBox remain visible as review work, with no lesson or
 recommendation. Neither Seen nor Tried certifies correctness, mastery or test
 coverage. The Code-panel layout issue recorded above is still separate work.
+
+
+<a id="ge-035-090"></a>
+## 090 · FrameGrid development addition — 2026-10-28
+
+The catalogue adds menu-15 (FrameGrid), bringing the current inventory to 112
+lessons and 111 feature entries. This bounded addition demonstrates resident Bag
+rows, the shared frame/menu bars and external gallery themes. Python/JavaScript
+Source parity and Chromium/WebKit checks cover this lesson; it does not claim a
+new full-catalogue qualification. Grid editing, configurator and persistence are
+not included. The earlier grammar audit is a dated baseline, not a fresh count of
+the development grid collection.

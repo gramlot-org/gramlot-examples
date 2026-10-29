@@ -532,7 +532,7 @@
         "title": "Validation: required, length and invalid drafts",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "Keep accepted Data separate from a rejected field draft.",
+        "description": "Outside a form, keep accepted Data separate from a rejected field draft.",
         "examples": [
           "w18",
           "w25"
@@ -560,6 +560,17 @@
           "w25"
         ],
         "label": "Validation callbacks"
+      },
+      {
+        "id": "behavior_form_state",
+        "title": "Form state",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Return to the original value, reject a required empty field, keep incomplete typed text and restore a local snapshot.",
+        "examples": [
+          "form-state"
+        ],
+        "label": "Form state"
       }
     ]
   },
@@ -577,6 +588,17 @@
           "menu-05"
         ],
         "label": "framePane"
+      },
+      {
+        "id": "behavior_framegrid_bag_and_command_bars",
+        "title": "FrameGrid with Bag rows",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Change the gallery theme, scroll below the headers and update or remove a sample order through the shared command bar.",
+        "examples": [
+          "menu-15"
+        ],
+        "label": "FrameGrid"
       },
       {
         "id": "component_formlet",
@@ -743,6 +765,67 @@
         "description": "Add a retained-content translation/rotation/scale exercise; tray gestures do not teach this component.",
         "examples": [],
         "label": "transformPane"
+      }
+    ]
+  },
+  {
+    "id": "grid",
+    "title": "Grid",
+    "features": [
+      {
+        "id": "behavior_grid_basic",
+        "title": "Basic grid · Bag values",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Start with three columns and a Bag whose row values are Bags.",
+        "examples": [
+          "grid-01"
+        ],
+        "label": "Basic grid · Bag values"
+      },
+      {
+        "id": "behavior_grid_attributes",
+        "title": "Rows as attributes",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Read the same kind of records from node attributes, with typed numeric and boolean cells.",
+        "examples": [
+          "grid-02"
+        ],
+        "label": "Rows as attributes"
+      },
+      {
+        "id": "behavior_grid_colgroups",
+        "title": "Column groups and row heights",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Group columns, display multiline notes and resize individual rows.",
+        "examples": [
+          "grid-03"
+        ],
+        "label": "Column groups and row heights"
+      },
+      {
+        "id": "behavior_grid_ordering",
+        "title": "Multicolumn sort and row drag",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Sort raw Bag values with multiple criteria, then set a manual row order.",
+        "examples": [
+          "grid-04"
+        ],
+        "label": "Multicolumn sort and row drag"
+      },
+      {
+        "id": "behavior_grid_shared_store",
+        "title": "Two grids, one collection store",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Two grids share the indexed order while keeping independent row heights.",
+        "examples": [
+          "grid-05"
+        ],
+        "label": "Shared collection store"
       }
     ]
   },

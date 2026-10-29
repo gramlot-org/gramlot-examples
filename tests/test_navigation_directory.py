@@ -76,7 +76,7 @@ class NavigationDirectoryTests(unittest.TestCase):
 
 
     def test_numbered_siblings_and_markdown_index(self):
-        assert [n.label for n in navigation_directory().nodes] == ["html_svg", "components", "binding", "controllers", "rpc", "layout", "menus", "editors", "tools", "composition"]
+        assert [n.label for n in navigation_directory().nodes] == ["html_svg", "components", "binding", "controllers", "rpc", "layout", "grid", "menus", "editors", "tools", "composition"]
         branch = navigation_directory("00-html_svg")
         assert [n.label for n in branch.nodes] == ["01-html_basics", "02-native_controls", "03-svg", "04-page_composition", "06-nested", "07-markdown_index"]
         md = branch.get_node("07-markdown_index")

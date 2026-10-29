@@ -18,3 +18,5 @@ Read `main` as a contents list, then the named method for the behavior you are
 trying. Helpers compose ordinary Source; browser Logic changes Data. Each lesson
 has Python and JavaScript sources and a sample TYTX Bag. Save and Export here
 show local command delivery, not server persistence or file downloads.
+
+[FrameGrid](../05-grid/06_frame_grid.md) applies the same bars and command routing to a resident Bag grid. Use gallery Settings for its theme.
