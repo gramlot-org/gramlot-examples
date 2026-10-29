@@ -20,6 +20,26 @@ const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/cata
 
 // The parameters are the ones the dataRpc or remote of each page sends; edge values come first-hand from the lessons.
 const CASES = [
+    ['g06', 'source', 'guided_cards', {revision:1}],
+    ['g06', 'source', 'guided_cards', {revision:2}],
+    ['g06', 'source', 'guided_delivery', {}],
+    ['g06', 'source', 'guided_address', {}],
+    ['g05', 'source', 'shipping_card', {revision: 1}],
+    ['g05', 'source', 'shipping_card', {revision: 2}],
+    ['g05', 'source', 'shipping_address', {}],
+    ['g01', 'source', 'customer_fields', {kind: 'person'}],
+    ['g01', 'source', 'customer_fields', {kind: 'company'}],
+    ['g02', 'source', 'address_fields', {slot: 'billing', title: 'Billing address'}],
+    ['g02', 'source', 'address_fields', {slot: 'shipping', title: 'Delivery address'}],
+    ['g03', 'source', 'site_profile', {revision: 1}],
+    ['g03', 'source', 'site_profile', {revision: 2}],
+    ['g03', 'source', 'contact_fields', {}],
+    ['g03', 'source', 'address_fields', {}],
+    ['g04', 'source', 'order_cards', {revision: 1}],
+    ['g04', 'source', 'order_cards', {revision: 2}],
+    ['g04', 'source', 'order_address_fields', {slot: 'billing'}],
+    ['g04', 'source', 'order_address_fields', {slot: 'shipping'}],
+    ['g04', 'source', 'order_delivery_fields', {}],
     ['c08', 'data', 'quote', {quantity: 2, large: false, gift: false}],
     ['c08', 'data', 'quote', {quantity: 2, large: true, gift: true}],
     ['c08', 'data', 'quote', {quantity: 0, large: true, gift: true}],
@@ -100,7 +120,7 @@ class CollectionServer(GramlotFileServer):
 def normalize(v):
     if isinstance(v, date): return v.isoformat()
     if isinstance(v, (tuple, list)): return [normalize(x) for x in v]
-    if isinstance(v, dict): return {('class' if k == 'class_' else k): normalize(x) for k, x in v.items() if k != '_meta'}
+    if isinstance(v, dict): return {(k[:-1] if k.endswith('_') else k): normalize(x) for k, x in v.items() if k != '_meta'}
     return v
 
 def source(bag):
@@ -126,8 +146,9 @@ async def main(cases):
 print(json.dumps(asyncio.run(main(json.loads(sys.stdin.read())))))
 `;
 
-// This cross-language test starts Python and verifies all prepared collections.
-test('every endpoint and fragment answers the same in Python and JavaScript', {timeout:30000}, async () => {
+// This full-catalogue test starts Python and verifies all prepared collections.
+// Include the remote Grouplet cases in its bounded integration-test budget.
+test('every endpoint and fragment answers the same in Python and JavaScript', {timeout:120000}, async () => {
     const expected = JSON.parse(execFileSync(python, ['-c', script], {cwd: root, encoding: 'utf8', input: JSON.stringify(CASES)}));
     const actual = await answerInJavaScript();
     assert.equal(actual.length, CASES.length);

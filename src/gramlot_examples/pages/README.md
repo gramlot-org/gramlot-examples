@@ -18,6 +18,7 @@ learning prerequisites, not the release chronology.
 | [Grid](05-grid/README.md) | Progressive Bag grid examples, from basic columns to a complete FrameGrid. |
 | [Document and code editors](06-editors/README.md) | Document content, editing and previews. |
 | [Tools](07-tools/README.md) | Inspect and compose Source; Python adds a sample IDE. |
+| [Grouplets](09-grouplets/README.md) | Remote fragments, separate instances and nested content. |
 | [Composition and reuse](08-composition/README.md) | Reuse small helpers under different datapaths. |
 
 Each lesson says what to observe and provides complete Python and JavaScript

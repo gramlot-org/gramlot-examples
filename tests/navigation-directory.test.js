@@ -66,7 +66,7 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
 
 
 test('numbered siblings mix directories and pages, hide indexes and use Markdown headings', () => {
-    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition']);
+    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
     const branch = navigationDirectory('00-html_svg');
     assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', '02-native_controls', '03-svg', '04-page_composition', '06-nested', '07-markdown_index']);
     const md = branch.getNode('07-markdown_index');

@@ -24,8 +24,8 @@ class BuildGalleryTests(unittest.TestCase):
 
     def test_common_gallery(self):
         gallery = build_gallery()
-        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "binding", "controllers", "rpc", "layout", "grid", "menus", "editors", "tools", "composition"])
-        self.assertEqual(len(gallery["routes"]), 147)
+        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "binding", "controllers", "rpc", "layout", "grid", "menus", "editors", "tools", "composition", "grouplets"])
+        self.assertEqual(len(gallery["routes"]), 154)
         self.assertEqual(gallery["routes"]["gallery-tray"]["data"].name, "08-gallery_tray_data.tytx")
         self.assertEqual(gallery["routes"]["index"]["page"].name, "page.py")
         self.assertEqual(gallery["routes"]["c03"]["logic"].name, "03-named_logic.js")

@@ -858,6 +858,55 @@
           "explanation": "The grid is built once. Every tick calls the same step method as the Step button; that method updates only the Data Bag. Follow one prime and its multiples, change the interval, and reset while running."
         }
       ]
+    },
+    {
+      "key": "grouplets",
+      "title": "Grouplets",
+      "folder": "09-grouplets",
+      "examples": [
+        {
+          "key": "g01",
+          "folder": "01-remote_fragment",
+          "title": "Customer onboarding: adapt the customer details",
+          "description": "Change customer type, edit contact details and return to the previous type: its draft remains available.",
+          "explanation": "A remote parameter selects the customer fields. Common contact Data remains shared with a live preview; switching the fragment does not discard the draft."
+        },
+        {
+          "key": "g02",
+          "folder": "02-independent_instances",
+          "title": "Order addresses: reuse one editor twice",
+          "description": "Edit the delivery address for an order while its billing address remains unchanged.",
+          "explanation": "One @source address_fields method builds two complete editors under separate order.billing and order.shipping paths. Routing previews follow the Data without further RPC calls."
+        },
+        {
+          "key": "g03",
+          "folder": "03-nested_fragments",
+          "title": "Service visit: compose a site dossier",
+          "description": "Edit the site contact, address and access notes, then reload the composed section without losing the draft.",
+          "explanation": "The outer @source site_profile composes contact_fields and address_fields on relative paths. A reload reconstructs those fragments while preserving their editable Data."
+        },
+        {
+          "key": "g04",
+          "folder": "04-order_cards",
+          "title": "Order review: work with grouplet cards",
+          "description": "Review customer, invoice and delivery sections; fold nested cards, mark checks and reload without losing the draft.",
+          "explanation": "GroupletCard gives related fields a persistent header. Bound title, collapsed and checkbox states follow Data; the example combines authored fields and reusable remote @source bodies."
+        },
+        {
+          "key": "g05",
+          "folder": "05-card_actions",
+          "title": "Shipping desk: card actions and scoped Clear",
+          "description": "Arrange delivery, cancel or confirm scoped Clear, and lock it when invoiced; order and invoice details remain.",
+          "explanation": "Ordinary menu/menuline entries share the card header with Clear. Its bound delitem gate and confirmation protect the local draft, including a nested remote address."
+        },
+        {
+          "key": "g06",
+          "folder": "06-card_guides",
+          "title": "Customer handover: guides beside the fields",
+          "description": "Complete customer and delivery details with contextual guides, including help on folded and nested cards.",
+          "explanation": "Markdown doc content is authored or Data-bound. Ordinary formulas keep guidance aligned with the current contact and destination; @source methods build the complete card forms."
+        }
+      ]
     }
   ]
 }

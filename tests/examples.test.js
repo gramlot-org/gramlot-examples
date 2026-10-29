@@ -5,6 +5,7 @@ import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
 import editors from '@gramlot/gramlot/components/editors';
 import typst from '@gramlot/gramlot/components/typst';
+import grouplets from '@gramlot/gramlot/components/grouplets';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
@@ -55,7 +56,7 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst,grid,menuCommands]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst, grouplets,grid,menuCommands]});
     menuCommands.registerCommands(app);
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
@@ -113,6 +114,11 @@ async function checkMenuEditor({dom, byId, app, data}) {
 }
 
 // One behaviour of each page, checked on the JavaScript twin; the Python twin has the same Source.
+function setGroupletField({byId, window}, id, value) {
+    const input = byId(id).control;
+    input.value = value;
+    input.dispatchEvent(new window.Event('input', {bubbles: true}));
+}
 const CHECKS = {
     async 'grid-05'({byId, data}) {
         await tick();
@@ -136,6 +142,137 @@ const CHECKS = {
         byId('shared-update').shadowRoot.querySelector('button').click();
         await tick();
         assert.ok(chair(second), 'a shared update restores the row to the filtered view');
+    },
+    async g06(ctx) {
+        const {app, byId, data, click, calls} = ctx;
+        await tick(); await tick(); await tick();
+        const customer=byId('guide-customer'), delivery=byId('guide-delivery');
+        const requests=calls.length;
+        customer.docButton.click();
+        assert.match(customer.docBody.textContent,/country prefix/);
+        customer.docClose.click();
+        setGroupletField(ctx,'guide-customer-contact','Sam Taylor');
+        setGroupletField(ctx,'guide-address-city','Bath');
+        delivery.docButton.click();
+        assert.match(delivery.docBody.textContent,/Sam Taylor/);
+        assert.match(delivery.docBody.textContent,/Bath/);
+        app.data.setItem('order.shipping.address.city','Leeds');
+        assert.match(delivery.docBody.textContent,/Leeds/);
+        delivery.docClose.click(); delivery.check.click(); delivery.collapseButton.click();
+        delivery.docButton.click();
+        assert.equal(delivery.controlBox.hidden,true);
+        assert.equal(data('order.shipping.ui.checked'),true);
+        assert.equal(calls.length,requests);
+        app.data.setItem('order.showGuide',false);
+        assert.equal(delivery.docButton.hidden,true);
+        assert.equal(delivery.docButton.getAttribute('aria-expanded'),'false');
+        app.data.setItem('order.showGuide',true);
+        click('guide-reload'); await tick(); await tick(); await tick();
+        assert.equal(byId('guide-delivery').controlBox.hidden,true);
+        assert.equal(data('order.customer.contact'),'Sam Taylor');
+        assert.equal(data('order.shipping.address.city'),'Leeds');
+        byId('guide-delivery').docButton.click();
+        assert.match(byId('guide-delivery').docBody.textContent,/Leeds/);
+    },
+    async g05(ctx) {
+        const {app, byId, data, window, click} = ctx;
+        await tick(); await tick(); await tick();
+        const card = byId('actions-delivery');
+        card.openMenu(); byId('actions-morning').control.click();
+        assert.match(data('order.shipping.instructions'), /Call 30 minutes/);
+        card.check.click(); byId('actions-address').collapseButton.click();
+        const answer = confirm => {
+            const dialog = window.document.querySelector('dialog');
+            assert.ok(dialog);
+            if (confirm) dialog.querySelector('form').dispatchEvent(new window.Event('submit', {bubbles:true,cancelable:true}));
+            else [...dialog.querySelectorAll('button')].find(b => b.textContent === 'Cancel').click();
+        };
+        let pending = card.cardActions.clear(); answer(false); await pending;
+        assert.equal(data('order.shipping.address.city'), 'Bristol');
+        pending = card.cardActions.clear(); answer(true); await pending;
+        assert.equal(data('order.shipping.address.city'), null);
+        assert.equal(data('order.shipping.contact'), null);
+        assert.equal(data('order.shipping.ui.checked'), true);
+        assert.equal(data('order.shipping.address.ui.closed'), true);
+        assert.equal(data('order.shipping.tracking'), 'SHIP-1042-01');
+        assert.equal(data('order.reference'), 'Order SO-1042 · Workshop lighting');
+        assert.equal(data('order.billing.city'), 'London');
+        app.data.setItem('order.invoiced', true);
+        assert.equal(card.clearItem.disabled, true);
+        assert.equal(byId('actions-address').clearItem.disabled, true);
+        click('actions-reload'); await tick(); await tick(); await tick();
+        assert.equal(byId('actions-delivery').actionsMenu.items.length, 3);
+        assert.equal(data('order.shipping.address.city'), null);
+        assert.equal(byId('actions-delivery').check.checked, true);
+    },
+    async g04(ctx) {
+        const {byId, data, calls, click} = ctx;
+        await tick(0); await tick(0); await tick(0);
+        setGroupletField(ctx, 'order-customer-name', 'North Engineering Ltd');
+        setGroupletField(ctx, 'order-shipping-city', 'Bath');
+        setGroupletField(ctx, 'order-delivery-instructions', 'Use gate C.');
+        assert.equal(byId('customer-card').heading.textContent, 'North Engineering Ltd');
+        assert.equal(byId('order-city-summary').textContent, 'Bath');
+        assert.equal(data('order.billing.city'), 'London');
+        for (const id of ['customer-card', 'billing-card', 'delivery-card']) byId(id).check.click();
+        assert.equal(byId('review-progress').textContent, '3 of 3 sections reviewed');
+        byId('workshop-card').collapseButton.click();
+        byId('delivery-card').collapseButton.click();
+        assert.equal(data('order.shipping.ui.closed'), true);
+        assert.equal(byId('fold-delivery').control.checked, true);
+        const before = calls.length;
+        byId('delivery-card').heading.click();
+        assert.equal(byId('workshop-card').controlBox.hidden, true);
+        byId('delivery-card').collapseButton.click();
+        assert.equal(calls.length, before);
+        click('reload-cards'); await tick(0); await tick(0); await tick(0);
+        assert.equal(byId('order-revision').textContent, 'Order sections loaded · revision 2');
+        assert.equal(byId('delivery-card').controlBox.hidden, true);
+        assert.equal(byId('workshop-card').controlBox.hidden, true);
+        assert.equal(byId('delivery-card').check.checked, true);
+        assert.equal(byId('order-shipping-city').control.value, 'Bath');
+        assert.equal(byId('order-delivery-instructions').control.value, 'Use gate C.');
+        assert.equal(calls.filter(c => c.name === 'order_cards').length, 2);
+        assert.equal(calls.filter(c => c.name === 'order_address_fields').length, 4);
+    },
+    async g01(ctx) {
+        const {byId, edit, calls} = ctx;
+        await tick(0);
+        setGroupletField(ctx, 'customer-email', 'purchasing@example.com');
+        assert.equal(byId('customer-email-summary').textContent, 'purchasing@example.com');
+        edit('customer-kind', 'company'); await tick(0);
+        setGroupletField(ctx, 'customer-company', 'North Engineering');
+        edit('customer-kind', 'person'); await tick(0);
+        assert.equal(byId('customer-first_name').control.value, 'Ada');
+        edit('customer-kind', 'company'); await tick(0);
+        assert.equal(byId('customer-company').control.value, 'North Engineering');
+        assert.equal(byId('customer-email').control.value, 'purchasing@example.com');
+        assert.deepEqual(calls.filter(c => c.name === 'customer_fields').map(c => c.params.kind), ['person', 'company', 'person', 'company']);
+    },
+    async g02(ctx) {
+        const {byId, data, calls} = ctx;
+        await tick(0);
+        setGroupletField(ctx, 'shipping-city', 'Bath');
+        setGroupletField(ctx, 'shipping-street', '7 Harbour Lane');
+        assert.equal(byId('shipping-city-summary').textContent, 'Bath');
+        assert.equal(byId('billing-city').control.value, 'London');
+        assert.equal(data('order.billing.city'), 'London');
+        assert.equal(data('order.shipping.city'), 'Bath');
+        assert.equal(calls.filter(c => c.name === 'address_fields').length, 2);
+    },
+    async g03(ctx) {
+        const {byId, click, data, calls} = ctx;
+        await tick(0); await tick(0);
+        setGroupletField(ctx, 'contact-name', 'Sam Taylor');
+        setGroupletField(ctx, 'site-city', 'Bath');
+        setGroupletField(ctx, 'site-instructions', 'Use gate C.');
+        click('reload-site'); await tick(0); await tick(0);
+        assert.equal(byId('site-revision').textContent, 'Section loaded · revision 2');
+        assert.equal(byId('contact-name').control.value, 'Sam Taylor');
+        assert.equal(byId('site-city').control.value, 'Bath');
+        assert.equal(data('visit.site.instructions'), 'Use gate C.');
+        assert.equal(calls.filter(c => c.name === 'contact_fields').length, 2);
+        assert.equal(calls.filter(c => c.name === 'address_fields').length, 2);
     },
     'menu-10': checkMenuEditor,
     'menu-14': checkMenuEditor,
@@ -924,7 +1061,7 @@ test('c13: a request in flight is never cancelled, and the change made during th
 });
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);

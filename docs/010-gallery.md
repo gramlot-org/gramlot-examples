@@ -1766,3 +1766,139 @@ The browser shared-view exercise also passed: the same row remains in the
 category view and leaves/re-enters the quantity view as its value changes.
 This is a local checkpoint, not package publication or final release acceptance.
 Logs and the import manifest: /private/tmp/gramlot-grid-integration-20261029/.
+
+<a id="ge-010-095"></a>
+## 095 · Grouplet development lessons
+
+The owner requested incremental grouplet delivery with runnable gallery cases and
+the required Python @source methods (2026-10-28). The separate grouplets gallery
+worktree includes g01 customer onboarding (person/company and shared contact),
+g02 order billing/shipping addresses, and g03 a service-visit site dossier with
+nested contact/address editors under pages/09-grouplets. Each includes Python/JS
+twins, complete fields, live summaries, instructions and standard sample Data
+companions. These scenarios supersede the initial sparse mechanism-only cases
+after owner feedback requesting useful examples based on legacy tests. The gallery resource inventory includes the prepared
+optional grouplets collection; each lesson declares its own dependency.
+
+Use the matching core grouplets development build. These pages exercise the base
+component and the first card increment, not a resource catalogue, persistence or
+shared form/wizard/grid lifecycle. Source remains Python-first; @source methods are visible in the normal
+Code tab. No new runtime mechanism or public deployment is part of this increment.
+
+The revised lessons draw on legacy 01_grouplet_basics.py, 08_grouplet_edge_cases.py,
+address_fields.py and recursive_grouplet.py. Seven targeted parity/behavior/naming
+tests and six endpoint/navigation tests pass. Chromium checks the actual Python
+gallery: customer drafts survive type changes; shipping remains independent of
+billing; nested edits survive outer reload. Complete Code-tab sources and narrow
+viewport overflow are checked. No page/HTTP errors. Implemented and locally
+verified on 2026-10-28; owner acceptance pending.
+
+
+<a id="ge-010-100"></a>
+## 100 · Order review with grouplet cards
+
+The owner confirms the first groupletCard increment on 2026-10-28. Lesson g04,
+04-order_cards, is a complete order dossier with customer contacts, billing
+address, delivery planning and a nested workshop-address card. The customer has
+static authored fields; order_cards, order_delivery_fields and
+order_address_fields provide the remote Source. Code includes all Python @source
+methods and the JavaScript twin has equivalent Source.
+
+Header titles use ordinary Data bindings. Each card declares its own collapsed
+and checkbox ^ paths; there is no implicit local workspace. The example covers
+top/left/right headers, native keyboard collapse, independent nested fold states,
+external fold/review controls, a review counter and live dispatch briefing.
+Reloading Source preserves the draft and states in the existing Data paths.
+Review marks are a checklist; no validation or database save is implied.
+
+Build, nine targeted gallery tests and six protocol/navigation tests pass. All
+four grouplet lessons pass in Chromium against the real Python gallery, with
+actual RPC counts, Code definitions, editing, keyboard and narrow-overflow checks.
+Full desktop and 390px captures are inspected. Implemented and locally verified;
+owner acceptance pending. No publication or deployment. Menu/Clear, inline docs
+and shared form integration remain later increments. Core records three expected
+failures in upstream Python Builder validation of invalid literal state strings;
+the supported boolean/binding path works and invalid states fail in the browser.
+
+
+Visual revision, 2026-10-28: following owner feedback that the CSS was unreadable,
+the card side headers use content-height blocks, larger chevrons and clearer
+field spacing. Lesson g04 uses existing col_min_width formlets and inline toolbar
+labels; source CSS is reformatted. Keyboard/edit/reload behavior remains verified.
+The previous visual presentation is superseded, pending owner review of this one.
+
+
+Checkbox captions, 2026-10-28: owner requests checkboxLabel. Lesson g04 now
+shows Reviewed beside each customer/invoice/delivery header checkbox. Clicking
+the caption checks the section and updates the review counter. The caption is
+the accessible name, with native label semantics. Python/JS parity and actual
+Chromium label-click/reload checks pass, including narrow layout.
+
+
+<a id="ge-010-105"></a>
+## 105 · Shipping desk: card menus and scoped Clear
+
+Owner confirms this incremental groupletCard contract on 2026-10-28. Lesson g05
+provides complete shipping management for order SO-1042: custom Morning delivery
+and Prepare contact note menu actions, editable contact/delivery fields, a nested
+remote address, invoice lock, tracking reference, live briefing and remote reload.
+Its two Python @source methods and matching JavaScript definitions are visible
+in Code. Nothing is sent to a contact or persisted to a database.
+
+Direct card.menu()/menuline authoring uses the shared menu in the card header.
+The nullable boolean delitem hides (null), disables (false) or enables (true) the
+built-in Clear entry. Clear asks for confirmation and nulls only writable value
+fields within the card Data scope, including nested fields. It retains order and
+invoice details, non-field Data and fold/review state. The nested address card
+also demonstrates Clear without custom menu entries. A reactive formula derives
+the gate from the invoice checkbox; cancellation/locking prevent writes.
+
+Verified with Python/JavaScript Source and endpoint parity, the JavaScript lesson
+workflow and Chromium against the Python gallery: custom actions, nested/full
+Clear, Cancel, disabled entries, keyboard/focus, preserved state after reload,
+Code definitions and narrow overflow. Desktop/narrow captures inspected.
+Owner UI acceptance remains pending; this example adds no form/save engine.
+
+
+<a id="ge-010-110"></a>
+## 110 · Customer handover: inline card guides
+
+Owner selects the first card-local guide increment on 2026-10-28. Lesson g06
+contains complete customer/delivery/address forms, useful Markdown guides and a
+live handover summary. The delivery guide uses ordinary Data/formulas to show the
+current customer, contact and destination. Three Python @source methods and their
+JavaScript twins are visible in Code.
+
+Use the information button while the card is open or folded; Enter/Space activates
+it and Escape/Close returns focus. Outside pointer/focus movement dismisses it.
+Empty doc content hides the opener. Show delivery guide and Reload guided cards
+demonstrate content visibility and preservation of edits/review/fold state.
+
+Source/endpoint parity and the JS workflow pass. The actual Python gallery also
+passes Chromium keyboard/focus, contextual values, folded/nested guide, hiding,
+reload, no guide RPC, Code and narrow geometry checks; captures are inspected.
+Owner UI acceptance remains pending. Shared documentation addresses, manual/notes
+storage, editing, languages and permissions remain a separate resources/Kajenn
+increment by explicit owner choice; this lesson simulates none of that machinery.
+
+
+<a id="ge-010-115"></a>
+## 115 · Grouplets in the common local gallery — 2026-10-29
+
+The owner authorizes review and integration of the Grouplets worktree into the
+common base while preserving the originals and excluding the Invoice application.
+The six lessons g01–g06 now accompany Grid, chat, ordinary and mobile examples.
+Their billing/invoice fields are synthetic local example Data, not an import of
+the excluded Invoice application. The catalogue has 154 routes, including the
+Grouplets section introduction. Collection activation remains page-specific.
+
+All six pages are exercised in the real Python gallery: customer-type draft
+retention, independent addresses, nested remote reload, card fold/review retention,
+menu actions and cancel/confirm Clear, and contextual Markdown guides. A narrow
+390px viewport retains usable fields without horizontal content overflow. Remote
+Edit remains disabled. The complete preview is http://127.0.0.1:61509/.
+
+Earlier sections record the original worktree checks. The common-base receipt
+adds current qualification and keeps the shared resource/form follow-up explicit.
+No deployment, package release, TestFlight upload or full documentation-site
+rebuild is claimed by this local integration.
