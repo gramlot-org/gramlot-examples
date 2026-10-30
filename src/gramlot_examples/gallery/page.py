@@ -91,7 +91,8 @@ class Page(IndexPage):
         super().center(pane)
         pane.value.get_node("tabs").set_attr({"id": "index-pages", "class": "index-main", "hidden": True})
         pane.div(id="gallery-introduction", height="100%").iframe(src="pages/00-index", title="Example gallery", width="100%", height="100%", border=0)
-        feature_index(pane, {item["key"]: item for group in self.groups for item in group["children"]})
+        feature_index(pane, {item["key"]: {**item, "family": group["key"]}
+                             for group in self.groups for item in group["children"]})
 
     def top(self, pane):
         pane.set_attr({"height": "var(--gallery-toolbar-size,42px)"})

@@ -64,7 +64,7 @@ export class GalleryPage extends IndexPage {
         super.center(pane);
         pane.value.getNode('tabs').setAttr({id:'index-pages', class:'index-main', hidden:true});
         pane.div({id:'gallery-introduction',height:'100%'}).iframe({src:this.constructor.introductionUrl,title:'Example gallery',width:'100%',height:'100%',border:0});
-        featureIndex(pane, Object.fromEntries(this.constructor.groups.flatMap(group => group.children.map(item => [item.key, item]))));
+        featureIndex(pane, Object.fromEntries(this.constructor.groups.flatMap(group => group.children.map(item => [item.key, {...item, family:group.key}]))));
     }
     top(pane) { pane.setAttr({height:'var(--gallery-toolbar-size,42px)'}); this.header(pane); }
     navigation_section({directory}) {

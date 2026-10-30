@@ -770,7 +770,7 @@
   },
   {
     "id": "grid",
-    "title": "Grid",
+    "title": "Grid · Generic",
     "features": [
       {
         "id": "behavior_grid_basic",
@@ -818,14 +818,115 @@
       },
       {
         "id": "behavior_grid_shared_store",
-        "title": "Two grids, one collection store",
+        "title": "Two grids, independent views",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "Two grids share the indexed order while keeping independent row heights.",
+        "description": "Sort, filter or reorder either grid independently. Both views share the same Bag records and follow data changes.",
         "examples": [
           "grid-05"
         ],
-        "label": "Shared collection store"
+        "label": "Independent views"
+      },
+      {
+        "id": "behavior_grid_search",
+        "title": "Grid typed search",
+        "label": "Typed search",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Choose text, numeric or date columns, use typed comparisons, then clear the filter without losing sorting. This is local searchOn over the resident Bag.",
+        "examples": [
+          "grid-07"
+        ]
+      },
+      {
+        "id": "behavior_grid_virtual_scroll",
+        "title": "Grid resident virtualization",
+        "label": "Resident virtualization",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Scroll 1,000 loaded records with bounded DOM rows. Resize a row and compare local search and multicolumn sorting. All records remain in browser Data; this is not server paging.",
+        "examples": [
+          "grid-08"
+        ]
+      },
+      {
+        "id": "behavior_grid_floating_scroll",
+        "title": "Grid resize in a floating pane",
+        "label": "Floating and resize",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Resize the floating pane and scroll to the last row. Variable row heights and the row-number gutter belong to the same retained Grid.",
+        "examples": [
+          "grid-09"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grid_loading",
+    "title": "Grid · Data loading",
+    "features": [
+      {
+        "id": "behavior_grid_database_resident",
+        "title": "Grid with a resident database selection",
+        "label": "Resident database rows",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "The Grid consumes an ordinary Bag and does not depend on an ORM. This Python example obtains real customers through an Asqueel service; scroll, search and sort run locally.",
+        "examples": [
+          "base-asqueel-02"
+        ]
+      },
+      {
+        "id": "behavior_grid_jsonl",
+        "title": "Grid typed JSONL loading",
+        "label": "Typed JSONL loading",
+        "kind": "behavior",
+        "status": "Review",
+        "description": "Local Python/Kajenn experiment: TYTX iterators retain typed values while building an isolated Bag. Only a complete stream replaces the selection; failed, cancelled or superseded loads retain the previous Bag. JSONL is not a general dataRpc transport contract.",
+        "examples": [
+          "base-asqueel-03",
+          "selection-trial-02"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grid_asqueel",
+    "title": "Grid · Asqueel only",
+    "features": [
+      {
+        "id": "behavior_grid_cached_fetch",
+        "title": "Asqueel cachedFetch and bounded windows",
+        "label": "cachedFetch windows",
+        "kind": "behavior",
+        "status": "Review",
+        "description": "Local Asqueel-only experiment. Up to the configurable threshold (1,000 actual rows by default) selections are resident. Above it the database materializes the selection and the browser normally retains 200 rows. Unloaded row heights are estimated.",
+        "examples": [
+          "asqueel-only-01"
+        ]
+      },
+      {
+        "id": "behavior_grid_server_search_sort",
+        "title": "Asqueel server search and sort",
+        "label": "Server search and sort",
+        "kind": "behavior",
+        "status": "Review",
+        "description": "Search matches words across text columns on the server; it is not typed searchOn. Header clicks request server sorting, Shift adds criteria. Search and sort return to the beginning; obsolete responses cannot replace the current selection.",
+        "examples": [
+          "asqueel-only-01"
+        ]
+      },
+      {
+        "id": "behavior_grid_cached_lifecycle",
+        "title": "Asqueel selection snapshot lifecycle",
+        "label": "Snapshot lifecycle",
+        "kind": "behavior",
+        "status": "Review",
+        "description": "Reload refreshes the database snapshot; closing the page releases its cache. There is no live refresh or automatic TTL after a process crash. This experiment requires a dedicated cache-writable database configuration.",
+        "examples": [
+          "asqueel-only-01"
+        ]
       }
     ]
   },

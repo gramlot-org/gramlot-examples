@@ -45,7 +45,8 @@ async function mount(family, example, {hold = null} = {}) {
 
     // A page module that names no client method exports no Logic.
     const {Logic} = await import(pathToFileURL(buildGallery().routes[example.key].logic));
-    const server = new GramlotFileServer(fileURLToPath(folder(family.key)));
+    const server = new GramlotFileServer(fileURLToPath(folder(family.key)),
+        {collections: buildGallery().collections});
     const {pageId} = await server.registerPage(`/${example.folder}`);
     const calls = [];
     // `hold(request)` true keeps the answer of that request until `release()`, to observe a request in flight.

@@ -5,6 +5,11 @@ import features from './features.json' with {type: 'json'};
 export function featureIndex(pane, examples) {
     const index = pane.section({id:'gallery-features', class:'gallery-features', hidden:true});
     index.dataSetter({destination_path:'galleryIndex.featureTree', value:new Bag()});
+    const links = new Bag();
+    for (const [key, example] of Object.entries(examples)) {
+        links.setItem(key, null, {family:example.family, url:example.url});
+    }
+    index.dataSetter({destination_path:'galleryIndex.featureExamples', value:links});
     index.h2('Features');
     index.p('Select a feature to find examples. Green means seen; mark Tried after experimenting.');
     index.p('^galleryIndex.featureSummary', {role:'status', class:'feature-summary'});
@@ -29,7 +34,8 @@ function featureCard(parent, feature, examples) {
     if (feature.status !== 'Exercise') card.p(`Coverage: ${feature.status}`,  {class:'feature-evidence'});
     const available = feature.examples.filter(key => examples[key]);
     if (!available.length) {
-        card.p(feature.status === 'Quarantine' ? 'Awaiting review' : 'No dedicated example yet');
+        card.p(feature.examples.length ? 'Not available in this gallery environment' :
+            feature.status === 'Quarantine' ? 'Awaiting review' : 'No dedicated example yet');
         return;
     }
     const links = card.div({class:'feature-links'});

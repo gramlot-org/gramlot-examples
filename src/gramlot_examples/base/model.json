@@ -1,5 +1,5 @@
 {
-  "source_database": "test_invoice_pg",
+  "source_database": "test_invoice_pg_xl",
   "schema": "invc",
   "tables": {
     "state": {

@@ -36,13 +36,13 @@ base/model.json defines a fixed physical dataset, not a universal ORM model:
 | --- | ---: | ---: |
 | state | 2 | 8 |
 | customer | 4 | 3,200 |
-| invoice | 5 | 256 |
+| invoice | 5 | 60,179 |
 | product | 4 | 1,695 |
-| invoice_row | 6 | 806 |
+| invoice_row | 6 | 410,429 |
 
 The three dedicated copies retain every row, types, nullability, keys and four
 relations. Only columns are reduced. No logical-deletion policy is inferred.
-Source test_invoice_pg remains read-only; no records or credentials belong here.
+Source test_invoice_pg_xl remains read-only; no records or credentials belong here.
 
 <a id="ge-015-015"></a>
 ## 015 · What to try
@@ -72,8 +72,8 @@ Declare auxColumns='@state.name' for Asqueel. No aliasColumn or per-field auxili
 registration is required. The returned _state_name is used by
 selected__state_name='.state_name' and by {_state_name} in templates. Invalid model
 paths produce an error. SQLAlchemy/Django retain their explicit native projections.
-HTML templates are sanitized and record values are inserted as text. Only the
-server integration accesses models and queries.
+HTML templates are sanitized and record values are inserted as text. Connections and concrete models belong to the server integration; Python page
+endpoints query through its injected service.
 
 <a id="ge-015-030"></a>
 ## 030 · Integration checkpoint
@@ -126,3 +126,117 @@ selects a sole candidate after a condition change; otherwise the old key remains
 The declaration uses condition='$state=:state', condition_state='^.state' and
 weakCondition='^.weak'. This capability is Asqueel-only; no equivalent expression
 translator is installed for SQLAlchemy or Django. The database remains read-only.
+
+
+<a id="ge-015-045"></a>
+## 045 · XL invoice-row Grid — 2026-10-29
+
+Block ID: **GE-015-045**.
+
+Owner requested the XL source for Base and a resident invoice-row Grid with
+limits through 100,000, server timings, related customer name/state, invoice
+number/date, product, quantity, unit price and total. This is an additional Base
+example, not the separate Application/Invoice management project. Asqueel serves
+it under Grid · Database. It uses the existing native models and typed JSONL (selected 2026-10-30); the
+whole result is resident and only the displayed rows are virtualized.
+See lesson ge-db-grid-03. The source choice supersedes the smaller Base snapshot.
+
+
+<a id="ge-015-050"></a>
+## 050 · Separate selection-transfer experiments — 2026-10-29
+
+Block ID: **GE-015-050**.
+
+> Historical record: complete-response comparisons retired on 2026-10-30; JSONL is selected for resident invoice loading.
+
+Owner requested separate complete-response and progressive JSONL pages with
+query, transfer, Bag and search timings. The optional `base/selection-trial-catalog.json`
+adds Grid · Transfer experiments, with `83-selection-trials/01-json` and `02-jsonl`.
+It is not part of the standard Base/Asqueel catalogues. The local integration
+runner opts in with `--selection-trials` and the separately built experimental
+`gramlot_selection_trial` collection. Existing invoice-row examples are unchanged.
+
+Both comparison pages use HTTP and the same fully fetched XL invoice query,
+attribute-mode Bag, per-grid search/sort and nine limits through 100,000. The
+original lesson continues using ordinary WebSocket RPC. Python declares the UI,
+Data and bindings; transport/decoder behavior belongs to the experimental core
+component, not page JavaScript. A completed selection replaces the previous one
+only after valid EOF/completion; cancellation and failures never publish partial data.
+
+The cards distinguish query/fetch, request-to-headers, body reception, decoding,
+client insertion, server Bag construction and request-to-Bag-ready. JSON decoding
+also hydrates its Bag, so those client costs are combined. JSONL reception overlaps
+decoding/insertion and server encoding waits, and is not isolated network time.
+Search measures existing synchronous applyFilter, excluding the 100 ms debounce
+and rendering. Blank values mean not applicable or not yet measured. See the
+paired lesson explanations ge-db-grid-04/05 for the same measurement boundaries.
+
+
+<a id="ge-015-055"></a>
+## 055 · Historical record: withdrawn progressive WebSocket trial
+
+Block ID: **GE-015-055**.
+
+On 2026-10-29 the owner requested immediate appends via DataBinder, then discarded
+the solution: "scarterei quest asoluzione". It delivered the first 500 rows in
+666.10ms at a 100,000-row limit, but synchronous per-row collection-view index
+reconciliation made subsequent appends increasingly slow. The run was stopped;
+there is no final 100,000-row browser time. The page, block component and test-only
+protocol were removed. No silent-write/index workaround was adopted.
+
+<a id="ge-015-060"></a>
+## 060 · Complete WebSocket RPC comparison — 2026-10-29
+
+Block ID: **GE-015-060**.
+
+> Historical record: complete-response comparisons retired on 2026-10-30; JSONL is selected for resident invoice loading.
+
+Owner next requested checking whether ordinary WebSocket transfer is faster than
+HTTP. The optional trial catalogue adds 03-websocket-rpc (ge-db-grid-07), using
+existing dataRpc and the same load_trial_json endpoint as JSON / HTTP. Timing ends
+before Data publication to keep the boundary consistent. Server query/Bag timings
+and search remain visible. The complete WebSocket path includes gallery family
+routing and codec work; this is not an isolated network protocol benchmark.
+
+<a id="ge-015-065"></a>
+## 065 · Asqueel-only cached invoice rows — 2026-10-29
+
+Block ID: **GE-015-065**.
+
+Optional cached-trial-catalog.json adds Grid · Asqueel only, page
+84-cached-selection/01-invoice_rows. Max rows includes 200,000 and 500,000.
+The query uses the XL Base invoice-row model with customer/state, invoice/date,
+product, quantity, unit price and total. Threshold defaults to 1,000 actual rows,
+configurable by the integration launcher. Small selections remain fully loaded;
+larger selections use native cachedFetch and normally only 200 browser rows.
+
+Source uses DataBinder and the isolated windowSelection component. PageStore owns
+cache lifetime, per-page sort/search and request validation. There is no application
+DOM construction or custom fetch. Click a header for its direction, Shift-click
+adds/toggles criteria; badges show priority/direction. Search matches all words
+across text columns, with a 200 ms debounce. It does not expose typed searchOn.
+
+Displayed timings distinguish count, materialization, first window ready, server
+window read, scroll-to-ready, server search, search-to-ready and server sort.
+Ready excludes paint. Search total includes debounce. Unloaded row heights are
+estimated; no manual row reorder/resize is enabled in this experiment. Reload
+rebuilds the snapshot. Page close cleans its own cache; abrupt process death has
+no automatic TTL. Setup and limited privileges: GP-035 cached-selection section.
+
+<a id="ge-015-070"></a>
+## 070 · JSONL selected for resident invoice rows — 2026-10-30
+
+Block ID: **GE-015-070**.
+
+Owner selected JSONL and explicitly included the floating invoice-row page.
+82-grid-database/02-invoice_rows now shares the JSONL loader and load_trial_rows
+query with 83-selection-trials/02-jsonl. Dates/Decimals remain typed and the new
+selection is published only after valid completion. Reload and limit changes
+cancel/supersede older loads. The floating layout and local sort/filter remain.
+
+The footer displays Query, Encode and Ready (through Bag readiness, before paint).
+The JSON HTTP and complete WebSocket comparison pages/endpoint are retired. Their
+lesson IDs ge-db-grid-04 and ge-db-grid-07 are retired, not reused; measurements
+remain historical evidence in GC-375. The index retains JSONL and the separate
+Asqueel-only cachedFetch family. Use the local Base/Asqueel launcher or release
+preview with the core `gramlot.collections.selection_trial` collection; both expose JSONL.

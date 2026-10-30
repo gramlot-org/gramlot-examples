@@ -14,6 +14,27 @@
           "explanation": "Change State after choosing a Customer. A hard condition retains the old selection with an error; a weak condition is a preference. Parameters are reactive Data bindings."
         }
       ]
+    },
+    {
+      "key": "base-db-grid",
+      "folder": "82-grid-database",
+      "title": "Grid \u00b7 Database",
+      "examples": [
+        {
+          "key": "base-asqueel-02",
+          "folder": "01-customers",
+          "title": "Database grid \u00b7 resident customers",
+          "description": "A real PostgreSQL selection, resident scrolling and server timings.",
+          "explanation": "Choose a limit from 100 to 100,000 records and load through an RPC. Compare requested and loaded counts, query and server times, then resize, scroll, search and sort the resident Bag."
+        },
+        {
+          "key": "base-asqueel-03",
+          "folder": "02-invoice_rows",
+          "title": "Database grid \u00b7 resident invoice rows",
+          "description": "Up to 100,000 real invoice rows from the XL dataset, with related products and server timings.",
+          "explanation": "Choose a limit, load a complete resident Bag through typed JSONL, then scroll, search and sort locally. Compare query, server encoding and request-to-Bag-ready timings."
+        }
+      ]
     }
   ]
 }

@@ -4,6 +4,7 @@ import unittest
 from genro_tytx import from_tytx, to_tytx
 from gramlot.server import GramlotFileServer
 import gramlot_examples
+from gramlot_examples.gallery.collections import collections
 
 
 class TrialServer(GramlotFileServer):
@@ -14,7 +15,7 @@ class TrialServer(GramlotFileServer):
 class MenuTrialTests(unittest.IsolatedAsyncioTestCase):
     async def test_page_source_and_lazy_bag_endpoint(self):
         folder = Path(gramlot_examples.__file__).parent / 'pages/05-menus'
-        server = TrialServer(str(folder))
+        server = TrialServer(str(folder), collections=collections())
         opened = await server.open_page('/08_workspace')
         self.addCleanup(server.close_page, opened.page_id)
         self.assertIn('menu-trial', opened.html)
@@ -45,7 +46,7 @@ class MenuTrialTests(unittest.IsolatedAsyncioTestCase):
         for key in keys:
             with self.subTest(key=key):
                 path = gallery['routes'][key]['page']
-                server = TrialServer(str(path.parent))
+                server = TrialServer(str(path.parent), collections=collections())
                 opened = await server.open_page('/' + path.stem)
                 self.addCleanup(server.close_page, opened.page_id)
                 reply = from_tytx(await server.call(to_tytx(dict(id=key, pageId=opened.page_id,
@@ -57,7 +58,7 @@ class MenuTrialTests(unittest.IsolatedAsyncioTestCase):
                 self.assertTrue(path.with_suffix('.md').is_file())
                 self.assertTrue(path.with_suffix('.js').is_file())
 
-        server = TrialServer(str(chapter))
+        server = TrialServer(str(chapter), collections=collections())
         opened = await server.open_page('/07_resolver')
         self.addCleanup(server.close_page, opened.page_id)
         async def call(name, **params):

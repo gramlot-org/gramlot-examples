@@ -1888,3 +1888,91 @@ Earlier sections record the original worktree checks. The common-base receipt
 adds current qualification and keeps the shared resource/form follow-up explicit.
 No deployment, package release, TestFlight upload or full documentation-site
 rebuild is claimed by this local integration.
+
+
+<a id="ge-010-grid-viewport-20261029"></a>
+## Resident Grid scrolling — 2026-10-29
+
+Owner requested a virtualized Grid on a fully resident Bag, initially 1,000 rows.
+Grid lesson grid-08 (08_virtual_scroll) uses a canonical typed Data companion,
+Python-first Source and an equivalent JS page. It demonstrates multiline/manual
+row heights, whole-collection sort/search and a small scroll viewport. The grid
+implementation belongs to core GC-375 §135. No page-local DOM or scroll logic,
+locale override, partial database loading or editing. Source parity and 12
+catalogue/sample checks pass; the common preview serves the lesson at 61509.
+
+
+<a id="ge-010-floating-grid-20261029"></a>
+## Floating Grid viewport — 2026-10-29
+
+Owner request: add a 1,000-row Grid in a resizable floating pane and verify
+adaptation with variable row heights. Gallery lesson grid-09 composes the existing
+floatingPane, frameGrid and Grid, with Python/JavaScript Source parity. The center
+uses flex sizing; no application DOM, resize listeners or framework changes.
+The Bag is fully resident; columns retain declared widths and overflow horizontally
+when the window becomes narrow.
+
+Live gallery verification: a 353px-high body mounts 20 rows; 203px mounts 14;
+453px mounts 26. Pointer resize reduces body dimensions from 763×353 to 683×293.
+Natural multiline rows measure 60px, then 95px after narrowing the notes column;
+a manually enlarged first row remains 42px after window resize and viewport
+exit/re-entry. End reaches R1000 within one pixel of the bottom, including after
+resize. Search R0999 finds the offscreen record; clearing restores rows. Descending
+Code order survives closing/reopening the window. Local build, grid-09 Source
+parity and all 51 gallery/catalogue/sample tests pass; no release, publication
+or version change. Owner visual acceptance
+remains separate.
+
+
+### Floating layout correction — 2026-10-29
+
+Owner confirmed: “Mantieni la barra del titolo; toolbar solo nel FrameGrid”.
+The floating center has 5px padding on every side; the bordered FrameGrid owns
+its search toolbar in top and its Grid in center. Resizing the floating changes
+both together. Measured FrameGrid sizes 768×416 and 648×296 retain exactly
+5px on all four sides; the viewport mounts 20 and 14 rows respectively.
+Manual row height survives resize and viewport re-entry; End reaches R1000.
+Python/JavaScript parity and local browser build pass. The example uses the
+existing layout API, with no framework change.
+
+
+<a id="ge-010-database-grid-20261029"></a>
+## Resident database Grid — 2026-10-29
+
+Owner requested a real database load with server timing, then a selector for
+100, 500, 1,000, 2,000, 5,000, 10,000, 20,000, 50,000 and 100,000 records.
+The Python environment lesson `base-asqueel-02`, under Grid · Database, uses
+an ordinary dataRpc and the host-injected read-only Asqueel service to query
+`gramlot_base_asqueel`, physical table `invc.invc_customer`. Default limit: 1,000.
+Changing the selector reloads the complete selection into a resident Bag.
+Requested and actual counts are separate; no synthetic records are added.
+Query timing covers execution/fetch; endpoint timing includes it plus session
+release and Bag construction, excluding response serialization, network and UI.
+
+All nine limits were checked against the physical table, including field/order
+identity, read-only transactions and rejection of undeclared limits. Browser
+checks cover automatic reload at 100, 500, 2,000 and 100,000; the last returns
+3,200 available rows. End reaches ordinal 3,200 with zero bottom gap and only
+23 mounted rows. One observed 3,200-row load took 13.91ms query / 20.42ms server;
+this is not a 100,000-row performance claim. Local release-gallery staging test
+passes. Existing core APIs suffice; no framework or database writes, publication
+or release. Gallery preview remains at http://127.0.0.1:61509/.
+
+
+<a id="ge-010-xl-grid-20261029"></a>
+## XL invoice-row Grid — 2026-10-29
+
+Owner requests switching Base to test_invoice_pg_xl and showing related customer
+name/state, invoice number/date, product, quantity, unit price and total. The
+additional Asqueel lesson base-asqueel-03 uses existing model relations/dataRpc;
+the source specification remains the same 21-column subset. All three Base copies
+now hold 60,179 invoices and 410,429 rows. All nine limits match independent SQL;
+the browser actually loads 100,000, reaches the last ordinal with 20 DOM rows,
+and supports multicolumn sort and search/clear on the resident selection.
+Observed query/endpoint times: 552.31/930.23ms, excluding serialization, transfer
+and client work. Searching 100,000 rows can occupy the browser for several seconds.
+See GE-015-045, lesson ge-db-grid-03 and GP-910-080. No core changes or publication.
+
+Final XL verification: 54 gallery/catalogue/sample tests pass. Rebuilt examples
+documentation validates 127 lessons, five paired guides and all local links;
+adapter documentation checks also pass.

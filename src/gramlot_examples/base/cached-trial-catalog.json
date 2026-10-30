@@ -1,0 +1,7 @@
+{
+  "environment": "asqueel-only",
+  "families": [{"key":"asqueel-cached","folder":"84-cached-selection","title":"Grid · Asqueel only",
+    "examples":[{"key":"asqueel-only-01","folder":"01-invoice_rows","title":"Asqueel only · cached invoice rows",
+    "description":"Server-side cachedFetch, search and sort; only a small window resides in the browser.",
+    "explanation":"Selections up to the configured threshold remain resident; larger selections use a numbered database cache."}]}]
+}

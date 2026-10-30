@@ -1,16 +1,24 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 import {Bag, NavigationResolver} from '@gramlot/gramlot';
 import features from '../src/gramlot_examples/gallery/features.json' with {type:'json'};
 import catalog from '../src/gramlot_examples/catalog.json' with {type:'json'};
 import {mountFeatureProgress, markFeatureExampleSeen, openFeatureExample} from '../src/gramlot_examples/gallery/browser/gallery-features.js';
 
+const optionalCatalogs = ['asqueel', 'selection-trial', 'cached-trial'].map(name =>
+    JSON.parse(readFileSync(new URL(`../src/gramlot_examples/base/${name}-catalog.json`, import.meta.url))));
 const entries = features.flatMap(group => group.features);
-function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window) {
+function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window, catalogs = [catalog]) {
     const state = new Bag();
+    const links = new Bag();
+    for (const source of catalogs) for (const family of source.families) for (const item of family.examples) {
+        links.setItem(item.key, null, {family:family.key, url:`pages/${family.folder}/${item.folder}`});
+    }
+    state.setItem('featureExamples', links);
     const progress = new Bag();
-    for (const feature of entries) if (feature.examples.length) progress.setItem(feature.id, 'new');
+    for (const feature of entries) if (feature.examples.some(key => links.getNode(key) !== null)) progress.setItem(feature.id, 'new');
     state.setItem('featureProgress', progress);
     const data = new Bag(); data.setItem('galleryIndex', state);
     const root = {builder:{data}, indexContext:{disposed:false}};
@@ -20,8 +28,7 @@ function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window) {
 }
 
 test('feature inventory references catalogue keys and keeps quarantined selectors out of the lesson path', () => {
-    const keys = new Set(catalog.families.flatMap(group => group.examples.map(item => item.key)));
-    assert.equal(entries.length, 117);
+    const keys = new Set([catalog, ...optionalCatalogs].flatMap(source => source.families.flatMap(group => group.examples.map(item => item.key))));
     assert.equal(new Set(entries.map(item => item.id)).size, entries.length);
     for (const feature of entries) for (const key of feature.examples) assert.ok(keys.has(key), key);
     for (const name of ['dbSelect', 'dbComboBox']) {
@@ -174,4 +181,43 @@ test('hosted JavaScript navigation ends with Features while keeping directory br
     const children = new Page().navigation_section({directory: directory.attr.directory});
     assert.ok(children.getNodes().length);
     assert.equal(children.getNode('features'), null, 'Features is only a root entry');
+});
+
+
+test('every common Grid lesson has feature evidence, with explicit optional loading and Asqueel scopes', () => {
+    const commonGrid = catalog.families.find(group => group.key === 'grid');
+    for (const lesson of commonGrid.examples) {
+        assert.ok(entries.some(feature => feature.examples.includes(lesson.key)), lesson.key);
+    }
+    const generic = features.find(group => group.id === 'grid');
+    assert.equal(generic.title, 'Grid · Generic');
+    assert.ok(generic.features.every(feature => feature.examples.every(key => key.startsWith('grid-'))));
+    const asqueel = features.find(group => group.id === 'grid_asqueel');
+    assert.equal(asqueel.title, 'Grid · Asqueel only');
+    assert.ok(asqueel.features.every(feature => feature.status === 'Review' && feature.examples.includes('asqueel-only-01')));
+    const jsonl = entries.find(feature => feature.id === 'behavior_grid_jsonl');
+    assert.equal(jsonl.status, 'Review');
+    assert.match(jsonl.description, /not a general dataRpc/);
+});
+
+test('optional examples open from the host catalogue and unavailable progress is not restored', async () => {
+    const window = new JSDOM('', {url:'https://gallery.test/'}).window;
+    const available = fixture(window, [catalog, ...optionalCatalogs]);
+    const navigation = new Bag();
+    const children = new Bag();
+    children.setItem('01-invoice_rows', null, {key:'asqueel-only-01', category:false});
+    navigation.setItem('asqueel-cached', children, {category:true});
+    available.state.setItem('navigation', navigation);
+    await openFeatureExample(available.root, 'asqueel-only-01');
+    assert.equal(available.state.getItem('navigationSelection'), 'asqueel-cached.01-invoice_rows');
+    markFeatureExampleSeen(available.state, 'asqueel-only-01');
+    assert.equal(available.progress.getItem('behavior_grid_cached_fetch'), 'seen');
+    available.progress.setItem('behavior_grid_cached_fetch', 'tried');
+    available.mounted.dispose();
+    const common = fixture(window);
+    assert.equal(common.progress.getItem('behavior_grid_cached_fetch'), null);
+    assert.equal(common.state.getItem('featureTree').getNode('grid_asqueel').attr.caption, 'Grid · Asqueel only');
+    await assert.rejects(openFeatureExample(common.root, 'asqueel-only-01'), /not available in this gallery/);
+    assert.equal(common.state.getItem('navigationSelection'), null);
+    common.mounted.dispose();
 });

@@ -677,6 +677,20 @@
           "title": "Search · text, numbers and dates",
           "description": "A focused guide to column search, typed comparisons and clearing.",
           "explanation": "Choose All columns or a specific field. Try text, numbers and dates, then clear the filter without losing the sort."
+        },
+        {
+          "key": "grid-08",
+          "folder": "08_virtual_scroll",
+          "title": "Scroll · 1,000 resident rows",
+          "description": "A small viewport over 1,000 fully loaded records, with variable heights and local search.",
+          "explanation": "Scroll to the last record, resize a row, sort multiple columns and search across all loaded data."
+        },
+        {
+          "key": "grid-09",
+          "folder": "09_floating_scroll",
+          "title": "Floating grid · resize and scroll",
+          "description": "A resizable floating window with 1,000 resident records and variable row heights.",
+          "explanation": "Resize the floating pane, enlarge a row, scroll to the end and search the complete Bag."
         }
       ]
     },

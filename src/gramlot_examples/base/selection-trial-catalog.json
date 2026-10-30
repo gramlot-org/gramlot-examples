@@ -1,0 +1,19 @@
+{
+  "environment": "selection-trial",
+  "families": [
+    {
+      "key": "selection-trials",
+      "folder": "83-selection-trials",
+      "title": "Grid \u00b7 Transfer experiments",
+      "examples": [
+        {
+          "key": "selection-trial-02",
+          "folder": "02-jsonl",
+          "title": "Selection trial \u00b7 progressive JSONL / HTTP",
+          "description": "Measure typed record streaming and incremental Bag construction.",
+          "explanation": "TYTX iterators encode/decode records. The completed Bag replaces the selection atomically. Reception overlaps decoding and insertion; these timings are not additive."
+        }
+      ]
+    }
+  ]
+}

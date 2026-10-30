@@ -9,6 +9,10 @@ FEATURES = json.loads(Path(__file__).with_name('features.json').read_text())
 def feature_index(pane, examples):
     index = pane.section(id='gallery-features', class_='gallery-features', hidden=True)
     index.dataSetter('galleryIndex.featureTree', Bag())
+    links = Bag()
+    for key, example in examples.items():
+        links.set_item(key, None, {'family': example['family'], 'url': example['url']})
+    index.dataSetter('galleryIndex.featureExamples', links)
     index.h2('Features')
     index.p('Select a feature to find examples. Green means seen; mark Tried after experimenting.')
     index.p('^galleryIndex.featureSummary', role='status', class_='feature-summary')
@@ -36,7 +40,8 @@ def feature_card(parent, feature, examples):
         card.p('Coverage: ' + feature['status'], class_='feature-evidence')
     available = [key for key in feature['examples'] if key in examples]
     if not available:
-        card.p('Awaiting review' if feature['status'] == 'Quarantine' else 'No dedicated example yet')
+        card.p('Not available in this gallery environment' if feature['examples'] else
+               'Awaiting review' if feature['status'] == 'Quarantine' else 'No dedicated example yet')
         return
     links = card.div(class_='feature-links')
     for key in available:

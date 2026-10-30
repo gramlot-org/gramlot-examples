@@ -1,6 +1,5 @@
 import {Bag} from '@gramlot/gramlot';
 import features from '../features.json' with {type:'json'};
-import catalog from '../../catalog.json' with {type:'json'};
 
 const entries = features.flatMap(group => group.features);
 const states = new Set(['new', 'seen', 'tried']);
@@ -24,7 +23,7 @@ export function mountFeatureProgress(renderer, root, state) {
         state.setItem('featureStorageNotice', 'Previous progress could not be restored. Current progress remains in page Data.');
     }
     for (const feature of entries) {
-        if (saved !== null && states.has(saved[feature.id])) progress.setItem(feature.id, saved[feature.id]);
+        if (progress.getNode(feature.id) !== null && saved !== null && states.has(saved[feature.id])) progress.setItem(feature.id, saved[feature.id]);
     }
     const tree = new Bag();
     for (const group of features) {
@@ -94,13 +93,12 @@ export function markFeatureExampleSeen(state, key) {
 
 /** Reuse the navigation Bag and its resolvers, then select through IndexPage Data. */
 export async function openFeatureExample(root, key) {
-    const family = catalog.families.find(group => group.examples.some(item => item.key === key));
-    if (!family) throw new Error(`Unknown example: ${key}`);
     const state = root.builder.data.getItem('galleryIndex');
+    const example = state.getItem('featureExamples').getNode(key);
+    if (example === null) throw new Error(`Example is not available in this gallery: ${key}`);
     state.setItem('featureRequest', key);
-    const example = family.examples.find(item => item.key === key);
-    const directory = [family.folder, ...example.folder.split('/').slice(0, -1)].join('/');
-    const branch = state.getItem('navigation').getNode(family.key);
+    const {family, url} = example.attr;
+    const branch = state.getItem('navigation').getNode(family);
     async function find(node, path) {
         if (node.attr.key === key) return path;
         if (!node.attr.category) return null;
@@ -111,13 +109,13 @@ export async function openFeatureExample(root, key) {
         if (children === null) return null;
         for (const child of children.getNodes()) {
             if (child.attr.directory !== undefined &&
-                directory !== child.attr.directory && !directory.startsWith(child.attr.directory + '/')) continue;
+                !url.startsWith('pages/' + child.attr.directory + '/')) continue;
             const found = await find(child, `${path}.${child.label}`);
             if (found) return found;
         }
         return null;
     }
-    const path = await find(branch, family.key);
+    const path = await find(branch, family);
     if (root.indexContext.disposed || state.getItem('featureRequest') !== key) return;
     if (!path) throw new Error(`Example is not available in navigation: ${key}`);
     state.setItem('featuresOpen', false);

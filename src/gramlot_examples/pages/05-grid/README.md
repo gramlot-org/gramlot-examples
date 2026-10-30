@@ -10,6 +10,9 @@ Follow this sequence from the smallest Bag grid to a complete framed component:
 6. [FrameGrid · complete example](06_frame_grid.md): themed groups, shared command bars, collection search and live Data updates.
 7. [Search · text, numbers and dates](07_search.md): a focused search tutorial, column scope, comparisons and clearing.
 
+8. [Scroll · 1,000 resident rows](08_virtual_scroll.md): a small viewport, variable row heights and full-collection search.
+9. [Floating grid · resize and scroll](09_floating_scroll.md): resize a floating window around the same resident dataset.
+
 Every lesson uses Python Source, a Data Bag and the shared grid component, with an
 equivalent JavaScript page. Choose themes in the gallery Settings. Cells remain
 read-only; remote providers, editing and a configurator are future work.

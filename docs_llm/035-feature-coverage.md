@@ -5,18 +5,18 @@ Document ID: **GE-035**.
 <a id="ge-035-005"></a>
 ## 005 · What this checklist measures
 
-This is a teaching-coverage baseline, not test coverage or a claim that all lessons
-have passed a visual/code-quality review. It maps the current common catalogue
-(**117 lessons**) to the six packaged component grammars (**43 declarations**),
-then tracks selected shared behaviors separately. The baseline was checked on
-2026-10-27 against the release checkout and both authoring languages.
+This checklist describes teaching evidence, not exhaustive feature or test coverage.
+The common catalogue now has **127 lessons**. The Grid review on 2026-10-30 adds
+resident virtualization, floating layouts and typed search, plus optional Python
+catalogues for database loading and the Asqueel-only cached-selection experiment.
+The index distinguishes generic Grid behavior, experimental loading and Asqueel-only
+capabilities; it does not imply that every host supports these examples.
 
-**40 of 43 component declarations (93%) have a mapped lesson using them in Python
-and JavaScript.** That is component presence only: it says nothing about coverage
-of every parameter, interaction, failure path, browser or accessibility behavior.
-There is deliberately no overall “93% of Gramlot features” claim.
-Of the three unmapped components, `dbSelect` and `dbComboBox` are quarantined
-prototypes, not an example-writing backlog; `transformPane` remains a teaching gap.
+**Historical record — 2026-10-27 baseline:** 40 of 43 declarations in six component
+grammars had mapped Python/JavaScript lessons (117 common lessons then). That figure
+is not current overall feature coverage. The selector quarantine entries below
+still await reconciliation with the later database review; this Grid update does
+not certify dbSelect/dbComboBox or the remaining new collections.
 
 | State | Meaning |
 | --- | --- |
@@ -192,7 +192,7 @@ verification remain separate work.
 | Per-instance state isolation across several IDEs | **Gap** | — | Host IDE is outside this catalogue; add a focused isolation exercise if teaching this contract. |
 | Persist/restore layout across a page reload | **Gap** | — | Tray Save is page-local. Server persistence is an application responsibility, not silently demonstrated. |
 
-### Grid
+### Grid · Generic
 
 | Feature | Status | Lessons | Exercise |
 | --- | --- | --- | --- |
@@ -200,7 +200,25 @@ verification remain separate work.
 | Rows as attributes | **Exercise** | [grid-02 · Rows as attributes](../src/gramlot_examples/pages/05-grid/02_attributes.md) | Read the same kind of records from node attributes, with typed numeric and boolean cells. |
 | Column groups and row heights | **Exercise** | [grid-03 · Column groups and row heights](../src/gramlot_examples/pages/05-grid/03_colgroups.md) | Group columns, display multiline notes and resize individual rows. |
 | Multicolumn sort and row drag | **Exercise** | [grid-04 · Multicolumn sort and row drag](../src/gramlot_examples/pages/05-grid/04_ordering.md) | Sort raw Bag values with multiple criteria, then set a manual row order. |
-| Two grids, one collection store | **Exercise** | [grid-05 · Two grids, one collection store](../src/gramlot_examples/pages/05-grid/05_shared_store.md) | Two grids share the indexed order while keeping independent row heights. |
+| Two grids, independent views | **Exercise** | [grid-05 · Two grids, independent views](../src/gramlot_examples/pages/05-grid/05_shared_store.md) | Sort, filter or reorder either grid independently. Both views share the same Bag records and follow data changes. |
+| Grid typed search | **Exercise** | [grid-07 · Search · text, numbers and dates](../src/gramlot_examples/pages/05-grid/07_search.md) | Choose text, numeric or date columns, use typed comparisons, then clear the filter without losing sorting. This is local searchOn over the resident Bag. |
+| Grid resident virtualization | **Exercise** | [grid-08 · Scroll · 1,000 resident rows](../src/gramlot_examples/pages/05-grid/08_virtual_scroll.md) | Scroll 1,000 loaded records with bounded DOM rows. Resize a row and compare local search and multicolumn sorting. All records remain in browser Data; this is not server paging. |
+| Grid resize in a floating pane | **Exercise** | [grid-09 · Floating grid · resize and scroll](../src/gramlot_examples/pages/05-grid/09_floating_scroll.md) | Resize the floating pane and scroll to the last row. Variable row heights and the row-number gutter belong to the same retained Grid. |
+
+### Grid · Data loading
+
+| Feature | Status | Lessons | Exercise |
+| --- | --- | --- | --- |
+| Grid with a resident database selection | **Exercise** | [base-asqueel-02 · Database grid · resident customers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/82-grid-database/01-customers.md) | The Grid consumes an ordinary Bag and does not depend on an ORM. This Python example obtains real customers through an Asqueel service; scroll, search and sort run locally. |
+| Grid typed JSONL loading | **Review** | [base-asqueel-03 · Database grid · resident invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/82-grid-database/02-invoice_rows.md), [selection-trial-02 · Selection trial · progressive JSONL / HTTP](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/83-selection-trials/02-jsonl.md) | Local Python/Kajenn experiment: TYTX iterators retain typed values while building an isolated Bag. Only a complete stream replaces the selection; failed, cancelled or superseded loads retain the previous Bag. JSONL is not a general dataRpc transport contract. |
+
+### Grid · Asqueel only
+
+| Feature | Status | Lessons | Exercise |
+| --- | --- | --- | --- |
+| Asqueel cachedFetch and bounded windows | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Local Asqueel-only experiment. Up to the configurable threshold (1,000 actual rows by default) selections are resident. Above it the database materializes the selection and the browser normally retains 200 rows. Unloaded row heights are estimated. |
+| Asqueel server search and sort | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Search matches words across text columns on the server; it is not typed searchOn. Header clicks request server sorting, Shift adds criteria. Search and sort return to the beginning; obsolete responses cannot replace the current selection. |
+| Asqueel selection snapshot lifecycle | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Reload refreshes the database snapshot; closing the page releases its cache. There is no live refresh or automatic TTL after a process crash. This experiment requires a dedicated cache-writable database configuration. |
 
 <a id="ge-035-020"></a>
 ## 020 · Code clarity is a separate checklist
@@ -340,3 +358,22 @@ Source parity and Chromium/WebKit checks cover this lesson; it does not claim a
 new full-catalogue qualification. Grid editing, configurator and persistence are
 not included. The earlier grammar audit is a dated baseline, not a fresh count of
 the development grid collection.
+
+
+<a id="ge-035-095"></a>
+## 095 · Environment-aware Grid coverage
+
+Owner request, 2026-10-30: review the new Grid work and distinguish generic features
+from Asqueel-only features in the gallery index. No release is authorized here.
+
+Feature links use the host's actual catalogue metadata in gallery Data and the
+existing lazy navigation resolvers. Optional examples are explicitly unavailable
+when their catalogue is absent. They do not enter progress counts, including when
+sessionStorage contains progress from a previously enabled environment. Seen/Tried
+records remain in Data; sessionStorage is only a reload snapshot.
+
+JSONL and cachedFetch remain marked Review: successful local tests do not approve
+a public streaming protocol or a general remote CollectionStore. Invoice application
+integration and Python-to-serverless export remain outside this consolidation.
+The invoice-row dataset used by these explicitly approved Grid trials is separate
+from the excluded Invoice application gallery.
