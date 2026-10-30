@@ -14,6 +14,7 @@ import {chromium} from 'playwright';
 import {componentBehaviors} from './component-behaviors.mjs';
 import {layoutBehaviors} from './layout-behaviors.mjs';
 import {workspaceBehaviors} from './workspace-behaviors.mjs';
+import {gridBehaviors} from './grid-behaviors.mjs';
 import {groupletBehaviors} from './grouplet-behaviors.mjs';
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
@@ -486,11 +487,11 @@ LOGIC.c23 = async (page, text) => {
     assert.equal(await text('#summary'), 'Stay estimate: €567');
 };
 
-Object.assign(LOGIC, componentBehaviors, layoutBehaviors, workspaceBehaviors, groupletBehaviors);
+Object.assign(LOGIC, componentBehaviors, layoutBehaviors, workspaceBehaviors, groupletBehaviors, gridBehaviors);
 
-for (const family of families) for (const example of family.examples) {
-    assert.ok(LOGIC[example.key] || ENDPOINTS[example.key], `Missing behavioral check: ${example.key}`);
-}
+const missingChecks = families.flatMap(family => family.examples)
+    .filter(example => !LOGIC[example.key] && !ENDPOINTS[example.key]).map(example => example.key);
+assert.deepEqual(missingChecks, [], 'Catalogue entries without a behavioral check');
 
 export async function verifyExample(page, key, calls = []) {
     assert.ok(LOGIC[key] || ENDPOINTS[key], `Missing behavioral check: ${key}`);

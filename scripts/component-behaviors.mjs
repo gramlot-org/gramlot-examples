@@ -210,3 +210,28 @@ Object.assign(componentBehaviors, {
         await destination.locator('[data-path="inbox.brief"]').waitFor();
     },
 });
+
+componentBehaviors['form-state'] = async page => {
+    const status = value => page.waitForFunction(expected=>document.querySelector('#form-status').textContent===expected,value);
+    const edit = async (id,value) => {const input=page.locator(`#${id} input`);await input.fill(value);await input.press('Tab');};
+    await status('ok');
+    await edit('form-name','Luigi'); await status('changed');
+    await edit('form-name','Mario'); await status('ok');
+    await edit('form-name',''); await status('error');
+    assert.equal(await page.evaluate(()=>gramlot.data.getItem('record.name')), '');
+    assert.equal(await page.locator('#form-save button').isDisabled(), true);
+    await page.locator('#form-restore button').click(); await status('ok');
+    const previous=await page.evaluate(()=>String(gramlot.data.getItem('record.date')));
+    await edit('form-date','2026-'); await status('error');
+    assert.equal(await page.evaluate(()=>String(gramlot.data.getItem('record.date'))), previous);
+    await page.locator('#form-restore button').click(); await status('ok');
+    await edit('form-code','taken'); await status('pending');
+    assert.equal(await page.locator('#form-save button').isDisabled(), true);
+    await status('error');
+    await page.locator('#form-restore button').click(); await status('ok');
+    await edit('form-name','Luigi'); await status('changed');
+    await page.locator('#form-save button').click(); await status('ok');
+    await edit('form-name','Mario'); await status('changed');
+    await page.locator('#form-restore button').click(); await status('ok');
+    assert.equal(await page.locator('#form-name input').inputValue(),'Luigi');
+};

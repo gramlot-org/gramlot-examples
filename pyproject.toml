@@ -12,6 +12,7 @@ requires-python = ">=3.11"
 dependencies = ["gramlot>=0.3.24"]
 
 [project.optional-dependencies]
+test = ["pytest>=8"]
 chat = ["anthropic>=2.0.0", "openai"]
 
 [project.urls]

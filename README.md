@@ -63,7 +63,7 @@ gallery with its own server and can add its own catalogue. Guide:
 npm install --no-package-lock
 npm run build
 npm test
-python -m unittest discover -s tests
+python -m pytest -q tests
 ```
 
 [Repository map](https://github.com/gramlot-org/gramlot-examples/blob/main/docs/005-repository-map.md) (GE-005).

@@ -207,7 +207,7 @@ remain supported for application examples.
 
 ## 035 · Checks
 
-`npm run build`, `npm test`, `bun test ./tests`, `python -m unittest discover -s tests`.
+`npm run build`, `npm test`, `bun test ./tests`, `python -m pytest -q tests`.
 Browser (CI `browser`): `serve_pages.py` / `serve_pages.mjs` (core `GramlotFileServer`) +
 `verify_pages_browser.mjs` (every catalogue entry, both languages; fail on missing
 behavior coverage; static structure, bindings, Logic, lifecycle, file exchange,
@@ -1860,3 +1860,8 @@ See GE-015-045, lesson ge-db-grid-03 and GP-910-080. No core changes or publicat
 Final XL verification: 54 gallery/catalogue/sample tests pass. Rebuilt examples
 documentation validates 127 lessons, five paired guides and all local links;
 adapter documentation checks also pass.
+
+
+### Release qualification — 2026-10-30
+
+The all-page browser runner includes form-state, the nine Grid lessons and the two new Grouplet action/guide lessons. Grid behavioral checks are shared with the gallery-navigation qualification; sorting/filtering waits for the observable render result. The Python runner is pytest so both unittest classes and pytest functions/fixtures execute. Install `.[test,chat]` for optional provider contract tests; these do not make paid provider calls. Node test files run with concurrency two to avoid CPU-contention timeouts on CI without dropping coverage. All twelve added page checks pass against both Python and JavaScript hosts.

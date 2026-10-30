@@ -90,3 +90,25 @@ export const groupletBehaviors = {
             window.gramlot.data.getItem('visit.site.address.city')]), ['Sam Taylor', 'Bath']);
     },
 };
+
+groupletBehaviors.g05 = async page => {
+    await page.locator('#actions-contact input').waitFor();
+    await page.locator('#actions-delivery .card-actions').first().click();
+    await page.locator('#actions-morning').click();
+    assert.equal(await page.locator('#actions-window input').inputValue(),'Tuesday, 09:00–12:00');
+    await edit(page,'actions-address-city','Bath');
+    await page.locator('#actions-reload').click();
+    await page.locator('#actions-revision').filter({hasText:'2'}).waitFor();
+    await page.locator('#actions-address-city input').waitFor();
+    assert.equal(await page.locator('#actions-address-city input').inputValue(),'Bath');
+};
+groupletBehaviors.g06 = async page => {
+    await page.locator('#guide-customer-contact input').waitFor();
+    await edit(page,'guide-customer-contact','Sam Taylor');
+    await page.locator('#guide-delivery .card-doc-button').first().click();
+    await page.locator('#guide-delivery .card-doc-body').first().getByText('Sam Taylor',{exact:false}).waitFor();
+    await page.locator('#guide-delivery .card-doc-close').first().click();
+    await page.locator('#guide-reload').click();
+    await page.locator('#guide-revision').filter({hasText:'2'}).waitFor();
+    assert.equal(await page.locator('#guide-customer-contact input').inputValue(),'Sam Taylor');
+};
