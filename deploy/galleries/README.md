@@ -268,7 +268,7 @@ mobile entry point. It mounts the packaged Base, Asqueel, database-grid, JSONL
 and cached-selection catalogues alongside the ordinary and native-only mobile
 catalogues. JavaScript and offline galleries retain their own supported catalogues.
 
-The existing private Docker network `gramlot-demo-db` supplies `invoice_demo`.
+The existing private Docker network `gramlot-demo-db` supplies `test_invoice_pg_xl`.
 The non-superuser login `gramlot_gallery` has SELECT on only state, customer,
 invoice, product and invoice_row in `invc`; it owns the isolated `_asql_` cache
 schema. It cannot modify business records or read administrative tables. The
@@ -281,9 +281,13 @@ Prepare the native Asqueel cache catalogue once, using
 `create_database(cached=True, catalog_only=True)`: inspect `migration_plan()`
 before `migrate()`. The approved migration creates only
 `_asql_._asql_cached_fetch` and its owner index. Startup never migrates.
-Public data currently contains 3,200 customers and 806 invoice rows; the cache
-threshold is 100 to demonstrate both resident and cached modes with these data.
-The larger local XL copy is not transferred.
+Public data contains 3,200 customers, 60,179 invoices and 410,429 invoice rows.
+The cache threshold remains 100. The owner authorized the local XL dump transfer
+and then connecting the gallery ("collega", 2026-10-30). The former `invoice_demo`
+database is retained; existing credentials for that database support rollback.
+The same restricted reader accesses only the five demonstration tables in the XL
+copy, with its own `_asql_` cache schema. The browser qualification also selects
+500,000 rows and verifies the actual total of 410,429 with only 200 resident rows.
 
 Every candidate verifies role restrictions, denied writes, cache paging, search,
 sorting, independent owners and cleanup before startup. Browser checks verify

@@ -9,7 +9,7 @@ from gramlot_py_server.gallery.base import service
 
 EXAMPLES = Path(str(files('gramlot_examples')))
 MODEL = Path(str(files('gramlot_py_server').joinpath('gallery/base/asqueel_model/invc')))
-DATABASE = 'invoice_demo'
+DATABASE = 'test_invoice_pg_xl'
 CACHE_THRESHOLD = 100
 
 

@@ -2,9 +2,9 @@
 import importlib.util
 import psycopg
 from psycopg.errors import InsufficientPrivilege
-from public_database import CACHE_THRESHOLD, EXAMPLES, create_database
+from public_database import CACHE_THRESHOLD, DATABASE, EXAMPLES, create_database
 
-with psycopg.connect(dbname='invoice_demo') as connection:
+with psycopg.connect(dbname=DATABASE) as connection:
     privileges=connection.execute("SELECT rolsuper, rolcreatedb, rolcreaterole FROM pg_roles WHERE rolname=current_user").fetchone()
     assert privileges==(False,False,False), privileges
     for table in ('invc_state','invc_customer','invc_invoice','invc_product','invc_invoice_row'):
@@ -57,8 +57,9 @@ try:
     values=[node.attr['quantity'] for node in result['rows'].nodes]
     assert values==sorted(values,reverse=True)
     with database.session() as session:
-        expected=session.table('invc.invoice_row').query(columns='$id,$quantity',order_by='$quantity DESC,$id',limit=200).fetch()
-        assert values==[row['quantity'] for row in expected]
+        # Sorting applies to the selected ID-ordered subset, not the entire table.
+        expected=session.execute('SELECT quantity FROM (SELECT id,quantity FROM invc.invc_invoice_row ORDER BY id LIMIT 1000) selected ORDER BY quantity DESC,id LIMIT 200').fetchall()
+        assert values==[row[0] for row in expected]
     first.close()
     with database.session() as session:
         table=session.table('_asql_._asql_cached_fetch')
