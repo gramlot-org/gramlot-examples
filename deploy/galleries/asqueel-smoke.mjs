@@ -1,0 +1,63 @@
+/** Public database lessons must work before and after gallery promotion. */
+import assert from 'node:assert/strict';
+import {chromium} from 'playwright';
+const base=process.argv[2];
+const browser=await chromium.launch({headless:true});
+const errors=[];
+async function open(path) {
+    const page=await browser.newPage({viewport:{width:1440,height:1000}});
+    page.on('pageerror', error=>errors.push(error.message));
+    const response=await page.goto(`${base}${path}`);
+    assert.equal(response.status(),200);
+    await page.waitForFunction(()=>window.gramlot?.state==='started');
+    return page;
+}
+try {
+    let page=await open('/');
+    await page.getByRole('treeitem').first().waitFor();
+    await page.getByPlaceholder('Search examples').fill('cached invoice');
+    await page.locator('#gallery-navigation-tree').getByText('Asqueel only · cached invoice rows',{exact:true}).waitFor();
+    console.log('PASS',new URL(page.url()).pathname);
+    await page.close();
+    page=await open('/pages/81-asqueel/01-state_customers');
+    await page.locator('#state input').fill('VIC');
+    await page.getByRole('option',{name:'Victoria',exact:true}).click();
+    await page.waitForFunction(()=>Boolean(gramlot.data.getItem('selection.state')));
+    await page.locator('#customer input').click();
+    await page.locator('#customer input').press('ArrowDown');
+    await page.getByRole('option').first().click();
+    assert.ok(await page.evaluate(()=>gramlot.data.getItem('selection.customer')));
+    console.log('PASS',new URL(page.url()).pathname);
+    await page.close();
+    page=await open('/pages/82-grid-database/01-customers');
+    await page.locator('#db-grid-status').filter({hasText:/^Loaded$/}).waitFor({timeout:60000});
+    assert.equal(await page.evaluate(()=>gramlot.data.getItem('customers.selection.count')),1000);
+    await page.locator('#db-grid-limit').selectOption('100');
+    await page.waitForFunction(()=>gramlot.data.getItem('customers.selection.count')===100);
+    console.log('PASS',new URL(page.url()).pathname);
+    await page.close();
+    page=await open('/pages/82-grid-database/02-invoice_rows');
+    await page.waitForFunction(()=>gramlot.data.getItem('invoice_rows.selection.count')>0,null,{timeout:60000});
+    assert.equal(await page.evaluate(()=>gramlot.data.getItem('invoice_rows.selection.count')),806);
+    console.log('PASS',new URL(page.url()).pathname);
+    await page.close();
+    page=await open('/pages/84-cached-selection/01-invoice_rows');
+    await page.locator('#trial-mode').filter({hasText:'cachedFetch'}).waitFor({timeout:60000});
+    assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.count')),806);
+    assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.resident')),200);
+    await page.getByLabel('Maximum records').selectOption('100');
+    await page.locator('#trial-mode').filter({hasText:'resident'}).waitFor();
+    assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.count')),100);
+    await page.getByLabel('Maximum records').selectOption('1000');
+    await page.locator('#trial-mode').filter({hasText:'cachedFetch'}).waitFor();
+    await page.getByLabel('Server search').fill('zzzz-no-such-public-row');
+    await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.count')===0);
+    await page.getByLabel('Server search').fill('');
+    await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.count')===806);
+    await page.locator('#trial-grid th[data-field=quantity]').click();
+    await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.window.sortedBy')==='quantity:a');
+    console.log('PASS',new URL(page.url()).pathname);
+    await page.close();
+    assert.deepEqual(errors,[]);
+    console.log(`PASS ${base}: Asqueel catalogue, dependent selectors, resident grid, JSONL and cached selection/search/sort`);
+} finally {await browser.close();}

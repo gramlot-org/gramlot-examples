@@ -115,7 +115,14 @@ def compose_file(slot, py_image, js_image):
             'read_only': True, 'tmpfs': ['/tmp:rw,noexec,nosuid,size=64m'], 'cap_drop': ['ALL'],
             'security_opt': ['no-new-privileges:true'], 'mem_limit': '512m', 'cpus': 1,
             'restart': 'unless-stopped', 'logging': {'driver': 'json-file', 'options': {'max-size':'10m','max-file':'3'}}}
-    return json.dumps({'name': f'gramlot-galleries-{slot}', 'services': services}, indent=2)
+    services['python'].update({
+        'networks': ['default', 'database'],
+        'environment': {'PGHOST': 'gramlot-demo-db', 'PGUSER': 'gramlot_gallery',
+                        'PGPASSFILE': '/run/secrets/postgres.pgpass'},
+        'volumes': [f'{ROOT}/secrets/postgres.pgpass:/run/secrets/postgres.pgpass:ro'],
+    })
+    return json.dumps({'name': f'gramlot-galleries-{slot}', 'services': services,
+        'networks': {'default': {}, 'database': {'external': True, 'name': 'gramlot-demo-db'}}}, indent=2)
 
 
 def nginx_text(template, slot, archive):
@@ -183,15 +190,21 @@ def deploy(snapshot, current, *, fetch=read_json):
         digest = zip_gallery(offline / 'gallery', archive, {'python': py_versions, 'javascript': js_versions})
         # Only this project's inactive generation may be replaced.
         started = True
+        run('docker', 'run', '--rm', py_image, 'python', '/app/verify-public-proxy.py')
+        run('docker', 'compose', '-f', compose, 'run', '--rm', '--no-deps', 'python', 'python', '/app/verify-public-database.py')
         run('docker', 'compose', '-f', compose, 'up', '-d', '--wait', '--wait-timeout', '120')
         run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', '-v', f'{offline}:/offline:ro',
             'gramlot-gallery-check:current', 'node', 'smoke.mjs',
             f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
+        run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
+            'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs', f'http://127.0.0.1:{19182+slot*2}')
         if releases(fetch) != snapshot or not ready(snapshot, fetch, verified=snapshot):
             raise ReleasePending('Release set changed during build; retry after publication completes')
         def public_check():
             run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', 'gramlot-gallery-check:current',
                 'node', 'smoke.mjs', 'https://gallery-py.gramlot.dev', 'https://gallery-js.gramlot.dev')
+            run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
+                'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs', 'https://gallery-py.gramlot.dev')
             for host in ('gallery-py', 'gallery-js'):
                 with urlopen(f'https://{host}.gramlot.dev{DOWNLOAD}', timeout=90) as response:
                     if hashlib.sha256(response.read()).hexdigest() != digest:

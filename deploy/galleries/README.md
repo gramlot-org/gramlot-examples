@@ -254,3 +254,46 @@ The CI updater still builds, verifies and atomically promotes candidates. Remote
 Edit stays disabled, the serverless ZIP link remains available, and no private
 APNs configuration or TestFlight upload is involved. The verifier image must
 exist before promotion; rebuild it from `Dockerfile.check` if it was removed.
+
+## Public Asqueel module
+
+Owner authorization, 2026-10-30: “si”, answering the explicit request to create a
+separate public cache schema and dedicated role without business-table writes.
+This extends the former local-only cache preparation to the public demo database.
+Invoice application and TestFlight remain excluded; Remote Edit stays disabled.
+
+The Python deployment uses `Dockerfile.python-mobile`, installed as
+`Dockerfile.python` in the updater context, with `public_database.py` and the
+mobile entry point. It mounts the packaged Base, Asqueel, database-grid, JSONL
+and cached-selection catalogues alongside the ordinary and native-only mobile
+catalogues. JavaScript and offline galleries retain their own supported catalogues.
+
+The existing private Docker network `gramlot-demo-db` supplies `invoice_demo`.
+The non-superuser login `gramlot_gallery` has SELECT on only state, customer,
+invoice, product and invoice_row in `invc`; it owns the isolated `_asql_` cache
+schema. It cannot modify business records or read administrative tables. The
+read-only selector connection additionally sets `default_transaction_read_only`.
+No PostgreSQL port is exposed publicly. Credentials stay in a server-only file
+`/opt/gramlot-galleries/secrets/postgres.pgpass`, mounted read-only for UID 10001;
+they are absent from the build context, image, page assets and logs.
+
+Prepare the native Asqueel cache catalogue once, using
+`create_database(cached=True, catalog_only=True)`: inspect `migration_plan()`
+before `migrate()`. The approved migration creates only
+`_asql_._asql_cached_fetch` and its owner index. Startup never migrates.
+Public data currently contains 3,200 customers and 806 invoice rows; the cache
+threshold is 100 to demonstrate both resident and cached modes with these data.
+The larger local XL copy is not transferred.
+
+Every candidate verifies role restrictions, denied writes, cache paging, search,
+sorting, independent owners and cleanup before startup. Browser checks verify
+the navigation entry, selectors, resident rows, typed JSONL and cache transitions
+before promotion and again over public HTTPS. `/gramlot/store` has an explicit
+HTTPS WebSocket proxy route; plain HTTP continues to redirect to HTTPS.
+
+TLS terminates at nginx. The Linux-container entry point gives Uvicorn the exact
+default gateway plus loopback as trusted proxy addresses (`FORWARDED_ALLOW_IPS`),
+never `*`. This preserves `wss` in the ASGI scope so the existing same-origin
+WebSocket check remains strict. A missing/ambiguous default gateway stops startup.
+`verify-public-proxy.py` verifies HTTPS forwarding from the gateway and rejection
+of spoofed forwarding from another container address.

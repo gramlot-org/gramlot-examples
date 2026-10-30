@@ -101,6 +101,20 @@ class UpdaterTests(unittest.TestCase):
             services=json.loads(u.compose_file(slot,'py','js'))['services']
             self.assertEqual(services['python']['ports'],[f'127.0.0.1:{19182+slot*2}:8080'])
             self.assertTrue(services['node']['read_only'])
+    def test_database_access_is_confined_to_python(self):
+        compose=json.loads(u.compose_file(0,'py','js'))
+        py, js=compose['services']['python'],compose['services']['node']
+        self.assertEqual(py['environment']['PGUSER'],'gramlot_gallery')
+        self.assertNotIn('PGPASSWORD',py['environment'])
+        self.assertTrue(py['volumes'][0].endswith('/postgres.pgpass:ro'))
+        self.assertNotIn('volumes',js)
+        self.assertNotIn('networks',js)
+        self.assertEqual(compose['networks']['database'],{'external':True,'name':'gramlot-demo-db'})
+    def test_websocket_route_is_https_python_only(self):
+        config=(Path(__file__).parent/'nginx.conf').read_text()
+        self.assertEqual(config.count('location = /gramlot/store'),1)
+        self.assertLess(config.index('listen 443 ssl'),config.index('location = /gramlot/store'))
+        self.assertLess(config.index('location = /gramlot/store'),config.index('server_name gallery-js.gramlot.dev;',config.index('listen 443 ssl')))
     def test_failed_promotion_restores_configuration(self):
         with tempfile.TemporaryDirectory() as d:
             config=Path(d)/'nginx.conf';config.write_text('old')

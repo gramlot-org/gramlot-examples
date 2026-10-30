@@ -74,7 +74,9 @@ class CacheIntegration(unittest.TestCase):
                 for port in ports:
                     status,h,body=until(port,'W/"second:/assets/probe.js"','W/"first:/assets/probe.js"')
                     self.assertEqual(status,200);self.assertTrue(gzip.decompress(body).startswith(b'// b\n'))
-                    self.assertEqual(get(port,etag=h['ETag'])[0],304)
+                    # Old workers may still accept a connection during graceful reload.
+                    status, checked, body = until(port, h['ETag'], h['ETag'])
+                    self.assertEqual(status,304);self.assertEqual(body,b'')
                 state['version']='a';render('first');nginx('-s','reload')
                 for port in ports:
                     status,h,body=until(port,'W/"first:/assets/probe.js"','W/"second:/assets/probe.js"')
