@@ -1,9 +1,7 @@
-import layout from '../../../gallery/dist/layout/descriptor.js';
 /** Introduction to the borderContainer lesson group. */
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static gramlots = [layout];
     static title = 'Border containers';
     static devices = ['desktop', 'tablet', 'phone'];
 

@@ -1,10 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import layout from '../../gallery/dist/layout/descriptor.js';
-import mygramlot from '../../gallery/dist/menu-trial/descriptor.js';
 
 export class Page extends BasePage {
     static title = "Classic menu bar and hierarchy";
-    static gramlots = [layout, mygramlot];
 
     main(root) {
 

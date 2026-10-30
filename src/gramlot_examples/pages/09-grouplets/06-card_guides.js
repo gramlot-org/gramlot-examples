@@ -1,12 +1,8 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import grouplets from '../../gallery/dist/grouplets/descriptor.js';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 const CUSTOMER_GUIDE = "### Who should receive order updates?\n\nUse the **customer name** for the organisation placing the order. The delivery recipient may be different.\n\n1. Enter a named **contact person** who can approve changes.\n2. Use an **email** monitored by the purchasing team.\n3. Enter a **phone number** with its country prefix, so the carrier can call from another region.\n\n### Before marking Reviewed\n\nRead the name, email and phone back to your contact. A review mark is a local checklist; it does not send a message or save the order.\n\nYou can fold the card after reviewing it and still reopen this guide from its header.";
 const ADDRESS_GUIDE = "### Describe the entrance the driver should use\n\n- **Recipient:** the receiving team or named person, not necessarily the billing customer.\n- **Street and number:** the actual delivery entrance. Include a unit number when needed.\n- **City, postal code and country:** complete all three so the carrier can distinguish similar addresses.\n- **Access reference:** a gate, reception desk or loading-bay reference that will still make sense on delivery day.\n\n### Example\n\nFor a workshop with a separate goods entrance, use `Gate B \u00b7 Goods in` as the access reference and put unloading restrictions in the Delivery plan card.\n\nChanging the delivery address does not change the invoice address. Folding this card retains your draft.";
 export class Page extends BasePage {
     static title = 'Customer handover: guides beside the fields';
-    static gramlots = [grouplets, inputs, layout];
     main(root) {
         const main = root.main({class:'grouplet-demo',datapath:'order'});
         main.p('CUSTOMER HANDOVER · ORDER SO-1042',{class:'eyebrow'});

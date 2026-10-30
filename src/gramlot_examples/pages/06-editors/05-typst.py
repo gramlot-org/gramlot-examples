@@ -1,10 +1,7 @@
-from gramlot.collections.editors import mygramlot as editors
-from gramlot.collections.typst import mygramlot as typst
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [editors, typst]
     title = "Typst and PDF"
 
     def main(self, root):

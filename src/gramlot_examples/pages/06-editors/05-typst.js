@@ -1,8 +1,5 @@
-import editors from '../../gallery/dist/editors/descriptor.js';
-import typst from '../../gallery/dist/typst/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static gramlots = [editors, typst];
     static title="Typst and PDF";
     main(root) {
         const main_content=root.main({datapath:'typstDemo',padding:'24px',class:'example-page stack'});

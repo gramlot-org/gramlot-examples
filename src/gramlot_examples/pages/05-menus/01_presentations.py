@@ -1,12 +1,8 @@
 from gramlot import Page as BasePage
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
-from gramlot_examples.collections.menu_trial import mygramlot
 
 
 class Page(BasePage):
     title = "One hierarchical menu, four presentations"
-    gramlots = [inputs, layout, mygramlot]
 
     def main(self, root):
         main_content = root.main(padding="20px")

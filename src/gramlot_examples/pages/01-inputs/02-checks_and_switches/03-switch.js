@@ -1,8 +1,5 @@
-import inputs from '../../../gallery/dist/inputs/descriptor.js';
-import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static gramlots = [inputs, layout];
     static title = "Show a boolean as a switch";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {

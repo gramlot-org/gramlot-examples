@@ -7,7 +7,7 @@ import {GalleryPage} from './gallery-page.js';
 
 /** An environment subclass sets `catalogs`, the pairs `[catalog.json, pages folder]` of `buildGallery`. */
 export class Page extends GalleryPage {
-    static gramlots = collections.filter(item=>item.name !== 'typst');
+    static gramlots = collections;
     static logoUrl = '/assets/branding/svg/gramlot-horizontal-primary.svg';
     static catalogs = [];
     static get navigation() {

@@ -1,11 +1,9 @@
 """Sort raw Bag values with multiple criteria, then set a manual row order."""
 from gramlot import Page as BasePage
-from gramlot.collections.grid import mygramlot as grid
 
 
 class Page(BasePage):
     title = 'Multicolumn sort and row drag'
-    gramlots = [grid]
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')

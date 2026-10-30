@@ -1,11 +1,7 @@
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.editors import mygramlot as editors
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [inputs, layout, editors]
     title = "Markdown editor"
 
     def main(self, root):

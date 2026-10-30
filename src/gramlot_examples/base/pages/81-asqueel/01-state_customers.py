@@ -1,11 +1,9 @@
 """Two dependent selectors over the Base PostgreSQL copy, through Asqueel."""
 from gramlot import Page as BasePage
 from gramlot.db import DatabaseSelectors
-from gramlot.collections.inputs import mygramlot as inputs
 
 
 class Page(DatabaseSelectors, BasePage):
-    gramlots = [inputs]
     title = 'State and customer'
     css = ('/themes/gramlot-base/theme.css',)
 

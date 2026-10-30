@@ -1,12 +1,9 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 
 const STAGES = {"idea": "M12 3a6 6 0 0 0-3 11v3h6v-3a6 6 0 0 0-3-11ZM9 21h6", "review": "M4 4h16v16H4ZM8 9h8M8 13h6", "ready": "m5 12 4 4L19 6"};
 
 export class Page extends BasePage {
     static title = "Dialog: modal editing";
-    static gramlots = [inputs, layout];
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const content = root.main({datapath:'workspace', class:'example-content stack', max_width:'48rem', padding:'12px'});

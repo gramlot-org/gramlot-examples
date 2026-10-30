@@ -1,7 +1,5 @@
 """An empty tray: add independent live pages from the shared catalogue."""
 from gramlot import Page as BasePage
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 from gramlot_examples import PACKAGE, read_catalog
 
 FAMILIES = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
@@ -11,7 +9,6 @@ EXCLUDED = {"gallery-tray", "l08"}
 
 class Page(BasePage):
     title = "Gallery tray"
-    gramlots = [inputs, layout]
     devices = ("desktop", "tablet", "phone")
     gallery_urls = {demo["key"]: f"../{family['folder']}/{demo['folder']}"
                     for family in FAMILIES for demo in family["examples"]}

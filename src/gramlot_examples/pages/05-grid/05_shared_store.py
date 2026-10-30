@@ -1,12 +1,9 @@
 """Two independent collection views share the same resident Bag nodes."""
 from gramlot import Page as BasePage
-from gramlot.collections.grid import mygramlot as grid
-from gramlot.collections.layout import mygramlot as layout
 
 
 class Page(BasePage):
     title = 'Two grids, independent views'
-    gramlots = [layout, grid]
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')

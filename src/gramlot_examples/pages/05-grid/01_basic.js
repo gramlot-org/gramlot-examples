@@ -1,9 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import grid from '../../gallery/dist/grid/descriptor.js';
 
 export class Page extends BasePage {
     static title = "Basic grid \u00b7 Bag values";
-    static gramlots = [grid];
 
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});

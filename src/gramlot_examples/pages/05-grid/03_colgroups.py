@@ -1,11 +1,9 @@
 """Group columns, display multiline notes and resize individual rows."""
 from gramlot import Page as BasePage
-from gramlot.collections.grid import mygramlot as grid
 
 
 class Page(BasePage):
     title = 'Column groups and row heights'
-    gramlots = [grid]
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')

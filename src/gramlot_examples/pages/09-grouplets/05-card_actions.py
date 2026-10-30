@@ -1,12 +1,8 @@
 from gramlot import Page as BasePage, source
-from gramlot.collections.grouplets import mygramlot as grouplets
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 
 
 class Page(BasePage):
     title = "Shipping desk: card actions and scoped Clear"
-    gramlots = [grouplets, inputs, layout]
 
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="order")

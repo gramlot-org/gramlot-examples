@@ -1,10 +1,7 @@
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 import { Page as BasePage } from '@gramlot/gramlot/page';
 import catalog from '../../catalog.json' with { type: 'json' };
 
 export class Page extends BasePage {
-    static gramlots = [inputs, layout];
     // Integrations supply public URLs; direct filesystem pages use sibling paths.
     static galleryUrls = Object.fromEntries(
         catalog.families.flatMap((family) => family.examples.map((demo) => [demo.key, `../${family.folder}/${demo.folder}`])),

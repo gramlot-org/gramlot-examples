@@ -1,9 +1,7 @@
 import {Page as BasePage, Bag} from '@gramlot/gramlot/page';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
 
 export class Page extends BasePage {
     static title = 'Sieve of Eratosthenes: animate reactive Data';
-    static gramlots = [inputs];
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

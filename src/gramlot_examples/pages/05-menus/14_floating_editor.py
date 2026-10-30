@@ -1,8 +1,6 @@
 from urllib.parse import quote
 
 from gramlot import Page as BasePage
-from gramlot.collections.layout import mygramlot as layout
-from gramlot_examples.collections.menu_trial import mygramlot
 
 
 # Example-owned vector images, rendered by the existing iconSrc contract.
@@ -23,7 +21,6 @@ ICONS = {
 
 class Page(BasePage):
     title = "Complete floating editor"
-    gramlots = [layout, mygramlot]
     css = ("/themes/gramlot-compact/theme.css",)
 
     def main(self, root):

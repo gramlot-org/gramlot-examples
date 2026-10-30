@@ -1,6 +1,4 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import layout from '../../gallery/dist/layout/descriptor.js';
-import mygramlot from '../../gallery/dist/menu-trial/descriptor.js';
 function svg_icon(drawing) {
 
     const svg = (("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#7c899c\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\">" + drawing) + "</svg>");
@@ -10,7 +8,6 @@ const ICONS = {"save": svg_icon("<path d=\"M5 3h12l4 4v12a2 2 0 0 1-2 2H5a2 2 0 
 
 export class Page extends BasePage {
     static title = "Complete dialog editor";
-    static gramlots = [layout, mygramlot];
     static css = ["/themes/gramlot-compact/theme.css"];
 
     main(root) {

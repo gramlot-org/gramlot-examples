@@ -1,10 +1,8 @@
 from gramlot import Page as BasePage
-from gramlot.collections.inputs import mygramlot as inputs
 
 
 class Page(BasePage):
     title = "Sieve of Eratosthenes: animate reactive Data"
-    gramlots = [inputs]
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

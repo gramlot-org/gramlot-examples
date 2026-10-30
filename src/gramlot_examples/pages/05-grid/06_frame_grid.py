@@ -1,13 +1,9 @@
 """A resident Bag grid inside the shared frame and menu-bar system."""
 from gramlot import Page as BasePage
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.grid import mygramlot as grid
-from gramlot_examples.collections.menu_trial import mygramlot as commands
 
 
 class Page(BasePage):
     title = 'FrameGrid · complete example'
-    gramlots = [layout, grid, commands]
 
     def main(self, root):
         main_content = root.main(padding='12px', height='100%', min_height=0)

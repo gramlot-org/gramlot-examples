@@ -1,11 +1,9 @@
 """Start with three columns and a Bag whose row values are Bags."""
 from gramlot import Page as BasePage
-from gramlot.collections.grid import mygramlot as grid
 
 
 class Page(BasePage):
     title = 'Basic grid · Bag values'
-    gramlots = [grid]
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')

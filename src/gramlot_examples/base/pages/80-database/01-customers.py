@@ -1,11 +1,9 @@
 """One selector page shared by all three Base database adapters."""
 from gramlot import Page as BasePage
 from gramlot.db import DatabaseSelectors
-from gramlot.collections.inputs import mygramlot as inputs
 
 
 class Page(DatabaseSelectors, BasePage):
-    gramlots = [inputs]
     selector_parameters = {'auxColumns': '@state.name', 'selected__state_name': '.state_name'}
 
     title = 'Customers · Base gallery'

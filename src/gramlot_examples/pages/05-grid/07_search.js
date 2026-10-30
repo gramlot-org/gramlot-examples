@@ -1,10 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import grid from '../../gallery/dist/grid/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 
 export class Page extends BasePage {
     static title = 'Search · text, numbers and dates';
-    static gramlots = [layout, grid];
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'20px', max_width:'1080px', margin:'0 auto'});
         main_content.p('GRID / SEARCH', {color:'var(--gramlot-text-secondary)', font_size:'11px', letter_spacing:'.12em', margin:'0 0 8px'});

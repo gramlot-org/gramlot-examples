@@ -1,10 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import grid from '../../gallery/dist/grid/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 
 export class Page extends BasePage {
     static title = 'Two grids, independent views';
-    static gramlots = [layout, grid];
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});
         main_content.p('Same data, independent views. Sort, search or drag in either grid: the other keeps its own order and filter.', {margin_top:0});

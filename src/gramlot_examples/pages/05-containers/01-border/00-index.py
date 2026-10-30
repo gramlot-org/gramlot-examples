@@ -1,10 +1,8 @@
 """Introduction to the borderContainer lesson group."""
-from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [layout]
     title = "Border containers"
     devices = ("desktop", "tablet", "phone")
 

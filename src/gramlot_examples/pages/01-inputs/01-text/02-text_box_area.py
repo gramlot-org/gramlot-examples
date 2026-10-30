@@ -1,10 +1,7 @@
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [inputs, layout]
     title = "Multiline text fields"
 
     def main(self, root):

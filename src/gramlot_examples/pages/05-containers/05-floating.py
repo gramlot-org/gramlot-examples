@@ -1,7 +1,5 @@
 from urllib.parse import quote
 from gramlot import Page as BasePage
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 
 
 STAGES = {'idea': 'M12 3a6 6 0 0 0-3 11v3h6v-3a6 6 0 0 0-3-11ZM9 21h6', 'review': 'M4 4h16v16H4ZM8 9h8M8 13h6', 'ready': 'm5 12 4 4L19 6'}
@@ -9,7 +7,6 @@ STAGES = {'idea': 'M12 3a6 6 0 0 0-3 11v3h6v-3a6 6 0 0 0-3-11ZM9 21h6', 'review'
 
 class Page(BasePage):
     title = 'Floating: keep the page usable'
-    gramlots = [inputs, layout]
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

@@ -1,11 +1,8 @@
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.tree import mygramlot as tree
 from gramlot import Page as BasePage, endpoint
 from genro_bag import Bag
 
 
 class Page(BasePage):
-    gramlots = [inputs, tree]
     title = "Browse hierarchical Data with a tree"
     devices = ("desktop", "tablet", "phone")
 

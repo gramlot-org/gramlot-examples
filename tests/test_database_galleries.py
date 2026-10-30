@@ -1,4 +1,4 @@
-"""Database lessons remain portable Source declarations with explicit collections."""
+"""Database lessons remain portable Source declarations with environment collections."""
 from importlib.resources import files
 from pathlib import Path
 
@@ -6,17 +6,19 @@ import pytest
 from gramlot.collection import page_collections
 from gramlot.server import GramlotFileServer
 from gramlot_examples import build_gallery, navigation_directory
+from gramlot_examples.gallery.collections import collections
 
 
 @pytest.mark.parametrize(('name', 'key'), [('base', 'base-01')])
-def test_database_page_builds_with_its_own_collections(name, key):
+def test_database_page_builds_with_environment_collections(name, key):
     root = Path(str(files('gramlot_examples'))) / name
     gallery = build_gallery([(root / 'catalog.json', root / 'pages')])
     route = gallery['routes'][key]
-    server = GramlotFileServer(route['page'].parent)
+    server = GramlotFileServer(route['page'].parent, collections=collections())
     cls = server.resolve_page(route['page'].stem)
-    declared = page_collections(cls)
-    assert [collection.name for collection in declared] == ['inputs']
+    declared = server.page_collections(cls)
+    assert not page_collections(cls)
+    assert {collection.name for collection in declared} == {c.name for c in collections()}
     page = cls()
     builder = page.source_builder('main')
     server._load_collections(builder, declared)
@@ -39,11 +41,11 @@ def test_asqueel_state_customer_lesson_builds_only_with_explicit_catalog():
     assert 'base-asqueel-01' not in build_gallery(common)['routes']
     gallery = build_gallery([*common, (root / 'asqueel-catalog.json', root / 'pages')])
     route = gallery['routes']['base-asqueel-01']
-    server = GramlotFileServer(route['page'].parent)
+    server = GramlotFileServer(route['page'].parent, collections=collections())
     cls = server.resolve_page(route['page'].stem)
     page = cls()
     builder = page.source_builder('main')
-    server._load_collections(builder, page_collections(cls))
+    server._load_collections(builder, server.page_collections(cls))
     page.main(builder.root)
     wire = builder.to_tytx()
     for value in ('dbSelect', 'states', 'customers', '$state=:state',

@@ -27,20 +27,17 @@ Extract `color_rgb(self, pane, title, rgb)` from the Color Maker into
 
 ```python
 from gramlot import Page as BasePage
-from gramlot.collections.inputs import mygramlot as inputs
 from mywidgets import color_rgb
 
 class Page(BasePage):
-    gramlots = [inputs]
-
     def main(self, root):
         for name in ("first", "second", "third"):
             color_rgb(root.section(datapath=name), name, (128, 128, 128))
 ```
 
 `mywidgets` must be importable in the Python server environment, like any other
-Python module. This is project code, not a module shipped by Gramlot. The page still
-declares the `inputs` collection used by its helper. If you reuse the Color Maker's
+Python module. This is project code, not a module shipped by Gramlot. The environment includes the `inputs` collection used by this helper; the page
+does not repeat that declaration. If you reuse the Color Maker's
 appearance too, include its CSS in your page resources.
 
 In JavaScript, export the equivalent `colorRgb(pane, title, rgb)` function from a

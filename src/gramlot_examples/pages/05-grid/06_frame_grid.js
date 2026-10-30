@@ -1,11 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import layout from '../../gallery/dist/layout/descriptor.js';
-import grid from '../../gallery/dist/grid/descriptor.js';
-import commands from '../../gallery/dist/menu-trial/descriptor.js';
 
 export class Page extends BasePage {
     static title = 'FrameGrid · complete example';
-    static gramlots = [layout, grid, commands];
 
     main(root) {
         const main_content = root.main({padding:'12px', height:'100%', min_height:0});

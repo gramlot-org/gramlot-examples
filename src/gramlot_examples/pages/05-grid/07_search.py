@@ -1,12 +1,9 @@
 """Learn FrameGrid search: column scope, typed comparisons and clearing."""
 from gramlot import Page as BasePage
-from gramlot.collections.grid import mygramlot as grid
-from gramlot.collections.layout import mygramlot as layout
 
 
 class Page(BasePage):
     title = 'Search · text, numbers and dates'
-    gramlots = [layout, grid]
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='20px', max_width='1080px', margin='0 auto')

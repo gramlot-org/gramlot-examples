@@ -1,10 +1,7 @@
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.editors import mygramlot as editors
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [inputs, editors]
     title = "Code editor"
 
     def main(self, root):

@@ -3,8 +3,6 @@ import json
 from uuid import uuid4
 from genro_bag import Bag
 from gramlot import Page as BasePage, ChatPageStore, GramlotBuilder
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.chat import mygramlot as chat
 from gramlot_examples.trials.chat.composition import chat_frame
 from gramlot_examples.trials.chat.anthropic_chat import ChatError, get_provider, user_content
 from gramlot_examples.trials.chat.openai_images import get_images
@@ -13,7 +11,6 @@ from gramlot_examples.trials.chat.prompts import system_prompt
 
 class Page(BasePage):
     title = 'Conversation lab'
-    gramlots = [layout, chat]
     css = ['index.css']
 
     def main(self, root):

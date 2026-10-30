@@ -1,5 +1,3 @@
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 from urllib.parse import quote
 from gramlot import Page as BasePage
 
@@ -9,7 +7,6 @@ def icon(drawing):
 
 
 class Page(BasePage):
-    gramlots = [inputs, layout]
     title = "Compare desktop and touch themes"
     devices = ("desktop", "tablet", "phone")
 

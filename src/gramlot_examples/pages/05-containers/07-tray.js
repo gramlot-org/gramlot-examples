@@ -1,10 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 
 export class Page extends BasePage {
     static title = 'Tray workspace';
-    static gramlots = [inputs, layout];
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack', padding:'12px', max_width:'none', width:'100%'});

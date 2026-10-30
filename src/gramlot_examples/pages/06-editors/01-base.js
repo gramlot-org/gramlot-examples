@@ -1,8 +1,5 @@
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import editors from '../../gallery/dist/editors/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static gramlots = [inputs, editors];
     static title = "Code editor";
     main(root) {
         const main_content = root.main({class:'example-page stack', datapath:'editorDemo', padding:'24px'});

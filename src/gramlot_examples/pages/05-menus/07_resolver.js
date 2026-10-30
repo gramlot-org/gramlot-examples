@@ -1,12 +1,8 @@
 import {Bag} from '@gramlot/gramlot';
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
-import mygramlot from '../../gallery/dist/menu-trial/descriptor.js';
 
 export class Page extends BasePage {
     static title = "Resolver menus and nested Bags";
-    static gramlots = [inputs, layout, mygramlot];
 
     main(root) {
 

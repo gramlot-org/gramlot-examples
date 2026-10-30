@@ -1,6 +1,4 @@
 from gramlot import Page as BasePage
-from gramlot.collections.layout import mygramlot as layout
-from gramlot_examples.collections.menu_trial import mygramlot
 
 
 from urllib.parse import quote
@@ -26,7 +24,6 @@ ICONS = {
 
 class Page(BasePage):
     title = "Vertical icon toolbar"
-    gramlots = [layout, mygramlot]
 
     def main(self, root):
         main_content = root.main(padding="24px", max_width="900px", margin="auto")

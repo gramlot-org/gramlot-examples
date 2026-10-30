@@ -1,7 +1,4 @@
 from gramlot import Page as BasePage, source
-from gramlot.collections.grouplets import mygramlot as grouplets
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 
 CUSTOMER_GUIDE = """### Who should receive order updates?
 
@@ -31,7 +28,6 @@ Changing the delivery address does not change the invoice address. Folding this 
 
 class Page(BasePage):
     title = "Customer handover: guides beside the fields"
-    gramlots = [grouplets, inputs, layout]
 
     def main(self, root):
         main = root.main(class_="grouplet-demo", datapath="order")

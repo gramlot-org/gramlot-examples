@@ -1,11 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import grouplets from '../../gallery/dist/grouplets/descriptor.js';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 
 export class Page extends BasePage {
     static title = 'Shipping desk: card actions and scoped Clear';
-    static gramlots = [grouplets, inputs, layout];
     main(root) {
         const main_content = root.main({class: 'grouplet-demo', datapath: 'order'});
         main_content.p('SHIPPING DESK · SO-1042', {class: 'eyebrow'});

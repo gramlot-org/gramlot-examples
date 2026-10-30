@@ -1,12 +1,8 @@
-from gramlot.collections.editors import mygramlot as editors
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.inputs import mygramlot as inputs
 from gramlot import Page as BasePage
 from gramlot.page import code_mirror_with_options
 
 
 class Page(BasePage):
-    gramlots = [inputs, layout, editors]
     title = "Editor options"
 
     def main(self, root):

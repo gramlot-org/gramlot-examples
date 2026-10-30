@@ -1,12 +1,9 @@
 """A workspace composed from ordinary Source nodes; layout lives in Data."""
 from gramlot import Page as BasePage
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 
 
 class Page(BasePage):
     title = "Tray workspace"
-    gramlots = [inputs, layout]
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

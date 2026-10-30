@@ -1,11 +1,9 @@
 """Read the same kind of records from node attributes, with typed numeric and boolean cells."""
 from gramlot import Page as BasePage
-from gramlot.collections.grid import mygramlot as grid
 
 
 class Page(BasePage):
     title = 'Rows as attributes'
-    gramlots = [grid]
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')

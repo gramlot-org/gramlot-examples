@@ -1,5 +1,3 @@
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
 from gramlot import Page as BasePage
 from gramlot_examples import PACKAGE, read_catalog
 
@@ -8,7 +6,6 @@ EXAMPLES = [example for family in read_catalog(PACKAGE / "catalog.json", PACKAGE
 
 
 class Page(BasePage):
-    gramlots = [inputs, layout]
     gallery_urls = {demo["key"]: f"../{family['folder']}/{demo['folder']}"
                    for family in read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
                    for demo in family["examples"]}

@@ -1,9 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import inputs from '../../../gallery/dist/inputs/descriptor.js';
-import layout from '../../../gallery/dist/layout/descriptor.js';
 
 export class Page extends BasePage {
-    static gramlots = [inputs, layout];
     static devices = ['desktop', 'tablet', 'phone'];
     static title = 'HTML and components';
 

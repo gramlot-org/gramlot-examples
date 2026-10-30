@@ -1345,43 +1345,29 @@ Visual acceptance pending; no publication or release.
 
 <a id="ge-010-355"></a>
 
-## 355 · Python page collection loading
+## 355 · Collections belong to the environment
 
-Block ID: **GE-010-355**.
+Block ID: **GE-010-355**. Updated 2026-10-30.
 
-Each Python example now selects its own `Page.gramlots`. The gallery shell needs
-inputs, layout, tree and editors (the code panel); ordinary textbox examples need
-only inputs and layout. Typst is selected by the Typst lesson. Directory index
-pages that use only HTML need no optional collections. The Python gallery runner
-discovers the registry from these declarations instead of activating the full
-catalogue as server-wide defaults. Source methods and helpers count when choosing
-a page's dependencies. JavaScript-host activation is unchanged in this Python
-performance increment.
-
-The loading browser check measures fresh contexts and retained tabs, rejects
-unrelated collections in basic examples, and verifies cached transfers in
-Chromium. WebKit does not consistently expose decodedBodySize for cached assets.
-
+The gallery declares its prepared collections once in `gallery/collections.py`
+and `gallery/collections.js`. Its Page base exposes inputs, layout, tree, grid,
+chat, editors, Typst, Grouplets and the menu trial to every example. Examples
+import Page and use their Source methods without repeating collection imports.
+A custom trial collection outside that environment still declares its dependency.
+The host prepares and reuses the complete grammar for this selection.
 
 <a id="ge-010-360"></a>
-## 360 · JavaScript page collection loading
+## 360 · External engines load on first use
 
-Block ID: **GE-010-360**.
+Block ID: **GE-010-360**. Updated 2026-10-30.
 
-JavaScript twins now declare `static gramlots` with the same page dependencies as
-Python. The Node/Bun gallery no longer activates the full catalogue globally.
-The browser build writes metadata-only `gallery/dist/<name>/descriptor.js`
-modules, hosted by both Python and JavaScript gallery asset maps. Importing a
-page module for its Logic therefore does not import widget bundles, editors or
-Typst as a side effect. Descriptor modules sit outside the verified artifact
-inventory; collection artifact bytes and fingerprint URLs remain unchanged.
-
-The JavaScript server discovers page classes at startup, verifies its resource
-registry once and retains those bytes. Its per-page bootstrap and grammar cache
-follow the same lifetime rules as Python. New builds require a process restart.
-Tests build all JavaScript pages without global collections and exercise remote
-Data, tree, code editors and Typst in Chromium and WebKit.
-
+The bootstrap activates Gramlot component definitions. The generator preserves
+components' dynamic module imports: CodeMirror, Jodit, ProseMirror and Typst live
+in separate verified files and are fetched only when their component uses them.
+HTTP cache and the browser module cache reuse those immutable resources. A textbox
+page can therefore use any environment component without fetching editor engines.
+The file-origin serverless profile still embeds engine bytes in its verified
+derived bundles; it does not yet provide deferred downloads.
 
 <a id="ge-010-365"></a>
 ## 365 · Try toolbar placement

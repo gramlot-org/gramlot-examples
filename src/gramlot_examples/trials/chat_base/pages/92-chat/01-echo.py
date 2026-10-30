@@ -2,13 +2,10 @@
 from urllib.parse import quote
 from time import sleep
 from gramlot import Page as BasePage, GramlotBuilder, ChatPane, ChatPageStore
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.chat import mygramlot as chat
 
 
 class Page(BasePage):
     title = 'Echo and interactive replies'
-    gramlots = [layout, chat]
 
     def main(self, root):
         ui = ChatPane(root, datapath='chat', height='100dvh', id='base-chat')

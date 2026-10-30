@@ -1,8 +1,5 @@
 """Gallery content on Gramlot's reusable index page."""
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.tree import mygramlot as tree
-from gramlot.collections.editors import mygramlot as editors
+from gramlot_examples.gallery.collections import collections
 from gramlot import IndexPage, source, endpoint
 from genro_bag import Bag
 from gramlot_examples import build_gallery, navigation_directory
@@ -21,7 +18,7 @@ INSPECTOR_ICON = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org
 
 
 class Page(IndexPage):
-    gramlots = [inputs, layout, tree, editors]
+    gramlots = collections()
     title = "Gramlot examples"
     installable = True
     app_icon = "/assets/branding/app-icon.png"

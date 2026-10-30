@@ -1,11 +1,8 @@
 from gramlot import Page as BasePage
-from gramlot.collections.layout import mygramlot as layout
-from gramlot_examples.collections.menu_trial import mygramlot
 
 
 class Page(BasePage):
     title = "Toolbar: groups, priority and overflow"
-    gramlots = [layout, mygramlot]
 
     def main(self, root):
         main_content = root.main(padding="24px", max_width="1200px", margin="auto")

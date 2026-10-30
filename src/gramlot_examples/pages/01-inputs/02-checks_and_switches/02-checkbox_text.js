@@ -1,9 +1,6 @@
-import inputs from '../../../gallery/dist/inputs/descriptor.js';
-import layout from '../../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static gramlots = [inputs, layout];
     static title = "Checkbox group: select several values";
     main(root) {
         const main_content = root.main({class:"example-page stack"});

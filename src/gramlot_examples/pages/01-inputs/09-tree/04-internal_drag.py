@@ -1,9 +1,7 @@
-from gramlot.collections.tree import mygramlot as tree
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [tree]
     title = "Copy tree nodes with drag and drop"
     devices = ("desktop", "tablet", "phone")
 

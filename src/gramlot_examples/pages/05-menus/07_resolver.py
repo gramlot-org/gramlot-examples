@@ -1,13 +1,9 @@
 from genro_bag import Bag
 from gramlot import Page as BasePage, endpoint
-from gramlot.collections.inputs import mygramlot as inputs
-from gramlot.collections.layout import mygramlot as layout
-from gramlot_examples.collections.menu_trial import mygramlot
 
 
 class Page(BasePage):
     title = "Resolver menus and nested Bags"
-    gramlots = [inputs, layout, mygramlot]
 
     def main(self, root):
         main_content = root.main(padding="20px")

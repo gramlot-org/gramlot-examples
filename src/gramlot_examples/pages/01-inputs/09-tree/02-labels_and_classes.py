@@ -1,9 +1,7 @@
-from gramlot.collections.tree import mygramlot as tree
 from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    gramlots = [tree]
     title = "Customize tree labels and row styles"
     devices = ("desktop", "tablet", "phone")
 

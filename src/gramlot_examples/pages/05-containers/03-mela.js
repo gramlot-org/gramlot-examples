@@ -1,9 +1,6 @@
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 const icon = drawing => 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#7b8795" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+drawing+'</svg>');
 export class Page extends BasePage {
-    static gramlots = [inputs, layout];
     static title = "Compare desktop and touch themes";
     static devices = ['desktop','tablet','phone'];
     main(root) {

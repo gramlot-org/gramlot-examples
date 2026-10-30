@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 import gramlot_examples
 from gramlot_py_server.uvicorn import serve
+from gramlot_examples.gallery.collections import collections
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
@@ -27,4 +28,4 @@ if __name__ == '__main__':
     get_provider()
     get_images()
     pages = Path(gramlot_examples.__file__).parent / 'trials/chat/pages'
-    serve(pages, host='127.0.0.1', port=args.port, websocket=True)
+    serve(pages, host='127.0.0.1', port=args.port, websocket=True, collections=collections())

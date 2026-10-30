@@ -1,14 +1,11 @@
 import {Bag} from '@gramlot/gramlot';
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
-import layout from '../../gallery/dist/layout/descriptor.js';
 import catalog from '../../catalog.json' with {type:'json'};
 
 const EXCLUDED = new Set(['gallery-tray', 'l08']);
 
 export class Page extends BasePage {
     static title = 'Gallery tray';
-    static gramlots = [inputs, layout];
     static devices = ['desktop', 'tablet', 'phone'];
     static galleryUrls = Object.fromEntries(catalog.families.flatMap(family =>
         family.examples.map(demo => [demo.key, `../${family.folder}/${demo.folder}`])));

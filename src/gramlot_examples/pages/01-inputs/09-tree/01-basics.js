@@ -1,10 +1,7 @@
-import inputs from '../../../gallery/dist/inputs/descriptor.js';
-import tree from '../../../gallery/dist/tree/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 import {Bag} from '@gramlot/gramlot';
 
 export class Page extends BasePage {
-    static gramlots = [inputs, tree];
     static title = "Browse hierarchical Data with a tree";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {

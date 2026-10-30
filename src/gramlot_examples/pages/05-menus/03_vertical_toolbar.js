@@ -1,6 +1,4 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import layout from '../../gallery/dist/layout/descriptor.js';
-import mygramlot from '../../gallery/dist/menu-trial/descriptor.js';
 function svg_icon(drawing) {
 
     const svg = (("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#dbe4ef\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\">" + drawing) + "</svg>");
@@ -10,7 +8,6 @@ const ICONS = {"home": svg_icon("<path d=\"m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9\"/>
 
 export class Page extends BasePage {
     static title = "Vertical icon toolbar";
-    static gramlots = [layout, mygramlot];
 
     main(root) {
 

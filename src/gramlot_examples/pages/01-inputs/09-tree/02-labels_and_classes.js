@@ -1,8 +1,6 @@
-import tree from '../../../gallery/dist/tree/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static gramlots = [tree];
     static title = "Customize tree labels and row styles";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {

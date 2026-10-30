@@ -1,8 +1,6 @@
-import tree from '../../../gallery/dist/tree/descriptor.js';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 import {Bag} from '@gramlot/gramlot';
 export class Page extends BasePage {
-    static gramlots = [tree];
     static title = "Tree icons and computed captions";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
