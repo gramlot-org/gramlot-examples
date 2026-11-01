@@ -49,7 +49,8 @@ def test_asqueel_state_customer_lesson_builds_only_with_explicit_catalog():
     page.main(builder.root)
     wire = builder.to_tytx()
     for value in ('dbSelect', 'states', 'customers', '$state=:state',
-                  'condition_state', '^.state', 'weakCondition', '^.weak'):
+                  'condition_state', '^.state', 'weakCondition', '^.weak',
+                  'caption_field', '^.state_caption', 'name:Full name,code:Code'):
         assert value in wire
 
 

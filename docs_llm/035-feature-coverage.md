@@ -393,3 +393,12 @@ remain dependent on device/browser capabilities and permission. These examples
 do not define a storage or authentication service for applications.
 
 Grid editing (`grid-10`) and the three upload lessons are mapped to the shared feature tree.
+
+
+<a id="ge-035-selector-caption-field"></a>
+### Asqueel selector captions
+
+The Base **State and customer** example (`81-asqueel/01-state_customers`) also
+shows reactive `caption_field`: choose Full name or Code and observe that the
+selected state identity and customer condition do not change. The default remains
+server-owned; the override is checked against the exposed selector fields.

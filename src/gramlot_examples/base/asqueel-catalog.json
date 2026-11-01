@@ -11,7 +11,7 @@
           "title": "State and customer",
           "folder": "01-state_customers",
           "description": "Filter customers by the selected state.",
-          "explanation": "Change State after choosing a Customer. A hard condition retains the old selection with an error; a weak condition is a preference. Parameters are reactive Data bindings."
+          "explanation": "Change State after choosing a Customer. A hard condition retains the old selection with an error; a weak condition is a preference. Parameters are reactive Data bindings. Switch State label between Full name and Code: caption_field refreshes the label while retaining the selected key."
         }
       ]
     },
