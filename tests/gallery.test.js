@@ -180,6 +180,8 @@ test('every shared example displays exactly its exported Logic class, never the 
         const url = pathToFileURL(routes[example.key].logic);
         const {Logic} = await import(url);
         const excerpt = logicSource(readFileSync(url, 'utf8'));
+        // Tools mount directly and have no teaching Code tab; they may delegate to core Logic.
+        if (example.presentation === 'tool') continue;
         const hasMethods = Logic && Reflect.ownKeys(Logic.prototype).some(name => name !== 'constructor');
         if (hasMethods) {
             assert.equal(excerpt, `export ${originals[url.href]}`, example.key);

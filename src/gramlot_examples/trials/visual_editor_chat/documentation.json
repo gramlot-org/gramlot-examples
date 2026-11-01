@@ -1,0 +1,201 @@
+{
+  "documents": [
+    {
+      "id": "writing-pages",
+      "title": "Writing pages",
+      "repository": "gramlot",
+      "path": "public/095-writing-pages.md",
+      "status": "reference"
+    },
+    {
+      "id": "data-binding",
+      "title": "Data binding and controllers",
+      "repository": "gramlot",
+      "path": "public/097-data-binding.md",
+      "status": "reference"
+    },
+    {
+      "id": "components",
+      "title": "Controls, forms, validation and trees",
+      "repository": "gramlot",
+      "path": "public/105-components.md",
+      "status": "reference"
+    },
+    {
+      "id": "widgets",
+      "title": "Widget and parameter reference",
+      "repository": "gramlot",
+      "path": "public/345-widget-reference.md",
+      "status": "development reference; installed metadata decides availability"
+    },
+    {
+      "id": "menus",
+      "title": "Menus, toolbars, frames and windows",
+      "repository": "gramlot",
+      "path": "public/350-menus-toolbars-and-windows.md",
+      "status": "reference"
+    },
+    {
+      "id": "styles",
+      "title": "Themes, CSS and density",
+      "repository": "gramlot",
+      "path": "public/096-themes-and-css.md",
+      "status": "reference"
+    },
+    {
+      "id": "composition",
+      "title": "Components, collections and authoring",
+      "repository": "gramlot",
+      "path": "public/340-components-and-collections-guide.md",
+      "status": "reference"
+    },
+    {
+      "id": "server-calls",
+      "title": "Server calls and endpoints",
+      "repository": "gramlot",
+      "path": "public/098-server-calls.md",
+      "status": "reference"
+    },
+    {
+      "id": "remote-content",
+      "title": "Remote content and lazy Data",
+      "repository": "gramlot",
+      "path": "public/099-remote-content.md",
+      "status": "reference"
+    },
+    {
+      "id": "grid",
+      "title": "Resident grid and frameGrid",
+      "repository": "gramlot",
+      "path": "internal/375-frame-grid.md",
+      "status": "bounded development implementation; read-only grid"
+    },
+    {
+      "id": "chat",
+      "title": "Shared ChatPane and ChatPageStore",
+      "repository": "gramlot",
+      "path": "internal/390-chat-component.md",
+      "status": "development implementation"
+    },
+    {
+      "id": "visual-editor",
+      "title": "Visual Source editor",
+      "repository": "gramlot-examples",
+      "path": "src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.md",
+      "status": "shared core component; gallery consumer"
+    },
+    {
+      "id": "editor-chat",
+      "title": "Natural-language Source editing",
+      "repository": "gramlot-examples",
+      "path": "trials/visual_editor_chat/README.md",
+      "status": "Source edits or Python draft; explicit Save; no whole-request rollback"
+    }
+  ],
+  "topics": [
+    {
+      "id": "source",
+      "title": "Pages and Source",
+      "description": "Nodes, hierarchy, HTML/SVG, identity, page composition and Source serialization.",
+      "documents": [
+        "writing-pages",
+        "composition"
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Data and behavior",
+      "description": "Data roots, relative paths, bindings, formulas, named Logic, controllers, server calls and lazy data.",
+      "documents": [
+        "data-binding",
+        "server-calls",
+        "remote-content"
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Containers and layout",
+      "description": "Parent/child attributes, regions, page title/pageName, framePane, tabContainer and floating windows.",
+      "documents": [
+        "widgets",
+        "components",
+        "menus"
+      ]
+    },
+    {
+      "id": "forms",
+      "title": "Forms, labels and validation",
+      "description": "Formlet columns, groupBox, lbl_/box_, typed values, choices and validation.",
+      "documents": [
+        "components",
+        "widgets"
+      ]
+    },
+    {
+      "id": "commands",
+      "title": "Commands, menus and toolbars",
+      "description": "The slot-bar use case: menu(presentation=\"bar\"), menuline, spacers, command routing and overflow.",
+      "documents": [
+        "menus",
+        "data-binding",
+        "widgets"
+      ]
+    },
+    {
+      "id": "styles",
+      "title": "Appearance and density",
+      "description": "CSS attributes, themes, spacing, colors, compact controls and label position.",
+      "documents": [
+        "styles",
+        "widgets"
+      ]
+    },
+    {
+      "id": "trees-grid",
+      "title": "Trees and grids",
+      "description": "Data/Source trees, search, rows, columns and frameGrid; check current editing limits.",
+      "documents": [
+        "components",
+        "widgets",
+        "grid"
+      ]
+    },
+    {
+      "id": "files",
+      "title": "Files and document transfer",
+      "description": "Uploader, download, copy Source, .grmlt and the scoped edited document.",
+      "documents": [
+        "components",
+        "writing-pages",
+        "visual-editor"
+      ]
+    },
+    {
+      "id": "collections",
+      "title": "Components and collections",
+      "description": "Declarations, parameters, composition, preparation and activation; helpers are not runtime widget tags.",
+      "documents": [
+        "composition",
+        "components"
+      ]
+    },
+    {
+      "id": "editor",
+      "title": "Visual editor workflow",
+      "description": "Selection, properties, catalogue, contextual required parameters, cut/copy/paste and the named clipboard.",
+      "documents": [
+        "visual-editor",
+        "editor-chat"
+      ]
+    },
+    {
+      "id": "chat",
+      "title": "Chat-assisted editing",
+      "description": "Shared chat composition, context, acknowledged edit operations and current trial limits.",
+      "documents": [
+        "chat",
+        "editor-chat"
+      ]
+    }
+  ]
+}

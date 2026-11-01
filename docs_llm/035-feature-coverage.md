@@ -219,6 +219,8 @@ verification remain separate work.
 | Asqueel cachedFetch and bounded windows | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Local Asqueel-only experiment. Up to the configurable threshold (1,000 actual rows by default) selections are resident. Above it the database materializes the selection and the browser normally retains 200 rows. Unloaded row heights are estimated. |
 | Asqueel server search and sort | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Search matches words across text columns on the server; it is not typed searchOn. Header clicks request server sorting, Shift adds criteria. Search and sort return to the beginning; obsolete responses cannot replace the current selection. |
 | Asqueel selection snapshot lifecycle | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Reload refreshes the database snapshot; closing the page releases its cache. There is no live refresh or automatic TTL after a process crash. This experiment requires a dedicated cache-writable database configuration. |
+| Visual Source editor | Exercise | [visual_source · Visual Source editor](../src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.md) | Insert widgets, edit parameters and copy or import Source branches. |
+
 
 <a id="ge-035-020"></a>
 ## 020 · Code clarity is a separate checklist

@@ -229,6 +229,8 @@ verification remain separate work.
 | Upload queue | **Exercise** | [upload_queue · Upload queue](../src/gramlot_examples/pages/07-tools/02-advanced/02-upload_queue.md) | Choose files, edit metadata and start uploads. |
 | Attachments | **Exercise** | [attachment_manager · Attachments](../src/gramlot_examples/pages/07-tools/02-advanced/03-attachment_manager.md) | Save the record, then upload, preview and remove attachments. |
 | Image editing | **Exercise** | [editable_image · Image editing](../src/gramlot_examples/pages/07-tools/02-advanced/04-editable_image.md) | Frame an image and confirm its local or application upload result. |
+| Visual Source editor | Exercise | [visual_source · Visual Source editor](../src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.md) | Insert widgets, edit parameters and copy or import Source branches. |
+
 
 <a id="ge-035-020"></a>
 ## 020 · Code clarity is a separate checklist

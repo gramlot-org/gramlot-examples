@@ -1134,6 +1134,17 @@
           "menu-07"
         ],
         "label": "Icons and labels"
+      },
+      {
+        "id": "behavior_visual_source_editor",
+        "title": "Visual Source editor",
+        "label": "Visual editor",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Insert widgets, edit their parameters, move and copy Source branches, and open or download a typed Source document.",
+        "examples": [
+          "visual_source"
+        ]
       }
     ]
   },

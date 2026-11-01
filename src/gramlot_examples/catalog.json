@@ -877,6 +877,14 @@
           "folder": "02-advanced/04-editable_image",
           "description": "Crop an image locally or send it through an application upload operation.",
           "explanation": "The application-upload demonstration returns a temporary data URL and does not persist files."
+        },
+        {
+          "key": "visual_source",
+          "presentation": "tool",
+          "title": "Visual editor",
+          "folder": "02-advanced/01-visual_source",
+          "description": "Drop widgets onto Source, enter required parameters, then edit their properties and preview.",
+          "explanation": "Source and Data trees inspect the live Bags. Detachable properties follow selection. Download or reopen a trusted Source document; changes stay local."
         }
       ]
     },
