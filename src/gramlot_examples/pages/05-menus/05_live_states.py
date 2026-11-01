@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(padding="20px")
-        main_content.h1("One state, two presentations")
-        main_content.p("Use the checkboxes to change both menus. Open Document for the popup, or use the permanent row. Details toggles the shared checkmark and paragraph; disabled Save cannot run.")
         controls = main_content.div(display="flex", gap="20px", margin_bottom="16px")
         controls.checkbox(value="^document.locked", lbl="Disable Save")
         controls.checkbox(value="^document.hidden", lbl="Hide Export")

@@ -13,10 +13,7 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.main(datapath='customers', padding='20px')
-        pane.h2(self.title, margin='0 0 8px')
-        pane.p('PostgreSQL · gramlot_base_asqueel · invc.invc_customer. Choose the maximum number of customers to load, in account-name and ID order. If the table has fewer records, all available records are returned. All returned rows stay in a client Bag.')
         pane.button('Open database grid', action="this.SET('.open', true)")
-        pane.p('Query measures database execution and fetching. Server measures the endpoint through session release and Bag construction; transport, response serialization and browser rendering are excluded.', color='var(--gramlot-text-secondary)')
         pane.dataSetter('.open', True)
         pane.dataSetter('.limit', '1000')
         pane.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))
@@ -29,6 +26,11 @@ class Page(BasePage):
         window.frame.center.set_attr(display='flex', flex_direction='column', min_height=0, min_width=0, padding='5px', overflow='hidden')
         frame = window.frame.center.frameGrid(storepath='.selection.rows', rowMode='attributes',
                                              flex=1, min_height=0, min_width=0, border='1px solid var(--gramlot-border)', overflow='hidden')
+        self.toolbar(frame)
+        self.measurements(frame)
+        self.columns(frame.grid)
+
+    def toolbar(self, frame):
         bar = frame.top.menu(presentation='bar', aria_label='Customer grid tools', padding='4px 8px', background='var(--gramlot-surface-subtle)')
         bar.menuline(group=True).searchBox(searchOn=True)
         bar.spacer(flex=1)
@@ -38,6 +40,7 @@ class Page(BasePage):
         for limit in ROW_LIMITS:
             choice.option(str(limit), value=str(limit))
         bar.menuline(caption='Reload from DB', action="this.FIRE('.reload')", tooltip='Run the query again and replace the resident selection')
+    def measurements(self, frame):
         metrics = frame.bottom.menu(presentation='bar', aria_label='Server measurements', padding='4px 8px')
         facts = metrics.menuline(group=True, gap='12px', overflowable=False)
         facts.span('^.status', id='db-grid-status', margin_right='12px')
@@ -45,8 +48,9 @@ class Page(BasePage):
         facts.span('^.selection.count', mask='Loaded: {}', id='db-grid-count', margin_right='12px')
         facts.span('^.selection.query_ms', mask='Query: {} ms', format='0.00', id='db-grid-query-ms', margin_right='12px')
         facts.span('^.selection.server_ms', mask='Server: {} ms', format='0.00', id='db-grid-server-ms')
-        frame.grid.set_attr(id='customer-db-grid', rowHeaders=True, rowResize=True)
-        s = frame.grid.struct()
+    def columns(self, grid):
+        grid.set_attr(id='customer-db-grid', rowHeaders=True, rowResize=True)
+        s = grid.struct()
         s.column('account_name', name='Customer', width='270px', white_space='pre-wrap')
         s.column('suburb', name='City', width='190px', white_space='pre-wrap')
         s.column('state', name='State', width='70px')

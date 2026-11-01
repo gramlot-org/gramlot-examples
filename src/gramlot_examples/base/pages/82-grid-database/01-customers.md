@@ -26,3 +26,11 @@ Times use Python's monotonic `perf_counter`, are returned as numeric Data values
 and are formatted using the browser locale. Repeated loads may benefit from
 connection and database caches; they are observations, not a benchmark guarantee.
 A failed reload retains the last successful selection and reports failure.
+
+## Read the code
+
+`main` connects `dataRpc` to the resident Bag and `frameGrid` to its rows.
+`toolbar`, `measurements` and `columns` separate the controls, timing display and
+column declarations. `load_customers` is the server endpoint; its query and limit
+validation remain explicit. The current example does not imply an implemented
+`dataSelection` or configurable `dbQuery` API.

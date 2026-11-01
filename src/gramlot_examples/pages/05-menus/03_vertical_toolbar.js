@@ -12,13 +12,9 @@ export class Page extends BasePage {
     main(root) {
 
         const main_content = root.main({padding: "24px", max_width: "900px", margin: "auto"});
-        main_content.h1("Vertical icon toolbar");
-        main_content.p("A narrow rail with SVG icons and tooltips; selection uses only its background. Select Home, Documents or Activity: the highlighted button and central content follow the same Data value. Tools opens a menu to the right, marked ›.");
         this.height_control(main_content);
-        main_content.p("Reduce the height to send lower-priority items into the › overflow menu. Home and Tools stay on the rail. Labels always appear beside icons inside a menu; selecting an overflow entry also updates the highlighted section.");
         this.vertical_toolbar(main_content);
         main_content.a("Try the classic menu bar and nested menus →", {href: "/pages/05-menus/04_menu_bar", display: "block", margin: "16px 0"});
-        main_content.p("The drawings are SVG images supplied through iconSrc. iconSize controls the icon independently of the button. The classic menu-bar lesson also shows emoji icons and per-entry styling.");
         this.horizontal_toolbar(main_content);
 
     }
@@ -46,12 +42,10 @@ export class Page extends BasePage {
         this.section(rail, "overview", "Overview", {priority: 10});
         const center = frame.center.contentPane({frameTarget: true, node_label: "navigation_content", padding: "18px"});
         center.h2("^navigation.selected", {id: "selected-section", margin: "0 0 12px", text_transform: "capitalize"});
-        center.p("Selected section. Choose another icon or open Tools.");
     }
 
     horizontal_toolbar(main_content) {
         main_content.h2("The horizontal equivalent");
-        main_content.p("Here Tools and the overflow trigger point down (▾). Popup descendants continue to open sideways.");
         const horizontal = main_content.menu({presentation: "bar", labelPosition: "tooltip", iconSize: 28, id: "horizontal-rail", padding: "8px", border: "1px solid #64748b", border_radius: "8px"});
         this.section(horizontal, "home", "Home", {overflowable: false});
         horizontal.menuline({caption: "Tools", iconSrc: ICONS["settings"], overflowable: false, id: "horizontal-tools"}).menu().menuline({caption: "Settings", iconSrc: ICONS["settings"], action: "selectSection", parameters: {section: "settings"}});

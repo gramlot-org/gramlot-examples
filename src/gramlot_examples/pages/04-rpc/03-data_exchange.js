@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static title = "Export and restore typed Data";
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'exchange'});
-        pane.h1('Data exchange');
-        pane.p("Edit the sample record, save it as TYTX, change a value and load the saved file. The typed values and nested Bag are restored together.");
         const form = pane.section({class: 'card stack', datapath: '.record'});
         form.html_label('Name', {for: 'name'});
         form.input({value: '^.name', id: 'name'});
@@ -13,7 +11,6 @@ export class Page extends BasePage {
         form.input({type: 'number', value: '^.seats', id: 'seats'});
         form.html_label('Confirmed', {for: 'confirmed'});
         form.input({type: 'checkbox', value: '^.confirmed', id: 'confirmed'});
-        form.p('The record also contains a null note and a nested address.');
         const actions = pane.div({class: 'actions'});
         for (const [label, method] of [['Inspect types', 'inspect'], ['Save TYTX', 'save'],
             ['Restore TYTX', 'restore'], ['Export JSON', 'exportJson'], ['Export XML', 'exportXml'],

@@ -7,8 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("The draft and the accepted value")
-        main_content.p("Try one letter, more than eight, or an empty name. The draft stays in the field; the Data below keeps the last valid value.")
         options = main_content.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

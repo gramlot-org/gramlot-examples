@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="shapes")
-        pane.h1("SVG shape vocabulary, bound")
-        pane.p("The six shapes of HTML / SVG example 08. Their size, stroke, color and label come from the Data.")
         work = pane.div(class_="grid lesson-workbench")
         controls = work.form(class_="card stack")
         for label, key, low, high in (("Rectangle width", "width", 20, 95), ("Circle radius", "radius", 10, 45),

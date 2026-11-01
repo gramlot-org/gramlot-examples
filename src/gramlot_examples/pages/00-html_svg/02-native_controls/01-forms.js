@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
-        main_content.h1('Native form controls');
-        main_content.p('Try the controls, then use Reset to restore their initial values. Submit is disabled in this static example.');
         const form = main_content.form();
         this.identity_fields(form);
 

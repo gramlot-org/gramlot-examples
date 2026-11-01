@@ -4,9 +4,6 @@ export class Page extends BasePage {
     static title = 'Order addresses: reuse one editor twice';
     main(root) {
         const main_content = root.main({class: 'grouplet-demo', datapath: 'order'});
-        main_content.p('ORDER SO-1042 · STUDIO NORTH', {class: 'eyebrow'});
-        main_content.h1('Invoice the office. Deliver to the workshop.');
-        main_content.p('Both address editors are built by the same server method. Each edits a different part of this order, so changing the delivery address leaves billing untouched.', {class: 'demo-intro'});
         const columns = main_content.div({class: 'demo-addresses'});
         for (const [slot, title] of [['billing', 'Billing address'], ['shipping', 'Delivery address']]) {
             columns.grouplet({id: `${slot}-editor`, datapath: `.${slot}`, remote: 'address_fields', remote_slot: slot, remote_title: title, class: 'demo-panel'});
@@ -22,7 +19,6 @@ export class Page extends BasePage {
             block.p('^.city', {id: `${slot}-city-summary`});
             block.p('^.country');
         }
-        main_content.div('Try it: change only the delivery street and city. Compare the two routing previews and the billing fields above. All edits are a local draft.', {class: 'demo-task'});
     }
     address_fields(root, {slot, title}) {
         root.h2(title);

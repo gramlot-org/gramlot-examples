@@ -14,3 +14,7 @@ email and save again. The draft remains available after an error.
 The publication acknowledges acceptance; `saved` in the Bag confirms the commit.
 Reload reads the database again. This is a dedicated demonstration database, not
 an application authorization or collaborative conflict-resolution framework.
+
+Load customer 1 in another frame or connected window. Save here, then reload
+there: both use SQLite, while each PageStore retains its own draft. The last
+successful save wins.

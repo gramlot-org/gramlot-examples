@@ -10,7 +10,7 @@ for(const url of process.argv.slice(2))for(const engine of [chromium,webkit]){
  await choose('index-appearance','Mela');await choose('index-palette','Theme default');await settings.click();
  await (await galleryRow(page,'l09')).click();
  const frame=page.frameLocator('#frame-l09');
- await frame.getByRole('heading',{name:'Mela: desktop and touch'}).waitFor();
+ await frame.locator('main gramlot-textbox input').waitFor();
  const title=frame.locator('main gramlot-textbox input');await title.fill('Retained Mela draft');await title.press('Tab');
  for(const mobile of [false,true]){
   await page.setViewportSize(mobile?{width:390,height:844}:{width:1360,height:960});

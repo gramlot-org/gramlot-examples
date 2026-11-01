@@ -8,8 +8,6 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="tabsDemo")
         self.track_events(main_content)
-        main_content.h1("Tabs")
-        main_content.p("Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.")
         self.options(main_content)
         self.workspace(main_content)
         self.event_report(main_content)
@@ -42,7 +40,6 @@ class Page(BasePage):
         controls.filteringSelect(id="tabs-icon", value="^.notesIcon", lbl="Notes icon",
                                  values="✉:Envelope,●:Dot,★:Star", default='✉')
         controls.checkbox(id="tabs-lock", value="^.locked", label="Prevent closing Notes", mode="switch", default=False)
-        options.p("Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.")
 
     def workspace(self, main_content):
         main_content.p("^.index", id="tabs-index", mask="Selected index: {}")
@@ -87,10 +84,6 @@ class Page(BasePage):
 
     def tab_variants(self, main_content):
         main_content.h2("See the tab variants side by side")
-        main_content.p("Compare shaped tabs with a light underline, on each of the four sides. "
-                       "Every card is a working editor. Change the name in one: the others show the same Data.")
-        main_content.p("Top and bottom use a horizontal row. Left and right use a vertical list; "
-                       "the words remain horizontal so they are easy to read.")
         grid = main_content.section(id="tab-variants", display="grid",
                                     grid_template_columns="repeat(auto-fit, minmax(min(100%, 24rem), 1fr))",
                                     gap="16px", width="100%", max_width="72rem")
@@ -102,8 +95,6 @@ class Page(BasePage):
 
     def tab_alignment(self, main_content):
         main_content.h2("Align the labels along the strip")
-        main_content.p("Position chooses the side of the panel. Alignment chooses where the labels sit "
-                       "along that side. Compare the three horizontal rows, then the three vertical lists.")
         grid = main_content.section(id="tab-alignment", display="grid",
                                     grid_template_columns="repeat(auto-fit, minmax(min(100%, 22rem), 1fr))",
                                     gap="16px", width="100%", max_width="72rem")
@@ -124,13 +115,10 @@ class Page(BasePage):
         profile = tabs.contentPane(pageName="profile", title="Profile", padding="12px")
         profile.textbox(id=f"variant-name-{key}", value="^.name", lbl="Customer name",
                         width="100%", max_width="15rem", live=True)
-        profile.p("Switch to Messages and back. Your edit stays here.", font_size=".9rem")
         messages = tabs.contentPane(pageName="messages", title="Messages", icon="✉",
                                     badge="^.unread", badge_color="^.badgeColor", padding="12px")
         messages.textBoxArea(value="^.variantMessage", lbl="Message", rows=2,
                              width="100%", live=True)
-        messages.p("The badge remains visible when this panel is hidden.", font_size=".9rem")
         activity = tabs.contentPane(pageName="activity", title="Activity", padding="12px")
         activity.h3("Customer updated", font_size="1rem")
         activity.p("^.name", mask="Latest name: {}")
-        activity.p("Each card selects its own panel; only the business values are shared.", font_size=".9rem")

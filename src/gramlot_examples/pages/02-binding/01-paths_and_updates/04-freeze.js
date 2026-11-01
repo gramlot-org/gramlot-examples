@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'board'});
-        pane.h1('Freeze');
-        pane.p("Freeze the branch, increment the count and remove an item. The count updates immediately; item removal appears only after Thaw.");
         const actions = pane.div({class: 'actions'});
         for (const [label, method] of [['Freeze', 'freeze'], ['Increment Data count', 'add'],
             ['Remove last item', 'removeLast'], ['Thaw', 'thaw']]) {

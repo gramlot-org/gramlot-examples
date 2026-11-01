@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(padding="20px", max_width="900px", margin="auto")
-        main_content.h1("Classic menu bar")
-        main_content.p("Click File, Edit or View. The first level shows menu names; each opens a compact popup. In File → Export → Image, the next levels open sideways. These are nested menu and menuline declarations.")
         frame = main_content.framePane(height="260px", border="1px solid #64748b", border_radius="8px")
         bar = frame.top.menu(presentation="bar", iconSize=20, id="classic-menu-bar")
         self.file_menu(bar)
@@ -16,8 +14,6 @@ class Page(BasePage):
         center = frame.center.contentPane(frameTarget=True, padding="16px")
         center.p("Last chosen command")
         center.h3("^navigation.selected", id="chosen-command")
-        main_content.h2("What to observe")
-        main_content.p("A selected toolbar button uses only its highlighted background. Popup menus retain a check mark for checked entries: View → Show details toggles it. Disabled commands remain visible but cannot run. The actions here only update the message above.")
         self.entry_style(main_content)
 
     def file_menu(self, bar):
@@ -45,7 +41,6 @@ class Page(BasePage):
 
     def entry_style(self, main_content):
         main_content.h2("Customize one entry")
-        main_content.p("caption names the entry; class_, color, width and height style its outer button. icon and iconSize configure its graphic separately. SVG uses iconSrc instead. This blue example is 140 × 52 px with a 24 px emoji icon.")
         sample = main_content.menu(presentation="bar", iconSize=24)
         self.item(sample, "Save a copy", "💾", class_="save-copy", color="#93c5fd", width="140px", height="52px")
         main_content.a("Back to the vertical icon toolbar", href="/pages/05-menus/03_vertical_toolbar")

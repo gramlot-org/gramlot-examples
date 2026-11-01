@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="lifecycle")
-        pane.h1("Lifecycle")
-        pane.p("Follow initialization, building, starting and removal of one branch.")
         actions = pane.div(class_="actions")
         for label, method in (("Freeze", "freeze"), ("Thaw", "thaw"),
                               ("Inspect Source and DOM", "inspect"), ("Remove branch", "remove")):

@@ -7,13 +7,11 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'transforms'});
-        main_content.h1('Same Data, different presentation');
         const sizes = main_content.section({class: 'card stack'});
         sizes.h2('1. A number becomes a CSS length');
         sizes.html_label('Width in pixels', {for: 'width-input'});
         sizes.input({id: 'width-input', type: 'number', value: '^.width', live: true});
         sizes.div('Width', {id: 'width-preview', width: '^.width:{}px', background_color: '#456bc4', color: 'white'});
-        sizes.p('Edit the number: only its presentation gains px. Clear it: the explicit width disappears.');
         const state = main_content.section({class: 'card stack'});
         state.h2('2. A boolean becomes another boolean');
         state.html_label('Draft: allow editing', {for: 'draft-input'});
@@ -25,8 +23,6 @@ export class Page extends BasePage {
         display.html_label('Amount', {for: 'amount-input'});
         display.input({id: 'amount-input', type: 'number', value: '^.amount', live: true});
         display.p('^.amount', {id: 'amount-display', format: '0.00', mask: 'Total: {} €'});
-        display.p('Hover to read the same amount in the title.', {id: 'amount-title',
-            title: "^.amount:=_F({}, {pattern: '0.00', mask: '{} €'})"});
-        display.p('This page uses Italian formatting. The amount in Data remains a number.');
+        display.p('Amount tooltip', {id:'amount-title', title:"^.amount:=_F({}, {pattern: '0.00', mask: '{} €'})"});
     }
 }

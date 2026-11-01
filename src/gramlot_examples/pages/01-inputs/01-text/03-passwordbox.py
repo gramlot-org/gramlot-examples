@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1('One password, two masked fields')
-        main_content.p('Two password fields share a sample value. The browser masks the characters; changing either field updates the other.')
         options = main_content.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

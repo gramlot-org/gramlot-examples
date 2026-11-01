@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("Native form controls")
-        main_content.p("Try the controls, then use Reset to restore their initial values. Submit is disabled in this static example.")
         form = main_content.form()
         self.identity_fields(form)
 

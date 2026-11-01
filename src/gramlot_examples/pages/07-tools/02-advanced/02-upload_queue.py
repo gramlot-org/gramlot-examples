@@ -32,8 +32,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(datapath="uploadDemo", padding="16px")
-        main_content.h1("Upload queue and metadata")
-        main_content.p("Choose files, select each one, edit its fields, then upload. This demonstration does not save files.")
 
         main_content.uploader(id="upload-demo", operation="inspect_file", storepath=".queue",
                       selectedPath="^.selected", multiple=True, autoUpload=False, onComplete="uploadCompleted")

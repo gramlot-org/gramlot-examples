@@ -6,8 +6,6 @@ export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'treeDrag'});
-        main_content.h1('Drag a document into a folder');
-        main_content.p('Drag a document from the left tree onto Inbox or Projects. Locked archive refuses it. Open the folder to see the copied item; the source stays unchanged.');
         const columns = main_content.div({class: 'drag-columns'});
         const origin = columns.section({class: 'drag-panel'});
         origin.h2('Documents');
@@ -19,7 +17,6 @@ export class Page extends BasePage {
             dropTypes: 'app/document', dropTags: 'document', dropEffect: 'copy', onDrop: 'copyDocument', id: 'drop-folders'});
         main_content.p('^.lastDrop', {id: 'last-drop'});
         main_content.p('^.lastEnd', {id: 'last-drag-end'});
-        main_content.p('Logic writes only to the destination Bag. The tree renders the change. Copying the same document again updates its existing entry. This lesson supports gestures inside this page; other browser windows are a later increment.');
     }
 }
 

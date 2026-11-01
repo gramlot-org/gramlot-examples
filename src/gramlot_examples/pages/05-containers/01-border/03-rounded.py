@@ -7,14 +7,11 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("Rounded outside, continuous inside")
-        main_content.p("Drag all four separators and toggle their drawers. Open the calendar and choices inside the rounded inner panel.")
         controls = main_content.formlet(max_width="24rem", columns=1)
         controls.filteringSelect(id="rounded-design", value="^design", lbl="Outer design",
                                  values="headline:Headline,sidebar:Sidebar", width="10rem", default='headline')
         controls.horizontalSlider(id="rounded-slider", value="^rounded", lbl="Corner radius (px)",
                                   min=0, max=48, step=1, live=True, width="14rem", default=24)
-        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
         canvas = main_content.div(class_="layout-canvas")
         border = canvas.borderContainer(id="rounded-border", height="480px", max_width="64rem",
                                               design="^design", rounded="^rounded",
@@ -43,4 +40,3 @@ class Page(BasePage):
         form.filteringSelect(id="rounded-choice", value="^choice", lbl="Delivery",
                              values="standard:Standard,express:Express,pickup:Pick up,scheduled:Scheduled,evening:Evening,weekend:Weekend",
                              width="100%")
-        main_content.p("The rounded outline clips pane backgrounds. Calendar, choices and validation messages use the browser's top layer.")

@@ -7,8 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1('Date editing')
-        main_content.p('Enter a calendar date or a word such as oggi or domani. Two fields share one civil date.')
         options = main_content.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

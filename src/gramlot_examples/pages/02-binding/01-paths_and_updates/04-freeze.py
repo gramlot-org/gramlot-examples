@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="board")
-        pane.h1("Freeze")
-        pane.p("Freeze the branch, increment the count and remove an item. The count updates immediately; item removal appears only after Thaw.")
         actions = pane.div(class_="actions")
         for label, method in (("Freeze", "freeze"), ("Increment Data count", "add"),
                               ("Remove last item", "removeLast"), ("Thaw", "thaw")):

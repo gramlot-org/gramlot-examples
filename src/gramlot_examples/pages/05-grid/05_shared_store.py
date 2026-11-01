@@ -7,10 +7,7 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')
-        main_content.p('Same data, independent views. Sort, search or drag in either grid: the other keeps its own order and filter.', margin_top=0)
-        main_content.p('Click a header: ascending, then descending. Shift-click adds a column; Shift-click it again reverses only that column. Arrows show direction; 1, 2 show priority.')
         main_content.button('Toggle Linen chair quantity: 12 / 0', id='shared-update', action='toggleQuantity')
-        main_content.p('The button changes one shared record: it remains in Furniture, but leaves the second view when its quantity becomes zero.')
         main_content.h3('Furniture — initially Category ↑, Quantity ↓')
         first = main_content.frameGrid(storepath='.rows', rowMode='attributes', searchOn=True, height='270px')
         first.grid.set_attr(id='grid-shared-first', rowHeaders=True, rowResize=True, selfDragRows=True,

@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'shapes'});
-        pane.h1('SVG shape vocabulary, bound');
-        pane.p('The six shapes of HTML / SVG example 08. Their size, stroke, color and label come from the Data.');
         const work = pane.div({class: 'grid lesson-workbench'});
         const controls = work.form({class: 'card stack'});
         for (const [label, key, low, high] of [['Rectangle width', 'width', 20, 95], ['Circle radius', 'radius', 10, 45],

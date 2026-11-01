@@ -5,9 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack'});
-        pane.h1('Automatic initial data');
-        pane.p('The customer comes from foo_data.tytx. Edit the name: the preview follows. '
-            + 'The accent is interface state, initialized with default.');
         const customer = pane.section({datapath: 'customer', class: 'card stack'});
         customer.html_label('Customer name', {for: 'customer-name'});
         customer.input({value: '^.name', live: true, id: 'customer-name'});
@@ -17,8 +14,6 @@ export class Page extends BasePage {
         pane.input({type: 'color', value: '^ui.accent', default: '#2563eb', id: 'accent'});
         const draft = pane.section({datapath: 'draft', class: 'card stack'});
         draft.h2('Try an empty form');
-        draft.p('Type a name and city yourself, or press Play to copy the customer above '
-            + 'into this separate draft, with a short pause between fields. Clear stops playback. Editing the draft does not change the customer.');
         draft.html_label('Draft name', {for: 'draft-name'});
         draft.input({value: '^.name', default: '', live: true, id: 'draft-name'});
         draft.html_label('Draft city', {for: 'draft-city'});

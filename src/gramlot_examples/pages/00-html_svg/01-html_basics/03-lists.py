@@ -11,7 +11,6 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(class_="example-page stack")
         main_content.h1("Lists tell a sequence")
-        main_content.p("Loops add one Source node for each item.")
         ordered = main_content.ol()
         for step in STEPS:
             ordered.li(step)

@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
-        main_content.h1('SVG shape vocabulary');
-        main_content.p('One SVG viewport contains six shapes and a text label.');
         const figure = main_content.figure({class: 'card'});
         const art = figure.svg({viewBox: '0 0 480 200', role: 'img', aria_labelledby: 'shapes-title', class: 'example-art'});
         art.title('Six geometric shapes', {id: 'shapes-title'});

@@ -3,9 +3,6 @@ export class Page extends BasePage {
     static title = "Editor options";
     main(root) {
         const main_content = root.main({class:'example-page stack', datapath:'editorDemo', padding:'24px'});
-        main_content.h1("CodeMirror with options");
-        main_content.p('Edit the draft: Data updates immediately. Ctrl/Cmd+F opens search; Escape then Tab leaves the editor. Save or Ctrl/Cmd+S copies the draft to the snapshot below.');
-        main_content.p("Choose a language to load its sample and switch syntax highlighting. Changing language replaces the current draft.");
         const options = main_content.details();
         options.summary('Options · language, read only and disabled');
         options.filteringSelect({default: "python", value:"^.document.settings.language", values:"python:Python,javascript:JavaScript,typescript:TypeScript,json:JSON,html:HTML,css:CSS,xml:XML,markdown:Markdown,sql:SQL,text:Plain text", lbl:"Language and sample", validate_notnull:true, id:"sample-language"});

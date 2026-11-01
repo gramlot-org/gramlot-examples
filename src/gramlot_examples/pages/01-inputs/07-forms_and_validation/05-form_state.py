@@ -9,8 +9,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", max_width="48rem")
-        main_content.h1("A form remembers")
-        main_content.p("Change Mario to Luigi, then back to Mario. Clear the name, type an incomplete date, or try the code taken. Watch the save indicator.")
         form = main_content.groupBox(lbl="Profile", form=True, datapath="record",
             selfsubscribe_formStatus="this.SET('ui.status',p_0.status); this.SET('ui.canSave',p_0.canSave);")
         self.fields(form.formlet(columns=2, col_min_width="16rem", lbl_position="TL", box_c_width="100%"))
@@ -20,7 +18,6 @@ class Page(BasePage):
         for label, path in (("Name", "name"), ("Amount", "amount"), ("Date", "date"), ("Code", "code")):
             panel.div("^record." + path, lbl=label, lbl_position="L",
                       **({"format": "short", "dtype": "D"} if path == "date" else {}))
-        main_content.p("Save locally accepts a snapshot for this page only. Restore uses that snapshot. Nothing is written to a server; reloading starts with the example data.")
 
     def fields(self, form):
         form.textbox(id="form-name", value="^.name", lbl="Name", validate_notnull=True)

@@ -26,8 +26,6 @@ export class Page extends BasePage {
     static title = 'Attachments';
     main(root) {
         const main_content = root.main({datapath:'attachmentsDemo', padding:'16px'});
-        main_content.h1('Attachments');
-        main_content.p('Choose files before or after saving. This demonstration keeps records and files in memory for this page session; reloading loses access.');
 
         main_content.dataFormula({result_path:'.ready',formula:'recordId != null',recordId:'^.context.recordId',_init:true});
         main_content.button('Save record',{id:'save-record'}).dataRpc({method:'save_record',result_path:'.context.recordId'});

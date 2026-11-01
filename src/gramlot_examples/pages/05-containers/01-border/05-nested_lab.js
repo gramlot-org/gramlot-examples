@@ -6,10 +6,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({ class: 'example-page stack' });
-        main_content.h1('Five containers, one live workspace');
-        main_content.p(
-            'Move the sliders, drag separators and close drawers. The same widgets and their values stay in place.',
-        );
         const options = main_content.details();
         options.summary('Options · sizes, design and drawer captions');
         this.size_controls(options);
@@ -81,7 +77,6 @@ export class Page extends BasePage {
             preview: 'color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #9977bb)',
         };
         const drawer = { splitter: true, drawer: true, drawer_minimize: '^minimize' };
-        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
         const canvas = main_content.div({class: 'layout-canvas'});
         const outer = canvas.borderContainer({
             id: 'lab-outer',
@@ -160,9 +155,6 @@ export class Page extends BasePage {
             lbl: 'Appointment',
             width: '100%',
         });
-        details
-            .contentPane({ region: 'bottom', height: '60px', padding: '10px' })
-            .p('An independent nested container.');
         const work = outer.borderContainer({
             id: 'lab-workspace',
             region: 'center',

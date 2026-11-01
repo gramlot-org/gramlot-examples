@@ -7,7 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')
-        main_content.p('Drag a column edge or a row-number edge. Move columns between visual positions: they keep their group membership.', margin_top=0)
         g = main_content.grid(id='grid-03', storepath='.rows', rowMode='attributes', height='340px', rowHeaders=True, rowResize=True)
         s = g.struct()
         s.column('description', name='Description', width='240px')

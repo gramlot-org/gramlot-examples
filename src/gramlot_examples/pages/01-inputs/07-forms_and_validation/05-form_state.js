@@ -5,8 +5,6 @@ export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack',max_width:'48rem'});
-        main_content.h1('A form remembers');
-        main_content.p('Change Mario to Luigi, then back to Mario. Clear the name, type an incomplete date, or try the code taken. Watch the save indicator.');
         const form = main_content.groupBox({lbl:'Profile',form:true,datapath:'record',
             selfsubscribe_formStatus:"this.SET('ui.status',p_0.status); this.SET('ui.canSave',p_0.canSave);"});
         this.fields(form.formlet({columns:2,col_min_width:'16rem',lbl_position:'TL',box_c_width:'100%'}));
@@ -16,7 +14,6 @@ export class Page extends BasePage {
         for (const [label,path] of [['Name','name'],['Amount','amount'],['Date','date'],['Code','code']]) {
             panel.div('^record.'+path,{lbl:label,lbl_position:'L',...(path==='date'?{format:'short',dtype:'D'}:{})});
         }
-        main_content.p('Save locally accepts a snapshot for this page only. Restore uses that snapshot. Nothing is written to a server; reloading starts with the example data.');
     }
     fields(form) {
         form.textbox({id:'form-name',value:'^.name',lbl:'Name',validate_notnull:true});

@@ -7,8 +7,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'choice'});
-        pane.h1('Checkbox and radio');
-        pane.p("Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.");
 
         const work = pane.div({class: 'grid lesson-workbench'});
         const options = work.fieldset({class: 'card stack'});

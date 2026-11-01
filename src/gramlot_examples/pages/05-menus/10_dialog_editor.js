@@ -13,9 +13,6 @@ export class Page extends BasePage {
     main(root) {
 
         const main_content = root.main({padding: "20px", max_width: "900px", margin: "auto"});
-        main_content.h1("A complete dialog editor");
-        main_content.p("Edit a document inside a modal dialog containing a real framePane. The left icon bar and top toolbar control the same draft; the bottom bar keeps Cancel and Save at the right. Only Save updates the saved document shown below.");
-        this.instructions(main_content);
         main_content.button("Edit document", {action: "openEditor", id: "open-editor"});
         this.saved_document(main_content);
         const window = root.dialog({title: "Edit document", open: "^editor.open", beforeClose: "discardOnClose", movable: true, resizable: true, collapsible: true, collapsed: "^editor.collapsed", maximizable: true, maximized: "^editor.maximized", width: "620px", height: "380px", id: "editor-window"});
@@ -25,14 +22,6 @@ export class Page extends BasePage {
         this.draft_fields(frame);
         this.footer(frame);
 
-    }
-
-    instructions(main_content) {
-        const steps = main_content.ol();
-        steps.li("Open the editor and change the title or notes. Save copies the draft to the saved document and closes the dialog. This is local page Data, not a server or disk save.");
-        steps.li("Open it again, make another change and choose Cancel: the saved document must stay unchanged. X and Escape also discard the current draft.");
-        steps.li("Reset draft restores the last saved values without closing. Details toggles an extra field and its menu checkmark. Document opens a hierarchical menu using the same commands.");
-        steps.li("Drag, resize, maximize and collapse the dialog. Its toolbars stay in their frame regions; the center scrolls when space is limited. The page stays blocked, including while collapsed.");
     }
 
     saved_document(main_content) {
@@ -68,7 +57,6 @@ export class Page extends BasePage {
 
     draft_fields(frame) {
         const center = frame.center.contentPane({frameTarget: true, node_label: "document_editor", padding: "var(--gramlot-space-4)", overflow: "auto", selfsubscribe_save: "save", selfsubscribe_undo: "undo", selfsubscribe_toggleDetails: "toggleDetails"});
-        center.p("Draft — changes are committed only by Save.", {margin_top: "0"});
         center.html_label("Title (required)", {for: "editor-title", display: "block", margin_bottom: "4px"});
         center.input({value: "^editor.draft.title", live: true, id: "editor-title", width: "100%", box_sizing: "border-box"});
         center.html_label("Notes", {for: "editor-notes", display: "block", margin_top: "var(--gramlot-space-3)", margin_bottom: "4px"});

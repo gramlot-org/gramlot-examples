@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static title = "Combine free text and suggestions";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
-        main_content.h1("Combo box");
-        main_content.p("Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});

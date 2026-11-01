@@ -5,8 +5,6 @@ export class Page extends BasePage {
     static locale = "it-IT";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
-        main_content.h1("Date editing");
-        main_content.p("Enter a calendar date or a word such as oggi or domani. Two fields share one civil date.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});

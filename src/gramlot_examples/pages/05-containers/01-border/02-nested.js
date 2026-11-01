@@ -6,7 +6,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({ class: 'example-page stack' });
-        main_content.h1('One layout inside another');
         const controls = main_content.formlet({ max_width: '24rem', columns: 1 });
         controls.filteringSelect({default: "headline",
             id: 'design',
@@ -15,7 +14,6 @@ export class Page extends BasePage {
             values: 'headline:Headline,sidebar:Sidebar',
             width: '10rem',
         });
-        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
         const canvas = main_content.div({class: 'layout-canvas'});
         const bc = canvas.borderContainer({
             id: 'nested-demo',
@@ -46,7 +44,6 @@ export class Page extends BasePage {
         });
         left.h3('Workspace');
         left.radioButtonText({default: "profile",  value: '^section', values: 'profile:Profile,history:History', cols: 1 });
-        left.p('A fixed-width drawer: open and close without dragging.');
         const nested = bc.borderContainer({ region: 'center' });
         nested
             .contentPane({

@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
-        main_content.h1("Vertical slider");
-        main_content.p("Vertical and horizontal sliders share the same level. The vertical minimum is at the bottom and the maximum at the top.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack", width: "100%", max_width: "24rem"});

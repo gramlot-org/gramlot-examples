@@ -46,8 +46,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(datapath="attachmentsDemo", padding="16px")
-        main_content.h1("Attachments")
-        main_content.p("Choose files before or after saving. This demonstration keeps records and files in memory for this page session; reloading loses access.")
 
         main_content.dataFormula(".ready", "recordId != null", recordId="^.context.recordId", _init=True)
         main_content.button("Save record", id="save-record").dataRpc("save_record", result_path=".context.recordId")

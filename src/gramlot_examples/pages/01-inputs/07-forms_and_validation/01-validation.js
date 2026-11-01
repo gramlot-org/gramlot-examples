@@ -5,8 +5,6 @@ export class Page extends BasePage {
     static title = "Validate required values and text length";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
-        main_content.h1("The draft and the accepted value");
-        main_content.p("Try one letter, more than eight, or an empty name. The draft stays in the field; the Data below keeps the last valid value.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});

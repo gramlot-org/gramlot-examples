@@ -9,8 +9,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="form")
-        pane.h1("Bound forms")
-        pane.p("Edit a field, then leave it: the Data record follows. Intensity updates while dragging.")
         layout = pane.div(class_="bound-form")
         form = layout.form()
         self.identity_fields(form)

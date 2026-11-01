@@ -6,15 +6,12 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(padding="16px")
-        main_content.h1("FramePane: regions and a central recipient")
-        main_content.p("The frame reuses borderContainer layout. Regions appear only when accessed; none creates a toolbar automatically.")
         frame = main_content.framePane(height="520px", node_label="outer_frame")
         self.region_tools(frame)
         center = frame.center.contentPane(frameTarget=True, node_label="outer_editor", padding="12px",
             selfsubscribe_save="receive", selfsubscribe_undo="receive")
         center.h2("CENTER — outer_editor")
         center.p("^outerResult", role="status", id="frame-outer-result", overflow_wrap="anywhere")
-        center.p("Commands from the outer bars reach this content. Try Shift+click.")
         self.nested_frame(center)
 
     def region_tools(self, frame):
@@ -28,7 +25,6 @@ class Page(BasePage):
         frame.left.menu(presentation="bar", orientation="vertical").menuline("documenti:undo", caption="Left B", parameters=dict(id=1))
         info = frame.right.contentPane(padding="8px")
         info.p("RIGHT")
-        info.p("Ordinary content. No automatic bar.")
         frame.bottom.menu(presentation="bar").menuline("documenti:save", caption="Bottom", parameters=dict(id=1))
 
     def nested_frame(self, center):

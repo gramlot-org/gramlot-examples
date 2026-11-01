@@ -2,7 +2,7 @@
 
 **Try this:** Try an empty name, quantity 11 and a malformed email. Compare drafts with Accepted Data, then make the email warning blocking and retry.
 
-A labelled groupBox contains a compact formlet with text, multiline text, number, date, selection and boolean controls. Try required values, length, normalization, conditional rules, warnings and asynchronous validation. The group copy icon copies the accepted `profile` Bag as TYTX; its menu also offers JSON. Invalid drafts are not copied. The expandable accepted-Data panel shows what actually changed.
+A labelled groupBox contains four focused blocks, each with its own formlet. They share the same `profile` Data Bag. Try required values, length, normalization, conditional rules, warnings and asynchronous validation. The group copy icon copies the accepted `profile` Bag as TYTX; its menu also offers JSON. Invalid drafts are not copied. The expandable accepted-Data panel shows what actually changed.
 
 **Uses:** shared input validation, Source conditions, named Logic and typed RPC. The endpoint also runs in the serverless Worker. No database or form-save service.
 
@@ -28,3 +28,16 @@ The local callback reserves `admin`. The endpoint reserves `taken` and normalize
 **Sample data:** `04-validation_engine_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>
+
+## Compare the variants
+
+| Block | What to change | What to observe |
+| --- | --- | --- |
+| Required and ranges | Clear Name or Date; enter quantity 11; write a long note | Required, length and typed-value limits |
+| Normalization | Enter `abc`; clear the fallback | `ABC` and `Guest` become the accepted values |
+| Warnings and conditions | Change both switches, then retry the fields | The same candidate can warn or fail according to Data |
+| Callbacks and remote | Try `admin` and `taken`, then valid names | Local callbacks and a pending server check |
+
+`main` composes these blocks. Each method shows only that family of declarations;
+`accepted_values` displays their shared results. These are field validations outside
+a form session; the Form state lesson shows form-owned drafts, errors and saving.

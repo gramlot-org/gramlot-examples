@@ -44,7 +44,7 @@ main_content.p("^.amount", format="0.00", mask="Total: {} €")
 For an attribute such as a tooltip, use the same formatter inside an expression:
 
 ```python
-main_content.p("Hover here", title="^.amount:=_F({}, {pattern: '0.00', mask: '{} €'})")
+main_content.p("Amount tooltip", title="^.amount:=_F({}, {pattern: '0.00', mask: '{} €'})")
 ```
 
 The first `{}` passes the typed amount. The quoted `'{} €'` is the mask passed to `_F`; it is not another pointer placeholder. `_F` calls this page's `gramlot.format` and does not create a global function.

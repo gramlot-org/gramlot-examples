@@ -7,7 +7,6 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(datapath="markdownDemo", padding="24px", class_="example-page stack")
         main_content.h1(self.title)
-        main_content.p("Three views share one Markdown draft. Rich text provides Bold, Italic, Code, Undo and Redo. Tables and complex blocks retain their source; edit them in Code.")
         main_content.checkbox(value="^.readonly", label="Read only", default=False)
         main_content.checkbox(value="^.allowHtml", label="Allow embedded HTML", default=False)
         tabs = main_content.tabContainer(selectedPage="^.view", height="500px", default_selectedPage='code')

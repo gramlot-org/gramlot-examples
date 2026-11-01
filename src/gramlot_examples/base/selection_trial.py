@@ -49,8 +49,6 @@ class SelectionTrialPage(BasePage):
 
     def main(self, root):
         pane = root.main(datapath='trial', padding='16px')
-        pane.h2(self.title, margin='0 0 6px')
-        pane.p(self.description, margin='0 0 12px')
         pane.dataSetter('.limit', '1000')
         pane.dataSetter('.reload', 0)
         pane.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))
@@ -79,8 +77,6 @@ class SelectionTrialPage(BasePage):
         facts.span('^.status', id='trial-status', margin_right='16px')
         facts.span('^.selection.count', mask='Loaded: {}', id='trial-count', margin_right='16px')
         self.status_details(facts)
-        for note in self.notes:
-            pane.p(note, font_size='12px')
         frame.grid.set_attr(id='trial-grid', rowHeaders=True, rowResize=True)
         self.configure_grid(frame)
         s = frame.grid.struct()

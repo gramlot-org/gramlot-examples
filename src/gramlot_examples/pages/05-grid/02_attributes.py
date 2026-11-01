@@ -7,7 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')
-        main_content.p('Inspect Data: the row value is empty and its fields are attributes. Zero and false remain visible.', margin_top=0)
         g = main_content.grid(id='grid-02', storepath='.rows', rowMode='attributes', height='340px')
         s = g.struct()
         s.column('description', name='Description', width='240px')

@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'demo'});
-        pane.h1('Controller');
-        pane.p("Change the name, send a request and try the delayed input. Each section shows a different reason for a controller to run; the counters make those triggers visible.");
 
         const triggers = pane.div({class: 'grid controller-triggers'});
         this.value_changes(triggers);

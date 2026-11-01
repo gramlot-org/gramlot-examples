@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: "example-page stack"});
-        main_content.h1("A boolean value");
-        main_content.p("lbl names the field; label is the caption beside its checkbox.");
         const fields = main_content.formlet({class: "card stack", width: "100%", max_width: "32rem"});
         fields.checkbox({id: "newsletter", value: "^newsletter", lbl: "Contact preferences", label: "Send me the newsletter", lbl_color: "var(--gramlot-action)", disabled: "^locked"});
         fields.checkbox({id: "newsletter-copy", value: "^newsletter", lbl: "Same preference", label: "Newsletter", disabled: "^locked"});

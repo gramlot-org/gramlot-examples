@@ -13,9 +13,6 @@ export class Page extends BasePage {
             flex_direction: 'column',
             overflow: 'hidden',
         });
-        main_content.h1('Small handles, readable labels');
-        main_content.p('Open and resize the regions; the fields share the same Data.');
-        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
         const canvas = main_content.div({class: 'layout-canvas'});
         const border = canvas.borderContainer({
             id: 'handles-demo',
@@ -82,7 +79,6 @@ export class Page extends BasePage {
         });
         details.h3('Customer details');
         details.textbox({ value: '^customer', lbl: 'Customer', width: '100%' });
-        details.p('Pull the closed handle inward to open this panel.');
         border
             .contentPane({default_drawer: true,
                 region: 'bottom',
@@ -112,12 +108,6 @@ export class Page extends BasePage {
             width: '100%',
             max_width: '18rem',
         });
-        center.p(
-            'Move over a handle or focus it with Tab. Its label grows over the panel; the fields do not move.',
-        );
-        center.p(
-            'Click to toggle. Drag to resize, even from closed. On touch devices the captions remain visible and compact at rest.',
-        );
         for (const title of ['Search', 'Filters', 'Details', 'Output']) {
             main_content.dataController({
                 script: "this.SET(path, open ? true : 'close')",

@@ -5,7 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});
-        main_content.p("Inspect Data: the row value is empty and its fields are attributes. Zero and false remain visible.", {margin_top:0});
         const g = main_content.grid({id:"grid-02", storepath:".rows", rowMode:"attributes", height:"340px"});
         const s = g.struct();
         s.column({field:"description", name:"Description", width:"240px"});

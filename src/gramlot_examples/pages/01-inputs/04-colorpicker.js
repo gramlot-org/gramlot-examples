@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
-        main_content.h1("Choose a color, update every view");
-        main_content.p("Choose a color in either picker. Both controls and the swatch follow the same Data value.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack", width: "100%", max_width: "24rem"});

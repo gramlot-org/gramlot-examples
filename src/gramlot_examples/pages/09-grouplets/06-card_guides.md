@@ -18,7 +18,9 @@ when and where the goods should arrive. A live handover summary follows the draf
 6. Turn off **Show delivery guide**: the empty guide has no information button.
    Restore it and reload the cards. Edits, review marks and fold states remain.
 
-The customer and address guides are authored Markdown. The delivery guide is a
+The customer and address guides are Markdown values in `06-card_guides_data.tytx`.
+Each card uses `doc="^.guide"` relative to its own datapath, keeping sample document
+content out of the Python and JavaScript declarations. The delivery guide is a
 Data value produced by an ordinary dataFormula from the customer, destination and
 contact; doc="^.guide" follows it. There is no separate card template language or
 implicit doc_kw merge. If those Data values change while the popup is open, its

@@ -8,8 +8,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'form'});
-        pane.h1('Bound forms');
-        pane.p('Edit a field, then leave it: the Data record follows. Intensity updates while dragging.');
         const layout = pane.div({class: 'bound-form'});
         const form = layout.form();
         this.identity_fields(form);

@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
-        main_content.h1("One password, two masked fields");
-        main_content.p("Two password fields share a sample value. The browser masks the characters; changing either field updates the other.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack", width: "100%", max_width: "24rem"});

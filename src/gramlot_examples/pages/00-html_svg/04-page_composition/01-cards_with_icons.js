@@ -11,8 +11,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({node_label: 'main_content', class: 'example-page stack'});
-        main_content.h1('Three ideas, three icons');
-        main_content.p('Click × to remove a card from Source. Gramlot updates the DOM without reloading.');
         const cards = main_content.section({node_label: 'cards', class: 'grid icon-cards', aria_label: 'Gramlot concepts'});
         for (const [title, description, kind] of CARDS) {
             const card = cards.article({node_label: kind, class: 'card stack'});

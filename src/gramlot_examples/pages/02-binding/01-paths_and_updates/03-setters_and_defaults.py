@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="order")
-        pane.h1("Setters and defaults")
-        pane.p("Every value below was in the Data before the first render.", class_="muted")
 
         work = pane.div(class_="grid lesson-workbench")
         form = work.form(class_="card stack")
@@ -35,6 +33,5 @@ class Page(BasePage):
         pane.dataSetter(".customer", "Ada Lovelace")
         pane.dataSetter(".price", 12.5)
         later = pane.section(class_="muted")
-        later.p("This section holds the second setters: a descendant writes after its ancestors.")
         later.dataSetter(".customer", "Grace Hopper")
         later.dataSetter(".shipping", {"city": "London", "zone": "EU"})

@@ -7,16 +7,13 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({datapath: 'maker', class: 'color-maker'});
         const header = main_content.div({class: 'maker-header'});
-        header.h1('Color Maker');
         const icon = header.button({aria_label: 'Open color palette', title: 'Open color palette',
             action: "this.SET('.paletteOpen', true)"}).svg({viewBox: '0 0 24 24', width: 22, height: 22,
             fill: 'none', stroke: 'currentColor', stroke_width: 1.7});
         icon.path({d: 'M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1.6-3.2 1.5 1.5 0 0 1 1.2-2.4H18a4 4 0 0 0 4-4C22 7 17.5 3 12 3Z'});
         for (const [x, y] of [[7, 9], [10, 6], [15, 7]]) icon.circle({cx: x, cy: y, r: 1, fill: 'currentColor', stroke: 'none'});
-        main_content.p('A learning example: open the palette, select a color block, then move its sliders or press Random.', {class: 'muted'});
         this.preview(main_content);
         this.palette(main_content);
-        main_content.p('One RGB method, reused on three independent datapaths. Select a block by clicking it or focusing one of its sliders.', {class: 'maker-note'});
     }
 
     palette(pane) {
@@ -61,6 +58,5 @@ export class Page extends BasePage {
         poster.h2('A little color.\nA different mood.');
         poster.p('Background, type and shadow — composed by you.');
         poster.div('Aa', {class: 'maker-specimen', aria_hidden: 'true'});
-        stage.p('Try a warm background with cool text. Then change only the shadow.', {class: 'muted'});
     }
 }

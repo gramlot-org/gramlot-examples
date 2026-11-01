@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack'});
-        main_content.h1('One layout, shared label settings');
-        main_content.p('Change the columns. The fields keep their values and their own label overrides.');
         const options = main_content.details({max_width: "32rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",max_width:'24rem'});

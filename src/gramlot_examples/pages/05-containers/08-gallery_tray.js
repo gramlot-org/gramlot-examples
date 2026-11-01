@@ -13,7 +13,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({datapath:'galleryTray', class:'example-page stack',
             padding:'12px', max_width:'none', width:'100%'});
-        main_content.p('Choose an example and press Add. Each card opens a live page at 65% zoom. Drag its title or use rotation, zoom and layer on the left. The cross removes a card.', {margin:'0'});
         // Catalogue titles and host-specific URLs are generated, not sample records.
         main_content.dataSetter({destination_path:'.examples', value:Object.fromEntries(catalog.families.flatMap(family =>
             family.examples.filter(demo => !EXCLUDED.has(demo.key)).map(demo =>

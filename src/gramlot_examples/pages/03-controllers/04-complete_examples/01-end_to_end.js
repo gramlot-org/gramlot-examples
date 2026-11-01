@@ -11,7 +11,6 @@ export class Page extends BasePage {
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'story'});
         pane.h1('^.settings.caption', {id: 'caption'});
-        pane.p('Change quantity, size or gift wrap: the total and circle update together. Then try pausing a branch and requesting a server quote.');
         pane.h2('1. Calculate locally');
         const work = pane.div({class: 'grid order-workbench'});
         this.order_fields(work);
@@ -73,7 +72,6 @@ export class Page extends BasePage {
         // Return here after c09/c11: the original local stage above remains independent.
         const quotes = pane.section({class: 'card stack'});
         quotes.h2('3. Request a server quote');
-        quotes.p('The local total follows edits. The server quote changes only after a request.');
         quotes.button('Request quote', {type: 'button', id: 'request-quote'}).dataRpc({
             method: 'quote', result_path: '.quote', quantity: '=.quantity',
             large: '=.size.large', gift: '=.gift',
@@ -84,8 +82,6 @@ export class Page extends BasePage {
             ['Request error', 'quote_error', 'quote-error']]) {
             facts.dt(label); facts.dd(`^.${key}`, {id: elementId});
         }
-        quotes.p('Try quantity 0: the server refuses it and the previous quote remains. Then use 3 and request again.',
-            {class: 'muted'});
     }
 
 

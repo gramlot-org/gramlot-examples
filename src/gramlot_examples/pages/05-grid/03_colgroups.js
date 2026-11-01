@@ -5,7 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});
-        main_content.p("Drag a column edge or a row-number edge. Move columns between visual positions: they keep their group membership.", {margin_top:0});
         const g = main_content.grid({id:"grid-03", storepath:".rows", rowMode:"attributes", height:"340px", rowHeaders:true, rowResize:true});
         const s = g.struct();
         s.column({field:"description", name:"Description", width:"240px"});

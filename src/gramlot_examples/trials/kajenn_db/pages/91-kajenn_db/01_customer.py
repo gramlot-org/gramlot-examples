@@ -8,8 +8,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(datapath='view', style='padding:20px;max-width:700px;display:grid;gap:10px')
-        pane.h1(self.title)
-        pane.p('Enter 1 or 2, then leave the field to load. Try 99 to preserve the current record on a lookup error.')
         pane.dataBinder('.request', 'request')
         pane.dataBinder('.customer', 'customer')
         pane.html_label('Customer ID to load', for_='customer-key')
@@ -28,8 +26,6 @@ class Page(BasePage):
         pane.div('Page ID: ').span(self.page_id, id='current-page-id')
         pane.a('Open a connected customer window', href='./01_customer', target='_blank',
                rel='opener', id='open-customer-window')
-        pane.p('Save commits to SQLite. Reload in another frame or window to see it. Each page keeps its own draft; the last successful save wins.')
-        pane.p('A name is required and email addresses must be unique. Try anna@example.com on customer 1 to test a failed save.')
 
 
 class PageStore(BasePageStore):

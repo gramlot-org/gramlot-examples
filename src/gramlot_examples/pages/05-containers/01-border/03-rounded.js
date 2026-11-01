@@ -6,10 +6,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({ class: 'example-page stack' });
-        main_content.h1('Rounded outside, continuous inside');
-        main_content.p(
-            'Drag all four separators and toggle their drawers. Open the calendar and choices inside the rounded inner panel.',
-        );
         const controls = main_content.formlet({ max_width: '24rem', columns: 1 });
         controls.filteringSelect({default: "headline",
             id: 'rounded-design',
@@ -28,7 +24,6 @@ export class Page extends BasePage {
             live: true,
             width: '14rem',
         });
-        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
         const canvas = main_content.div({class: 'layout-canvas'});
         const border = canvas.borderContainer({
             id: 'rounded-border',
@@ -98,8 +93,5 @@ export class Page extends BasePage {
             values: 'standard:Standard,express:Express,pickup:Pick up,scheduled:Scheduled,evening:Evening,weekend:Weekend',
             width: '100%',
         });
-        main_content.p(
-            "The rounded outline clips pane backgrounds. Calendar, choices and validation messages use the browser's top layer.",
-        );
     }
 }

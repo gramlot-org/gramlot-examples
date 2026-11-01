@@ -8,12 +8,10 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(datapath="view", style="padding:24px;max-width:720px;display:grid;gap:12px")
-        pane.h1(self.title)
         pane.html_label("This page ID", for_="current-page-id")
         pane.input(id="current-page-id", value=self.page_id, readonly=True)
         pane.a("Open a connected copy", href="./02_customer_lookup", target="_blank",
                rel="opener", id="open-connected-copy")
-        pane.p("Enter 1 or 2 and load the customer. Then try 99: the previous record stays visible.")
         pane.dataBinder(".customer", "customer")
         pane.html_label("Customer ID", for_="customer-key")
         pane.input(id="customer-key", value="^.requested_pkey", placeholder="1 or 2")
@@ -38,7 +36,6 @@ class Page(BasePage):
         pane.div("Server event — PageStore ID: ").span("^.notification.sender", id="event-store-id")
         remote = pane.details(id="cross-page-controls")
         remote.summary("Publish to another page")
-        remote.p("Copy the recipient's page ID here. Use the Customer ID above as the record to load there.")
         remote.html_label("Recipient page ID", for_="target-page-id")
         remote.input(id="target-page-id", value="^.target_page_id")
         remote.button(
@@ -57,8 +54,6 @@ class Page(BasePage):
             """,
         )
         remote.div("Publication: ").span("^.delivery", id="delivery-status")
-        remote.p("Accepted confirms delivery acceptance. The business result appears in the recipient's Bag.")
-        pane.p("The record arrives through the binder. The publication confirms acceptance, not completion.")
 
 
 class PageStore(BasePageStore):

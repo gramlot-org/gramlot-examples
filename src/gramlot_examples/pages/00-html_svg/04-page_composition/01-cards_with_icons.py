@@ -13,8 +13,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(node_label="main_content", class_="example-page stack")
-        main_content.h1("Three ideas, three icons")
-        main_content.p("Click × to remove a card from Source. Gramlot updates the DOM without reloading.")
         cards = main_content.section(node_label="cards", class_="grid icon-cards", aria_label="Gramlot concepts")
         for title, description, kind in CARDS:
             card = cards.article(node_label=kind, class_="card stack")

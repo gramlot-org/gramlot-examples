@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(padding="20px")
-        main_content.h1("One hierarchical menu, four presentations")
-        main_content.p("Each example below uses the same menu definition: Save, Details, Undo and Export → PDF / Other formats → CSV. Icons, separators and state belong to the menu in every presentation.")
         controls = main_content.div(display="flex", gap="24px", flex_wrap="wrap", margin_bottom="14px")
         controls.checkbox(value="^document.locked", label="Disable Save in every menu", lbl="Shared disabled state")
         controls.checkbox(value="^document.details", label="Details checked in every menu", lbl="Shared checked state")
@@ -21,7 +19,6 @@ class Page(BasePage):
         self.example(cards, "context", "4. Context menu",
             "Right-click inside the document area, or focus it and press Shift+F10. The same menu opens at the pointer. Escape closes it; selecting a command updates the result.")
         main_content.h2("Opening with modifiers")
-        main_content.p("In this extra area only Shift+click opens the same menu. Ordinary click and Shift+Ctrl+click do not match. modifiers='*' means no modifier keys; modifiers='Shift' means exactly Shift.")
         frame = main_content.framePane(height="145px", border="1px solid var(--gramlot-border-control)")
         area = self.document(frame, "modified")
         area.p("Shift+click here", font_weight="bold")

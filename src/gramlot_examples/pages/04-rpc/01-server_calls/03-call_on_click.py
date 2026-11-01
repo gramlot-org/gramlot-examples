@@ -13,8 +13,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="stock")
-        pane.h1("Call on click")
-        pane.p("Reserve the unavailable item, then try the protected action. The error messages distinguish an application error from missing authentication.")
 
         calls = pane.section(class_="card stack")
         calls.h2("A dataRpc nested in the button")
@@ -31,7 +29,6 @@ class Page(BasePage):
         auth.h2("Authorization and visibility")
         auth.p("Source-auth marker", auth="admin", id="protected-source")
         auth.p("Hidden marker is still delivered", hidden=True, id="hidden-source")
-        auth.p("Without an authorized identity, the protected paragraph is omitted from Source.")
 
 
     @endpoint

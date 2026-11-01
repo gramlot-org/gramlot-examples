@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="drawing")
-        pane.h1("Bound SVG")
-        pane.p("Move the controls and watch the drawing change. SVG attributes use the same Data bindings as text and form fields.")
 
         work = pane.div(class_="grid lesson-workbench")
         controls = work.form(class_="card stack")

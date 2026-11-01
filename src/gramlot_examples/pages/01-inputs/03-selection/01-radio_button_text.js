@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: "example-page stack"});
-        main_content.h1("One code for each group");
-        main_content.p("Choose a delivery option: the Data stores its code, not its caption. The second group has its own value. Arrow keys move between options.");
         const options = main_content.details({max_width: "36rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack", width: "100%", max_width: "24rem"});

@@ -6,9 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="cart")
-        pane.h1("Named logic")
-        pane.p("The formula and the controller name methods of class Logic in 03_named_logic.js.",
-               class_="muted")
         form = pane.form(class_="card stack")
         form.html_label("Price", for_="price")
         form.input(type="number", value="^.price", live=True, id="price")

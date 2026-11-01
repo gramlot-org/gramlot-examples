@@ -6,9 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="order")
-        main_content.p("ORDER SO-1042 · STUDIO NORTH", class_="eyebrow")
-        main_content.h1("Invoice the office. Deliver to the workshop.")
-        main_content.p("Both address editors are built by the same server method. Each edits a different part of this order, so changing the delivery address leaves billing untouched.", class_="demo-intro")
         columns = main_content.div(class_="demo-addresses")
         for slot, title in [("billing", "Billing address"), ("shipping", "Delivery address")]:
             columns.grouplet(id=f"{slot}-editor", datapath=f".{slot}", remote="address_fields", remote_slot=slot, remote_title=title, class_="demo-panel")
@@ -22,7 +19,6 @@ class Page(BasePage):
             block.p("^.street", id=f"{slot}-street-summary")
             block.p("^.city", id=f"{slot}-city-summary")
             block.p("^.country")
-        main_content.div("Try it: change only the delivery street and city. Compare the two routing previews and the billing fields above. All edits are a local draft.", class_="demo-task")
 
     @source
     def address_fields(self, root, slot, title):

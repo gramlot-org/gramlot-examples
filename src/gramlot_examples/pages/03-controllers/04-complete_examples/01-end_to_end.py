@@ -11,7 +11,6 @@ class Page(BasePage):
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="story")
         pane.h1("^.settings.caption", id="caption")
-        pane.p("Change quantity, size or gift wrap: the total and circle update together. Then try pausing a branch and requesting a server quote.")
         pane.h2("1. Calculate locally")
         work = pane.div(class_="grid order-workbench")
         self.order_fields(work)
@@ -67,7 +66,6 @@ class Page(BasePage):
         # Return here after c09/c11: the original local stage above remains independent.
         quotes = pane.section(class_="card stack")
         quotes.h2("3. Request a server quote")
-        quotes.p("The local total follows edits. The server quote changes only after a request.")
         quotes.button("Request quote", type="button", id="request-quote").dataRpc(
             "quote", result_path=".quote", quantity="=.quantity",
             large="=.size.large", gift="=.gift",
@@ -78,8 +76,6 @@ class Page(BasePage):
                                        ("Request error", "quote_error", "quote-error")):
             facts.dt(label)
             facts.dd(f"^.{key}", id=element_id)
-        quotes.p("Try quantity 0: the server refuses it and the previous quote remains. Then use 3 and request again.",
-                 class_="muted")
 
     @endpoint
     def quote(self, quantity, large, gift, **kwargs):

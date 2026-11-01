@@ -6,8 +6,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({datapath: 'sieve', class: 'sieve-page'});
-        main_content.h1('Sieve of Eratosthenes');
-        main_content.p('A learning example: discover the primes from 1 to 100, one Data update at a time.', {class: 'muted'});
         this.controls(main_content);
         this.grid(main_content);
         this.explanation(main_content);

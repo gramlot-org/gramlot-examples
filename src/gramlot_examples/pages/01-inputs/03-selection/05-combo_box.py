@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1('Combo box')
-        main_content.p('Choose a suggested city or enter a different one. Two fields share the same text; suggestions do not restrict what you can write.')
         options = main_content.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

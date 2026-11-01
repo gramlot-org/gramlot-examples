@@ -7,8 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("Five containers, one live workspace")
-        main_content.p("Move the sliders, drag separators and close drawers. The same widgets and their values stay in place.")
         options = main_content.details()
         options.summary("Options · sizes, design and drawer captions")
         self.size_controls(options)
@@ -42,7 +40,6 @@ class Page(BasePage):
                  "details": "color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #bb8844)",
                  "preview": "color-mix(in srgb, var(--gramlot-surface, #fff) 90%, #9977bb)"}
         drawer = dict(splitter=True, drawer=True, drawer_minimize="^minimize")
-        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
         canvas = main_content.div(class_="layout-canvas")
         outer = canvas.borderContainer(id="lab-outer", height="700px", max_width="78rem", design="^design",
                                     rounded="^radius", border=edge, background=surface)
@@ -68,7 +65,6 @@ class Page(BasePage):
         detailfields.checkbox(value="^active", lbl="Active", mode="switch")
         detailfields.textbox(value="^customer", lbl="Same customer", width="100%")
         detailfields.dateTextBox(id="lab-date", value="^appointment", lbl="Appointment", width="100%")
-        details.contentPane(region="bottom", height="60px", padding="10px").p("An independent nested container.")
         work = outer.borderContainer(id="lab-workspace", region="center", rounded="^radius", border=edge)
         tools = work.contentPane(region="left", width="^regions.workspace.left", minSize=70, maxSize=200,
                                  drawer_label="Tools", padding="10px", background=fills["tools"], **drawer, default_width=105)

@@ -18,14 +18,11 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({datapath:'imageDemo',padding:'16px'});
         main_content.dataController({func:'attachBrowserCamera',_onStart:true});
-        main_content.h1('Editable images');
-        main_content.p('Choose an image, adjust the framing and confirm the crop.');
 
 
         main_content.h2('Browser only');
         main_content.imageUploader({id:'local-image',value:'^.localImage',storepath:'.localQueue'});
         main_content.h2('Application upload');
-        main_content.p('The demonstration returns a temporary data URL; it does not persist the image.');
         main_content.imageUploader({id:'server-image',value:'^.serverImage',storepath:'.serverQueue',operation:'save_image'});
     }
     save_image(metadata) { return new TemporaryImage(); }

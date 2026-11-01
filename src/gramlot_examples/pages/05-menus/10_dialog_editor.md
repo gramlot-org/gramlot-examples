@@ -1,8 +1,16 @@
 # Complete dialog editor
 
 This example combines existing layout and command components in Python. No new
-window API is introduced. The instructions above the example describe the complete
-Save/Cancel cycle. Values are local Data and do not survive reloading the page.
+window API is introduced. Use the walkthrough below to compare Save and Cancel. Values are local Data and do not survive reloading the page.
+
+## Try it
+
+1. Open the editor, change a field, then Save and reopen. The saved summary contains the change.
+2. Edit again and Cancel. The saved summary stays unchanged. X and Escape also discard the draft.
+3. Reset draft restores the saved values without closing. Details reveals the optional Author field.
+4. Move, resize, maximize and collapse the window. The page stays blocked, even while collapsed.
+
+## Composition
 
 ```python
 window = root.dialog(title="Edit document", open="^editor.open",

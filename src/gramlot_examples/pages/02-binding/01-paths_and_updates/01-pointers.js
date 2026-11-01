@@ -12,7 +12,6 @@ export class Page extends BasePage {
         settings.h2('Relative pointers');
         settings.html_label('Caption', {for: 'caption-field'});
         settings.input({value: '^.caption', id: 'caption-field'});
-        settings.p("Inside datapath='settings', .caption means settings.caption.");
         settings.p('=.caption', {id: 'first-caption', title: 'Read once with =: it does not follow the field.'});
 
         const person = pane.section({datapath: 'person', formId: 'person', class: 'card stack'});

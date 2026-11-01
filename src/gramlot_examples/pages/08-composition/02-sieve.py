@@ -7,8 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(datapath="sieve", class_="sieve-page")
-        main_content.h1("Sieve of Eratosthenes")
-        main_content.p("A learning example: discover the primes from 1 to 100, one Data update at a time.", class_="muted")
         self.controls(main_content)
         self.grid(main_content)
         self.explanation(main_content)

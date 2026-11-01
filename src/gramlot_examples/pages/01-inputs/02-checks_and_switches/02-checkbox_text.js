@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static title = "Checkbox group: select several values";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
-        main_content.h1("Several choices, one value");
-        main_content.p("Choose several notification channels. Two groups share the same comma-separated codes; clearing all choices writes null.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});

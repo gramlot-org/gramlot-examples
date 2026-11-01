@@ -10,7 +10,6 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(class_="example-page stack")
         main_content.h1("A small regional report")
-        main_content.p("Rows come from data; totals are computed before Source is built.")
         table = main_content.table()
         table.caption("Orders by region and quarter")
         heading = table.thead().tr()

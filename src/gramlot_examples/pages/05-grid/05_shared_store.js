@@ -4,10 +4,7 @@ export class Page extends BasePage {
     static title = 'Two grids, independent views';
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});
-        main_content.p('Same data, independent views. Sort, search or drag in either grid: the other keeps its own order and filter.', {margin_top:0});
-        main_content.p('Click a header: ascending, then descending. Shift-click adds a column; Shift-click it again reverses only that column. Arrows show direction; 1, 2 show priority.');
         main_content.button('Toggle Linen chair quantity: 12 / 0', {id:'shared-update', action:'toggleQuantity'});
-        main_content.p('The button changes one shared record: it remains in Furniture, but leaves the second view when its quantity becomes zero.');
         main_content.h3('Furniture — initially Category ↑, Quantity ↓');
         const first = main_content.frameGrid({storepath:'.rows', rowMode:'attributes', searchOn:true, height:'270px'});
         first.grid.setAttr({id:'grid-shared-first', rowHeaders:true, rowResize:true, selfDragRows:true,

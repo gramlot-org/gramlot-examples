@@ -8,7 +8,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
         main_content.h1('A small regional report');
-        main_content.p('Rows come from data; totals are computed before Source is built.');
         const table = main_content.table();
         table.caption('Orders by region and quarter');
         const heading = table.thead().tr();

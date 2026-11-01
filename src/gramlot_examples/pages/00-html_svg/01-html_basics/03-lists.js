@@ -9,7 +9,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
         main_content.h1('Lists tell a sequence');
-        main_content.p('Loops add one Source node for each item.');
         const ordered = main_content.ol();
         for (const step of STEPS) ordered.li(step);
         main_content.h2('Two useful terms');

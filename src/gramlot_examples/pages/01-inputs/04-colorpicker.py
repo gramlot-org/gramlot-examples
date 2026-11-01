@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1('Choose a color, update every view')
-        main_content.p('Choose a color in either picker. Both controls and the swatch follow the same Data value.')
         options = main_content.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

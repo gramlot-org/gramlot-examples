@@ -9,8 +9,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(datapath="view", style="padding:24px;max-width:720px;display:grid;gap:12px")
-        pane.h1(self.title)
-        pane.p("Edit either quantity and leave the field. Both copies update; the server calculates the total.")
         pane.dataBinder(".order", "order")
         pane.dataBinder(".mirror", "order")
         pane.html_label("First client copy", for_="quantity")
@@ -20,7 +18,6 @@ class Page(BasePage):
         pane.div("Unit price: ").span("^.order.unit_price")
         pane.div("Server total: ").span("^.order.total", id="total")
         pane.div("Status: ").span("^.order.status", id="status")
-        pane.p("Try -1, then a positive quantity. Errors and calculated values are ordinary Bag data.")
 
 
 class PageStore(BasePageStore):

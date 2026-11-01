@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="demo")
-        pane.h1("Controller")
-        pane.p("Change the name, send a request and try the delayed input. Each section shows a different reason for a controller to run; the counters make those triggers visible.")
 
         triggers = pane.div(class_="grid controller-triggers")
         self.value_changes(triggers)

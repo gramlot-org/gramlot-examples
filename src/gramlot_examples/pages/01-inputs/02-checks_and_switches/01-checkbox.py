@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("A boolean value")
-        main_content.p("lbl names the field; label is the caption beside its checkbox.")
         fields = main_content.formlet(class_="card stack", width="100%", max_width="32rem")
         fields.checkbox(id="newsletter", value="^newsletter", lbl="Contact preferences",
                         label="Send me the newsletter", lbl_color="var(--gramlot-action)", disabled="^locked")

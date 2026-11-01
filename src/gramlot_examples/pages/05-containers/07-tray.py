@@ -8,7 +8,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", padding="12px", max_width="none", width="100%")
-        main_content.p("Arrange four live cards. Drag their titles, select several with Shift+click or an empty-space rectangle, then save and restore the layout.", margin="0")
         surface = main_content.framePane(height="max(700px, calc(100dvh - 100px))", border="1px solid var(--gramlot-border)", border_radius="8px")
         layout_toolbar(surface.top)
         surface.center.set_attr(dict(overflow="auto"))
@@ -30,8 +29,6 @@ def layout_toolbar(region):
     bar.menuline(caption="Save layout", action="this.SET('savedLayout', this.GET('layout').deepcopy()); this.SET('savedSettings', this.GET('ui').deepcopy())")
     bar.menuline(caption="Restore", disabled="^savedLayout:={} == null",
         action="this.SET('layout', this.GET('savedLayout').deepcopy()); this.SET('ui', this.GET('savedSettings').deepcopy())")
-    region.div("Shift snaps movement, resize and rotation. Lock keeps fields editable. Save keeps a snapshot in this page's Data, not on the server.",
-        padding="4px 10px", font_size="12px", color="var(--gramlot-muted)")
 
 
 def workspace_card(tray):

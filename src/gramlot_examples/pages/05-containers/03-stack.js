@@ -23,7 +23,6 @@ export class Page extends BasePage {
             script:"const demo = keys[panel]; this.SET('.opened.' + demo, this.GET('.urls.' + demo)); this.SET('.active', demo); this.SET('.activeCaption', this.GET('.titles.' + demo));",
             panel:'^.panel', keys:demos.map(demo => demo.key), _delay:350, _onStart:true,
         });
-        main_content.h1('Browse, pause and try the demo');
         main_content.p(`Use the slider to choose among ${demos.length} demos. Pause briefly to open your choice in the single central view.`);
         const border = main_content.borderContainer({id:'carousel-layout', height:'min(76vh, 680px)', min_height:'320px',
             rounded:6, border:'1px solid var(--gramlot-border-control, #aaa)'});
@@ -39,6 +38,5 @@ export class Page extends BasePage {
             full.contentPane({pageName:demo.key}).iframe({id:`live-${demo.key}`, src:`^.opened.${demo.key}`,
                 title:demo.title, width:'100%', height:'100%', border:0, display:'block'});
         }
-        main_content.p('Visited demos keep their edits. Demos you skip quickly are never loaded. This overview excludes itself.');
     }
 }

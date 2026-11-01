@@ -8,10 +8,7 @@ class Page(SelectionTrialPage):
 
     def main(self, root):
         pane = root.main(datapath='invoice_rows', padding='20px')
-        pane.h2(self.title, margin='0 0 8px')
-        pane.p('PostgreSQL · gramlot_base_asqueel · invc.invc_invoice_row. Choose the maximum number of invoice rows to load, in row-ID order. If the table has fewer records, all available records are returned. All returned rows stay in a client Bag.')
         pane.button('Open database grid', action="this.SET('.open', true)")
-        pane.p('The complete selection loads through typed JSONL. Query measures database execution and fetch; Ready includes transfer, decoding and Bag creation, before rendering. A failed or cancelled load preserves the previous selection.', color='var(--gramlot-text-secondary)')
         pane.dataSetter('.open', True)
         pane.dataSetter('.limit', '1000')
         pane.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))

@@ -5,9 +5,6 @@ export class Page extends BasePage {
     static devices = ['desktop','tablet','phone'];
     main(root) {
         const content = root.main({class:'example-page stack',max_width:'760px'});
-        content.h1('Mela: desktop and touch');
-        content.p('In Gallery Settings choose Theme → Mela and Colors → Theme default. Switch between Light and Dark, then narrow the window to compare compact desktop controls with touch-sized fields. Changing the theme keeps your entries.');
-        content.p('Try Document for the hierarchical menu. Open the dialog to test modality, or the floating window to keep using this content. Both windows share the same draft fields.');
         const panel = content.framePane({height:'320px',border:'1px solid var(--gramlot-border)',border_radius:'var(--gramlot-radius)',overflow:'hidden'});
         this.toolbar(panel.top); this.fields(panel.center);
         panel.bottom.div('^mela.notice',{role:'status',padding:'6px 12px',default:'Ready',id:'mela-status'});

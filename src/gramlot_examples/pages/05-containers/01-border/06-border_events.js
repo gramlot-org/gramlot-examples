@@ -16,12 +16,7 @@ export class Page extends BasePage {
             count: '=.resizeCount',
             subscribe_eventWorkspace_splitter_resize: true,
         });
-        main_content.h1('Observe a drawer and a splitter');
-        main_content.p(
-            'Toggle Filters, drag a separator, or focus a separator and use its arrow keys. The controllers below receive the published payloads.',
-        );
         main_content.checkbox({default: false,  id: 'events-hide', value: '^.hideFilters', label: 'Hide Filters from Data' });
-        main_content.p('On narrow screens, scroll the workspace sideways to keep every region readable.', {class: 'layout-pan-hint'});
         const canvas = main_content.div({class: 'layout-canvas'});
         const border = canvas.borderContainer({
             id: 'events-border',
@@ -66,21 +61,6 @@ export class Page extends BasePage {
             width: '100%',
             max_width: '18rem',
         });
-        center.p(
-            'Live resizing keeps these widgets mounted. The resize counter changes only when the gesture finishes.',
-        );
-        border
-            .contentPane({
-                region: 'bottom',
-                height: '52px',
-                minSize: 36,
-                maxSize: 120,
-                splitter: true,
-                padding: '12px',
-                border_top: '1px solid var(--gramlot-border-control, #aaa)',
-                background: 'var(--gramlot-surface-subtle, #eef1f5)',
-            })
-            .p('Resize this bottom region too.');
         const report = main_content.section({ class: 'card stack', max_width: '48rem' });
         report.h2('Received by dataController');
         report.p('^.drawerCount', { id: 'events-drawer-count', mask: 'Visibility events: {}' });
@@ -97,8 +77,5 @@ export class Page extends BasePage {
             white_space: 'pre-wrap',
             overflow_wrap: 'anywhere',
         });
-        main_content.p(
-            "No events are emitted at startup. The Data checkbox changes visibility too; it does not change the drawer's own open/closed preference.",
-        );
     }
 }

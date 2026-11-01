@@ -6,9 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="visit")
-        main_content.p("SERVICE VISIT SV-208 · HEATING MAINTENANCE", class_="eyebrow")
-        main_content.h1("Everything the technician needs before arrival")
-        main_content.p("The site grouplet composes a contact editor and an address editor. Reload the whole section after editing: rebuilding its content keeps the draft in the page Data.", class_="demo-intro")
         toolbar = main_content.div(class_="demo-toolbar")
         toolbar.button("Reload site section", id="reload-site", action="this.SET('.revision', this.GET('.revision') + 1)")
         toolbar.span("Draft held in this page", class_="demo-badge")
@@ -21,7 +18,6 @@ class Page(BasePage):
         summary.p("^.site.address.street", id="street-summary")
         summary.p("^.site.address.city", id="city-summary")
         summary.p("^.site.instructions", id="instructions-summary")
-        main_content.div("Try it: change the site contact, the city and access instructions. Reload the site section and check that every edit remains in the briefing and the fields.", class_="demo-task")
 
     @source
     def site_profile(self, root, revision):

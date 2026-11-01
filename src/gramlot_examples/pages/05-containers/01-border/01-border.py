@@ -7,9 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("Space for content")
-        main_content.p("Drag a separator or use its arrow keys. Resize Filters and Details while editing the customer.")
-        main_content.p("On narrow screens, scroll the workspace sideways to keep every region readable.", class_="layout-pan-hint")
         canvas = main_content.div(class_="layout-canvas")
         bc = canvas.borderContainer(id="border-demo", height="440px", max_width="64rem",
                                           border="1px solid var(--gramlot-border-control, #aaa)")
@@ -30,4 +27,3 @@ class Page(BasePage):
         fields.textBoxArea(value="^customer.notes", lbl="Notes", rows=3, width="100%")
         center.p("Accepted name:")
         center.p("^customer.name", id="accepted-name")
-        center.p("Try an invalid one-character name, then resize the panes. The draft stays in the field.")

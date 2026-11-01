@@ -11,14 +11,11 @@ class Page(BasePage):
 
     def main(self, root):
         content = root.main(datapath="workspace", class_="example-content stack", max_width="48rem", padding="12px")
-        content.h1('Floating: keep the page usable')
-        content.p('Open the floating window, then use the background counter. Both remain usable. Edit the title and watch the page update; close and reopen to keep the same draft.')
         actions = content.div(display="flex", flex_wrap="wrap", gap="8px")
         actions.button("Open floating", action="this.SET('.open', true)")
         actions.button("Background counter", action="this.SET('.clicks', (this.GET('.clicks') || 0) + 1)")
         card = content.section(class_="card stack")
         card.h2("The page behind the window")
-        card.p("The left toolbar selects a stage; the top toolbar edits the title; Done closes the window. All three bars belong to the same framePane.")
         card.div("^.clicks", mask="Background clicks: {}", role="status")
         card.div("^.title", mask="Shared title: {}")
         window = content.floatingPane(title="Edit document", open="^.open", width="440px", height="300px",

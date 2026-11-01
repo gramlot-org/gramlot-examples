@@ -6,8 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="frames")
-        main_content.h1("Parent and child messages")
-        main_content.p("Send a message to the child, then reply from it. Compare the two logs to see which frame received each message.")
         main_content.html_label("Message", for_="message")
         main_content.input(id="message", value="^.text", live=True)
         parent = main_content.section(hidden="^.child", class_="stack")

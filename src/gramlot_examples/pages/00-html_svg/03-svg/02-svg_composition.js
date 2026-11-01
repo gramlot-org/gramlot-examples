@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({class: 'example-page stack'});
-        main_content.h1('Compose a small SVG scene');
-        main_content.p('Groups and loops arrange repeated Source nodes in a single viewport.');
         const figure = main_content.figure({class: 'card'});
         const drawing = figure.svg({viewBox: '0 0 560 240', role: 'img', aria_labelledby: 'scene-title', class: 'example-art'});
         drawing.title('A row of houses and trees in a garden', {id: 'scene-title'});

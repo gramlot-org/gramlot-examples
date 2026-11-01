@@ -7,8 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(padding="20px", height="620px")
-        main_content.h1("One menu, two presentations")
-        main_content.p("Example: edit the document, use the visible menu bar or open Document, and open Export to load a submenu.")
         frame = main_content.framePane(node_label="document", height="480px")
         controls = frame.top.contentPane(node_label="controls", padding="8px", display="flex", gap="12px", flex_wrap="wrap")
         controls.numberTextBox(value="^document.id", lbl="Document ID", width="9rem")

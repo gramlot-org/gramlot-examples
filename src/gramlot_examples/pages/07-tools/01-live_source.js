@@ -15,11 +15,9 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({node_label: 'main_content', class: 'example-page stack'});
-        main_content.h1('Live Source playground', {node_label: 'heading'});
-        main_content.p('Create and remove items, change text and watch SVG move. Every change goes through Source.');
+        main_content.h1('Editable heading', {node_label:'heading'});
         this.workspace(main_content);
         this.motion(main_content);
-        main_content.p('Reload to restore the initial page. Changes are local to this browser page.', {class: 'muted'});
     }
 
     action_button(root, title, action) {
@@ -29,7 +27,6 @@ export class Page extends BasePage {
     workspace(main_content) {
         const work = main_content.section({node_label: 'work', class: 'card stack'});
         work.h2('Build a list live');
-        work.p('The first two items are authored by a loop. Add item uses the browser Builder to create another li.');
         const toolbar = work.div({class: 'live-toolbar'});
         for (const [title, action] of [['Add item', 'add'], ['Remove last', 'remove'], ['Clear list', 'clear'], ['Change heading', 'rename']]) {
             this.action_button(toolbar, title, action);
@@ -41,7 +38,6 @@ export class Page extends BasePage {
     motion(main_content) {
         const motion = main_content.section({node_label: 'motion', class: 'card stack'});
         motion.h2('An animated Source attribute');
-        motion.p("Every 50 ms a controller changes the circle's cx attribute in Source. Gramlot projects it into SVG.");
         motion.dataController({func: 'animate', _timing: 0.05});
         const scene = motion.svg({node_label: 'scene', viewBox: '0 0 320 100', role: 'img', aria_label: 'A circle moving from side to side'});
         scene.line({x1: 30, y1: 50, x2: 290, y2: 50, stroke: 'var(--gramlot-action)', stroke_width: 2});
@@ -49,7 +45,6 @@ export class Page extends BasePage {
         const toolbar = motion.div({class: 'live-toolbar'});
         this.action_button(toolbar, 'Change ball color', 'color');
         this.action_button(toolbar, 'Remove animation', 'stop');
-        motion.p("Removing this section also removes its controller, and the controller's timer stops with it.", {class: 'muted'});
     }
 }
 

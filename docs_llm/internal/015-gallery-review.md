@@ -511,3 +511,64 @@ The next requested teaching revision is separate: essential Python, explanations
 in Markdown, dedicated blocks/tabs for parameter variants and reusable methods.
 It must retain full feature coverage; this qualification does not claim that the
 132 examples have already received that new editorial pass.
+
+
+### Essential examples and visible variants — 2026-11-01
+
+Owner request: keep Python essential, move explanations to Explanation, and
+retain parameter variants in dedicated blocks or tabs. The owner explicitly
+added: “dove ci sono molte varianti o parametri arricchisci mettendo le varianti
+in blocchi o tab dedicati”. This teaching pass is separate from the qualified
+release checkpoint; it changes examples and their checks, not the runtime.
+
+The common catalogue contains 132 lessons. The first pass removes duplicated
+headings and instructional prose from 121 Python/JavaScript pairs, keeping
+semantic HTML/SVG content, bound output, controls and actionable Source targets.
+Validation now has four named blocks and window behavior has three distinct
+launch cards. Reusable methods expose the feature being taught; shared bindings
+remain shared where comparison is the lesson. Companion Markdown keeps the
+walkthrough. Tests caught two essential nodes initially mistaken for prose:
+the bound amount tooltip and the heading modified by the Source playground.
+Both are retained. The Mela probe now waits for its real editable field.
+
+Six database pages keep their query/endpoint behavior, with narrative in Markdown.
+The resident customer grid separates toolbar, measurements and column declarations
+from its data/selection composition. Six PageStore/Kajenn lessons move duplicated
+instructions into their existing explanations; directory introductions and nested
+frame labels remain because they identify the navigation or frame being taught.
+Application compositions and server-side providers are not treated as removable
+lesson prose. No dataSelection/dbQuery API is invented for this cleanup.
+
+Verification so far: Python 130 passed, one skipped, 201 subtests. All 132 common
+lessons pass the Python browser run. JavaScript suite, JavaScript browser run,
+strict documentation and final layout checks are in progress. The first JS run
+had an incorrect Python executable environment; it is not qualification evidence.
+The corrected run uses the same Python environment as the host. Host-only lesson
+changes still require their adapter checks. Do not claim this revision published
+or fully qualified until those checks complete.
+
+
+Verification completed for this editorial pass: 374 JavaScript tests; 130 Python
+tests, one skipped, 201 subtests; all 132 lessons in both Python and JavaScript
+browser hosts; four validation blocks at 390px and 1200px in Chromium/WebKit.
+The guide lesson additionally checks both static guide bodies loaded from TYTX,
+its reactive delivery guide and retained draft after Source reload, including
+the documentation export opened from file in Chromium. Three sample-data tests
+and the final guide Source parity check pass. Strict docs cover 132 executable
+lessons and five paired guides. Ten host contracts pass; real SQLite read/save/
+rollback and PageStore family/binder/publication checks pass Chromium/WebKit.
+
+A full JS browser pass initially timed out on the delivery guide under concurrent
+checks; isolated Python/JS checks and the subsequent complete 132+132 pass succeeded
+with the same runtime. No retry or timeout workaround was added to product code.
+The temporary data writer also exposed an invalid extra newline after the TYTX
+type suffix; the fixture now uses the exact serializer output.
+
+This is a verified first editorial pass, not a claim that every complex application
+example has reached a final design. The 132 common lessons keep their catalogue
+and feature coverage. The 29 other ordinary modules include navigation introductions;
+21 trial modules also include providers/composition helpers; these are not 50 extra
+lessons to strip indiscriminately. Invoice application remains outside scope.
+Evidence includes gallery-teaching-review-results.json and essential-*.log in
+/private/tmp/gramlot-release-20261101/. Publication of this separate revision has
+not been performed; the frozen release remains unchanged.

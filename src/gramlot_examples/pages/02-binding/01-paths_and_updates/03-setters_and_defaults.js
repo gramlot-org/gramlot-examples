@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'order'});
-        pane.h1('Setters and defaults');
-        pane.p('Every value below was in the Data before the first render.', {class: 'muted'});
 
         const work = pane.div({class: 'grid lesson-workbench'});
         const form = work.form({class: 'card stack'});
@@ -35,7 +33,6 @@ export class Page extends BasePage {
         pane.dataSetter({destination_path: '.customer', value: 'Ada Lovelace'});
         pane.dataSetter({destination_path: '.price', value: 12.5});
         const later = pane.section({class: 'muted'});
-        later.p('This section holds the second setters: a descendant writes after its ancestors.');
         later.dataSetter({destination_path: '.customer', value: 'Grace Hopper'});
         later.dataSetter({destination_path: '.shipping', value: {city: 'London', zone: 'EU'}});
     }

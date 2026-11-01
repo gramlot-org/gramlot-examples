@@ -42,7 +42,7 @@ export const groupletBehaviors = {
         assert.equal(await page.locator('#order-delivery-instructions input').inputValue(), 'Use gate C after 10:00.');
         assert.equal(await page.locator('#order-customer-name input').inputValue(), 'North Engineering Ltd');
         // Return to the top so the saved capture presents the dossier, not a scrolled field.
-        await page.locator('h1').scrollIntoViewIfNeeded();
+        await page.locator('#reload-cards').scrollIntoViewIfNeeded();
     },
     async g01(page) {
         await page.locator('#customer-first_name input').waitFor();
@@ -105,6 +105,14 @@ groupletBehaviors.g05 = async page => {
 groupletBehaviors.g06 = async page => {
     await page.locator('#guide-customer-contact input').waitFor();
     await edit(page,'guide-customer-contact','Sam Taylor');
+    for (const [id, heading] of [
+        ['guide-customer', 'Who should receive order updates?'],
+        ['guide-address', 'Describe the entrance the driver should use'],
+    ]) {
+        await page.locator(`#${id} .card-doc-button`).first().click();
+        await page.locator(`#${id} .card-doc-body`).first().getByRole('heading', {name:heading, exact:true}).waitFor();
+        await page.locator(`#${id} .card-doc-close`).first().click();
+    }
     await page.locator('#guide-delivery .card-doc-button').first().click();
     await page.locator('#guide-delivery .card-doc-body').first().getByText('Sam Taylor',{exact:false}).waitFor();
     await page.locator('#guide-delivery .card-doc-close').first().click();

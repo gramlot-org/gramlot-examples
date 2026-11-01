@@ -6,14 +6,11 @@ export class Page extends BasePage {
     main(root) {
 
         const main_content = root.main({padding: "16px"});
-        main_content.h1("FramePane: regions and a central recipient");
-        main_content.p("The frame reuses borderContainer layout. Regions appear only when accessed; none creates a toolbar automatically.");
         const frame = main_content.framePane({height: "520px", node_label: "outer_frame"});
         this.region_tools(frame);
         const center = frame.center.contentPane({frameTarget: true, node_label: "outer_editor", padding: "12px", selfsubscribe_save: "receive", selfsubscribe_undo: "receive"});
         center.h2("CENTER — outer_editor");
         center.p("^outerResult", {role: "status", id: "frame-outer-result", overflow_wrap: "anywhere"});
-        center.p("Commands from the outer bars reach this content. Try Shift+click.");
         this.nested_frame(center);
 
     }
@@ -29,7 +26,6 @@ export class Page extends BasePage {
         frame.left.menu({presentation: "bar", orientation: "vertical"}).menuline("documenti:undo", {caption: "Left B", parameters: {id: 1}});
         const info = frame.right.contentPane({padding: "8px"});
         info.p("RIGHT");
-        info.p("Ordinary content. No automatic bar.");
         frame.bottom.menu({presentation: "bar"}).menuline("documenti:save", {caption: "Bottom", parameters: {id: 1}});
     }
 

@@ -6,9 +6,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("One code for each group")
-        main_content.p("Choose a delivery option: the Data stores its code, not its caption. "
-                       "The second group has its own value. Arrow keys move between options.")
         options = main_content.details(max_width="36rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

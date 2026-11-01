@@ -7,8 +7,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(padding="20px")
-        main_content.h1("A submenu supplied by a resolver")
-        main_content.p("Open Document → Export, or Export in the visible bar: the server supplies the submenu. Change Document ID and reopen it; ID 0 is empty. Enable Resolver error to try failure and retry. Disable exports and Details are live bindings.")
         controls = main_content.div(display="flex", flex_wrap="wrap", gap="16px")
         controls.numberTextBox(value="^document.id", lbl="Document ID", width="8rem")
         controls.checkbox(value="^document.locked", lbl="Disable exports")
@@ -22,7 +20,6 @@ class Page(BasePage):
         center.h2("Resolver result and live state")
         center.p("^document.result", role="status", id="resolver-result")
         center.p("Details enabled", hidden="^document.details:=!{}")
-        center.p("Change Document ID and reopen Export. ID 0 returns an empty Bag. Resolver error enables the Retry state.")
 
     def commands(self, menu):
         menu.menuline(caption="Export").menu(resolver="export_menu",

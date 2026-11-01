@@ -27,8 +27,7 @@ Prepare summary reads the current total with `=.total` and stores a snapshot.
 Formula inputs use `^` and react to changes; the summary changes only on click.
 This example does not reserve rooms or process payments.
 
-The full Python Page is 42 nonblank lines, including Page setup, presentation
-declarations and behavior. The paired CSS and collection-enabled host setup are
+The Python Page keeps the fields, calculation chain and snapshot action together. The paired CSS and collection-enabled host setup are
 separate. Short browser expressions are visible in the Python declarations.
 
 Try three independent edits, starting from Classic / two guests / three nights:

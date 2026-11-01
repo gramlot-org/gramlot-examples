@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static title = "Search a list and select a value";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
-        main_content.h1("Filtering select");
-        main_content.p("Search a caption, store its code. Two fields share the same choice and the same list.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});

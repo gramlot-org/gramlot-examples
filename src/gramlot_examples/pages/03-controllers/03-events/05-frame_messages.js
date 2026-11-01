@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static title = "Exchange messages between frames";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'frames'});
-        main_content.h1('Parent and child messages');
-        main_content.p("Send a message to the child, then reply from it. Compare the two logs to see which frame received each message.");
         main_content.html_label('Message', {for: 'message'});
         main_content.input({id: 'message', value: '^.text', live: true});
         const parent = main_content.section({hidden: '^.child', class: 'stack'});

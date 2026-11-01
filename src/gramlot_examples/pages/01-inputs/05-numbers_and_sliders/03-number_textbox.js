@@ -5,8 +5,6 @@ export class Page extends BasePage {
     static locale = "it-IT";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
-        main_content.h1("Number editing");
-        main_content.p("Try a comma decimal, an integer and an exact Decimal. Invalid text stays in the field without changing Data.");
         const options = main_content.details({max_width: "24rem"});
         options.summary("Options · change the behavior");
         const controls = options.formlet({class: "stack",width:"100%",max_width:"24rem"});

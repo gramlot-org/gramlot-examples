@@ -8,8 +8,6 @@ class Page(BasePage):
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")
-        main_content.h1("One date, three editors")
-        main_content.p("Pick a day or type a date. The inline calendar, popup and text-only field share the same Data value.")
         options = main_content.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")

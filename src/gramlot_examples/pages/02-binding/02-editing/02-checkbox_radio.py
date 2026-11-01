@@ -8,8 +8,6 @@ class Page(BasePage):
 
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="choice")
-        pane.h1("Checkbox and radio")
-        pane.p("Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.")
 
         work = pane.div(class_="grid lesson-workbench")
         options = work.fieldset(class_="card stack")

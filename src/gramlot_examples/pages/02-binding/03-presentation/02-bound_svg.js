@@ -5,8 +5,6 @@ export class Page extends BasePage {
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'drawing'});
-        pane.h1('Bound SVG');
-        pane.p("Move the controls and watch the drawing change. SVG attributes use the same Data bindings as text and form fields.");
 
         const work = pane.div({class: 'grid lesson-workbench'});
         const controls = work.form({class: 'card stack'});

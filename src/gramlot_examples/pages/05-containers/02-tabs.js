@@ -7,8 +7,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'tabsDemo'});
         this.track_events(main_content);
-        main_content.h1('Tabs');
-        main_content.p('Try a one-letter name, switch away and return: the invalid draft remains. Close Notes: its Source disappears, but the saved notes below remain.');
         this.options(main_content);
         this.workspace(main_content);
         this.event_report(main_content);
@@ -47,9 +45,6 @@ export class Page extends BasePage {
             values: '✉:Envelope,●:Dot,★:Star'});
         controls.checkbox({default: false, id: 'tabs-lock', value: '^.locked', label: 'Prevent closing Notes',
             mode: 'switch'});
-        options.p(
-            'Change position and presentation while keeping a draft. Move the unread slider while Notes is inactive: its badge updates immediately.',
-        );
     }
 
     workspace(main_content) {
@@ -108,12 +103,6 @@ export class Page extends BasePage {
 
     tab_variants(main_content) {
         main_content.h2('See the tab variants side by side');
-        main_content.p(
-            'Compare shaped tabs with a light underline, on each of the four sides. Every card is a working editor. Change the name in one: the others show the same Data.',
-        );
-        main_content.p(
-            'Top and bottom use a horizontal row. Left and right use a vertical list; the words remain horizontal so they are easy to read.',
-        );
         const grid = main_content.section({id: 'tab-variants', display: 'grid',
             grid_template_columns: 'repeat(auto-fit, minmax(min(100%, 24rem), 1fr))', gap: '16px',
             width: '100%', max_width: '72rem'});
@@ -135,9 +124,6 @@ export class Page extends BasePage {
 
     tab_alignment(main_content) {
         main_content.h2('Align the labels along the strip');
-        main_content.p(
-            'Position chooses the side of the panel. Alignment chooses where the labels sit along that side. Compare the three horizontal rows, then the three vertical lists.',
-        );
         const grid = main_content.section({id: 'tab-alignment', display: 'grid',
             grid_template_columns: 'repeat(auto-fit, minmax(min(100%, 22rem), 1fr))', gap: '16px',
             width: '100%', max_width: '72rem'});
@@ -184,14 +170,11 @@ export class Page extends BasePage {
             max_width: '15rem',
             live: true,
         });
-        profile.p('Switch to Messages and back. Your edit stays here.', { font_size: '.9rem' });
         const messages = tabs.contentPane({pageName: 'messages', title: 'Messages', icon: '✉', badge: '^.unread',
             badge_color: '^.badgeColor', padding: '12px'});
         messages.textBoxArea({value: '^.variantMessage', lbl: 'Message', rows: 2, width: '100%', live: true});
-        messages.p('The badge remains visible when this panel is hidden.', { font_size: '.9rem' });
         const activity = tabs.contentPane({ pageName: 'activity', title: 'Activity', padding: '12px' });
         activity.h3('Customer updated', { font_size: '1rem' });
         activity.p('^.name', { mask: 'Latest name: {}' });
-        activity.p('Each card selects its own panel; only the business values are shared.', {font_size: '.9rem'});
     }
 }

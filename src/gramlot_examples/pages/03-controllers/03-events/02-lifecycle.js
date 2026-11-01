@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static title = "Start and dispose page behavior";
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'lifecycle'});
-        pane.h1('Lifecycle');
-        pane.p('Follow initialization, building, starting and removal of one branch.');
         const actions = pane.div({class: 'actions'});
         for (const [label, method] of [['Freeze', 'freeze'], ['Thaw', 'thaw'],
             ['Inspect Source and DOM', 'inspect'], ['Remove branch', 'remove']]) {

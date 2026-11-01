@@ -4,8 +4,6 @@ export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content=root.main({class:'example-page stack'});
-        main_content.h1('Execute, or execute and remember');
-        main_content.p('Click a menu entry to execute it. Hold Shift while selecting it to also change the main action and caption. Reload to verify persistence.');
         const actions=main_content.div({class:'card stack',max_width:'26rem'});
         const dropdown=actions.dropDownButton('Export',{id:'export-command',icon:'↓',persist:true,action:"this.SET('result', 'Default export')"});
         const menu=dropdown.menu();
