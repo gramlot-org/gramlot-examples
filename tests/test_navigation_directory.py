@@ -84,3 +84,32 @@ class NavigationDirectoryTests(unittest.TestCase):
         assert md.attr["url"] == "pages/00-html_svg/07-markdown_index/00-index"
         assert md.attr["markdown"].startswith("# Descriptive directory index")
         assert len(navigation_directory(md.attr["directory"])) == 0
+
+
+def test_environment_overlay_keeps_common_and_host_subdirectories_within_their_roots(tmp_path):
+    import json
+    folder = tmp_path / "07-tools"
+    folder.mkdir()
+    (folder / "00-index.md").write_text("# Tools and IDE\n")
+    host = folder / "03-host"
+    host.mkdir()
+    (host / "00-index.md").write_text("# Host tools\n")
+    (host / "01-sample.py").write_text('from gramlot import Page as BasePage\nclass Page(BasePage):\n    title = "Host sample"\n')
+    catalog = tmp_path / "catalog.json"
+    catalog.write_text(json.dumps({"environment": "test", "families": [{
+        "key": "host_tools", "title": "Tools and IDE", "folder": "07-tools", "examples": []}]}))
+    catalogs = [(catalog, tmp_path)]
+    tools = navigation_directory("07-tools", catalogs)
+    assert tools.get_node("02-advanced") is not None
+    assert tools.get_node("03-host") is not None
+    assert len(navigation_directory("07-tools/02-advanced", catalogs)) > 0
+    assert navigation_directory("07-tools/03-host", catalogs).get_node("01-sample").attr["title"] == "Host sample"
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (folder / "escape").symlink_to(outside, target_is_directory=True)
+    assert navigation_directory("07-tools", catalogs).get_node("escape") is None
+    import pytest
+    with pytest.raises(ValueError, match="outside its pages root"):
+        navigation_directory("07-tools/escape", catalogs)
+    with pytest.raises(ValueError, match="does not exist"):
+        navigation_directory("07-tools/absent", catalogs)

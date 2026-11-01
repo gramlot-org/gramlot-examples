@@ -576,3 +576,9 @@ not been performed; the frozen release remains unchanged.
 ### Teaching revision publication — 2026-11-01
 
 Owner authorized publishing the simplified examples after completing the server release and public gallery verification. Prepare examples 0.3.27 from the verified teaching revision, keeping core and servers at 0.3.26. Existing 0.3.26 tags and artifacts remain unchanged. The release workflow must repeat its package, documentation and browser checks before publishing; the hosted-gallery reconciliation must then verify both public hosts and preserve the mobile module with Remote Edit disabled. Publication and deployment are pending.
+
+### Nested catalogue deployment correction — 2026-11-01
+
+The public deployment rehearsal rejected `07-tools/02-advanced`: the host adds the IDE under the existing Tools topic, and navigation incorrectly required the common nested branch to exist under the last registered host directory. The candidate was rolled back before promotion; the prior public generation stayed active. Both Python and JavaScript now collect each existing branch from its own registered root. They continue to reject traversal, escaping symlinks and missing directories. Six Python navigation tests (four subtests) and six JavaScript navigation tests pass, including new shared-topic nested-branch and containment regressions. Complete Python traversal with the actual four public database catalogues and staged IDE passes all 43 directories.
+
+Examples 0.3.27 publication was cancelled before artifacts were released. Its tag is preserved; 0.3.28 includes the teaching revision and this necessary deployment correction. Core and servers remain 0.3.26. Repeat the full release gates and public promotion checks.

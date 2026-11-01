@@ -95,3 +95,32 @@ test('host tools share one navigation category with the common playground', asyn
     assert.equal(tools.getNode('index').attr.title, 'Sample IDE');
     assert.equal(navigationDirectory('00-html_svg', catalogs).getNode('e13'), null);
 });
+
+
+test('environment overlay keeps common and host subdirectories inside their own roots', async t => {
+    const {mkdtempSync, mkdirSync, writeFileSync, rmSync, symlinkSync} = await import('node:fs');
+    const {tmpdir} = await import('node:os');
+    const {join} = await import('node:path');
+    const root = mkdtempSync(join(tmpdir(), 'gallery-overlay-'));
+    t.after(() => rmSync(root, {recursive: true, force: true}));
+    const folder = join(root, '07-tools');
+    const host = join(folder, '03-host');
+    mkdirSync(host, {recursive: true});
+    writeFileSync(join(folder, '00-index.md'), '# Tools and IDE\n');
+    writeFileSync(join(host, '00-index.md'), '# Host tools\n');
+    writeFileSync(join(host, '01-sample.js'), 'export class Page { static title = "Host sample"; }');
+    const catalog = join(root, 'catalog.json');
+    writeFileSync(catalog, JSON.stringify({environment:'test', families:[{key:'host_tools', title:'Tools and IDE', folder:'07-tools', examples:[]}]}));
+    const catalogs = [[catalog, root]];
+    const tools = navigationDirectory('07-tools', catalogs);
+    assert.ok(tools.getNode('02-advanced'));
+    assert.ok(tools.getNode('03-host'));
+    assert.ok(navigationDirectory('07-tools/02-advanced', catalogs).length > 0);
+    assert.equal(navigationDirectory('07-tools/03-host', catalogs).getNode('01-sample').attr.title, 'Host sample');
+    const outside = join(root, 'outside');
+    mkdirSync(outside);
+    symlinkSync(outside, join(folder, 'escape'), 'dir');
+    assert.equal(navigationDirectory('07-tools', catalogs).getNode('escape'), null);
+    assert.throws(() => navigationDirectory('07-tools/escape', catalogs), /outside its pages root/);
+    assert.throws(() => navigationDirectory('07-tools/absent', catalogs), /does not exist/);
+});

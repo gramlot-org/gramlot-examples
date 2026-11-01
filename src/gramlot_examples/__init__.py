@@ -139,12 +139,17 @@ def navigation_directory(directory="", catalogs=()):
     parts = directory.split("/") if directory else []
     if any(not re.fullmatch(r"[A-Za-z0-9_-]+", part) for part in parts):
         raise ValueError("Invalid navigation directory")
-    boundary = groups[parts[0]]["path"] if parts and parts[0] in groups else PACKAGE / "pages"
-    folder = boundary.joinpath(*(parts[1:] if parts and parts[0] in groups else parts))
-    if not folder.resolve().is_relative_to(boundary.resolve()) or not folder.is_dir():
-        raise ValueError("Navigation directory is outside its pages root")
-    folders = [family["path"].joinpath(*parts[1:]) for family in families
-               if parts and family["folder"] == parts[0]] if parts else [folder]
+    roots = [family["path"] for family in families if parts and family["folder"] == parts[0]]
+    suffix = parts[1:] if roots else parts
+    folders = []
+    for boundary in roots or [PACKAGE / "pages"]:
+        folder = boundary.joinpath(*suffix)
+        if not folder.resolve().is_relative_to(boundary.resolve()):
+            raise ValueError("Navigation directory is outside its pages root")
+        if folder.is_dir():
+            folders.append(folder)
+    if not folders:
+        raise ValueError("Navigation directory does not exist")
     files = {p.name: p for directory in folders for p in directory.iterdir()}
     if not parts:
         files.update({name:group["path"] for name,group in groups.items()})

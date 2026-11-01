@@ -138,11 +138,17 @@ export function navigationDirectory(directory = '', catalogs = []) {
     const groups = new Map(families.map(group => [group.folder, group]));
     const parts = directory ? directory.split('/') : [];
     if (parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw new Error('Invalid navigation directory');
-    const boundary = parts.length && groups.has(parts[0]) ? groups.get(parts[0]).path : join(PACKAGE, 'pages');
-    const folder = join(boundary, ...(parts.length && groups.has(parts[0]) ? parts.slice(1) : parts));
-    const rel = relative(realpathSync(boundary), realpathSync(folder));
-    if (rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) throw new Error('Navigation directory is outside its pages root');
-    const folders = parts.length ? families.filter(family => family.folder === parts[0]).map(family => join(family.path, ...parts.slice(1))) : [folder];
+    const roots = families.filter(family => parts.length && family.folder === parts[0]).map(family => family.path);
+    const suffix = roots.length ? parts.slice(1) : parts;
+    const folders = [];
+    for (const boundary of roots.length ? roots : [join(PACKAGE, 'pages')]) {
+        const folder = join(boundary, ...suffix);
+        if (!existsSync(folder)) continue;
+        const rel = relative(realpathSync(boundary), realpathSync(folder));
+        if (rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) throw new Error('Navigation directory is outside its pages root');
+        if (statSync(folder).isDirectory()) folders.push(folder);
+    }
+    if (!folders.length) throw new Error('Navigation directory does not exist');
     const files = new Map(folders.flatMap(directory => readdirSync(directory).map(name => [name, join(directory, name)])));
     if (!parts.length) for (const [name, group] of groups) files.set(name, group.path);
     const bag = new Bag();
