@@ -272,6 +272,14 @@ test('the gallery footer omits the ZIP link even when a deployment URL is suppli
 
 
 const settle = () => new Promise(resolve => setTimeout(resolve, 0));
+async function renderedDescription(f, id) {
+    for (let attempt=0;attempt<200;attempt++) {
+        const heading=f.document.querySelector(`${id} h1`);
+        if (heading) return heading;
+        await new Promise(resolve=>setTimeout(resolve,10));
+    }
+    assert.fail(`Markdown description did not render: ${id}`);
+}
 const setup = async (t, ...args) => {
     const f = fixture(...args);
     t.after(() => { f.app.dispose(); f.document.defaultView.close(); });
@@ -358,7 +366,7 @@ test('Explanation and source tabs preserve frames, sanitize prose and retain lit
     await settle();
     assert.equal(f.tab('preview-e01', 'Example').getAttribute('aria-selected'), 'false');
     assert.equal(f.get('readme-e01').querySelector('script, [onerror], [href^="javascript:"]'), null);
-    assert.equal(f.get('readme-e01').querySelector('h1').textContent, 'Example');
+    assert.equal((await renderedDescription(f, '#readme-e01')).textContent, 'Example');
     assert.match(f.get('code-e01').textContent, /<script>bad\(\)<\/script>/);
     assert.equal(f.get('code-e01').querySelector('script'), null);
     f.tab('preview-e01', 'Example').click();
@@ -582,7 +590,7 @@ test('hidden teaching content makes no requests; visible content never delays th
     assert.equal(f.get('frame-e01'), frame);
     assert.equal(f.state.getItem('active'), 'e01');
     f.visible('description-e01'); await settle();
-    assert.ok(f.get('readme-e01').querySelector('h1'));
+    await renderedDescription(f, '#readme-e01');
     release(); await settle();
     assert.ok(f.get('code-e01').querySelector('.code-line'));
     for (let i = 0; i < 3; i++) for (const id of ['codepane-e01', 'description-e01']) {
@@ -606,7 +614,7 @@ test('secondary content failure retains the running example and retries on reope
     assert.equal(f.get('frame-e01'), frame);
     f.transport.call = call;
     f.visible('description-e01', false); f.visible('description-e01'); await settle();
-    assert.ok(f.get('readme-e01').querySelector('h1'));
+    await renderedDescription(f, '#readme-e01');
     assert.equal(frame.contentWindow.draft, 'Keep me');
 });
 
@@ -675,6 +683,7 @@ test('a Markdown directory index opens as sanitized content without expanding it
         markdown:'# Markdown overview\n\n**Readable** <script>bad()</script><img onerror="bad()">'});
     const before = f.calls.filter(c => c.name === 'navigation_section').length;
     f.navigation('html_svg').click(); await settle();
+    await renderedDescription(f, '.gallery-directory-markdown');
     const description = f.document.querySelector('.gallery-directory-markdown');
     assert.equal(description.querySelector('h1').textContent, 'Markdown overview');
     assert.equal(description.querySelector('strong').textContent, 'Readable');

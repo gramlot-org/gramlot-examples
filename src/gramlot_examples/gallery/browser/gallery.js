@@ -43,7 +43,7 @@ export function mountGallery(renderer, root, inspector) {
         entry.frame=entry.panel.querySelector('iframe');
         entry.code=byId(`codepane-${entry.key}`);
         const description=entry.panel.querySelector('.gallery-directory-markdown');
-        if(description) { description.textContent=renderer.elements.get(description).node.value; renderReadme(description); }
+        if(description) { description.textContent=renderer.elements.get(description).node.value; renderReadme(description).catch(error => console.error(error)); }
         if(entry.frame&&!entry.frame.hasAttribute('src'))set(entry.frame,{src:entry.url});
         if(entry.key==='l04'&&!guide)guide=mountGuidedDemo(renderer,root);
         if(entry.code)content.observe(entry.key);

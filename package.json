@@ -18,11 +18,9 @@
   },
   "devDependencies": {
     "@genrojs/bag": ">=0.11.0",
-    "dompurify": "3.4.17",
     "esbuild": "0.28.2",
     "highlight.js": "^11.11.1",
-    "jsdom": "27.0.1",
-    "marked": "^18.0.14"
+    "jsdom": "27.0.1"
   },
   "exports": {
     ".": "./src/gramlot_examples/index.js",

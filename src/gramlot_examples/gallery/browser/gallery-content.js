@@ -12,11 +12,11 @@ export function mountGalleryContent(renderer, root) {
     const entries = new Map();
     let disposed = false;
 
-    function format({key, view}) {
+    async function format({key, view}) {
         if (view === 'description') {
             const readme = byId(`readme-${key}`);
             readme.textContent = node(readme).value;
-            renderReadme(readme);
+            await renderReadme(readme);
             return;
         }
         const code = byId(`code-${key}`);
@@ -48,7 +48,7 @@ export function mountGalleryContent(renderer, root) {
         try {
             const mounted = await request;
             if (disposed || !current() || !mounted) return;
-            format(entry);
+            await format(entry);
             observer.unobserve(entry.element);
             entries.delete(entry.element);
         } catch {
@@ -81,7 +81,7 @@ export function mountGalleryContent(renderer, root) {
             ]) {
                 const element = byId(id);
                 const entry = {key, view, element, visible: false, loading: false};
-                if (byId(loaded)) format(entry);
+                if (byId(loaded)) format(entry).catch(error => console.error(error));
                 else if (!entries.has(element)) {
                     entries.set(element, entry);
                     observer.observe(element);

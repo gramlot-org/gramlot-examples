@@ -150,11 +150,13 @@ const CHECKS = {
         const customer=byId('guide-customer'), delivery=byId('guide-delivery');
         const requests=calls.length;
         customer.docButton.click();
+        await customer.docReady;
         assert.match(customer.docBody.textContent,/country prefix/);
         customer.docClose.click();
         setGroupletField(ctx,'guide-customer-contact','Sam Taylor');
         setGroupletField(ctx,'guide-address-city','Bath');
         delivery.docButton.click();
+        await delivery.docReady;
         assert.match(delivery.docBody.textContent,/Sam Taylor/);
         assert.match(delivery.docBody.textContent,/Bath/);
         app.data.setItem('order.shipping.address.city','Leeds');
@@ -173,6 +175,7 @@ const CHECKS = {
         assert.equal(data('order.customer.contact'),'Sam Taylor');
         assert.equal(data('order.shipping.address.city'),'Leeds');
         byId('guide-delivery').docButton.click();
+        await byId('guide-delivery').docReady;
         assert.match(byId('guide-delivery').docBody.textContent,/Leeds/);
     },
     async g05(ctx) {

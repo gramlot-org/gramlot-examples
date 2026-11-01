@@ -1981,3 +1981,31 @@ adapter documentation checks also pass.
 ### Release qualification — 2026-10-30
 
 The all-page browser runner includes form-state, the nine Grid lessons and the two new Grouplet action/guide lessons. Grid behavioral checks are shared with the gallery-navigation qualification; sorting/filtering waits for the observable render result. The Python runner is pytest so both unittest classes and pytest functions/fixtures execute. Install `.[test,chat]` for optional provider contract tests; these do not make paid provider calls. Node test files run with concurrency two to avoid CPU-contention timeouts on CI without dropping coverage. All twelve added page checks pass against both Python and JavaScript hosts.
+
+
+<a id="ge-010-shared-sanitizer"></a>
+## Shared HTML sanitizer — 2026-10-30
+
+The gallery prose renderer imports `createDOMPurify` from the Gramlot runtime.
+Its own sanitizer configuration stays local to the renderer. The gallery no
+longer bundles or declares a separate DOMPurify dependency; Markdown parsing
+with Marked is unchanged. Build the gallery against the corresponding runtime
+export before publishing the two together.
+
+
+<a id="ge-010-shared-markdown"></a>
+## Lazy shared Markdown — 2026-10-30
+
+This supersedes the Marked sentence in GE-010's shared-sanitizer note. Gallery
+prose now awaits the runtime's `loadMarkdown()` and uses its markdown-it
+constructor with HTML enabled, followed by the existing local DOMPurify policy.
+Marked is no longer a gallery dependency or bundled parser. Explanations remain
+lazy; asynchronous rendering never overwrites a newer description or a removed
+node. The example iframe is not recreated or blocked while prose loads.
+
+The 150 current page Markdown files were compared against the previous parser
+using sanitized DOM structures: all match after insignificant whitespace and
+equivalent strikethrough-tag normalization. Tests cover headings, tables, fenced
+code, embedded safe HTML, malicious HTML/links and deferred-description races.
+The gallery, core optional Markdown resource and prepared collections must be
+built and deployed together. This work is locally verified, not published.
