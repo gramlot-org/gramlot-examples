@@ -6,7 +6,7 @@ Document ID: **GE-035**.
 ## 005 · What this checklist measures
 
 This checklist describes teaching evidence, not exhaustive feature or test coverage.
-The common catalogue now has **127 lessons**. The Grid review on 2026-10-30 adds
+The common catalogue now has **131 lessons**. The Grid review on 2026-10-30 adds
 resident virtualization, floating layouts and typed search, plus optional Python
 catalogues for database loading and the Asqueel-only cached-selection experiment.
 The index distinguishes generic Grid behavior, experimental loading and Asqueel-only
@@ -220,6 +220,16 @@ verification remain separate work.
 | Asqueel server search and sort | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Search matches words across text columns on the server; it is not typed searchOn. Header clicks request server sorting, Shift adds criteria. Search and sort return to the beginning; obsolete responses cannot replace the current selection. |
 | Asqueel selection snapshot lifecycle | **Review** | [asqueel-only-01 · Asqueel only · cached invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/84-cached-selection/01-invoice_rows.md) | Reload refreshes the database snapshot; closing the page releases its cache. There is no live refresh or automatic TTL after a process crash. This experiment requires a dedicated cache-writable database configuration. |
 
+
+### Upload integration and shared editing
+
+| Feature | Evidence | Examples | What to try |
+| --- | --- | --- | --- |
+| Grid editing | **Exercise** | [grid-10 · Editing](../src/gramlot_examples/pages/05-grid/10_editing.md) | Edit rows, scroll away and back, inspect validation and restore the session. |
+| Upload queue | **Exercise** | [upload_queue · Upload queue](../src/gramlot_examples/pages/07-tools/02-advanced/02-upload_queue.md) | Choose files, edit metadata and start uploads. |
+| Attachments | **Exercise** | [attachment_manager · Attachments](../src/gramlot_examples/pages/07-tools/02-advanced/03-attachment_manager.md) | Save the record, then upload, preview and remove attachments. |
+| Image editing | **Exercise** | [editable_image · Image editing](../src/gramlot_examples/pages/07-tools/02-advanced/04-editable_image.md) | Frame an image and confirm its local or application upload result. |
+
 <a id="ge-035-020"></a>
 ## 020 · Code clarity is a separate checklist
 
@@ -377,3 +387,15 @@ a public streaming protocol or a general remote CollectionStore. Invoice applica
 integration and Python-to-serverless export remain outside this consolidation.
 The invoice-row dataset used by these explicitly approved Grid trials is separate
 from the excluded Invoice application gallery.
+
+
+### Upload integration — 2026-11-01
+
+The feature tree links **Upload queue**, **Attachments** and **Image editing** to
+the three shared upload lessons. The HTTP binary path is currently supplied by
+Uvicorn; Worker uploads pass from a local file in Chromium. WebKit currently
+requires serving the export over HTTP because of its opaque-origin File/Worker
+read limitation (GC-385 §080). Hosts without upload capability
+are not presented as supporting application uploads. Camera and screen capture
+remain dependent on device/browser capabilities and permission. These examples
+do not define a storage or authentication service for applications.

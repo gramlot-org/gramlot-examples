@@ -859,6 +859,17 @@
         "examples": [
           "grid-09"
         ]
+      },
+      {
+        "id": "behavior_grid_editing",
+        "title": "Grid editing",
+        "label": "Editing",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Edit rows, retain drafts while scrolling, inspect validation, then accept or restore the shared editing session.",
+        "examples": [
+          "grid-10"
+        ]
       }
     ]
   },
@@ -1244,6 +1255,45 @@
         "description": "Tray Save is page-local. Server persistence is an application responsibility, not silently demonstrated.",
         "examples": [],
         "label": "Restore after reload"
+      }
+    ]
+  },
+  {
+    "id": "uploads",
+    "title": "Files and images",
+    "features": [
+      {
+        "id": "component_uploader",
+        "title": "Upload queue",
+        "label": "Upload queue",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Choose files, edit per-file metadata, start uploads and inspect progress. Transfers use an application upload target.",
+        "examples": [
+          "upload_queue"
+        ]
+      },
+      {
+        "id": "component_attachment_manager",
+        "title": "Attachments",
+        "label": "Attachments",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Queue files before saving a record, then list, preview and remove its attachments through application endpoints.",
+        "examples": [
+          "attachment_manager"
+        ]
+      },
+      {
+        "id": "component_image_uploader",
+        "title": "Image editing",
+        "label": "Image editing",
+        "kind": "component",
+        "status": "Exercise",
+        "description": "Choose an image, frame, zoom and rotate it, then confirm a local result or upload it. Camera and screen actions depend on the available device and browser capabilities.",
+        "examples": [
+          "editable_image"
+        ]
       }
     ]
   },

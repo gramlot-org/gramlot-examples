@@ -1,0 +1,36 @@
+import {resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+const [playwrightEntry,baseUrl]=process.argv.slice(2);
+if (!playwrightEntry || !baseUrl) throw new Error('Expected Playwright module and gallery base URL');
+const {chromium}=await import(pathToFileURL(resolve(playwrightEntry)));
+import assert from 'node:assert/strict';
+const browser=await chromium.launch({headless:true,args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
+try {
+ const context=await browser.newContext({permissions:['camera']}),page=await context.newPage(),errors=[];
+ page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error') errors.push(m.text());});
+ await page.addInitScript(()=>{const media=navigator.mediaDevices;const original=media.getUserMedia.bind(media);media.getUserMedia=async constraints=>{const stream=await original(constraints);window.lastCameraStream=stream;return stream;};});
+ await page.goto(`${baseUrl.replace(/\/$/,'')}/pages/07-tools/02-advanced/04-editable_image`);
+ const target=page.locator('#local-image');await target.getByRole('button',{name:'Take photo'}).click();
+ const camera=page.getByRole('dialog',{name:'Take photo'}),capture=camera.getByRole('button',{name:'Capture'});await capture.waitFor();await page.waitForFunction(()=>!document.querySelector('.gramlot-camera-dialog button.primary').disabled);
+ await capture.click();
+ const crop=page.getByRole('dialog',{name:'Edit image'});await crop.waitFor();
+ assert.equal(await page.evaluate(()=>window.lastCameraStream.getTracks().every(track=>track.readyState==='ended')),true);
+ await crop.getByRole('button',{name:'Confirm'}).click();await target.locator('img').waitFor({state:'visible'});
+ assert.deepEqual(errors,[]);console.log('PASS ASGI Chromium: browser camera stream, capture, stop, crop and local image');
+ const serverTarget=page.locator('#server-image');await serverTarget.getByRole('button',{name:'Take photo'}).click();
+ await page.getByRole('dialog',{name:'Take photo'}).getByRole('button',{name:'Capture'}).waitFor();
+ await page.waitForFunction(()=>!document.querySelector('.gramlot-camera-dialog button.primary').disabled);
+ await page.getByRole('dialog',{name:'Take photo'}).getByRole('button',{name:'Capture'}).click();
+ await page.getByRole('dialog',{name:'Edit image'}).getByRole('button',{name:'Confirm'}).click();
+ await serverTarget.locator('img').waitFor({state:'visible'});console.log('PASS ASGI Chromium: browser photo follows application upload path');
+ const saved=await page.evaluate(()=>window.gramlot.data.getItem('imageDemo.localImage'));
+ await target.getByRole('button',{name:'Take photo'}).click();await page.getByRole('dialog',{name:'Take photo'}).getByRole('button',{name:'Cancel'}).click();
+ await page.waitForFunction(()=>window.lastCameraStream.getTracks().every(track=>track.readyState==='ended'));
+ assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.evaluate(()=>window.gramlot.data.getItem('imageDemo.localImage')),saved);
+ console.log('PASS ASGI Chromium: cancel closes camera, stops stream and preserves image');
+ await target.getByRole('button',{name:'Take photo'}).click();
+ await page.waitForFunction(()=>!document.querySelector('.gramlot-camera-dialog button.primary').disabled);
+ await page.evaluate(()=>window.gramlot.dispose());
+ await page.waitForFunction(()=>window.lastCameraStream.getTracks().every(track=>track.readyState==='ended'));
+ assert.equal(await page.getByRole('dialog').count(),0);console.log('PASS ASGI Chromium: page disposal stops the camera');
+}finally{await browser.close();}

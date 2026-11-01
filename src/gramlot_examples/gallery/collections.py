@@ -7,8 +7,9 @@ from gramlot.collections.grid import mygramlot as grid
 from gramlot.collections.editors import mygramlot as editors
 from gramlot.collections.typst import mygramlot as typst
 from gramlot.collections.grouplets import mygramlot as grouplets
+from gramlot.collections.uploads import mygramlot as uploads
 
 from gramlot_examples.collections.menu_trial import mygramlot as menu_commands
 
 def collections():
-    return [inputs, layout, tree, grid, chat, editors, typst, grouplets, menu_commands]
+    return [inputs, layout, tree, grid, chat, editors, typst, grouplets, uploads, menu_commands]

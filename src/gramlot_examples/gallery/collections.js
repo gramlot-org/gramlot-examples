@@ -6,8 +6,9 @@ import chat from './dist/chat/descriptor.js';
 import grid from './dist/grid/descriptor.js';
 import editors from './dist/editors/descriptor.js';
 import typst from './dist/typst/descriptor.js';
+import uploads from './dist/uploads/descriptor.js';
 import grouplets from './dist/grouplets/descriptor.js';
 
 import menuCommands from './dist/menu-trial/descriptor.js';
 
-export const collections = [inputs, layout, tree, grid, chat, editors, typst, grouplets, menuCommands];
+export const collections = [inputs, layout, tree, grid, chat, editors, typst, grouplets, uploads, menuCommands];

@@ -6,7 +6,7 @@ Document ID: **GE-035**.
 ## 005 · What this checklist measures
 
 This checklist describes teaching evidence, not exhaustive feature or test coverage.
-The common catalogue now has **127 lessons**. The Grid review on 2026-10-30 adds
+The common catalogue now has **131 lessons**. The Grid review on 2026-10-30 adds
 resident virtualization, floating layouts and typed search, plus optional Python
 catalogues for database loading and the Asqueel-only cached-selection experiment.
 The index distinguishes generic Grid behavior, experimental loading and Asqueel-only
@@ -377,3 +377,17 @@ a public streaming protocol or a general remote CollectionStore. Invoice applica
 integration and Python-to-serverless export remain outside this consolidation.
 The invoice-row dataset used by these explicitly approved Grid trials is separate
 from the excluded Invoice application gallery.
+
+
+### Upload integration — 2026-11-01
+
+The feature tree links **Upload queue**, **Attachments** and **Image editing** to
+the three shared upload lessons. The HTTP binary path is currently supplied by
+Uvicorn; Worker uploads pass from a local file in Chromium. WebKit currently
+requires serving the export over HTTP because of its opaque-origin File/Worker
+read limitation (GC-385 §080). Hosts without upload capability
+are not presented as supporting application uploads. Camera and screen capture
+remain dependent on device/browser capabilities and permission. These examples
+do not define a storage or authentication service for applications.
+
+Grid editing (`grid-10`) and the three upload lessons are mapped to the shared feature tree.

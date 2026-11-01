@@ -6,6 +6,7 @@ import tree from '@gramlot/gramlot/components/tree';
 import editors from '@gramlot/gramlot/components/editors';
 import typst from '@gramlot/gramlot/components/typst';
 import grouplets from '@gramlot/gramlot/components/grouplets';
+import uploads from '@gramlot/gramlot/components/uploads';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
@@ -57,7 +58,7 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst, grouplets,grid,menuCommands]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst, grouplets,uploads,grid,menuCommands]});
     menuCommands.registerCommands(app);
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
