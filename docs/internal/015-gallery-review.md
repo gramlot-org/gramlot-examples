@@ -572,3 +572,7 @@ lessons to strip indiscriminately. Invoice application remains outside scope.
 Evidence includes gallery-teaching-review-results.json and essential-*.log in
 /private/tmp/gramlot-release-20261101/. Publication of this separate revision has
 not been performed; the frozen release remains unchanged.
+
+### Teaching revision publication — 2026-11-01
+
+Owner authorized publishing the simplified examples after completing the server release and public gallery verification. Prepare examples 0.3.27 from the verified teaching revision, keeping core and servers at 0.3.26. Existing 0.3.26 tags and artifacts remain unchanged. The release workflow must repeat its package, documentation and browser checks before publishing; the hosted-gallery reconciliation must then verify both public hosts and preserve the mobile module with Remote Edit disabled. Publication and deployment are pending.
