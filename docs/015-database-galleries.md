@@ -240,3 +240,15 @@ lesson IDs ge-db-grid-04 and ge-db-grid-07 are retired, not reused; measurements
 remain historical evidence in GC-375. The index retains JSONL and the separate
 Asqueel-only cachedFetch family. Use the local Base/Asqueel launcher or release
 preview with the core `gramlot.collections.selection_trial` collection; both expose JSONL.
+
+
+<a id="ge-015-075"></a>
+## 075 · Resident JSONL loading indicator
+
+The floating invoice Grid and JSONL timing lesson bind selectionTrial.loading and
+grid.loading to the same .loading Data value. The initial query/transfer/decoding
+shows the shared centered SVG after 200 ms, without an empty-result message.
+Completion/failure/cancellation clear loading; rapid limit/reload changes retain
+the newer request's state. The previous successful Bag remains during reload.
+No application DOM handling, status-text parsing or second timer is used.
+The Asqueel-only cachedFetch lesson keeps its existing coordinator/window behavior.

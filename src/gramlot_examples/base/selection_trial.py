@@ -36,9 +36,10 @@ class SelectionTrialPage(BasePage):
     )
 
     def load_source(self, pane):
+        pane.dataSetter('.loading', False)
         pane.selectionTrial(url='/gramlot/selection-trial', method='load_trial_rows',
                             limit='^.limit', reload='^.reload', result='^.selection',
-                            metrics='^.metrics', status='^.status', display='none')
+                            metrics='^.metrics', status='^.status', loading='^.loading', display='none')
 
     def timing_fields(self):
         return [('query_ms', 'Query / fetch'), ('headers_ms', 'Request → headers'),
@@ -103,7 +104,7 @@ class SelectionTrialPage(BasePage):
         facts.span('^.metrics.mb', format='0.00', mask='Body: {} MB', margin_right='16px')
 
     def configure_grid(self, frame):
-        pass
+        frame.grid.set_attr(loading='^.loading')
 
     @endpoint
     def load_trial_rows(self, limit):

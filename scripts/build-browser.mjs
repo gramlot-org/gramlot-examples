@@ -3,7 +3,7 @@ import {build} from 'esbuild';
 import {copyFile, cp, mkdir, readFile, readdir, writeFile, rm} from 'node:fs/promises';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {resolve, dirname, join} from 'node:path';
-import {createRequire} from 'node:module';
+import {createRequire, register} from 'node:module';
 
 const directory = new URL('../src/gramlot_examples/gallery/', import.meta.url);
 const output = new URL('dist/', directory);
@@ -47,11 +47,17 @@ const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/
     }}]});
 Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
 // Copy prepared browser resources byte-for-byte to preserve their fingerprints.
-for (const name of ['inputs','layout','tree','grid','chat','editors','typst','grouplets','menu-trial']) {
+const collectionNames = ['inputs','layout','tree','grid','chat','editors','typst','grouplets','menu-trial'];
+const artifacts = new Map(collectionNames.map(name => [name, name === 'menu-trial'
+    ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))
+    : join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name)]));
+// Prepared modules use the same collection specifiers as the browser import map.
+register(new URL('./prepared-collection-loader.mjs', import.meta.url), {
+    data:Object.fromEntries([...artifacts].map(([name,artifact]) =>
+        [`@gramlot/collections/${name}`,pathToFileURL(join(artifact,'assets/index.js')).href]))
+});
+for (const [name, artifact] of artifacts) {
     await rm(new URL(name+'/',output),{recursive:true,force:true});
-    const artifact = name === 'menu-trial'
-        ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))
-        : join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name);
     await cp(artifact, new URL(name+'/',output), {recursive:true, filter:path => !path.endsWith('__pycache__')});
     const {default: collection, buildId} = await import(pathToFileURL(join(artifact,'assets/index.js')).href);
     const root = pathToFileURL(artifact + '/');

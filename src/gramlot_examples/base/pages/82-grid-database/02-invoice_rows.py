@@ -40,7 +40,7 @@ class Page(SelectionTrialPage):
         facts.span('^.metrics.query_ms', mask='Query: {} ms', format='0.00', id='db-grid-query-ms', margin_right='12px')
         facts.span('^.metrics.encode_ms', mask='Encode: {} ms', format='0.00', id='db-grid-encode-ms', margin_right='12px')
         facts.span('^.metrics.total_ms', mask='Ready: {} ms', format='0.00', id='db-grid-total-ms')
-        frame.grid.set_attr(id='invoice-row-db-grid', rowHeaders=True, rowResize=True)
+        frame.grid.set_attr(id='invoice-row-db-grid', rowHeaders=True, rowResize=True, loading='^.loading')
         s = frame.grid.struct()
         s.column('customer_name', name='Customer', width='210px', white_space='pre-wrap')
         s.column('state', name='State', width='65px')

@@ -419,3 +419,73 @@ information button opening instructions for the selected type. The dedicated
 lesson remains; its explanation reflects the new instructions interaction.
 Core tests and Chromium/WebKit pass; live gallery appearance and info click
 verified. Owner visual acceptance remains separate.
+
+
+<a id="ge-015-grid-editing-20261101"></a>
+## Grid editing gallery trial — 2026-11-01
+
+Owner requested activating the gallery with an editable grid to try validation
+and preservation of drafts/errors across scrolling. Added grid-10, Editing ·
+drafts and validation, with matching Python/JavaScript Source, a shared 1,000-row
+Bag fixture, a form-owned session, required text, nonnegative quantity, multiline
+notes and a read-only 1.5-second validation endpoint. Local accept/restore and
+session status use the existing core contract. No database writes or application
+DOM/scroll machinery. The lesson inherits gallery appearance and browser locale.
+
+The browser build now resolves prepared collection dependency specifiers through
+an explicit artifact map, as the browser does. It does not modify prepared bytes
+or replace dependencies with alternate source implementations.
+
+Verified: standard gallery build; all 157 Python route subtests; 9 catalogue tests;
+focused JS catalogue/new-page tests; actual hosted lesson in Chromium and WebKit
+(draft/error scroll retention, async completion without editor, local acceptance);
+actual gallery index navigation to grid-10. Screenshot visually reviewed.
+The wider JS example run also exposed a failure in g06 (card-guide validation
+message), outside this gallery activation task; it is not reported as a clean
+whole-gallery qualification. The two failures belonging to this addition (route
+count and JS column field syntax) were corrected and their tests rerun successfully.
+Gallery is served locally on 61509 using the database-local-integration core.
+Owner acceptance remains pending. No publication or deployment.
+
+
+<a id="ge-015-editing-reports-20261101"></a>
+## Shared editing reports and arrow navigation — 2026-11-01
+
+The Python/JavaScript grid-10 declarations now add the reusable `editingStatus`
+component in the session toolbar and document error/change navigation and arrows.
+There is no application state journal or DOM event wiring. The paired guide
+explains original/current values, filtering, shared form entries and async errors.
+Core/gallery builds and both live-browser scripts passed in Chromium and WebKit:
+`verify_grid_editing_browser.mjs` and `verify_editing_reports_browser.mjs`.
+The latter checks visible reports, original/current values, offscreen focus,
+vertical arrows, async completion and clearing after local acceptance.
+
+
+<a id="ge-015-grid-caret-boundaries-20261101"></a>
+## Caret-boundary navigation — 2026-11-01
+
+The grid-10 Python/JavaScript instructions and paired guide now explain Left at
+text start and Right at text end. The shared browser verification exercises native
+caret movement, selections, boundary navigation, filled destination cells and
+invalid-draft restoration in Chromium and WebKit. No page-specific keyboard code
+was added; this behavior belongs to the core GridCellEditor.
+
+
+<a id="ge-015-editing-consolidation-20261101"></a>
+## Common-base editing qualification — 2026-11-01
+
+The shared runtime checkpoint was qualified separately from Grid/Form. The
+previous g06 failure was a synchronous test expectation for a now-lazy Markdown
+renderer; guide opening and recreation now await docReady. The explanation test
+also waits for its actual rendered heading. All 355 gallery cases passed across
+the complete run and the two affected reruns.
+
+With shared Grid/Form integrated, 129 catalogue/example tests, 9 Python catalogue
+tests and grid-10 Python/JS Source parity pass. Live Chromium and WebKit pass
+drafts/errors, async validation after scrolling, reports with original/current
+values, focus restoration and cell navigation. The gallery index reaches grid-10.
+The navigation probe accepts GALLERY_URL like the other browser probes.
+Public documentation validates 128 lessons and five paired guides.
+
+Preview: http://127.0.0.1:61515/pages/05-grid/10_editing. Remote Edit remains off.
+This is local consolidation only; publication and owner acceptance remain separate.

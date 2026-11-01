@@ -691,6 +691,13 @@
           "title": "Floating grid · resize and scroll",
           "description": "A resizable floating window with 1,000 resident records and variable row heights.",
           "explanation": "Resize the floating pane, enlarge a row, scroll to the end and search the complete Bag."
+        },
+        {
+          "key": "grid-10",
+          "folder": "10_editing",
+          "title": "Editing · drafts and validation",
+          "description": "Edit 1,000 rows with persistent drafts, errors and asynchronous validation.",
+          "explanation": "Scroll away during editing or validation, return to the cell, and accept or restore the shared local session."
         }
       ]
     },
