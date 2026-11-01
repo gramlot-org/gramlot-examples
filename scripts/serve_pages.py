@@ -80,6 +80,8 @@ class Handler(BaseHTTPRequestHandler):
         if path in self.server.assets:
             asset = self.server.assets[path]
             return self.reply(200, asset["file"].read_bytes(), asset["type"])
+        if path == server.markdown_url:
+            return self.reply(200, runtime_asset("gramlot-markdown.js").read_bytes(), MEDIA_TYPES[".js"])
         if path == server.runtime_url:
             return self.reply(200, runtime_asset().read_bytes(), MEDIA_TYPES[".js"])
         if path.startswith("/themes/"):

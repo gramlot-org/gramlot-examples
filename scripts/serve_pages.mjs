@@ -44,6 +44,7 @@ export function servePages(folder, port) {
         try {
             if (request.method === 'GET') {
                 if (assets[path]) return reply(200, await readFile(assets[path].file), assets[path].type);
+                if (path === server.markdownUrl) return reply(200, await readFile(runtimeAsset('gramlot-markdown.js')), MEDIA_TYPES['.js']);
                 if (path === server.runtimeUrl) return reply(200, await readFile(runtimeAsset()), MEDIA_TYPES['.js']);
                 if (path.startsWith('/themes/') || /\.(js|css)$/.test(path)) {
                     const file = path.startsWith('/themes/')

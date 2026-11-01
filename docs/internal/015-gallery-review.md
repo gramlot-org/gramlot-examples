@@ -489,3 +489,25 @@ Public documentation validates 128 lessons and five paired guides.
 
 Preview: http://127.0.0.1:61515/pages/05-grid/10_editing. Remote Edit remains off.
 This is local consolidation only; publication and owner acceptance remain separate.
+
+
+### Common release qualification — 2026-11-01
+
+All 132 common catalogue pages pass the targeted browser checker on both Python
+and JavaScript. The new Grid editing, Visual Source, uploader, attachment and image
+lessons now have observable behavioral checks. The test hosts serve lazy Markdown;
+widget engines remain deferred. No production runtime workaround was added.
+Gallery tests: 374 JavaScript passed; 130 Python passed, one skipped, 201 subtests.
+Strict documentation checks cover 132 executable lessons and local links/anchors.
+Uvicorn verifies metadata upload and reusable attachment workflows separately;
+other HTTP adapters do not yet expose binary transfers. Packed wheel/npm catalogues
+were installed and checked. Evidence: /private/tmp/gramlot-release-20261101/.
+
+Owner authorized aligned publication, now 0.3.26 after the unpublished core 0.3.25
+candidate stopped on an inspector qualification import. Remote Edit stays disabled,
+Invoice application excluded; no TestFlight upload. Public deployment is pending.
+
+The next requested teaching revision is separate: essential Python, explanations
+in Markdown, dedicated blocks/tabs for parameter variants and reusable methods.
+It must retain full feature coverage; this qualification does not claim that the
+132 examples have already received that new editorial pass.

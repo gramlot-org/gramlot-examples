@@ -85,3 +85,15 @@ gridBehaviors['grid-09'] = async page => {
     await page.getByRole('button',{name:'Open floating grid',exact:true}).click();
     assert.equal(await page.evaluate(()=>window.testGridIdentity===document.querySelector('#grid-floating-demo')),true);
 };
+
+gridBehaviors['grid-10'] = async page => {
+    const title = page.locator('#editing-title input');
+    const original = await title.inputValue();
+    await title.fill('Updated batch'); await title.press('Tab');
+    await page.waitForFunction(() => gramlot.data.getItem('sample.title') === 'Updated batch');
+    assert.match(await page.locator('#editing-status').innerText(), /changed/);
+    await page.locator('#editing-restore').getByRole('button').click();
+    await page.waitForFunction(original => gramlot.data.getItem('sample.title') === original, original);
+    assert.equal(await title.inputValue(), original);
+    assert.ok(await page.locator('#grid-editing-demo td[data-field=description]').count() > 0);
+};
