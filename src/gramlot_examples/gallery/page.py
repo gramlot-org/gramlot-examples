@@ -131,6 +131,10 @@ class Page(IndexPage):
                                values="example:As in the example,TL:Top left,TC:Top center,TR:Top right,L:Left,R:Right,BL:Bottom left,BC:Bottom center,BR:Bottom right")
         fields.checkbox(lbl="Navigation", label="Keyboard shortcuts", id="keyboard-navigation",
                         value="^galleryIndex.keyboard")
+        if self.gallery_modules:
+            fields.checkbox(lbl="Examples", label="Show mobile examples", id="gallery-show-mobile",
+                            value="^galleryIndex.showMobileExamples")
+            settings.p("Mobile examples appear automatically in the native app. This option also shows them in a browser; device features require the native app.")
         settings.p("Changes apply immediately. Colors do not change density; label position affects the example fields.")
         settings.p("Automatic uses the bottom in narrow, portrait windows and the left otherwise. Choose Left or Bottom to compare.")
         if self.installable:
@@ -192,7 +196,11 @@ class Page(IndexPage):
             for module in registered_modules(self.gallery_modules):
                 for entry in module['entries']:
                     if module['id'] == node.attr['module'] and entry['id'] == node.attr.get('moduleEntry'):
-                        pane.iframe(src=entry['url'], title=entry['title'], width="100%", height="100%", border=0)
+                        content = pane.div(display="flex", flex_direction="column", height="100%", min_height=0)
+                        content.p("Requires the native app for device features. Browser-compatible interactions remain available.",
+                               hidden="^galleryIndex.nativeApplication", role="note", padding="6px 12px", margin=0)
+                        content.iframe(src=entry['url'], title=entry['title'], width="100%",
+                                       flex="1", min_height=0, border=0)
                         return
             raise ValueError("Unknown registered module entry")
         key = node.attr.get("key")

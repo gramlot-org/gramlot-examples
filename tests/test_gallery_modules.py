@@ -21,7 +21,10 @@ class ModuleTests(unittest.TestCase):
         node.set_attr({'url': 'https://attacker.invalid/ignored'})
         page.panel(builder.root, node)
         self.assertEqual(len(builder.source.nodes), 1)
-        iframe = builder.source.nodes[0]
+        content = builder.source.nodes[0].value
+        self.assertEqual(content.nodes[0].attr["hidden"], "^galleryIndex.nativeApplication")
+        self.assertIn("Requires the native app", content.nodes[0].value)
+        iframe = content.nodes[1]
         self.assertEqual(iframe.node_tag, 'iframe')
         self.assertEqual(iframe.attr['src'], '/mobile-application/app')
         node.set_attr({'moduleEntry':'missing'})

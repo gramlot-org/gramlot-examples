@@ -12,6 +12,11 @@ export function mountGallerySettings(renderer, root, state) {
     try { saved = window.localStorage.getItem(key); }
     catch (error) { if (error.name !== 'SecurityError') throw error; }
     state.setItem('labelPosition', LABEL_POSITIONS.has(saved) ? saved : 'example');
+    const mobileKey = `${key}:showMobileExamples`;
+    let showMobileExamples = false;
+    try { showMobileExamples = window.localStorage.getItem(mobileKey) === 'true'; }
+    catch (error) { if (error.name !== 'SecurityError') throw error; }
+    state.setItem('showMobileExamples', showMobileExamples);
     const frames = () => [...renderer.records.get(root).element.querySelectorAll('.gallery-preview iframe')];
     const send = frame => frame.contentWindow.postMessage({type: SETTINGS_SET,
         labelPosition: state.getItem('labelPosition'), touchMode: 'auto'}, window.location.protocol === 'file:' ? '*' : window.location.origin);
@@ -27,6 +32,10 @@ export function mountGallerySettings(renderer, root, state) {
     };
     state.subscribe('gallery-label-position', {any: event => {
         if (event.node.label === 'labelPosition') change();
+        if (event.node === state.getNode('showMobileExamples')) {
+            try { window.localStorage.setItem(mobileKey, String(state.getItem('showMobileExamples'))); }
+            catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
+        }
     }});
     window.addEventListener('message', message);
     let disposed = false;

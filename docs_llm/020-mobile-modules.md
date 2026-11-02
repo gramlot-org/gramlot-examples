@@ -1,6 +1,6 @@
 # Native mobile modules
 
-Document ID: **GE-020**. Updated: **2026-10-29**.
+Document ID: **GE-020**. Updated: **2026-11-02**.
 
 <a id="ge-020-005"></a>
 ## 005 · A separate catalogue, one gallery
@@ -22,10 +22,18 @@ registration = dict(
 )
 ```
 
-Only the native iOS/Android Capacitor application sees this branch. A normal
-browser, including mobile Safari, neither imports the provider nor displays it.
-Native detection is presentation, not authorization. HTTPS and the same origin
-are required. Selecting a leaf opens its page directly in a Source-owned iframe;
+Native iOS/Android Capacitor apps show this branch automatically. In a browser
+or installed PWA it is hidden by default. When the host registers the module,
+Settings offers **Show mobile examples**. The preference lives in
+`galleryIndex.showMobileExamples` and is saved in localStorage with the other
+gallery settings. Enabling it shows the same catalogue immediately, including
+on Android browsers; it does not grant native capabilities.
+
+Native detection is presentation, not authorization. Native apps require HTTPS;
+all integrations must use the same origin. Browser previews also work on localhost.
+Browser panels explain **Requires the native app for device features**. The
+existing provider reports unsupported capabilities through `gramlot.device`;
+there is no simulated plugin or browser substitute. Selecting a leaf opens its page directly in a Source-owned iframe;
 there is no extra launch button. The server resolves the selection against its
 registered catalogue instead of accepting a client-selected URL.
 
@@ -42,7 +50,10 @@ core retains its disposal. Child Logic attaches through
 Hiding an existing gallery tab retains its page. Closing or reloading its iframe
 releases the connection and native resources; disposing the gallery root also
 releases the broker and appearance subscription. A late script load cannot
-install a broker after the root has been disposed.
+install a broker after the root has been disposed. Turning off Show mobile
+examples hides only the navigation branch. Already-open examples retain their
+Data and broker connection until their normal disposal; enabling the preference
+again reuses that broker.
 
 <a id="ge-020-015"></a>
 ## 015 · Appearance and mobile layout
@@ -147,7 +158,7 @@ text, busy/error state and results remain in Data. DeviceHandler and the iframe
 broker retain resource lifetime ownership. Original worktrees are preserved.
 
 All fifteen eligible pages render in the local browser with English headings.
-Ordinary browsers hide the mobile branch; native mounting, origin/iframe checks,
+At that integration checkpoint, ordinary browsers hid the mobile branch; native mounting, origin/iframe checks,
 disposal, motion, database resources and theme contracts are covered by automated
 checks. A desktop browser does not verify native hardware or off-LAN operation.
 The previous deployment records above remain historical evidence; this local

@@ -592,3 +592,20 @@ Hosted reconciliation 41355687474 succeeded. Active generation 20261101T221241Z 
 The public Python and JavaScript validation pages visibly show the four reusable variant blocks. The public Tools/Advanced tools branch opens correctly alongside the host IDE. Mobile catalogue and SQLite page return HTTP 200 over HTTPS; the catalogue remains native-only and includes SQLite. Remote Edit stays disabled. No TestFlight publication or Invoice application integration was performed. Native plugin behavior on a physical iPhone is not claimed by these web checks.
 
 Evidence: /private/tmp/gramlot-release-20261101/ (publication JSON/logs, deploy-0328-complete.log, public-0328-receipt.json and public-mobile-0328.json). Both public galleries are ready; reload existing browser pages after the generation change.
+
+
+<a id="ge-015-mobile-catalogue-release-20261102"></a>
+## Mobile catalogue opt-in publication — 2026-11-02
+
+Owner: “possimo aggirnare cosi la gallery pubblica ?” authorizes publishing the
+verified optional mobile catalogue. Examples 0.3.29 adds Show mobile examples
+in Settings, persisted in gallery Data/localStorage; native iOS/Android visibility
+remains automatic. Existing broker ownership/origin checks, resource cleanup and
+backend prerequisites remain enforced. Browser panels state that native device
+features require the app. Hiding the catalogue preserves open frames and edits.
+
+Local implementation passed 48 gallery/module JS tests, ten Python tests and
+eight subtests, plus a browser opt-in/reload/hide test with retained Notes and
+UNAVAILABLE for native appinfo. Publication CI repeats full release qualification.
+The release excludes concurrent grid and checkbox work; core/servers are unchanged.
+Public activation remains pending until publication and deployment gates pass.
