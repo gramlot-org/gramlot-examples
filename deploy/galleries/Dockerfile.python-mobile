@@ -1,7 +1,7 @@
 # Deployment context contains public assets, entry-point configuration and checks; no credentials.
 FROM python:3.12-slim
 WORKDIR /app
-RUN pip install --no-cache-dir --upgrade 'gramlot-py-server[kajenn,uvicorn,gallery]' 'asqueel[postgresql,migration]' 'asqueel-migration[postgresql,validation]' \
+RUN pip install --no-cache-dir --upgrade 'gramlot-py-server[kajenn,kajenn-asqueel,uvicorn,gallery]' 'asqueel[postgresql,migration]' 'asqueel-migration[postgresql,validation]' \
     && pip check \
     && python -c 'from gramlot_py_server.gallery.modules import stage_module' \
     && useradd --uid 10001 --create-home gallery

@@ -609,3 +609,28 @@ eight subtests, plus a browser opt-in/reload/hide test with retained Notes and
 UNAVAILABLE for native appinfo. Publication CI repeats full release qualification.
 The release excludes concurrent grid and checkbox work; core/servers are unchanged.
 Public activation remains pending until publication and deployment gates pass.
+
+
+<a id="ge-015-public-server-lessons-20261102"></a>
+## Public server lessons — 2026-11-02
+
+Examples 0.3.29 and deployment 20261102T111606Z passed publication and public
+mobile opt-in checks. Owner then requested PageStore and all eligible lessons,
+using the existing invented Hetzner database: “usa sempre qyel db : sono dati
+inventati”. The exact column grant was approved with “Sì, abilita nome ed email”.
+
+Prepared 0.3.30 mounts existing PageStore, Kajenn/Asqueel and base Chat catalogues
+in the Python deployment. It adds the host model mapping and updates only the
+name/email fields with a separate primary-key argument. No new core/server API,
+Invoice application, native push backend or TestFlight upload is included.
+Remote Edit remains disabled. The database role has column-level UPDATE only for
+account_name/email; the database gate verified update/rollback, denied other
+business writes and preserved administration-table isolation.
+
+Checks before publication: Python gallery/page/module tests (14 passed, 183
+subtests), deployment tests (32 passed, one skipped), browser Chat echo and
+interactive Source. The deployment browser gate now exercises PageStore frames
+and connected windows, customer validation/save/reload/restoration, and Chat.
+The isolated Hetzner browser candidate passed all those checks, including
+410,429 XL rows with 200 resident browser rows. Customer values were restored.
+Public activation remains pending release CI and post-promotion checks.

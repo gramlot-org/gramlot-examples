@@ -13,6 +13,19 @@ DATABASE = 'test_invoice_pg_xl'
 CACHE_THRESHOLD = 100
 
 
+def customer_model():
+    """Map the save-demo's logical customer to the existing Invoice table."""
+    source = SqlDatabaseConfig()
+    db = source.source.db(DATABASE, implementation='postgres',
+                          conninfo=f"dbname={DATABASE} options='-c statement_timeout=120000'")
+    customer = db.packages().package('app', sqlschema='invc', sqlprefix=False).table(
+        'customer', pkey='id', sqlname='invc_customer')
+    customer.column('id', dtype='C', size='22')
+    customer.column('name', dtype='T', sqlname='account_name')
+    customer.column('email', dtype='T')
+    return source
+
+
 def create_database(*, cached=False, catalog_only=False):
     class Configuration(SqlDatabaseConfig):
         def main(self, root):

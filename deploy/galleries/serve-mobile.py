@@ -7,12 +7,16 @@ import sys
 import os
 import socket
 import struct
+from importlib.resources import files
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from gramlot_py_server.gallery import stage
 from gramlot_py_server.gallery.modules import stage_module
-from gramlot_py_server.gallery.base.selection_trial import serve
-from public_database import configure, catalogs, wire_pages
+from gramlot_py_server.gallery.base.selection_trial import SelectionTrialApplication
+from kajenn import AsgiServer
+from kajenn.config.templates import DefaultConfiguration
+from kajenn_db.asqueel import AsqueelDbHandler
+from public_database import configure, catalogs, wire_pages, customer_model
 
 
 def trust_container_proxy():
@@ -38,16 +42,27 @@ def main():
                         integration=mount + '/device-provider.js', prerequisites=[])
     trust_container_proxy()
     configure()
+    trials = Path(str(files('gramlot_examples').joinpath('trials')))
+    page_catalogs = catalogs() + [(trials / name / 'catalog.json', trials / name / 'pages')
+                                 for name in ('page_store', 'kajenn_db', 'chat_base')]
     with TemporaryDirectory(prefix='gramlot-mobile-gallery-') as temporary:
         root = Path(temporary)
-        resources = stage(root, catalogs(), '', serverless_download_url='/downloads/gramlot-gallery-serverless.zip',
+        resources = stage(root, page_catalogs, '', serverless_download_url='/downloads/gramlot-gallery-serverless.zip',
                           remote_edit=False, modules=[registration])
         module = stage_module(root / 'mobile-application', pages=PAGES, assets=ASSETS,
                               catalog_file=ROOT / 'catalog.json', prefix=mount,
                               frame_script_url='/gallery/dist/frame.js')
         resources.update({mount + path: resource for path, resource in module.items()})
         wire_pages(root)
-        serve(root, host=args.host, port=args.port, assets=resources, websocket=True)
+        class Site(DefaultConfiguration):
+            def applications_section(self, cfg):
+                cfg.databases(handler_class=AsqueelDbHandler).database(
+                    code='default', source=customer_model())
+                cfg.applications().application(
+                    code='pages', mount='', app_class=SelectionTrialApplication,
+                    pages=root, assets=resources, websocket=True).request(body='raw')
+
+        AsgiServer(config=Site).serve(host=args.host, port=args.port)
 
 
 if __name__ == '__main__':

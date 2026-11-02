@@ -3,10 +3,10 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Nested SQLite customer'
+    title = 'Nested database customer'
 
     def main(self, root):
         pane = root.div(style='padding:12px')
         pane.h2(self.title)
-        pane.iframe(src='./01_customer', title='Nested SQLite customer',
+        pane.iframe(src='./01_customer', title='Nested database customer',
                     id='nested-customer', width='100%', height='760px')

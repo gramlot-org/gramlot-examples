@@ -1,4 +1,4 @@
-"""Independent customer drafts in frames and connected windows, sharing SQLite."""
+"""Independent customer drafts in frames and connected windows, sharing one database."""
 from gramlot import Page as BasePage
 
 
@@ -9,7 +9,7 @@ class Page(BasePage):
         pane = root.div(style='padding:20px;display:grid;gap:16px')
         pane.a('Open a connected customer window', href='./01_customer', target='_blank',
                rel='opener', id='open-family-window')
-        pane.iframe(src='./01_customer', title='Direct SQLite customer',
+        pane.iframe(src='./01_customer', title='Direct database customer',
                     id='direct-customer', width='100%', height='760px')
-        pane.iframe(src='./03_nested', title='Nested SQLite customer branch',
+        pane.iframe(src='./03_nested', title='Nested database customer branch',
                     id='customer-branch', width='100%', height='850px')

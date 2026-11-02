@@ -1568,7 +1568,7 @@ They use separate Page and PageStore classes, ordinary Source bindings and subsc
 controllers. The customer example uses pkey/status node attributes, explicit error
 Data and preservation of the last valid record. There is no dataSetter or database dependency.
 
-Run the PageStore development branch of gramlot-py-server with:
+Run the installed gramlot-py-server with:
 ```sh
 gramlot uvicorn gallery --websocket --port 8766 --mount /py \
   --catalog /absolute/path/to/trials/page_store/catalog.json \
@@ -1578,8 +1578,8 @@ gramlot uvicorn gallery --websocket --port 8766 --mount /py \
 The installed common gallery supplies the shell. Expand **PageStore and WebSocket**;
 the ordinary source and explanation panels show the Python and teaching notes.
 The staging integration preserves PageStore and current route URLs. Every lesson
-has its own page ID and store, sharing the primary gallery socket. This trial does
-not claim released support in other adapters or the JavaScript gallery.
+has its own page ID and store, sharing the primary gallery socket. These Python lessons require a WebSocket-capable host. They do not run in
+the JavaScript gallery or file-based serverless output.
 
 The family lesson reuses the customer page in a direct iframe and inside an
 intermediate iframe. Every customer page can open another connected copy using
@@ -2009,3 +2009,21 @@ equivalent strikethrough-tag normalization. Tests cover headings, tables, fenced
 code, embedded safe HTML, malicious HTML/links and deferred-description races.
 The gallery, core optional Markdown resource and prepared collections must be
 built and deployed together. This work is locally verified, not published.
+
+
+<a id="ge-010-public-server-lessons"></a>
+## Public server lessons
+
+The hosted Python gallery mounts the separate PageStore, Kajenn database and base
+Chat catalogues. PageStore lessons use small fixed records to teach messaging
+without a database; Chat uses an echo processor, without API keys.
+
+Database lessons use the shared, invented `test_invoice_pg_xl` PostgreSQL data.
+The host maps `app.customer` to `invc.invc_customer`: `name` means `account_name`,
+while `id` and `email` keep their physical names. Choose an existing customer ID
+from the Asqueel selector examples. Saving changes the shared demo customer; the
+public role can update only name and email, not insert or delete customers or
+change other columns. Performance lessons retain read-only sessions.
+
+Remote Edit stays disabled. Native mobile capabilities still require the app.
+The SQLite launcher remains a separate local fixture, not the hosted database.

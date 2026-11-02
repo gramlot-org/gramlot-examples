@@ -2,7 +2,8 @@
 import importlib.util
 import psycopg
 from psycopg.errors import InsufficientPrivilege
-from public_database import CACHE_THRESHOLD, DATABASE, EXAMPLES, create_database
+from asqueel import AsqueelDb
+from public_database import CACHE_THRESHOLD, DATABASE, EXAMPLES, create_database, customer_model
 
 with psycopg.connect(dbname=DATABASE) as connection:
     privileges=connection.execute("SELECT rolsuper, rolcreatedb, rolcreaterole FROM pg_roles WHERE rolname=current_user").fetchone()
@@ -12,11 +13,11 @@ with psycopg.connect(dbname=DATABASE) as connection:
         assert rights==(True,False),(table,rights)
     try:
         with connection.transaction():
-            connection.execute('UPDATE invc.invc_customer SET account_name=account_name WHERE false')
+            connection.execute('UPDATE invc.invc_customer SET suburb=suburb WHERE false')
     except InsufficientPrivilege:
         pass
     else:
-        raise AssertionError('Business-table update must be denied, even with zero affected rows')
+        raise AssertionError('Updates outside the demonstration fields must be denied')
     try:
         with connection.transaction():
             connection.execute('SELECT 1 FROM adm.adm_user WHERE false')
@@ -26,6 +27,23 @@ with psycopg.connect(dbname=DATABASE) as connection:
         raise AssertionError('Unrelated administration tables must not be readable')
     total=connection.execute('SELECT count(*) FROM invc.invc_invoice_row').fetchone()[0]
     assert total>CACHE_THRESHOLD
+
+customers = AsqueelDb(customer_model())
+try:
+    with customers.session() as session:
+        table = session.table('app.customer')
+        original = dict(table.query(order_by='$id', limit=1).fetchRecord().items())
+        try:
+            table.update({'name': 'Gallery rollback verification',
+                          'email': 'rollback@example.com'}, pkey=original['id'])
+            updated = table.query(where='$id=:key', key=original['id']).fetchRecord()
+            assert updated['name'] == 'Gallery rollback verification'
+        finally:
+            session.rollback()
+        restored = dict(table.query(where='$id=:key', key=original['id']).fetchRecord().items())
+        assert restored == original
+finally:
+    customers.close()
 
 spec=importlib.util.spec_from_file_location('public_cached_page',EXAMPLES/'base/pages/84-cached-selection/01-invoice_rows.py')
 module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
@@ -73,4 +91,4 @@ finally:
         for store in stores:
             assert session.table('_asql_._asql_cached_fetch').query(where='$owner=:owner',owner=store._owner).count()==0
     database.close()
-print('PASS public database: restricted role, denied business writes, resident/cached windows, sorting, search, independent owners and cleanup')
+print('PASS public database: restricted role, customer name/email update with rollback, other business writes denied, resident/cached windows, sorting, search, independent owners and cleanup')

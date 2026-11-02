@@ -75,7 +75,7 @@ class PageStore(BasePageStore):
         try:
             table = db.table('app.customer')
             table.query(where='$id=:pkey', pkey=pkey).fetchRecord()
-            table.update({'id': pkey, 'name': name.strip(), 'email': email.strip()})
+            table.update({'name': name.strip(), 'email': email.strip()}, pkey=pkey)
             row = table.query(where='$id=:pkey', pkey=pkey).fetchRecord()
             record = Bag(dict(row.items()))
             db.commit()

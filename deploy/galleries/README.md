@@ -271,7 +271,9 @@ catalogues. JavaScript and offline galleries retain their own supported catalogu
 The existing private Docker network `gramlot-demo-db` supplies `test_invoice_pg_xl`.
 The non-superuser login `gramlot_gallery` has SELECT on only state, customer,
 invoice, product and invoice_row in `invc`; it owns the isolated `_asql_` cache
-schema. It cannot modify business records or read administrative tables. The
+schema. The 2026-11-02 owner grant permits only customer name/email updates
+(see Public PageStore below); other business writes and administrative reads
+remain denied. The
 read-only selector connection additionally sets `default_transaction_read_only`.
 No PostgreSQL port is exposed publicly. Credentials stay in a server-only file
 `/opt/gramlot-galleries/secrets/postgres.pgpass`, mounted read-only for UID 10001;
@@ -289,7 +291,8 @@ The same restricted reader accesses only the five demonstration tables in the XL
 copy, with its own `_asql_` cache schema. The browser qualification also selects
 500,000 rows and verifies the actual total of 410,429 with only 200 resident rows.
 
-Every candidate verifies role restrictions, denied writes, cache paging, search,
+Every candidate verifies role restrictions, denied writes outside the two allowed
+customer columns, rollback, cache paging, search,
 sorting, independent owners and cleanup before startup. Browser checks verify
 the navigation entry, selectors, resident rows, typed JSONL and cache transitions
 before promotion and again over public HTTPS. `/gramlot/store` has an explicit
@@ -301,3 +304,16 @@ never `*`. This preserves `wss` in the ASGI scope so the existing same-origin
 WebSocket check remains strict. A missing/ambiguous default gateway stops startup.
 `verify-public-proxy.py` verifies HTTPS forwarding from the gateway and rejection
 of spoofed forwarding from another container address.
+
+
+## Public PageStore, database and Chat lessons (2026-11-02)
+
+The Python host also stages the packaged `page_store`, `kajenn_db` and `chat_base`
+catalogues. Kajenn's Asqueel handler maps `app.customer` onto the existing
+`test_invoice_pg_xl.invc.invc_customer`; no schema creation is performed.
+The owner authorized `gramlot_gallery` to UPDATE only `account_name` and `email`.
+Other business writes remain denied; performance connections remain read-only.
+The database and browser gates verify the restriction and restore test values.
+Rollback of this feature removes the three added catalogues and handler mapping;
+revoke its column grant separately if write access is no longer desired.
+Keep the public mobile module and existing Remote Edit policy unchanged.
