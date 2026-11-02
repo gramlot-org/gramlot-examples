@@ -1911,3 +1911,19 @@ change other columns. Performance lessons retain read-only sessions.
 
 Remote Edit stays disabled. Native mobile capabilities still require the app.
 The SQLite launcher remains a separate local fixture, not the hosted database.
+
+
+<a id="ge-010-hosted-upload-limit"></a>
+## Hosted upload limitation
+
+The upload, attachment and editable-image lessons are listed in the gallery,
+but catalogue presence does not establish host transport support. On 2026-11-02,
+a manual three-byte upload reported **Upload is unavailable in this environment**
+on the hosted JavaScript gallery and on the Python gallery's published Kajenn
+configuration. Selecting files and editing metadata is not a successful upload.
+
+The hosted adapter integration must announce and implement the upload capability
+before these transfers work. Do not enable the flag alone. The examples do not
+persist production documents: their application targets inspect bytes or retain
+temporary demo attachments. PageStore and customer database writes are separate
+capabilities and are covered by their own deployment checks.

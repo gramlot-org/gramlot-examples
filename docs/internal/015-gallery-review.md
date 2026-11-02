@@ -634,3 +634,27 @@ and connected windows, customer validation/save/reload/restoration, and Chat.
 The isolated Hetzner browser candidate passed all those checks, including
 410,429 XL rows with 200 resident browser rows. Customer values were restored.
 Public activation remains pending release CI and post-promotion checks.
+
+
+### Publication verified — 2026-11-02
+
+Examples 0.3.30 is published on npm, PyPI and GitHub. Publication workflow
+41474224564 passed every required job. Deployment 41477287849 succeeded on retry:
+the first attempt stopped before promotion because npm metadata preceded tarball
+availability. No package version or tag was rewritten.
+
+Active public generation: 20261102T161146Z, examples 0.3.30 and core/servers
+0.3.26. Candidate and public HTTPS checks passed on both galleries; the file-based
+export passed its browser checks. PageStore binding/validation, direct/nested
+frames and connected windows passed. Customer validation, save/reload, restoration
+of original values and unknown-ID preservation passed against test_invoice_pg_xl.
+Chat echo, interactive Source and reset passed. XL cached selection verified
+410429 server records and 200 browser rows. Manual public browser navigation
+shows all three new catalogues; typing quantity 4 updates both client copies and
+the server total to 50. Remote Edit remains disabled; mobile resources preserved.
+
+Known remaining gap: real binary uploads are unavailable on the published Kajenn
+and JavaScript hosts. Documented in GE-030 §045; component mount tests do not
+qualify host upload transport. Invoice application and TestFlight remain outside
+this publication. Deployment evidence: workflow 41477287849 and local
+/private/tmp/public-lessons-deploy-success.log.

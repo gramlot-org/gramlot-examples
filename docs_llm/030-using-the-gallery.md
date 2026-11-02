@@ -117,3 +117,22 @@ within this browser tab's session. It is not saved to an account or server.
 Coverage notes are separate from your progress. Missing exercises and quarantined
 components have no progress selector. dbSelect and dbComboBox remain in quarantine
 until their APIs have been reviewed against the legacy implementation.
+
+
+<a id="ge-030-045"></a>
+## 045 · Public server examples and upload support
+
+The public Python gallery includes **PageStore and WebSocket**, **Kajenn and
+Asqueel**, and **Chat**. These are host-specific catalogues; the JavaScript and
+file-based galleries do not provide the same Python server endpoints.
+
+The customer lesson uses invented records from the hosted PostgreSQL database.
+It can save only the customer name and email. Other columns remain protected,
+and Remote Edit remains disabled. PageStore examples demonstrate server binding,
+validation and communication between independent pages.
+
+Upload examples are listed, but binary transfer is currently unavailable on the
+public Kajenn and JavaScript hosts. A manual upload check on 2026-11-02 returned
+**Upload is unavailable in this environment**. Selecting a file is not proof of
+upload support. The adapters need a separately verified upload integration;
+enabling a capability flag alone is insufficient.
