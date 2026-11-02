@@ -18,7 +18,7 @@ session with the batch-name input. The gallery theme controls apply normally.
 
 The session status is displayed above the grid. Incomplete drafts, pending checks
 and errors block local acceptance. Description and the batch name are required.
-Notes have variable natural heights and use the ordinary multiline editor.
+Notes have variable natural heights up to a 96px content limit and use the ordinary multiline editor.
 Data, Source inputs, validation rules and editing state use the shared core;
 there is no application-specific scroll, input or validation-state machinery.
 
@@ -36,3 +36,24 @@ filled fields. Shift/Ctrl/Alt/Meta arrows retain the editor behavior.
 Tab/Shift+Tab changes editable cells. Notes and choice/date/time controls retain
 their own arrow behavior. Try leaving an invalid quantity with Down, scrolling
 away and returning through the Errors list.
+
+
+The first row has a twelve-line delivery note. Its column declares
+`white_space='pre-wrap', max_height='96px', edit=dict(tag='textBoxArea')`.
+Scroll inside Notes before opening it, then double-click and scroll inside the
+textarea: both use the same 96px maximum, while preserving the full text. Make the
+row taller with its row-header resize handle: the bounded note/editor remains
+96px high. Other rows stay at their natural height. This is core column behavior,
+not page-specific CSS or input/scroll event wiring.
+
+
+Complete check: **Test unopened cell** puts a negative quantity in row 801 without
+opening it. Click **Accept locally**: validation covers all 1,000 rows, reports
+that cell, and refuses acceptance. Select the error to open and correct the cell,
+then confirm again. The normal grid filter does not narrow validation coverage.
+
+The named Logic handler awaits `formState.validate()` before `accept()`. Checks
+use the shared session and declared input policies; no editor is constructed for
+unopened cells. The demo endpoint delays the reserved value `taken` by 1.5 seconds;
+other values return immediately so a complete scan remains practical. All applicable
+rows are checked remotely; this is not a result cache or a DB save.

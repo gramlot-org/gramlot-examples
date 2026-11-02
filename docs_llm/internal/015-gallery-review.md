@@ -511,3 +511,22 @@ The next requested teaching revision is separate: essential Python, explanations
 in Markdown, dedicated blocks/tabs for parameter variants and reusable methods.
 It must retain full feature coverage; this qualification does not claim that the
 132 examples have already received that new editorial pass.
+
+
+<a id="ge-015-grid-form-consolidation-20261102"></a>
+## Grid/Form consolidation — 2026-11-02
+
+Accepted local grid-10 update: shared text/editor max_height, complete validation
+at confirmation, and a button demonstrating an invalid unopened row. Keep the
+published minimal Python/JS layout; instructions belong in the Markdown lesson.
+Named client logic awaits session.validate() before local accept(). No DB writes.
+The sample remote validator delays only the demonstrably invalid reserved value,
+so a complete valid scan is not artificially delayed for every row.
+
+Fresh Python/JS Source parity passed. Chromium and WebKit passed complete scans
+without unopened editor construction, offscreen error navigation/correction,
+local acceptance, the shared 96px cap, internal scroll and virtualization. Core
+qualification passed 1,710 JavaScript and 29 Python authoring tests. Both builds
+passed. Original source files and untracked browser checks are backed up.
+The shared examples checkout remains because it contains other work and previews;
+no Invoice integration, push or deployment was performed.

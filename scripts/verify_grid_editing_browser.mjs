@@ -27,7 +27,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})) {
   await cell('reference').dblclick();assert.match(await grid.locator('#field-message').textContent(),/reserved/);
   await text.fill('available');await text.press('Enter');
   await page.locator('#editing-accept button:not([disabled])').waitFor();await page.locator('#editing-accept button').click();
-  assert.equal(await page.locator('#editing-status').textContent(),'ok');
+  await page.waitForFunction(()=>document.getElementById('editing-status').textContent==='ok');
   assert.ok(await grid.locator('tbody tr').count()<40);
   assert.deepEqual(errors,[]);
   await page.screenshot({path:`/private/tmp/grid-editing-gallery-${name}.png`,fullPage:true});
