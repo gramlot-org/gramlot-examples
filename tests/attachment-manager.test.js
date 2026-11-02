@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {Page} from '../src/gramlot_examples/pages/07-tools/02-advanced/03-attachment_manager.js';
+import {Page} from '../src/gramlot_examples/pages/01-uploader/03-attachment_manager.js';
 
 test('attachment demonstration requires a saved record and isolates page sessions', () => {
     const first = new Page(); first.pageId = 'first';

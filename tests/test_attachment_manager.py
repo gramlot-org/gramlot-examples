@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 
-module_path = Path(__file__).parents[1] / 'src/gramlot_examples/pages/07-tools/02-advanced/03-attachment_manager.py'
+module_path = Path(__file__).parents[1] / 'src/gramlot_examples/pages/01-uploader/03-attachment_manager.py'
 spec = importlib.util.spec_from_file_location('attachment_demo', module_path)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

@@ -8,7 +8,7 @@ const b=await chromium.launch({headless:true});try {const p=await b.newPage(),er
 await p.addInitScript(()=>{let canvas,ctx;window.displayTracks=[];window.displayActivation=[];window.denyDisplay=false;
 Object.defineProperty(navigator.mediaDevices,'getDisplayMedia',{configurable:true,value:()=>{window.displayActivation.push(navigator.userActivation.isActive);if(window.denyDisplay)return Promise.reject(new DOMException('Not allowed','NotAllowedError'));
 canvas=document.createElement('canvas');canvas.width=128;canvas.height=64;ctx=canvas.getContext('2d');const stream=canvas.captureStream(10);let color=false;const timer=setInterval(()=>{ctx.fillStyle=(color=!color)?'#28a':'#a82';ctx.fillRect(0,0,128,64);if(stream.getTracks().every(t=>t.readyState==='ended'))clearInterval(timer);},50);window.displayTracks.push(...stream.getTracks());return Promise.resolve(stream);}});});
-await p.goto(`${baseUrl.replace(/\/$/,'')}/pages/07-tools/02-advanced/04-editable_image`);
+await p.goto(`${baseUrl.replace(/\/$/,'')}/pages/01-uploader/04-editable_image`);
 for(const id of ['local-image','server-image']){
  const target=p.locator(`#${id}`);await target.getByRole('button',{name:'Capture screen'}).click();
  const dialog=p.getByRole('dialog',{name:'Edit image'});await dialog.waitFor();

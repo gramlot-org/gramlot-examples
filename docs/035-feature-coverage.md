@@ -225,10 +225,10 @@ verification remain separate work.
 
 | Feature | Evidence | Examples | What to try |
 | --- | --- | --- | --- |
-| Grid editing | **Exercise** | [grid-10 · Editing](../src/gramlot_examples/pages/05-grid/10_editing.md) | Edit rows, scroll away and back, inspect validation and restore the session. |
-| Upload queue | **Exercise** | [upload_queue · Upload queue](../src/gramlot_examples/pages/07-tools/02-advanced/02-upload_queue.md) | Choose files, edit metadata and start uploads. |
-| Attachments | **Exercise** | [attachment_manager · Attachments](../src/gramlot_examples/pages/07-tools/02-advanced/03-attachment_manager.md) | Save the record, then upload, preview and remove attachments. |
-| Image editing | **Exercise** | [editable_image · Image editing](../src/gramlot_examples/pages/07-tools/02-advanced/04-editable_image.md) | Frame an image and confirm its local or application upload result. |
+| Grid editing | **Exercise** | [grid-10 · Editing](../src/gramlot_examples/pages/05-grid_editable/10_editing.md) | Edit rows, scroll away and back, inspect validation and restore the session. |
+| Upload queue | **Exercise** | [upload_queue · Upload queue](../src/gramlot_examples/pages/01-uploader/02-upload_queue.md) | Choose files, edit metadata and start uploads. |
+| Attachments | **Exercise** | [attachment_manager · Attachments](../src/gramlot_examples/pages/01-uploader/03-attachment_manager.md) | Save the record, then upload, preview and remove attachments. |
+| Image editing | **Exercise** | [editable_image · Image editing](../src/gramlot_examples/pages/01-uploader/04-editable_image.md) | Frame an image and confirm its local or application upload result. |
 | Visual Source editor | Exercise | [visual_source · Visual Source editor](../src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.md) | Insert widgets, edit parameters and copy or import Source branches. |
 
 

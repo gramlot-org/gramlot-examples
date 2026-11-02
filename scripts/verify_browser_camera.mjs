@@ -9,7 +9,7 @@ try {
  const context=await browser.newContext({permissions:['camera']}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error') errors.push(m.text());});
  await page.addInitScript(()=>{const media=navigator.mediaDevices;const original=media.getUserMedia.bind(media);media.getUserMedia=async constraints=>{const stream=await original(constraints);window.lastCameraStream=stream;return stream;};});
- await page.goto(`${baseUrl.replace(/\/$/,'')}/pages/07-tools/02-advanced/04-editable_image`);
+ await page.goto(`${baseUrl.replace(/\/$/,'')}/pages/01-uploader/04-editable_image`);
  const target=page.locator('#local-image');await target.getByRole('button',{name:'Take photo'}).click();
  const camera=page.getByRole('dialog',{name:'Take photo'}),capture=camera.getByRole('button',{name:'Capture'});await capture.waitFor();await page.waitForFunction(()=>!document.querySelector('.gramlot-camera-dialog button.primary').disabled);
  await capture.click();

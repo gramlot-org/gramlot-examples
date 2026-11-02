@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 
-module_path = Path(__file__).parents[1] / "src/gramlot_examples/pages/07-tools/02-advanced/02-upload_queue.py"
+module_path = Path(__file__).parents[1] / "src/gramlot_examples/pages/01-uploader/02-upload_queue.py"
 spec = importlib.util.spec_from_file_location("upload_queue_example", module_path)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

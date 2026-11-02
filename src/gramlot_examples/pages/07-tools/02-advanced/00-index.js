@@ -5,6 +5,6 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({class:'example-page stack', padding:'24px'});
         main_content.h1('Advanced tools');
-        main_content.p('Explore the Visual Source editor, upload queues, attachments and editable images.');
+        main_content.p('Explore the Visual Source editor.');
     }
 }

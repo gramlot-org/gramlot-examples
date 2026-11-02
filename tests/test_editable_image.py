@@ -1,7 +1,7 @@
 import importlib.util
 from pathlib import Path
 
-path = Path(__file__).parents[1] / 'src/gramlot_examples/pages/07-tools/02-advanced/04-editable_image.py'
+path = Path(__file__).parents[1] / 'src/gramlot_examples/pages/01-uploader/04-editable_image.py'
 spec = importlib.util.spec_from_file_location('editable_image_demo', path)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

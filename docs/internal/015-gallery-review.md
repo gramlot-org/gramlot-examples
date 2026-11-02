@@ -530,3 +530,22 @@ qualification passed 1,710 JavaScript and 29 Python authoring tests. Both builds
 passed. Original source files and untracked browser checks are backed up.
 The shared examples checkout remains because it contains other work and previews;
 no Invoice integration, push or deployment was performed.
+
+
+<a id="ge-015-uploader-editable-sections-20261102"></a>
+## Uploader and editable-grid sections consolidated — 2026-11-02
+
+Owner requested “si ma farei una sezione uploader”, clarified that uploading is
+an input widget rather than a tool, and requested “io farei una sezione grid
+editabili” in the uploader chat. The reviewed navigation-only delta places
+Uploader after input widgets and Editable grids after Grid. Existing stable
+lesson keys and feature links remain; direct URLs use 01-uploader and
+05-grid_editable. Old route aliases were not introduced. The current simplified
+Python/JS examples, lesson text and data are moved byte-for-byte rather than
+replaced with the older candidate's versions. Visual Editor remains in Tools.
+
+Python/JS catalogue, navigation, uploader and feature checks verify the moved
+lessons. This is common-base consolidation, not package/site publication or a
+claim that all public HTTP hosts implement binary transfer. Original authored
+changes are preserved in the private cleanup recovery directory. Invoice stays
+outside this tranche.
