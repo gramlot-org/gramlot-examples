@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {Page} from '../src/gramlot_examples/pages/07-tools/02-advanced/02-upload_queue.js';
+import {Page} from '../src/gramlot_examples/pages/01-uploader/02-upload_queue.js';
 
 test('upload queue example validates metadata and never persists bytes', () => {
     const page = new Page();

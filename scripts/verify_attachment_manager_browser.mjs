@@ -5,7 +5,7 @@ if (!playwrightEntry || !baseUrl) throw new Error('Expected Playwright module an
 const engines = await import(pathToFileURL(resolve(playwrightEntry)));
 import assert from 'node:assert/strict';
 const b=await engines[engineName].launch({headless:true});try {const p=await b.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
-await p.goto(`${baseUrl.replace(/\/$/,'')}/pages/07-tools/02-advanced/03-attachment_manager`);const manager=p.locator('#attachment-manager'),u=manager.locator('gramlot-uploader');await u.waitFor();
+await p.goto(`${baseUrl.replace(/\/$/,'')}/pages/01-uploader/03-attachment_manager`);const manager=p.locator('#attachment-manager'),u=manager.locator('gramlot-uploader');await u.waitFor();
 await u.locator('input[type=file]').setInputFiles([{name:'first.txt',mimeType:'text/plain',buffer:Buffer.from('one')},{name:'second.txt',mimeType:'text/plain',buffer:Buffer.from('two')}]);
 await p.waitForFunction(()=>globalThis.gramlot.data.getItem('attachmentsDemo.queue').getNodes().length===2);assert.equal(await u.locator('li').filter({hasText:'queued'}).count(),2);
 await p.getByRole('button',{name:'Save record'}).click();await p.waitForFunction(()=>globalThis.gramlot.data.getItem('attachmentsDemo.queue').getNodes().filter(n=>n.value.getItem('status')==='completed').length===2);

@@ -658,3 +658,67 @@ and JavaScript hosts. Documented in GE-030 §045; component mount tests do not
 qualify host upload transport. Invoice application and TestFlight remain outside
 this publication. Deployment evidence: workflow 41477287849 and local
 /private/tmp/public-lessons-deploy-success.log.
+
+
+<a id="ge-015-grid-form-consolidation-20261102"></a>
+## Grid/Form consolidation — 2026-11-02
+
+Accepted local grid-10 update: shared text/editor max_height, complete validation
+at confirmation, and a button demonstrating an invalid unopened row. Keep the
+published minimal Python/JS layout; instructions belong in the Markdown lesson.
+Named client logic awaits session.validate() before local accept(). No DB writes.
+The sample remote validator delays only the demonstrably invalid reserved value,
+so a complete valid scan is not artificially delayed for every row.
+
+Fresh Python/JS Source parity passed. Chromium and WebKit passed complete scans
+without unopened editor construction, offscreen error navigation/correction,
+local acceptance, the shared 96px cap, internal scroll and virtualization. Core
+qualification passed 1,710 JavaScript and 29 Python authoring tests. Both builds
+passed. Original source files and untracked browser checks are backed up.
+The shared examples checkout remains because it contains other work and previews;
+no Invoice integration, push or deployment was performed.
+
+
+<a id="ge-015-uploader-editable-sections-20261102"></a>
+## Uploader and editable-grid sections consolidated — 2026-11-02
+
+Owner requested “si ma farei una sezione uploader”, clarified that uploading is
+an input widget rather than a tool, and requested “io farei una sezione grid
+editabili” in the uploader chat. The reviewed navigation-only delta places
+Uploader after input widgets and Editable grids after Grid. Existing stable
+lesson keys and feature links remain; direct URLs use 01-uploader and
+05-grid_editable. Old route aliases were not introduced. The current simplified
+Python/JS examples, lesson text and data are moved byte-for-byte rather than
+replaced with the older candidate's versions. Visual Editor remains in Tools.
+
+Python/JS catalogue, navigation, uploader and feature checks verify the moved
+lessons. This is common-base consolidation, not package/site publication or a
+claim that all public HTTP hosts implement binary transfer. Original authored
+changes are preserved in the private cleanup recovery directory. Invoice stays
+outside this tranche.
+
+
+<a id="ge-015-primary-consolidation-20261103"></a>
+## Primary checkout reconciliation — 2026-11-03
+
+Owner authorized comparison against primary main, consolidation of valid residuals,
+and recoverable retirement of superseded copies; Invoice remains excluded.
+Merged the two reviewed common-base changes with the seven newer public commits,
+retaining mobile visibility, PageStore/DB/chat lessons and the minimal examples.
+Both independent review-log additions were retained. The LLM coverage mirror now
+links the four moved lessons. The twelve moved Uploader source/data/lesson files
+are byte-identical to their published predecessors; this move adds no host upload
+capability or route aliases.
+
+Verification on the merged source: 100 Python tests; all 379 JavaScript cases
+covered by the full run and the corrected 160-case Python-backed rerun (the first
+run used a Python executable without Bag/TYTX). Browser build passed. Chromium
+and WebKit passed complete resident validation without constructing unopened
+editors, offscreen error correction and acceptance, capped display/editor height,
+inner scrolling and virtualization through the actual Uvicorn gallery adapter.
+The older bare test server could not serve the dual-use page module as JavaScript;
+that harness failure is not counted as gallery qualification.
+
+Original histories are preserved in a verified bundle. This is local main
+consolidation, not a package publication or deployment. Incomplete old checkouts
+remain while active previews or dependency links still use them.

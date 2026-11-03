@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {Page} from '../src/gramlot_examples/pages/07-tools/02-advanced/04-editable_image.js';
+import {Page} from '../src/gramlot_examples/pages/01-uploader/04-editable_image.js';
 
 test('application target returns a temporary displayable image URL', () => {
     const target = new Page().save_image({});

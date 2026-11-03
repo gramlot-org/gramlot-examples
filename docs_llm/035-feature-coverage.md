@@ -394,6 +394,13 @@ do not define a storage or authentication service for applications.
 
 Grid editing (`grid-10`) and the three upload lessons are mapped to the shared feature tree.
 
+| Feature | Coverage | Example | Exercise |
+| --- | --- | --- | --- |
+| Grid editing | **Exercise** | [grid-10 · Editing](../src/gramlot_examples/pages/05-grid_editable/10_editing.md) | Edit rows, scroll away and back, inspect validation and restore the session. |
+| Upload queue | **Exercise** | [upload_queue · Upload queue](../src/gramlot_examples/pages/01-uploader/02-upload_queue.md) | Choose files, edit metadata and start uploads. |
+| Attachments | **Exercise** | [attachment_manager · Attachments](../src/gramlot_examples/pages/01-uploader/03-attachment_manager.md) | Save the record, then upload, preview and remove attachments. |
+| Image editing | **Exercise** | [editable_image · Image editing](../src/gramlot_examples/pages/01-uploader/04-editable_image.md) | Frame an image and confirm its local or application upload result. |
+
 
 <a id="ge-035-selector-caption-field"></a>
 ### Asqueel selector captions

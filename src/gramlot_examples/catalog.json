@@ -276,6 +276,34 @@
       "folder": "01-inputs"
     },
     {
+      "key": "uploader",
+      "title": "Uploader",
+      "folder": "01-uploader",
+      "examples": [
+        {
+          "key": "upload_queue",
+          "title": "Upload queue and metadata",
+          "folder": "02-upload_queue",
+          "description": "Choose multiple files, edit metadata for each selected file, then upload the queue.",
+          "explanation": "The selected path binds ordinary form fields to each queue row; the application validates metadata and counts bytes without saving files."
+        },
+        {
+          "key": "attachment_manager",
+          "title": "Attachments",
+          "folder": "03-attachment_manager",
+          "description": "Queue files before saving, then browse, preview and remove attachments.",
+          "explanation": "The shared uploader waits for a saved record; application-owned endpoints manage a temporary in-memory attachment list."
+        },
+        {
+          "key": "editable_image",
+          "title": "Editable images",
+          "folder": "04-editable_image",
+          "description": "Crop an image locally or send it through an application upload operation.",
+          "explanation": "The application-upload demonstration returns a temporary data URL and does not persist files."
+        }
+      ]
+    },
+    {
       "key": "binding",
       "title": "Data and bindings",
       "examples": [
@@ -691,7 +719,14 @@
           "title": "Floating grid · resize and scroll",
           "description": "A resizable floating window with 1,000 resident records and variable row heights.",
           "explanation": "Resize the floating pane, enlarge a row, scroll to the end and search the complete Bag."
-        },
+        }
+      ]
+    },
+    {
+      "key": "editable_grids",
+      "title": "Editable grids",
+      "folder": "05-grid_editable",
+      "examples": [
         {
           "key": "grid-10",
           "folder": "10_editing",
@@ -856,27 +891,6 @@
           "folder": "01-live_source",
           "description": "Create an item, change its content and remove it. Compare the Source tree and rendered page; removing the animated section also disposes its timer.",
           "explanation": "Builder calls create list items. Source mutations update text, color and structure. A setInterval animates an SVG attribute; removing its section disposes the timer. Works in every gallery command and in the static gallery opened from disk."
-        },
-        {
-          "key": "upload_queue",
-          "title": "Upload queue and metadata",
-          "folder": "02-advanced/02-upload_queue",
-          "description": "Choose multiple files, edit metadata for each selected file, then upload the queue.",
-          "explanation": "The selected path binds ordinary form fields to each queue row; the application validates metadata and counts bytes without saving files."
-        },
-        {
-          "key": "attachment_manager",
-          "title": "Attachments",
-          "folder": "02-advanced/03-attachment_manager",
-          "description": "Queue files before saving, then browse, preview and remove attachments.",
-          "explanation": "The shared uploader waits for a saved record; application-owned endpoints manage a temporary in-memory attachment list."
-        },
-        {
-          "key": "editable_image",
-          "title": "Editable images",
-          "folder": "02-advanced/04-editable_image",
-          "description": "Crop an image locally or send it through an application upload operation.",
-          "explanation": "The application-upload demonstration returns a temporary data URL and does not persist files."
         },
         {
           "key": "visual_source",

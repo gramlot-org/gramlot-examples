@@ -7,7 +7,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})) {
  try {
   const page=await browser.newPage({viewport:{width:1320,height:1000}}),errors=[];
   page.on('pageerror',error=>errors.push(error.message));
-  await page.goto(origin+'/pages/05-grid/10_editing');
+  await page.goto(origin+'/pages/05-grid_editable/10_editing');
   const grid=page.locator('#grid-editing-demo');await grid.locator('tbody tr').first().waitFor();
   const cell=field=>grid.locator(`tr[data-row=r0] td[data-field=${field}]`);
   const scroll=async top=>{await grid.locator('.body-viewport').evaluate((element,top)=>{element.scrollTop=top;},top);await page.waitForTimeout(150);};
@@ -27,7 +27,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})) {
   await cell('reference').dblclick();assert.match(await grid.locator('#field-message').textContent(),/reserved/);
   await text.fill('available');await text.press('Enter');
   await page.locator('#editing-accept button:not([disabled])').waitFor();await page.locator('#editing-accept button').click();
-  assert.equal(await page.locator('#editing-status').textContent(),'ok');
+  await page.waitForFunction(()=>document.getElementById('editing-status').textContent==='ok');
   assert.ok(await grid.locator('tbody tr').count()<40);
   assert.deepEqual(errors,[]);
   await page.screenshot({path:`/private/tmp/grid-editing-gallery-${name}.png`,fullPage:true});
