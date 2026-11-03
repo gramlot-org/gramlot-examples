@@ -16,6 +16,8 @@ Current release: 0.3.30.
 
 ## Run the gallery locally
 
+The current source checkout uses Grid features newer than the published Gramlot core 0.3.26. A core release is needed before all lessons work with the setup below.
+
 Clone the examples to keep an editable copy. Install Python 3.11 or newer,
 Git and Node.js 22 or newer with npm, then run (macOS/Linux):
 
