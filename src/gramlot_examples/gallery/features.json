@@ -1205,6 +1205,17 @@
         "description": "Gallery navigation uses it; add a lesson showing lazy search, clear and restoration.",
         "examples": [],
         "label": "Search"
+      },
+      {
+        "id": "behavior_tree_checkboxes",
+        "title": "Tree checkboxes",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Check a parent before loading its children; compare partial checks and locked on/off nodes.",
+        "examples": [
+          "tree-checkboxes"
+        ],
+        "label": "Checkboxes and propagation"
       }
     ]
   },

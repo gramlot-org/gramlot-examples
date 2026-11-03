@@ -266,6 +266,12 @@
           "description": "Drag a document onto Inbox or Projects, then expand that folder. A copy appears there and the original stays put; Locked archive rejects the drop."
         },
         {
+          "key": "tree-checkboxes",
+          "folder": "09-tree/05-checkboxes",
+          "title": "Tree checkboxes",
+          "description": "Check Documents, then expand Catalog: lazy children inherit the check. Locked items keep their state; Checked paths shows the binding."
+        },
+        {
           "key": "form-state",
           "folder": "07-forms_and_validation/05-form_state",
           "title": "Form state",

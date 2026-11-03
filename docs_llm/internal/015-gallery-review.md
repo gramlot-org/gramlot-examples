@@ -722,3 +722,57 @@ that harness failure is not counted as gallery qualification.
 Original histories are preserved in a verified bundle. This is local main
 consolidation, not a package publication or deployment. Incomplete old checkouts
 remain while active previews or dependency links still use them.
+
+<a id="ge-015-tree-checkboxes-20261102"></a>
+## Tree checkboxes — 2026-11-02
+
+Owner requested a minimal gallery lesson for checkbox propagation, lazy children
+and disabled nodes, with clear explanations and a local preview. Added
+`tree-checkboxes` / `01-inputs/09-tree/05-checkboxes`: Python and JavaScript twins,
+a sample TYTX Bag, a lazy endpoint and a bound checked-path readout. Instructions
+live in the companion Markdown and its LLM mirror. The catalogue and feature
+coverage link to the lesson; no core behavior was changed.
+
+Verified: Python/JavaScript Source parity, 16 catalogue/feature-navigation checks,
+and real Python RPC in Chromium and WebKit: checking a loaded parent does not
+fetch lazy descendants; expanding loads checked children; partial states,
+disabled on/off states, bound paths and cached reopening behave as described.
+Preview: http://127.0.0.1:61530/ (Uvicorn; Remote Edit disabled).
+Browser regression: `scripts/verify_tree_checkboxes_browser.mjs`.
+No publication was requested for this increment.
+
+Separate core finding: initializing the bound `checkedPaths` to an empty string
+resets preexisting `disabled:on`/`disabled:off` attributes. The example leaves the
+output binding unset, as the existing Tree contract allows; it does not provide
+an application workaround. A review of external checked-path replacement remains
+outside this example-only change. Mixed parents containing permanently-on/off
+children also need a separate UX review before documenting a bulk-clear action.
+
+The gallery navigation opens the lesson with Example/Explanation/Code. Searching
+all directories also surfaced an existing unrelated directory-root error in the
+tools search; the requested Tree lesson remains reachable and verified.
+
+<a id="ge-015-tree-locked-checks-fixed-20261102"></a>
+## Tree checkbox reset regression resolved — 2026-11-02
+
+Following explicit owner approval, the core now preserves disabled:on/off during
+checkedPaths reset. The earlier empty-string limitation is resolved. The sample
+TYTX initializes checked to an empty string; Clear checks demonstrates a later
+empty binding write without unlocking either disabled node. The Python/JS Source
+parity and real Chromium/WebKit RPC checks pass after rebuilding both artifacts.
+Instructions and their LLM mirror describe the same behavior. Local only, port
+61530; no publication. The separate mixed-parent bulk-toggle UX review is deferred.
+
+<a id="ge-015-tree-checkboxes-recovery-20261103"></a>
+## Tree checkbox lesson recovery — 2026-11-03
+
+The owner-requested local lesson and its browser regression were recovered from
+the preserved preview into the primary checkout. The two records above retain
+their historical verification and old port. Current local preview target:
+http://127.0.0.1:61540/pages/01-inputs/09-tree/05-checkboxes.
+Qualified with primary core: three Python checks pass; the 138-case JavaScript
+run had two failures (example naming and the missing coverage row), both corrected
+and covered by a three-check targeted passing rerun. In-app browser checks confirm
+lazy propagation, mixed parent state and disabled on/off preservation after Clear.
+This is a current browser pass, not a fresh Chromium/WebKit matrix or publication.
+No Invoice changes.
