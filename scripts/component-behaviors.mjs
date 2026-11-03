@@ -174,6 +174,21 @@ export const componentBehaviors = {
 };
 
 Object.assign(componentBehaviors, {
+    async 'tree-checkboxes'(page) {
+        const tree = page.locator('#checkbox-tree');
+        const check = caption => tree.getByRole('checkbox', {name: caption, exact: true});
+        assert.equal(await check('Required (locked on)').isDisabled(), true);
+        assert.equal(await check('Required (locked on)').isChecked(), true);
+        await check('Documents').click();
+        await tree.getByRole('button', {name: 'Expand Documents', exact: true}).click();
+        assert.equal(await check('Notes').isChecked(), true);
+        await tree.getByRole('button', {name: 'Expand Catalog (lazy)', exact: true}).click();
+        await check('guide').waitFor();
+        assert.equal(await check('guide').isChecked(), true);
+        await page.getByRole('button', {name: 'Clear checks', exact: true}).click();
+        assert.equal(await check('Required (locked on)').isChecked(), true);
+        assert.equal(await check('guide').isChecked(), false);
+    },
     async w26(page) {
         const tree = page.locator('#example-tree');
         await tree.locator('[data-path="catalog"] > .row > button').click();
