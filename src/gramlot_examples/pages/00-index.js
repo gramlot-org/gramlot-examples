@@ -8,5 +8,7 @@ export class Page extends BasePage {
         const main_content = root.main({padding:'24px', class:'gallery-directory-page'});
         main_content.h1(this.constructor.title);
         main_content.p('Start with HTML and SVG, then Fields and input widgets. Continue with Data and bindings, Logic and events, or RPC. Document editors, layout and tools have separate sections. Select a section title for an introduction; expand its arrow to choose a working example.');
+        main_content.h2('Run the gallery locally');
+        main_content.p('Download the examples and run a local Python gallery to edit and save the lesson source. ').a('Setup instructions', {href:'https://github.com/gramlot-org/gramlot-examples#run-the-gallery-locally'});
     }
 }

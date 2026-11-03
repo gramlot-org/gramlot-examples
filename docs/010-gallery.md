@@ -190,8 +190,8 @@ follows core release chronology and identifies missing advanced exercises. A pag
 may return in a later stage to compare the code replaced by a new feature;
 prerequisites are supporting links. Preserve the earlier stage and label each
 revision. Maintained catalogue entries are not historical package snapshots.
-The gallery displays source; it does not edit/save page files. Open an editable
-project through the chosen environment and compare a predicted result after reload.
+The gallery displays source. The Python host can optionally save lesson files
+in a local source checkout with `--remote-edit`; see the [local setup](https://github.com/gramlot-org/gramlot-examples#run-the-gallery-locally).
 Page executes in the Python/JS host (or Worker); Logic executes in the browser.
 
 Check the installed catalogue before interpreting test counts: the current source

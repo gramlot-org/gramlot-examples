@@ -12,7 +12,35 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.3.30.
+Current release: 0.3.31.
+
+## Run the gallery locally
+
+Clone the examples to keep an editable copy. Install Python 3.11 or newer,
+Git and Node.js 22 or newer with npm, then run (macOS/Linux):
+
+```sh
+git clone https://github.com/gramlot-org/gramlot-examples.git
+cd gramlot-examples
+python3 -m venv .venv
+source .venv/bin/activate
+npm install --package-lock=false
+npm run build
+python -m pip install -e . "gramlot-py-server[uvicorn]"
+gramlot uvicorn gallery --remote-edit
+```
+
+On Windows, use `python -m venv .venv` and activate the environment with
+`.venv\Scripts\activate` in Command Prompt; the remaining commands are the same.
+
+Open the local address printed by the command. In an example's **Code** tab,
+edit the Python source and select **Save**; the local source file is updated
+and the preview reloads. `--remote-edit` also permits saving in the IDE's
+temporary sample workspace, which is reset when the gallery stops. Use this
+option only on your own trusted local server; the public gallery is read-only.
+Without the option, example sources remain read-only.
+
+Database examples may require additional services and configuration.
 
 [Documentation and learning sequence](https://gramlot-examples.readthedocs.io/en/latest/)
 include every lesson, its Python and JavaScript source, and the gallery guide.
