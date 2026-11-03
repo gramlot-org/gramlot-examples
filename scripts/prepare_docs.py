@@ -31,7 +31,7 @@ def stage():
         shutil.rmtree(destination)
     destination.mkdir(parents=True)
     shutil.copyfile(ROOT / "docs/conf.py", destination / "conf.py")
-    (destination / "_static").mkdir()
+    shutil.copytree(ROOT / "docs/_static", destination / "_static")
     shutil.copyfile(ROOT / "docs/gramlot-logo.svg", destination / "_static/gramlot-logo.svg")
 
     def toc(entries, caption):

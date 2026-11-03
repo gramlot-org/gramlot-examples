@@ -15,5 +15,7 @@ html_extra_path = ["_extra"]
 nitpicky = True
 myst_heading_anchors = 6
 html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]
+html_css_files = ["manual.css"]
 html_logo = "_static/gramlot-logo.svg"
 html_show_sourcelink = False
