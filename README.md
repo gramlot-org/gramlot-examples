@@ -12,11 +12,9 @@ npm install @gramlot/gramlot-examples
 [![PyPI](https://img.shields.io/pypi/v/gramlot-examples)](https://pypi.org/project/gramlot-examples/)
 [![npm](https://img.shields.io/npm/v/@gramlot/gramlot-examples)](https://www.npmjs.com/package/@gramlot/gramlot-examples)
 
-Current release: 0.3.30.
+Current release: 0.3.32.
 
 ## Run the gallery locally
-
-The current source checkout uses Grid features newer than the published Gramlot core 0.3.26. A core release is needed before all lessons work with the setup below.
 
 Clone the examples to keep an editable copy. Install Python 3.11 or newer,
 Git and Node.js 22 or newer with npm, then run (macOS/Linux):
