@@ -798,3 +798,35 @@ Two clean nested consumers (Uploader and Visual examples) were retired after
 semantic comparison and verified complete archives. The original Visual Editor
 working copy remains preserved, including its 70 untracked authored files. No
 public deployment or Invoice changes.
+
+
+<a id="ge-015-160"></a>
+## 160 · Tool documentation export recovered — 2026-11-03
+
+The previously pending export correction is now applied. Tool presentations omit
+an extra Inspector wrapper; Visual Editor receives its own standard directory
+export with every collection, including Typst. Ordinary examples keep their
+shared runtime and smaller collection set. Theme staging remains the standard
+serverless implementation; no blanket asset copy or dependency source changes.
+
+The focused regression passes and the complete export builds 133 playgrounds.
+The existing browser verifier, started before the visible-browser attempt,
+passed on Chromium and WebKit from file://: composition, required title,
+property changes, detached-panel identity, scoped Data, no page errors and no
+HTTP requests. This is an automated verifier result, not a CUA check. CUA refused
+the file protocol; no alternative was attempted to bypass that restriction.
+
+The local serverless installation had separate, older Bag/TYTX/Builder packages,
+causing an initial Data Bag identity failure. Its three installation directories
+were preserved with a manifest before linking to the primary core installation.
+No dependency manifest, package version policy or dependency source was changed.
+The earlier incomplete playground output was also preserved before rebuilding.
+No publication, deployment or Invoice changes.
+
+Final documentation qualification: Sphinx with warnings treated as errors passes;
+check_docs validates 133 lessons, five paired guides, search coverage and all
+local links/anchors. The prior site output contained 14 obsolete HTML pages and
+was preserved before a clean build. The broader runtime/parity runs were stopped
+as outside this export change: they are not passing receipts (the system Python
+lacked genro_tytx and the configured endpoint parity run reached its 120-second
+timeout). The focused docs-export regression passes independently.

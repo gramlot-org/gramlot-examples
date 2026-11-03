@@ -44,9 +44,11 @@ GE guides and every common lesson in catalogue order, with its Python and
 JavaScript source (and CSS when present). The lesson text remains authored beside
 the runnable pages; no second copy is maintained. Internal notes and concise
 mirrors are not part of the site. The documentation build uses the serverless exporter as a build tool to package
-every catalogue example with its own inspector palette, without the gallery shell or code pane.
-Each lesson embeds its runnable example with its explanation. The small 🔍 button
-opens the Inspector; the complete source remains below the lesson. Page Logic,
+every catalogue example without the gallery shell or code pane. Ordinary lessons include
+an inspector palette; full-panel tools keep their own controls without an extra Inspector.
+The Visual Editor is exported separately with the full collection catalogue, including Typst.
+Each lesson embeds its runnable example with its explanation. In ordinary lessons,
+the small 🔍 button opens the Inspector; the complete source remains below the lesson. Page Logic,
 stylesheets, endpoints and remote fragments use the standard Worker export. It adds no serverless dependency
 to the examples package. Sphinx copies the complete export unchanged through
 `html_extra_path`; the iframe uses a relative URL within the manual version.

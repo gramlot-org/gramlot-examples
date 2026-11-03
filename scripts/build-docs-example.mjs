@@ -15,7 +15,7 @@ const copied = Object.entries(assets)
     .map(([url, {file}]) => ({source: file, target: url.slice(1)}));
 copied.push({source: join(root, 'src/gramlot_examples/gallery/dist/inspector.js'),
     target: 'gallery/dist/inspector.js'});
-for (const {key} of families.flatMap(family => family.examples)) {
+for (const {key, presentation} of families.flatMap(family => family.examples)) {
     const route = routes[key];
     const folder = join(stage, key);
     await mkdir(folder, {recursive: true});
@@ -23,13 +23,13 @@ for (const {key} of families.flatMap(family => family.examples)) {
 export class Page extends Example {
     static galleryUrls = ${JSON.stringify(Object.fromEntries(families.flatMap(f => f.examples).map(e => [e.key, `../${e.key}/index.html`])))};
     async main(root) {
-        const inspector = root.div({style: 'padding: .25rem .5rem; text-align: right'})
+        ${presentation === 'tool' ? '' : `const inspector = root.div({style: 'padding: .25rem .5rem; text-align: right'})
             .button({type: 'button', id: 'gallery-inspector', title: 'Open inspector',
                 aria_label: 'Inspector', aria_pressed: 'false', disabled: true,
                 style: 'display: inline-flex; align-items: center; justify-content: center; padding: 0; inline-size: 28px; block-size: 28px; min-block-size: 28px; border: 0; background: transparent; box-shadow: none; font-size: 16px; line-height: 1'});
-        inspector.span('🔍', {aria_hidden: 'true'});
+        inspector.span('🔍', {aria_hidden: 'true'});`}
         await super.main(root);
-        root.script({src: ${JSON.stringify(key === 'typst_editor' ? 'gallery/dist/inspector.js' : '../gallery/dist/inspector.js')}});
+        ${presentation === 'tool' ? '' : `root.script({src: ${JSON.stringify(key === 'typst_editor' ? 'gallery/dist/inspector.js' : '../gallery/dist/inspector.js')}});`}
     }
 }
 `);
@@ -53,11 +53,14 @@ export class Page extends BasePage {
         }
     }
 }`);
-const {typst_editor: typstPage, ...ordinaryPages} = pages;
+const {typst_editor: typstPage, visual_source: visualPage, ...ordinaryPages} = pages;
 const output = join(root, 'build/docs-source/_extra/playgrounds');
 await buildDirectory({pages: {index: indexPage, ...ordinaryPages}, output,
     assets: copied, collections: collections.filter(item => item.grammar.grammar.name !== 'typst')});
 await buildDirectory({pages: {index: typstPage}, output: join(output, 'typst_editor'),
+    assets: copied, collections});
+
+await buildDirectory({pages: {index: visualPage}, output: join(output, 'visual_source'),
     assets: copied, collections});
 
 console.log(`Built ${families.reduce((count, family) => count + family.examples.length, 0)} manual playgrounds.`);
