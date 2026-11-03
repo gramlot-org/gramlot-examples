@@ -152,6 +152,10 @@ export class GalleryPage extends IndexPage {
     }
     examplePanel(parent, example) {
         const key = example.key;
+        if (example.presentation === 'tool') {
+            parent.iframe({title:example.title, name:`example-${key}`, id:`frame-${key}`, width:'100%', height:'100%', border:0, class:'gallery-tool'});
+            return;
+        }
         const panel = parent.div({class: 'gallery-panel-layout'});
         const header = panel.header({class: 'gallery-explanation'});
         header.h2(example.title);

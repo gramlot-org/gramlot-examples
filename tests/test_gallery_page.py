@@ -24,6 +24,16 @@ def sources(page):
 
 
 class GalleryPageTests(unittest.TestCase):
+    def test_visual_source_is_a_full_page_tool(self):
+        page = Page()
+        builder = page.source_builder("main", collections=GRAMMARS)
+        page.example_panel(builder.root, page.gallery_item("visual_source"))
+        nodes = builder.source.nodes
+        self.assertEqual(len(nodes), 1)
+        self.assertEqual(nodes[0].node_tag, "iframe")
+        self.assertEqual(nodes[0].attr["class_"], "gallery-tool")
+        self.assertEqual(nodes[0].attr["height"], "100%")
+
     def test_footer_omits_serverless_download(self):
         for url in (None, "/downloads/gallery.zip"):
             page = Page()

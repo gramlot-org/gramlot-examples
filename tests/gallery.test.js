@@ -870,3 +870,18 @@ test('Features is the final navigation page and retains an opened lesson when sw
     assert.equal(f.get('frame-e01'), frame);
     assert.equal(frame.contentWindow.draft, 'Retain me');
 });
+
+
+test('tool entries occupy the gallery panel without teaching chrome', () => {
+    const page = new NodeGalleryPage();
+    const entry = page.galleryItem('visual_source');
+    assert.equal(entry.presentation, 'tool');
+    const builder = new GramlotBuilder(null, {collections:[inputs, layout, tree]});
+    page.examplePanel(builder.root, entry);
+    const nodes = builder.source.getNodes();
+    assert.equal(nodes.length, 1);
+    assert.equal(nodes[0].nodeTag, 'iframe');
+    assert.equal(nodes[0].getAttr('class'), 'gallery-tool');
+    assert.equal(nodes[0].getAttr('id'), 'frame-visual_source');
+    assert.equal(nodes[0].getAttr('height'), '100%');
+});

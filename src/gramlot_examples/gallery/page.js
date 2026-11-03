@@ -24,7 +24,7 @@ export class Page extends GalleryPage {
             return {
                 key, title, get readme() { return read('README.md'); },
                 examples: examples.map(example => ({
-                    key: example.key, title: example.title, description: example.description, folder: example.folder, frameUrl: routes[example.key].url,
+                    key: example.key, presentation: example.presentation, title: example.title, description: example.description, folder: example.folder, frameUrl: routes[example.key].url,
                     get readme() { return read(`${example.folder}.md`); },
                     get source() { return read(`${example.folder}.js`); },
                     // The page module shows its own Logic; only a companion NN_name_aux.js is shown apart.

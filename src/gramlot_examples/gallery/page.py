@@ -214,6 +214,10 @@ class Page(IndexPage):
 
     def example_panel(self, parent, example):
         key = example["key"]
+        if example.get("presentation") == "tool":
+            parent.iframe(title=example["title"], name=f"example-{key}", id=f"frame-{key}",
+                          width="100%", height="100%", border=0, class_="gallery-tool")
+            return
         panel = parent.div(class_="gallery-panel-layout")
         header = panel.header(class_="gallery-explanation")
         header.h2(example["title"])

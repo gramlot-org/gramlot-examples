@@ -776,3 +776,25 @@ and covered by a three-check targeted passing rerun. In-app browser checks confi
 lazy propagation, mixed parent state and disabled on/off preservation after Clear.
 This is a current browser pass, not a fresh Chromium/WebKit matrix or publication.
 No Invoice changes.
+
+
+<a id="ge-015-tool-presentation-recovery-20261103"></a>
+## Hosted tool presentation recovered — 2026-11-03
+
+Review of the preserved nested Visual Editor copy found an existing catalogue
+contract not honored by current hosted renderers: presentation="tool". Recover
+the direct full-panel Source iframe in Python and JavaScript, and retain that
+property in the Node catalogue mapper. Ordinary lessons keep their teaching tabs.
+No new state, DOM bypass, resource API or page-side workaround is introduced.
+
+Qualification: all 40 gallery JavaScript tests and eight Python gallery-page
+tests pass; browser build passes. Local browser verification shows Visual Editor
+opening directly in its gallery tab without Example/Explanation/Code chrome,
+with its own panels, Source/Data trees and no console error. The standalone docs
+export candidate remains unapplied pending file:// qualification. Existing
+serverless automatic theme staging supersedes the old blanket theme-copy patch.
+
+Two clean nested consumers (Uploader and Visual examples) were retired after
+semantic comparison and verified complete archives. The original Visual Editor
+working copy remains preserved, including its 70 untracked authored files. No
+public deployment or Invoice changes.
