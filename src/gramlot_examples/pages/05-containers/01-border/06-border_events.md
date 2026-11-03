@@ -10,7 +10,7 @@ Those announcements are **events**. A **dataController** is a small piece of pag
 
 Close Filters and look at **Visibility events**. The count increases and the message says that the left region is closed. Open it again: you receive another change.
 
-Now drag a separator slowly. The panel follows your hand immediately, but **Completed resizes** changes when you finish dragging. This is useful if your application wants to react to the final size rather than every small movement.
+Drag the left or bottom separator slowly, or focus one and use the arrow keys. The panel follows your hand immediately, but **Completed resizes** changes when you finish dragging. This is useful if your application wants to react to the final size rather than every small movement.
 
 Use **Hide Filters from Data**. The region disappears and the visibility report updates too. An event describes a change in the interface, not just a particular mouse click. Untick it to restore visibility; the drawer's own open or closed preference is a separate setting.
 

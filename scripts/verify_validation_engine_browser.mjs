@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
-const [entry, base = 'http://127.0.0.1:8205/'] = process.argv.slice(2);
+const [entry, base = 'http://127.0.0.1:61505/'] = process.argv.slice(2);
 const {chromium,webkit} = await import(pathToFileURL(entry));
 for (const [name, engine] of [['chromium',chromium],['webkit',webkit]]) {
  const browser=await engine.launch({headless:true});
  try {
   const page=await browser.newPage({viewport:{width:1000,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base + 'w25');
+  await page.goto(new URL('pages/01-inputs/07-forms_and_validation/04-validation_engine', base).href);
   const field=id=>page.locator('#'+id+' #control');
   const data=path=>page.evaluate(p=>window.gramlot.data.getItem('profile.'+p),path);
   const edit=async(id,value)=>{await field(id).focus();await field(id).fill(value);await field(id).press('Tab');};

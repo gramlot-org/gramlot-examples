@@ -122,6 +122,11 @@ function setGroupletField({byId, window}, id, value) {
     input.dispatchEvent(new window.Event('input', {bubbles: true}));
 }
 const CHECKS = {
+    async l06({byId}) {
+        await tick();
+        const border = byId('events-border');
+        assert.ok(border.shadowRoot.querySelector('.separator[data-side="bottom"]'));
+    },
     async 'grid-05'({byId, data}) {
         await tick();
         const first = byId('grid-shared-first');

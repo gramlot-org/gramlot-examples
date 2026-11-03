@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
-const [entry, base='http://127.0.0.1:8243/']=process.argv.slice(2);
+const [entry, base='http://127.0.0.1:61505/']=process.argv.slice(2);
 const {chromium,webkit}=await import(pathToFileURL(entry));
 for (const [engine,type] of Object.entries({chromium,webkit})) {
     const browser=await type.launch();
     try {
         const page=await browser.newPage({viewport:{width:1200,height:1100}}), errors=[];
         page.on('pageerror', error=>errors.push(error.message));
-        await page.goto(new URL('l06',base).href);
+        await page.goto(new URL('pages/05-containers/01-border/06-border_events',base).href);
         const border=page.locator('#events-border');
         await page.locator('#events-name input').waitFor();
         const data=path=>page.evaluate(path=>gramlot.data.getItem(`events.${path}`),path);
@@ -59,7 +59,7 @@ for (const [engine,type] of Object.entries({chromium,webkit})) {
         await page.mouse.click(still.x+still.width/2,still.y+18);
         assert.equal(await data('resizeCount'),2);
         await page.evaluate(()=>{
-            const pane=gramlot.dom.getBaseSourceNode(document.getElementById('events-name').parentElement);
+            const pane=gramlot.dom.getBaseSourceNode(document.getElementById('events-name').closest('gramlot-content-pane'));
             window.filterSource=pane;
             pane.setAttr({width:'230px'});
         });

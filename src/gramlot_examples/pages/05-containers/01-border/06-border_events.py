@@ -35,6 +35,10 @@ class Page(BasePage):
                                     background="var(--gramlot-surface, #fff)")
         center.textBoxArea(id="events-note", value="^.note", lbl="Retained draft",
                            rows=3, width="100%", max_width="18rem")
+        border.contentPane(region="bottom", height="52px", minSize=36, maxSize=120,
+                           splitter=True, padding="12px",
+                           border_top="1px solid var(--gramlot-border-control, #aaa)",
+                           background="var(--gramlot-surface-subtle, #eef1f5)").p("Resize this bottom region too.")
         report = main_content.section(class_="card stack", max_width="48rem")
         report.h2("Received by dataController")
         report.p("^.drawerCount", id="events-drawer-count", mask="Visibility events: {}")

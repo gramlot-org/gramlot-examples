@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
-const [entry, base='http://127.0.0.1:8243/']=process.argv.slice(2);
+const [entry, base='http://127.0.0.1:61505/']=process.argv.slice(2);
 const {chromium,webkit}=await import(pathToFileURL(entry));
 for(const [name,type] of Object.entries({chromium,webkit})) {
  const browser=await type.launch();
@@ -9,7 +9,7 @@ for(const [name,type] of Object.entries({chromium,webkit})) {
   page.on('pageerror',e=>{errors.push(e.message);console.log(e.message)});
   page.on('console',m=>{if(m.type()==='error')console.log(m.text())});
 
-  await page.goto(new URL('l05',base).href);
+  await page.goto(new URL('pages/05-containers/01-border/05-nested_lab',base).href);
   await page.locator('#lab-customer input').waitFor({timeout:15000}).catch(async e=>{console.log(await page.locator('body').innerText());throw e});
   assert.equal(await page.locator('gramlot-border-container').count(),5);
   await page.evaluate(()=>window.retained=[...document.querySelectorAll('gramlot-border-container, #lab-customer, #lab-note')]);
@@ -17,6 +17,7 @@ for(const [name,type] of Object.entries({chromium,webkit})) {
   await customer.fill('A');await customer.press('Tab');
   await note.fill('A note through every resize');await note.press('Tab');
   assert.equal(await page.evaluate(()=>gramlot.data.getItem('customer')),'Ada Lovelace');
+  await page.getByText('Options · sizes, design and drawer captions',{exact:true}).click();
   for(const [path,host,side,axis,min,max] of [
    ['outer-top','lab-outer','top','height',40,110],['outer-bottom','lab-outer','bottom','height',35,130],
    ['outer-left','lab-outer','left','width',90,240],['outer-right','lab-outer','right','width',90,240],
