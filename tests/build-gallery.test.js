@@ -22,7 +22,9 @@ const environment = families => ({environment: 'test', families: families.map(fa
 test('common gallery', () => {
     const gallery = buildGallery();
     assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
-    assert.equal(Object.keys(gallery.routes).length, 163);
+    assert.equal(Object.keys(gallery.routes).length, 165);
+    assert.match(gallery.routes["transform-pane"].page, /\/09-transform_pane\.js$/);
+    assert.match(gallery.routes["tree-row-actions"].page, /\/06-row_actions\.js$/);
     assert.match(gallery.routes["tree-checkboxes"].page, /\/05-checkboxes\.js$/);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
     assert.match(gallery.routes.b12.data, /foo_data\.tytx$/);

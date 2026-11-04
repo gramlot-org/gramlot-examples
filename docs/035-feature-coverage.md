@@ -6,7 +6,7 @@ Document ID: **GE-035**.
 ## 005 · What this checklist measures
 
 This checklist describes teaching evidence, not exhaustive feature or test coverage.
-The common catalogue now has **131 lessons**. The Grid review on 2026-10-30 adds
+The common catalogue now has **135 lessons**. The Grid review on 2026-10-30 adds
 resident virtualization, floating layouts and typed search, plus optional Python
 catalogues for database loading and the Asqueel-only cached-selection experiment.
 The index distinguishes generic Grid behavior, experimental loading and Asqueel-only
@@ -67,7 +67,7 @@ coverage does not certify all of its attributes.
 
 | Component | Primary lesson | Teaching evidence / remaining work |
 | --- | --- | --- |
-| `transformPane` | **Gap** | Add a retained-content translation/rotation/scale exercise; tray gestures do not teach this component. |
+| `transformPane` | [transform-pane · Move, rotate and zoom a card](../src/gramlot_examples/pages/05-containers/09-transform_pane.md) | Drag the stage, change the angle and zoom fields, compare the bound pose, then reset it without losing the note. Two-touch gestures are described separately from mouse verification. |
 | `dialog` | [dialog_window · Dialog: modal editing](../src/gramlot_examples/pages/05-containers/04-dialog.md) | Open the dialog and try the background counter: it is blocked until you close the dialog. Edit the title, close and reopen: the draft is retained. |
 | `floatingPane` | [floating_window · Floating: keep the page usable](../src/gramlot_examples/pages/05-containers/05-floating.md) | Open the floating window, then use the background counter. Both remain usable. Edit the title and watch the page update; close and reopen to keep the same draft. |
 | `framePane` | [menu-05 · FramePane regions and command recipients](../src/gramlot_examples/pages/05-menus/06_frame_pane.md) | Click Top, Left and Bottom; compare sender and target, then test the nested frame. |
@@ -95,6 +95,7 @@ coverage does not certify all of its attributes.
 | Component | Primary lesson | Teaching evidence / remaining work |
 | --- | --- | --- |
 | `tree` | [w26 · Browse hierarchical Data with a tree](../src/gramlot_examples/pages/01-inputs/09-tree/01-basics.md) | Expand Catalog to request its children, then select a row. Add or rename a document and watch the tree follow changes in its Bag. |
+| `rowActions` | [tree-row-actions · Act without selecting](../src/gramlot_examples/pages/01-inputs/09-tree/06-row_actions.md) | Keep Notes selected while acting on Checklist, then use Archive’s row menu. Compare selected and acted-on paths. |
 
 ### editors
 

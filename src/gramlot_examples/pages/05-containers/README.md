@@ -32,3 +32,7 @@ The same lessons run in the Python, JavaScript and offline galleries. Code shows
 ## Live pages on a tray
 
 **Gallery tray** starts empty. Pick a lesson in its toolbar and add it as an independent live card at reduced zoom. This complements **Tray workspace**, which composes widgets directly in the same page and demonstrates layout snapshots.
+
+## Gesture values and visual transforms
+
+[Move, rotate and zoom a card](09-transform_pane.md) distinguishes the gesture surface from the child that displays its transform. Compare pointer movement with numeric Data edits and reset the pose without losing the note.

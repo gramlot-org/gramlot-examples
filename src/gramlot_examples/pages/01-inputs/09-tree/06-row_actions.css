@@ -1,0 +1,7 @@
+.row-actions-demo-tree {
+    display: block;
+    max-width: 42rem;
+    padding: 8px;
+    border: 1px solid var(--gramlot-border, #8997ab);
+    border-radius: 8px;
+}

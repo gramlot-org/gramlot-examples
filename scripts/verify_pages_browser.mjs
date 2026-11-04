@@ -17,6 +17,7 @@ import {workspaceBehaviors} from './workspace-behaviors.mjs';
 import {gridBehaviors} from './grid-behaviors.mjs';
 import {toolBehaviors} from './tool-behaviors.mjs';
 import {groupletBehaviors} from './grouplet-behaviors.mjs';
+import {widgetLessonsBehaviors} from './widget-lessons-behaviors.mjs';
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 
@@ -488,7 +489,7 @@ LOGIC.c23 = async (page, text) => {
     assert.equal(await text('#summary'), 'Stay estimate: €567');
 };
 
-Object.assign(LOGIC, componentBehaviors, layoutBehaviors, workspaceBehaviors, groupletBehaviors, gridBehaviors, toolBehaviors);
+Object.assign(LOGIC, componentBehaviors, layoutBehaviors, workspaceBehaviors, groupletBehaviors, gridBehaviors, toolBehaviors, widgetLessonsBehaviors);
 
 const missingChecks = families.flatMap(family => family.examples)
     .filter(example => !LOGIC[example.key] && !ENDPOINTS[example.key]).map(example => example.key);

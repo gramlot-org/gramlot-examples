@@ -277,6 +277,13 @@
           "title": "Form state",
           "description": "Track edits, incomplete drafts and pending checks; accept or restore a local snapshot.",
           "explanation": "A Source-owned baseline and registers coordinate existing input components without recreating them."
+        },
+        {
+          "key": "tree-row-actions",
+          "folder": "09-tree/06-row_actions",
+          "title": "Tree row actions",
+          "description": "Act on a tree row without changing selection; compare the selected and acted-on paths.",
+          "explanation": "A shared rowActions bar supplies the current node context to buttons and menu controllers."
         }
       ],
       "folder": "01-inputs"
@@ -654,6 +661,13 @@
           "folder": "08-gallery_tray",
           "title": "Gallery tray",
           "description": "Start with an empty tray. Add live examples at reduced zoom, arrange their cards, and keep each page’s edits while moving or resizing."
+        },
+        {
+          "key": "transform-pane",
+          "folder": "09-transform_pane",
+          "title": "Move, rotate and zoom a card",
+          "description": "Use gestures and numeric controls to update the same transform Data; keep content when resetting the pose.",
+          "explanation": "transformPane records gestures; a bound child style applies translation, rotation and scale."
         }
       ],
       "folder": "05-containers"
