@@ -6,6 +6,7 @@ RUN pip install --no-cache-dir --upgrade 'gramlot-py-server[kajenn,kajenn-asquee
     && python -c 'from gramlot_py_server.gallery.modules import stage_module' \
     && useradd --uid 10001 --create-home gallery
 COPY public-module/ /app/modules/
+COPY chart-data/ /app/chart-data/
 COPY serve-mobile.py public_database.py verify-public-database.py verify-public-proxy.py /app/
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 USER gallery

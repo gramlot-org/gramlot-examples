@@ -317,3 +317,13 @@ The database and browser gates verify the restriction and restore test values.
 Rollback of this feature removes the three added catalogues and handler mapping;
 revoke its column grant separately if write access is no longer desired.
 Keep the public mobile module and existing Remote Edit policy unchanged.
+
+## Original chart reports
+
+The Python public deployment includes the packaged chart-reports catalogue and uses
+the existing read-only demonstration connection for SalesCharts and SalesGeography.
+The deployment context must contain chart-data/states.geojson (Natural Earth) and
+chart-data/sal/<STATE>.geojson (ABS SAL 2021). These are public geography resources,
+not customer data, and are copied into the Python image. The same data and providers
+are used by the local qualified reports. No additional database grants or public
+process-monitor endpoints are enabled. Remote Edit remains disabled.
