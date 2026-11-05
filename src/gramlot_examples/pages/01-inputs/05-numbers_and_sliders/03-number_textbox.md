@@ -1,4 +1,4 @@
-# Numeric fields: format and constraints
+# Number fields
 
 **Try this:** Enter a decimal, then try invalid text and leave the field. Compare the editable draft with the accepted numeric value and its formatted copy.
 

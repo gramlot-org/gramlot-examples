@@ -830,3 +830,178 @@ was preserved before a clean build. The broader runtime/parity runs were stopped
 as outside this export change: they are not passing receipts (the system Python
 lacked genro_tytx and the configured endpoint parity run reached its 120-second
 timeout). The focused docs-export regression passes independently.
+
+
+Chart report reuse qualification — 2026-11-04: base/chart_report.py provides
+ChartReportPage, composed from shared FrameGrid and two ChartPane instances with
+separate configuration Bags and a common dataRpc result. Pages 85-chart-reports
+contain the host-backed index and deterministic attributes/values variants.
+Fixture years cover successful reload (2024/2025), a changed column catalogue
+(2023), empty results (2030), and an unavailable comparison (2022). The page uses
+ordinary Data bindings and RPC callbacks; it contains no application DOM, custom
+requests or parallel client state. The Python environment injects the invoice
+provider and GeoJSON; the examples package does not import that environment.
+The local launcher and repeatable Chromium/WebKit qualification instructions are
+in gramlot-py-server GP-035. All three pages passed both engines, including
+configuration retention and recovery. The fixture unit test covers both row
+representations. Local visual acceptance remains pending; no gallery publication.
+
+
+Chart composition update — 2026-11-05: the report examples now use the shared
+chartPane JavaScript Source composition through the thin Python ChartPane entry.
+Charts no longer calculate aggregations; SalesCharts still supplies prepared
+state totals, distinct-customer ratios and annual changes. The configuration
+contains no aggregation option. Browser qualification uses the composed child
+views and covers all three routes in Chromium and WebKit. The standard drawer,
+measure configuration, filtering, schema changes and reload recovery remain.
+
+
+<a id="ge-015-20261105"></a>
+## Release review — 2026-11-05
+
+This checkpoint supersedes the dated catalogue count above. The common catalogue
+contains 132 lessons. All have adjacent Python, JavaScript, JSON and Markdown.
+The configured optional catalogues add 14 lessons (Asqueel, cached selection,
+selection transport, database access, PageStore, chat and Kajenn). Directory
+introductions are not counted as exercises and may keep their navigation title.
+The chart-report files still under parallel development are not claimed complete
+or added to the released catalogue by this review.
+
+The pass removes duplicate page titles from 140 lesson sources, moves 14 exact
+decorative wrappers into the existing content presentation, shortens 33 JSON
+titles and updates their Markdown headings. Shared content presentation keeps
+Python/JS/serverless styling outside the lesson body. Wrappers carrying Data
+paths, semantic markup or actual layout constraints remain. Editors no longer
+repeat their page heading above the controls. Tree action instructions remain
+in Markdown rather than being repeated in the running example.
+
+No example, option, endpoint, field binding, initial Data file or behavioral
+variant was deleted. Tabs, toolbar variants and full-page compositions retain
+their small authoring methods and grouped options: their length represents
+multiple explicit behaviors, rather than explanatory paragraphs in code. The
+nested-border laboratory retains its three-level layout; collapsing it into an
+opaque helper would hide the feature it teaches. This is a structural/editorial
+review, not a claim that line count alone measures teaching quality.
+
+| Common family | Lessons | Nonempty Python lines per lesson |
+| --- | ---: | ---: |
+| Fundamentals | 5 | 5–10 |
+| Fields and input widgets | 32 | 10–62 |
+| Uploader | 3 | 34–89 |
+| Data and bindings | 12 | 15–97 |
+| Logic, actions and events | 16 | 13–71 |
+| RPC and data exchange | 7 | 17–28 |
+| Containers and layout | 15 | 15–108 |
+| Grid | 12 | 10–48 |
+| Editable grids | 1 | 32–32 |
+| Menus and toolbars | 14 | 5–102 |
+| Editors | 5 | 7–17 |
+| Tools | 2 | 18–37 |
+| Composition and reuse | 2 | 44–50 |
+| Grouplets | 6 | 25–45 |
+
+Checks include metadata/catalogue consistency, feature checklist links, all
+common lessons opening in both Chromium and WebKit, the updated checkbox example
+(codes/descriptions, readonly and hierarchy), and grid filter regressions.
+Browser startup checks do not replace full interaction tests for every variant.
+Detailed final verification is recorded in GC-070. No package publication or
+public deployment is performed by this pass.
+
+
+<a id="ge-015-charts-section-20261105"></a>
+## Charts learning path — 2026-11-05
+
+Owner approved a dedicated Charts family and declarative frameGrid chart options.
+Eight lessons cover bars/live rows, trends, shares, scatter, temporal snapshots,
+categorical 3D, numeric 3D and fictional GeoJSON maps. Python/JS, adjacent JSON,
+Markdown and TYTX are paired. Most lessons compose frameGrid search/chart options;
+only the temporal lesson concentrates on chartPane itself. The overview explains
+reactive rows/configuration, engine capabilities, lazy loading, WebGL and the lack
+of renderer-owned business aggregation. Vizabi and database geography stay outside
+this common path. The previous grid-charts key is retained in the Time subgroup.
+
+Verification: all eight lessons render in Chromium and WebKit over HTTP and file://
+(32 route/browser/profile checks). Both profiles check typed value edits, reactive
+chart updates, retained configuration and grid filters without deleting Data rows.
+Source parity for all eight lessons passes; the feature checklist agrees with its
+navigation. Gallery route tests and the strict Sphinx build pass (140 lessons).
+Local preview: http://127.0.0.1:61535/. No publication. Owner visual acceptance pending.
+
+
+### Lesson view preference and compact fields — 2026-11-05
+
+Implemented the owner-approved default-enabled Keep view between examples option
+using per-lesson selectedPage Data bindings and the existing settings persistence.
+Disabled mode retains independent choices; re-enabling carries the currently
+displayed view. Existing iframe instances and edited values remain intact.
+Common preview styles cap ordinary fields at 28rem without capping grids/editors.
+Verification: 41 gallery regressions, 8 Python gallery tests, final re-enable
+regression, and Chromium/WebKit browser checks pass. A 320px viewport has no
+horizontal overflow; the grid probe retains 1008px width. Preview is on port
+61535; public deployment unchanged.
+
+
+### Optional single preview — 2026-11-05
+
+Multipage defaults to enabled. Disabled mode reuses the existing lesson shell
+constructor, iframe and teaching tab container while keeping IndexPage navigation.
+Mode changes close prior panels and reopen the current choice; example state is
+discarded on navigation in single-page mode as explicitly approved by the owner.
+Late lesson responses are cancelled through the Source request API. The guide
+uses the existing frame-ready signal after loading. Regression checks cover
+mode toggling, iframe/tab identity, lazy teaching content and delayed responses;
+Python gallery (8) and guide (5) checks pass. Chromium/WebKit browser checks
+cover navigation, discarded drafts, reload persistence and return to multipage.
+Preview port 61535; no publication.
+
+Final browser run also covers the guided Drawers lesson in both Chromium and
+WebKit and passes. One earlier WebKit run emitted a transient “Load failed”
+during navigation while functional assertions passed; diagnostics observed
+cancelled requests from retiring frames. The unchanged repeat and the final
+guide-inclusive run passed without page errors. Keep this observation when
+reviewing cancellation behavior; no error suppression was introduced.
+
+### Minimal field declarations — 2026-11-05
+
+Owner: “default al posto dei dataSetter e lbl al posto di aria_label … fallo per tutti gli esempi”.
+Reviewed common Python/JS lessons and database/chart base pages. Bound field
+initial values now use defaults where they previously used dedicated setters;
+visible field labels use the shared labelbox. Dataset/controller initialization,
+the explicit setter lesson, and ARIA for landmarks/images/icon actions remain.
+Fundamentals and affected menu/tray Markdown explain the shorter declarations.
+Browser verification: Chromium and WebKit passed initial values, accessible
+labels and live text/opacity bindings. Broader database tests expose an unrelated
+catalogue key inconsistency: `asqueel-checkbox-customers` fails the existing
+`base-asqueel-NN` key validation (2 failures; chart/basic database checks pass).
+
+Final checks: 141/141 common Python/JavaScript Source parity tests passed; catalogue check and Python syntax validation passed. Five affected menu/tray pages also passed accessible-label checks in Chromium and WebKit. No publication.
+
+### Live examples import — 2026-11-05
+
+Owner requested importing the charts chat audio and psutil examples into a gallery folder for subsequent review. Copied the development examples and connected Python collector/launcher from docs-code-style without modifying originals. The optional system-monitor catalogue now groups System monitor and Microphone analysis under Live examples, each with Explanation and Python Code. Common examples remain included. Seven collector tests and Chromium live WebSocket sampling plus simulated microphone Play/Stop passed. This is a local integration, not final teaching review or public publication. Preview uses the optional localhost-only system-monitor gallery launcher on port 61535.
+
+
+### Relative Data paths audit — 2026-11-05
+
+Audio now uses an `audio` root context and child `.waveform`/`.spectrum` contexts.
+Its reusable chart and numeric-choice helpers use fixed relative paths; no binding
+path names are constructed. Human and compact lessons explain the arrangement.
+
+Reviewed dynamic path declarations across 234 authored Python modules and searched
+JavaScript counterparts (excluding generated assets). Main gallery hits mostly
+iterate real fields (forms, colors, transforms), create instance contexts
+(Grouplets), or teach variable datapaths; those are not context concatenation.
+Fundamentals deliberately introduces root Data paths.
+
+Remaining explicit-context review candidates: system_analysis chart/table helpers
+construct metrics/options paths; chart_report and sales_insights use separate
+shared row stores and chart configuration paths; visual_editor_chat uses the
+editor's explicit anchor contract. These are not silently rewritten: the monitor
+receives PageStore metric snapshots, reports share rows across independent charts,
+and editor paths are owned by its API. Their boundary contracts need to be retained
+when simplifying helpers. Invoice is unchanged. This audit does not claim that
+every example's absolute paths have been eliminated.
+
+Authoring rule: contextualize the Source container with datapath, then use fixed
+relative paths in the reusable helper. Never reconstruct a block's context in
+each binding. Explain intentional shared/server-owned absolute paths.

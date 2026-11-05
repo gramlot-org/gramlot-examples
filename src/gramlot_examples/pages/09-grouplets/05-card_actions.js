@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Shipping desk: card actions and scoped Clear';
     main(root) {
         const main_content = root.main({class: 'grouplet-demo', datapath: 'order'});
         main_content.dataFormula({result_path: '.shipping.canClear', formula: '!invoiced', invoiced: '^.invoiced', _init: true});

@@ -7,6 +7,7 @@ from genro_bag import Bag
 from gramlot import GramlotBuilder
 import gramlot_examples
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 
 TRIAL = Path(gramlot_examples.__file__).parent / 'trials/chat_base'
 
@@ -24,11 +25,11 @@ def test_chat_catalogue_keeps_source_logic_styles_and_explanation_together():
     assert route['url'] == 'pages/92-chat/01-echo'
     assert route['page'].is_file() and route['logic'].is_file() and route['stylesheet'].is_file()
     assert route['page'].with_suffix('.md').is_file()
-    assert 'chat' in [collection.name for collection in gallery['collections']]
+    assert 'chat' in [collection.name for collection in (*standard_collections(), *gallery['collections'])]
     assert not any('trials/chat/pages' in str(item['page']) for item in gallery['routes'].values())
     page = load_page().Page()
     import json
-    builder = GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in collections()])
+    builder = GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in (*standard_collections(), *collections())])
     page.main(builder.root)
     assert 'chatMessages' in builder.to_tytx()
 

@@ -1,0 +1,18 @@
+{
+  "key": "w10",
+  "title": "Number fields",
+  "description": "Enter a decimal, then try invalid text and leave the field. Compare the editable draft with the accepted numeric value and its formatted copy.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "numeric",
+    "format",
+    "constraints",
+    "numbers",
+    "sliders",
+    "number",
+    "textbox"
+  ],
+  "order": 9
+}

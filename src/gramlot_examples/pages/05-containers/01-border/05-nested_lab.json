@@ -1,0 +1,15 @@
+{
+  "key": "l05",
+  "title": "Nested regions playground",
+  "description": "Move one size control, then drag its corresponding splitter. Both update the same dimension; nested levels keep their own sizes.",
+  "tags": [
+    "containers",
+    "layout",
+    "nested",
+    "regions",
+    "playground",
+    "border",
+    "lab"
+  ],
+  "order": 4
+}

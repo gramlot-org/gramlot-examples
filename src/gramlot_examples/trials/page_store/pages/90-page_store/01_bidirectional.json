@@ -1,0 +1,14 @@
+{
+  "key": "pagestore-01",
+  "title": "Bidirectional Bag binding",
+  "description": "Two client Bags share one server branch through dataBinder.",
+  "tags": [
+    "store",
+    "web",
+    "socket",
+    "bidirectional",
+    "bag",
+    "binding"
+  ],
+  "order": 0
+}

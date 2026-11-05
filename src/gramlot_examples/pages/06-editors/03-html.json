@@ -1,0 +1,11 @@
+{
+  "key": "html_editor",
+  "title": "HTML editor",
+  "description": "Edit the code, then switch to Preview and Rich text. The three views share one draft; Preview displays the HTML without running its scripts.",
+  "tags": [
+    "editors",
+    "html",
+    "editor"
+  ],
+  "order": 2
+}

@@ -8,7 +8,6 @@ const ACTIONS = [
 ];
 
 export class Page extends BasePage {
-    static title = "Call methods on a Source node";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'methods'});

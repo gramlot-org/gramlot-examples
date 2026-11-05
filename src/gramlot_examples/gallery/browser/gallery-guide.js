@@ -1,3 +1,5 @@
+import {THEME_READY} from './theme-messages.js';
+
 /** A gallery lesson drives Data, never synthetic clicks or recorded publish traffic. */
 export class GuidedDemo {
     constructor(data, window) {
@@ -122,7 +124,18 @@ export function mountGuidedDemo(renderer, root) {
     voices();
     const hidden = () => { if (document.hidden) player.pause(); };
     document.addEventListener('visibilitychange', hidden);
-    const loaded = () => { player.stop(); player.target = null; player.set('available', false); };
+    const refreshTarget = () => {
+        const example = frame?.contentWindow.gramlot;
+        player.target = example?.state === 'started' ? example.data : null;
+        player.set('available', active && player.target !== null);
+    };
+    const loaded = () => { player.stop(); refreshTarget(); };
+    const ready = event => {
+        if (event.source !== frame?.contentWindow || event.data?.type !== THEME_READY ||
+            event.origin !== (window.location.protocol === 'file:' ? 'null' : window.location.origin)) return;
+        refreshTarget();
+    };
+    window.addEventListener('message', ready);
     data.subscribe('gallery-guide', {any: event => {
         if (['galleryGuide.voice', 'galleryGuide.rate'].includes(event.pathlist.join('.'))) player.voiceChanged();
     }});
@@ -134,6 +147,7 @@ export function mountGuidedDemo(renderer, root) {
         data.unsubscribe('gallery-guide', {any: true});
         frame?.removeEventListener('load', loaded);
         document.removeEventListener('visibilitychange', hidden);
+        window.removeEventListener('message', ready);
         window.speechSynthesis?.removeEventListener('voiceschanged', voices);
     };
     renderer.onDispose(root, dispose);
@@ -148,9 +162,7 @@ export function mountGuidedDemo(renderer, root) {
             }
             active = entry !== undefined && selected === entry.url;
             if (!active) player.pause();
-            const example = frame?.contentWindow.gramlot;
-            player.target = example?.state === 'started' ? example.data : null;
-            player.set('available', active && player.target !== null);
+            refreshTarget();
         }, pause() { player.pause(); }, dispose,
     };
 }

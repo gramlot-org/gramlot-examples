@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "One hierarchical menu, four presentations";
 
     main(root) {
 

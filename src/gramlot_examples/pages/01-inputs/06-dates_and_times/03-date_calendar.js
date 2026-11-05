@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
-    static title = "Inline and popup calendars";
     static locale = "it-IT";
     main(root) {
         const main_content = root.main({class:"example-page stack"});

@@ -1,0 +1,12 @@
+{
+  "key": "chart-reports-02",
+  "title": "Sales over time",
+  "description": "Play daily or monthly sales prepared by the server.",
+  "tags": [
+    "charts",
+    "time",
+    "sales",
+    "snapshots"
+  ],
+  "order": 1
+}

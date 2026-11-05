@@ -1,0 +1,14 @@
+{
+  "key": "b08",
+  "title": "Defer structural updates with freeze",
+  "description": "Freeze the branch, increment the count and remove an item. The count updates immediately; item removal appears only after Thaw.",
+  "tags": [
+    "bindings",
+    "defer",
+    "structural",
+    "updates",
+    "freeze",
+    "paths"
+  ],
+  "order": 8
+}

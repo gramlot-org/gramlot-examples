@@ -3,17 +3,15 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     devices = ("desktop", "tablet", "phone")
-    title = "HTML and components"
 
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
-        self.options(main_content)
-        comparison = main_content.div(display="grid", gap="12px", max_width="56rem",
+        self.options(root)
+        comparison = root.div(display="grid", gap="12px", max_width="56rem",
                               grid_template_columns="repeat(auto-fit, minmax(min(100%, 22rem), 1fr))")
         self.html_controls(comparison)
         self.components(comparison)
-        main_content.h2("Shared Data")
-        main_content.p("^customer", id="customer-value")
+        root.h2("Shared Data")
+        root.p("^customer", id="customer-value")
 
     def html_controls(self, parent):
         card = parent.section(class_="card stack", min_width=0)

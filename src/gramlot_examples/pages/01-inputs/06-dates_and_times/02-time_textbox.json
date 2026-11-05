@@ -1,0 +1,18 @@
+{
+  "key": "w12",
+  "title": "Time fields",
+  "description": "Change hours and minutes, then leave the field. Compare the second view; the stored value is a civil time, not a timestamp.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "time",
+    "entry",
+    "display",
+    "formats",
+    "dates",
+    "times",
+    "textbox"
+  ],
+  "order": 11
+}

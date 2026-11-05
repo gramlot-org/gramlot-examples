@@ -1,0 +1,16 @@
+{
+  "key": "transform-pane",
+  "title": "Move, rotate and zoom a card",
+  "description": "Use gestures and numeric controls to update the same transform Data; keep content when resetting the pose.",
+  "tags": [
+    "containers",
+    "layout",
+    "move",
+    "rotate",
+    "zoom",
+    "card",
+    "transform",
+    "pane"
+  ],
+  "order": 14
+}

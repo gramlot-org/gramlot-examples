@@ -2,8 +2,6 @@ from gramlot import Page as BasePage, source
 
 
 class Page(BasePage):
-    title = "Shipping desk: card actions and scoped Clear"
-
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="order")
         main_content.dataFormula(".shipping.canClear", "!invoiced", invoiced="^.invoiced", _init=True)

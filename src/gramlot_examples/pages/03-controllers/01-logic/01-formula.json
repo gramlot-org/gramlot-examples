@@ -1,0 +1,14 @@
+{
+  "key": "c01",
+  "title": "Calculate a value with dataFormula",
+  "description": "Change price or quantity and follow the calculated results. Changing VAT alone does not recalculate Gross: its = pointer is read on the next total change.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "calculate",
+    "value",
+    "formula"
+  ],
+  "order": 0
+}

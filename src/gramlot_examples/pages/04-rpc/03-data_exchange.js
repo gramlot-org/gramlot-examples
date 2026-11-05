@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Export and restore typed Data";
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'exchange'});
         const form = pane.section({class: 'card stack', datapath: '.record'});

@@ -5,8 +5,6 @@ SHOWN = ("name", "email", "search", "website", "telephone", "quantity", "date", 
 
 
 class Page(BasePage):
-    title = "Bound forms"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="form")
         layout = pane.div(class_="bound-form")

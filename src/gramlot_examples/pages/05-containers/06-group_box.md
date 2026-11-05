@@ -14,3 +14,7 @@ Group customer data under a heading. Copy TYTX with its types or choose plain JS
 **Sample data:** `06-group_box_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 
 </details>
+
+## Selectable heading
+
+Open the small chevron beside **Internal note** and choose **Public note**. `lbl_values` supplies `code:Caption` choices; `lbl_value="^other.kind"` reads and writes the code in Data. The heading displays its caption. The note and its widget remain unchanged: selecting a heading does not replace the contents. The same Labelbox menu works on ordinary HTML and input components. A plain `lbl` remains a fixed label.

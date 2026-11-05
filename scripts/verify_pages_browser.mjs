@@ -194,10 +194,42 @@ LOGIC.c17 = async (page, text) => {
 const input = async (page, selector, value, event = 'input') => page.locator(selector).evaluate(
     (element, args) => { element.value = args.value; element.dispatchEvent(new Event(args.event, {bubbles: true})); }, {value, event});
 Object.assign(LOGIC, {
+    async 'checkbox-tree'(page) {
+        const host=page.locator('#hierarchy');await host.locator('input.summary').click();
+ const tree=host.locator('gramlot-tree');
+ await tree.locator('[data-path="documents"] > .row > input').click();
+ await tree.locator('[data-path="documents"] > .row > .expander').click();
+ await tree.locator('[data-path="documents.catalog"] > .row > .expander').click();
+ await page.waitForFunction(()=>document.querySelector('#selected-paths').textContent.includes('documents.catalog.guide'));
+ assert.equal(await tree.locator('[data-path="documents.fixed"] > .row > input').isChecked(),true);
+ assert.equal(await tree.locator('[data-path="documents.fixed"] > .row > input').isDisabled(),true);
+ assert.equal(await tree.locator('[data-path="documents.blocked"] > .row > input').isChecked(),false);
+ assert.equal(await tree.locator('[data-path="documents.blocked"] > .row > input').isDisabled(),true);
+ assert.equal(await page.locator('#selected-paths').textContent(),'documents.catalog.guide,documents.catalog.reference');
+ const identity=await tree.elementHandle();
+ await tree.locator('[data-path="documents"] > .row > input').press('Escape');
+ await page.locator('#clear').click();
+ await host.locator('input.summary').click();
+ assert.equal(await tree.evaluate((el,old)=>el===old,identity),true);
+ assert.equal(await tree.locator('[data-path="documents.fixed"] > .row > input').isChecked(),true);
+ assert.equal(await page.locator('#selected-paths').textContent(),'');
+
+    },
     async e01(page) {
-        assert.equal(await page.locator('main').count(), 1);
-        assert.equal(await page.locator('main > h1').count(), 1);
-        assert.equal(await page.locator('main > p').count(), 1);
+        assert.equal(await page.getByRole('heading', {name:'Hello, Gramlot!'}).count(), 1);
+        assert.equal(await page.getByText('This heading and paragraph come from a Source tree.').count(), 1);
+    },
+    async 'fundamentals-bindings'(page) {
+        await page.getByRole('textbox', {name: 'Message'}).fill('Ada');
+        const paragraph = page.locator('p[title="Ada"]');
+        await paragraph.waitFor();
+        assert.equal(await paragraph.textContent(), 'Ada');
+        const slider = page.getByRole('slider', {name: 'Opacity'});
+        await slider.focus();
+        await slider.press('Home');
+        await page.waitForFunction(() => document.querySelector('p[title="Ada"]')?.style.opacity === '0.2');
+        await slider.press('End');
+        await page.waitForFunction(() => document.querySelector('p[title="Ada"]')?.style.opacity === '1');
     },
     async e02(page) {
         assert.ok((await page.locator('main').textContent()).includes('<tag>'));
@@ -206,9 +238,10 @@ Object.assign(LOGIC, {
         assert.equal(new URL(page.url()).hash, '#destination');
     },
     async e03(page) {
-        assert.equal(await page.locator('ol > li').count(), 3);
-        assert.equal(await page.locator('dl dt').count(), 2);
-        assert.ok(await page.locator('ul ul li').count() > 0);
+        assert.equal(await page.locator('section ul > li').count(), 3);
+        assert.equal(await page.locator('section').evaluate(el => getComputedStyle(el).color), 'rgb(255, 0, 0)');
+        assert.ok((await page.locator('section').textContent()).includes('<tag>'));
+        assert.equal(await page.locator('tag').count(), 0);
     },
     async e04(page) {
         await page.getByRole('link', {name: 'Notes', exact: true}).click();
@@ -222,11 +255,15 @@ Object.assign(LOGIC, {
         assert.deepEqual(await page.locator('tfoot td').allTextContents(), ['36','25','61']);
     },
     async e06(page) {
-        await page.fill('#name', 'Grace'); await page.uncheck('#updates');
-        await page.getByRole('button', {name: 'Reset values'}).click();
-        assert.equal(await page.inputValue('#name'), 'Ada Lovelace');
-        assert.equal(await page.isChecked('#updates'), true);
-        assert.equal(await page.getByRole('button', {name: 'Submit unavailable'}).isDisabled(), true);
+        const input = page.locator('input[type=text]');
+        await input.fill('Grace');
+        assert.equal(await input.inputValue(), 'Grace');
+        const labels = await page.locator('input[type=text], p').evaluateAll(nodes => nodes.map(node => {
+            for (let el = node; el; el = el.parentElement) if (el.labelbox) return el.labelbox.fieldLabel.textContent;
+            return null;
+        }).filter(Boolean));
+        assert.ok(labels.includes('Name')); assert.ok(labels.includes('Summary'));
+        assert.equal(await page.getByRole('button', {name: 'Continue'}).count(), 1);
     },
     async e07(page) {
         const summary = page.getByText('What is Source?', {exact:true});
@@ -237,9 +274,8 @@ Object.assign(LOGIC, {
         assert.equal(await page.locator('meter').getAttribute('value'), '8');
     },
     async e08(page) {
-        assert.equal(await page.locator('svg circle').getAttribute('r'), '38');
-        assert.equal(await page.locator('svg ellipse').getAttribute('rx'), '26');
-        assert.equal(await page.locator('svg ellipse').getAttribute('ry'), '38');
+        assert.equal(await page.locator('svg circle').getAttribute('r'), '30');
+        assert.equal(await page.locator('svg rect').getAttribute('width'), '60');
     },
     async e09(page) {
         assert.equal(await page.locator('svg > g').count(), 8);

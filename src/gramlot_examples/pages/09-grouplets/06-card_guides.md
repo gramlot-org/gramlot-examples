@@ -1,4 +1,4 @@
-# Customer handover: guides beside the fields
+# Card guides
 
 A new operator takes over North Workshop's order for twelve lights. The customer
 card identifies who can approve changes; delivery and nested address cards specify

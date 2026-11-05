@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Call the server when a value changes";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'quote'});

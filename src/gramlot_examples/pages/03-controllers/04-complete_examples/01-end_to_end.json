@@ -1,0 +1,18 @@
+{
+  "key": "c08",
+  "title": "Connected page",
+  "description": "Change quantity and options, then request a quote. The local total follows edits immediately; the last server quote stays visible until the next successful request.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "combine",
+    "inputs",
+    "calculations",
+    "server",
+    "calls",
+    "examples",
+    "end"
+  ],
+  "order": 7
+}

@@ -1,0 +1,12 @@
+{
+  "key": "upload_queue",
+  "title": "Upload queue and metadata",
+  "description": "Choose multiple files, edit metadata for each selected file, then upload the queue.",
+  "tags": [
+    "uploader",
+    "upload",
+    "queue",
+    "metadata"
+  ],
+  "order": 0
+}

@@ -1,0 +1,16 @@
+{
+  "key": "l04",
+  "title": "Drawers",
+  "description": "Close and reopen the four drawers. The workspace gains space while the fields and their Data remain available when you return.",
+  "tags": [
+    "containers",
+    "layout",
+    "drawers",
+    "handles",
+    "content",
+    "retained",
+    "border",
+    "drawer"
+  ],
+  "order": 3
+}

@@ -1,0 +1,11 @@
+{
+  "key": "chart-reports-07",
+  "title": "Monthly snapshots",
+  "description": "Animate prepared monthly rows with the shared chart configurator.",
+  "tags": [
+    "charts",
+    "time",
+    "animation"
+  ],
+  "order": 6
+}

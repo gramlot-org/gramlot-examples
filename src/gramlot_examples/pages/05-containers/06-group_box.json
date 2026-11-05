@@ -1,0 +1,14 @@
+{
+  "key": "w20",
+  "title": "groupBox: group fields and copy Data",
+  "description": "Edit the customer, then use the group's copy command. Only that datapath is copied; the note in the other group is excluded. TYTX preserves types.",
+  "tags": [
+    "containers",
+    "layout",
+    "group",
+    "box",
+    "fields",
+    "copy"
+  ],
+  "order": 11
+}

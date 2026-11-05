@@ -1,0 +1,18 @@
+{
+  "key": "w16",
+  "title": "checkBoxText",
+  "description": "Multiple selection: inline checkboxes, editable descriptions with stored codes, and hierarchical choices.",
+  "tags": [
+    "checkbox",
+    "checkBoxText",
+    "multiple",
+    "selection",
+    "codes",
+    "descriptions",
+    "popup",
+    "inline",
+    "hierarchical"
+  ],
+  "order": 15,
+  "component": "checkBoxText"
+}

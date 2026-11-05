@@ -4,8 +4,6 @@ from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = 'Editing · drafts and validation'
-
     def main(self, root):
         main = root.main(padding='20px', max_width='1120px', margin='0 auto')
         form = main.div(form=True, datapath='sample', node_label='editing',

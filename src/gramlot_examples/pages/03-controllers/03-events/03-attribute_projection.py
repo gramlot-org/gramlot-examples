@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Project attributes and preview HTML"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="projection")
         pane.h2("One value, several presentations")

@@ -1,0 +1,6 @@
+{
+  "key": "uploader",
+  "title": "Uploader",
+  "order": 2,
+  "catalog": "catalog.json"
+}

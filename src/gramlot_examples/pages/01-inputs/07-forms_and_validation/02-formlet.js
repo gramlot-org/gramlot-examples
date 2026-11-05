@@ -1,6 +1,5 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static title = "Arrange fields with formlet";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack'});

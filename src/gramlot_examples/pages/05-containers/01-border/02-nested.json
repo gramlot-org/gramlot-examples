@@ -1,0 +1,14 @@
+{
+  "key": "l02",
+  "title": "Nested borders and layout designs",
+  "description": "Resize an outer region, then a region inside the editor. Each borderContainer owns its layout independently.",
+  "tags": [
+    "containers",
+    "layout",
+    "nested",
+    "borders",
+    "designs",
+    "border"
+  ],
+  "order": 1
+}

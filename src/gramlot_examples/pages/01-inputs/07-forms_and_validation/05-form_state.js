@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Form state';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack',max_width:'48rem'});

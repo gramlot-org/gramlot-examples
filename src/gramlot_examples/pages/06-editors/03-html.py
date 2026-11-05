@@ -2,11 +2,8 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "HTML editor"
-
     def main(self, root):
         main_content = root.main(datapath="htmlDemo", padding="24px", class_="example-page stack")
-        main_content.h1(self.title)
         main_content.checkbox(value="^.readonly", label="Read only", default=False)
         tabs = main_content.tabContainer(selectedPage="^.view", height="500px", default_selectedPage='code')
         tabs.contentPane(title="Code", pageName="code", height="100%").codeMirror(value="^.content", language="html", readonly="^.readonly", height="100%")

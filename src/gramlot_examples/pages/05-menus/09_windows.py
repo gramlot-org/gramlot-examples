@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "FramePane, dialog and floating windows"
-
     def main(self, root):
         main_content = root.main(padding="20px", max_width="900px", margin="auto")
         choices = main_content.div(class_="grid")
@@ -15,7 +13,7 @@ class Page(BasePage):
             block = choices.section(class_="card stack")
             block.h2(title)
             block.button(caption, action=action, id=key)
-        main_content.input(value="^windows.background", live=True, id="background-field", width="100%", margin="12px 0", aria_label="Background field")
+        main_content.input(value="^windows.background", live=True, id="background-field", width="100%", margin="12px 0", lbl="Background field")
         main_content.p("^windows.notice", id="window-notice")
         self.contents(root.dialog(title="Basic modal dialog", open="^windows.basic", width="440px", height="310px", id="basic-window"), "basic")
         self.contents(root.dialog(title="Movable modal dialog", open="^windows.modal", collapsed="^windows.collapsed", movable=True, resizable=True, collapsible=True, maximizable=True, maximized="^windows.modal_maximized", beforeClose="beforeClose", width="440px", height="360px", id="modal-window"), "modal")
@@ -29,7 +27,7 @@ class Page(BasePage):
         bar.spacer(flex=1)
         bar.menuline(group=True).span("Frame top", font_size="12px")
         content = frame.center.contentPane(frameTarget=True, selfsubscribe_save="save", padding="12px", overflow="auto")
-        content.input(value="^windows.draft", live=True, width="100%", aria_label="Window draft")
+        content.input(value="^windows.draft", live=True, width="100%", lbl="Window draft")
         if kind != "basic":
             row = content.div(margin="12px 0")
             row.input(type="checkbox", value="^windows.locked", id=kind+"-locked")

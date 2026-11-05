@@ -4,7 +4,6 @@ const FIELDS = [['Text', 'text', 'text'], ['Number', 'number', 'number'], ['Rang
     ['Date', 'date', 'date'], ['Color', 'color', 'color']];
 
 export class Page extends BasePage {
-    static title = "Edit shared Data with native fields";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'edit'});

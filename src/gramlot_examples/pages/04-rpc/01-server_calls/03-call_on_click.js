@@ -8,7 +8,6 @@ class OutOfStock extends Error {
 }
 
 export class Page extends BasePage {
-    static title = "Call the server from a button";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'stock'});

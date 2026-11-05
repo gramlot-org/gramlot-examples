@@ -10,7 +10,7 @@ Open the [Python gallery](https://gallery-py.gramlot.dev/) or the
 its search field. Search includes branches not yet opened; clearing the field
 restores the tree. Choose a result to open its page in a retained tab.
 
-Start with HTML and SVG, then fields, Data bindings and Logic. Continue to RPC,
+Start with Fundamentals: HTML, Data, value and attribute bindings, styles, Labelboxes, SVG and inspection of Data and Source. Then continue with components, advanced bindings and Logic. Continue to RPC,
 containers, menus and composition as needed. The [learning path](../src/gramlot_examples/pages/README.md)
 links every topic; it is generated into the manual with the catalogue lessons.
 
@@ -21,7 +21,8 @@ links every topic; it is generated into the manual with the catalogue lessons.
 - **Explanation:** understand the mechanism and expected result.
 - **Code:** read the Python or JavaScript declaration and any browser Logic.
 
-Use the handle inside Code to detach it into a floating window. Closing that
+Use the handle inside Example, Explanation or Code to detach that panel into a
+floating window. Arrange the windows side by side to read while trying the example. Closing that
 window returns the same panel. The Inspector in the navigation toolbar exposes
 Source and Data. A value changing in Data is different from a Source node being
 inserted or removed; watch the relevant tree while trying an action.
@@ -37,6 +38,12 @@ A companion `foo_data.tytx` contains the initial Data Bag for `foo.py` or `foo.j
 It is loaded before rendering. Small interface preferences use `default` on their
 bound controls. `dataSetter` remains available for examples teaching explicit
 installation writes; it is not required for every bound field.
+
+`default` initializes a missing bound value without overwriting existing Data.
+Use `lbl` for a visible field label: the shared labelbox supplies the accessible
+association too. Explicit ARIA names remain useful for icon-only actions, SVG
+images and landmarks; they do not need an extra visible field label.
+Dataset Bags and controller state still need their own initialization.
 
 Some lessons provide Play and Clear. Their instructions explain whether Play
 loads values together or replays edits with a short delay. You can always try the
@@ -136,3 +143,90 @@ public Kajenn and JavaScript hosts. A manual upload check on 2026-11-02 returned
 **Upload is unavailable in this environment**. Selecting a file is not proof of
 upload support. The adapters need a separately verified upload integration;
 enabling a capability flag alone is insufficient.
+
+
+<a id="ge-030-050"></a>
+## 050 · Lesson files and minimal code
+
+Each lesson keeps its title, short description and search tags in an adjacent
+JSON descriptor. Its Markdown file explains what to try, what changes and why
+the declarations work. The catalogue is generated from those descriptors; it is
+not an independent source of truth. Python and JavaScript show the same lesson.
+
+A content lesson can declare `"presentation": "content"` in JSON. The shared
+gallery wrapper then supplies spacing and the `example-page stack` presentation
+in Python, JavaScript and serverless. Its `main(root)` declares only the lesson's
+contents. Grid, editor and tool pages keep their own bounded or filling layout;
+they do not receive this content wrapper automatically. A wrapper that defines
+a Data path, semantic HTML section or layout constraint is still part of the
+example.
+
+Index pages introduce a section and are not individual exercises. They may retain
+a page title for directory navigation. Likewise, a lesson may explicitly set a
+page title when that behavior itself is being demonstrated; title assignment is
+not boilerplate required to use Gramlot.
+
+Longer examples retain separate methods and variant groups when they demonstrate
+distinct behavior. Removing a variant merely to reduce line count would hide a
+feature. Sample Data, component declarations and handlers that produce the
+observable result remain available beside the lesson.
+
+
+<a id="ge-030-055"></a>
+## 055 · Charts and their Data
+
+The Charts family separates simple comparisons, temporal snapshots, 3D and maps.
+Read its introduction for the engine capability table and Data/configuration model.
+Most lessons start with frameGrid: searchOn creates search, chart=True or a type
+creates the Chart command. chart_* initializes configuration in the frame's
+._chart Data Bag; each chart frame declares its own datapath. Rows come from
+storepath and can be shared. Closing the floating chart retains configuration.
+
+Try Bars and live data first. Its integer revenue field changes the same row
+shown in the grid and chart. Filter the grid, change the chart type or measure,
+and inspect Data. There is no application redraw call. Sample data is adjacent
+TYTX; maps use a small fictional GeoJSON dataset, so no database or boundary
+service is needed. 3D requires WebGL. Unsupported engine/type pairs are not offered.
+
+
+<a id="ge-030-060"></a>
+## 060 · Lesson view and compact fields
+
+Settings → **Keep view between examples** is enabled by default. Selecting
+Example, Explanation or Code carries that view to the next lesson, including
+an already open lesson. Disable it to retain each lesson's own selected tab.
+The preference persists with the other gallery settings in local storage;
+the current and per-lesson views live in the gallery Data Bag. Switching views
+keeps the example iframe and its edited Data alive.
+
+The common preview presentation limits ordinary input fields and horizontal
+sliders to 28rem, shrinking to the available width on narrow screens. It does
+not cap grids, editors or filling panels. Python and JavaScript lesson code
+need no extra wrappers or width declarations. The shared preview bridge also
+supplies these styles to serverless exports.
+
+Owner confirmation (2026-11-05): “procedi con l’opzione nelle impostazioni,
+attiva di default, e rendi più compatte le larghezze degli esempi senza
+aggiungere codice inutile.” The view preference is independent of the Multipage option described below.
+
+
+<a id="ge-030-065"></a>
+## 065 · Multipage or one reusable preview
+
+**Settings → Multipage** is enabled by default. Each open lesson retains its
+own iframe and Data. Disable it to keep one shared lesson shell, its
+Example/Explanation/Code tabs and one preview iframe. Selecting another lesson
+changes the iframe URL and replaces its teaching content; unsaved example state
+is discarded. The selected teaching tab stays in place. The preference is saved
+with the other gallery settings.
+
+Changing mode closes the previous lesson panels and reopens the current choice
+in the selected mode. Code and Explanation still load on demand. Their old
+Source requests are cancelled before reusing the targets so late responses
+cannot overwrite the next lesson. The existing IndexPage navigation, lesson
+constructor, guide, content loader and Source request lifecycle are reused;
+there is no second navigation implementation.
+
+Owner confirmation (2026-11-05): “aggiungi multipagina true di default […]
+contorno e tab restano, si riusa un solo iframe. Va bene perdere lo stato quando
+cambio esempio.” Multipage is enabled by default; single-page mode is optional.

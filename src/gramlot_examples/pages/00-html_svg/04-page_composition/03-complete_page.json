@@ -1,0 +1,15 @@
+{
+  "key": "e12",
+  "title": "Build a complete event page",
+  "description": "Use the page navigation, inspect the schedule and open a question. This complete static page combines the small HTML and SVG techniques from the earlier lessons.",
+  "tags": [
+    "html",
+    "svg",
+    "build",
+    "event",
+    "composition"
+  ],
+  "order": 11,
+  "catalogued": false,
+  "navigation": false
+}

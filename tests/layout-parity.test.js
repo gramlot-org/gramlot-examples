@@ -45,6 +45,7 @@ from datetime import date
 from gramlot import GramlotBuilder
 from genro_bag import Bag
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 from gramlot_examples.gallery.guided_demo import guided_demo
 
 def normalize(v):
@@ -57,7 +58,7 @@ def normalize(v):
 def source(bag):
     return [dict(tag=n.node_tag.lower() if n.node_tag else n.label, attrs=normalize(n.attr), value=source(n.value) if hasattr(n.value, 'nodes') else normalize(n.value)) for n in bag.nodes]
 
-b=GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in collections()])
+b=GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in (*standard_collections(), *collections())])
 if sys.argv[1] == 'guide': guided_demo(b.root)
 else:
     spec=importlib.util.spec_from_file_location('example', sys.argv[1]); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)

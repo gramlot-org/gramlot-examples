@@ -1,0 +1,15 @@
+{
+  "key": "w26",
+  "title": "Browse hierarchical Data with a tree",
+  "description": "Expand Catalog to request its children, then select a row. Add or rename a document and watch the tree follow changes in its Bag.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "browse",
+    "hierarchical",
+    "tree",
+    "basics"
+  ],
+  "order": 24
+}

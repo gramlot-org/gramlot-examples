@@ -1,0 +1,14 @@
+{
+  "key": "menu-03",
+  "title": "Toolbar groups and overflow",
+  "description": "Compact toolbar, retained search, indivisible groups, priority overflow and scrolling.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "toolbar",
+    "groups",
+    "priority",
+    "overflow"
+  ],
+  "order": 1
+}

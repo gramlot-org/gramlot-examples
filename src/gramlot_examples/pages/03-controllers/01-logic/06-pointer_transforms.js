@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Transform bound values with pointer expressions";
     static locale = 'it-IT';
     static timeZone = 'Europe/Rome';
 

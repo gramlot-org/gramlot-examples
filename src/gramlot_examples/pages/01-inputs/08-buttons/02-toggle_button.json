@@ -1,0 +1,16 @@
+{
+  "key": "w23",
+  "title": "Toggle buttons and selection state",
+  "description": "Toggle Enabled and compare its checkbox. Then try Read only and Disabled: the command's state and whether you can edit it are separate concerns.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "toggle",
+    "buttons",
+    "selection",
+    "state",
+    "button"
+  ],
+  "order": 21
+}

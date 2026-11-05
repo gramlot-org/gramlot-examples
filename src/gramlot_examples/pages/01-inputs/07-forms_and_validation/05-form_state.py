@@ -4,7 +4,6 @@ from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = "Form state"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

@@ -1,0 +1,13 @@
+{
+  "key": "dialog_window",
+  "title": "Dialog: modal editing",
+  "description": "Open the dialog and try the background counter: it is blocked until you close the dialog. Edit the title, close and reopen: the draft is retained.",
+  "tags": [
+    "containers",
+    "layout",
+    "dialog",
+    "modal",
+    "editing"
+  ],
+  "order": 9
+}

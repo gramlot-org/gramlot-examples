@@ -3,7 +3,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 const OPTIONS = [['ada', 'Ada Lovelace'], ['alan', 'Alan Turing'], ['grace', 'Grace Hopper']];
 
 export class Page extends BasePage {
-    static title = "Change the current record with datapath";
 
     main(root) {
         const pane = root.div({class: 'example-page stack'});

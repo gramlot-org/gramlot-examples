@@ -5,7 +5,6 @@ from gramlot import Page as BasePage, GramlotBuilder, ChatPane, ChatPageStore
 
 
 class Page(BasePage):
-    title = 'Echo and interactive replies'
 
     def main(self, root):
         ui = ChatPane(root, datapath='chat', height='100dvh', id='base-chat')

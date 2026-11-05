@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Color Maker: one block, three contexts';
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

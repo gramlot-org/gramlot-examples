@@ -1,4 +1,4 @@
-# FramePane, dialog and floating
+# Window commands
 
 `dialog` and `floatingPane` come from the layout collection. `html_dialog` always
 means native HTML and remains available for low-level framework uses.
@@ -47,3 +47,8 @@ Persistent geometry across reloads and stable maturity remain outside this trial
 ## Read the composition
 
 Both windows call `contents` to build their frame. Open each and try the background controls: modality is the deliberate difference. Then move, resize, collapse and maximize; closing and reopening must retain the page Data.
+
+## Field labels
+
+`lbl` declares the visible label and associates it with the input through the
+shared labelbox. No separate HTML label or repeated ARIA name is needed.

@@ -28,8 +28,6 @@ class InspectUpload(UploadTarget):
 
 
 class Page(BasePage):
-    title = "Upload queue and metadata"
-
     def main(self, root):
         main_content = root.main(datapath="uploadDemo", padding="16px")
 

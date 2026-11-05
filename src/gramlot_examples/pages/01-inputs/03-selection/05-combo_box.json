@@ -1,0 +1,18 @@
+{
+  "key": "w15",
+  "title": "Combine free text and suggestions",
+  "description": "Choose a suggested city, then enter a city outside the list. Both are accepted: suggestions assist free text rather than restricting it.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "combine",
+    "free",
+    "text",
+    "suggestions",
+    "selection",
+    "combo",
+    "box"
+  ],
+  "order": 14
+}

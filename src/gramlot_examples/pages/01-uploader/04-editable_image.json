@@ -1,0 +1,12 @@
+{
+  "key": "editable_image",
+  "title": "Editable images",
+  "description": "Crop an image locally or send it through an application upload operation.",
+  "tags": [
+    "uploader",
+    "editable",
+    "images",
+    "image"
+  ],
+  "order": 2
+}

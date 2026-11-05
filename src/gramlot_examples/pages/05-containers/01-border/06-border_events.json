@@ -1,0 +1,13 @@
+{
+  "key": "l06",
+  "title": "Border events and controllers",
+  "description": "Open or close a drawer and resize a region. Compare the event counters and payloads to see the notifications received by controllers.",
+  "tags": [
+    "containers",
+    "layout",
+    "border",
+    "events",
+    "controllers"
+  ],
+  "order": 5
+}

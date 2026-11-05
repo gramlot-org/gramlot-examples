@@ -7,7 +7,6 @@ def icon(drawing):
 
 
 class Page(BasePage):
-    title = "Compare desktop and touch themes"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

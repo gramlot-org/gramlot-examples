@@ -1,0 +1,15 @@
+{
+  "key": "c09",
+  "title": "Define and call a server endpoint",
+  "description": "The page sends price and VAT rate once at startup. The server returns the gross amount, which appears below through a Data binding.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "define",
+    "call",
+    "server",
+    "endpoint",
+    "calls"
+  ],
+  "order": 1
+}

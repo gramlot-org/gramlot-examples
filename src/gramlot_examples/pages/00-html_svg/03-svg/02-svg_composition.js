@@ -1,11 +1,9 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Compose an SVG scene";
 
     main(root) {
-        const main_content = root.main({class: 'example-page stack'});
-        const figure = main_content.figure({class: 'card'});
+        const figure = root.figure({class: 'card'});
         const drawing = figure.svg({viewBox: '0 0 560 240', role: 'img', aria_labelledby: 'scene-title', class: 'example-art'});
         drawing.title('A row of houses and trees in a garden', {id: 'scene-title'});
         drawing.rect({x: 0, y: 0, width: 560, height: 240, fill: 'var(--gramlot-surface-subtle)'});

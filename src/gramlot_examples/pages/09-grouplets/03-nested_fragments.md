@@ -1,4 +1,4 @@
-# Service visit: compose a site dossier
+# Nested grouplets
 
 Edit the site contact, address and access notes, then reload the composed section without losing the draft.
 

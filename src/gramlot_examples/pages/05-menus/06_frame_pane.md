@@ -1,4 +1,4 @@
-# 4. FramePane: layout and a command boundary
+# Frame regions and commands
 
 `framePane` reuses `borderContainer` layout and exposes `top`, `bottom`, `left`,
 `right`, and `center`. The first access creates one real `contentPane` Source node;

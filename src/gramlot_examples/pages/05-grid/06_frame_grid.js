@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'FrameGrid · complete example';
 
     main(root) {
         const main_content = root.main({padding:'12px', height:'100%', min_height:0});
@@ -30,7 +29,7 @@ export class Page extends BasePage {
     }
     bars(frame) {
         const top=frame.top.menu({presentation:'bar',aria_label:'Order commands',padding:'4px 8px',labelPosition:'tooltip',iconSize:20,background:'var(--gramlot-surface-subtle)'});
-        const title = top.menuline({group:true, overflowable:false, gap:'10px'});
+        const title = top.menuline({group:true, gap:'10px'});
         const symbol = title.svg({viewBox:'0 0 24 24', width:22, height:22, fill:'none',
             stroke:'currentColor', stroke_width:'1.6', aria_hidden:'true'});
         symbol.path({d:'M12 3 3 7.5v9L12 21l9-4.5v-9L12 3ZM3 7.5l9 4.5 9-4.5M12 12v9M7.5 5.25l9 4.5'});
@@ -41,7 +40,7 @@ export class Page extends BasePage {
         actions.menuline('gridExample:removeLast',{id:'orders-remove'});
         frame.dataFormula({result_path:'.count',formula:'rows.getNodes().length',rows:'^.rows',_onBuilt:true});
         const bottom=frame.bottom.menu({presentation:'bar',aria_label:'Order status',padding:'4px 8px'});
-        const count=bottom.menuline({group:true,overflowable:false});
+        const count=bottom.menuline({group:true});
         count.span('^.count',{id:'orders-count'});count.span('rows · Read only');
         bottom.spacer({flex:1});
         bottom.menuline({group:true,priority:10}).span('^.status',{id:'orders-status'});

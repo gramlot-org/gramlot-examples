@@ -2,18 +2,15 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Expandable sections and progress indicators"
-
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
         for question, answer in (
             ("What is Source?", "A declarative tree describing the page."),
             ("Can a page contain SVG?", "Yes. The SVG dialect nests under an HTML Source node."),
         ):
-            details = main_content.details(class_="card")
+            details = root.details(class_="card")
             details.summary(question)
             details.p(answer)
-        measures = main_content.section(class_="card stack")
+        measures = root.section(class_="card stack")
         measures.h2("Measured values")
         measures.html_label("Preparation: 70%", for_="preparation")
         measures.progress(id="preparation", value=70, max=100)

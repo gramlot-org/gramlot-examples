@@ -1,4 +1,4 @@
-# Drawers: handles, content and retained Data
+# Drawers
 
 **Try this:** Close and reopen the four drawers. The workspace gains space while the fields and their Data remain available when you return.
 

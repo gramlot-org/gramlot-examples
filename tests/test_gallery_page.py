@@ -5,8 +5,9 @@ import unittest
 
 from gramlot_examples.gallery.page import Page
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 
-GRAMMARS = [json.loads(item.verify()[item.grammar]) for item in collections()]
+GRAMMARS = [json.loads(item.verify()[item.grammar]) for item in (*standard_collections(), *collections())]
 
 
 def sources(page):
@@ -157,7 +158,7 @@ class GalleryPageTests(unittest.TestCase):
         for name in ("navigation", "settings"):
             button = controls[f"gallery-{name}-button"]
             self.assertTrue(button.attr["iconSrc"].startswith("data:image/svg+xml,"))
-            self.assertFalse(button.attr["overflowable"])
+            self.assertNotIn("overflowable", button.attr)
 
 
 if __name__ == "__main__":

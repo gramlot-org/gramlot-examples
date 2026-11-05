@@ -1,0 +1,14 @@
+{
+  "key": "tree-row-actions",
+  "title": "Tree row actions",
+  "description": "Act on a tree row without changing selection; compare the selected and acted-on paths.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "tree",
+    "row",
+    "actions"
+  ],
+  "order": 30
+}

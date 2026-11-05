@@ -3,7 +3,6 @@ from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = "Validation rules, warnings and callbacks"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

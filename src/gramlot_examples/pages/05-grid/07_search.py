@@ -3,8 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Search · text, numbers and dates'
-
     def main(self, root):
         main_content = root.main(datapath='sample', padding='20px', max_width='1080px', margin='0 auto')
         frame = main_content.frameGrid(storepath='.rows', rowMode='attributes', searchOn=True, height='330px')

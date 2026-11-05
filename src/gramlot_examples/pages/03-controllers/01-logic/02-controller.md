@@ -1,4 +1,4 @@
-# React to Data changes with dataController
+# Data controllers
 
 **Try this:** Change the name, send a request and try the delayed input. Each section shows a different reason for a controller to run; the counters make those triggers visible.
 

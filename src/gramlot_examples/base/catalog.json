@@ -3,15 +3,21 @@
   "families": [
     {
       "key": "base-database",
+      "title": "Base · Database",
       "folder": "80-database",
-      "title": "Base \u00b7 Database",
       "examples": [
         {
           "key": "base-01",
           "title": "Customers across adapters",
-          "folder": "01-customers",
           "description": "Real PostgreSQL customers through Asqueel, SQLAlchemy or Django.",
-          "explanation": "Shared physical fields, auxiliary columns and selected values."
+          "tags": [
+            "base",
+            "database",
+            "customers",
+            "across",
+            "adapters"
+          ],
+          "folder": "01-customers"
         }
       ]
     }

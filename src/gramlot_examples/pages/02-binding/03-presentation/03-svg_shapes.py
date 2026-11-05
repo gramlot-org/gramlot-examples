@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Bind SVG geometry and color"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="shapes")
         work = pane.div(class_="grid lesson-workbench")

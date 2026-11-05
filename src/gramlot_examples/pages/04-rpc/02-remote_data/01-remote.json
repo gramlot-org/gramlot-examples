@@ -1,0 +1,14 @@
+{
+  "key": "c12",
+  "title": "Load a remote Source fragment",
+  "description": "Choose Lamp, Desk or Chair. The server builds the selected detail fragment; the page replaces only that section.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "load",
+    "remote",
+    "source",
+    "fragment"
+  ],
+  "order": 4
+}

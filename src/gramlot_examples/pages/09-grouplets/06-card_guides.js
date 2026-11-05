@@ -1,6 +1,5 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static title = 'Customer handover: guides beside the fields';
     main(root) {
         const main = root.main({class:'grouplet-demo',datapath:'order'});
         main.dataFormula({result_path:'.shipping.guide',formula:"enabled ? '### Delivery for ' + customer + '\\n\\n**Current destination:** ' + (city || 'enter a city') + ', ' + (country || 'enter a country') + '.\\n\\n**Contact to confirm access:** ' + (contact || 'enter a contact') + '.\\n\\n### Before booking the carrier\\n\\n1. Agree a delivery window with the receiving team.\\n2. Check that the selected entrance is open during that window.\\n3. Describe unloading restrictions and who the driver should call.\\n\\nThe address card has a separate guide for the destination fields. These instructions follow the current draft, even while the card is folded.' : ''",enabled:'^.showGuide',customer:'^.customer.name',city:'^.shipping.address.city',country:'^.shipping.address.country',contact:'^.customer.contact',_init:true});

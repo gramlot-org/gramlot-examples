@@ -1,0 +1,11 @@
+{
+  "key": "code_mirror_options",
+  "title": "Editor options",
+  "description": "Open the editor's Options drawer and change wrapping or font size. The draft remains; changing Language and sample intentionally replaces it.",
+  "tags": [
+    "editors",
+    "editor",
+    "options"
+  ],
+  "order": 1
+}

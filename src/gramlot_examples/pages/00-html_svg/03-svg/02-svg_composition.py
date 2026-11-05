@@ -2,11 +2,8 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Compose an SVG scene"
-
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
-        figure = main_content.figure(class_="card")
+        figure = root.figure(class_="card")
         drawing = figure.svg(viewBox="0 0 560 240", role="img", aria_labelledby="scene-title", class_="example-art")
         drawing.title("A row of houses and trees in a garden", id="scene-title")
         drawing.rect(x=0, y=0, width=560, height=240, fill="var(--gramlot-surface-subtle)")

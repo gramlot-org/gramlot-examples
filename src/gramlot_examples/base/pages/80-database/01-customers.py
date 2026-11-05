@@ -6,7 +6,6 @@ from gramlot.db import DatabaseSelectors
 class Page(DatabaseSelectors, BasePage):
     selector_parameters = {'auxColumns': '@state.name', 'selected__state_name': '.state_name'}
 
-    title = 'Customers · Base gallery'
     css = ('/themes/gramlot-base/theme.css',)
 
     def main(self, root):

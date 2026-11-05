@@ -1,0 +1,8 @@
+{
+  "key": "nested-branch",
+  "title": "Nested customer branch",
+  "description": "Open a nested customer page and follow PageStore messages through its parent.",
+  "tags": ["pagestore", "nested", "iframe", "messages"],
+  "order": 98,
+  "catalogued": false
+}

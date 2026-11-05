@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Arrange fields with formlet"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

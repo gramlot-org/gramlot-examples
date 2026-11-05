@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 import {Bag} from '@gramlot/gramlot';
 export class Page extends BasePage {
-    static title = "Tree icons and computed captions";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'treeLabels'});

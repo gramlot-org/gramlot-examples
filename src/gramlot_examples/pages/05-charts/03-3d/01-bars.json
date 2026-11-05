@@ -1,0 +1,14 @@
+{
+  "key": "chart-bars-3d",
+  "title": "3D bars",
+  "description": "Compare revenue by region and quarter using two categorical dimensions.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "bar3D",
+    "echarts",
+    "reactivity"
+  ],
+  "order": 5,
+  "presentation": "content"
+}

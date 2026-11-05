@@ -5,17 +5,14 @@ REGIONS = (("North", 12, "var(--gramlot-action)"), ("South", 9, "var(--gramlot-w
 
 
 class Page(BasePage):
-    title = "Static report"
-
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
-        header = main_content.header()
+        header = root.header()
         header.p("SAMPLE REPORT", class_="eyebrow")
         header.h1("Orders by region")
         header.p("A fixed dataset feeds the summary, chart and table.")
         total = sum(value for _, value, _ in REGIONS)
-        self.summary(main_content, total)
-        detail = main_content.div(class_="grid report-detail")
+        self.summary(root, total)
+        detail = root.div(class_="grid report-detail")
         self.chart(detail.section())
         self.table(detail.section(), total)
 

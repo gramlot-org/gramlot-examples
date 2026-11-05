@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Order addresses: reuse one editor twice';
     main(root) {
         const main_content = root.main({class: 'grouplet-demo', datapath: 'order'});
         const columns = main_content.div({class: 'demo-addresses'});

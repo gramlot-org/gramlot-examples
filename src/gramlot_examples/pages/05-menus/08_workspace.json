@@ -1,0 +1,12 @@
+{
+  "key": "menu-01",
+  "title": "Complete document workspace",
+  "description": "Popup and toolbar together, central content, bindings, remote export, confirmation and delay.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "document",
+    "workspace"
+  ],
+  "order": 7
+}

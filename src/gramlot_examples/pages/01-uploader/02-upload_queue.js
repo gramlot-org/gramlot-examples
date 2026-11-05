@@ -8,7 +8,6 @@ class InspectUpload extends UploadTarget {
     status() { return this.outcome; }
 }
 export class Page extends BasePage {
-    static title = 'Upload queue and metadata';
     main(root) {
         const main_content = root.main({datapath:'uploadDemo', padding:'16px'});
 

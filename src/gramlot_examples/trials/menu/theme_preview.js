@@ -1,13 +1,11 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
-import layout from '../../gallery/dist/layout/descriptor.js';
-import inputs from '../../gallery/dist/inputs/descriptor.js';
 import mygramlot from '../../gallery/dist/menu-trial/descriptor.js';
 function icon(path) {
     return ("data:image/svg+xml," + encodeURIComponent((("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#7c899c\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"" + path) + "\"/></svg>")));
 }
 
 export class PreviewPage extends BasePage {
-    static gramlots = [layout, inputs, mygramlot];
+    static gramlots = [mygramlot];
     static profile = "Compact";
     static density = "28px controls / 13px text";
 
@@ -73,8 +71,8 @@ export class PreviewPage extends BasePage {
         const footer = frame.bottom.menu({presentation: "bar", padding: "2px 4px", iconSize: 18, background: "var(--gramlot-surface-subtle)", border_top: "1px solid var(--gramlot-border)"});
         footer.menuline({group: true}).span("^preview.notice", {class: "muted"});
         footer.spacer({flex: 1});
-        footer.menuline({caption: "Open dialog", action: "openDialog", overflowable: false});
-        footer.menuline({caption: "Floating", action: "openFloating", overflowable: false});
+        footer.menuline({caption: "Open dialog", action: "openDialog"});
+        footer.menuline({caption: "Floating", action: "openFloating"});
         this.window(root.dialog({title: (this.constructor.profile + " · Edit record"), open: "^preview.open", width: "440px", height: "200px", movable: true, resizable: true, collapsible: true, maximizable: true}), "preview.open");
         this.window(root.floatingPane({title: (this.constructor.profile + " · Tools"), open: "^preview.floating", width: "320px", height: "200px", maximizable: true}), "preview.floating");
     }

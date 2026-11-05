@@ -9,8 +9,6 @@ CARDS = (
 
 
 class Page(BasePage):
-    title = "Cards with icons"
-
     def main(self, root):
         main_content = root.main(node_label="main_content", class_="example-page stack")
         cards = main_content.section(node_label="cards", class_="grid icon-cards", aria_label="Gramlot concepts")

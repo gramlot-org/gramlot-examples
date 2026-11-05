@@ -12,7 +12,6 @@ FIELDS = ('id','customer_name','state','invoice_number','invoice_date','product_
 
 
 class Page(SelectionTrialPage):
-    title = 'Asqueel only · cached invoice rows'
     description = 'Asqueel only · Server selection, server search/sort, small browser window. Up to 500,000 invoice rows.'
     notes = (
         'The threshold is configurable on the server (default 1,000 actual selected rows). Small selections load completely; larger selections use cachedFetch. The browser normally retains 200 rows while the scrollbar represents the server total.',

@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 
 const PACKAGE = fileURLToPath(new URL('./', import.meta.url));
 const MEDIA_TYPES = {'.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json'};
-const SUFFIXES = ['.py', '.js', '.css', '.md', '_aux.js', '_data.tytx'];
+const SUFFIXES = ['.py', '.js', '.css', '.md', '.json', '_aux.js', '_data.tytx'];
 const DIST = ['gallery.js', 'frame.js', 'notices.json', 'LICENSE', 'NOTICE'];
 
 /** Media type of a gallery asset; only the built gallery scripts are served as JavaScript. */
@@ -87,6 +87,7 @@ export function buildGallery({catalogs = []} = {}) {
             const stylesheet = join(folder, `${example.folder}.css`);
             const logic = [join(folder, `${example.folder}_aux.js`), page].find(path => existsSync(path));
             routes[example.key] = {page, stylesheet: existsSync(stylesheet) ? stylesheet : null, logic, url: `pages/${family.folder}/${example.folder}`};
+            if (Object.hasOwn(example, 'presentation')) routes[example.key].presentation = example.presentation;
             for (const suffix of SUFFIXES) {
                 const source = join(folder, `${example.folder}${suffix}`);
                 if (existsSync(source)) assets[`/pages/${family.folder}/${relative(folder,source).split(sep).join('/')}`] = {file: source, type: mediaType(source)};
@@ -103,6 +104,10 @@ export function buildGallery({catalogs = []} = {}) {
                 const key=`${prefix}/${basename(name,'.js')}`;
                 const stylesheet=path.slice(0,-3)+'.css';
                 routes[key]={page:path,stylesheet:existsSync(stylesheet)?stylesheet:null,logic:null,url:key};
+                for (const suffix of SUFFIXES) {
+                    const source=path.slice(0,-3)+suffix;
+                    if(existsSync(source)) assets[`/${key}${suffix}`]={file:source,type:mediaType(source)};
+                }
             }
         }
     };
@@ -117,6 +122,11 @@ export function buildGallery({catalogs = []} = {}) {
 
 /** Read the title from the actual page class, or the first Markdown H1. */
 export function pageTitle(path) {
+    const metadata = path.slice(0, -extname(path).length) + ".json";
+    if (existsSync(metadata)) {
+        const {title} = JSON.parse(readFileSync(metadata, "utf8"));
+        if (title) return title;
+    }
     if (extname(path) === '.md') {
         const match = readFileSync(path, 'utf8').match(/^# +(.+?)\s*#*\s*$/m);
         if (!match) throw new Error(`Markdown index requires a level-one heading: ${path}`);
@@ -156,6 +166,8 @@ export function navigationDirectory(directory = '', catalogs = []) {
         if (name.startsWith('.') || name.startsWith('_') || lstatSync(path).isSymbolicLink()) continue;
         const childPath = [...parts, name].join('/');
         if (statSync(path).isDirectory()) {
+            const descriptor = join(path, '00-index.json');
+            if (existsSync(descriptor) && JSON.parse(readFileSync(descriptor,'utf8')).navigation === false) continue;
             const index = directoryIndex(path);
             const attrs = {title: pageTitle(index), category: true, directory: childPath, url: `pages/${childPath}/00-index`};
             if (extname(index) === '.md') attrs.markdown = readFileSync(index, 'utf8');
@@ -163,7 +175,12 @@ export function navigationDirectory(directory = '', catalogs = []) {
         } else if (extname(path) === '.js' && basename(name, '.js') !== '00-index' && !name.endsWith('_aux.js')) {
             const stem = basename(name, '.js');
             const example = families.filter(family => family.folder === parts[0]).flatMap(family => family.examples).find(item => item.folder === [...parts.slice(1), stem].join('/'));
-            const attrs = {title: pageTitle(path), url: `pages/${[...parts, stem].join('/')}`, category: false};
+            const metadata = path.slice(0,-3) + '.json';
+            const descriptor = existsSync(metadata) ? JSON.parse(readFileSync(metadata,'utf8')) : null;
+            if (descriptor?.navigation === false) continue;
+            const title = example ? example.title : descriptor ? descriptor.title : pageTitle(path);
+            const attrs = {title, url: `pages/${[...parts, stem].join('/')}`, category: false};
+            for (const name of ['description','tags','component']) if (descriptor && Object.hasOwn(descriptor,name)) attrs[name] = descriptor[name];
             if (example) attrs.key = example.key;
             bag.setItem(example ? example.key : stem, null, attrs);
         }

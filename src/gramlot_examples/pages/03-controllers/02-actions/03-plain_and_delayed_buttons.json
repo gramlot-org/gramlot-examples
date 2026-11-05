@@ -1,0 +1,17 @@
+{
+  "key": "c21",
+  "title": "Delayed actions",
+  "description": "Click a delayed button several times quickly, then wait. Compare its single grouped execution with the immediate action and native form reset.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "run",
+    "immediate",
+    "delayed",
+    "button",
+    "plain",
+    "buttons"
+  ],
+  "order": 13
+}

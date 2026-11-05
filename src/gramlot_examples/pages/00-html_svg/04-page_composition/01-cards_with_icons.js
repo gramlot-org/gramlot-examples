@@ -7,7 +7,6 @@ const CARDS = [
 ];
 
 export class Page extends BasePage {
-    static title = "Cards with icons";
 
     main(root) {
         const main_content = root.main({node_label: 'main_content', class: 'example-page stack'});

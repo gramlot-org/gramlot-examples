@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "FramePane regions and command recipients"
-
     def main(self, root):
         main_content = root.main(padding="16px")
         frame = main_content.framePane(height="520px", node_label="outer_frame")

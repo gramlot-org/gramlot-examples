@@ -1,0 +1,12 @@
+{
+  "key": "attachment_manager",
+  "title": "Attachments",
+  "description": "Queue files before saving, then browse, preview and remove attachments.",
+  "tags": [
+    "uploader",
+    "attachments",
+    "attachment",
+    "manager"
+  ],
+  "order": 1
+}

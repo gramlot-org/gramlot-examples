@@ -1,4 +1,4 @@
-import {attachInspectorAgent} from '@gramlot/gramlot/tools/inspector';
+import {attachInspectorAgent} from '@gramlot/gramlot/tools/inspector-agent';
 import {INSPECTOR_CONNECT, INSPECTOR_READY} from './inspector-messages.js';
 
 /** The example owns its real Bags and executes edits/breakpoints in its own realm. */

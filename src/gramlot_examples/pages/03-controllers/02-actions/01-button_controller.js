@@ -4,7 +4,6 @@ const KEYS = "[button_shift && 'Shift', button_ctrl && 'Ctrl', button_alt && 'Al
     ".filter(Boolean).join('+') || 'none'";
 
 export class Page extends BasePage {
-    static title = "Run a controller from a button";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'buttons'});

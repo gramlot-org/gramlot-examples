@@ -1,0 +1,11 @@
+{
+  "key": "chart-reports-06",
+  "title": "Value rows",
+  "description": "Use the same report over records stored as value Bags.",
+  "tags": [
+    "charts",
+    "Bag",
+    "values"
+  ],
+  "order": 5
+}

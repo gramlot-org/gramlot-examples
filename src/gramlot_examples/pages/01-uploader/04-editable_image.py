@@ -30,8 +30,6 @@ class TemporaryImage(UploadTarget):
 
 
 class Page(BasePage):
-    title = "Editable images"
-
     def main(self, root):
         main_content = root.main(datapath="imageDemo", padding="16px")
         main_content.dataController(func="attachBrowserCamera", _onStart=True)

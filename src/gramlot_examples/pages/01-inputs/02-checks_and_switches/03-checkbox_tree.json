@@ -1,0 +1,16 @@
+{
+  "key": "checkbox-tree",
+  "title": "Hierarchical choices",
+  "description": "Choose a branch: lazy children inherit its check, while disabled nodes keep their state.",
+  "tags": [
+    "checkbox",
+    "tree",
+    "hierarchical",
+    "popup",
+    "lazy",
+    "disabled",
+    "checkBoxText"
+  ],
+  "order": 31,
+  "component": "checkBoxText"
+}

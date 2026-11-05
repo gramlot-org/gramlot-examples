@@ -1,4 +1,4 @@
-# Sieve of Eratosthenes: animate reactive Data
+# Prime sieve
 
 **Try this:** Press Step to discover 2, then again to cross out 4. Start animates the same operation; Pause preserves progress and Reset restores the grid while keeping the chosen speed.
 

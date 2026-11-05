@@ -1,0 +1,12 @@
+{
+  "key": "menu-10",
+  "title": "Complete dialog editor",
+  "description": "A modal framePane with a top toolbar, editable draft and bottom Save/Cancel actions.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "dialog",
+    "editor"
+  ],
+  "order": 9
+}

@@ -1,0 +1,11 @@
+{
+  "key": "grid-02",
+  "title": "Rows as attributes",
+  "description": "Read the same kind of records from node attributes, with typed numeric and boolean cells.",
+  "tags": [
+    "grid",
+    "rows",
+    "attributes"
+  ],
+  "order": 1
+}

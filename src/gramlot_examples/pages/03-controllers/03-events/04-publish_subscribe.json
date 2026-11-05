@@ -1,0 +1,14 @@
+{
+  "key": "c18",
+  "title": "Publish and subscribe to messages",
+  "description": "Run the direct controller, then Publish. Both reach the same summary; the independent receivers show where each message was delivered.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "publish",
+    "subscribe",
+    "messages"
+  ],
+  "order": 10
+}

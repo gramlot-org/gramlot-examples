@@ -22,8 +22,8 @@ test('basic pages see all environment components and metadata descriptors',async
  const server=new GramlotFileServer(pages,{collections});
  const basic=await server.resolvePage('01-inputs/01-text/01-textbox');
  assert.deepEqual(basic.gramlots,[]);
- assert.deepEqual(server.pageCollections(basic).map(c=>c.name),collections.map(c=>c.name));
- assert.deepEqual(server.pageCollections(await server.resolvePage('00-index')),collections);
+ assert.deepEqual(server.pageCollections(basic).map(c=>c.name).sort(),server.collections.map(c=>c.name).sort());
+ assert.deepEqual(server.pageCollections(await server.resolvePage('00-index')).map(c=>c.name).sort(),server.collections.map(c=>c.name).sort());
  assert.deepEqual(GalleryPage.gramlots,collections);
  const gallery=buildGallery();
  for(const collection of gallery.collections)assert.equal(gallery.assets[`/gallery/dist/${collection.name}/descriptor.js`].type,'text/javascript');

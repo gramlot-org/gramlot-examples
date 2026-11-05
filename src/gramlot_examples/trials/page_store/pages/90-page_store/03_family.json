@@ -1,0 +1,13 @@
+{
+  "key": "pagestore-03",
+  "title": "Publish from a page family",
+  "description": "Direct and nested iframes and connected windows publish through the primary's single WebSocket.",
+  "tags": [
+    "store",
+    "web",
+    "socket",
+    "publish",
+    "family"
+  ],
+  "order": 2
+}

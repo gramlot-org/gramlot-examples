@@ -1,0 +1,17 @@
+{
+  "key": "grid-charts",
+  "title": "Temporal snapshots",
+  "description": "Configure a chart from one Data Bag, change rendering engines and animate monthly snapshots.",
+  "tags": [
+    "charts",
+    "chartPane",
+    "ECharts",
+    "Plotly",
+    "Vega",
+    "uPlot",
+    "timeline",
+    "animation"
+  ],
+  "order": 4,
+  "presentation": "content"
+}

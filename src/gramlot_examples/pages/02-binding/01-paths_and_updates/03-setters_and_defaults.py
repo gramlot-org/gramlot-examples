@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Initialize values: defaults and dataSetter"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="order")
 

@@ -1,0 +1,13 @@
+{
+  "key": "menu-07",
+  "title": "Vertical icon toolbar",
+  "description": "Large icons, tooltip, selected state, separators and priority overflow in a narrow rail.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "vertical",
+    "icon",
+    "toolbar"
+  ],
+  "order": 2
+}

@@ -1,4 +1,4 @@
-# Vertical slider: orientation and values
+# Vertical slider
 
 **Try this:** Move the vertical slider from bottom to top. The horizontal slider and numeric readout follow the same value from 0 to 100.
 

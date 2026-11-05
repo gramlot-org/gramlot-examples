@@ -1,4 +1,4 @@
-# Order addresses: reuse one editor twice
+# Independent address editors
 
 Edit the delivery address for an order while its billing address remains unchanged.
 

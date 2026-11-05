@@ -15,3 +15,8 @@ It uses the existing extra-catalog mechanism; common cross-host lessons are unch
 ## Read the composition
 
 `document_menu` is the reusable command list. The same list appears in the workspace presentations. `export_menu` supplies the lazy content. Follow the central recipient to see where commands update Data; menu layout does not contain business state.
+
+## Field labels
+
+`lbl` declares the visible label and associates it with the input through the
+shared labelbox. No separate HTML label or repeated ARIA name is needed.

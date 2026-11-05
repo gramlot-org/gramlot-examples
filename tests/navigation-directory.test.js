@@ -9,14 +9,12 @@ test('filesystem navigation is one level per request, with independent directory
     assert.equal(html.attr.directory, '00-html_svg');
     assert.equal(html.attr.url, 'pages/00-html_svg/00-index');
     const children = navigationDirectory('00-html_svg');
-    assert.equal(children.getNode('06-nested').staticValue, null);
-    assert.equal(children.getNode('06-nested').attr.url, 'pages/00-html_svg/06-nested/00-index');
+    assert.equal(children.getNode('06-nested'), null);
     assert.equal(children.getNode('01-html_basics').attr.directory, '00-html_svg/01-html_basics');
     assert.equal(navigationDirectory('00-html_svg/01-html_basics').getNode('e01').attr.url, 'pages/00-html_svg/01-html_basics/01-hello_world');
     assert.equal(children.getNode('00-index'), null);
-    const nested = navigationDirectory('00-html_svg/06-nested');
-    assert.deepEqual(nested.getNodes().map(node=>node.label), ['01-child']);
-    assert.equal(nested.getNode('01-child').attr.url, 'pages/00-html_svg/06-nested/01-child');
+    assert.equal(navigationDirectory('00-html_svg/06-nested').getNode('01-child'), null);
+    for (const ext of ['.json','.md']) assert.ok(buildGallery().assets[`/pages/00-html_svg/06-nested/01-child${ext}`]);
     const routes = buildGallery().routes;
     for (const url of ['pages/00-index','pages/00-html_svg/00-index','pages/00-html_svg/06-nested/00-index','pages/00-html_svg/06-nested/01-child']) assert.ok(routes[url]);
     for (const path of ['../', '/tmp', 'html_svg/../../', 'html_svg//nested']) assert.throws(()=>navigationDirectory(path), /Invalid navigation directory/);
@@ -51,7 +49,6 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
         const parts = example.folder.split('/');
         const directory = [family.folder,...parts.slice(0,-1)].join('/');
         const node = navigationDirectory(directory).getNode(example.key);
-        assert.equal(node.attr.title,pageTitle(gallery.routes[example.key].page));
         assert.equal(node.attr.title,example.title);
         assert.equal(node.attr.url,`pages/${family.folder}/${example.folder}`);
         assert.equal(seen.has(node.label),false); seen.add(node.label);
@@ -66,14 +63,10 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
 
 
 test('numbered siblings mix directories and pages, hide indexes and use Markdown headings', () => {
-    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
+    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'charts', 'layout', 'grid', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
     const branch = navigationDirectory('00-html_svg');
-    assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', '02-native_controls', '03-svg', '04-page_composition', '06-nested', '07-markdown_index']);
-    const md = branch.getNode('07-markdown_index');
-    assert.equal(md.attr.title, 'Descriptive directory index');
-    assert.equal(md.attr.url, 'pages/00-html_svg/07-markdown_index/00-index');
-    assert.ok(md.attr.markdown.startsWith('# Descriptive directory index'));
-    assert.equal(navigationDirectory(md.attr.directory).length, 0);
+    assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', '02-native_controls', '03-svg']);
+    assert.equal(branch.getNode('07-markdown_index'), null);
 });
 
 test('host tools share one navigation category with the common playground', async t => {
@@ -123,4 +116,26 @@ test('environment overlay keeps common and host subdirectories inside their own 
     assert.equal(navigationDirectory('07-tools', catalogs).getNode('escape'), null);
     assert.throws(() => navigationDirectory('07-tools/escape', catalogs), /outside its pages root/);
     assert.throws(() => navigationDirectory('07-tools/absent', catalogs), /does not exist/);
+});
+
+test('first lesson navigation and asset use its generated metadata', () => {
+    const gallery = buildGallery();
+    const example = gallery.families[0].examples.find(item => item.key === 'e01');
+    assert.equal(navigationDirectory('00-html_svg/01-html_basics').getNode('e01').attr.title, example.title);
+    assert.deepEqual(example.tags, ['html', 'heading', 'text', 'source']);
+    assert.ok(gallery.assets['/pages/00-html_svg/01-html_basics/01-hello_world.json']);
+});
+
+test('lesson search metadata reaches navigation independently of the displayed title', () => {
+    const lessons=navigationDirectory('01-inputs/02-checks_and_switches');
+    const field=lessons.getNode('w16').attr, hierarchy=lessons.getNode('checkbox-tree').attr;
+    assert.equal(field.title,'checkBoxText');assert.equal(field.component,'checkBoxText');
+    assert.ok(field.tags.includes('descriptions'));assert.match(field.description,/stored codes/);
+    assert.equal(hierarchy.title,'Hierarchical choices');assert.ok(hierarchy.tags.includes('checkbox'));
+    assert.equal(hierarchy.component,'checkBoxText');
+});
+
+test("chart directory titles come from metadata", () => {
+    assert.equal(navigationDirectory().getNode("charts").attr.title, "Charts");
+    assert.equal(navigationDirectory("05-charts").getNode("01-simple").attr.title, "Simple charts");
 });

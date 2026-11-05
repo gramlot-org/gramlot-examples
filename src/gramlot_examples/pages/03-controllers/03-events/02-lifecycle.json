@@ -1,0 +1,15 @@
+{
+  "key": "c15",
+  "title": "Start and dispose page behavior",
+  "description": "Compare the startup trace, freeze the branch and remove it. Observe which updates wait for thaw and which cleanup runs on removal.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "start",
+    "dispose",
+    "behavior",
+    "lifecycle"
+  ],
+  "order": 8
+}

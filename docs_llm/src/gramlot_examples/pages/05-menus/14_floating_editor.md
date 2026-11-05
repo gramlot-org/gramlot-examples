@@ -17,7 +17,7 @@ center = frame.center.contentPane(frameTarget=True, selfsubscribe_save="save",
 center.input(value="^editor.draft.title", live=True)
 footer = frame.bottom.menu(presentation="bar")
 footer.spacer(flex=1)
-actions = footer.menuline(group=True, overflowable=False)
+actions = footer.menuline(group=True)
 actions.menuline("documenti:undo", caption="Cancel", parameters=dict(close=True))
 actions.menuline("documenti:save")
 ```

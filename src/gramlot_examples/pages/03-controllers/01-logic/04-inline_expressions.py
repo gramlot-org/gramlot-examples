@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Use short inline expressions"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="player")
         form = pane.form(class_="card stack")

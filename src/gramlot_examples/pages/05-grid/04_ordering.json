@@ -1,0 +1,14 @@
+{
+  "key": "grid-04",
+  "title": "Multicolumn sort and row drag",
+  "description": "Sort raw Bag values with multiple criteria, then set a manual row order.",
+  "tags": [
+    "grid",
+    "multicolumn",
+    "sort",
+    "row",
+    "drag",
+    "ordering"
+  ],
+  "order": 3
+}

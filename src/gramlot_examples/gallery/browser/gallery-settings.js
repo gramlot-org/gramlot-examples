@@ -12,6 +12,18 @@ export function mountGallerySettings(renderer, root, state) {
     try { saved = window.localStorage.getItem(key); }
     catch (error) { if (error.name !== 'SecurityError') throw error; }
     state.setItem('labelPosition', LABEL_POSITIONS.has(saved) ? saved : 'example');
+    const multipageKey = `${key}:multipage`;
+    let multipage = true;
+    try { multipage = window.localStorage.getItem(multipageKey) !== 'false'; }
+    catch (error) { if (error.name !== 'SecurityError') throw error; }
+    state.setItem('multipage', multipage);
+    const viewKey = `${key}:keepLessonView`;
+    let keepLessonView = true;
+    try { keepLessonView = window.localStorage.getItem(viewKey) !== 'false'; }
+    catch (error) { if (error.name !== 'SecurityError') throw error; }
+    state.setItem('keepLessonView', keepLessonView);
+    state.setItem('lessonView', 'example');
+    state.setItem('lessonKey', null);
     const mobileKey = `${key}:showMobileExamples`;
     let showMobileExamples = false;
     try { showMobileExamples = window.localStorage.getItem(mobileKey) === 'true'; }
@@ -32,6 +44,19 @@ export function mountGallerySettings(renderer, root, state) {
     };
     state.subscribe('gallery-label-position', {any: event => {
         if (event.node.label === 'labelPosition') change();
+        if (event.node === state.getNode('multipage')) {
+            try { window.localStorage.setItem(multipageKey, String(state.getItem('multipage'))); }
+            catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
+        }
+        if (event.node === state.getNode('keepLessonView')) {
+            try { window.localStorage.setItem(viewKey, String(state.getItem('keepLessonView'))); }
+            catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
+        }
+        const lessonKey = state.getItem('lessonKey');
+        if (lessonKey != null && event.node === state.getNode(`lessonViews.${lessonKey}`)) {
+            const view = event.node.value;
+            if (['example', 'explanation', 'code'].includes(view)) state.setItem('lessonView', view);
+        }
         if (event.node === state.getNode('showMobileExamples')) {
             try { window.localStorage.setItem(mobileKey, String(state.getItem('showMobileExamples'))); }
             catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
@@ -46,7 +71,17 @@ export function mountGallerySettings(renderer, root, state) {
         window.removeEventListener('message', message);
     };
     renderer.onDispose(root, dispose);
-    return {dispose};
+    return {
+        update(lessonKey) {
+            if (lessonKey === state.getItem('lessonKey')) return;
+            state.setItem('lessonKey', lessonKey);
+            if (lessonKey != null) {
+                if (state.getItem('keepLessonView')) state.setItem(`lessonViews.${lessonKey}`, state.getItem('lessonView'));
+                else state.setItem('lessonView', state.getItem(`lessonViews.${lessonKey}`));
+            }
+        },
+        dispose,
+    };
 }
 
 /** Preview overrides edit Source, never shadow DOM or application Data. */

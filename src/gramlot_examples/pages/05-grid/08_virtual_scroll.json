@@ -1,0 +1,14 @@
+{
+  "key": "grid-08",
+  "title": "Scroll · 1,000 resident rows",
+  "description": "A small viewport over 1,000 fully loaded records, with variable heights and local search.",
+  "tags": [
+    "grid",
+    "scroll",
+    "000",
+    "resident",
+    "rows",
+    "virtual"
+  ],
+  "order": 7
+}

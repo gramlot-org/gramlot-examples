@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Validation rules, warnings and callbacks";
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack'});

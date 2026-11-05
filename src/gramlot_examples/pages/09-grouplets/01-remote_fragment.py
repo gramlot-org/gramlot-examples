@@ -2,8 +2,6 @@ from gramlot import Page as BasePage, source
 
 
 class Page(BasePage):
-    title = "Customer onboarding: adapt the customer details"
-
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="customer")
         toolbar = main_content.div(class_="demo-toolbar")

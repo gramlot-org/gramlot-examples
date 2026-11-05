@@ -3,8 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Scroll · 1,000 resident rows'
-
     def main(self, root):
         main_content = root.main(datapath='sample', padding='20px', max_width='1200px', margin='0 auto')
         frame = main_content.frameGrid(storepath='.rows', rowMode='attributes', searchOn=True, height='420px')

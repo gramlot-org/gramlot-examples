@@ -1,0 +1,16 @@
+{
+  "key": "color_maker",
+  "title": "Reusable color maker",
+  "description": "Open the palette, select Background, Text or Shadow and move a slider. Random changes only the selected block; the three editors use the same method under different datapaths.",
+  "tags": [
+    "composition",
+    "reuse",
+    "color",
+    "maker",
+    "one",
+    "block",
+    "three",
+    "contexts"
+  ],
+  "order": 0
+}

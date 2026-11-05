@@ -5,8 +5,6 @@ MENUS = {"dishes": ("Soup", "Risotto", "Fish"), "drinks": ("Water", "Lemonade", 
 
 
 class Page(BasePage):
-    title = "Fetch Data with dataRemote"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="kitchen")
 

@@ -1,4 +1,4 @@
-# Order review with grouplet cards
+# Order cards
 
 Prepare an order for twelve workshop lights: confirm the customer contact, check
 the invoice address and arrange delivery to the workshop. Each card gives a

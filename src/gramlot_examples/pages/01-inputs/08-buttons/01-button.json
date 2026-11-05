@@ -1,0 +1,16 @@
+{
+  "key": "w22",
+  "title": "Buttons: icons, labels and commands",
+  "description": "Confirm the first command, then click the delayed command several times quickly. Its result reports one execution for the burst of clicks.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "buttons",
+    "icons",
+    "labels",
+    "commands",
+    "button"
+  ],
+  "order": 20
+}

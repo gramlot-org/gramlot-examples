@@ -1,0 +1,16 @@
+{
+  "key": "w04",
+  "title": "Multiline text fields",
+  "description": "Edit either note. Both multiline fields share the same text; Options lets you compare live editing with updates after leaving the field.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "multiline",
+    "text",
+    "box",
+    "area"
+  ],
+  "order": 3,
+  "presentation": "content"
+}

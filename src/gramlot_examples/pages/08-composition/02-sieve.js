@@ -1,7 +1,6 @@
 import {Page as BasePage, Bag} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Sieve of Eratosthenes: animate reactive Data';
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

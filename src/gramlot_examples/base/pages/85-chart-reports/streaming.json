@@ -1,0 +1,12 @@
+{
+  "key": "chart-reports-04",
+  "title": "Streaming sine waves",
+  "description": "Pause or change the rate of a rolling 600-sample signal.",
+  "tags": [
+    "charts",
+    "sinusoid",
+    "streaming",
+    "uplot"
+  ],
+  "order": 3
+}

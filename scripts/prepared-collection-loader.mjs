@@ -1,4 +1,4 @@
-/** Resolve prepared collection dependencies during the gallery build only. */
+/** Resolve prepared collection dependencies during gallery build and Node qualification. */
 let modules;
 export function initialize(data) { modules = data; }
 export function resolve(specifier, context, nextResolve) {

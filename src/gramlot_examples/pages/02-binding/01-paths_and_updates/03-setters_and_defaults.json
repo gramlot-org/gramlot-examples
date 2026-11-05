@@ -1,0 +1,16 @@
+{
+  "key": "b03",
+  "title": "Defaults and setters",
+  "description": "Compare the initialized values below. Defaults fill missing values; dataSetter writes explicitly and is then removed from Source. This lesson demonstrates that distinction deliberately.",
+  "tags": [
+    "bindings",
+    "initialize",
+    "values",
+    "defaults",
+    "setter",
+    "paths",
+    "updates",
+    "setters"
+  ],
+  "order": 3
+}

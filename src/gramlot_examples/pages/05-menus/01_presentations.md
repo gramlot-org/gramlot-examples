@@ -1,4 +1,4 @@
-# One hierarchical menu, four presentations
+# Menu presentations
 
 Start with the explanations above each example. All four presentations call the
 same Python `document_menu(menu)` method; it creates separate Source occurrences

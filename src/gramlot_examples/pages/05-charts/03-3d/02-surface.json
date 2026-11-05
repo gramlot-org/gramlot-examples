@@ -1,0 +1,14 @@
+{
+  "key": "chart-surface",
+  "title": "Points and surfaces",
+  "description": "Compare a numeric lattice as a surface, 3D points or 3D lines.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "surface",
+    "plotly",
+    "reactivity"
+  ],
+  "order": 6,
+  "presentation": "content"
+}

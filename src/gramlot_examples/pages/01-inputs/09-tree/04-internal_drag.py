@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Copy tree nodes with drag and drop"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

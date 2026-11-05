@@ -1,0 +1,17 @@
+{
+  "key": "c22",
+  "title": "Binding expressions",
+  "description": "Change the number and compare its CSS width and formatted text. The presentation changes; the stored number keeps its type.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "transform",
+    "bound",
+    "values",
+    "pointer",
+    "expressions",
+    "transforms"
+  ],
+  "order": 14
+}

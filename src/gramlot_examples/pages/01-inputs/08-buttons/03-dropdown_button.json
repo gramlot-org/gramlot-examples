@@ -1,0 +1,16 @@
+{
+  "key": "w24",
+  "title": "Dropdown buttons and command menus",
+  "description": "Open Export and choose CSV. Repeat with Shift held: the command also becomes the main action. The unavailable item cannot execute.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "dropdown",
+    "buttons",
+    "command",
+    "menus",
+    "button"
+  ],
+  "order": 22
+}

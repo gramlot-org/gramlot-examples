@@ -1,0 +1,15 @@
+{
+  "key": "g05",
+  "title": "Card actions",
+  "description": "Arrange delivery, cancel or confirm scoped Clear, and lock it when invoiced; order and invoice details remain.",
+  "tags": [
+    "grouplets",
+    "shipping",
+    "desk",
+    "card",
+    "actions",
+    "scoped",
+    "clear"
+  ],
+  "order": 4
+}

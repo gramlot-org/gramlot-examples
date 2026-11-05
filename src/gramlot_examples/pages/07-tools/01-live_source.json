@@ -1,0 +1,12 @@
+{
+  "key": "e13",
+  "title": "Live Source playground",
+  "description": "Create an item, change its content and remove it. Compare the Source tree and rendered page; removing the animated section also disposes its timer.",
+  "tags": [
+    "tools",
+    "live",
+    "source",
+    "playground"
+  ],
+  "order": 0
+}

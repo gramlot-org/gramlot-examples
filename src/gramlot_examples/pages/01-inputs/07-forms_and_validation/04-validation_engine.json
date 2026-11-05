@@ -1,0 +1,17 @@
+{
+  "key": "w25",
+  "title": "Validation rules",
+  "description": "Try an empty name, quantity 11 and a malformed email. Compare drafts with Accepted Data, then make the email warning blocking and retry.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "validation",
+    "rules",
+    "warnings",
+    "callbacks",
+    "forms",
+    "engine"
+  ],
+  "order": 23
+}

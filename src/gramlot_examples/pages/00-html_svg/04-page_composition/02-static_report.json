@@ -1,0 +1,16 @@
+{
+  "key": "e11",
+  "title": "Static report",
+  "description": "Read the report from summary to detail. Follow how rows and totals become tables and charts; these are fixed sample results, not a live service.",
+  "tags": [
+    "html",
+    "svg",
+    "static",
+    "report",
+    "composition"
+  ],
+  "order": 10,
+  "catalogued": false,
+  "navigation": false,
+  "presentation": "content"
+}

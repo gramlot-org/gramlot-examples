@@ -5,12 +5,9 @@ ROWS = [("North", 12, 8), ("South", 9, 11), ("West", 15, 6)]
 
 
 class Page(BasePage):
-    title = "Tables with headings and totals"
-
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
-        main_content.h1("A small regional report")
-        table = main_content.table()
+        root.h1("A small regional report")
+        table = root.table()
         table.caption("Orders by region and quarter")
         heading = table.thead().tr()
         for label in ("Region", "Q1", "Q2", "Total"):

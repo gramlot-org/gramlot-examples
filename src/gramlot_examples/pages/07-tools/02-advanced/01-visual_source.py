@@ -2,7 +2,6 @@ from gramlot import Page as BasePage, upload, VisualEditor, SourceImport
 
 
 class Page(BasePage):
-    title = "Visual editor"
     devices = ("desktop", "tablet")
     data_root = ""
     editor_chat = False

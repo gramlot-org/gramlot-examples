@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Defer structural updates with freeze"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="board")
         actions = pane.div(class_="actions")

@@ -1,4 +1,4 @@
-# Bind values with absolute and relative paths
+# Binding paths
 
 **Try this:** Compare the same value through an absolute path, a relative path and an anchor. Edit a field and watch only the views bound to that path change.
 

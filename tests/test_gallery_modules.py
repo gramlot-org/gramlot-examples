@@ -4,6 +4,7 @@ import unittest
 from gramlot_examples.gallery.modules import registered_modules, module_bag
 from gramlot_examples.gallery.page import Page
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 
 REGISTRATION = {'catalog': {'id': 'mobileApplication', 'title': 'Mobile application', 'visibility': 'native',
     'entries': [dict(id='app', title='App information', path='app', capabilities=['appinfo'], requires=[]),
@@ -15,7 +16,7 @@ class ModuleTests(unittest.TestCase):
         result = registered_modules([REGISTRATION])
         self.assertEqual([e['id'] for e in result[0]['entries']], ['app'])
         page = Page(); page.gallery_modules = [REGISTRATION]
-        grammar = [__import__('json').loads(c.verify()[c.grammar]) for c in collections()]
+        grammar = [__import__('json').loads(c.verify()[c.grammar]) for c in (*standard_collections(), *collections())]
         builder = page.source_builder('main', collections=grammar)
         node = module_bag([REGISTRATION]).get_item('mobileApplication').get_node('app')
         node.set_attr({'url': 'https://attacker.invalid/ignored'})

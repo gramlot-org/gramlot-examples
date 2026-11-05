@@ -1,0 +1,18 @@
+{
+  "key": "w17",
+  "title": "Inline and popup calendars",
+  "description": "Choose a day in the inline calendar, then open the popup calendar. Both calendars and the text field follow the same date.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "inline",
+    "popup",
+    "calendars",
+    "dates",
+    "times",
+    "date",
+    "calendar"
+  ],
+  "order": 16
+}

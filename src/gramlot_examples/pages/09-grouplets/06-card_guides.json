@@ -1,0 +1,15 @@
+{
+  "key": "g06",
+  "title": "Card guides",
+  "description": "Complete customer and delivery details with contextual guides, including help on folded and nested cards.",
+  "tags": [
+    "grouplets",
+    "customer",
+    "handover",
+    "guides",
+    "beside",
+    "fields",
+    "card"
+  ],
+  "order": 5
+}

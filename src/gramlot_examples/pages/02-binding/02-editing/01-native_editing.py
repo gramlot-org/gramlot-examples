@@ -5,8 +5,6 @@ FIELDS = (("Text", "text", "text"), ("Number", "number", "number"), ("Range", "r
 
 
 class Page(BasePage):
-    title = "Edit shared Data with native fields"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="edit")
         pane.html_label("Write at every keystroke (live)", for_="live")

@@ -1,0 +1,12 @@
+{
+  "key": "gallery-tray",
+  "title": "Gallery tray",
+  "description": "Start with an empty tray. Add live examples at reduced zoom, arrange their cards, and keep each page’s edits while moving or resizing.",
+  "tags": [
+    "containers",
+    "layout",
+    "gallery",
+    "tray"
+  ],
+  "order": 13
+}

@@ -1,0 +1,17 @@
+{
+  "key": "w27",
+  "title": "Customize tree labels and row styles",
+  "description": "Select Notes and rename it. The caption changes while its node key and selected path remain stable.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "customize",
+    "tree",
+    "labels",
+    "row",
+    "styles",
+    "classes"
+  ],
+  "order": 25
+}

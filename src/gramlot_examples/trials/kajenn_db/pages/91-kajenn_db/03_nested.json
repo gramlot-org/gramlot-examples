@@ -1,0 +1,8 @@
+{
+  "key": "nested-database-customer",
+  "title": "Nested database customer",
+  "description": "Open the customer example inside a nested page.",
+  "tags": ["database", "customer", "nested", "iframe"],
+  "order": 98,
+  "catalogued": false
+}

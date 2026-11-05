@@ -2,17 +2,15 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
-    static title = 'HTML and components';
 
     main(root) {
-        const main_content = root.main({class: 'example-page stack'});
-        this.options(main_content);
-        const comparison = main_content.div({display: 'grid', gap: '12px', max_width: '56rem',
+        this.options(root);
+        const comparison = root.div({display: 'grid', gap: '12px', max_width: '56rem',
             grid_template_columns: 'repeat(auto-fit, minmax(min(100%, 22rem), 1fr))'});
         this.html_controls(comparison);
         this.components(comparison);
-        main_content.h2('Shared Data');
-        main_content.p('^customer', {id: 'customer-value'});
+        root.h2('Shared Data');
+        root.p('^customer', {id: 'customer-value'});
     }
 
     html_controls(parent) {

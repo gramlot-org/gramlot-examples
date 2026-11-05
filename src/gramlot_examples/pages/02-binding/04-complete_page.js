@@ -11,7 +11,6 @@ const QUESTIONS = [['Do I need a service?', 'This local example has no remote da
     ['Is the map interactive?', 'The highlighted stop follows the radio buttons above it.']];
 
 export class Page extends BasePage {
-    static title = "A complete page driven by Data";
 
     main(root) {
         const pane = root.div({class: 'example-page complete-page', datapath: 'event'});

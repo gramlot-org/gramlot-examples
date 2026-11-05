@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
     static devices = ['desktop', 'tablet', 'phone'];
-    static title = "Validate required values and text length";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
         const options = main_content.details({max_width: "24rem"});

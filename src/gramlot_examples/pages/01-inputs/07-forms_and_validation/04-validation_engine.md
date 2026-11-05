@@ -1,4 +1,4 @@
-# Validation rules, warnings and callbacks
+# Validation rules
 
 **Try this:** Try an empty name, quantity 11 and a malformed email. Compare drafts with Accepted Data, then make the email warning blocking and retry.
 

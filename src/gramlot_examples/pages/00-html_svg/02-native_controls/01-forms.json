@@ -1,0 +1,16 @@
+{
+  "key": "e06",
+  "title": "Labels and boxes",
+  "description": "Give native HTML elements a shared Labelbox, and distinguish native buttons from components.",
+  "tags": [
+    "html",
+    "native",
+    "label",
+    "labelbox",
+    "lbl",
+    "box",
+    "button"
+  ],
+  "order": 5,
+  "presentation": "content"
+}

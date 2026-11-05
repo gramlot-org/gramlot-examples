@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Customer onboarding: adapt the customer details';
     main(root) {
         const main_content = root.main({class: 'grouplet-demo', datapath: 'customer'});
         const toolbar = main_content.div({class: 'demo-toolbar'});

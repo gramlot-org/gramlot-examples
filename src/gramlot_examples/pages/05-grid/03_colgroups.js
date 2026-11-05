@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Column groups and row heights";
 
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});

@@ -1,0 +1,14 @@
+{
+  "key": "c04",
+  "title": "Use short inline expressions",
+  "description": "Edit the name and score. Short expressions update the greeting and pass/fail message directly from the other attributes of their node.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "short",
+    "inline",
+    "expressions"
+  ],
+  "order": 3
+}

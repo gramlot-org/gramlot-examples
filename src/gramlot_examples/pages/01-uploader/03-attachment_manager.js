@@ -23,7 +23,6 @@ class AttachmentTarget extends UploadTarget {
     status() { return this.outcome; }
 }
 export class Page extends BasePage {
-    static title = 'Attachments';
     main(root) {
         const main_content = root.main({datapath:'attachmentsDemo', padding:'16px'});
 

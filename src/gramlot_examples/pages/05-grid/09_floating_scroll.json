@@ -1,0 +1,12 @@
+{
+  "key": "grid-09",
+  "title": "Floating grid · resize and scroll",
+  "description": "A resizable floating window with 1,000 resident records and variable row heights.",
+  "tags": [
+    "grid",
+    "floating",
+    "resize",
+    "scroll"
+  ],
+  "order": 8
+}

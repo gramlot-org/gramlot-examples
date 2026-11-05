@@ -23,8 +23,6 @@ ICONS = {
 
 
 class Page(BasePage):
-    title = "Vertical icon toolbar"
-
     def main(self, root):
         main_content = root.main(padding="24px", max_width="900px", margin="auto")
         self.height_control(main_content)
@@ -34,8 +32,7 @@ class Page(BasePage):
 
     def height_control(self, main_content):
         controls = main_content.div(display="flex", gap="12px", align_items="center", flex_wrap="wrap", margin="16px 0")
-        controls.html_label("Rail height", for_="rail-height")
-        controls.input(type="range", min=180, max=500, step=20, value="^navigation.height", live=True, id="rail-height", aria_label="Rail height", width="190px")
+        controls.input(type="range", min=180, max=500, step=20, value="^navigation.height", live=True, id="rail-height", lbl="Rail height", width="190px")
         controls.span("^navigation.height")
         controls.span("px")
 
@@ -43,23 +40,23 @@ class Page(BasePage):
         frame = main_content.framePane(height="^navigation.height:={} + 'px'", min_height="180px", border="1px solid #64748b", border_radius="12px", overflow="hidden", id="rail-frame")
         frame.left.setAttr(dict(width="64px", padding="8px 3px", background="#292929"))
         rail = frame.left.menu(presentation="bar", orientation="vertical", labelPosition="tooltip", iconSize=32, width="58px", id="icon-rail")
-        self.section(rail, "home", "Home", overflowable=False)
-        self.section(rail, "documents", "Documents", priority=80)
-        self.section(rail, "activity", "Activity", priority=60)
-        tools = rail.menuline(caption="Tools", iconSrc=ICONS["settings"], overflowable=False, id="rail-tools").menu(id="rail-tools-menu")
+        self.section(rail, "home", "Home")
+        self.section(rail, "documents", "Documents")
+        self.section(rail, "activity", "Activity")
+        tools = rail.menuline(caption="Tools", iconSrc=ICONS["settings"], id="rail-tools").menu(id="rail-tools-menu")
         self.section(tools, "settings", "Settings")
         self.section(tools, "integrations", "Integrations")
         rail.menuline("-")
-        self.section(rail, "branches", "Branches", priority=20)
-        self.section(rail, "overview", "Overview", priority=10)
+        self.section(rail, "branches", "Branches")
+        self.section(rail, "overview", "Overview")
         center = frame.center.contentPane(frameTarget=True, node_label="navigation_content", padding="18px")
         center.h2("^navigation.selected", id="selected-section", margin="0 0 12px", text_transform="capitalize")
 
     def horizontal_toolbar(self, main_content):
         main_content.h2("The horizontal equivalent")
         horizontal = main_content.menu(presentation="bar", labelPosition="tooltip", iconSize=28, id="horizontal-rail", padding="8px", border="1px solid #64748b", border_radius="8px")
-        self.section(horizontal, "home", "Home", overflowable=False)
-        horizontal.menuline(caption="Tools", iconSrc=ICONS["settings"], overflowable=False, id="horizontal-tools").menu().menuline(caption="Settings", iconSrc=ICONS["settings"], action="selectSection", parameters=dict(section="settings"))
+        self.section(horizontal, "home", "Home")
+        horizontal.menuline(caption="Tools", iconSrc=ICONS["settings"], id="horizontal-tools").menu().menuline(caption="Settings", iconSrc=ICONS["settings"], action="selectSection", parameters=dict(section="settings"))
         horizontal.spacer(flex=1)
         for key, caption in (("documents", "Documents"), ("activity", "Activity"), ("branches", "Branches"), ("overview", "Overview")):
             self.section(horizontal, key, caption)

@@ -6,7 +6,6 @@ class EmptyOrder extends Error {
 }
 
 export class Page extends BasePage {
-    static title = "Combine inputs, calculations and server calls";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'story'});

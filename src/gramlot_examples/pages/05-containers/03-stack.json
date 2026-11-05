@@ -1,0 +1,14 @@
+{
+  "key": "l08",
+  "title": "Switch pages in a single stack",
+  "description": "Use the slider above the stack to visit a demo, edit it and return later. There is one central stack; a visited page keeps its state.",
+  "tags": [
+    "containers",
+    "layout",
+    "switch",
+    "pages",
+    "single",
+    "stack"
+  ],
+  "order": 7
+}

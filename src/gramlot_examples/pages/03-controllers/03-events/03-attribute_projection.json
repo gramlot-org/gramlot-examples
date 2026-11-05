@@ -1,0 +1,17 @@
+{
+  "key": "c16",
+  "title": "Project attributes and preview HTML",
+  "description": "Edit the bound value and compare its text, attributes and HTML preview. The preview is sandboxed and does not execute scripts.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "project",
+    "attributes",
+    "preview",
+    "html",
+    "attribute",
+    "projection"
+  ],
+  "order": 9
+}

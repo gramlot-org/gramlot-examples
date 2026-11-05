@@ -20,7 +20,6 @@ ICONS = {
 
 
 class Page(BasePage):
-    title = "Complete dialog editor"
     css = ("/themes/gramlot-compact/theme.css",)
 
     def main(self, root):
@@ -80,6 +79,6 @@ class Page(BasePage):
     def footer(self, frame):
         footer = frame.bottom.menu(presentation="bar", padding="2px 8px", iconSize=18, background="var(--gramlot-surface-subtle)", border_top="1px solid var(--gramlot-border-control)", id="editor-footer")
         footer.spacer(flex=1)
-        actions = footer.menuline(group=True, overflowable=False)
+        actions = footer.menuline(group=True)
         actions.menuline("documenti:undo", caption="Cancel", iconSrc=ICONS["cancel"], parameters=dict(close=True), id="editor-cancel")
         actions.menuline("documenti:save", caption="Save", iconSrc=ICONS["save"], id="editor-save")

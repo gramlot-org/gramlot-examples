@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Load choices with a browser callback";
     main(root) {
         const main_content = root.main({class:"example-page stack"});
         const options = main_content.details({max_width: "24rem"});

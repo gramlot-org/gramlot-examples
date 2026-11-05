@@ -5,8 +5,6 @@ from gramlot import endpoint
 
 
 class Page(BasePage):
-    title = "Define and call a server endpoint"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="invoice")
 

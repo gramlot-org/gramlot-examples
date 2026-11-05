@@ -1,0 +1,12 @@
+{
+  "key": "c14",
+  "title": "Fetch Data with dataRemote",
+  "description": "Compare the live menu with Read current value. Changing the table updates the bound view; the explicit snapshot stays unchanged until you read again.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "fetch",
+    "remote"
+  ],
+  "order": 6
+}

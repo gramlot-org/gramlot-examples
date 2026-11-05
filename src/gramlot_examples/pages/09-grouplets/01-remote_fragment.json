@@ -1,0 +1,15 @@
+{
+  "key": "g01",
+  "title": "Customer details",
+  "description": "Change customer type, edit contact details and return to the previous type: its draft remains available.",
+  "tags": [
+    "grouplets",
+    "customer",
+    "onboarding",
+    "adapt",
+    "details",
+    "remote",
+    "fragment"
+  ],
+  "order": 0
+}

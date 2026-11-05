@@ -1,4 +1,4 @@
-# Combine inputs, calculations and server calls
+# Connected page
 
 **Try this:** Change quantity and options, then request a quote. The local total follows edits immediately; the last server quote stays visible until the next successful request.
 

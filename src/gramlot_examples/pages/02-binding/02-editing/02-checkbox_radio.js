@@ -3,7 +3,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 const PLANS = [['basic', 'Basic'], ['plus', 'Plus'], ['team', 'Team']];
 
 export class Page extends BasePage {
-    static title = "Bind boolean and single-choice values";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'choice'});

@@ -1,0 +1,15 @@
+{
+  "key": "w19",
+  "title": "Arrange fields with formlet",
+  "description": "Switch between one and two columns. The same fields move without losing their values; the note keeps its own label-position override.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "arrange",
+    "formlet",
+    "forms",
+    "validation"
+  ],
+  "order": 18
+}

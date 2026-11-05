@@ -1,7 +1,6 @@
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Rounded borders and popups";
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

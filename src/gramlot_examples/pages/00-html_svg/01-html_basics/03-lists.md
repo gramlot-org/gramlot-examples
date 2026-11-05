@@ -1,47 +1,42 @@
-# Ordered, nested and definition lists
+# Children and styles
 
-**Try this:** Match each visible list to its loop. Add one item in your own copy; the loop supplies its markup without another hand-written block.
+> **What you learn**
+>
+> Build a container with children, generate a list with a loop, and style the
+> result through separate attributes.
 
-Bullet lists, numbered lists and terms with descriptions. You learn how a loop builds several elements from a set of values when the page is created.
+## A container and its children
 
-**Uses:** Source and native HTML/SVG. No Data binding.
+`section = root.section(...)` creates a container. Calling `section.h2(...)`
+adds its heading; `section.ul()` adds its list. The returned `items` lets you
+add children inside that list.
 
-<details>
-<summary>More detail</summary>
+In Inspector, open Source: the heading and list belong to the section;
+the three list items belong to the list.
 
-**Goal:** Distinguish a Python build-time loop from reactive Data.
+## One declaration, three items
 
-**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/01-hello_world.md), [e02 · Text and links](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/02-text_and_links.md). 
+The loop calls `items.li(name)` once for each name. Add another name and reload:
+you get another list item without another declaration.
 
-## Read the page
+The loop builds Source when the page is created. It does not observe later Data
+changes like the bindings in the previous lesson.
 
-`STEPS` drives an ordered list, `TERMS` drives paired `dt`/`dd` nodes, and a nested `ul` is a child of one `li`.
+## Styles as attributes
 
-```python
-ordered = main_content.ol()
-for step in STEPS:
-    ordered.li(step)
-```
+On the section, `padding` provides inner spacing, `border_radius` rounds the
+corners and `background` gives the group a visible surface. On the heading,
+`color` changes only the title. Gramlot translates these attributes into CSS.
 
-The loop runs when the host builds Source; the list on screen is its result.
+The `var(...)` values use the current theme's colors, so the example works in
+light and dark mode. Change a style value and reload to compare the result.
 
-Python builds Source on the server; its JavaScript counterpart builds it on Node/Bun or in a standalone Worker. Bindings, actions and any Logic execute in the browser; Python strings containing JavaScript are not executed by Python.
+## Compare the example and code side by side
 
-## Try it and predict the result
+Example, Explanation and Code each have a detach icon inside their panel.
+Use it to open the panel in a floating window. Move the window by its title bar
+and resize it from its corner to arrange the example beside these instructions
+or its code.
 
-1. Count three ordered steps, two definition pairs and a nested list.
-2. Reload: the same constants produce the same nodes; no timer or subscription appends rows.
-
-## Change it and check yourself
-
-Append `"Explain the result"` to `STEPS` and `("DOM", "The browser representation.")` to `TERMS`.
-
-**Answer:** after reload there are four ordered items and three definition pairs. Existing nested items are unaffected because their loop uses another collection.
-
-## Limits and next step
-
-A Python list constant is not a Data Bag subscription. Later changing a Data value does not rerun this Python loop.
-
-Continue with [e04 · Semantic page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/04-semantic_page.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
-
-</details>
+Close the floating window with **×** to return the same panel to its tab.
+Detaching and docking preserve the running example's state.

@@ -1,0 +1,17 @@
+{
+  "key": "w06",
+  "title": "Individual radio buttons",
+  "description": "Select Standard, Express and Pick up in turn. Their booleans are exclusive within one group; the independent choice belongs to another group.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "individual",
+    "radio",
+    "buttons",
+    "selection",
+    "button"
+  ],
+  "order": 5,
+  "presentation": "content"
+}

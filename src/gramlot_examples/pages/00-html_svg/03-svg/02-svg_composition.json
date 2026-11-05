@@ -1,0 +1,16 @@
+{
+  "key": "e09",
+  "title": "Compose an SVG scene",
+  "description": "Find the repeated houses, trees and flowers. Each small method receives a position; loops reuse those methods to create one scene.",
+  "tags": [
+    "html",
+    "svg",
+    "compose",
+    "scene",
+    "composition"
+  ],
+  "order": 8,
+  "catalogued": false,
+  "navigation": false,
+  "presentation": "content"
+}

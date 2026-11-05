@@ -1,0 +1,13 @@
+{
+  "key": "tree-checkboxes",
+  "title": "Tree checkboxes",
+  "description": "Check Documents, then expand Catalog: lazy children inherit the check. Locked items keep their state; Checked paths shows the binding.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "tree",
+    "checkboxes"
+  ],
+  "order": 28
+}

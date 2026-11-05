@@ -1,0 +1,11 @@
+{
+  "key": "chart-reports-05",
+  "title": "Attribute rows",
+  "description": "Verify shared charts over records stored in node attributes.",
+  "tags": [
+    "charts",
+    "Bag",
+    "attributes"
+  ],
+  "order": 4
+}

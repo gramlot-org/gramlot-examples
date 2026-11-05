@@ -1,0 +1,13 @@
+{
+  "key": "b07",
+  "title": "Update SVG from Data",
+  "description": "Move the controls and watch the drawing change. SVG attributes use the same Data bindings as text and form fields.",
+  "tags": [
+    "bindings",
+    "update",
+    "svg",
+    "presentation",
+    "bound"
+  ],
+  "order": 7
+}

@@ -1,0 +1,14 @@
+{
+  "key": "chart-shares",
+  "title": "Pie and donut",
+  "description": "Show four prepared regional totals as parts of a whole.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "pie",
+    "echarts",
+    "reactivity"
+  ],
+  "order": 2,
+  "presentation": "content"
+}

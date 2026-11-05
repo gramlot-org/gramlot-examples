@@ -3,22 +3,36 @@
   "families": [
     {
       "key": "kajenn-db-lessons",
-      "folder": "91-kajenn_db",
       "title": "Kajenn and Asqueel",
+      "folder": "91-kajenn_db",
       "examples": [
         {
           "key": "kajenn-db-01",
           "title": "Load and save a customer",
-          "folder": "01_customer",
           "description": "A database record is loaded and saved by PageStore controllers.",
-          "explanation": "Enter an existing customer ID and leave the field. Edit and save; status and errors are Data. Unknown keys preserve the current record. Invalid drafts are not saved."
+          "tags": [
+            "kajenn",
+            "asqueel",
+            "load",
+            "save",
+            "customer"
+          ],
+          "folder": "01_customer"
         },
         {
           "key": "kajenn-db-02",
           "title": "Customer editing across windows",
-          "folder": "02_family",
           "description": "Frames and connected windows edit independent drafts backed by the same database.",
-          "explanation": "Load the same customer in two pages. Save in one, then reload in the other. The gallery owns the only WebSocket. Changes are not pushed to other drafts automatically."
+          "tags": [
+            "kajenn",
+            "asqueel",
+            "customer",
+            "editing",
+            "across",
+            "windows",
+            "family"
+          ],
+          "folder": "02_family"
         }
       ]
     }

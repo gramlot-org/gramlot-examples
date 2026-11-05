@@ -1,0 +1,26 @@
+{
+  "environment": "system-monitor",
+  "families": [
+    {
+      "key": "system-analysis",
+      "folder": "86-system-analysis",
+      "title": "Live examples",
+      "examples": [
+        {
+          "key": "system-monitor-01",
+          "folder": "system_analysis",
+          "title": "System monitor",
+          "description": "Compose movable charts and grids over live Data Bags.",
+          "explanation": "Read main(), follow the request/metrics bindings, then inspect the host sampler. Rates and chart data are prepared outside the renderer."
+        },
+        {
+          "key": "system-monitor-02",
+          "folder": "audio_spectrum",
+          "title": "Microphone analysis",
+          "description": "Turn microphone samples into waveform and spectrum charts through Data Bags.",
+          "explanation": "Start capture explicitly, compare the waveform and spectrum, then stop to release the microphone."
+        }
+      ]
+    }
+  ]
+}

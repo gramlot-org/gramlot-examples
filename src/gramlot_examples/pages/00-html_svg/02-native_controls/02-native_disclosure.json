@@ -1,0 +1,20 @@
+{
+  "key": "e07",
+  "title": "Disclosure and progress",
+  "description": "Open and close each question. The progress bar and meter show fixed example values; opening a question does not start a task.",
+  "tags": [
+    "html",
+    "svg",
+    "expandable",
+    "sections",
+    "progress",
+    "indicators",
+    "native",
+    "controls",
+    "disclosure"
+  ],
+  "order": 6,
+  "catalogued": false,
+  "navigation": false,
+  "presentation": "content"
+}

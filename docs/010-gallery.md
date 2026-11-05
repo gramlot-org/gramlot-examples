@@ -39,7 +39,7 @@ the exports `@gramlot/gramlot/themes/*` and `@gramlot/gramlot/assets/branding/*`
 
 A catalogue is an object with `families`. Each family has `key`, `folder`, `title` and
 `examples`; each example has `key`, `title`, `folder`, `description` and
-`explanation`. The family `folder` names its physical directory. An example `folder` is its
+`tags`. The family `folder` names its physical directory. An example `folder` is its
 family-relative path without the extension, including any topic directories.
 Keys identify lessons; public URLs retain the complete numbered filesystem path.
 
@@ -49,7 +49,7 @@ Keys identify lessons; public URLs retain the complete numbered filesystem path.
   "families": [
     {"key": "django_pages", "folder": "django_pages", "title": "Django", "examples": [
       {"key": "django-01", "title": "Quick start", "folder": "01_quick_start",
-       "description": "…", "explanation": "…"}
+       "description": "…", "tags": ["sample"]}
     ]}
   ]
 }
@@ -152,6 +152,13 @@ These gallery commands follow the steps above:
 The development runner that served the examples before this package
 (`runner/serve.py`, `runner/server.mjs`, `runner/build-standalone.mjs`) remains only in
 the history of this repository.
+
+A catalogue lesson may set `presentation` to `content`: the Python, Node/Bun
+and serverless gallery hosts supply a themed `main` container and pass it to
+its `main(root)`. Its source can declare content directly on `root`. Lessons
+without `content`, including existing full-space layouts and tools, receive the
+original root and retain control of their layout. The frame belongs to the
+gallery host; the original page file remains unchanged.
 
 <a id="ge-010-030"></a>
 
@@ -2043,3 +2050,7 @@ before these transfers work. Do not enable the flag alone. The examples do not
 persist production documents: their application targets inspect bytes or retain
 temporary demo attachments. PageStore and customer database writes are separate
 capabilities and are covered by their own deployment checks.
+
+### Example metadata
+
+Each catalogued lesson has adjacent JSON metadata for its key, title, description, search tags, order and optional presentation; its Markdown file is the lesson. Each family has an `_family.json` descriptor. Run `node scripts/generate-catalog.mjs` to generate the common and bundled environment catalogues from these files; `--check` verifies them. Tags are metadata only: tree search currently matches captions. A lesson marked `catalogued: false` and `navigation: false` remains available at its direct URL but is omitted from the teaching path. A directory index can use `00-index.json` with `navigation: false` to hide its branch.

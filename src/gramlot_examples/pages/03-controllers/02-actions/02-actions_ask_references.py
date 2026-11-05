@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Confirm actions and target references"
-
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="buttons")
         main_content.html_label("Ask before running", for_="confirm-needed")

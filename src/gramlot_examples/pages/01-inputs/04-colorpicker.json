@@ -1,0 +1,15 @@
+{
+  "key": "w07",
+  "title": "Choose and bind a color",
+  "description": "Choose a color and compare both pickers with the swatch. All three read the same color value.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "bind",
+    "color",
+    "colorpicker"
+  ],
+  "order": 6,
+  "presentation": "content"
+}

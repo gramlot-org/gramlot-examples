@@ -1,0 +1,14 @@
+{
+  "key": "asqueel-only-01",
+  "title": "Asqueel only · cached invoice rows",
+  "description": "Server-side cachedFetch, search and sort; only a small window resides in the browser.",
+  "tags": [
+    "grid",
+    "asqueel",
+    "only",
+    "cached",
+    "invoice",
+    "rows"
+  ],
+  "order": 0
+}

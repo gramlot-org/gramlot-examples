@@ -1,0 +1,12 @@
+{
+  "key": "code_mirror",
+  "title": "Code editor",
+  "description": "Edit the draft and save a snapshot. Keep typing: the live draft changes while the saved version stays unchanged until you save again.",
+  "tags": [
+    "editors",
+    "code",
+    "editor",
+    "base"
+  ],
+  "order": 0
+}

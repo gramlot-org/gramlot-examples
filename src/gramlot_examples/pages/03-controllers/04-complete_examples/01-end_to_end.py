@@ -6,8 +6,6 @@ class EmptyOrder(Exception):
 
 
 class Page(BasePage):
-    title = "Combine inputs, calculations and server calls"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="story")
         pane.h1("^.settings.caption", id="caption")

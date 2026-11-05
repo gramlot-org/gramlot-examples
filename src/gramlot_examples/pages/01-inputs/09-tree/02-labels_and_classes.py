@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Customize tree labels and row styles"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

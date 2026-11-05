@@ -3,8 +3,6 @@ from gramlot import endpoint
 
 
 class Page(BasePage):
-    title = "Call the server when a value changes"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="quote")
 

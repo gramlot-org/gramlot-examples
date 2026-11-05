@@ -1,4 +1,4 @@
-# Bind boolean and single-choice values
+# Booleans and single choices
 
 **Try this:** Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.
 

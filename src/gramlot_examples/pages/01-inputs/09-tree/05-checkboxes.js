@@ -2,7 +2,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 import {Bag} from '@gramlot/gramlot';
 
 export class Page extends BasePage {
-    static title = 'Tree checkboxes';
 
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'checks'});

@@ -19,31 +19,29 @@
         "title": "Text, links and literal escaping",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "Compare emphasis, inline code and links; text is not parsed markup.",
+        "description": "Observe a link and literal text in an HTML section.",
         "examples": [
-          "e02"
+          "e03"
         ],
         "label": "Text and links"
       },
       {
         "id": "behavior_lists_tables_and_meaningful_html_regions",
-        "title": "Lists, tables and meaningful HTML regions",
+        "title": "HTML lists and nesting",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "Compare the declarations with nested content and landmarks.",
+        "description": "A section contains a list; a loop adds its items.",
         "examples": [
-          "e03",
-          "e05",
-          "e04"
+          "e03"
         ],
-        "label": "Lists and tables"
+        "label": "HTML nesting"
       },
       {
         "id": "behavior_native_html_versus_gramlot_component_names",
         "title": "Native HTML versus Gramlot component names",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "Compare HTML and component controls on one Data value; try shared labels, editing modes and both Clear actions.",
+        "description": "Use lbl on native HTML, then compare the bound HTML input and Gramlot textbox in the next chapter.",
         "examples": [
           "e06",
           "w01",
@@ -473,7 +471,8 @@
         "status": "Exercise",
         "description": "Select several channels, then clear them all. Compare the comma-separated codes with the null value produced by an empty selection.",
         "examples": [
-          "w16"
+          "w16",
+          "checkbox-tree"
         ],
         "label": "checkBoxText"
       },
@@ -761,27 +760,29 @@
         "id": "component_transformpane",
         "title": "transformPane",
         "kind": "component",
-        "status": "Gap",
-        "description": "Add a retained-content translation/rotation/scale exercise; tray gestures do not teach this component.",
-        "examples": [],
+        "status": "Exercise",
+        "description": "Move, rotate and zoom a card using a shared Data pose.",
+        "examples": [
+          "transform-pane"
+        ],
         "label": "transformPane"
       }
     ]
   },
   {
     "id": "grid",
-    "title": "Grid · Generic",
+    "title": "Grid \u00b7 Generic",
     "features": [
       {
         "id": "behavior_grid_basic",
-        "title": "Basic grid · Bag values",
+        "title": "Basic grid \u00b7 Bag values",
         "kind": "behavior",
         "status": "Exercise",
         "description": "Start with three columns and a Bag whose row values are Bags.",
         "examples": [
           "grid-01"
         ],
-        "label": "Basic grid · Bag values"
+        "label": "Basic grid \u00b7 Bag values"
       },
       {
         "id": "behavior_grid_attributes",
@@ -870,12 +871,56 @@
         "examples": [
           "grid-10"
         ]
+      },
+      {
+        "id": "behavior_grid_check_sets",
+        "title": "Customer sets",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Create customer sets, intersect John and Fred, and combine their membership with grid search on a complete Bag.",
+        "examples": [
+          "grid-check-sets"
+        ],
+        "label": "Customer sets"
+      },
+      {
+        "id": "behavior_grid_column_filters",
+        "title": "Column filters",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Distinct values, self-excluding counts and multiple selections combined with search and sets.",
+        "examples": [
+          "grid-column-filters"
+        ],
+        "label": "Column filters"
+      },
+      {
+        "id": "behavior_grid_primary_supplier",
+        "title": "Single choice",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Choose one supplier with a radio column and keep its scalar ID in the product record, including when filtered or unloaded.",
+        "examples": [
+          "grid-primary-supplier"
+        ],
+        "label": "Single choice"
+      },
+      {
+        "id": "behavior_chart_configuration_time",
+        "title": "Charts and time",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Shared chart configuration, rendering engines and monthly playback from a Data Bag.",
+        "examples": [
+          "grid-charts"
+        ],
+        "label": "Charts and time"
       }
     ]
   },
   {
     "id": "grid_loading",
-    "title": "Grid · Data loading",
+    "title": "Grid \u00b7 Data loading",
     "features": [
       {
         "id": "behavior_grid_database_resident",
@@ -904,7 +949,7 @@
   },
   {
     "id": "grid_asqueel",
-    "title": "Grid · Asqueel only",
+    "title": "Grid \u00b7 Asqueel only",
     "features": [
       {
         "id": "behavior_grid_cached_fetch",
@@ -1441,13 +1486,12 @@
     "features": [
       {
         "id": "behavior_svg_shapes_and_reusable_drawing_helpers",
-        "title": "SVG shapes and reusable drawing helpers",
+        "title": "SVG shapes",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "Change shape attributes; reuse the drawing helper.",
+        "description": "Declare SVG shapes within the page Source.",
         "examples": [
-          "e08",
-          "e09"
+          "e08"
         ],
         "label": "SVG shapes"
       },
@@ -1570,6 +1614,89 @@
         "description": "Prototype only. No new gallery exercise or recommendation until a full implementation review and comparison with legacy APIs.",
         "examples": [],
         "label": "dbComboBox"
+      }
+    ]
+  },
+  {
+    "id": "charts",
+    "title": "Charts",
+    "features": [
+      {
+        "id": "chart_chart_bars",
+        "title": "Reactive chart data",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Edit a Data value and observe both grid and chart.",
+        "examples": [
+          "chart-bars"
+        ],
+        "label": "Reactive chart data"
+      },
+      {
+        "id": "chart_chart_trends",
+        "title": "Lines and engines",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare engines over numeric samples.",
+        "examples": [
+          "chart-trends"
+        ],
+        "label": "Lines and engines"
+      },
+      {
+        "id": "chart_chart_shares",
+        "title": "Shares",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Compare pie and donut charts.",
+        "examples": [
+          "chart-shares"
+        ],
+        "label": "Shares"
+      },
+      {
+        "id": "chart_chart_points",
+        "title": "Scatter",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Plot numeric relationships.",
+        "examples": [
+          "chart-points"
+        ],
+        "label": "Scatter"
+      },
+      {
+        "id": "chart_chart_bars_3d",
+        "title": "Categorical 3D",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Two dimensions and one measure.",
+        "examples": [
+          "chart-bars-3d"
+        ],
+        "label": "Categorical 3D"
+      },
+      {
+        "id": "chart_chart_surface",
+        "title": "Numeric 3D",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Surfaces, lines and points.",
+        "examples": [
+          "chart-surface"
+        ],
+        "label": "Numeric 3D"
+      },
+      {
+        "id": "chart_chart_territories",
+        "title": "GeoJSON maps",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Match rows to territory names.",
+        "examples": [
+          "chart-territories"
+        ],
+        "label": "GeoJSON maps"
       }
     ]
   }

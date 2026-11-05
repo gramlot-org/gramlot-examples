@@ -1,13 +1,12 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Toolbar: groups, priority and overflow";
 
     main(root) {
 
         const main_content = root.main({padding: "24px", max_width: "1200px", margin: "auto"});
         this.button_styles(main_content);
-        this.priority_overflow(main_content);
+        this.ordered_overflow(main_content);
         this.moving_input(main_content);
         this.retained_groups(main_content);
         this.vertical_overflow(main_content);
@@ -29,13 +28,13 @@ export class Page extends BasePage {
         }
     }
 
-    priority_overflow(main_content) {
+    ordered_overflow(main_content) {
         main_content.h2("1. Make the toolbar narrower");
         this.width_controls(main_content);
         const shell = main_content.div({width: "^toolbar.width:={} + 'px'", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", overflow: "hidden", id: "responsive-frame"});
         const frame = shell.framePane({height: "245px"});
         frame.top.setAttr({background: "var(--gramlot-field-background)", padding: "6px"});
-        this.priority_bar(frame);
+        this.ordered_bar(frame);
         this.recipient(frame, "document_editor");
         main_content.div().strong("Query: ");
         main_content.p("^document.query", {id: "query-result", min_height: "22px", margin: "0 0 20px"});
@@ -43,29 +42,27 @@ export class Page extends BasePage {
 
     width_controls(main_content) {
         const controls = main_content.div({display: "flex", align_items: "center", gap: "12px", flex_wrap: "wrap", margin: "12px 0"});
-        controls.html_label("Toolbar width", {for: "toolbar-width"});
-        controls.input({type: "range", min: 280, max: 1080, step: 20, value: "^toolbar.width", live: true, id: "toolbar-width", aria_label: "Toolbar width", width: "280px"});
+        controls.input({type: "range", min: 280, max: 1080, step: 20, value: "^toolbar.width", live: true, id: "toolbar-width", lbl: "Toolbar width", width: "280px"});
         controls.span("^toolbar.width", {min_width: "40px"});
         controls.span("px");
-        controls.input({type: "checkbox", value: "^document.locked", id: "toolbar-lock", aria_label: "Disable Save"});
-        controls.html_label("Disable Save", {for: "toolbar-lock"});
+        controls.input({type: "checkbox", value: "^document.locked", id: "toolbar-lock", lbl: "Disable Save"});
     }
 
-    priority_bar(frame) {
+    ordered_bar(frame) {
         const bar = frame.top.menu({presentation: "bar", id: "responsive-toolbar"});
-        const title = bar.menuline({group: true, overflowable: false, id: "title-group"});
+        const title = bar.menuline({group: true, id: "title-group"});
         title.span("Documents", {font_weight: "600", padding: "0 8px"});
         title.span("42", {opacity: "0.65"});
         bar.spacer({size: 12});
-        const editing = bar.menuline({group: true, priority: 80, id: "editing-group"});
+        const editing = bar.menuline({group: true, id: "editing-group"});
         editing.menuline("documenti:save", {labelPosition: "tooltip", tooltip: "Save document", parameters: {id: 42}, disabled: "^document.locked", id: "toolbar-save"});
         editing.menuline("documenti:undo", {labelPosition: "tooltip", tooltip: "Undo", id: "toolbar-undo"});
-        bar.menuline("documenti:toggleDetails", {priority: 40, checked: "^document.details", id: "toolbar-details"});
-        this.export_group(bar, "export-group", 10);
+        bar.menuline("documenti:toggleDetails", {checked: "^document.details", id: "toolbar-details"});
+        this.export_group(bar, "export-group");
         bar.spacer({flex: 1});
-        const search = bar.menuline({group: true, overflowable: false, id: "search-group"});
+        const search = bar.menuline({group: true, id: "search-group"});
         search.span("⌕", {font_size: "22px", aria_hidden: true});
-        search.input({value: "^document.query", live: true, placeholder: "Search documents", aria_label: "Search documents", width: "190px", id: "toolbar-search"});
+        search.input({value: "^document.query", live: true, placeholder: "Search documents", lbl: "Search documents", width: "190px", id: "toolbar-search"});
     }
 
     moving_input(main_content) {
@@ -73,48 +70,47 @@ export class Page extends BasePage {
         const second_shell = main_content.div({width: "^toolbar.width:={} + 'px'", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", padding: "6px", box_sizing: "border-box"});
         const second_frame = second_shell.framePane({height: "150px"});
         const second = second_frame.top.menu({presentation: "bar", id: "input-toolbar"});
-        const fixed = second.menuline({group: true, overflowable: false});
+        const fixed = second.menuline({group: true});
         fixed.span("Recent documents", {font_weight: "600", padding: "0 8px", white_space: "nowrap"});
         fixed.menuline("documenti:save", {parameters: {id: 42}});
         second.spacer({flex: 1});
-        const moving = second.menuline({group: true, priority: 0, id: "moving-search-group"});
-        moving.span("Search", {white_space: "nowrap"});
-        moving.input({value: "^document.query", live: true, placeholder: "Same query", aria_label: "Movable search", width: "220px", id: "moving-search"});
+        const moving = second.menuline({group: true, id: "moving-search-group"});
+        moving.input({value: "^document.query", live: true, placeholder: "Same query", lbl: "Movable search", width: "220px", id: "moving-search"});
         this.recipient(second_frame, "secondary_editor");
     }
 
     retained_groups(main_content) {
-        main_content.h2("3. Retained groups scroll without breaking");
+        main_content.h2("3. Groups move together in declaration order");
         const scroll_shell = main_content.div({width: "400px", max_width: "100%", border: "1px solid var(--gramlot-border)", border_radius: "8px", padding: "6px", box_sizing: "border-box"});
         const scroll_frame = scroll_shell.framePane({height: "130px"});
         const retained = scroll_frame.top.menu({presentation: "bar", id: "scroll-toolbar"});
         for (const [index, caption] of ["Inbox", "Archive", "Shared documents"].entries()) {
-            const group = retained.menuline({group: true, overflowable: false});
+            const group = retained.menuline({group: true});
             group.menuline("documenti:save", {caption: caption, parameters: {id: index}, white_space: "nowrap"});
             group.menuline("documenti:undo", {labelPosition: "tooltip", tooltip: "Undo"});
         }
-        retained.menuline({group: true, overflowable: false}).input({value: "^document.query", live: true, placeholder: "Search", aria_label: "Retained search", width: "190px"});
+        retained.menuline({group: true}).input({value: "^document.query", live: true, placeholder: "Search", lbl: "Retained search", width: "190px"});
         this.recipient(scroll_frame, "retained_editor");
     }
 
     vertical_overflow(main_content) {
         main_content.h2("4. The same policy on a vertical toolbar");
-        main_content.input({type: "range", min: 80, max: 300, step: 20, value: "^toolbar.height", live: true, aria_label: "Vertical toolbar height", id: "toolbar-height", width: "260px"});
+        main_content.input({type: "range", min: 80, max: 300, step: 20, value: "^toolbar.height", live: true, lbl: "Vertical toolbar height", id: "toolbar-height", width: "260px"});
         const vertical_frame = main_content.framePane({height: "330px", border: "1px solid var(--gramlot-border)", border_radius: "8px", margin_top: "10px"});
         vertical_frame.left.setAttr({width: "190px", padding: "6px"});
         const vertical = vertical_frame.left.menu({presentation: "bar", orientation: "vertical", height: "^toolbar.height:={} + 'px'", width: "178px", id: "vertical-toolbar"});
-        vertical.menuline({group: true, overflowable: false}).strong("Folders", {padding: "8px"});
+        vertical.menuline({group: true}).strong("Folders", {padding: "8px"});
         for (const [index, caption] of ["Inbox", "Archive", "Shared"].entries()) {
-            const group = vertical.menuline({group: true, priority: 0, id: `folder-group-${index}`});
+            const group = vertical.menuline({group: true, id: `folder-group-${index}`});
             group.menuline("documenti:save", {caption: caption, parameters: {id: index}});
             group.menuline("documenti:undo", {caption: "Undo"});
         }
         this.recipient(vertical_frame, "vertical_editor");
     }
 
-    export_group(bar, identity, priority) {
+    export_group(bar, identity) {
 
-        const group = bar.menuline({group: true, priority: priority, id: identity});
+        const group = bar.menuline({group: true, id: identity});
         group.menuline("documenti:save", {caption: "Copy", icon: "⧉", parameters: {id: 42}});
         const exportMenu = group.menuline({caption: "Export", icon: "↓"}).menu();
         exportMenu.menuline("documenti:export", {caption: "PDF", parameters: {id: 42, format: "PDF"}});

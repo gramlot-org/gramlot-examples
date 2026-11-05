@@ -1,0 +1,16 @@
+{
+  "key": "selection-trial-02",
+  "title": "Progressive JSONL",
+  "description": "Measure typed record streaming and incremental Bag construction.",
+  "tags": [
+    "grid",
+    "transfer",
+    "experiments",
+    "selection",
+    "trial",
+    "progressive",
+    "jsonl",
+    "http"
+  ],
+  "order": 0
+}

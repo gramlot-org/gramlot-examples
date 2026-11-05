@@ -1,0 +1,16 @@
+{
+  "key": "w01",
+  "title": "HTML and components",
+  "description": "Edit a name in either HTML or Gramlot controls. Compare their declarations, then try label positions, live editing and read only.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "html",
+    "components",
+    "text",
+    "textbox"
+  ],
+  "order": 0,
+  "presentation": "content"
+}

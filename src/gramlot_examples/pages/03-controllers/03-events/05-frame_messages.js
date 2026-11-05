@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Exchange messages between frames";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'frames'});
         main_content.html_label('Message', {for: 'message'});

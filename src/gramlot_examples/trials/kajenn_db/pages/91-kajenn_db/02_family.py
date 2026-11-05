@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Customer editing across windows'
 
     def main(self, root):
         pane = root.div(style='padding:20px;display:grid;gap:16px')

@@ -9,7 +9,6 @@ const RULES = {lighting: 'Ships in two days, bulbs not included.', seating: 'Shi
 const ON_REMOTE = "this.SET('mounts', (this.GET('mounts') ?? 0) + 1); this.SET('status', 'Mounted the ' + category + ' rules')";
 
 export class Page extends BasePage {
-    static title = "Cache remote fragments";
 
     main(root) {
         const pane = root.div({class: 'example-page stack'});

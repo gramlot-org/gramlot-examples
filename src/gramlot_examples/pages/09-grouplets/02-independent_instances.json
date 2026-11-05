@@ -1,0 +1,17 @@
+{
+  "key": "g02",
+  "title": "Independent address editors",
+  "description": "Edit the delivery address for an order while its billing address remains unchanged.",
+  "tags": [
+    "grouplets",
+    "order",
+    "addresses",
+    "reuse",
+    "one",
+    "editor",
+    "twice",
+    "independent",
+    "instances"
+  ],
+  "order": 1
+}

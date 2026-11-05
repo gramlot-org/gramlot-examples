@@ -1,0 +1,15 @@
+{
+  "key": "e10",
+  "title": "Cards with icons",
+  "description": "Compare the cards and their SVG icons. Change a card's content in your own copy; the shared card method keeps the presentation consistent.",
+  "tags": [
+    "html",
+    "svg",
+    "cards",
+    "icons",
+    "composition"
+  ],
+  "order": 9,
+  "catalogued": false,
+  "navigation": false
+}

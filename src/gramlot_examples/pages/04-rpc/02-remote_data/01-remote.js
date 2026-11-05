@@ -3,7 +3,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 const RECORDS = {lamp: ['Lamp', 3], desk: ['Desk', 0], chair: ['Chair', 12]};
 
 export class Page extends BasePage {
-    static title = "Load a remote Source fragment";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'catalog'});

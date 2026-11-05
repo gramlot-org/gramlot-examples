@@ -8,7 +8,6 @@ EXCLUDED = {"gallery-tray", "l08"}
 
 
 class Page(BasePage):
-    title = "Gallery tray"
     devices = ("desktop", "tablet", "phone")
     gallery_urls = {demo["key"]: f"../{family['folder']}/{demo['folder']}"
                     for family in FAMILIES for demo in family["examples"]}
@@ -31,7 +30,7 @@ class Page(BasePage):
 def example_picker(region):
     bar = region.menu(presentation="bar", height="42px", border_bottom="1px solid var(--gramlot-border)")
     tools = bar.contentPane(display="flex", align_items="center", gap="8px", padding="0 8px")
-    picker = tools.select(id="tray-example", value="^.choice", default="", aria_label="Example",
+    picker = tools.select(id="tray-example", value="^.choice", default="", lbl="Example",
                           width="min(440px, 55vw)")
     picker.option("Choose an example…", value="")
     for family in FAMILIES:

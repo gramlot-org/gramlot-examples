@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Bind values with absolute and relative paths";
 
     main(root) {
         const pane = root.div({class: 'example-page stack'});

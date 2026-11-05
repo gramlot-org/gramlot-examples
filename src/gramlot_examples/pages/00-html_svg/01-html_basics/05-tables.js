@@ -3,12 +3,10 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 const ROWS = [['North', 12, 8], ['South', 9, 11], ['West', 15, 6]];
 
 export class Page extends BasePage {
-    static title = "Tables with headings and totals";
 
     main(root) {
-        const main_content = root.main({class: 'example-page stack'});
-        main_content.h1('A small regional report');
-        const table = main_content.table();
+        root.h1('A small regional report');
+        const table = root.table();
         table.caption('Orders by region and quarter');
         const heading = table.thead().tr();
         for (const label of ['Region', 'Q1', 'Q2', 'Total']) heading.th(label, {scope: 'col'});

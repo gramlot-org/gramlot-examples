@@ -1,0 +1,18 @@
+{
+  "key": "w09",
+  "title": "Vertical slider",
+  "description": "Move the vertical slider from bottom to top. The horizontal slider and numeric readout follow the same value from 0 to 100.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "vertical",
+    "slider",
+    "orientation",
+    "values",
+    "numbers",
+    "sliders"
+  ],
+  "order": 8,
+  "presentation": "content"
+}

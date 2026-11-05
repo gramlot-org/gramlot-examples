@@ -1,8 +1,6 @@
 """One Source specimen shared by the three appearance preview pages."""
 from urllib.parse import quote
 from gramlot import Page as BasePage
-from gramlot.collections.layout import mygramlot as layout
-from gramlot.collections.inputs import mygramlot as inputs
 from gramlot_examples.collections.menu_trial import mygramlot
 
 
@@ -11,7 +9,7 @@ def icon(path):
 
 
 class PreviewPage(BasePage):
-    gramlots = [layout, inputs, mygramlot]
+    gramlots = [mygramlot]
     profile = "Compact"
     density = "28px controls / 13px text"
 
@@ -69,8 +67,8 @@ class PreviewPage(BasePage):
         footer = frame.bottom.menu(presentation="bar", padding="2px 4px", iconSize=18, background="var(--gramlot-surface-subtle)", border_top="1px solid var(--gramlot-border)")
         footer.menuline(group=True).span("^preview.notice", class_="muted")
         footer.spacer(flex=1)
-        footer.menuline(caption="Open dialog", action="openDialog", overflowable=False)
-        footer.menuline(caption="Floating", action="openFloating", overflowable=False)
+        footer.menuline(caption="Open dialog", action="openDialog")
+        footer.menuline(caption="Floating", action="openFloating")
         self.window(root.dialog(title=self.profile+" · Edit record", open="^preview.open", width="440px", height="200px", movable=True, resizable=True, collapsible=True, maximizable=True), "preview.open")
         self.window(root.floatingPane(title=self.profile+" · Tools", open="^preview.floating", width="320px", height="200px", maximizable=True), "preview.floating")
 

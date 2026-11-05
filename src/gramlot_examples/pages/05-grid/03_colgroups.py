@@ -3,8 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Column groups and row heights'
-
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')
         g = main_content.grid(id='grid-03', storepath='.rows', rowMode='attributes', height='340px', rowHeaders=True, rowResize=True)

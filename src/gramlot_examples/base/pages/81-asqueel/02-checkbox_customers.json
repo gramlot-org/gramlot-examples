@@ -1,0 +1,14 @@
+{
+  "key": "base-asqueel-04",
+  "title": "Multiple customers",
+  "description": "Choose a state, then tick several customers in the popup. The complete eligible list is loaded.",
+  "tags": [
+    "asqueel",
+    "database",
+    "checkbox",
+    "multiple",
+    "popup",
+    "condition"
+  ],
+  "order": 1
+}

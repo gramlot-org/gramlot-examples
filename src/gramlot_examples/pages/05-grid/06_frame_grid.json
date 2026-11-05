@@ -1,0 +1,10 @@
+{
+  "key": "menu-15",
+  "title": "FrameGrid · complete example",
+  "description": "A read-only Bag grid with shared top and bottom command bars. Choose its theme in the gallery Settings.",
+  "tags": [
+    "grid",
+    "frame"
+  ],
+  "order": 5
+}

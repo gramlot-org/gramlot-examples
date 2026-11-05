@@ -1,0 +1,12 @@
+{
+  "key": "b09",
+  "title": "Bound forms",
+  "description": "Edit a field and compare its Data value. Text updates on change; Intensity updates while dragging. Password and unbound controls are absent from the summary.",
+  "tags": [
+    "bindings",
+    "bound",
+    "forms",
+    "editing"
+  ],
+  "order": 9
+}

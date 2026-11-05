@@ -1,0 +1,12 @@
+{
+  "key": "chart-reports-01",
+  "title": "Australian sales",
+  "description": "Compare live annual sales in a grid, map and bar chart.",
+  "tags": [
+    "charts",
+    "sales",
+    "database",
+    "Australia"
+  ],
+  "order": 0
+}

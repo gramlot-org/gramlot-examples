@@ -2,6 +2,7 @@
 import json
 
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 from gramlot_examples.gallery.features import feature_index
 from gramlot_examples.gallery.page import Page
 
@@ -16,7 +17,7 @@ def walk(bag):
 def test_feature_index_declares_optional_links_in_page_data():
     page = Page()
     builder = page.source_builder('main', collections=[
-        json.loads(item.verify()[item.grammar]) for item in collections()])
+        json.loads(item.verify()[item.grammar]) for item in (*standard_collections(), *collections())])
     feature_index(builder.root, {'asqueel-only-01': {
         'family': 'cached_selection', 'url': 'pages/84-cached-selection/01-invoice_rows',
         'title': 'Cached rows'}})

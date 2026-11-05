@@ -1,0 +1,6 @@
+{
+  "key": "chart-reports",
+  "title": "Charts \u00b7 Live reports",
+  "order": 0,
+  "catalog": "chart-reports-catalog.json"
+}

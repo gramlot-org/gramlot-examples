@@ -1,0 +1,14 @@
+{
+  "key": "c07",
+  "title": "Handle browser and component events",
+  "description": "Click a chip, type in the field and move over the pointer area. The visible readouts show which event reached each declaring Source node.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "handle",
+    "browser",
+    "component"
+  ],
+  "order": 6
+}

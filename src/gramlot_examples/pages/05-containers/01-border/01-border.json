@@ -1,0 +1,13 @@
+{
+  "key": "l01",
+  "title": "Border regions and splitters",
+  "description": "Resize Filters and Details while editing the customer. The center takes the remaining space and the summary follows accepted Data.",
+  "tags": [
+    "containers",
+    "layout",
+    "border",
+    "regions",
+    "splitters"
+  ],
+  "order": 0
+}

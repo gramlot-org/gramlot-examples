@@ -1,0 +1,12 @@
+{
+  "key": "menu-14",
+  "title": "Complete floating editor",
+  "description": "The same editor in a nonmodal floating window, with top toolbar, fields and bottom Save/Cancel.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "floating",
+    "editor"
+  ],
+  "order": 13
+}

@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Publish to another page"
 
     def main(self, root):
         pane = root.div(style="padding:24px;display:grid;gap:16px")

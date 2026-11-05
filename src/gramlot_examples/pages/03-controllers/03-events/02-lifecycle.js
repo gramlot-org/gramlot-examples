@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Start and dispose page behavior";
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'lifecycle'});
         const actions = pane.div({class: 'actions'});

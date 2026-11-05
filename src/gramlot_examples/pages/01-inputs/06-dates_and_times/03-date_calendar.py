@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     devices = ("desktop", "tablet", "phone")
-    title = "Inline and popup calendars"
     locale = "it-IT"
 
     def main(self, root):

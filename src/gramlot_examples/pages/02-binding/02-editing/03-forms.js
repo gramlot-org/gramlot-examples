@@ -4,7 +4,6 @@ const SHOWN = ['name', 'email', 'search', 'website', 'telephone', 'quantity', 'd
     'week', 'accent', 'intensity', 'region', 'topics', 'note', 'updates'];
 
 export class Page extends BasePage {
-    static title = "Bound forms";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'form'});

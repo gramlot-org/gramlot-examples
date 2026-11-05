@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Editing · drafts and validation';
     main(root) {
         const main = root.main({padding:"20px", max_width:"1120px", margin:"0 auto"});
         const form = main.div({form:true, datapath:"sample", node_label:"editing", selfsubscribe_formStatus:"this.SET('ui.status',p_0.status); this.SET('ui.canSave',p_0.canSave);"});

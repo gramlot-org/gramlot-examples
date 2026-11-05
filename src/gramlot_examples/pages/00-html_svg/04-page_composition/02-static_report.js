@@ -3,17 +3,15 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 const REGIONS = [['North', 12, 'var(--gramlot-action)'], ['South', 9, 'var(--gramlot-warning)'], ['West', 15, 'var(--gramlot-success)']];
 
 export class Page extends BasePage {
-    static title = "Static report";
 
     main(root) {
-        const main_content = root.main({class: 'example-page stack'});
-        const header = main_content.header();
+        const header = root.header();
         header.p('SAMPLE REPORT', {class: 'eyebrow'});
         header.h1('Orders by region');
         header.p('A fixed dataset feeds the summary, chart and table.');
         const total = REGIONS.reduce((sum, region) => sum + region[1], 0);
-        this.summary(main_content, total);
-        const detail = main_content.div({class: "grid report-detail"});
+        this.summary(root, total);
+        const detail = root.div({class: "grid report-detail"});
         this.chart(detail.section());
         this.table(detail.section(), total);
     }

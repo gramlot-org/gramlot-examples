@@ -3,36 +3,67 @@
   "families": [
     {
       "key": "base-asqueel",
-      "folder": "81-asqueel",
       "title": "Asqueel selectors",
+      "folder": "81-asqueel",
       "examples": [
         {
           "key": "base-asqueel-01",
           "title": "State and customer",
-          "folder": "01-state_customers",
           "description": "Filter customers by the selected state.",
-          "explanation": "Change State after choosing a Customer. A hard condition retains the old selection with an error; a weak condition is a preference. Parameters are reactive Data bindings. Switch State label between Full name and Code: caption_field refreshes the label while retaining the selected key."
+          "tags": [
+            "asqueel",
+            "selectors",
+            "state",
+            "customer",
+            "customers"
+          ],
+          "folder": "01-state_customers"
+        },
+        {
+          "key": "base-asqueel-04",
+          "title": "Multiple customers",
+          "description": "Choose a state, then tick several customers in the popup. The complete eligible list is loaded.",
+          "tags": [
+            "asqueel",
+            "database",
+            "checkbox",
+            "multiple",
+            "popup",
+            "condition"
+          ],
+          "folder": "02-checkbox_customers"
         }
       ]
     },
     {
       "key": "base-db-grid",
+      "title": "Grid · Database",
       "folder": "82-grid-database",
-      "title": "Grid \u00b7 Database",
       "examples": [
         {
           "key": "base-asqueel-02",
-          "folder": "01-customers",
-          "title": "Database grid \u00b7 resident customers",
+          "title": "Database grid · resident customers",
           "description": "A real PostgreSQL selection, resident scrolling and server timings.",
-          "explanation": "Choose a limit from 100 to 100,000 records and load through an RPC. Compare requested and loaded counts, query and server times, then resize, scroll, search and sort the resident Bag."
+          "tags": [
+            "grid",
+            "database",
+            "resident",
+            "customers"
+          ],
+          "folder": "01-customers"
         },
         {
           "key": "base-asqueel-03",
-          "folder": "02-invoice_rows",
-          "title": "Database grid \u00b7 resident invoice rows",
+          "title": "Resident invoice rows",
           "description": "Up to 100,000 real invoice rows from the XL dataset, with related products and server timings.",
-          "explanation": "Choose a limit, load a complete resident Bag through typed JSONL, then scroll, search and sort locally. Compare query, server encoding and request-to-Bag-ready timings."
+          "tags": [
+            "grid",
+            "database",
+            "resident",
+            "invoice",
+            "rows"
+          ],
+          "folder": "02-invoice_rows"
         }
       ]
     }

@@ -3,7 +3,6 @@ from genro_bag import Bag
 
 
 class Page(BasePage):
-    title = "Browse hierarchical Data with a tree"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

@@ -9,7 +9,6 @@ class Page(BasePage):
     gallery_urls = {demo["key"]: f"../{family['folder']}/{demo['folder']}"
                    for family in read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
                    for demo in family["examples"]}
-    title = "Switch pages in a single stack"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

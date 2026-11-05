@@ -3,4 +3,4 @@ from gramlot_examples.base.selection_trial import SelectionTrialPage
 
 
 class Page(SelectionTrialPage):
-    title = 'Selection trial · progressive JSONL / HTTP'
+    pass

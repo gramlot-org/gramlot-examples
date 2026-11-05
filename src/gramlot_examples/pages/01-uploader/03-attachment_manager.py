@@ -42,8 +42,6 @@ class AttachmentTarget(UploadTarget):
 
 
 class Page(BasePage):
-    title = "Attachments"
-
     def main(self, root):
         main_content = root.main(datapath="attachmentsDemo", padding="16px")
 

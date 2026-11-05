@@ -1,0 +1,19 @@
+{
+  "key": "grid-check-sets",
+  "title": "Customer sets",
+  "description": "Create independent customer sets, then intersect John and Fred in AND with grid search.",
+  "tags": [
+    "grid",
+    "checkbox",
+    "sets",
+    "John",
+    "Mark",
+    "Fred",
+    "dynamic columns",
+    "checked",
+    "checkedField",
+    "intersection",
+    "setFilter"
+  ],
+  "order": 9
+}

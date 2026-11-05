@@ -1,0 +1,13 @@
+{
+  "key": "kajenn-db-01",
+  "title": "Load and save a customer",
+  "description": "A database record is loaded and saved by PageStore controllers.",
+  "tags": [
+    "kajenn",
+    "asqueel",
+    "load",
+    "save",
+    "customer"
+  ],
+  "order": 0
+}

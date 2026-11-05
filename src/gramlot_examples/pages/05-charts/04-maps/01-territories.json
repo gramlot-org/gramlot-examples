@@ -1,0 +1,14 @@
+{
+  "key": "chart-territories",
+  "title": "Territories",
+  "description": "Match rows to a small fictional GeoJSON map and change the displayed values.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "map",
+    "echarts",
+    "reactivity"
+  ],
+  "order": 7,
+  "presentation": "content"
+}

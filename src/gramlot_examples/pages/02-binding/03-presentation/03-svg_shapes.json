@@ -1,0 +1,15 @@
+{
+  "key": "b10",
+  "title": "Bind SVG geometry and color",
+  "description": "Move the geometry controls and change the color. The same six SVG shapes update through bound attributes without rebuilding the scene.",
+  "tags": [
+    "bindings",
+    "bind",
+    "svg",
+    "geometry",
+    "color",
+    "presentation",
+    "shapes"
+  ],
+  "order": 10
+}

@@ -3,8 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Two grids, independent views'
-
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')
         main_content.button('Toggle Linen chair quantity: 12 / 0', id='shared-update', action='toggleQuantity')

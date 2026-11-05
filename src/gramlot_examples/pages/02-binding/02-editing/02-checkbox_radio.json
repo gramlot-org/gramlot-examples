@@ -1,0 +1,17 @@
+{
+  "key": "b05",
+  "title": "Booleans and single choices",
+  "description": "Toggle the checkbox, then choose a radio option. The readout shows the boolean and the selected code stored in Data.",
+  "tags": [
+    "bindings",
+    "bind",
+    "boolean",
+    "single",
+    "choice",
+    "values",
+    "editing",
+    "checkbox",
+    "radio"
+  ],
+  "order": 5
+}

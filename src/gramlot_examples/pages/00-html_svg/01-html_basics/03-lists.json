@@ -1,0 +1,15 @@
+{
+  "key": "e03",
+  "title": "Children and styles",
+  "description": "Nest HTML elements, reuse a loop and declare CSS with separate style attributes.",
+  "tags": [
+    "html",
+    "source",
+    "children",
+    "nesting",
+    "styles",
+    "color",
+    "padding"
+  ],
+  "order": 2
+}

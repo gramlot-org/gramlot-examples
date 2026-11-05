@@ -1,0 +1,14 @@
+{
+  "key": "pagestore-04",
+  "title": "Publish to another page",
+  "description": "A child window publishes to the PageStore of another page owned by the same owner.",
+  "tags": [
+    "store",
+    "web",
+    "socket",
+    "publish",
+    "another",
+    "cross"
+  ],
+  "order": 3
+}

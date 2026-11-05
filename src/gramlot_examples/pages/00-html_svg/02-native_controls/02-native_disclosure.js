@@ -1,19 +1,17 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Expandable sections and progress indicators";
 
     main(root) {
-        const main_content = root.main({class: 'example-page stack'});
         for (const [question, answer] of [
             ['What is Source?', 'A declarative tree describing the page.'],
             ['Can a page contain SVG?', 'Yes. The SVG dialect nests under an HTML Source node.'],
         ]) {
-            const details = main_content.details({class: 'card'});
+            const details = root.details({class: 'card'});
             details.summary(question);
             details.p(answer);
         }
-        const measures = main_content.section({class: 'card stack'});
+        const measures = root.section({class: 'card stack'});
         measures.h2('Measured values');
         measures.html_label('Preparation: 70%', {for: 'preparation'});
         measures.progress({id: 'preparation', value: 70, max: 100});

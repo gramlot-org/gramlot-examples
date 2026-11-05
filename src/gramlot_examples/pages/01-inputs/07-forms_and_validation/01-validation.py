@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 class Page(BasePage):
     devices = ("desktop", "tablet", "phone")
-    title = "Validate required values and text length"
 
     def main(self, root):
         main_content = root.main(class_="example-page stack")

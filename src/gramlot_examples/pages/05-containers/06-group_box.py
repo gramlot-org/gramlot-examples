@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "groupBox: group fields and copy Data"
     devices = ("desktop", "tablet", "phone")
     locale = "it-IT"
 
@@ -14,5 +13,5 @@ class Page(BasePage):
         fields.dateTextBox(value="^.date", lbl="Date", format="short")
         fields.numberTextBox(value="^.amount", lbl="Exact amount", dtype="N")
         fields.checkbox(value="^.enabled", lbl="Active", default=True)
-        other = main_content.groupBox(lbl="Outside the copied group", datapath="other", lbl_variant="underline", max_width="24rem")
+        other = main_content.groupBox(lbl_value="^other.kind", lbl_values="internal:Internal note,public:Public note", datapath="other", lbl_variant="underline", max_width="24rem")
         other.textbox(value="^.note", lbl="Note", box_c_width="100%")

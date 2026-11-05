@@ -1,0 +1,15 @@
+{
+  "key": "menu-02",
+  "title": "Menu presentations",
+  "description": "One hierarchy with icons, separators, checked and disabled, reused in four presentations plus exact opening modifiers.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "one",
+    "hierarchical",
+    "menu",
+    "four",
+    "presentations"
+  ],
+  "order": 0
+}

@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Two grids, independent views';
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'16px'});
         main_content.button('Toggle Linen chair quantity: 12 / 0', {id:'shared-update', action:'toggleQuantity'});

@@ -1,0 +1,17 @@
+{
+  "key": "c10",
+  "title": "Call the server when a value changes",
+  "description": "Change the quantity several times quickly. A request starts after you pause typing; compare the status and returned quote.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "call",
+    "server",
+    "when",
+    "value",
+    "changes",
+    "calls",
+    "change"
+  ],
+  "order": 2
+}

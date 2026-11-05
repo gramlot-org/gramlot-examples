@@ -34,11 +34,11 @@ export function mountGalleryContent(renderer, root) {
     async function load(entry) {
         if (entry.loading) return;
         entry.loading = true;
-        const targetId = entry.view === 'code' ? `code-tabs-${entry.key}` : entry.element.id;
+        const targetId = entry.view === 'code' ? `code-tabs-${entry.panelKey}` : entry.element.id;
         const target = node(byId(targetId));
         const current = () => {
             const element = byId(targetId);
-            return element && renderer.elements.get(element)?.node === target ? element : null;
+            return entries.get(entry.element) === entry && element && renderer.elements.get(element)?.node === target ? element : null;
         };
         let request = pending.get(target);
         if (!request) {
@@ -49,6 +49,7 @@ export function mountGalleryContent(renderer, root) {
             const mounted = await request;
             if (disposed || !current() || !mounted) return;
             await format(entry);
+            if (!current()) return;
             observer.unobserve(entry.element);
             entries.delete(entry.element);
         } catch {
@@ -74,13 +75,27 @@ export function mountGalleryContent(renderer, root) {
     const dispose = () => { disposed = true; observer.disconnect(); entries.clear(); };
     renderer.onDispose(root, dispose);
     return {
-        observe(key) {
+        reset(panelKey) {
+            for (const [element, entry] of entries) if (entry.panelKey === panelKey) {
+                observer.unobserve(element); entries.delete(element);
+            }
+            for (const [view, id] of [['description', `description-${panelKey}`], ['code', `code-tabs-${panelKey}`]]) {
+                const target = node(byId(id));
+                target.requests.inflight?.cancel();
+                pending.delete(target);
+                for (const child of target.value.getNodes()) target.value.popNode(child.label);
+                const body = target.builder.wrapSource(target);
+                if (view === 'code') body.contentPane({title:'Code'}).p('Loading code…', {role:'status'});
+                else body.p('Loading explanation…', {role:'status'});
+            }
+        },
+        observe(key, panelKey=key) {
             for (const [view, id, loaded] of [
-                ['code', `codepane-${key}`, `code-${key}`],
-                ['description', `description-${key}`, `readme-${key}`],
+                ['code', `codepane-${panelKey}`, `code-${key}`],
+                ['description', `description-${panelKey}`, `readme-${key}`],
             ]) {
                 const element = byId(id);
-                const entry = {key, view, element, visible: false, loading: false};
+                const entry = {key, panelKey, view, element, visible: false, loading: false};
                 if (byId(loaded)) format(entry).catch(error => console.error(error));
                 else if (!entries.has(element)) {
                     entries.set(element, entry);

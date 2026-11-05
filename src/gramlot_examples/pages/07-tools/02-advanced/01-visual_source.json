@@ -1,0 +1,14 @@
+{
+  "key": "visual_source",
+  "title": "Visual editor",
+  "description": "Drop widgets onto Source, enter required parameters, then edit their properties and preview.",
+  "tags": [
+    "tools",
+    "visual",
+    "editor",
+    "advanced",
+    "source"
+  ],
+  "order": 1,
+  "presentation": "tool"
+}

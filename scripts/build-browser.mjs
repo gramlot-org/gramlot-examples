@@ -32,6 +32,10 @@ const result = await build({
     // The optional tool runs in the example frame and uses that frame's actual classes.
     // Its core import must never create a second Gramlot runtime in this bundle.
     plugins: [{name: 'inspector-runtime', setup(plugin) {
+        plugin.onResolve({filter: /^@gramlot\/collections\/(layout|tree)$/}, args => ({path: args.path.slice('@gramlot/collections/'.length), namespace: 'inspector-layout'}));
+        plugin.onLoad({filter: /.*/, namespace: 'inspector-layout'}, args => ({loader: 'js', contents: `
+            export default window.gramlot.getCollection(${JSON.stringify(args.path)});
+        `}));
         plugin.onResolve({filter: /^@gramlot\/gramlot$/}, () => ({path: 'runtime', namespace: 'inspector-runtime'}));
         plugin.onLoad({filter: /.*/, namespace: 'inspector-runtime'}, () => ({loader: 'js', contents: `
             export const Gramlot = window.gramlot.constructor;
@@ -44,10 +48,11 @@ const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/
     outfile:fileURLToPath(new URL('gallery.js',output)), bundle:true, format:'esm', platform:'browser',
     target:'es2022', legalComments:'inline', metafile:true, plugins:[{name:'shared-runtime',setup(plugin){
         plugin.onResolve({filter:/^@gramlot\/gramlot$/},args=>({path:args.path,external:true}));
+        plugin.onResolve({filter:/^@gramlot\/collections\/(layout|tree)$/},args=>({path:args.path,external:true}));
     }}]});
 Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
 // Copy prepared browser resources byte-for-byte to preserve their fingerprints.
-const collectionNames = ['inputs','layout','tree','grid','chat','editors','typst','grouplets','uploads','menu-trial'];
+const collectionNames = ['inputs','layout','tree','grid','chat','editors','typst','grouplets','uploads','charts','audio','menu-trial'];
 const artifacts = new Map(collectionNames.map(name => [name, name === 'menu-trial'
     ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))
     : join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name)]));

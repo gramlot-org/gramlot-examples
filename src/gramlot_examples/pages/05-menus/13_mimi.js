@@ -1,7 +1,6 @@
 import {PreviewPage} from '../../trials/menu/theme_preview.js';
 
 export class Page extends PreviewPage {
-    static title = "Mimi appearance review";
     static profile = "Mimi";
     static density = "24px controls / 12.5px text";
     static css = ["/themes/gramlot-compact/theme.css", "/themes/mimi/theme.css"];

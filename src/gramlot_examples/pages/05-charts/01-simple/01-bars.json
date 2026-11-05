@@ -1,0 +1,14 @@
+{
+  "key": "chart-bars",
+  "title": "Bars and live data",
+  "description": "Change North revenue, open Chart and observe the same Data in the grid and chart.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "bar",
+    "echarts",
+    "reactivity"
+  ],
+  "order": 0,
+  "presentation": "content"
+}

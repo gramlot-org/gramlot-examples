@@ -1,4 +1,4 @@
-# Transform bound values with pointer expressions
+# Binding expressions
 
 **Try this:** Change the number and compare its CSS width and formatted text. The presentation changes; the stored number keeps its type.
 

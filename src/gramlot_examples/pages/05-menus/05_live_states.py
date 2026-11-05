@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Reactive menu states"
-
     def main(self, root):
         main_content = root.main(padding="20px")
         controls = main_content.div(display="flex", gap="20px", margin_bottom="16px")

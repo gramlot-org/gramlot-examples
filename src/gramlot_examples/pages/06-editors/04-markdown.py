@@ -2,11 +2,8 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Markdown editor"
-
     def main(self, root):
         main_content = root.main(datapath="markdownDemo", padding="24px", class_="example-page stack")
-        main_content.h1(self.title)
         main_content.checkbox(value="^.readonly", label="Read only", default=False)
         main_content.checkbox(value="^.allowHtml", label="Allow embedded HTML", default=False)
         tabs = main_content.tabContainer(selectedPage="^.view", height="500px", default_selectedPage='code')

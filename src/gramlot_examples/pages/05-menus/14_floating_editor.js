@@ -7,7 +7,6 @@ function svg_icon(drawing) {
 const ICONS = {"save": svg_icon("<path d=\"M5 3h12l4 4v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z\"/><path d=\"M7 3v6h9V3M7 21v-8h10v8M13 5v2\"/>"), "reset": svg_icon("<path d=\"M3 10a9 9 0 1 1 2.6 8.4M3 4v6h6\"/>"), "cancel": svg_icon("<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m8.5 8.5 7 7m0-7-7 7\"/>"), "details": svg_icon("<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M9 4v16m4-11h4m-4 6h4\"/>")};
 
 export class Page extends BasePage {
-    static title = "Complete floating editor";
     static css = ["/themes/gramlot-compact/theme.css"];
 
     main(root) {
@@ -73,7 +72,7 @@ export class Page extends BasePage {
     footer(frame) {
         const footer = frame.bottom.menu({presentation: "bar", padding: "2px 8px", iconSize: 18, background: "var(--gramlot-surface-subtle)", border_top: "1px solid var(--gramlot-border-control)", id: "editor-footer"});
         footer.spacer({flex: 1});
-        const actions = footer.menuline({group: true, overflowable: false});
+        const actions = footer.menuline({group: true});
         actions.menuline("documenti:undo", {caption: "Cancel", iconSrc: ICONS["cancel"], parameters: {close: true}, id: "editor-cancel"});
         actions.menuline("documenti:save", {caption: "Save", iconSrc: ICONS["save"], id: "editor-save"});
     }

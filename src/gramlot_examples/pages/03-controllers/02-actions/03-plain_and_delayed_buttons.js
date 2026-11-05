@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Run immediate and delayed button actions";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'clicks'});
         const form = main_content.form({class: 'card stack'});

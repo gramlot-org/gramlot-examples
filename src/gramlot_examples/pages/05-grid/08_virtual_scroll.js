@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Scroll · 1,000 resident rows';
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'20px', max_width:'1200px', margin:'0 auto'});
         const frame = main_content.frameGrid({storepath:'.rows', rowMode:'attributes', searchOn:true, height:'420px'});

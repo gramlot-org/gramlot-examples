@@ -1,0 +1,14 @@
+{
+  "key": "chart-points",
+  "title": "Scatter points",
+  "description": "Compare numeric observations without grouping or fitting a model.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "scatter",
+    "plotly",
+    "reactivity"
+  ],
+  "order": 3,
+  "presentation": "content"
+}

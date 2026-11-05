@@ -1,0 +1,13 @@
+{
+  "key": "c17",
+  "title": "Export and restore typed Data",
+  "description": "Edit the sample record, save it as TYTX, change a value and load the saved file. The typed values and nested Bag are restored together.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "export",
+    "restore",
+    "typed"
+  ],
+  "order": 0
+}

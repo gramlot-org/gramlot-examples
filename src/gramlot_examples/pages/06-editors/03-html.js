@@ -1,9 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static title = "HTML editor";
     main(root) {
         const main_content = root.main({datapath:'htmlDemo',padding:'24px',class:'example-page stack'});
-        main_content.h1(Page.title);
         main_content.checkbox({default: false, value:'^.readonly',label:'Read only'});
         const tabs=main_content.tabContainer({default_selectedPage: "code", selectedPage:'^.view',height:'500px'});
         tabs.contentPane({title:'Code',pageName:'code',height:'100%'}).codeMirror({value:'^.content',language:'html',readonly:'^.readonly',height:'100%'});

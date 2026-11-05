@@ -13,8 +13,6 @@ ACTIONS = {
 
 
 class Page(BasePage):
-    title = "Live Source playground"
-
     def main(self, root):
         main_content = root.main(node_label="main_content", class_="example-page stack")
         main_content.h1("Editable heading", node_label="heading")

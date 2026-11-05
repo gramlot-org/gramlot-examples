@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Code editor"
-
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="editorDemo", padding="24px")
         options = main_content.details()

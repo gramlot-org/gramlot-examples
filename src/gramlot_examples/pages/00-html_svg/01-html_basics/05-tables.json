@@ -1,0 +1,17 @@
+{
+  "key": "e05",
+  "title": "Tables with headings and totals",
+  "description": "Check a row total and the final totals. In your own copy, add a region to ROWS: the loop and calculations include it automatically.",
+  "tags": [
+    "html",
+    "svg",
+    "tables",
+    "headings",
+    "totals",
+    "basics"
+  ],
+  "order": 4,
+  "catalogued": false,
+  "navigation": false,
+  "presentation": "content"
+}

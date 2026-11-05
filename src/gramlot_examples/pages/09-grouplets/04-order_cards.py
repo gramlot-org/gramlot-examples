@@ -2,8 +2,6 @@ from gramlot import Page as BasePage, source
 
 
 class Page(BasePage):
-    title = "Order review: work with grouplet cards"
-
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="order")
         main_content.dataFormula(".reviewed", "(customer ? 1 : 0) + (billing ? 1 : 0) + (shipping ? 1 : 0)", customer="^.customer.ui.checked", billing="^.billing.ui.checked", shipping="^.shipping.ui.checked", _init=True)

@@ -1,0 +1,11 @@
+{
+  "key": "typst_editor",
+  "title": "Typst and PDF",
+  "description": "Edit the sample document and inspect its preview, then generate the PDF. Compilation runs locally; this example uses bundled fonts and no external includes.",
+  "tags": [
+    "editors",
+    "typst",
+    "pdf"
+  ],
+  "order": 4
+}

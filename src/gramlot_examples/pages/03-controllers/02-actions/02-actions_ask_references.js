@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Confirm actions and target references";
     main(root) {
         const main_content = root.main({class: 'example-page stack', datapath: 'buttons'});
         main_content.html_label('Ask before running', {for: 'confirm-needed'});

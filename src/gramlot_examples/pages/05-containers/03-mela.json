@@ -1,0 +1,15 @@
+{
+  "key": "l09",
+  "title": "Compare desktop and touch themes",
+  "description": "Compare the theme previews, open a menu and edit a field. Open dialog and floating windows to compare modality while keeping the same controls.",
+  "tags": [
+    "containers",
+    "layout",
+    "compare",
+    "desktop",
+    "touch",
+    "themes",
+    "mela"
+  ],
+  "order": 8
+}

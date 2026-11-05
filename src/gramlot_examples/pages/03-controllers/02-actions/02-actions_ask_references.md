@@ -1,4 +1,4 @@
-# Confirm actions and target references
+# Confirm and target actions
 
 **Try this:** Run an action directly, then with confirmation. Cancel a question to leave the result unchanged; the reference examples pass an existing Source or DOM object.
 

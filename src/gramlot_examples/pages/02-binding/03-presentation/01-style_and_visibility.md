@@ -1,4 +1,4 @@
-# Control styles and visibility from Data
+# Styles and visibility
 
 **Try this:** Change the color and dimensions, then toggle visibility. Notice that an invisible box still reserves its place in the layout.
 

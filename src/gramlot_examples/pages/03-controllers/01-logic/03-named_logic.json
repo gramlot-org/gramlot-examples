@@ -1,0 +1,15 @@
+{
+  "key": "c03",
+  "title": "Organize behavior in a Logic class",
+  "description": "Change the price and compare the discounted result and change counter. The page declares the fields; two named Logic methods provide the behavior.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "organize",
+    "behavior",
+    "class",
+    "named"
+  ],
+  "order": 2
+}

@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Classic menu bar and hierarchy";
 
     main(root) {
 
@@ -19,7 +18,7 @@ export class Page extends BasePage {
     }
 
     file_menu(bar) {
-        const file = bar.menuline({caption: "File", id: "file-menu-trigger", overflowable: false}).menu({id: "file-popup"});
+        const file = bar.menuline({caption: "File", id: "file-menu-trigger"}).menu({id: "file-popup"});
         this.item(file, "New document", "📄");
         this.item(file, "Open…", "📂");
         file.menuline("-");
@@ -32,13 +31,13 @@ export class Page extends BasePage {
     }
 
     edit_menu(bar) {
-        const edit = bar.menuline({caption: "Edit", overflowable: false}).menu();
+        const edit = bar.menuline({caption: "Edit"}).menu();
         this.item(edit, "Undo", "↩️", {disabled: true});
         this.item(edit, "Copy", "📋");
     }
 
     view_menu(bar) {
-        const view = bar.menuline({caption: "View", overflowable: false}).menu();
+        const view = bar.menuline({caption: "View"}).menu();
         view.menuline({caption: "Show details", icon: "🔎", checked: "^navigation.details", action: "toggleDetails"});
         view.menuline("-");
         this.item(view, "Full screen", "🖥️", {disabled: true});

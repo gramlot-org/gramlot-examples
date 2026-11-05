@@ -1,4 +1,4 @@
-# Change the current record with datapath
+# Switch records
 
 **Try this:** Choose Ada, edit her name, then select Alan and come back. One card follows the selected datapath; each record keeps its own values.
 

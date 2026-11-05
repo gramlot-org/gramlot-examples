@@ -104,7 +104,7 @@
 }
 
 .gallery-lesson { font-size: 14px; padding: clamp(16px, 3vw, 36px); line-height: 1.65; background: var(--gramlot-surface); }
-.gallery-lesson > div { max-width: 68ch; margin-inline: auto; }
+.gallery-lesson > div { min-width: 0; }
 .gallery-lesson h1 { font-size: 1.5rem; margin: 0 0 1rem; }
 .gallery-lesson h2 { margin: 1.5rem 0 .5rem; font-size: 1.15rem; }
 .gallery-lesson pre { overflow: auto; padding: 1rem; font-size: .85rem; }

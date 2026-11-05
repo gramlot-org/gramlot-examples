@@ -1,6 +1,5 @@
 import {Page as BasePage, codeMirrorWithOptions} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
-    static title = "Editor options";
     main(root) {
         const main_content = root.main({class:'example-page stack', datapath:'editorDemo', padding:'24px'});
         const options = main_content.details();

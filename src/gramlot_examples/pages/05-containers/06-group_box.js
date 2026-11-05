@@ -1,6 +1,5 @@
 import {Page as BasePage} from "@gramlot/gramlot/page";
 export class Page extends BasePage {
-    static title = "groupBox: group fields and copy Data";
     static devices = ['desktop', 'tablet', 'phone'];
     static locale = 'it-IT';
     main(root) {
@@ -11,7 +10,7 @@ export class Page extends BasePage {
         fields.dateTextBox({value:'^.date',lbl:'Date',format:'short'});
         fields.numberTextBox({value:'^.amount',lbl:'Exact amount',dtype:'N'});
         fields.checkbox({default: true, value:'^.enabled',lbl:'Active'});
-        const other = main_content.groupBox({lbl:'Outside the copied group',datapath:'other',lbl_variant:'underline',max_width:'24rem'});
+        const other = main_content.groupBox({lbl_value:'^other.kind',lbl_values:'internal:Internal note,public:Public note',datapath:'other',lbl_variant:'underline',max_width:'24rem'});
         other.textbox({value:'^.note',lbl:'Note',box_c_width:'100%'});
     }
 }

@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Tray workspace"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

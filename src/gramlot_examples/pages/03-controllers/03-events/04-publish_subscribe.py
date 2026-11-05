@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Publish and subscribe to messages"
-
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="messages")
         main_content.html_label("Message", for_="message")

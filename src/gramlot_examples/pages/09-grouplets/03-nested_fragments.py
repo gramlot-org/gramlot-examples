@@ -2,8 +2,6 @@ from gramlot import Page as BasePage, source
 
 
 class Page(BasePage):
-    title = "Service visit: compose a site dossier"
-
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="visit")
         toolbar = main_content.div(class_="demo-toolbar")

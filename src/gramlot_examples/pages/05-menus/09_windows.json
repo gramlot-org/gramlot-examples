@@ -1,0 +1,15 @@
+{
+  "key": "menu-09",
+  "title": "Window commands",
+  "description": "Modal and nonmodal windows around a retained frame, with movement, resize and collapse.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "frame",
+    "pane",
+    "dialog",
+    "floating",
+    "windows"
+  ],
+  "order": 8
+}

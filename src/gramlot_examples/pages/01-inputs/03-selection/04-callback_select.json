@@ -1,0 +1,17 @@
+{
+  "key": "w14",
+  "title": "Load choices with a browser callback",
+  "description": "Search for Sample 02 and choose a result. The browser callback reads a local Bag; the selected code appears in both fields without a server call.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "load",
+    "choices",
+    "browser",
+    "callback",
+    "selection",
+    "select"
+  ],
+  "order": 13
+}

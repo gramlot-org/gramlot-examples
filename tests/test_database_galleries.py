@@ -7,6 +7,7 @@ from gramlot.collection import page_collections
 from gramlot.server import GramlotFileServer
 from gramlot_examples import build_gallery, navigation_directory
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 
 
 @pytest.mark.parametrize(('name', 'key'), [('base', 'base-01')])
@@ -18,7 +19,7 @@ def test_database_page_builds_with_environment_collections(name, key):
     cls = server.resolve_page(route['page'].stem)
     declared = server.page_collections(cls)
     assert not page_collections(cls)
-    assert {collection.name for collection in declared} == {c.name for c in collections()}
+    assert {collection.name for collection in declared} == {c.name for c in (*standard_collections(), *collections())}
     page = cls()
     builder = page.source_builder('main')
     server._load_collections(builder, declared)

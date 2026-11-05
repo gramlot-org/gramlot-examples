@@ -1,0 +1,14 @@
+{
+  "key": "menu-04",
+  "title": "Reactive menu states",
+  "description": "Shared checked, disabled and hidden bindings in popup and toolbar.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "reactive",
+    "menu",
+    "states",
+    "live"
+  ],
+  "order": 4
+}

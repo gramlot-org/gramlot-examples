@@ -1,0 +1,14 @@
+{
+  "key": "grid-03",
+  "title": "Column groups and row heights",
+  "description": "Group columns, display multiline notes and resize individual rows.",
+  "tags": [
+    "grid",
+    "column",
+    "groups",
+    "row",
+    "heights",
+    "colgroups"
+  ],
+  "order": 2
+}

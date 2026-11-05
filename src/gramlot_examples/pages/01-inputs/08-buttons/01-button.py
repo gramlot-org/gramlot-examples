@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Buttons: icons, labels and commands"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

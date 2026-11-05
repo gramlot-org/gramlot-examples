@@ -1,0 +1,16 @@
+{
+  "key": "w28",
+  "title": "Tree icons and computed captions",
+  "description": "Expand Documents in both trees and toggle the rich caption. Both read the same Bag; the named callbacks choose different labels and icons.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "tree",
+    "icons",
+    "computed",
+    "captions",
+    "callbacks"
+  ],
+  "order": 26
+}

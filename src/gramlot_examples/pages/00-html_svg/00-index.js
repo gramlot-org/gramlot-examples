@@ -1,10 +1,10 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
+
 export class Page extends BasePage {
-    static title = "HTML and SVG";
+    static title = 'Fundamentals';
+
     main(root) {
-        const pane = root.main({class:'example-page stack',padding:'24px'});
-        pane.h1(this.constructor.title);
-        pane.p("Learn the underlying page vocabulary: text, links, lists, tables, native controls and SVG. Build up to complete page compositions.");
-        pane.p("For ready-made input components start with Fields and input widgets. For application layout use Containers and layout.");
+        root.h1(this.constructor.title);
+        root.p('Build a page from HTML and SVG, style its elements, add labels and boxes, connect values and attributes to the Data store, and inspect Data and Source.');
     }
 }

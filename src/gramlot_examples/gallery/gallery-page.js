@@ -34,15 +34,12 @@ export class GalleryPage extends IndexPage {
         const rail = frame.left.menu({id:'gallery-rail', presentation:'bar', orientation:'vertical',
             labelPosition:'tooltip', iconSize:24, width:'100%', height:'100%', aria_label:'Gallery tools'});
         rail.menuline({caption:'Navigation', tooltip:'Navigation — browse examples and documentation', iconSrc:NAVIGATION_ICON,
-            checked:'^galleryIndex.navigationOpen', action:'galleryToggleNavigation', overflowable:false,
-            id:'gallery-navigation-button', width:'36px', height:'36px'});
+            checked:'^galleryIndex.navigationOpen', action:'galleryToggleNavigation', id:'gallery-navigation-button', width:'36px', height:'36px'});
         rail.spacer({flex:1});
         rail.menuline({caption:'Inspector', tooltip:'Inspector — explore the current page’s Source and Data', iconSrc:INSPECTOR_ICON,
-            checked:false, disabled:true, overflowable:false,
-            id:'gallery-inspector', width:'36px', height:'36px'});
+            checked:false, disabled:true, id:'gallery-inspector', width:'36px', height:'36px'});
         rail.menuline({caption:'Settings', tooltip:'Settings — change theme, colors and toolbar position', iconSrc:SETTINGS_ICON,
-            checked:'^galleryIndex.settingsOpen', action:'galleryToggleSettings', overflowable:false,
-            id:'gallery-settings-button', width:'36px', height:'36px'});
+            checked:'^galleryIndex.settingsOpen', action:'galleryToggleSettings', id:'gallery-settings-button', width:'36px', height:'36px'});
         super.main(frame.center);
     }
     left(pane) {
@@ -50,19 +47,20 @@ export class GalleryPage extends IndexPage {
         const header=pane.header({class:'gallery-navigation-header'});
         header.img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
         const search=header.menu({presentation:'bar',class:'gallery-navigation-search',aria_label:'Search navigation'});
-        const field=search.menuline({group:true,overflowable:false,flex:1,min_width:0}).div({class:'gallery-search-field'});
+        const field=search.menuline({group:true,flex:1,min_width:0}).div({class:'gallery-search-field'});
         field.span({class:'gallery-search-icon',aria_hidden:'true'});
         field.input({type:'search',value:'^galleryIndex.search',default:'',live:true,placeholder:'Search examples',aria_label:'Search examples'});
         field.html_button({type:'button',class:'gallery-search-clear',aria_label:'Clear search',title:'Clear search',hidden:"^galleryIndex.search:={} === ''",connect_onclick:"this.SET('galleryIndex.search', '')"});
         super.left(pane);
         pane.setAttr({drawer_minimize:true, drawer_label:'', drawer_display:'none'});
-        pane.value.getNode('tree').setAttr({id:'gallery-navigation-tree', class:'gallery-navigation-tree', autoCollapse:true, hideValues:true, searchText:'^galleryIndex.search'});
+        pane.value.getNode('tree').setAttr({id:'gallery-navigation-tree', class:'gallery-navigation-tree', autoCollapse:true, hideValues:true, searchText:'^galleryIndex.search', searchEager:true, searchAttributes:'description,tags,component'});
 
     }
     center(pane) {
         pane.setAttr({id:'gallery-center', overflow:'hidden'});
         super.center(pane);
         pane.value.getNode('tabs').setAttr({id:'index-pages', class:'index-main', hidden:true});
+        pane.div({id:'gallery-single',height:'100%',hidden:true});
         pane.div({id:'gallery-introduction',height:'100%'}).iframe({src:this.constructor.introductionUrl,title:'Example gallery',width:'100%',height:'100%',border:0});
         featureIndex(pane, Object.fromEntries(this.constructor.groups.flatMap(group => group.children.map(item => [item.key, {...item, family:group.key}]))));
     }
@@ -79,7 +77,7 @@ export class GalleryPage extends IndexPage {
     introduction(intro) {
         intro.h2("Example gallery");
         intro.p("This gallery shows each example page beside the code that creates it. The Python and JavaScript integrations have the same examples.");
-        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Drag the icon beside Code to open it in a floating window; close that window to return Code to its tab. Switching tabs preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
+        intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Use the internal detach icon in Example, Explanation or Code to open that panel in a floating window. Arrange panels side by side; close a window to return its panel to its tab. Switching tabs preserves the running example. Choose Base, Compact, mimi or joanna independently of the color mode.");
     }
     groupPanel(pane, group) { pane.div(group.readme, {id: `readme-${group.key}`}); }
     footer(footer) {
@@ -96,7 +94,10 @@ export class GalleryPage extends IndexPage {
             value:'^galleryIndex.toolbarPosition', default:'auto', values:'auto:Automatic,left:Left,bottom:Bottom'});
         fields.filteringSelect({validate_notnull:true, lbl:'Label position', id:'gallery-label-position', value:'^galleryIndex.labelPosition',
             values:'example:As in the example,TL:Top left,TC:Top center,TR:Top right,L:Left,R:Right,BL:Bottom left,BC:Bottom center,BR:Bottom right'});
+        fields.checkbox({lbl:'Pages',label:'Multipage',id:'gallery-multipage',value:'^galleryIndex.multipage'});
+        fields.checkbox({lbl:'Lessons', label:'Keep view between examples', id:'gallery-keep-view', value:'^galleryIndex.keepLessonView'});
         fields.checkbox({lbl:'Navigation', label:'Keyboard shortcuts', id:'keyboard-navigation', value:'^galleryIndex.keyboard'});
+        settings.p('With Multipage off, examples share one iframe. Switching examples discards their unsaved state.');
         settings.p('Changes apply immediately. Colors do not change density; label position affects the example fields.');
         settings.p('Automatic uses the bottom in narrow, portrait windows and the left otherwise. Choose Left or Bottom to compare.');
         if (this.constructor.installable) {
@@ -150,7 +151,8 @@ export class GalleryPage extends IndexPage {
             width:'100%', height:'100%', border:0});
         else this.examplePanel(pane, this.galleryItem(key));
     }
-    examplePanel(parent, example) {
+    single_panel(root) { this.examplePanel(root, {key:'single',title:'',description:''}, true); }
+    examplePanel(parent, example, shared=false) {
         const key = example.key;
         if (example.presentation === 'tool') {
             parent.iframe({title:example.title, name:`example-${key}`, id:`frame-${key}`, width:'100%', height:'100%', border:0, class:'gallery-tool'});
@@ -162,16 +164,17 @@ export class GalleryPage extends IndexPage {
         header.p('In this example: ' + example.description);
         const preview = panel.tabContainer({class: 'gallery-preview', id: `preview-${key}`,
             tabMode: 'underline', height: '100%', min_height: 0,
-            ...(key === 'l04' ? {nodeId: 'galleryGuidePreview'} : {})});
-        let stage = preview.contentPane({title: 'Example', pageName: 'example',
+            selectedPage: `^galleryIndex.lessonViews.${key}`,
+            ...((key === 'l04' || shared) ? {nodeId: 'galleryGuidePreview'} : {})});
+        let stage = preview.contentPane({title: 'Example', pageName: 'example', detachable: true,
             class: 'gallery-preview-stage', id: `preview-stage-${key}`});
-        if (key === 'l04') {
+        if (key === 'l04' || shared) {
             const layout = stage.borderContainer({height: '100%', id: 'gallery-guide-layout'});
             stage = layout.contentPane({region: 'center', overflow: 'hidden'});
             guidedDemo(layout);
         }
         stage.iframe({title: `${example.title} preview`, name: `example-${key}`, id: `frame-${key}`});
-        preview.contentPane({title: 'Explanation', pageName: 'explanation', class: 'gallery-lesson', overflow: 'auto', id: `description-${key}`})
+        preview.contentPane({title: 'Explanation', pageName: 'explanation', detachable: true, class: 'gallery-lesson', overflow: 'auto', id: `description-${key}`})
             .p('Loading explanation…', {role: 'status'});
         preview.contentPane({title:'Code', pageName:'code', detachable:true, class:'gallery-codepane', id:`codepane-${key}`})
             .tabContainer({id:`code-tabs-${key}`, class:'gallery-source-tabs', height:'100%', tabMode:'underline'})
@@ -192,3 +195,5 @@ export class GalleryPage extends IndexPage {
 GalleryPage.registerSource('lesson');
 
 GalleryPage.registerEndpoint('navigation_section');
+
+GalleryPage.registerSource('single_panel');

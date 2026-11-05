@@ -1,0 +1,15 @@
+{
+  "key": "grid-05",
+  "title": "Two grids, independent views",
+  "description": "Two independently sorted and filtered views share the same Bag records.",
+  "tags": [
+    "grid",
+    "two",
+    "grids",
+    "independent",
+    "views",
+    "shared",
+    "store"
+  ],
+  "order": 4
+}

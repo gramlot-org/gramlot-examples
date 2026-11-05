@@ -4,8 +4,6 @@ OPTIONS = (("ada", "Ada Lovelace"), ("alan", "Alan Turing"), ("grace", "Grace Ho
 
 
 class Page(BasePage):
-    title = "Change the current record with datapath"
-
     def main(self, root):
         pane = root.div(class_="example-page stack")
         pane.html_label("Record", for_="record")

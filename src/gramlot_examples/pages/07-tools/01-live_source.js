@@ -11,7 +11,6 @@ const ACTIONS = {
 };
 
 export class Page extends BasePage {
-    static title = "Live Source playground";
 
     main(root) {
         const main_content = root.main({node_label: 'main_content', class: 'example-page stack'});

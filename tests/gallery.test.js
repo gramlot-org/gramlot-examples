@@ -133,7 +133,8 @@ test(`frame theme bridge is owned and disposed with Source (${url})`, () => {
     message(parent, 'dark');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'base');
-    assert.equal(style.textContent.trim(), '');
+    assert.match(style.textContent, /max-inline-size: min\(100%, 28rem\)/);
+    assert.doesNotMatch(style.textContent, /--gramlot-field-height:/);
     message(parent, 'light', 'invalid');
     assert.equal(child.document.documentElement.getAttribute('data-theme'), 'dark');
     message(parent, 'dark', 'compact');
@@ -191,35 +192,38 @@ test('every shared example displays exactly its exported Logic class, never the 
     assert.ok(shown > 0, 'The catalogue must exercise at least one Logic excerpt');
 });
 
-test('built frame inspector uses the example runtime classes without another core', async () => {
-    const {window} = new JSDOM('<main id="gramlot-root"></main>');
-    window.HTMLDialogElement.prototype.close = function () { this.open = false; };
-    const app = new Gramlot({document: window.document, transport: false});
-    window.gramlot = app;
-    app.data.setItem('name', 'Ada');
+test('built frame agent observes the original Bags and releases its port', async () => {
+    const parent = new JSDOM('<iframe></iframe>', {url:'http://localhost/'});
+    const window = parent.window.document.querySelector('iframe').contentWindow;
+    parent.window.postMessage=()=>{};
+    window.document.body.innerHTML='<main id="gramlot-root"></main>';
+    const app = new Gramlot({document:window.document,transport:false});
+    window.gramlot=app;
+    const builder=new GramlotBuilder();builder.root.script({id:'frame-bootstrap'});
+    app.src.startSource(builder.toTytx());
+    Object.defineProperty(window.document,'currentScript',{value:window.document.getElementById('frame-bootstrap'),configurable:true});
+    const port=new window.EventTarget(),messages=[];
+    let closed=false;
+    port.postMessage=message=>messages.push(message);port.start=()=>{};port.close=()=>{closed=true;};
     try {
-        const bundle = readFileSync(new URL('../src/gramlot_examples/gallery/dist/frame.js', import.meta.url), 'utf8');
-        new Function('window', 'document', 'HTMLElement', 'customElements', bundle)(
-            window, window.document, window.HTMLElement, window.customElements);
-        const inspector = window.document.createElement('gramlot-tools-inspector');
-        inspector.gramlot = app;
-        window.document.body.append(inspector);
-        const tree = inspector.shadowRoot.querySelector('gramlot-poc-tree[data-root=data]');
-        tree.shadowRoot.querySelector('[data-node-path=name]').click();
-    await settle();
-        assert.equal(inspector.shadowRoot.querySelector('[aria-label=Value]').value, 'Ada');
-        app.data.setItem('name', 'Grace');
-        await new Promise(resolve => queueMicrotask(resolve));
-        assert.equal(inspector.shadowRoot.querySelector('[aria-label=Value]').value, 'Grace');
-        let closed = false;
-        inspector.addEventListener('close', () => { closed = true; });
-        inspector.shadowRoot.querySelector('gramlot-poc-palette').shadowRoot.querySelector('[aria-label="Close inspector"]').click();
-    await settle();
-        assert.equal(closed, true);
-        assert.equal(inspector.isConnected, false);
-    } finally { app.dispose(); window.close(); }
+        app.data.setItem('name','Ada');
+        const bundle=readFileSync(new URL('../src/gramlot_examples/gallery/dist/frame.js',import.meta.url),'utf8');
+        new Function('window','document',bundle)(window,window.document);
+        await settle();
+        const connect=new window.MessageEvent('message',{source:parent.window,data:{type:'gallery:inspector-connect'}});
+        Object.defineProperty(connect,'ports',{value:[port]});
+        window.dispatchEvent(connect);
+        await settle();
+        const snapshot=()=>messages.filter(m=>m.type==='snapshot').at(-1).snapshot;
+        assert.match(JSON.stringify(snapshot().data),/Ada/);
+        const id=snapshot().data.find(node=>node.label==='name').id;
+        app.data.setItem('name','Grace');await settle();
+        assert.match(JSON.stringify(snapshot().data),/Grace/);
+        assert.equal(snapshot().data.find(node=>node.label==='name').id,id);
+        assert.equal(window.document.querySelector('gramlot-tools-inspector'),null,'the frame hosts an agent, not a duplicate inspector UI');
+        app.dispose();assert.equal(closed,true);assert.equal(messages.at(-1).type,'closed');
+    } finally {app.dispose();parent.window.close();}
 });
-
 
 test('frame settings override Source label positions and restore authored pointers', () => {
     const parent = new JSDOM('<iframe></iframe>').window;
@@ -884,4 +888,77 @@ test('tool entries occupy the gallery panel without teaching chrome', () => {
     assert.equal(nodes[0].getAttr('class'), 'gallery-tool');
     assert.equal(nodes[0].getAttr('id'), 'frame-visual_source');
     assert.equal(nodes[0].getAttr('height'), '100%');
+});
+
+
+test('lesson view follows navigation by default and stays independent when disabled', async t => {
+    const f = await setup(t);
+    assert.equal(f.state.getItem('keepLessonView'), true);
+    f.navigation('e01').click(); await settle();
+    f.tab('preview-e01', 'Code').click(); await settle();
+    assert.equal(f.state.getItem('lessonView'), 'code');
+    f.navigation('e02').click(); await settle();
+    assert.equal(f.state.getItem('lessonViews.e02'), 'code');
+    f.tab('preview-e02', 'Explanation').click(); await settle();
+    f.tab('index-pages', 'e01').click(); await settle();
+    assert.equal(f.state.getItem('lessonViews.e01'), 'explanation');
+    f.state.setItem('keepLessonView', false);
+    f.tab('preview-e01', 'Example').click(); await settle();
+    f.tab('index-pages', 'e02').click(); await settle();
+    assert.equal(f.state.getItem('lessonViews.e02'), 'explanation');
+    f.tab('index-pages', 'e01').click(); await settle();
+    assert.equal(f.state.getItem('lessonViews.e01'), 'example');
+    assert.equal(f.document.defaultView.localStorage.getItem('gramlot.gallery.settings:/py/index:keepLessonView'), 'false');
+    f.tab('index-pages', 'e02').click(); await settle();
+    f.state.setItem('keepLessonView', true);
+    f.tab('index-pages', 'e01').click(); await settle();
+    assert.equal(f.state.getItem('lessonViews.e01'), 'explanation', 'enabling follows the currently displayed view');
+    f.behavior.dispose(); f.app.dispose();
+});
+
+
+test('single-page mode reuses the lesson shell and iframe and can return to multipage', async t => {
+    const f = await setup(t);
+    f.navigation('e01').click(); await settle();
+    f.tab('preview-e01', 'Code').click(); await settle();
+    f.state.setItem('multipage', false); await settle(); await settle();
+    const frame=f.get('frame-single'), preview=f.get('preview-single');
+    assert.ok(frame);
+    assert.equal(f.state.getItem('lessonViews.single'), 'code');
+    assert.equal(frame.getAttribute('src'), 'e01');
+    f.navigation('e02').click(); await settle(); await settle();
+    assert.equal(f.get('frame-single'), frame);
+    assert.equal(f.get('preview-single'), preview);
+    assert.equal(frame.getAttribute('src'), 'e02');
+    assert.equal(f.get('index-pages').querySelectorAll('iframe').length, 0);
+    assert.equal(f.root.indexContext.entries.size, 1);
+    f.visible('description-single'); f.visible('codepane-single'); await settle();
+    assert.ok(f.calls.some(call => call.name==='lesson' && call.key==='e02'));
+    f.state.setItem('multipage', true); await settle(); await settle();
+    assert.equal(f.get('frame-single'), null);
+    assert.ok(f.get('frame-e02'));
+    f.navigation('e01').click(); await settle();
+    assert.equal(f.root.indexContext.entries.size, 2);
+});
+
+
+test('single-page ignores an old Code response after switching lessons', async t => {
+    const f = await setup(t);
+    f.state.setItem('multipage', false);
+    f.navigation('e01').click(); await settle(); await settle();
+    const call=f.transport.call.bind(f.transport); let release;
+    f.transport.call=async text=>{
+        const request=fromTytx(text);
+        if(request.name==='lesson' && request.params.key==='e01' && request.params.view==='code')
+            await new Promise(resolve=>{release=resolve;});
+        return call(text);
+    };
+    f.tab('preview-single','Code').click();f.visible('codepane-single');await settle();
+    assert.equal(typeof release,'function');
+    f.navigation('e02').click();await settle();await settle();
+    f.visible('codepane-single');await settle();
+    assert.ok(f.get('code-e02'));
+    release();await settle();await settle();
+    assert.ok(f.get('code-e02'));
+    assert.equal(f.get('code-e01'),null);
 });

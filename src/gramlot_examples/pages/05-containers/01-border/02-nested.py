@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Nested borders and layout designs"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

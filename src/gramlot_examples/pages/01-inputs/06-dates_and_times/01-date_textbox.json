@@ -1,0 +1,18 @@
+{
+  "key": "w11",
+  "title": "Date fields",
+  "description": "Type domani and leave the field. Compare the long and short Italian date formats: they represent the same civil date.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "date",
+    "entry",
+    "display",
+    "formats",
+    "dates",
+    "times",
+    "textbox"
+  ],
+  "order": 10
+}

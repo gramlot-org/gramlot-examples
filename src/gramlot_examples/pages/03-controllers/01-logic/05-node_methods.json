@@ -1,0 +1,15 @@
+{
+  "key": "c05",
+  "title": "Call methods on a Source node",
+  "description": "Try SET, PUT and FIRE and compare the value with the notification counter. GET reads the stored value, including a silent PUT.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "call",
+    "methods",
+    "source",
+    "node"
+  ],
+  "order": 4
+}

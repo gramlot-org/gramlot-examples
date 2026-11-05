@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Classic menu bar and hierarchy"
-
     def main(self, root):
         main_content = root.main(padding="20px", max_width="900px", margin="auto")
         frame = main_content.framePane(height="260px", border="1px solid #64748b", border_radius="8px")
@@ -17,7 +15,7 @@ class Page(BasePage):
         self.entry_style(main_content)
 
     def file_menu(self, bar):
-        file = bar.menuline(caption="File", id="file-menu-trigger", overflowable=False).menu(id="file-popup")
+        file = bar.menuline(caption="File", id="file-menu-trigger").menu(id="file-popup")
         self.item(file, "New document", "📄")
         self.item(file, "Open…", "📂")
         file.menuline("-")
@@ -29,12 +27,12 @@ class Page(BasePage):
         self.item(image, "SVG", "🖼️")
 
     def edit_menu(self, bar):
-        edit = bar.menuline(caption="Edit", overflowable=False).menu()
+        edit = bar.menuline(caption="Edit").menu()
         self.item(edit, "Undo", "↩️", disabled=True)
         self.item(edit, "Copy", "📋")
 
     def view_menu(self, bar):
-        view = bar.menuline(caption="View", overflowable=False).menu()
+        view = bar.menuline(caption="View").menu()
         view.menuline(caption="Show details", icon="🔎", checked="^navigation.details", action="toggleDetails")
         view.menuline("-")
         self.item(view, "Full screen", "🖥️", disabled=True)

@@ -39,14 +39,13 @@ class Page(IndexPage):
                                aria_label="Gallery tools")
         rail.menuline(caption="Navigation", tooltip="Navigation — browse examples and documentation", iconSrc=NAVIGATION_ICON,
                       checked="^galleryIndex.navigationOpen", action="galleryToggleNavigation",
-                      overflowable=False, id="gallery-navigation-button", width="36px", height="36px")
+                      id="gallery-navigation-button", width="36px", height="36px")
         rail.spacer(flex=1)
         rail.menuline(caption="Inspector", tooltip="Inspector — explore the current page’s Source and Data", iconSrc=INSPECTOR_ICON,
-                      checked=False, disabled=True, overflowable=False,
-                      id="gallery-inspector", width="36px", height="36px")
+                      checked=False, disabled=True, id="gallery-inspector", width="36px", height="36px")
         rail.menuline(caption="Settings", tooltip="Settings — change theme, colors and toolbar position", iconSrc=SETTINGS_ICON,
                       checked="^galleryIndex.settingsOpen", action="galleryToggleSettings",
-                      overflowable=False, id="gallery-settings-button", width="36px", height="36px")
+                      id="gallery-settings-button", width="36px", height="36px")
         super().main(frame.center)
 
     @property
@@ -76,7 +75,7 @@ class Page(IndexPage):
         header = pane.header(class_="gallery-navigation-header")
         header.img(src=self.logo_url, alt=self.title, class_="index-logo")
         search = header.menu(presentation="bar", class_="gallery-navigation-search", aria_label="Search navigation")
-        field = search.menuline(group=True, overflowable=False, flex=1, min_width=0).div(class_="gallery-search-field")
+        field = search.menuline(group=True, flex=1, min_width=0).div(class_="gallery-search-field")
         field.span(class_="gallery-search-icon", aria_hidden="true")
         field.input(type="search", value="^galleryIndex.search", default="", live=True,
                     placeholder="Search examples", aria_label="Search examples")
@@ -84,12 +83,13 @@ class Page(IndexPage):
                      hidden="^galleryIndex.search:={} === ''", connect_onclick="this.SET('galleryIndex.search', '')")
         super().left(pane)
         pane.set_attr({"drawer_minimize": True, "drawer_label": "", "drawer_display": "none"})
-        pane.value.get_node("tree").set_attr({"id": "gallery-navigation-tree", "class": "gallery-navigation-tree", "autoCollapse": True, "hideValues": True, "searchText": "^galleryIndex.search"})
+        pane.value.get_node("tree").set_attr({"id": "gallery-navigation-tree", "class": "gallery-navigation-tree", "autoCollapse": True, "hideValues": True, "searchText": "^galleryIndex.search", "searchEager": True, "searchAttributes": "description,tags,component"})
 
     def center(self, pane):
         pane.set_attr({"id": "gallery-center", "overflow": "hidden"})
         super().center(pane)
         pane.value.get_node("tabs").set_attr({"id": "index-pages", "class": "index-main", "hidden": True})
+        pane.div(id="gallery-single", height="100%", hidden=True)
         pane.div(id="gallery-introduction", height="100%").iframe(src="pages/00-index", title="Example gallery", width="100%", height="100%", border=0)
         feature_index(pane, {item["key"]: {**item, "family": group["key"]}
                              for group in self.groups for item in group["children"]})
@@ -108,7 +108,7 @@ class Page(IndexPage):
                 "The Python and JavaScript integrations have the same examples.")
         intro.p("Expand a section in the tree and choose an example. Its tab stays open so you can return to it. "
                 "Use the arrow keys on a focused tab to switch pages. The navigation tree supports the arrow keys and Enter. "
-                "Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Open Code and drag its internal icon to open it in a floating window; close that window to return Code to its tab. Switching tabs preserves the running example. "
+                "Use the Navigation toolbar button to show or hide the tree. Each lesson has Example, Explanation and Code tabs. Use the internal detach icon in Example, Explanation or Code to open that panel in a floating window. Arrange panels side by side; close a window to return its panel to its tab. Switching tabs preserves the running example. "
                 "Choose the theme, color combination and light/dark mode independently in Settings.")
 
     def group_panel(self, pane, group):
@@ -129,12 +129,16 @@ class Page(IndexPage):
                                values="auto:Automatic,left:Left,bottom:Bottom")
         fields.filteringSelect(validate_notnull=True, lbl="Label position", id="gallery-label-position", value="^galleryIndex.labelPosition",
                                values="example:As in the example,TL:Top left,TC:Top center,TR:Top right,L:Left,R:Right,BL:Bottom left,BC:Bottom center,BR:Bottom right")
+        fields.checkbox(lbl="Pages", label="Multipage", id="gallery-multipage", value="^galleryIndex.multipage")
+        fields.checkbox(lbl="Lessons", label="Keep view between examples", id="gallery-keep-view",
+                        value="^galleryIndex.keepLessonView")
         fields.checkbox(lbl="Navigation", label="Keyboard shortcuts", id="keyboard-navigation",
                         value="^galleryIndex.keyboard")
         if self.gallery_modules:
             fields.checkbox(lbl="Examples", label="Show mobile examples", id="gallery-show-mobile",
                             value="^galleryIndex.showMobileExamples")
             settings.p("Mobile examples appear automatically in the native app. This option also shows them in a browser; device features require the native app.")
+        settings.p("With Multipage off, examples share one iframe. Switching examples discards their unsaved state.")
         settings.p("Changes apply immediately. Colors do not change density; label position affects the example fields.")
         settings.p("Automatic uses the bottom in narrow, portrait windows and the left otherwise. Choose Left or Bottom to compare.")
         if self.installable:
@@ -212,7 +216,11 @@ class Page(IndexPage):
         else:
             self.example_panel(pane, self.gallery_item(key))
 
-    def example_panel(self, parent, example):
+    @source
+    def single_panel(self, root):
+        self.example_panel(root, {"key": "single", "title": "", "description": ""}, shared=True)
+
+    def example_panel(self, parent, example, shared=False):
         key = example["key"]
         if example.get("presentation") == "tool":
             parent.iframe(title=example["title"], name=f"example-{key}", id=f"frame-{key}",
@@ -224,15 +232,16 @@ class Page(IndexPage):
         header.p("In this example: " + example.get("description", ""))
         preview = panel.tabContainer(class_="gallery-preview", id=f"preview-{key}",
                                      tabMode="underline", height="100%", min_height=0,
-                                     **({"nodeId": "galleryGuidePreview"} if key == "l04" else {}))
-        stage = preview.contentPane(title="Example", pageName="example",
+                                     selectedPage=f"^galleryIndex.lessonViews.{key}",
+                                     **({"nodeId": "galleryGuidePreview"} if key == "l04" or shared else {}))
+        stage = preview.contentPane(title="Example", pageName="example", detachable=True,
                                     class_="gallery-preview-stage", id=f"preview-stage-{key}")
-        if key == "l04":
+        if key == "l04" or shared:
             layout = stage.borderContainer(height="100%", id="gallery-guide-layout")
             stage = layout.contentPane(region="center", overflow="hidden")
             guided_demo(layout)
         stage.iframe(title=f"{example['title']} preview", name=f"example-{key}", id=f"frame-{key}")
-        explanation = preview.contentPane(title="Explanation", pageName="explanation",
+        explanation = preview.contentPane(title="Explanation", pageName="explanation", detachable=True,
                                           class_="gallery-lesson", overflow="auto", id=f"description-{key}")
         explanation.p("Loading explanation…", role="status")
         code = preview.contentPane(title="Code", pageName="code", detachable=True,

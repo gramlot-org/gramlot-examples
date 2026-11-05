@@ -1,19 +1,29 @@
-from gramlot import Page as BasePage
+from genro_bag import Bag
+from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = "Checkbox group: select several values"
-
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
-        options = main_content.details(max_width="24rem")
-        options.summary("Options · change the behavior")
-        controls = options.formlet(class_="stack", width="100%", max_width="24rem")
-        controls.html_label("Columns (1–3): ", for_="columns").span("^columns", id="columns-value")
-        controls.input(id="columns", type="range", min=1, max=3, value="^columns", live=True, width="16rem", max_width="100%", default=2)
-        controls.checkbox(id="locked", value="^locked", lbl="State", label="Read only", default=False)
-        fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
-        fields.checkBoxText(id="channels", value="^channels", values="^choices", lbl="Notifications", cols="^columns", readonly="^locked")
-        fields.checkBoxText(id="channels-copy", value="^channels", values="^choices", lbl="Same channels", cols=1, readonly="^locked")
-        main_content.p("Selected codes:")
-        main_content.p("^channels", id="channels-value")
+        options = "MI:Milano,TO:Torino,CO:Como,PV:Pavia"
+        pane = root.div(max_width="34rem", display="grid", gap="1rem", padding="1rem")
+        pane.checkbox(value="^locked", default=False, label="Read only", id="locked")
+        inline = pane.groupBox(lbl="Inline")
+        inline.comboBox(value="^columns", values="1,2,3", default="2",
+                      lbl="Columns", id="columns", box_c_width="6rem")
+        inline.checkBoxText(value="^cities", values=options, cols="==Number(columns)", columns="^columns",
+                          readonly="^locked", id="channels")
+        popup = pane.groupBox(lbl="Popup")
+        popup.checkBoxText(value="^cities", values=options, popup=True,
+                          readonly="^locked", id="channels-copy")
+        popup.code("^cities", id="city-codes")
+        root.dataRemote("documents", "document_choices", cacheTime=-1)
+        hierarchy = pane.groupBox(lbl="Hierarchy")
+        hierarchy.checkBoxText(value="^selected", values="^documents", hierarchical=True,
+                          readonly="^locked", id="hierarchy-inline")
+        hierarchy.code("^selected", id="selected-paths")
+
+    @endpoint
+    def document_choices(self):
+        choices = Bag({"manual": Bag({"guide": None, "reference": None})})
+        choices.setItem("manual.fixed", None, checked="disabled:on")
+        return choices

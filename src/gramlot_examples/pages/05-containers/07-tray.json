@@ -1,0 +1,12 @@
+{
+  "key": "tray-workspace",
+  "title": "Tray workspace",
+  "description": "Arrange live cards, select and move groups, change layers, snap to a grid, and restore a saved Data Bag layout.",
+  "tags": [
+    "containers",
+    "layout",
+    "tray",
+    "workspace"
+  ],
+  "order": 12
+}

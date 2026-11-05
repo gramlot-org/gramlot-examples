@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Rounded borders and popups"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

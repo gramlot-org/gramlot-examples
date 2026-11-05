@@ -1,0 +1,16 @@
+{
+  "key": "c19",
+  "title": "Exchange messages between frames",
+  "description": "Send a message to the child, then reply from it. Compare the two logs to see which frame received each message.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "exchange",
+    "messages",
+    "between",
+    "frames",
+    "frame"
+  ],
+  "order": 11
+}

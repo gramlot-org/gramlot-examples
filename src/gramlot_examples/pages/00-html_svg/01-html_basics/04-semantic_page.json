@@ -1,0 +1,14 @@
+{
+  "key": "e04",
+  "title": "Semantic page",
+  "description": "Use Story and Notes to move between sections. Compare header, navigation, main, article and footer with the structure in the source.",
+  "tags": [
+    "html",
+    "svg",
+    "semantic",
+    "basics"
+  ],
+  "order": 3,
+  "catalogued": false,
+  "navigation": false
+}

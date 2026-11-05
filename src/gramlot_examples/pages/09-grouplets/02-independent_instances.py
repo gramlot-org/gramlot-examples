@@ -2,8 +2,6 @@ from gramlot import Page as BasePage, source
 
 
 class Page(BasePage):
-    title = "Order addresses: reuse one editor twice"
-
     def main(self, root):
         main_content = root.main(class_="grouplet-demo", datapath="order")
         columns = main_content.div(class_="demo-addresses")

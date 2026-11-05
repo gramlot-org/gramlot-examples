@@ -1,0 +1,18 @@
+{
+  "key": "w18",
+  "title": "Required values and length",
+  "description": "Enter a one-character name and leave the field. The invalid draft stays visible while the accepted value below remains unchanged; correct it to two or more characters.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "validate",
+    "required",
+    "values",
+    "text",
+    "length",
+    "forms",
+    "validation"
+  ],
+  "order": 17
+}

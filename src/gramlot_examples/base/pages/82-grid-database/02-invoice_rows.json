@@ -1,0 +1,13 @@
+{
+  "key": "base-asqueel-03",
+  "title": "Resident invoice rows",
+  "description": "Up to 100,000 real invoice rows from the XL dataset, with related products and server timings.",
+  "tags": [
+    "grid",
+    "database",
+    "resident",
+    "invoice",
+    "rows"
+  ],
+  "order": 1
+}

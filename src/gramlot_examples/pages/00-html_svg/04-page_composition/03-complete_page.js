@@ -10,7 +10,6 @@ const QUESTIONS = [['Do I need a service?', 'This local example has no remote da
     ['Is the map interactive?', 'No. It is a schematic SVG illustration.']];
 
 export class Page extends BasePage {
-    static title = "Build a complete event page";
 
     main(root) {
         const pane = root.div({class: 'example-page complete-page'});

@@ -1,4 +1,4 @@
-# Load example data and replay field edits
+# Load and replay Data
 
 **Try this:** Edit the initialized customer, then use Play to fill the separate draft. Clear interrupts playback; editing the draft leaves the original customer untouched.
 

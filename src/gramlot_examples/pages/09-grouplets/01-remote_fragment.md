@@ -1,4 +1,4 @@
-# Customer onboarding: adapt the customer details
+# Customer details
 
 Change customer type, edit contact details and return to the previous type: its draft remains available.
 

@@ -1,0 +1,14 @@
+{
+  "key": "b04",
+  "title": "Edit shared Data with native fields",
+  "description": "Edit a field, then leave it. Compare the accepted Data below; enable live editing to see updates while typing.",
+  "tags": [
+    "bindings",
+    "edit",
+    "shared",
+    "native",
+    "fields",
+    "editing"
+  ],
+  "order": 4
+}

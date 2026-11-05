@@ -1,0 +1,18 @@
+{
+  "key": "w08",
+  "title": "Horizontal slider: range and steps",
+  "description": "Move a slider or use its arrow keys. The other slider follows in steps of five; Options lets you compare live and committed updates.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "horizontal",
+    "slider",
+    "range",
+    "steps",
+    "numbers",
+    "sliders"
+  ],
+  "order": 7,
+  "presentation": "content"
+}

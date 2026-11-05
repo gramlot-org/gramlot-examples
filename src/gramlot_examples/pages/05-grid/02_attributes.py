@@ -3,8 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Rows as attributes'
-
     def main(self, root):
         main_content = root.main(datapath='sample', padding='16px')
         g = main_content.grid(id='grid-02', storepath='.rows', rowMode='attributes', height='340px')

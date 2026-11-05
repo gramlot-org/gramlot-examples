@@ -4,7 +4,6 @@ from gramlot import Page as BasePage, PageStore as BasePageStore
 
 
 class Page(BasePage):
-    title = "Publish a customer request"
 
     def main(self, root):
         pane = root.div(datapath="view", style="padding:24px;max-width:720px;display:grid;gap:12px")

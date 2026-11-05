@@ -17,6 +17,8 @@ test('every advertised sample companion decodes as a Data Bag in JavaScript', ()
 });
 
 test('sample records retain nested paths, types and attributes; UI preferences stay with controls', () => {
+    const annotations = read('drawing-annotations').getItem('drawing.annotations');
+    assert.ok(annotations instanceof Bag);
     const customer = read('b12');
     assert.equal(customer.getItem('customer.credit').toString(), '1250.5');
     assert.equal(customer.getItem('customer.active'), true);
@@ -30,9 +32,9 @@ test('sample records retain nested paths, types and attributes; UI preferences s
     for (const path of ['position', 'live', 'readonly']) assert.equal(textbox.getNode(path), null);
 });
 
-test('explicit setters in lessons are confined to setter teaching and host-generated gallery metadata', () => {
+test('explicit setters in lessons are confined to Data/Bag teaching and host-generated gallery metadata', () => {
     for (const [key, route] of Object.entries(gallery.routes)) {
-        if (!route.page.includes('/pages/') || ['b03', 'l08', 'gallery-tray'].includes(key)) continue;
+        if (!route.page.includes('/pages/') || ['b03', 'fundamentals-bindings', 'checkbox-tree', 'l08', 'gallery-tray'].includes(key)) continue;
         const text = readFileSync(route.page, 'utf8');
         assert.doesNotMatch(text, /\.dataSetter\s*\(/, key);
     }

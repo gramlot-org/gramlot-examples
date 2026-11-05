@@ -14,7 +14,6 @@ class TemporaryImage extends UploadTarget {
     status() { return this.outcome; }
 }
 export class Page extends BasePage {
-    static title = 'Editable images';
     main(root) {
         const main_content = root.main({datapath:'imageDemo',padding:'16px'});
         main_content.dataController({func:'attachBrowserCamera',_onStart:true});

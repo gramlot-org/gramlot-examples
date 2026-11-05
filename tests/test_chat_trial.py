@@ -8,6 +8,7 @@ pytest.importorskip("anthropic", reason="Install the chat extra to test optional
 pytest.importorskip("openai", reason="Install the chat extra to test optional AI providers")
 import gramlot_examples
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 from genro_bag import Bag
 from gramlot_examples.trials.chat.anthropic_chat import AnthropicChat, ChatError, EFFORTS
 
@@ -149,7 +150,7 @@ def test_generated_image_uses_same_bag_and_text_context(store, provider, monkeyp
 def test_python_composition_builds_native_controls(provider):
     import json
     from gramlot import GramlotBuilder
-    builder = GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in collections()])
+    builder = GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in (*standard_collections(), *collections())])
     from gramlot_examples.trials.chat.composition import chat_frame
     chat_frame(builder.root, datapath='chat', models=provider.models, image_models={'gpt-image-2.5-sunburst':'Sunburst 2.5'})
     assert 'chat-model' in builder.to_tytx()

@@ -1,4 +1,4 @@
-# Shipping desk: card actions and scoped Clear
+# Card actions
 
 Manage delivery for order SO-1042, twelve workshop lights for North Workshop.
 The order and invoice overview gives context; the delivery card groups the contact,

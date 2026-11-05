@@ -1,0 +1,14 @@
+{
+  "key": "b06",
+  "title": "Styles and visibility",
+  "description": "Change the color and dimensions, then toggle visibility. Notice that an invisible box still reserves its place in the layout.",
+  "tags": [
+    "bindings",
+    "control",
+    "styles",
+    "visibility",
+    "presentation",
+    "style"
+  ],
+  "order": 6
+}

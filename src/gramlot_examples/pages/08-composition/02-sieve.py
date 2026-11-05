@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Sieve of Eratosthenes: animate reactive Data"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

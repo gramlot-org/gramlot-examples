@@ -1,0 +1,10 @@
+{
+  "key": "b11",
+  "title": "A complete page driven by Data",
+  "description": "Edit the page's bound controls and follow the repeated values in the complete page. Compare this live version with the earlier static page.",
+  "tags": [
+    "bindings",
+    "driven"
+  ],
+  "order": 11
+}

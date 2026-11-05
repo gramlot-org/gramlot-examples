@@ -1,0 +1,19 @@
+{
+  "key": "grid-column-filters",
+  "title": "Column filters",
+  "description": "Combine distinct values, date ranges and periods with search and customer sets.",
+  "tags": [
+    "grid",
+    "column filters",
+    "distinct",
+    "counts",
+    "facets",
+    "multiple selection",
+    "John",
+    "Fred",
+    "dates",
+    "periods",
+    "date range"
+  ],
+  "order": 10
+}

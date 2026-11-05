@@ -21,10 +21,15 @@ const environment = families => ({environment: 'test', families: families.map(fa
 
 test('common gallery', () => {
     const gallery = buildGallery();
-    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
-    assert.equal(Object.keys(gallery.routes).length, 165);
+    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
+    assert.equal(Object.keys(gallery.routes).length, 184);
+    assert.match(gallery.routes['drawing-annotations'].page, /\/06-drawing\.js$/);
+    assert.ok(gallery.routes['grid-primary-supplier']);
+    assert.ok(gallery.routes['w16']);
     assert.match(gallery.routes["transform-pane"].page, /\/09-transform_pane\.js$/);
     assert.match(gallery.routes["tree-row-actions"].page, /\/06-row_actions\.js$/);
+    assert.equal(gallery.routes.e01.presentation, 'content');
+    assert.equal(gallery.routes['grid-10'].presentation, undefined);
     assert.match(gallery.routes["tree-checkboxes"].page, /\/05-checkboxes\.js$/);
     assert.match(gallery.routes.index.page, /\/page\.js$/);
     assert.match(gallery.routes.b12.data, /foo_data\.tytx$/);

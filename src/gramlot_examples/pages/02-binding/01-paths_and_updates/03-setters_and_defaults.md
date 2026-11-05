@@ -1,4 +1,4 @@
-# Initialize values: defaults and dataSetter
+# Defaults and setters
 
 **Try this:** Compare the initialized values below. Defaults fill missing values; dataSetter writes explicitly and is then removed from Source. This lesson demonstrates that distinction deliberately.
 

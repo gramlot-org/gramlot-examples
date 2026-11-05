@@ -2,6 +2,7 @@ import {mountFeatureProgress, markFeatureExampleSeen} from './gallery-features.j
 import {renderReadme} from './markdown.js';
 import {mountGuidedDemo} from './gallery-guide.js';
 import {mountGalleryMobile} from './gallery-mobile.js';
+import {mountSinglePage} from './gallery-single-page.js';
 import {mountGallerySettings} from './gallery-settings.js';
 import {mountGalleryPresentation} from './gallery-presentation.js';
 import {mountIndexPage} from '@gramlot/gramlot';
@@ -23,7 +24,8 @@ export function mountGallery(renderer, root, inspector) {
         const active = state.getItem('active');
         source('gallery-features').setAttr({hidden:!features});
         source('gallery-introduction').setAttr({hidden:features || active!==null});
-        source('index-pages').setAttr({hidden:features || active===null});
+        source('index-pages').setAttr({hidden:features || active===null || !state.getItem('multipage')});
+        source('gallery-single').setAttr({hidden:features || active===null || state.getItem('multipage')});
     };
     state.subscribe('gallery-feature-view', {any:event => {
         if (event.node === state.getNode('navigationSelection')) {
@@ -35,9 +37,11 @@ export function mountGallery(renderer, root, inspector) {
     renderer.onDispose(root, () => state.unsubscribe('gallery-feature-view', {any:true}));
     let guide=null;
     const content=mountGalleryContent(renderer,root);
+    const single=mountSinglePage(renderer,root,state,content);
     const mobile=mountGalleryMobile(renderer,root,inspector,state,visible=>{if(!visible)guide?.pause();});
     const prepare=entry=>{
         entry.key=entry.node.attr.key??entry.pane.label;
+        if (!state.getItem('multipage')) { single.prepare(entry); return; }
         entry.panel=renderer.records.get(entry.pane).element;
         entry.tab=entry.panel;
         entry.frame=entry.panel.querySelector('iframe');
@@ -49,14 +53,22 @@ export function mountGallery(renderer, root, inspector) {
         if(entry.code)content.observe(entry.key);
     };
     const index=mountIndexPage(renderer,root,(entries,active)=>{
+        if (root.galleryModeChanging) return;
         source('gallery-load-status').setValue(entries.get(active)?.loading ? 'Loading page…' : '');
         state.setItem('featureRequest', null);
         state.setItem('featuresOpen', false);
         showContent();
         const entry = entries.get(active);
+        if (entry && !entry.loading && !state.getItem('multipage')) {
+            single.update(entry);
+            if (!guide) guide=mountGuidedDemo(renderer,root);
+            for (const other of [...entries.values()]) if (other !== entry) other.pane.parentBag.popNode(other.pane.label);
+        }
+        settings.update(entry && !entry.loading && entry.code ? (state.getItem('multipage') ? entry.key : 'single') : null);
         if (entry && !entry.loading) markFeatureExampleSeen(state, entry.key);
         presentation.update(entries,active);inspector.update(entries,active);mobile.update(entries,active);guide?.update(entries,active);
     },prepare,{state,async createEntry(entry){
+        if (!state.getItem('multipage')) { await single.ensure(); return; }
         const key=entry.node.attr.key??entry.pane.label;
         entry.pane.setAttr({id:`panel-${key}`,class:'gallery-panel'});
         const selection=new Bag();selection.setItem(entry.node.label,null,{...entry.node.attr});
@@ -70,7 +82,20 @@ export function mountGallery(renderer, root, inspector) {
         source('gallery-load-status').setValue(loading?'Loading page…':
             status==='error'&&(active===url||active===null)?'Could not load this page. Select it again to retry.':'');
     }});
-    return {dispose(){progress.dispose();state.unsubscribe('gallery-feature-view', {any:true});guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
+    state.subscribe('gallery-multipage', {any:event => {
+        if (event.node !== state.getNode('multipage')) return;
+        const selected = state.getItem('navigationSelection');
+        root.galleryModeChanging = true;
+        try {
+            guide?.dispose(); guide=null;
+            for (const entry of [...index.entries.values()]) entry.pane.parentBag.popNode(entry.pane.label);
+            single.clear();
+        } finally { root.galleryModeChanging = false; }
+        showContent();
+        if (selected != null) state.setItem('navigationSelection', selected);
+    }});
+    renderer.onDispose(root,()=>state.unsubscribe('gallery-multipage', {any:true}));
+    return {dispose(){state.unsubscribe('gallery-multipage', {any:true});progress.dispose();state.unsubscribe('gallery-feature-view', {any:true});guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
 }
 
 /** Install directory resolvers during page build, before the tree first renders. */

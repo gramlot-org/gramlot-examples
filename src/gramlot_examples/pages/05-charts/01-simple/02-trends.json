@@ -1,0 +1,14 @@
+{
+  "key": "chart-trends",
+  "title": "Lines and areas",
+  "description": "Compare supplied numeric samples as lines or areas; try uPlot for lines.",
+  "tags": [
+    "charts",
+    "frameGrid",
+    "line",
+    "echarts",
+    "reactivity"
+  ],
+  "order": 1,
+  "presentation": "content"
+}

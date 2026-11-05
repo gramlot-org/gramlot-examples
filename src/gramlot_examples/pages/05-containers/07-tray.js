@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Tray workspace';
     static devices = ['desktop', 'tablet', 'phone'];
     main(root) {
         const main_content = root.main({class:'example-page stack', padding:'12px', max_width:'none', width:'100%'});

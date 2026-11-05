@@ -1,0 +1,13 @@
+{
+  "key": "e01",
+  "title": "Hello, Gramlot!",
+  "description": "Compare the two element calls with the heading and paragraph. In your own copy, add a second paragraph and reload: one extra call creates one extra element.",
+  "tags": [
+    "html",
+    "heading",
+    "text",
+    "source"
+  ],
+  "order": 0,
+  "presentation": "content"
+}

@@ -1,0 +1,16 @@
+{
+  "key": "e02",
+  "title": "Text and links",
+  "description": "Follow the local link and compare emphasis, quoted text and the code sample. The literal <tag> remains text rather than becoming an HTML element.",
+  "tags": [
+    "html",
+    "svg",
+    "text",
+    "links",
+    "basics"
+  ],
+  "order": 1,
+  "catalogued": false,
+  "navigation": false,
+  "presentation": "content"
+}

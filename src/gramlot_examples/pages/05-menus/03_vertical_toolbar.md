@@ -47,3 +47,8 @@ Toolbar checked state uses background only; popup checked state retains a tick.
 ## Read the composition
 
 `main` joins a height control, `vertical_toolbar` and `horizontal_toolbar`. Both bars call `section`: it associates an icon and label with one selection value. The selected section lives in Data, not in an icon or DOM class.
+
+## Field labels
+
+`lbl` declares the visible label and associates it with the input through the
+shared labelbox. No separate HTML label or repeated ARIA name is needed.

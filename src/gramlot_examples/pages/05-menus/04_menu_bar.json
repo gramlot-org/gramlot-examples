@@ -1,0 +1,14 @@
+{
+  "key": "menu-08",
+  "title": "Classic menu bar and hierarchy",
+  "description": "Named top-level menus, nested side-opening submenus, checked and disabled entries.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "classic",
+    "menu",
+    "bar",
+    "hierarchy"
+  ],
+  "order": 3
+}

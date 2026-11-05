@@ -1,4 +1,4 @@
-# Time fields: entry and display formats
+# Time fields
 
 **Try this:** Change hours and minutes, then leave the field. Compare the second view; the stored value is a civil time, not a timestamp.
 

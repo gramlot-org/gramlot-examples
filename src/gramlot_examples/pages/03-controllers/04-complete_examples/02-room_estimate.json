@@ -1,0 +1,15 @@
+{
+  "key": "c23",
+  "title": "Calculate a room estimate",
+  "description": "Change room, guests and nights. Follow the rate, subtotal, discount, total and deposit; Prepare summary captures a snapshot when clicked.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "calculate",
+    "room",
+    "estimate",
+    "examples"
+  ],
+  "order": 15
+}

@@ -1,0 +1,16 @@
+{
+  "key": "drawing-annotations",
+  "title": "Image annotations",
+  "description": "Draw, move and edit annotations over an image. Each annotation is stored in a Data Bag.",
+  "tags": [
+    "drawingPane",
+    "drawing",
+    "image",
+    "annotations",
+    "arrow",
+    "freehand",
+    "text",
+    "Bag"
+  ],
+  "order": 5
+}

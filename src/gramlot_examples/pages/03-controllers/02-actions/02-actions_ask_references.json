@@ -1,0 +1,15 @@
+{
+  "key": "c20",
+  "title": "Confirm and target actions",
+  "description": "Run an action directly, then with confirmation. Cancel a question to leave the result unchanged; the reference examples pass an existing Source or DOM object.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "confirm",
+    "target",
+    "references",
+    "ask"
+  ],
+  "order": 12
+}

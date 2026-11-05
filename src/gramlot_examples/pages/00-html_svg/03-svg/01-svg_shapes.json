@@ -1,0 +1,14 @@
+{
+  "key": "e08",
+  "title": "HTML and SVG",
+  "description": "Declare a small SVG drawing inside the same Source tree as HTML.",
+  "tags": [
+    "html",
+    "svg",
+    "source",
+    "drawing",
+    "circle",
+    "rectangle"
+  ],
+  "order": 7
+}

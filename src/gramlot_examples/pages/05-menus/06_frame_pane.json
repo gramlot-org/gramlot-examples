@@ -1,0 +1,15 @@
+{
+  "key": "menu-05",
+  "title": "Frame regions and commands",
+  "description": "Five regions, multiple bars, five-field messages and nested frame isolation.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "frame",
+    "pane",
+    "regions",
+    "command",
+    "recipients"
+  ],
+  "order": 5
+}

@@ -2,8 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Export and restore typed Data"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="exchange")
         form = pane.section(class_="card stack", datapath=".record")

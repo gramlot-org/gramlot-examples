@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Define and call a server endpoint";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'invoice'});

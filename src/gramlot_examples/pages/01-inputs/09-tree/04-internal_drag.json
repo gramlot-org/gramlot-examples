@@ -1,0 +1,17 @@
+{
+  "key": "w29",
+  "title": "Copy tree nodes with drag and drop",
+  "description": "Drag a document onto Inbox or Projects, then expand that folder. A copy appears there and the original stays put; Locked archive rejects the drop.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "copy",
+    "tree",
+    "nodes",
+    "drag",
+    "drop",
+    "internal"
+  ],
+  "order": 27
+}

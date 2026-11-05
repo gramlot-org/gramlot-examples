@@ -8,7 +8,7 @@ from .gallery.collections import collections as gallery_collections
 
 PACKAGE = Path(__file__).resolve().parent
 MEDIA_TYPES = {".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".json": "application/json"}
-SUFFIXES = (".py", ".js", ".css", ".md", "_aux.js", "_data.tytx")
+SUFFIXES = (".py", ".js", ".css", ".md", ".json", "_aux.js", "_data.tytx")
 DIST = ("gallery.js", "frame.js", "notices.json", "LICENSE", "NOTICE")
 
 
@@ -88,6 +88,8 @@ def build_gallery(catalogs=()):
             routes[example["key"]] = {"page": page,
                                       "stylesheet": stylesheet if stylesheet.is_file() else None,
                                       "logic": logic, "url": f"pages/{family['folder']}/{example['folder']}"}
+            if "presentation" in example:
+                routes[example["key"]]["presentation"] = example["presentation"]
             for suffix in SUFFIXES:
                 source = folder / f"{example['folder']}{suffix}"
                 if source.is_file():
@@ -103,6 +105,10 @@ def build_gallery(catalogs=()):
             key = f"{prefix}/{page.relative_to(base).with_suffix('').as_posix()}"
             stylesheet = page.with_suffix(".css")
             routes[key] = {"page": page, "stylesheet": stylesheet if stylesheet.is_file() else None, "logic": None, "url": key}
+            for suffix in SUFFIXES:
+                source = page.with_name(page.stem + suffix)
+                if source.is_file():
+                    assets[f"/{key}{suffix}"] = {"file": source, "type": media_type(source)}
     for route in routes.values():
         data = route["page"].with_name(route["page"].stem + "_data.tytx")
         route["data"] = data if data.is_file() else None
@@ -112,7 +118,12 @@ def build_gallery(catalogs=()):
 __all__ = ["build_gallery"]
 
 def page_title(path):
-    """Read the title from the actual page class, or the first Markdown H1."""
+    """Read gallery metadata first, then the page class or Markdown heading."""
+    metadata = path.with_suffix(".json")
+    if metadata.is_file():
+        title = json.loads(metadata.read_text()).get("title")
+        if title:
+            return title
     if path.suffix == ".md":
         match = re.search(r"^# +(.+?)\s*#*\s*$", path.read_text(), re.MULTILINE)
         if match is None:
@@ -159,6 +170,9 @@ def navigation_directory(directory="", catalogs=()):
             continue
         relative = "/".join([*parts, name])
         if child.is_dir():
+            index_metadata = child / "00-index.json"
+            if index_metadata.is_file() and json.loads(index_metadata.read_text()).get("navigation") is False:
+                continue
             index = directory_index(child)
             attrs = dict(title=page_title(index), category=True, directory=relative,
                          url=f"pages/{relative}/00-index")
@@ -170,7 +184,14 @@ def navigation_directory(directory="", catalogs=()):
             examples = [item for family in families if parts and family["folder"] == parts[0]
                         for item in family["examples"]]
             example = next((item for item in examples if item["folder"] == "/".join([*parts[1:], child.stem])), None)
-            attrs = dict(title=page_title(child), url=f"pages/{'/'.join([*parts, child.stem])}", category=False)
+            metadata = child.with_suffix(".json")
+            descriptor = json.loads(metadata.read_text()) if metadata.is_file() else None
+            if descriptor and descriptor.get("navigation") is False:
+                continue
+            title = example["title"] if example else descriptor["title"] if descriptor else page_title(child)
+            attrs = dict(title=title, url=f"pages/{'/'.join([*parts, child.stem])}", category=False)
+            if descriptor:
+                attrs.update({name: descriptor[name] for name in ("description", "tags", "component") if name in descriptor})
             if example:
                 attrs["key"] = example["key"]
             result.set_item(example["key"] if example else child.stem, None, **attrs)

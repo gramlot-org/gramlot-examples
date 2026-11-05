@@ -1,7 +1,6 @@
 import {PreviewPage} from '../../trials/menu/theme_preview.js';
 
 export class Page extends PreviewPage {
-    static title = "Compact appearance review";
     static profile = "Compact";
     static density = "28px controls / 13px text";
     static css = ["/themes/gramlot-compact/theme.css"];

@@ -1,0 +1,16 @@
+{
+  "key": "g03",
+  "title": "Nested grouplets",
+  "description": "Edit the site contact, address and access notes, then reload the composed section without losing the draft.",
+  "tags": [
+    "grouplets",
+    "service",
+    "visit",
+    "compose",
+    "site",
+    "dossier",
+    "nested",
+    "fragments"
+  ],
+  "order": 2
+}

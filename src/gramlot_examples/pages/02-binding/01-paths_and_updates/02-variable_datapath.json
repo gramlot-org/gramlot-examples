@@ -1,0 +1,16 @@
+{
+  "key": "b02",
+  "title": "Switch records",
+  "description": "Choose Ada, edit her name, then select Alan and come back. One card follows the selected datapath; each record keeps its own values.",
+  "tags": [
+    "bindings",
+    "change",
+    "current",
+    "record",
+    "datapath",
+    "paths",
+    "updates",
+    "variable"
+  ],
+  "order": 2
+}

@@ -2,21 +2,18 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Individual radio buttons"
-
     def main(self, root):
-        main_content = root.main(class_="example-page stack")
-        options = main_content.details(max_width="24rem")
+        options = root.details(max_width="24rem")
         options.summary("Options · change the behavior")
         controls = options.formlet(class_="stack", width="100%", max_width="24rem")
         controls.checkbox(id="locked", value="^locked", lbl="State", label="Disable controls", default=False)
-        fields = main_content.formlet(class_="card stack", width="100%", max_width="24rem")
+        fields = root.formlet(class_="card stack", width="100%", max_width="24rem")
         for code, caption in (("standard", "Standard"), ("express", "Express"), ("pickup", "Pick up")):
             fields.radioButton(id=code, value=f"^{code}", group="delivery", label=caption,
                                disabled="^locked")
         fields.radioButton(id="independent", value="^independent", group="other", label="Independent choice",
                            lbl="Another group", disabled="^locked")
-        facts = main_content.dl()
+        facts = root.dl()
         for code in ("standard", "express", "pickup", "independent"):
             facts.dt(code)
             facts.dd(f"^{code}", id=f"{code}-value")

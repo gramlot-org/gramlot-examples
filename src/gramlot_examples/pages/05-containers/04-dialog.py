@@ -6,7 +6,6 @@ STAGES = {'idea': 'M12 3a6 6 0 0 0-3 11v3h6v-3a6 6 0 0 0-3-11ZM9 21h6', 'review'
 
 
 class Page(BasePage):
-    title = 'Dialog: modal editing'
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):

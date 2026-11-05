@@ -9,13 +9,11 @@ ROW_LIMITS = (100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000)
 
 
 class Page(BasePage):
-    title = 'Database grid · resident customers'
 
     def main(self, root):
         pane = root.main(datapath='customers', padding='20px')
         pane.button('Open database grid', action="this.SET('.open', true)")
         pane.dataSetter('.open', True)
-        pane.dataSetter('.limit', '1000')
         pane.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))
         pane.dataRpc('load_customers', result_path='.selection', limit='^.limit', _init=True, _fired='^.reload',
                      _onCalling="this.SET('.status', 'Loading from PostgreSQL…')",
@@ -35,14 +33,13 @@ class Page(BasePage):
         bar.menuline(group=True).searchBox(searchOn=True)
         bar.spacer(flex=1)
         limits = bar.menuline(group=True)
-        limits.span('Max rows', margin_right='6px')
-        choice = limits.select(value='^.limit', aria_label='Maximum records', id='db-grid-limit', width='7rem')
+        choice = limits.select(value='^.limit', default='1000', lbl='Max rows', lbl_position='L', id='db-grid-limit', width='7rem')
         for limit in ROW_LIMITS:
             choice.option(str(limit), value=str(limit))
         bar.menuline(caption='Reload from DB', action="this.FIRE('.reload')", tooltip='Run the query again and replace the resident selection')
     def measurements(self, frame):
         metrics = frame.bottom.menu(presentation='bar', aria_label='Server measurements', padding='4px 8px')
-        facts = metrics.menuline(group=True, gap='12px', overflowable=False)
+        facts = metrics.menuline(group=True, gap='12px')
         facts.span('^.status', id='db-grid-status', margin_right='12px')
         facts.span('^.selection.requested', mask='Requested: {}', id='db-grid-requested', margin_right='12px')
         facts.span('^.selection.count', mask='Loaded: {}', id='db-grid-count', margin_right='12px')

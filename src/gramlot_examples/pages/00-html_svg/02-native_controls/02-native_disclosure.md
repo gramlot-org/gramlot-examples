@@ -1,4 +1,4 @@
-# Expandable sections and progress indicators
+# Disclosure and progress
 
 **Try this:** Open and close each question. The progress bar and meter show fixed example values; opening a question does not start a task.
 

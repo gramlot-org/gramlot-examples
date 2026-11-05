@@ -1,0 +1,13 @@
+{
+  "key": "base-asqueel-01",
+  "title": "State and customer",
+  "description": "Filter customers by the selected state.",
+  "tags": [
+    "asqueel",
+    "selectors",
+    "state",
+    "customer",
+    "customers"
+  ],
+  "order": 0
+}

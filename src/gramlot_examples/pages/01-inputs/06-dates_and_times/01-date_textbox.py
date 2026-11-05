@@ -2,7 +2,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Date fields: entry and display formats"
     locale = "it-IT"
 
     def main(self, root):

@@ -1,0 +1,11 @@
+{
+  "key": "markdown_editor",
+  "title": "Markdown editor",
+  "description": "Edit a heading and compare Code, Preview and Rich text. The views share the same Markdown; use Code for complex blocks.",
+  "tags": [
+    "editors",
+    "markdown",
+    "editor"
+  ],
+  "order": 3
+}

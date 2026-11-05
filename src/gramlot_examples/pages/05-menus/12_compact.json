@@ -1,0 +1,13 @@
+{
+  "key": "menu-12",
+  "title": "Compact appearance review",
+  "description": "28px controls / 13px text — forms, tabs, menus, table and windows.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "compact",
+    "appearance",
+    "review"
+  ],
+  "order": 11
+}

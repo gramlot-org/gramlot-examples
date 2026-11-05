@@ -1,7 +1,6 @@
 import {Page as BasePage} from "@gramlot/gramlot/page";
 
 export class Page extends BasePage {
-    static title = "Numeric fields: format and constraints";
     static locale = "it-IT";
     main(root) {
         const main_content = root.main({class:"example-page stack"});

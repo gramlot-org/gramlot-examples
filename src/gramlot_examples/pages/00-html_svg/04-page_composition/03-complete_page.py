@@ -12,8 +12,6 @@ QUESTIONS = (("Do I need a service?", "This local example has no remote data."),
 
 
 class Page(BasePage):
-    title = "Build a complete event page"
-
     def main(self, root):
         pane = root.div(class_="example-page complete-page")
         self.header(pane)

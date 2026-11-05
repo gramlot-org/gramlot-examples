@@ -6,7 +6,6 @@ export class Page extends BasePage {
     static galleryUrls = Object.fromEntries(
         catalog.families.flatMap((family) => family.examples.map((demo) => [demo.key, `../${family.folder}/${demo.folder}`])),
     );
-    static title = "Switch pages in a single stack";
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

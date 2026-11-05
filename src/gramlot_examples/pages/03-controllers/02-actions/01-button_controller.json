@@ -1,0 +1,14 @@
+{
+  "key": "c06",
+  "title": "Run a controller from a button",
+  "description": "Press the first button normally, then with Shift or Alt. Its nested controller receives the click count and modifiers; the other buttons fire Data paths.",
+  "tags": [
+    "logic",
+    "actions",
+    "events",
+    "run",
+    "controller",
+    "button"
+  ],
+  "order": 5
+}

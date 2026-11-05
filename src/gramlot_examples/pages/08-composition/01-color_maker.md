@@ -1,4 +1,4 @@
-# Color Maker: one block, three contexts
+# Reusable color maker
 
 **Try this:** Open the palette, select Background, Text or Shadow and move a slider. Random changes only the selected block; the three editors use the same method under different datapaths.
 

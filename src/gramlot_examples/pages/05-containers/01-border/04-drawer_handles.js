@@ -1,7 +1,6 @@
 import { Page as BasePage } from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Drawers: handles, content and retained Data";
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {

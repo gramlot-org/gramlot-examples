@@ -3,7 +3,6 @@ import {Page as BasePage} from '@gramlot/gramlot/page';
 const MENUS = {dishes: ['Soup', 'Risotto', 'Fish'], drinks: ['Water', 'Lemonade', 'Coffee']};
 
 export class Page extends BasePage {
-    static title = "Fetch Data with dataRemote";
 
     main(root) {
         const pane = root.div({class: 'example-page stack', datapath: 'kitchen'});

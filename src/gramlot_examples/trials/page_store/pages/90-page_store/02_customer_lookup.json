@@ -1,0 +1,15 @@
+{
+  "key": "pagestore-02",
+  "title": "Publish a customer request",
+  "description": "Publish a key; a subscribed PageStore controller puts the record and outcome in its Bag.",
+  "tags": [
+    "store",
+    "web",
+    "socket",
+    "publish",
+    "customer",
+    "request",
+    "lookup"
+  ],
+  "order": 1
+}

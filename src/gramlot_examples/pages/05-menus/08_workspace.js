@@ -2,7 +2,6 @@ import {Bag} from '@gramlot/gramlot';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Complete document workspace";
 
     main(root) {
 
@@ -17,7 +16,7 @@ export class Page extends BasePage {
         const bar = frame.top.menu({presentation: "bar", orientation: "horizontal", node_label: "toolbar", id: "menu-toolbar"});
         this.document_menu(bar);
         bar.spacer({size: 12});
-        bar.contentPane({node_label: "search"}).input({value: "^document.query", placeholder: "A normal embedded input", aria_label: "Search"});
+        bar.contentPane({node_label: "search"}).input({value: "^document.query", placeholder: "A normal embedded input", lbl: "Search"});
         bar.spacer({flex: 1});
         const nested = bar.contentPane({node_label: "extra"}).menu({presentation: "bar", orientation: "vertical"});
         nested.menuline("documenti:save", {caption: "Save after confirmation", ask: "Save this document?", parameters: {id: "^document.id"}});

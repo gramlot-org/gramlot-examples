@@ -1,0 +1,15 @@
+{
+  "key": "c11",
+  "title": "Call the server from a button",
+  "description": "Reserve the unavailable item, then try the protected action. The error messages distinguish an application error from missing authentication.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "call",
+    "server",
+    "button",
+    "calls",
+    "click"
+  ],
+  "order": 3
+}

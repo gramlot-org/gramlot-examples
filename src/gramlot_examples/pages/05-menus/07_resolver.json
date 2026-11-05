@@ -1,0 +1,13 @@
+{
+  "key": "menu-06",
+  "title": "Resolver menus and nested Bags",
+  "description": "Direct resolver, nested Bags, lazy submenus, live states, empty results and retry.",
+  "tags": [
+    "menus",
+    "toolbars",
+    "resolver",
+    "nested",
+    "bags"
+  ],
+  "order": 6
+}

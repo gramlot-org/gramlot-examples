@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gramlot-examples"
-version = "0.3.32"
+version = "0.3.33"
 description = "Gramlot example pages, the gallery page and its catalogue."
 readme = "README.md"
 license = "Apache-2.0"
@@ -12,7 +12,8 @@ requires-python = ">=3.11"
 dependencies = ["gramlot>=0.3.27"]
 
 [project.optional-dependencies]
-test = ["pytest>=8"]
+test = ["pytest>=8", "psutil>=7"]
+system-monitor = ["psutil>=7"]
 chat = ["anthropic>=2.0.0", "openai"]
 
 [project.urls]

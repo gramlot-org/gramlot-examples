@@ -4,7 +4,6 @@ from gramlot.db import DatabaseSelectors
 
 
 class Page(DatabaseSelectors, BasePage):
-    title = 'State and customer'
     css = ('/themes/gramlot-base/theme.css',)
 
     def main(self, root):

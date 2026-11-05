@@ -1,0 +1,13 @@
+{
+  "key": "chart-reports-03",
+  "title": "States and suburbs",
+  "description": "Click an Australian state to inspect its suburbs without losing year, measure or search.",
+  "tags": [
+    "charts",
+    "map",
+    "Australia",
+    "drilldown",
+    "suburbs"
+  ],
+  "order": 2
+}

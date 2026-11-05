@@ -3,8 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = 'Floating grid · resize and scroll'
-
     def main(self, root):
         main_content = root.main(datapath='sample', padding='20px', max_width='1000px', margin='0 auto')
         main_content.button('Open floating grid', action="this.SET('.open', true)")

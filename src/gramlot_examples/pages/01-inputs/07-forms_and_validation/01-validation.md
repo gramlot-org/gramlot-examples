@@ -1,4 +1,4 @@
-# Validate required values and text length
+# Required values and length
 
 **Try this:** Enter a one-character name and leave the field. The invalid draft stays visible while the accepted value below remains unchanged; correct it to two or more characters.
 

@@ -28,3 +28,8 @@ Use the three controls at the left of a card title for rotation, zoom and layer.
 The cross at the right removes that card and its layout entry; other cards keep
 their live contents. The counter follows the layout Bag. Newly added cards have
 fresh keys, so adding after removal does not replace a surviving card.
+
+## Field labels
+
+`lbl` declares the visible label and associates it with the input through the
+shared labelbox. No separate HTML label or repeated ARIA name is needed.

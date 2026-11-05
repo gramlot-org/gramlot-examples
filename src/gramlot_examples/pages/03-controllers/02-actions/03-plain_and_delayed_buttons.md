@@ -1,4 +1,4 @@
-# Run immediate and delayed button actions
+# Delayed actions
 
 **Try this:** Click a delayed button several times quickly, then wait. Compare its single grouped execution with the immediate action and native form reset.
 

@@ -1,7 +1,6 @@
 import {Page as BasePage, VisualEditor, SourceImport} from '@gramlot/gramlot/page';
 export {VisualEditorLogic as Logic} from '@gramlot/gramlot';
 export class Page extends BasePage {
-    static title = 'Visual editor';
     static devices = ['desktop', 'tablet'];
     dataRoot = '';
     codeDocument = null;

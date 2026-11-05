@@ -1,0 +1,19 @@
+{
+  "key": "w03",
+  "title": "Radio group: choose one value",
+  "description": "Choose a delivery option and compare the stored code below. The alternative group is independent; changing one group leaves the other untouched.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "radio",
+    "group",
+    "one",
+    "value",
+    "selection",
+    "button",
+    "text"
+  ],
+  "order": 2,
+  "presentation": "content"
+}

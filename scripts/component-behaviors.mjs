@@ -118,9 +118,24 @@ export const componentBehaviors = {
         assert.equal(await page.locator('#choice-copy input').inputValue(), 'A custom caption');
     },
     async w16(page) {
-        await page.locator('#channels input[value="sms"]').check();
-        assert.ok((await data(page, 'channels')).split(',').includes('sms'));
-        assert.equal(await page.locator('#channels-copy input[value="sms"]').isChecked(), true);
+        const inline = page.locator('#channels');
+        assert.equal(await inline.locator('.choice-toggle').isVisible(),false);
+        const popup = page.locator('#channels-copy');
+        const cities = popup.locator('input.summary');
+        await cities.fill('Milano,Torino,Como,pavia'); await cities.press('Enter');
+        assert.equal(await page.locator('#city-codes').textContent(),'MI,TO,CO,PV');
+        assert.equal(await inline.locator('input[value=PV]').isChecked(),true);
+        await popup.locator('.choice-toggle').click();
+        await popup.locator('input[value=MI]').uncheck();
+        assert.equal(await inline.locator('input[value=MI]').isChecked(),false);
+        await popup.locator('input[value=PV]').press('Escape');
+        assert.equal(await popup.locator('#checkbox-options').isVisible(),false);
+        const tree=page.locator('#hierarchy-inline gramlot-tree');
+        await tree.locator('[data-path="manual"] > .row > input').click();
+        await page.waitForFunction(()=>document.querySelector('#selected-paths').textContent.includes('manual.guide'));
+        await tree.locator('[data-path="manual"] > .row > .expander').click();
+        assert.equal(await tree.locator('[data-path="manual.fixed"] input').isDisabled(),true);
+        assert.equal(await tree.locator('[data-path="manual.fixed"] input').isChecked(),true);
     },
     async w17(page) {
         await page.locator('#calendar [data-date="2026-10-20"]').click();

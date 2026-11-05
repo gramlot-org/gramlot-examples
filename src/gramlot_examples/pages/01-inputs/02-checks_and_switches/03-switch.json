@@ -1,0 +1,15 @@
+{
+  "key": "w21",
+  "title": "Show a boolean as a switch",
+  "description": "Click the switch or focus it and press Space. The ordinary checkbox follows the same boolean; compare read-only and disabled behavior.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "boolean",
+    "switch",
+    "checks",
+    "switches"
+  ],
+  "order": 19
+}

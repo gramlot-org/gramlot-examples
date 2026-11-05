@@ -1,0 +1,14 @@
+{
+  "key": "01-child",
+  "title": "Nested page",
+  "description": "Open a page inside a nested gallery directory and switch between it and its parent.",
+  "tags": [
+    "navigation",
+    "directory",
+    "nested",
+    "page"
+  ],
+  "order": 12,
+  "catalogued": false,
+  "navigation": false
+}

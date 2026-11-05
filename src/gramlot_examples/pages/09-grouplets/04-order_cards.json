@@ -1,0 +1,14 @@
+{
+  "key": "g04",
+  "title": "Order cards",
+  "description": "Review customer, invoice and delivery sections; fold nested cards, mark checks and reload without losing the draft.",
+  "tags": [
+    "grouplets",
+    "order",
+    "review",
+    "work",
+    "grouplet",
+    "cards"
+  ],
+  "order": 3
+}

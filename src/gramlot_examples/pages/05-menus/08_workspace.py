@@ -3,8 +3,6 @@ from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = "Complete document workspace"
-
     def main(self, root):
         main_content = root.main(padding="20px", height="620px")
         frame = main_content.framePane(node_label="document", height="480px")
@@ -17,7 +15,7 @@ class Page(BasePage):
         bar = frame.top.menu(presentation="bar", orientation="horizontal", node_label="toolbar", id="menu-toolbar")
         self.document_menu(bar)
         bar.spacer(size=12)
-        bar.contentPane(node_label="search").input(value="^document.query", placeholder="A normal embedded input", aria_label="Search")
+        bar.contentPane(node_label="search").input(value="^document.query", placeholder="A normal embedded input", lbl="Search")
         bar.spacer(flex=1)
         nested = bar.contentPane(node_label="extra").menu(presentation="bar", orientation="vertical")
         nested.menuline("documenti:save", caption="Save after confirmation", ask="Save this document?", parameters=dict(id="^document.id"))

@@ -1,0 +1,13 @@
+{
+  "key": "base-01",
+  "title": "Customers across adapters",
+  "description": "Real PostgreSQL customers through Asqueel, SQLAlchemy or Django.",
+  "tags": [
+    "base",
+    "database",
+    "customers",
+    "across",
+    "adapters"
+  ],
+  "order": 0
+}

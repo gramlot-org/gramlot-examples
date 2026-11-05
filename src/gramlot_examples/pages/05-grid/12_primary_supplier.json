@@ -1,0 +1,14 @@
+{
+  "key": "grid-primary-supplier",
+  "title": "Primary supplier",
+  "description": "Select one supplier and store its ID in the product record. Filtering keeps the choice.",
+  "tags": [
+    "grid",
+    "radio",
+    "single selection",
+    "primary supplier",
+    "checked",
+    "checkedField"
+  ],
+  "order": 11
+}

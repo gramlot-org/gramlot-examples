@@ -1,0 +1,19 @@
+{
+  "key": "fundamentals-bindings",
+  "title": "Data and bindings",
+  "description": "Edit text and move a slider: Data updates the paragraph, its tooltip and its opacity. Inspect Data and Source.",
+  "tags": [
+    "fundamentals",
+    "data",
+    "source",
+    "binding",
+    "html",
+    "input",
+    "range",
+    "slider",
+    "attributes",
+    "inspector"
+  ],
+  "order": 1,
+  "presentation": "content"
+}

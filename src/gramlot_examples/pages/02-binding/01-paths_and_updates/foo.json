@@ -1,0 +1,16 @@
+{
+  "key": "b12",
+  "title": "Load and replay Data",
+  "description": "Edit the initialized customer, then use Play to fill the separate draft. Clear interrupts playback; editing the draft leaves the original customer untouched.",
+  "tags": [
+    "bindings",
+    "load",
+    "replay",
+    "field",
+    "edits",
+    "paths",
+    "updates",
+    "foo"
+  ],
+  "order": 0
+}

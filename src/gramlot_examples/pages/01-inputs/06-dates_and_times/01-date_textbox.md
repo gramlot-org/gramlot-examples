@@ -1,4 +1,4 @@
-# Date fields: entry and display formats
+# Date fields
 
 **Try this:** Type domani and leave the field. Compare the long and short Italian date formats: they represent the same civil date.
 

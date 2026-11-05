@@ -7,7 +7,6 @@ function svg_icon(drawing) {
 const ICONS = {"home": svg_icon("<path d=\"m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9\"/>"), "documents": svg_icon("<path d=\"M3 7V4h7l2 3h9v14H3Z\"/><path d=\"M3 10h18\"/>"), "activity": svg_icon("<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 6v6l4 2\"/>"), "settings": svg_icon("<path d=\"M4 7h16M4 17h16\"/><circle cx=\"8\" cy=\"7\" r=\"3\" fill=\"#292929\"/><circle cx=\"16\" cy=\"17\" r=\"3\" fill=\"#292929\"/>"), "integrations": svg_icon("<path d=\"M8 3v5m8-5v5M6 8h12v3a6 6 0 0 1-12 0ZM12 17v4\"/>"), "branches": svg_icon("<circle cx=\"6\" cy=\"4\" r=\"2\"/><circle cx=\"6\" cy=\"20\" r=\"2\"/><circle cx=\"18\" cy=\"5\" r=\"2\"/><path d=\"M6 6v12m0-5c0-4 12 1 12-6\"/>"), "overview": svg_icon("<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>")};
 
 export class Page extends BasePage {
-    static title = "Vertical icon toolbar";
 
     main(root) {
 
@@ -21,8 +20,7 @@ export class Page extends BasePage {
 
     height_control(main_content) {
         const controls = main_content.div({display: "flex", gap: "12px", align_items: "center", flex_wrap: "wrap", margin: "16px 0"});
-        controls.html_label("Rail height", {for: "rail-height"});
-        controls.input({type: "range", min: 180, max: 500, step: 20, value: "^navigation.height", live: true, id: "rail-height", aria_label: "Rail height", width: "190px"});
+        controls.input({type: "range", min: 180, max: 500, step: 20, value: "^navigation.height", live: true, id: "rail-height", lbl: "Rail height", width: "190px"});
         controls.span("^navigation.height");
         controls.span("px");
     }
@@ -31,15 +29,15 @@ export class Page extends BasePage {
         const frame = main_content.framePane({height: "^navigation.height:={} + 'px'", min_height: "180px", border: "1px solid #64748b", border_radius: "12px", overflow: "hidden", id: "rail-frame"});
         frame.left.setAttr({width: "64px", padding: "8px 3px", background: "#292929"});
         const rail = frame.left.menu({presentation: "bar", orientation: "vertical", labelPosition: "tooltip", iconSize: 32, width: "58px", id: "icon-rail"});
-        this.section(rail, "home", "Home", {overflowable: false});
-        this.section(rail, "documents", "Documents", {priority: 80});
-        this.section(rail, "activity", "Activity", {priority: 60});
-        const tools = rail.menuline({caption: "Tools", iconSrc: ICONS["settings"], overflowable: false, id: "rail-tools"}).menu({id: "rail-tools-menu"});
+        this.section(rail, "home", "Home");
+        this.section(rail, "documents", "Documents", {});
+        this.section(rail, "activity", "Activity", {});
+        const tools = rail.menuline({caption: "Tools", iconSrc: ICONS["settings"], id: "rail-tools"}).menu({id: "rail-tools-menu"});
         this.section(tools, "settings", "Settings");
         this.section(tools, "integrations", "Integrations");
         rail.menuline("-");
-        this.section(rail, "branches", "Branches", {priority: 20});
-        this.section(rail, "overview", "Overview", {priority: 10});
+        this.section(rail, "branches", "Branches", {});
+        this.section(rail, "overview", "Overview", {});
         const center = frame.center.contentPane({frameTarget: true, node_label: "navigation_content", padding: "18px"});
         center.h2("^navigation.selected", {id: "selected-section", margin: "0 0 12px", text_transform: "capitalize"});
     }
@@ -47,8 +45,8 @@ export class Page extends BasePage {
     horizontal_toolbar(main_content) {
         main_content.h2("The horizontal equivalent");
         const horizontal = main_content.menu({presentation: "bar", labelPosition: "tooltip", iconSize: 28, id: "horizontal-rail", padding: "8px", border: "1px solid #64748b", border_radius: "8px"});
-        this.section(horizontal, "home", "Home", {overflowable: false});
-        horizontal.menuline({caption: "Tools", iconSrc: ICONS["settings"], overflowable: false, id: "horizontal-tools"}).menu().menuline({caption: "Settings", iconSrc: ICONS["settings"], action: "selectSection", parameters: {section: "settings"}});
+        this.section(horizontal, "home", "Home");
+        horizontal.menuline({caption: "Tools", iconSrc: ICONS["settings"], id: "horizontal-tools"}).menu().menuline({caption: "Settings", iconSrc: ICONS["settings"], action: "selectSection", parameters: {section: "settings"}});
         horizontal.spacer({flex: 1});
         for (const [key, caption] of [["documents", "Documents"], ["activity", "Activity"], ["branches", "Branches"], ["overview", "Overview"]]) {
             this.section(horizontal, key, caption);

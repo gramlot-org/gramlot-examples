@@ -1,3 +1,7 @@
+import {register} from 'node:module';
+register(new URL('../scripts/prepared-collection-loader.mjs', import.meta.url), {
+    data: Object.fromEntries(['layout','tree'].map(name => [`@gramlot/collections/${name}`, import.meta.resolve(`@gramlot/gramlot/components/${name}`)]))
+});
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
@@ -12,10 +16,11 @@ import json
 from gramlot import GramlotBuilder
 from gramlot_examples.gallery.page import Page
 from gramlot_examples.gallery.collections import collections
+from gramlot.collection import standard_collections
 class Trial(Page):
     def source_document(self, key):
         return dict(content='value = 1\\n', revision='r1', writable=key != 'readonly')
-b = GramlotBuilder(collections=[json.loads(entry.verify()[entry.grammar]) for entry in collections()])
+b = GramlotBuilder(collections=[json.loads(entry.verify()[entry.grammar]) for entry in (*standard_collections(), *collections())])
 for key in ['first', 'second', 'readonly']:
     b.root.iframe(id='frame-' + key, src='pages/' + key)
     Trial().code_panel(b.root.tabContainer(), dict(key=key, logic=None))

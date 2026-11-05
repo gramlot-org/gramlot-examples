@@ -1,0 +1,17 @@
+{
+  "key": "w13",
+  "title": "Search a list and select a value",
+  "description": "Search for a delivery caption and select it. The second field follows; the readout contains its code rather than the displayed caption.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "search",
+    "list",
+    "select",
+    "value",
+    "selection",
+    "filtering"
+  ],
+  "order": 12
+}

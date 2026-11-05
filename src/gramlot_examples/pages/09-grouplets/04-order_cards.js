@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Order review: work with grouplet cards';
     main(root) {
         const main_content = root.main({class: 'grouplet-demo', datapath: 'order'});
         main_content.dataFormula({result_path: '.reviewed', formula: "(customer ? 1 : 0) + (billing ? 1 : 0) + (shipping ? 1 : 0)", customer: '^.customer.ui.checked', billing: '^.billing.ui.checked', shipping: '^.shipping.ui.checked', _init: true});

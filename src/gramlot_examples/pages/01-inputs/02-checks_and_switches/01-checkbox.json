@@ -1,0 +1,17 @@
+{
+  "key": "w02",
+  "title": "Checkbox: a boolean value",
+  "description": "Toggle either newsletter checkbox. Both views and the subscription message follow one boolean; Options lets you disable editing.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "checkbox",
+    "boolean",
+    "value",
+    "checks",
+    "switches"
+  ],
+  "order": 1,
+  "presentation": "content"
+}

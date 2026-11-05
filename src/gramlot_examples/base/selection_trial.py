@@ -49,7 +49,6 @@ class SelectionTrialPage(BasePage):
 
     def main(self, root):
         pane = root.main(datapath='trial', padding='16px')
-        pane.dataSetter('.limit', '1000')
         pane.dataSetter('.reload', 0)
         pane.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))
         pane.dataSetter('.metrics', Bag())
@@ -67,8 +66,7 @@ class SelectionTrialPage(BasePage):
         self.search_control(bar)
         bar.spacer(flex=1)
         group = bar.menuline(group=True)
-        group.span('Max rows', margin_right='6px')
-        limits = group.select(value='^.limit', aria_label='Maximum records', width='7rem')
+        limits = group.select(value='^.limit', default='1000', lbl='Max rows', lbl_position='L', width='7rem')
         for count in self.row_limits:
             limits.option(str(count), value=str(count))
         bar.menuline(caption='Reload', action="this.SET('.reload', this.GET('.reload') + 1)")

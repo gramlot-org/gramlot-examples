@@ -1,0 +1,13 @@
+{
+  "key": "floating_window",
+  "title": "Floating: keep the page usable",
+  "description": "Open the floating window, then use the background counter. Both remain usable. Edit the title and watch the page update; close and reopen to keep the same draft.",
+  "tags": [
+    "containers",
+    "layout",
+    "floating",
+    "keep",
+    "usable"
+  ],
+  "order": 10
+}

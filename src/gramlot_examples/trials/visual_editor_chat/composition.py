@@ -7,7 +7,7 @@ def add_editor_chat(editor, document=None):
     pane = editor.pane
     anchor = f"#{pane.attr['visualEditorId']}Editor"
     pane.dataSetter('.chatOpen', True)
-    editor.tool_button(editor.rail.menuline(group=True, overflowable=False), 'Chat',
+    editor.tool_button(editor.rail.menuline(group=True), 'Chat',
                        "this.SET('.chatOpen', !this.GET('.chatOpen'))",
                        'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M21%2011.5a8.5%208.5%200%200%201-8.5%208.5H4l-3%202V11.5a8.5%208.5%200%200%201%2017-0%22%20transform%3D%22translate%282%20-1%29%20scale%28.9%29%22/%3E%3Cpath%20d%3D%22M7%209h10M7%2013h7%22/%3E%3C/svg%3E',
                        title="^.chatOpen:={} ? 'Hide chat' : 'Show chat'")

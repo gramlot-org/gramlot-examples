@@ -9,8 +9,6 @@ class OutOfStock(Exception):
 
 
 class Page(BasePage):
-    title = "Call the server from a button"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="stock")
 

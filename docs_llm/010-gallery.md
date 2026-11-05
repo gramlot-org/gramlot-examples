@@ -26,7 +26,7 @@ those records describe their stated revision, not current API guarantees.
 ## 010 · `catalog.json`
 
 `{"environment"?, "families": [{key, folder, title, examples: [{key, title, folder,
-description, explanation}]}]}`. Family `folder` is the physical directory; example `folder` is its nested family-relative stem. Keys identify lessons; public URLs preserve physical paths.
+description, tags}]}]}`. Family `folder` is the physical directory; example `folder` is its nested family-relative stem. Keys identify lessons; public URLs preserve physical paths.
 The common catalogue has no `environment`; an environment catalogue has one.
 
 <a id="ge-010-015"></a>
@@ -78,6 +78,13 @@ Gallery commands that follow these steps: `gramlot <environment> gallery`
 (`@gramlot/gramlot-serverless`, a static folder opened from disk). The earlier runner
 (`runner/serve.py`, `server.mjs`, `build-standalone.mjs`) remains only in the history
 of this repository.
+
+A catalogue lesson may set `presentation` to `content`: the Python, Node/Bun
+and serverless gallery hosts supply a themed `main` container and pass it to
+its `main(root)`. Its source can declare content directly on `root`. Lessons
+without `content`, including existing full-space layouts and tools, receive the
+original root and retain control of their layout. The frame belongs to the
+gallery host; the original page file remains unchanged.
 
 <a id="ge-010-030"></a>
 
@@ -1927,3 +1934,7 @@ before these transfers work. Do not enable the flag alone. The examples do not
 persist production documents: their application targets inspect bytes or retain
 temporary demo attachments. PageStore and customer database writes are separate
 capabilities and are covered by their own deployment checks.
+
+### Example metadata
+
+Each catalogued lesson has adjacent JSON metadata for its key, title, description, search tags, order and optional presentation; its Markdown file is the lesson. Each family has an `_family.json` descriptor. Run `node scripts/generate-catalog.mjs` to generate the common and bundled environment catalogues from these files; `--check` verifies them. Tags are metadata only: tree search currently matches captions. A lesson marked `catalogued: false` and `navigation: false` remains available at its direct URL but is omitted from the teaching path. A directory index can use `00-index.json` with `navigation: false` to hide its branch.

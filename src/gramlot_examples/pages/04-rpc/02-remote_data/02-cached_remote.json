@@ -1,0 +1,14 @@
+{
+  "key": "c13",
+  "title": "Cache remote fragments",
+  "description": "Switch from Lamp to Spotlight, then to Chair. The first two share a category, so the mounted-fragment counter stays unchanged until Chair.",
+  "tags": [
+    "rpc",
+    "exchange",
+    "cache",
+    "remote",
+    "fragments",
+    "cached"
+  ],
+  "order": 5
+}

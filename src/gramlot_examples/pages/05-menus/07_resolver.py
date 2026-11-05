@@ -3,8 +3,6 @@ from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = "Resolver menus and nested Bags"
-
     def main(self, root):
         main_content = root.main(padding="20px")
         controls = main_content.div(display="flex", flex_wrap="wrap", gap="16px")

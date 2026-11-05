@@ -3,8 +3,6 @@ from gramlot import Page as BasePage, endpoint
 
 
 class Page(BasePage):
-    title = "Tree checkboxes"
-
     def main(self, root):
         main_content = root.main(class_="example-page stack", datapath="checks")
         main_content.dataRemote(".nodes.documents.catalog", "catalog_children", cacheTime=-1)

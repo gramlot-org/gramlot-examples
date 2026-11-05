@@ -1,13 +1,11 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Tree row actions';
     static devices = ['desktop', 'tablet', 'phone'];
 
     main(root) {
         const content = root.main({class: 'example-page stack', datapath: 'rowActionsDemo'});
         content.h2('Act on a row without selecting it');
-        content.p('Select Notes, then hover over or focus Checklist. Use the row\'s action and compare the two paths below.');
         const tree = content.tree({
             storepath: '.nodes',
             labelAttribute: 'caption',

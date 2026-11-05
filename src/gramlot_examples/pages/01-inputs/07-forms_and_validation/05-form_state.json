@@ -1,0 +1,15 @@
+{
+  "key": "form-state",
+  "title": "Form state",
+  "description": "Track edits, incomplete drafts and pending checks; accept or restore a local snapshot.",
+  "tags": [
+    "fields",
+    "input",
+    "widgets",
+    "form",
+    "state",
+    "forms",
+    "validation"
+  ],
+  "order": 29
+}

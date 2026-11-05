@@ -2,16 +2,11 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Tree row actions"
     devices = ("desktop", "tablet", "phone")
 
     def main(self, root):
         content = root.main(class_="example-page stack", datapath="rowActionsDemo")
         content.h2("Act on a row without selecting it")
-        content.p(
-            "Select Notes, then hover over or focus Checklist. "
-            "Use the row's action and compare the two paths below."
-        )
         tree = content.tree(
             storepath=".nodes",
             labelAttribute="caption",

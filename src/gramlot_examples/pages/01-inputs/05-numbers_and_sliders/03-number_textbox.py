@@ -3,7 +3,6 @@ from gramlot import Page as BasePage
 
 
 class Page(BasePage):
-    title = "Numeric fields: format and constraints"
     locale = "it-IT"
 
     def main(self, root):

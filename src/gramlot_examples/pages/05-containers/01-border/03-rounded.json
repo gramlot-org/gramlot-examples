@@ -1,0 +1,14 @@
+{
+  "key": "l03",
+  "title": "Rounded borders and popups",
+  "description": "Change the corner radius, then open a date or choice popup. Compare the nested container edges and the controls inside them.",
+  "tags": [
+    "containers",
+    "layout",
+    "rounded",
+    "borders",
+    "popups",
+    "border"
+  ],
+  "order": 2
+}

@@ -1,7 +1,6 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = 'Floating grid · resize and scroll';
     main(root) {
         const main_content = root.main({datapath:'sample', padding:'20px', max_width:'1000px', margin:'0 auto'});
         main_content.button('Open floating grid', {action:"this.SET('.open', true)"});

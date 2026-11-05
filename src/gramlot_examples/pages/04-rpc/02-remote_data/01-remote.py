@@ -5,8 +5,6 @@ RECORDS = {"lamp": ("Lamp", 3), "desk": ("Desk", 0), "chair": ("Chair", 12)}
 
 
 class Page(BasePage):
-    title = "Load a remote Source fragment"
-
     def main(self, root):
         pane = root.div(class_="example-page stack", datapath="catalog")
 

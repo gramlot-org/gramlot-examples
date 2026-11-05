@@ -2,7 +2,6 @@ import {Bag} from '@gramlot/gramlot';
 import {Page as BasePage} from '@gramlot/gramlot/page';
 
 export class Page extends BasePage {
-    static title = "Resolver menus and nested Bags";
 
     main(root) {
 

@@ -1,12 +1,4 @@
 import menuCommands from '../src/gramlot_examples/collections/menu_trial/assets/index.js';
-import grid from '@gramlot/gramlot/components/grid';
-import inputs from '@gramlot/gramlot/components/inputs';
-import layout from '@gramlot/gramlot/components/layout';
-import tree from '@gramlot/gramlot/components/tree';
-import editors from '@gramlot/gramlot/components/editors';
-import typst from '@gramlot/gramlot/components/typst';
-import grouplets from '@gramlot/gramlot/components/grouplets';
-import uploads from '@gramlot/gramlot/components/uploads';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
@@ -19,6 +11,17 @@ import {JSDOM, VirtualConsole} from 'jsdom';
 const fromExamples = createRequire(new URL('../package.json', import.meta.url));
 const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot')).href);
 const {GramlotFileServer} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/server')).href);
+const {standardCollectionAssets} = await import('@gramlot/gramlot/server');
+const assets = standardCollectionAssets();
+const standard = new GramlotFileServer('.').collections;
+const {register} = await import('node:module');
+register('data:text/javascript,'+encodeURIComponent(`
+let imports;
+export function initialize(data){imports=data;}
+export function resolve(name,context,next){return Object.hasOwn(imports,name)?{url:imports[name],shortCircuit:true}:next(name,context);}
+`), {data:Object.fromEntries(standard.map(({name,module})=>[
+    '@gramlot/collections/'+name, assets.find(item=>item.url===module).file.href]))});
+const browserCollections = await Promise.all(assets.map(async ({file}) => (await import(file.href)).default));
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
 const folder = key => new URL(`../src/gramlot_examples/pages/${families.find(f => f.key === key).folder}/`, import.meta.url);
@@ -58,7 +61,7 @@ async function mount(family, example, {hold = null} = {}) {
         if (!hold?.(request)) return server.call(text);
         return new Promise(resolve => held.push(() => resolve(server.call(text))));
     }, close() {}, dispose() {}};
-    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[inputs,layout,tree,editors,typst, grouplets,uploads,grid,menuCommands]});
+    const app = new Gramlot({document: dom.window.document, pageId, transport, collections:[...browserCollections,menuCommands]});
     menuCommands.registerCommands(app);
     if (Logic) app.src.logicRegistry.register(Logic, {group: null, resource: `/${example.key}.js`});
     await app.start();
@@ -122,6 +125,94 @@ function setGroupletField({byId, window}, id, value) {
     input.dispatchEvent(new window.Event('input', {bubbles: true}));
 }
 const CHECKS = {
+    async 'grid-primary-supplier'({byId,data,app}) {
+        await tick();
+        const host=byId('primary-supplier');
+        const radios=()=>[...host.shadowRoot.querySelectorAll('input[type=radio]')];
+        const original=data('product.suppliers').toTytx();
+        assert.deepEqual(radios().map(r=>r.checked),[false,true,false]);
+        radios()[0].click();await tick();
+        assert.equal(data('product.primary_supplier_id'),'SUP01');
+        radios()[0].click();assert.equal(data('product.primary_supplier_id'),'SUP01');
+        app.data.setItem('product.primary_supplier_id','SUP03');await tick();
+        assert.deepEqual(radios().map(r=>r.checked),[false,false,true]);
+        assert.equal(data('product.suppliers').toTytx(),original);
+    },
+    async 'grid-column-filters'({byId, data, dom}) {
+        await tick();
+        const host=byId('column-facets'), shadow=host.shadowRoot;
+        const original=data('sample.customers').toTytx();
+        const rows=()=>shadow.querySelectorAll('tr[data-row]').length;
+        shadow.querySelector('.column-filter[data-field="city"]').click();await tick();
+        const inner=host.querySelector('gramlot-grid');
+        const choices=()=>[...inner.shadowRoot.querySelectorAll('tr[data-row]')];
+        const choose=text=>choices().find(row=>row.querySelector('td[data-field="caption"]').textContent===text).querySelector('input').click();
+        const action=text=>[...host.querySelectorAll('gramlot-menu-line')].find(item=>item.control.getAttribute('aria-label')===text).control.click();
+        action('None');await tick();assert.equal(rows(),0);
+        choose('Milan');choose('Turin');await tick();assert.equal(rows(),4);
+        const search=host.querySelector('gramlot-search-box').shadowRoot.querySelector('input');
+        search.value='Mil';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));await tick(120);
+        assert.equal(choices().length,1);assert.equal(rows(),4);
+        search.value='';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));await tick(120);
+        search.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+        shadow.querySelector('.column-filter[data-field="category"]').click();await tick();
+        assert.equal(host.querySelector('gramlot-grid'),inner);
+        action('None');choose('Retailer');await tick();assert.equal(rows(),2);
+        search.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+        shadow.querySelector('.column-filter[data-field="city"]').click();await tick();
+        const counts=Object.fromEntries(choices().map(row=>[row.querySelector('td[data-field="caption"]').textContent,row.querySelector('td[data-field="count"]').textContent]));
+        assert.deepEqual(counts,{Milan:'1',Turin:'1',Rome:'0',Empty:'1'});
+        action('Reset');await tick();assert.equal(rows(),3);
+        search.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+        const command=text=>[...dom.window.document.querySelectorAll('gramlot-button')].find(button=>button.textContent===text).control.click();
+        command('John e Fred');await tick();assert.equal(rows(),1);
+        command('Tutti');await tick();assert.equal(rows(),3);
+        shadow.querySelector('.column-filter[data-field="category"]').click();await tick();action('Reset');await tick();
+        search.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+        shadow.querySelector('.column-filter[data-field="joined"]').click();await tick();
+        const [from,to]=host.querySelectorAll('gramlot-date-text-box');
+        const enter=async(control,text)=>{control.value=text;for(const type of ['input','change'])control.dispatchEvent(new dom.window.Event(type,{bubbles:true}));await Promise.resolve();await tick();};
+        await enter(from.control,new Intl.DateTimeFormat(from.context().locale,{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date('2026-03-01T00:00:00Z')));assert.equal(rows(),3,JSON.stringify({text:from.control.value,error:from.message.textContent,locale:from.context().locale,to:to.readControlValue(),alerts:[...host.querySelectorAll('[role=alert]')].map(n=>n.textContent)}));
+        assert.equal(to.readControlValue().toISOString(),'2026-03-31T00:00:00.000Z');
+        await enter(from.control,'invalid date');assert.equal(rows(),3);
+        action('Reset');await tick();assert.equal(rows(),6);assert.equal(from.control.value,'');
+        assert.equal(host.querySelector('gramlot-grid'),inner);
+        assert.equal(data('sample.sets.john'),'C1,C2,C3');
+        assert.equal(data('sample.customers').toTytx(),original);
+    },
+    async 'grid-check-sets'({byId, data, app, dom}) {
+        await tick();
+        const host = byId('customer-sets'), row = host.shadowRoot.querySelector('tbody tr');
+        const before = data('sample.customers').toTytx();
+        for (const button of dom.window.document.querySelectorAll('gramlot-button')) {
+            if (button.textContent.startsWith('Add ')) button.control.click();
+        }
+        await tick();
+        const check = name => host.shadowRoot.querySelector(`input[aria-label="${name}: C1"]`);
+        check('John').click(); check('Fred').click(); await tick();
+        assert.equal(data('sample.sets.john'), 'C1');
+        assert.equal(data('sample.sets.fred'), 'C1');
+        assert.equal(data('sample.sets.mark'), '');
+        app.data.setItem('sample.sets.john', 'C2'); await tick();
+        assert.equal(check('John').checked, false);
+        assert.equal(check('Fred').checked, true);
+        assert.equal(host.shadowRoot.querySelector('tbody tr'), row);
+        assert.equal(data('sample.customers').toTytx(), before);
+        const command = text => [...dom.window.document.querySelectorAll('gramlot-button')].find(button=>button.textContent===text).control.click();
+        app.data.setItem('sample.sets.john','C1,C2');
+        command('John e Fred'); await tick();
+        assert.deepEqual([...host.shadowRoot.querySelectorAll('tr[data-row]')].map(row=>row.dataset.row),['r1']);
+        command('John'); await tick();
+        assert.equal(host.shadowRoot.querySelectorAll('tr[data-row]').length,2);
+        const search = dom.window.document.querySelector('gramlot-search-box').shadowRoot.querySelector('input');
+        search.value='Birch';search.dispatchEvent(new dom.window.Event('input'));
+        await new Promise(resolve=>setTimeout(resolve,150));
+        command('Tutti');await tick();
+        assert.deepEqual([...host.shadowRoot.querySelectorAll('tr[data-row]')].map(row=>row.dataset.row),['r2']);
+        assert.equal(search.value,'Birch');
+        assert.deepEqual([...host.shadowRoot.querySelectorAll('th[data-field]')].map(cell=>cell.dataset.field),['john','mark','fred','name']);
+        assert.equal(data('sample.customers').toTytx(),before);
+    },
     async l06({byId}) {
         await tick();
         const border = byId('events-border');
@@ -521,14 +612,24 @@ const CHECKS = {
         input.value='Grace'; input.dispatchEvent(new window.Event('change',{bubbles:true}));
         assert.equal(data('name'),'Grace'); assert.equal(name.message.hidden,true);
     },
-    w16({byId, data}) {
+    async w16({byId, data, app, window}) {
         const box=(id,code)=>byId(id).control.querySelector(`input[value="${code}"]`);
-        assert.equal(data('channels'),'email,push');
-        box('channels','sms').click(); assert.equal(data('channels'),'email,push,sms');
-        assert.equal(box('channels-copy','sms').checked,true);
-        for(const code of ['email','push','sms']) box('channels-copy',code).click();
-        assert.equal(data('channels'),null);
+        assert.equal(data('cities'),'MI,TO,CO');
+        box('channels','PV').click(); assert.equal(data('cities'),'MI,TO,CO,PV');
+        assert.equal(box('channels-copy','PV').checked,true);
+        const popup=byId('channels-copy');
+        const text=popup.shadowRoot.querySelector('input[type=text]');
+        text.value='Milano,Pavia'; text.dispatchEvent(new window.Event('input',{bubbles:true})); text.dispatchEvent(new window.Event('change',{bubbles:true}));
+        assert.equal(data('cities'),'MI,PV');
+        app.data.setItem('locked',true);
+        assert.ok(box('channels','MI').disabled);
+        app.data.setItem('locked',false);
+        for(const code of ['MI','PV']) box('channels-copy',code).click();
+        assert.equal(data('cities'),null);
         assert.equal([...byId('channels').control.querySelectorAll('input')].some(box=>box.checked),false);
+        await tick(30);
+        assert.ok(data('documents').getNode('manual.fixed'));
+        assert.equal(data('documents').getNode('manual.fixed').attr.checked,'disabled:on');
     },
     async w15({byId, data, app}) {
         await tick();
@@ -1071,7 +1172,7 @@ test('c13: a request in flight is never cancelled, and the change made during th
 });
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);
