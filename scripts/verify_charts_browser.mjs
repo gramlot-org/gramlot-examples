@@ -1,3 +1,4 @@
+import {verifyChart} from './chart-behaviors.mjs';
 import {pathToFileURL} from 'node:url';
 import {resolve} from 'node:path';
 const [playwrightEntry,base='http://127.0.0.1:61535']=process.argv.slice(2);
@@ -18,31 +19,9 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    await page.goto(base.startsWith('file:') ? base+'/playgrounds/'+keys[route]+'/index.html' : base+'/pages/05-charts/'+route);
    await page.waitForFunction(()=>['started','failed'].includes(window.gramlot?.state));
    assert.equal(await page.evaluate(()=>window.gramlot.state),'started',JSON.stringify(errors));
-   if(!route.startsWith('02-time'))await page.getByRole('button',{name:'Chart',exact:true}).first().click();
-   await page.getByRole('button',{name:'Chart settings',exact:true}).waitFor({timeout:15000});
-   await page.locator('gramlot-chart-view svg, gramlot-chart-view canvas').first().waitFor({timeout:30000});
-   assert.deepEqual(errors,[],route);
-   console.log(name,route,'rendered');
-   if(route.endsWith('01-bars')&&route.startsWith('01-simple')){
-    const view=page.locator('gramlot-chart-view svg').first();
-    const before=await view.innerHTML();
-    await page.getByRole('textbox',{name:'North revenue',exact:true}).press('ControlOrMeta+A');
-    await page.getByRole('textbox',{name:'North revenue',exact:true}).pressSequentially('240');
-    await page.getByRole('textbox',{name:'North revenue',exact:true}).press('Tab');
-    await page.waitForFunction(()=>window.gramlot.data.getItem('report.rows.north.revenue')===240);
-    await page.waitForFunction(previous=>document.querySelector('gramlot-chart-view').shadowRoot.querySelector('svg').innerHTML!==previous,before);
-    await page.evaluate(()=>window.gramlot.data.setItem('report._chart.chartType','line'));
-    await page.evaluate(()=>window.gramlot.data.setItem('report._chart.open',false));
-    await page.getByRole('button',{name:'Chart',exact:true}).first().click();
-    await page.getByRole('button',{name:'Chart settings',exact:true}).waitFor();
-    const config=await page.evaluate(()=>window.gramlot.data.getItem('report._chart.chartType'));
-    assert.equal(config,'line');
-    await page.locator('gramlot-search-box input').fill('North');
-    await page.waitForFunction(()=>!document.querySelector('gramlot-chart-view').shadowRoot.querySelector('svg').textContent.includes('South'));
-    assert.equal(await page.evaluate(()=>window.gramlot.data.getItem('report.rows').getNodes().length),4);
-    await page.locator('gramlot-search-box input').fill('');
-    await page.waitForFunction(()=>document.querySelector('gramlot-chart-view').shadowRoot.querySelector('svg').textContent.includes('South'));
-   }
+   await verifyChart(page, keys[route]);
+   assert.deepEqual(errors, [], route);
+   console.log(name, route, 'rendered');
   }
  }finally{await browser.close()}
 }

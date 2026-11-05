@@ -14,6 +14,8 @@ import {chromium} from 'playwright';
 import {componentBehaviors} from './component-behaviors.mjs';
 import {layoutBehaviors} from './layout-behaviors.mjs';
 import {workspaceBehaviors} from './workspace-behaviors.mjs';
+import {chartBehaviors} from './chart-behaviors.mjs';
+import {releaseBehaviors} from './release-behaviors.mjs';
 import {gridBehaviors} from './grid-behaviors.mjs';
 import {toolBehaviors} from './tool-behaviors.mjs';
 import {groupletBehaviors} from './grouplet-behaviors.mjs';
@@ -525,7 +527,7 @@ LOGIC.c23 = async (page, text) => {
     assert.equal(await text('#summary'), 'Stay estimate: €567');
 };
 
-Object.assign(LOGIC, componentBehaviors, layoutBehaviors, workspaceBehaviors, groupletBehaviors, gridBehaviors, toolBehaviors, widgetLessonsBehaviors);
+Object.assign(LOGIC, chartBehaviors, releaseBehaviors, componentBehaviors, layoutBehaviors, workspaceBehaviors, groupletBehaviors, gridBehaviors, toolBehaviors, widgetLessonsBehaviors);
 
 const missingChecks = families.flatMap(family => family.examples)
     .filter(example => !LOGIC[example.key] && !ENDPOINTS[example.key]).map(example => example.key);
