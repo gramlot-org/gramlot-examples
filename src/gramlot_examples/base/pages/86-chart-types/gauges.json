@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-01",
+  "title": "Gauges",
+  "description": "Show one value as a needle dial, a ring or an arc; change range, thresholds and mask live.",
+  "tags": [
+    "charts",
+    "gauge",
+    "thresholds",
+    "mask"
+  ],
+  "order": 0
+}

@@ -1,0 +1,8 @@
+{
+  "key": "chart-types",
+  "title": "Charts · Value and chart types",
+  "order": 0,
+  "catalog": "chart-types-catalog.json",
+  "group": "chart-lessons",
+  "public": false
+}
