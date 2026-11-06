@@ -44,7 +44,7 @@ def main():
     configure()
     trials = Path(str(files('gramlot_examples').joinpath('trials')))
     page_catalogs = catalogs() + [(trials / name / 'catalog.json', trials / name / 'pages')
-                                 for name in ('page_store', 'kajenn_db', 'chat_base')]
+                                 for name in ('page_store', 'kajenn_db', 'chat_base', 'ai')]
     with TemporaryDirectory(prefix='gramlot-mobile-gallery-') as temporary:
         root = Path(temporary)
         resources = stage(root, page_catalogs, '', serverless_download_url='/downloads/gramlot-gallery-serverless.zip',

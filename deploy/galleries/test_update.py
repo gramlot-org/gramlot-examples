@@ -110,6 +110,19 @@ class UpdaterTests(unittest.TestCase):
         self.assertNotIn('volumes',js)
         self.assertNotIn('networks',js)
         self.assertEqual(compose['networks']['database'],{'external':True,'name':'gramlot-demo-db'})
+    def test_llm_environment_is_optional_and_python_only(self):
+        compose=json.loads(u.compose_file(0,'py','js'))
+        py, js=compose['services']['python'],compose['services']['node']
+        self.assertEqual(py['env_file'],[{'path':'/etc/gramlot-galleries/llm.env','required':False}])
+        self.assertNotIn('env_file',js)
+        self.assertFalse(any('API_KEY' in name for name in py['environment']))
+        self.assertNotIn('environment',js)
+    def test_python_image_carries_no_llm_credentials(self):
+        recipe=(Path(__file__).parent/'Dockerfile.python-mobile').read_text()
+        self.assertIn("'gramlot-examples[chat]'",recipe)
+        self.assertIn('GRAMLOT_DOCS_ROOT=/app/gramlot-docs',recipe)
+        self.assertNotIn('API_KEY',recipe)
+        self.assertNotIn('llm.env',(Path(__file__).parent/'Dockerfile.node').read_text())
     def test_websocket_route_is_https_python_only(self):
         config=(Path(__file__).parent/'nginx.conf').read_text()
         self.assertEqual(config.count('location = /gramlot/store'),1)

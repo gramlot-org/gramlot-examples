@@ -16,7 +16,7 @@ ENVIRONMENTS = [
       for name in ("catalog", "asqueel-catalog", "cached-trial-catalog", "selection-trial-catalog",
                    "chart-reports-catalog", "system-monitor-catalog")),
     *((PACKAGE / "trials" / name / "catalog.json", PACKAGE / "trials" / name / "pages")
-      for name in ("page_store", "chat_base", "kajenn_db")),
+      for name in ("page_store", "chat_base", "kajenn_db", "ai")),
 ]
 
 
@@ -39,7 +39,7 @@ class GalleryFilterTests(unittest.TestCase):
 
     def test_declared_filters_each_match_a_lesson(self):
         gallery = build_gallery(ENVIRONMENTS)
-        labels = ["All", "Plain", "Server", "Python server", "DB", "Kajenn/Asqueel"]
+        labels = ["All", "Plain", "Server", "Python server", "DB", "Kajenn/Asqueel", "AI (LLM)"]
         self.assertEqual([rule["label"] for rule in gallery["filters"]], labels)
         self.assertEqual([rule["label"] for rule in available_filters(gallery)], labels)
         self.assertEqual([rule["label"] for rule in available_filters(build_gallery())], ["All", "Plain", "Server"])
@@ -99,6 +99,24 @@ class GalleryFilterTests(unittest.TestCase):
                          ["base-asqueel", "base-db-grid", "asqueel-cached", "chart-reports"])
         self.assertEqual(labels(navigation_directory("86-system-analysis", ENVIRONMENTS, "Python server")), ["system-monitor-01"])
         self.assertEqual(labels(navigation_directory("86-system-analysis", ENVIRONMENTS, "Plain")), ["system-monitor-02"])
+
+    def test_ai_catalogue_filter_and_requirements(self):
+        catalog = PACKAGE / "trials" / "ai" / "catalog.json"
+        self.assertEqual(read_filters(catalog), [{"label": "AI (LLM)", "any": ["llm"]}])
+        gallery = build_gallery([(catalog, PACKAGE / "trials" / "ai" / "pages")])
+        self.assertEqual(available_filters(gallery)[-1], {"label": "AI (LLM)", "any": ["llm"]})
+        lessons = [example for family in gallery["families"] for example in family["examples"]
+                   if "llm" in example.get("requires", [])]
+        self.assertEqual([example["key"] for example in lessons], ["ai-01", "ai-02"])
+        for example in lessons:
+            self.assertEqual(example["requires"], ["endpoint", "python", "llm"])
+        labels = lambda bag: [node.label for node in bag.nodes]
+        self.assertEqual(labels(navigation_directory("", ENVIRONMENTS, "AI (LLM)")), ["ai-lessons"])
+        self.assertEqual(labels(navigation_directory("93-ai", ENVIRONMENTS, "AI (LLM)")), ["ai-01", "ai-02"])
+        self.assertEqual(labels(navigation_directory("93-ai", ENVIRONMENTS, "Plain")), [])
+        # The common gallery, the one the JavaScript and serverless hosts build, has no AI lesson or filter.
+        common = build_gallery()
+        self.assertNotIn("AI (LLM)", [rule["label"] for rule in available_filters(common)])
 
 
 if __name__ == "__main__":

@@ -12,8 +12,8 @@ from gramlot.collection import standard_collections
 from genro_bag import Bag
 from gramlot_examples.trials.chat.anthropic_chat import AnthropicChat, ChatError, EFFORTS
 
-PAGES = Path(gramlot_examples.__file__).parent / 'trials/chat/pages'
-spec = importlib.util.spec_from_file_location('chat_trial_page', PAGES / 'index.py')
+PAGES = Path(gramlot_examples.__file__).parent / 'trials/ai/pages/93-ai'
+spec = importlib.util.spec_from_file_location('chat_trial_page', PAGES / '01-chat.py')
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 

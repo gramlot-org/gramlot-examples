@@ -13,7 +13,10 @@ Anthropic; visible image replies are Gramlot Source. Generated image pixels are 
 PDFs and text files are sent and retained in the server context. New conversation clears both message Source and provider
 context, title, instructions and notes; model choices remain selected.
 
-Open http://127.0.0.1:8772/. Ask naturally to draw an image, or use `/image`.
+The page is the lesson `ai-01` of the `ai` gallery catalogue:
+`trials/ai/pages/93-ai/01-chat.py` with its `.js` Logic and `.css`. This folder keeps
+the provider code and the composition. `scripts/serve_chat.py` serves the lesson alone;
+open http://127.0.0.1:8772/01-chat. Ask naturally to draw an image, or use `/image`.
 The selected image model produces one PNG embedded with an ordinary Source img.
 The gear opens title, chat instructions, background notes and the read-only common
 prompt. Effort choices follow the model catalogue. The existing temperature
@@ -22,8 +25,8 @@ control remains unavailable; this migration does not change provider API options
 This development trial needs the local core chat implementation with rebuilt
 runtime/prepared collections and the Python adapter's immediate-feedback change.
 See GE-040 for server-only 1Password launcher arguments. Never store keys in
-Source, browser Data or repository files. The optional trial is outside the
-standard gallery catalogue. No streaming, microphone, cancellation, persistence
+Source, browser Data or repository files. The `ai` catalogue is optional: the
+standard galleries do not load it. No streaming, microphone, cancellation, persistence
 or automatic context compaction is implemented.
 
 Verification: Python tests exercise context, options, image tool calls, Source
@@ -39,3 +42,8 @@ failed requests keep them. The PDF is read by Claude; no PDF viewer is included.
 The server hook reads `self.request_attachments` and translates validated Data
 into provider content blocks. Those blocks remain available on later turns.
 Encoded history is limited to 24 MiB; start a new conversation when reached.
+
+Server environment (`trials/ai/environment.py`, GE-010 section 955): without
+`ANTHROPIC_API_KEY` or `OPENAI_API_KEY` the page shows “AI examples are not
+configured on this server.” `GRAMLOT_AI_MODELS` restricts the chat models;
+`GRAMLOT_AI_MAX_MESSAGES` and `GRAMLOT_AI_MAX_IMAGES` limit one page session.

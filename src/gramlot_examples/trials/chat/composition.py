@@ -52,7 +52,7 @@ def chat_frame(parent, *, datapath, models, image_models, **attributes):
     context.input(type='number', id='chat-temperature', aria_label='Temperature', disabled=True,
                   placeholder='Unavailable', title='The current Anthropic API does not accept temperature.')
     context.p('Unavailable in the current Anthropic API.')
-    context.p('This local trial waits for the complete answer. History lasts for this page only.')
+    context.p('The chat waits for the complete answer. History lasts for this page only.')
 
 
     ui.composer.set_attr(class_='chat-composer')

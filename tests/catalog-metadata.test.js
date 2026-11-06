@@ -7,7 +7,7 @@ const root = 'src/gramlot_examples';
 const targets = [
     ['catalog.json','pages'],
     ...['catalog.json','asqueel-catalog.json','cached-trial-catalog.json','selection-trial-catalog.json'].map(name=>[`base/${name}`,'base/pages']),
-    ...['page_store','chat_base','kajenn_db'].map(name=>[`trials/${name}/catalog.json`,`trials/${name}/pages`]),
+    ...['page_store','chat_base','kajenn_db','ai'].map(name=>[`trials/${name}/catalog.json`,`trials/${name}/pages`]),
 ];
 const read = path => JSON.parse(readFileSync(path,'utf8'));
 test('every catalogued lesson has adjacent metadata and a Markdown lesson', () => {
@@ -36,7 +36,7 @@ test('catalogue generation uses lesson files, detects drift and requires a lesso
     t.after(()=>rmSync(base,{recursive:true,force:true}));
     mkdirSync(join(base,'scripts'),{recursive:true});
     copyFileSync('scripts/generate-catalog.mjs',join(base,'scripts/generate-catalog.mjs'));
-    const families=[['pages','catalog.json'],['base/pages','catalog.json'],['base/pages','asqueel-catalog.json'],['base/pages','cached-trial-catalog.json'],['base/pages','selection-trial-catalog.json'],['base/pages','chart-reports-catalog.json'],...['page_store','chat_base','kajenn_db'].map(n=>[`trials/${n}/pages`,'catalog.json'])];
+    const families=[['pages','catalog.json'],['base/pages','catalog.json'],['base/pages','asqueel-catalog.json'],['base/pages','cached-trial-catalog.json'],['base/pages','selection-trial-catalog.json'],['base/pages','chart-reports-catalog.json'],...['page_store','chat_base','kajenn_db','ai'].map(n=>[`trials/${n}/pages`,'catalog.json'])];
     for(const [i,[pages,catalog]] of families.entries()) {
         const dir=join(base,'src/gramlot_examples',pages,`family-${i}`);mkdirSync(dir,{recursive:true});
         writeFileSync(join(dir,'_family.json'),JSON.stringify({key:`family-${i}`,title:'Family',order:i,catalog}));

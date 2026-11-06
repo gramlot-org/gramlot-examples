@@ -3,6 +3,7 @@ import json
 from uuid import uuid4
 from genro_bag import Bag
 from gramlot import Page as BasePage, ChatPageStore, GramlotBuilder
+from gramlot_examples.trials.ai.environment import SessionUsage, Unavailable, unavailable_notice
 from gramlot_examples.trials.chat.composition import chat_frame
 from gramlot_examples.trials.chat.anthropic_chat import ChatError, get_provider, user_content
 from gramlot_examples.trials.chat.openai_images import get_images
@@ -11,19 +12,30 @@ from gramlot_examples.trials.chat.prompts import system_prompt
 
 class Page(BasePage):
     title = 'Conversation lab'
-    css = ['index.css']
 
     def main(self, root):
-        chat_frame(root, datapath='chat', models=get_provider().models,
-                   image_models=get_images().models, height='100dvh', id='chat-frame')
+        try:
+            models, image_models = get_provider().models, get_images().models
+        except Unavailable as error:
+            unavailable_notice(root, str(error))
+            return
+        chat_frame(root, datapath='chat', models=models,
+                   image_models=image_models, height='100dvh', id='chat-frame')
 
 
 class PageStore(ChatPageStore):
     def main(self, root):
         super().main(root)
+        self.usage = SessionUsage()
+        self.unavailable = None
+        try:
+            models, image_models = get_provider().models, get_images().models
+        except Unavailable as error:
+            self.unavailable = str(error)
+            return
         root.dataSetter('configuration', Bag(dict(title='', instructions='', notes='')))
-        root.dataSetter('settings', Bag(dict(model=next(iter(get_provider().models)),
-                        effort='default', imageModel=next(iter(get_images().models)))))
+        root.dataSetter('settings', Bag(dict(model=next(iter(models)),
+                        effort='default', imageModel=next(iter(image_models)))))
         root.dataSetter('providerContext', Bag())
         root.dataSetter('turns', 0)
         root.dataSetter('notice', '')
@@ -43,11 +55,13 @@ class PageStore(ChatPageStore):
         self.data.set_item('notice', '')
         try:
             return self._answer(text)
-        except ChatError as error:
+        except (ChatError, Unavailable) as error:
             self.data.set_item('notice', str(error))
             raise
 
     def _answer(self, text):
+        if self.unavailable is not None:
+            raise Unavailable(self.unavailable)
         if len(text) > 8000:
             raise ChatError('Enter a message between 1 and 8000 characters.')
         settings = self.data.get_item('settings')
@@ -61,12 +75,14 @@ class PageStore(ChatPageStore):
         image, warning = None, ''
 
         def generate_image(prompt):
+            self.usage.count_image()
             self.feedback('Generating your image with OpenAI…')
             generated = get_images().generate(prompt, model=image_model)
             self.feedback('Image ready · completing the reply…')
             return generated
 
         command, _, prompt = text.strip().partition(' ')
+        self.usage.count_message()
         if command == '/image':
             if len(attachments):
                 raise ChatError('Use a chat message to read attachments. /image creates a new image without editing attachments.')

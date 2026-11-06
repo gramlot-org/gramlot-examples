@@ -1,6 +1,6 @@
 # 040 · Visual editor knowledge index
 
-Document ID: **GE-040**. Updated: **2026-11-01**.
+Document ID: **GE-040**. Updated: **2026-11-06**.
 
 <a id="ge-040-005"></a>
 ## 005 · Topics
@@ -40,7 +40,7 @@ only when requested through `read_gramlot_doc`.
 | `remote-content` | [Remote content and lazy Data](../../gramlot/docs_llm/public/099-remote-content.md) | reference |
 | `grid` | [Resident grid and frameGrid](../../gramlot/docs_llm/internal/375-frame-grid.md) | bounded development implementation; read-only grid |
 | `chat` | [Shared ChatPane and ChatPageStore](../../gramlot/docs_llm/internal/390-chat-component.md) | development implementation |
-| `visual-editor` | [Visual Source editor](src/gramlot_examples/pages/07-tools/02-visual_source.md) | reusable editor; gallery integration trial |
+| `visual-editor` | [Visual Source editor](pages/07-tools/02-visual_source.md) | reusable editor; gallery integration trial |
 | `editor-chat` | [Natural-language Source editing](trials/visual_editor_chat/README.md) | Source edits and code drafts; no whole-request rollback |
 
 <a id="ge-040-015"></a>
@@ -71,7 +71,7 @@ silently replaced with a different widget.
 ## 020 · Local setup and verification
 
 The launcher requires `--gramlot-docs /path/to/matching/gramlot/docs_llm`.
-The examples documentation comes from the same checkout as the application.
+The examples documents come from the installed `gramlot_examples` package.
 Provider SDK and retrieval code stay in gramlot-examples; the core has no model
 provider or arbitrary-file reading endpoint. Existing Source editing, acknowledgements
 and manual-edit conflict checks remain unchanged.
@@ -124,3 +124,30 @@ Code selection, the assistant asked for schema/access and left the draft unchang
 A replacement request for one h2 was assessed and applied successfully in Source.
 The initial trial's reference to unspecified standard fields was corrected in the
 prompt before the final test. No database connection or query execution is claimed.
+
+<a id="ge-040-030"></a>
+## 030 · Visual editor with assistant on the hosted gallery — 2026-11-06
+
+Owner decision, 2026-11-06: “per ora mettiamoli e usiamo le mie chiavi. tanto tra
+oggi e domani la provano solo quelli di softwell. poi faremo la registrazione e
+keycloak” and “mettiamo solo sonnet 5.5 e haiku per anthropic”.
+
+The lesson `ai-02` of the `ai` catalogue (GE-010 section 955) is this editor with
+its chat, as an ordinary gallery lesson. `02-visual_editor.py` composes
+`VisualEditor` and `add_editor_chat`; its PageStore is `SourceAssistantStore`.
+The generic Tools editor stays without chat. The local launcher
+`scripts/serve_visual_chat.py` is unchanged.
+
+The examples documents of the catalogue (`visual-editor`, `editor-chat`) are read
+from the installed `gramlot_examples` package: `documentation.json` gives their
+paths relative to the package. The core manuals come from `GRAMLOT_DOCS_ROOT`.
+The core wheel does not contain `docs_llm`; the public Python image takes it from
+the GitHub tag of the installed core release (`deploy/galleries/fetch-gramlot-docs.py`)
+and fails its build when a catalogued manual is missing.
+
+Without `ANTHROPIC_API_KEY` or `GRAMLOT_DOCS_ROOT` the lesson shows “AI examples
+are not configured on this server.” `GRAMLOT_AI_MODELS` restricts the model
+selector and the server rejects any other model before the first provider call.
+Each editor instruction counts as one message of the page session
+(`GRAMLOT_AI_MAX_MESSAGES`); one instruction can still make up to twelve edit
+steps and eight manual reads, each a provider request.

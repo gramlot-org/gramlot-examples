@@ -8,12 +8,12 @@ const targets = [
     {catalog:'catalog.json', pages:'pages'},
     ...['catalog.json', 'asqueel-catalog.json', 'cached-trial-catalog.json', 'selection-trial-catalog.json', 'chart-reports-catalog.json']
         .map(catalog => ({catalog:`base/${catalog}`, pages:'base/pages'})),
-    ...['page_store', 'chat_base', 'kajenn_db'].map(name => ({catalog:`trials/${name}/catalog.json`, pages:`trials/${name}/pages`})),
+    ...['page_store', 'chat_base', 'kajenn_db', 'ai'].map(name => ({catalog:`trials/${name}/catalog.json`, pages:`trials/${name}/pages`})),
 ];
 const environments = new Map([
     ['base/chart-reports-catalog.json','chart-reports'], ['base/catalog.json','base'], ['base/asqueel-catalog.json','base-asqueel'],
     ['base/cached-trial-catalog.json','asqueel-only'], ['base/selection-trial-catalog.json','selection-trial'],
-    ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'],
+    ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'], ['trials/ai/catalog.json','ai'],
 ]);
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
 function walk(dir) {

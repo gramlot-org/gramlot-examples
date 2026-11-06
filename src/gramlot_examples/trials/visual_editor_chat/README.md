@@ -1,6 +1,6 @@
 # Visual Source editor chat trial
 
-Document ID: **GE-TRIAL-VISUAL-CHAT**. Updated: **2026-11-01**.
+Document ID: **GE-TRIAL-VISUAL-CHAT**. Updated: **2026-11-06**.
 
 <a id="ge-trial-visual-chat-001"></a>
 ## 001 · Scope and execution
@@ -104,3 +104,19 @@ request. Core and adapter regression results are recorded in GC-070 and PORT-002
 The launcher keeps the rest of the gallery read-only even when one configured
 Python editor document is writable. Inspector integration remains future work.
 No publication, deployment or TestFlight upload is part of this consolidation.
+
+
+<a id="ge-trial-visual-chat-006"></a>
+## 006 · Gallery lesson and hosted configuration — 2026-11-06
+
+The lesson `ai-02` of the `ai` catalogue (`trials/ai/pages/93-ai/02-visual_editor.py`)
+composes the editor with this chat and uses `SourceAssistantStore` as its PageStore.
+The examples documents of `documentation.json` are now package-relative and are
+read from the installed `gramlot_examples`; the former paths under the checkout's
+`docs_llm` did not exist and stopped the launcher at startup.
+
+`get_assistant` requires `ANTHROPIC_API_KEY` and `GRAMLOT_DOCS_ROOT`; without them
+the lesson shows “AI examples are not configured on this server.” `GRAMLOT_AI_MODELS`
+restricts the offered models; the PageStore rejects any other model before calling
+the provider. `GRAMLOT_AI_MAX_MESSAGES` counts editor instructions per page session.
+See GE-010 section 955 and GE-040 section 030.

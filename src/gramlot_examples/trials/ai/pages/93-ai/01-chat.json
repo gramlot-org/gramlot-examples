@@ -1,0 +1,19 @@
+{
+  "key": "ai-01",
+  "title": "AI chat with images",
+  "description": "Talk with an Anthropic model and ask it to draw: the server PageStore calls Anthropic and OpenAI, the page receives text and Source.",
+  "tags": [
+    "ai",
+    "llm",
+    "chat",
+    "anthropic",
+    "openai",
+    "image"
+  ],
+  "requires": [
+    "endpoint",
+    "python",
+    "llm"
+  ],
+  "order": 0
+}
