@@ -38,9 +38,12 @@ without `--github-token-stdin` retain their explicit anonymous mode.
 Concurrent events wait on the updater lock instead of being discarded. Each
 rechecks the newest release set after acquiring the lock; duplicate events are
 no-ops. Readiness and installed-version races retry every 30 seconds, within a
-15-minute wait budget. Real build/browser/promotion failures fail the CI job
-without automatic retry. The remote process has a 40-minute limit and the CI job
-45 minutes. These are bounded retries of a received event, not a periodic release
+15-minute wait budget. Build, version, Compose start and nginx failures fail the
+CI job without automatic retry. Browser checks, proxy/database verifications and
+ZIP hash comparisons never block: each runs with a 150-second limit, a failure or
+timeout becomes a `::warning` annotation and an entry in the receipt's
+`check_failures`, and the deploy continues. The remote process has a 40-minute
+limit and the CI job 25 minutes. These are bounded retries of a received event, not a periodic release
 poll. Incomplete/failed publications are never promoted; rerun the failed job
 once publication or infrastructure is repaired.
 
@@ -68,9 +71,9 @@ assertion is skipped. The ZIP contains all generated lessons, a README and a
 version receipt.
 
 One nginx configuration selects both upstreams and the immutable shared ZIP.
-After `nginx -t` and reload, public HTTPS browser checks and both ZIP hashes must
-pass. A failure restores and reloads the preceding configuration and removes the
-candidate. The previous containers stop only after successful promotion. The last
+After `nginx -t` and reload, public HTTPS browser checks and both ZIP hashes run
+and report their failures without blocking. An nginx failure restores and reloads
+the preceding configuration and removes the candidate. The previous containers stop only after successful promotion. The last
 successful generation is retained for rollback. Builds use a dedicated `gramlot-galleries` BuildKit builder; its cache is pruned
 to at most 1 GB after each attempt. No unrelated images, caches or services
 are pruned. Existing clients can need a reload after deployment: in-memory page
@@ -410,7 +413,7 @@ bound one session, not the total spend: the console caps below bound the total.
 5. The staged `serve-mobile.py` needs a gramlot-examples release that contains
    `trials/ai`. The updater deploys when a new release set is published: the
    gramlot-examples release with the `ai` catalogue triggers it through CI. Until then
-   a deployment of an older examples release fails its candidate checks and is not promoted.
+   a deployment of an older examples release reports failed candidate checks.
 6. Verify on https://gallery-py.gramlot.dev/: the filter menu lists **AI (LLM)**; the
    two lessons open; the chat model selector lists only Sonnet 5.5 and Haiku 5.5.
    `docker compose -f <compose of current.json> exec python env | grep -c API_KEY`

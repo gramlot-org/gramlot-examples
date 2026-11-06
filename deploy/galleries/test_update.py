@@ -128,6 +128,24 @@ class UpdaterTests(unittest.TestCase):
         self.assertEqual(config.count('location = /gramlot/store'),1)
         self.assertLess(config.index('listen 443 ssl'),config.index('location = /gramlot/store'))
         self.assertLess(config.index('location = /gramlot/store'),config.index('server_name gallery-js.gramlot.dev;',config.index('listen 443 ssl')))
+    def test_failed_check_is_reported_and_does_not_raise(self):
+        report=[]
+        with patch('subprocess.run',side_effect=[subprocess.CalledProcessError(1,['docker'])]) as run:
+            u.soft_check(report,'smoke','docker','run','--rm','image','node','smoke.mjs')
+        self.assertEqual(run.call_args.args[0][:4],['docker','run','--name','gramlot-gallery-check-smoke'])
+        self.assertEqual(len(report),1);self.assertTrue(report[0].startswith('smoke:'))
+    def test_slow_check_is_stopped_reported_and_its_container_removed(self):
+        report=[]
+        with patch('subprocess.run',side_effect=[subprocess.TimeoutExpired(['docker'],u.CHECK_TIMEOUT),None]) as run:
+            u.soft_check(report,'asqueel-smoke','docker','run','--rm','image')
+        self.assertEqual(run.call_args_list[0].kwargs['timeout'],u.CHECK_TIMEOUT)
+        self.assertEqual(run.call_args_list[1].args[0],['docker','rm','-f','gramlot-gallery-check-asqueel-smoke'])
+        self.assertEqual(len(report),1)
+    def test_passing_check_leaves_the_report_empty(self):
+        report=[]
+        with patch('subprocess.run',return_value=None):
+            u.soft_check(report,'public-proxy','docker','run','--rm','image')
+        self.assertEqual(report,[])
     def test_failed_promotion_restores_configuration(self):
         with tempfile.TemporaryDirectory() as d:
             config=Path(d)/'nginx.conf';config.write_text('old')

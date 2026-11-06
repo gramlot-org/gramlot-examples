@@ -26,6 +26,8 @@ DOWNLOAD = '/downloads/gramlot-gallery-serverless.zip'
 # Root-owned (mode 600) API keys and limits of the AI lessons, read by Compose for the Python gallery only.
 LLM_ENV = Path('/etc/gramlot-galleries/llm.env')
 RETRY_INTERVAL = 30
+# Seconds for one gallery check. A failed or slow check is reported and never blocks the deploy.
+CHECK_TIMEOUT = 150
 # Publication jobs that do not gate the galleries: JSR is optional, npm is required.
 OPTIONAL_JOBS = {'jsr'}
 
@@ -97,6 +99,32 @@ def ready(snapshot, fetch=read_json, verified=None):
         if fetch(f'https://pypi.org/pypi/{package}/json')['info']['version'] != snapshot[repo]['version']:
             return False
     return True
+
+
+def soft_check(report, name, *args):
+    """Run one verification command; record a failure or a timeout and continue."""
+    container = f'gramlot-gallery-check-{name}'
+    command = [str(arg) for arg in args]
+    if command[:2] == ['docker', 'run']:
+        command[2:2] = ['--name', container]
+    try:
+        subprocess.run(command, check=True, text=True, timeout=CHECK_TIMEOUT)
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+        if isinstance(error, subprocess.TimeoutExpired) and command[:2] == ['docker', 'run']:
+            subprocess.run(['docker', 'rm', '-f', container], check=False)
+        report.append(f'{name}: {error}')
+        print(f'::warning title=Gallery check {name}::{error}', flush=True)
+
+
+def soft_download(report, host, digest):
+    """Compare one public offline archive with the generated one; record a difference and continue."""
+    try:
+        with urlopen(f'https://{host}.gramlot.dev{DOWNLOAD}', timeout=30) as response:
+            if hashlib.sha256(response.read()).hexdigest() != digest:
+                raise RuntimeError('download hash differs')
+    except Exception as error:
+        report.append(f'{host} download: {error}')
+        print(f'::warning title=Gallery check {host} download::{error}', flush=True)
 
 
 def run(*args, capture=False):
@@ -194,30 +222,34 @@ def deploy(snapshot, current, *, fetch=read_json):
         digest = zip_gallery(offline / 'gallery', archive, {'python': py_versions, 'javascript': js_versions})
         # Only this project's inactive generation may be replaced.
         started = True
-        run('docker', 'run', '--rm', py_image, 'python', '/app/verify-public-proxy.py')
-        run('docker', 'compose', '-f', compose, 'run', '--rm', '--no-deps', 'python', 'python', '/app/verify-public-database.py')
-        run('docker', 'compose', '-f', compose, 'up', '-d', '--wait', '--wait-timeout', '120')
-        run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', '-v', f'{offline}:/offline:ro',
-            'gramlot-gallery-check:current', 'node', 'smoke.mjs',
-            f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
-        run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
-            'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs', f'http://127.0.0.1:{19182+slot*2}')
+        report = []
+        soft_check(report, 'public-proxy', 'docker', 'run', '--rm', py_image, 'python', '/app/verify-public-proxy.py')
+        soft_check(report, 'public-database', 'docker', 'compose', '-f', compose, 'run', '--rm', '--no-deps',
+                   'python', 'python', '/app/verify-public-database.py')
+        run('docker', 'compose', '-f', compose, 'up', '-d', '--wait', '--wait-timeout', '90')
+        soft_check(report, 'smoke', 'docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
+                   '-v', f'{offline}:/offline:ro', 'gramlot-gallery-check:current', 'node', 'smoke.mjs',
+                   f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
+        soft_check(report, 'asqueel-smoke', 'docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
+                   'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs', f'http://127.0.0.1:{19182+slot*2}')
         if releases(fetch) != snapshot or not ready(snapshot, fetch, verified=snapshot):
             raise ReleasePending('Release set changed during build; retry after publication completes')
         def public_check():
-            run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m', 'gramlot-gallery-check:current',
-                'node', 'smoke.mjs', 'https://gallery-py.gramlot.dev', 'https://gallery-js.gramlot.dev')
-            run('docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
-                'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs', 'https://gallery-py.gramlot.dev')
+            soft_check(report, 'public-smoke', 'docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
+                       'gramlot-gallery-check:current', 'node', 'smoke.mjs',
+                       'https://gallery-py.gramlot.dev', 'https://gallery-js.gramlot.dev')
+            soft_check(report, 'public-asqueel-smoke', 'docker', 'run', '--rm', '--network', 'host',
+                       '--shm-size=256m', 'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs',
+                       'https://gallery-py.gramlot.dev')
             for host in ('gallery-py', 'gallery-js'):
-                with urlopen(f'https://{host}.gramlot.dev{DOWNLOAD}', timeout=90) as response:
-                    if hashlib.sha256(response.read()).hexdigest() != digest:
-                        raise RuntimeError(f'{host}: download hash differs')
+                soft_download(report, host, digest)
         receipt = {'releases': snapshot, 'slot': slot, 'generation': generation, 'compose': str(compose),
                    'images': [py_image, js_image], 'archive_sha256': digest, 'previous': current.get('generation')}
         (target/'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
         def commit_checked():
             public_check()
+            receipt['check_failures'] = report
+            (target/'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
             atomic(ROOT / 'current.json', json.dumps(receipt, indent=2) + '\n')
         promote(nginx_text((ROOT/'automation/nginx.conf').read_text(), slot, archive), commit_checked)
         promoted = True
@@ -231,6 +263,8 @@ def deploy(snapshot, current, *, fetch=read_json):
                         subprocess.run(['docker', 'image', 'rm', image], check=False)
                 shutil.rmtree(old)
         print(f'Deployed {generation}: {digest}', flush=True)
+        if report:
+            print(f'Deployed with {len(report)} failed checks:', *report, sep='\n  ', flush=True)
     finally:
         if not promoted:
             if started:
