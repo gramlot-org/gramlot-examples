@@ -1,0 +1,12 @@
+[
+  {"key": "fundamentals", "title": "Fundamentals", "description": "HTML and SVG built from Source, the first step of every page."},
+  {"key": "fields-inputs", "title": "Fields and inputs", "description": "Input widgets, labels and validation, and the uploader."},
+  {"key": "data-logic-rpc", "title": "Data, logic and RPC", "description": "Bindings between Data and the page, Logic, actions and events, and calls to the server."},
+  {"key": "layout-menus", "title": "Layout and menus", "description": "Containers that arrange a page, and the menus and toolbars that act on it."},
+  {"key": "grid-lessons", "title": "Grid", "description": "The grid and its frame: columns, editing, formulas, selection and export."},
+  {"key": "chart-lessons", "title": "Charts", "description": "Charts over the same Data as the grid."},
+  {"key": "editors-tools", "title": "Editors and tools", "description": "Code, HTML, Markdown and Typst editors, the Live Source playground and the visual editor."},
+  {"key": "composition-reuse", "title": "Composition", "description": "Reusable components and grouplets."},
+  {"key": "database-demos", "title": "Database demos", "description": "Demos that read a real database through the server: selects, grids and chart reports."},
+  {"key": "server-demos", "title": "Real-time, server and AI demos", "description": "Demos of streaming Data, the shared PageStore, chat and AI assistants."}
+]

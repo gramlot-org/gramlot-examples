@@ -4,6 +4,7 @@
     {
       "key": "ai-lessons",
       "title": "AI assistants",
+      "group": "server-demos",
       "folder": "93-ai",
       "examples": [
         {

@@ -2,5 +2,6 @@
   "key": "rpc",
   "title": "RPC and data exchange",
   "order": 5,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "data-logic-rpc"
 }

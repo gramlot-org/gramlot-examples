@@ -36,6 +36,8 @@ test('catalogue generation uses lesson files, detects drift and requires a lesso
     t.after(()=>rmSync(base,{recursive:true,force:true}));
     mkdirSync(join(base,'scripts'),{recursive:true});
     copyFileSync('scripts/generate-catalog.mjs',join(base,'scripts/generate-catalog.mjs'));
+    mkdirSync(join(base,'src/gramlot_examples'),{recursive:true});
+    copyFileSync('src/gramlot_examples/groups.json',join(base,'src/gramlot_examples/groups.json'));
     const families=[['pages','catalog.json'],['base/pages','catalog.json'],['base/pages','asqueel-catalog.json'],['base/pages','cached-trial-catalog.json'],['base/pages','selection-trial-catalog.json'],['base/pages','chart-reports-catalog.json'],...['page_store','chat_base','kajenn_db','ai'].map(n=>[`trials/${n}/pages`,'catalog.json'])];
     for(const [i,[pages,catalog]] of families.entries()) {
         const dir=join(base,'src/gramlot_examples',pages,`family-${i}`);mkdirSync(dir,{recursive:true});

@@ -21,8 +21,8 @@ const environment = families => ({environment: 'test', families: families.map(fa
 
 test('common gallery', () => {
     const gallery = buildGallery();
-    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
-    assert.equal(Object.keys(gallery.routes).length, 185);
+    assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'menus', 'editors', 'tools', 'composition', 'grouplets', 'realtime']);
+    assert.equal(Object.keys(gallery.routes).length, 187);
     assert.match(gallery.routes['drawing-annotations'].page, /\/06-drawing\.js$/);
     assert.ok(gallery.routes['grid-primary-supplier']);
     assert.ok(gallery.routes['w16']);

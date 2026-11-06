@@ -86,8 +86,8 @@ class GalleryFilterTests(unittest.TestCase):
         self.assertEqual(labels(navigation_directory("04-rpc/01-server_calls", (), "Server")), ["c09", "c10", "c11"])
         self.assertNotIn("c09", labels(navigation_directory("04-rpc/01-server_calls", (), "Plain")))
         self.assertEqual(labels(navigation_directory("04-rpc/01-server_calls", (), "DB")), [])
-        self.assertNotIn("binding", labels(navigation_directory("", (), "Server")))
-        self.assertIn("binding", labels(navigation_directory("", (), "Plain")))
+        self.assertNotIn("binding", labels(navigation_directory("data-logic-rpc", (), "Server")))
+        self.assertIn("binding", labels(navigation_directory("data-logic-rpc", (), "Plain")))
         self.assertEqual(labels(navigation_directory("", (), "All")), labels(navigation_directory("")))
         self.assertEqual(navigation_directory("04-rpc/01-server_calls").get_node("c09").attr["requires"], ["endpoint"])
         with self.assertRaisesRegex(ValueError, "Unknown filter"):
@@ -95,10 +95,15 @@ class GalleryFilterTests(unittest.TestCase):
 
     def test_environment_lessons_are_filtered_through_their_catalogue(self):
         labels = lambda bag: [node.label for node in bag.nodes]
-        self.assertEqual(labels(navigation_directory("", ENVIRONMENTS, "Kajenn/Asqueel"))[-4:],
-                         ["base-asqueel", "base-db-grid", "asqueel-cached", "chart-reports"])
-        self.assertEqual(labels(navigation_directory("86-system-analysis", ENVIRONMENTS, "Python server")), ["system-monitor-01"])
-        self.assertEqual(labels(navigation_directory("86-system-analysis", ENVIRONMENTS, "Plain")), ["system-monitor-02"])
+        self.assertEqual(labels(navigation_directory("", ENVIRONMENTS, "Kajenn/Asqueel"))[-1:], ["database-demos"])
+        # Single-lesson families show their lesson in their place.
+        self.assertEqual(labels(navigation_directory("database-demos", ENVIRONMENTS, "Kajenn/Asqueel")),
+                         ["base-asqueel", "base-asqueel-03", "asqueel-only-01", "chart-reports"])
+        # The common and the Python Real-time folders are one folder of the tree.
+        self.assertEqual(labels(navigation_directory("10-realtime", ENVIRONMENTS)),
+                         ["chart-reports-04", "system-monitor-02", "system-monitor-01"])
+        self.assertEqual(labels(navigation_directory("10-realtime", ENVIRONMENTS, "Python server")), ["system-monitor-01"])
+        self.assertEqual(labels(navigation_directory("10-realtime", ENVIRONMENTS, "Plain")), ["chart-reports-04", "system-monitor-02"])
 
     def test_ai_catalogue_filter_and_requirements(self):
         catalog = PACKAGE / "trials" / "ai" / "catalog.json"
@@ -114,6 +119,8 @@ class GalleryFilterTests(unittest.TestCase):
         self.assertEqual(labels(navigation_directory("", ENVIRONMENTS, "AI (LLM)")), ["ai-lessons"])
         self.assertEqual(labels(navigation_directory("93-ai", ENVIRONMENTS, "AI (LLM)")), ["ai-01", "ai-02"])
         self.assertEqual(labels(navigation_directory("93-ai", ENVIRONMENTS, "Plain")), [])
+        # The group "server-demos" holds only the AI family under this filter: the tree shows the family.
+        self.assertEqual(labels(navigation_directory("server-demos", ENVIRONMENTS, "AI (LLM)")), ["ai-lessons"])
         # The common gallery, the one the JavaScript and serverless hosts build, has no AI lesson or filter.
         common = build_gallery()
         self.assertNotIn("AI (LLM)", [rule["label"] for rule in available_filters(common)])

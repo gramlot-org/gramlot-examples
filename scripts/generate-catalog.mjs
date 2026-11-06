@@ -16,6 +16,7 @@ const environments = new Map([
     ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'], ['trials/ai/catalog.json','ai'],
 ]);
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
+const groups = new Set(read(resolve(pkg, 'groups.json')).map(group => group.key));
 function walk(dir) {
     return readdirSync(dir, {withFileTypes:true}).flatMap(entry => {
         const p = join(dir, entry.name);
@@ -39,7 +40,9 @@ for (const {catalog,pages} of targets) {
         const folder=join(root,entry.name), config=join(folder,'_family.json');
         if(!existsSync(config)) continue;
         const family=read(config); if(family.catalog !== name) continue;
-        if(typeof family.key!=='string' || !family.key || typeof family.title!=='string' || !family.title || !Number.isInteger(family.order)) throw new Error(`Invalid family metadata: ${config}`);
+        if(typeof family.key!=='string' || !family.key || typeof family.title!=='string' || !family.title || !Number.isInteger(family.order) ||
+            (Object.hasOwn(family,'group') && !groups.has(family.group)) ||
+            (Object.hasOwn(family,'public') && family.public !== false)) throw new Error(`Invalid family metadata: ${config}`);
         const examples=walk(folder).map(p=>{
             const item=read(p);validate(item,p);
             const {order,catalogued,navigation,...metadata}=item;
@@ -48,7 +51,9 @@ for (const {catalog,pages} of targets) {
         const catalogued = examples.filter(e=>e.catalogued);
         unique(catalogued.map(e=>e.order),`Duplicate lesson order in ${folder}`);
         catalogued.sort((a,b)=>a.order-b.order);
-        families.push({order:family.order, metadata:{key:family.key,title:family.title,folder:entry.name,examples:catalogued.map(e=>e.metadata)}});
+        families.push({order:family.order, metadata:{key:family.key,title:family.title,
+            ...(Object.hasOwn(family,'group') ? {group:family.group} : {}), ...(family.public === false ? {public:false} : {}),
+            folder:entry.name,examples:catalogued.map(e=>e.metadata)}});
     }
     if(!families.length) throw new Error(`No families for ${catalog}`);
     unique(families.map(f=>f.order),`Duplicate family order in ${catalog}`);

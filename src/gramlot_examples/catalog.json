@@ -3,6 +3,7 @@
     {
       "key": "html_svg",
       "title": "Fundamentals",
+      "group": "fundamentals",
       "folder": "00-html_svg",
       "examples": [
         {
@@ -87,6 +88,7 @@
     {
       "key": "components",
       "title": "Fields and input widgets",
+      "group": "fields-inputs",
       "folder": "01-inputs",
       "examples": [
         {
@@ -641,6 +643,7 @@
     {
       "key": "uploader",
       "title": "Uploader",
+      "group": "fields-inputs",
       "folder": "01-uploader",
       "examples": [
         {
@@ -693,6 +696,7 @@
     {
       "key": "binding",
       "title": "Data and bindings",
+      "group": "data-logic-rpc",
       "folder": "02-binding",
       "examples": [
         {
@@ -873,6 +877,7 @@
     {
       "key": "controllers",
       "title": "Logic, actions and events",
+      "group": "data-logic-rpc",
       "folder": "03-controllers",
       "examples": [
         {
@@ -1127,6 +1132,7 @@
     {
       "key": "rpc",
       "title": "RPC and data exchange",
+      "group": "data-logic-rpc",
       "folder": "04-rpc",
       "examples": [
         {
@@ -1252,6 +1258,7 @@
     {
       "key": "layout",
       "title": "Containers and layout",
+      "group": "layout-menus",
       "folder": "05-containers",
       "examples": [
         {
@@ -1464,6 +1471,7 @@
     {
       "key": "grid",
       "title": "Grid",
+      "group": "grid-lessons",
       "folder": "05-grid",
       "examples": [
         {
@@ -1736,6 +1744,7 @@
     {
       "key": "charts",
       "title": "Charts",
+      "group": "chart-lessons",
       "folder": "05-charts",
       "examples": [
         {
@@ -1858,6 +1867,7 @@
     {
       "key": "menus",
       "title": "Menus and toolbars",
+      "group": "layout-menus",
       "folder": "05-menus",
       "examples": [
         {
@@ -2059,6 +2069,7 @@
     {
       "key": "editors",
       "title": "Editors",
+      "group": "editors-tools",
       "folder": "06-editors",
       "examples": [
         {
@@ -2138,6 +2149,7 @@
     {
       "key": "tools",
       "title": "Tools",
+      "group": "editors-tools",
       "folder": "07-tools",
       "examples": [
         {
@@ -2174,6 +2186,7 @@
     {
       "key": "composition",
       "title": "Composition and reuse",
+      "group": "composition-reuse",
       "folder": "08-composition",
       "examples": [
         {
@@ -2211,6 +2224,7 @@
     {
       "key": "grouplets",
       "title": "Grouplets",
+      "group": "composition-reuse",
       "folder": "09-grouplets",
       "examples": [
         {
@@ -2322,6 +2336,39 @@
             "endpoint"
           ],
           "folder": "06-card_guides"
+        }
+      ]
+    },
+    {
+      "key": "realtime",
+      "title": "Real-time",
+      "group": "server-demos",
+      "folder": "10-realtime",
+      "examples": [
+        {
+          "key": "chart-reports-04",
+          "title": "Streaming sine waves",
+          "description": "Pause or change the rate of a rolling 600-sample signal.",
+          "tags": [
+            "charts",
+            "sinusoid",
+            "streaming",
+            "uplot"
+          ],
+          "folder": "01-streaming"
+        },
+        {
+          "key": "system-monitor-02",
+          "title": "Microphone analysis",
+          "description": "Turn microphone samples into waveform and spectrum charts through Data Bags.",
+          "tags": [
+            "charts",
+            "audio",
+            "microphone",
+            "spectrum",
+            "uplot"
+          ],
+          "folder": "02-audio_spectrum"
         }
       ]
     }

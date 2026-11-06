@@ -6,7 +6,7 @@ from unittest.mock import patch
 from importlib import import_module
 import pytest
 from genro_bag import Bag
-module = import_module('gramlot_examples.base.pages.86-system-analysis.system_analysis')
+module = import_module('gramlot_examples.base.pages.10-realtime.system_analysis')
 PageStore, PsutilHandler, counter_rate = module.PageStore, module.PsutilHandler, module.counter_rate
 
 CPU = namedtuple("CPU", "user system idle")

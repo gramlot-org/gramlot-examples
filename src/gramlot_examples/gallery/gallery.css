@@ -198,10 +198,20 @@
   --gallery-toolbar-size:max(var(--gramlot-toolbar-thickness,42px),calc(var(--gallery-control-size) + 6px));
 }
 
-/* Lesson filter: one select above the search field. */
-.gallery-navigation-filter { display:block;width:100%;min-width:0;box-sizing:border-box;margin:0 0 6px;
-  min-height:30px;padding:0 7px;border:1px solid var(--gramlot-border);border-radius:999px;
-  background:var(--gramlot-field-background,var(--gramlot-surface));color:var(--gramlot-ink);font:inherit; }
+/* Lesson filter: a labelled select above the logo. */
+/* The filter reads as a heading above the logo ("Show: All"), not as a second field like the search. */
+.gallery-navigation-filter { display:flex;align-items:baseline;gap:6px;width:100%;min-width:0;box-sizing:border-box;
+  margin:0 0 8px;padding:0 0 6px;border-bottom:1px solid var(--gramlot-border);color:var(--gramlot-ink); }
+.gallery-navigation-filter > label { flex:none;font-size:.8em;font-weight:600;text-transform:uppercase;
+  letter-spacing:.04em;opacity:.7; }
+.gallery-navigation-filter > label::after { content:':'; }
+.gallery-navigation-filter > select { flex:1;min-width:0;min-height:0;margin:0;padding:2px 18px 2px 2px;
+  border:0;border-radius:4px;box-shadow:none;outline:0;appearance:none;-webkit-appearance:none;cursor:pointer;
+  background:transparent no-repeat right 2px center/10px 10px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 3l4 4 4-4' fill='none' stroke='%237b8795' stroke-width='1.6'/%3E%3C/svg%3E");
+  color:inherit;font:inherit;font-weight:600; }
+.gallery-navigation-filter > select:hover { background-color:var(--gramlot-selected); }
+.gallery-navigation-filter > select:focus-visible { outline:2px solid var(--gramlot-action);outline-offset:1px; }
 
 /* One search field: decorative lens, live input and an internal clear action. */
 .gallery-navigation-search { display:block;margin:0;min-width:0;

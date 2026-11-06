@@ -2,5 +2,6 @@
   "key": "components",
   "title": "Fields and input widgets",
   "order": 1,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "fields-inputs"
 }

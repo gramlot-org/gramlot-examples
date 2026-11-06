@@ -4,6 +4,8 @@
     {
       "key": "selection-trials",
       "title": "Grid · Transfer experiments",
+      "group": "database-demos",
+      "public": false,
       "folder": "83-selection-trials",
       "examples": [
         {

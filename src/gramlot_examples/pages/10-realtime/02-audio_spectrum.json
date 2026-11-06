@@ -1,0 +1,13 @@
+{
+  "key": "system-monitor-02",
+  "title": "Microphone analysis",
+  "description": "Turn microphone samples into waveform and spectrum charts through Data Bags.",
+  "tags": [
+    "charts",
+    "audio",
+    "microphone",
+    "spectrum",
+    "uplot"
+  ],
+  "order": 1
+}

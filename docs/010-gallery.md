@@ -106,13 +106,49 @@ filter)` take the label of a rule. They list only the matching lessons and omit 
 without a matching lesson below it. A leaf carries `requires` as an attribute when the lesson
 has any. An unknown label is an error; `None`/`null` lists everything.
 
-The gallery page shows the filter menu above the search field when the host has at least two
+The gallery page shows the filter menu (**Show:**, a labelled select without a field outline)
+above the logo and the search field when the host has at least two
 available filters (`galleryIndex.filter` holds the selected label, `galleryIndex.filters` the
 available ones). Choosing a filter replaces the root of the navigation with the answer of
 `navigation_section(directory="", filter)` and gives every directory a resolver that passes the
 same filter. The selection is kept per viewer in `localStorage`; an unavailable saved label
 falls back to the first filter. A static export with its own `navigation_section` that ignores
 `filter` lists every lesson.
+
+<a id="ge-010-013"></a>
+
+## 013 · Groups at the root of the navigation
+
+The root of the navigation lists groups, not families. `groups.json` beside the common
+`catalog.json` declares them in order, each with `key`, `title` and `description`:
+Fundamentals, Fields and inputs, Data, logic and RPC, Layout and menus, Grid, Charts,
+Editors and tools, Composition (the tutorials), then Database demos and Real-time, server and
+AI demos (the demos). A family joins a group with `"group": "<key>"` in its `_family.json`;
+the catalogue generator copies it into `catalog.json`. A catalogue written by hand (the system
+monitor) carries it in the family. Families without `group` follow the groups at the root.
+`build_gallery` / `buildGallery` and `navigation_directory` / `navigationDirectory` raise an
+error when a family names an unknown group, when two families of one folder name different
+groups, or when a group key is also a family key.
+
+A group is a directory of the navigation whose `directory` is its key:
+`navigation_directory("database-demos", catalogs)` lists its families. Its panel shows the
+group title and description. Lesson keys, family folders and URL routes do not change.
+
+No folder of the tree holds a single entry. At every level, after the environment catalogues
+and the selected filter, a directory whose listing has one entry is replaced by that entry: a
+group with one family shows the family, a family or topic folder with one lesson shows the
+lesson. A group with no entry is omitted, so a host without the database or trial catalogues
+(the JavaScript and serverless galleries) shows only the groups it can fill.
+
+Families of two catalogues may share a folder: the tree lists one folder with the pages of
+both. The common `pages/10-realtime` (Streaming sine waves, Microphone analysis) and the Python
+`base/pages/10-realtime` of `system-monitor-catalog.json` (System monitor) form the
+**Real-time** folder; the JavaScript and serverless galleries list only the first two.
+
+A family with `"public": false` in its `_family.json` is a local trial: the generator copies the
+flag, and the public Python gallery (`deploy/galleries/public_database.py`) does not stage its
+catalogue. Grid · Transfer experiments (`83-selection-trials`) and Base database examples
+(`80-database`) are local trials; their files stay for local runs and tests.
 
 <a id="ge-010-015"></a>
 

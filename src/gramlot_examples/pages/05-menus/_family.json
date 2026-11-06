@@ -2,5 +2,6 @@
   "key": "menus",
   "title": "Menus and toolbars",
   "order": 10,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "layout-menus"
 }

@@ -2,5 +2,6 @@
   "key": "base-asqueel",
   "title": "Asqueel selectors",
   "order": 0,
-  "catalog": "asqueel-catalog.json"
+  "catalog": "asqueel-catalog.json",
+  "group": "database-demos"
 }

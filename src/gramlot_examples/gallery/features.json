@@ -994,9 +994,9 @@
         "label": "Resident database rows",
         "kind": "behavior",
         "status": "Exercise",
-        "description": "The Grid consumes an ordinary Bag and does not depend on an ORM. This Python example obtains real customers through an Asqueel service; scroll, search and sort run locally.",
+        "description": "The Grid consumes an ordinary Bag and does not depend on an ORM. This Python example loads invoice rows with related customers and products through dataRpc and an Asqueel service; scroll, search and sort run locally.",
         "examples": [
-          "base-asqueel-02"
+          "base-asqueel-03"
         ]
       },
       {
@@ -1007,7 +1007,6 @@
         "status": "Review",
         "description": "Local Python/Kajenn experiment: TYTX iterators retain typed values while building an isolated Bag. Only a complete stream replaces the selection; failed, cancelled or superseded loads retain the previous Bag. JSONL is not a general dataRpc transport contract.",
         "examples": [
-          "base-asqueel-03",
           "selection-trial-02"
         ]
       }

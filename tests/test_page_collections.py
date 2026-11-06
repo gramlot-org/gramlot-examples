@@ -32,7 +32,7 @@ def test_examples_do_not_repeat_environment_collection_imports():
 def test_optional_chart_and_system_examples_use_environment_collections():
     root = Path(__file__).parents[1] / 'src/gramlot_examples/base/pages'
     server = GramlotFileServer(root, collections=collections())
-    for folder in ['85-chart-reports', '86-system-analysis']:
+    for folder in ['85-chart-reports', '10-realtime']:
         for source in (root / folder).glob('*.py'):
             cls = server.resolve_page(str(source.relative_to(root).with_suffix('')))
             assert not page_collections(cls), source

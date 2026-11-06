@@ -47,13 +47,15 @@ export class GalleryPage extends IndexPage {
     left(pane) {
         pane.setAttr({id:'index-sidebar', class:'index-sidebar', nodeId:'galleryNavigation'});
         const header=pane.header({class:'gallery-navigation-header'});
-        header.img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
         const filters=this.constructor.filters;
         if(filters.length>1) {
-            const choice=header.select({value:'^galleryIndex.filter', id:'gallery-filter', class:'gallery-navigation-filter',
-                aria_label:'Filter lessons', title:'Filter lessons by what they require'});
+            const show=header.div({class:'gallery-navigation-filter'});
+            show.html_label('Show', {for:'gallery-filter'});
+            const choice=show.select({value:'^galleryIndex.filter', id:'gallery-filter',
+                title:'Show the lessons that need this environment'});
             for(const rule of filters) choice.option(rule.label, {value:rule.label});
         }
+        header.img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
         const search=header.menu({presentation:'bar',class:'gallery-navigation-search',aria_label:'Search navigation'});
         const field=search.menuline({group:true,flex:1,min_width:0}).div({class:'gallery-search-field'});
         field.span({class:'gallery-search-icon',aria_hidden:'true'});

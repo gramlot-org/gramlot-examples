@@ -2,5 +2,6 @@
   "key": "editors",
   "title": "Editors",
   "order": 11,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "editors-tools"
 }

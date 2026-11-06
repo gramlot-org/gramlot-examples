@@ -4,6 +4,8 @@
     {
       "key": "base-database",
       "title": "Base · Database",
+      "group": "database-demos",
+      "public": false,
       "folder": "80-database",
       "examples": [
         {

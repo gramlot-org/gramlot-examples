@@ -81,13 +81,15 @@ class Page(IndexPage):
     def left(self, pane):
         pane.set_attr({"id": "index-sidebar", "class": "index-sidebar", "nodeId": "galleryNavigation"})
         header = pane.header(class_="gallery-navigation-header")
-        header.img(src=self.logo_url, alt=self.title, class_="index-logo")
         filters = self.filters
         if len(filters) > 1:
-            choice = header.select(value="^galleryIndex.filter", id="gallery-filter", class_="gallery-navigation-filter",
-                                   aria_label="Filter lessons", title="Filter lessons by what they require")
+            show = header.div(class_="gallery-navigation-filter")
+            show.html_label("Show", for_="gallery-filter")
+            choice = show.select(value="^galleryIndex.filter", id="gallery-filter",
+                                 title="Show the lessons that need this environment")
             for rule in filters:
                 choice.option(rule["label"], value=rule["label"])
+        header.img(src=self.logo_url, alt=self.title, class_="index-logo")
         search = header.menu(presentation="bar", class_="gallery-navigation-search", aria_label="Search navigation")
         field = search.menuline(group=True, flex=1, min_width=0).div(class_="gallery-search-field")
         field.span(class_="gallery-search-icon", aria_hidden="true")

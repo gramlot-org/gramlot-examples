@@ -1,41 +1,39 @@
-"""Load a complete resident selection from the read-only Base PostgreSQL copy."""
+"""A grid on a database query: dataRpc, the resident selection and the grid bound to its rows."""
 from genro_bag import Bag
-from gramlot_examples.base.selection_trial import SelectionTrialPage, ROW_LIMITS
+from gramlot import Page as BasePage, endpoint
+from gramlot_examples.base.selection_trial import ROW_LIMITS, read_records
 
 
-class Page(SelectionTrialPage):
+class Page(BasePage):
 
     def main(self, root):
-        pane = root.main(datapath='invoice_rows', padding='20px')
-        pane.button('Open database grid', action="this.SET('.open', true)")
-        pane.dataSetter('.open', True)
-        pane.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))
-        pane.dataSetter('.reload', 0)
-        pane.dataSetter('.metrics', Bag())
-        self.load_source(pane)
-        window = pane.floatingPane(title='Invoice rows · PostgreSQL XL', open='^.open', id='invoice-row-grid-window',
-                                   width='1060px', height='500px', resizable=True, movable=True, maximizable=True)
-        window.frame.center.set_attr(display='flex', flex_direction='column', min_height=0, min_width=0, padding='5px', overflow='hidden')
-        frame = window.frame.center.frameGrid(storepath='.selection.rows', rowMode='attributes',
-                                             flex=1, min_height=0, min_width=0, border='1px solid var(--gramlot-border)', overflow='hidden')
-        bar = frame.top.menu(presentation='bar', aria_label='Invoice row grid tools', padding='4px 8px', background='var(--gramlot-surface-subtle)')
-        bar.menuline(group=True).searchBox(searchOn=True)
+        main_content = root.main(datapath='invoice_rows', padding='16px')
+        main_content.dataSetter('.selection', Bag({'rows': Bag(), 'count': 0}))
+        main_content.dataRpc('load_rows', result_path='.selection', limit='^.limit', _init=True, _fired='^.reload',
+                             _onCalling="this.SET('.status', 'Loading from PostgreSQL…')",
+                             _onResult="this.SET('.status', 'Loaded')",
+                             _onError="this.SET('.status', 'Load failed: ' + error.message)")
+        frame = main_content.frameGrid(storepath='.selection.rows', rowMode='attributes', searchOn=True,
+                                       height='calc(100vh - 32px)', min_height='320px')
+        self.status_bar(frame)
+        self.columns(frame.grid)
+
+    def status_bar(self, frame):
+        bar = frame.bottom.menu(presentation='bar', aria_label='Selection status and loading', padding='4px 8px')
+        facts = bar.menuline(group=True, gap='12px')
+        facts.span('^.status', id='db-grid-status')
+        facts.span('^.selection.requested', mask='Requested: {}', id='db-grid-requested')
+        facts.span('^.selection.count', mask='Loaded: {}', id='db-grid-count')
         bar.spacer(flex=1)
-        limits = bar.menuline(group=True)
-        choice = limits.select(value='^.limit', default='1000', lbl='Max rows', lbl_position='L', id='db-grid-limit', width='7rem')
+        choice = bar.menuline(group=True).select(value='^.limit', default='1000', lbl='Max rows', lbl_position='L',
+                                                 id='db-grid-limit', width='7rem')
         for limit in ROW_LIMITS:
             choice.option(str(limit), value=str(limit))
-        bar.menuline(caption='Reload from DB', action="this.SET('.reload', this.GET('.reload') + 1)", tooltip='Run the query again and replace the resident selection')
-        metrics = frame.bottom.menu(presentation='bar', aria_label='Server measurements', padding='4px 8px')
-        facts = metrics.menuline(group=True)
-        facts.span('^.status', id='db-grid-status', margin_right='12px')
-        facts.span('^.selection.requested', mask='Requested: {}', id='db-grid-requested', margin_right='12px')
-        facts.span('^.selection.count', mask='Loaded: {}', id='db-grid-count', margin_right='12px')
-        facts.span('^.metrics.query_ms', mask='Query: {} ms', format='0.00', id='db-grid-query-ms', margin_right='12px')
-        facts.span('^.metrics.encode_ms', mask='Encode: {} ms', format='0.00', id='db-grid-encode-ms', margin_right='12px')
-        facts.span('^.metrics.total_ms', mask='Ready: {} ms', format='0.00', id='db-grid-total-ms')
-        frame.grid.set_attr(id='invoice-row-db-grid', rowHeaders=True, rowResize=True, loading='^.loading')
-        s = frame.grid.struct()
+        bar.menuline(caption='Reload', action="this.FIRE('.reload')", tooltip='Run the query again and replace the selection')
+
+    def columns(self, grid):
+        grid.set_attr(id='invoice-row-db-grid', rowHeaders=True, rowResize=True)
+        s = grid.struct()
         s.column('customer_name', name='Customer', width='210px', white_space='pre-wrap')
         s.column('state', name='State', width='65px')
         s.column('invoice_number', name='Invoice', width='115px')
@@ -45,3 +43,12 @@ class Page(SelectionTrialPage):
         s.column('quantity', name='Quantity', dtype='L', width='90px')
         s.column('unit_price', name='Unit price', dtype='N', format='0.00', width='110px')
         s.column('tot_price', name='Total', dtype='N', format='0.00', width='115px')
+
+    @endpoint
+    def load_rows(self, limit, **kwargs):
+        # The Base host injects its read-only Asqueel service as Page.database.
+        records, _ = read_records(self.database, limit)
+        rows = Bag()
+        for index, record in enumerate(records):
+            rows.set_item(f'r{index}', None, _attributes=dict(record.items()))
+        return Bag({'rows': rows, 'count': len(rows), 'requested': int(limit)})

@@ -22,16 +22,15 @@ class Page(BasePage):
     title = "Microphone · waveform and spectrum"
 
     def main(self, root):
-        pane = root.main(datapath="audio", max_width="1400px", margin="16px auto", padding="16px")
-        pane.h1(self.title)
-        pane.p(
+        main_content = root.main(datapath="audio", max_width="1400px", margin="16px auto", padding="16px")
+        main_content.h1(self.title)
+        main_content.p(
             "Local Web Audio analysis. Press Play to request microphone access. No recording, speaker playback, server upload or WebSocket audio transmission."
         )
-        pane.dataSetter(".running", False)
-        pane.dataSetter(".minimumDb", -100)
-        bar = pane.menu(presentation="bar", aria_label="Audio controls",
-                        labelPosition="tooltip", iconSize=20,
-                        background="var(--gramlot-surface-subtle)", padding="4px 8px")
+        main_content.dataSetter(".running", False)
+        main_content.dataSetter(".minimumDb", -100)
+        bar = main_content.menu(presentation="bar", aria_label="Audio controls",
+                        labelPosition="tooltip", iconSize=20, padding="4px 8px")
         bar.menuline(caption="Play", tooltip="Start microphone", iconSrc=PLAY_ICON,
                      disabled="^.running", action="this.SET('.running', true)")
         bar.menuline(caption="Stop", tooltip="Stop microphone", iconSrc=STOP_ICON,
@@ -45,17 +44,17 @@ class Page(BasePage):
         status = bar.menuline(group=True, gap="8px")
         status.span("^.status", id="audio-status")
         status.span("^.sampleRate", mask="Sample rate: {} Hz")
-        pane.div("^.error", role="alert")
-        pane.dataFormula(".waveform.step", "rate ? 1000 / rate : 1",
+        main_content.div("^.error", role="alert")
+        main_content.dataFormula(".waveform.step", "rate ? 1000 / rate : 1",
                          rate="^.sampleRate", _init=True)
-        pane.dataFormula(".spectrum.step", "rate ? rate / size : 1",
+        main_content.dataFormula(".spectrum.step", "rate ? rate / size : 1",
                          rate="^.sampleRate", size="^.fftSize.value", _init=True)
-        self.signal_chart(pane.section(datapath=".waveform"), "Waveform", "milliseconds", "amplitude", -1, 1)
-        self.signal_chart(pane.section(datapath=".spectrum"), "Spectrum", "frequency", "decibels", -100, 0)
-        pane.audioAnalyser(running="^.running", fftSize="^.fftSize.value", frameRate="^.frameRate.value",
+        self.signal_chart(main_content.section(datapath=".waveform"), "Waveform", "milliseconds", "amplitude", -1, 1)
+        self.signal_chart(main_content.section(datapath=".spectrum"), "Spectrum", "frequency", "decibels", -100, 0)
+        main_content.audioAnalyser(running="^.running", fftSize="^.fftSize.value", frameRate="^.frameRate.value",
                            minimumDb="^.minimumDb", spectrum="^.spectrum.samples", waveform="^.waveform.samples",
                            sampleRate="^.sampleRate", status="^.status", error="^.error")
-        pane.p(
+        main_content.p(
             "The spectrum floor is −100 dB. These are digital levels, not calibrated sound pressure (dB SPL). Browser microphone processing may affect the signal. FFT size controls frequency resolution; update rate controls display refresh. Stop or close the page to release the microphone."
         )
 

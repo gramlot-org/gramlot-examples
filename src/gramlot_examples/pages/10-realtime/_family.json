@@ -1,0 +1,7 @@
+{
+  "key": "realtime",
+  "title": "Real-time",
+  "order": 15,
+  "catalog": "catalog.json",
+  "group": "server-demos"
+}

@@ -58,11 +58,31 @@ The common catalogue ships `All`, `Plain` (`requires: []`), `Server` (`endpoint`
 lessons and omit directories with none below; leaves carry `requires`; unknown label = error;
 `None`/`null` = everything.
 
-The gallery shows a filter menu above the search field when at least two filters are available.
+The gallery shows a filter menu (**Show:**, a labelled select without a field outline) above the
+logo and the search field when at least two filters are available.
 `galleryIndex.filter` holds the label. A change replaces the navigation root with
 `navigation_section(directory="", filter)` and gives each directory a resolver passing the filter.
 Kept per viewer in `localStorage`; an unavailable saved label falls back to the first filter.
 A static export whose `navigation_section` ignores `filter` lists everything.
+
+Root groups: `groups.json` (beside the common `catalog.json`) lists `key`, `title`, `description`
+in order: Fundamentals, Fields and inputs, Data, logic and RPC, Layout and menus, Grid, Charts,
+Editors and tools, Composition (tutorials), Database demos, Real-time, server and AI demos (demos).
+A family joins one with `"group"` in `_family.json` (copied into `catalog.json`; hand-written
+catalogues carry it). Families without `group` follow the groups. Unknown group, two families of
+one folder with different groups, or a group key equal to a family key = error. A group is a
+navigation directory named by its key (`navigation_directory("database-demos", catalogs)`); its
+panel shows title and description. Keys, folders and routes do not change.
+
+No folder holds a single entry: at every level, after environment and filter, a directory with
+one entry is replaced by that entry (group with one family -> the family; family or topic folder
+with one lesson -> the lesson); an empty group is omitted. Families of two catalogues sharing a
+folder are one folder: common `pages/10-realtime` (sine waves, microphone) + Python
+`base/pages/10-realtime` (system monitor, `system-monitor-catalog.json`) = **Real-time**.
+
+`"public": false` in `_family.json` marks a local trial: copied into the catalogue; the public
+Python gallery (`deploy/galleries/public_database.py`) does not stage it. Local trials:
+`83-selection-trials`, `80-database`.
 
 <a id="ge-010-015"></a>
 

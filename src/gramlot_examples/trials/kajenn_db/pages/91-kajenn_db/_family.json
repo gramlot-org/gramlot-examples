@@ -2,5 +2,6 @@
   "key": "kajenn-db-lessons",
   "title": "Kajenn and Asqueel",
   "order": 0,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "database-demos"
 }

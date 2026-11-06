@@ -2,5 +2,6 @@
   "key": "base-db-grid",
   "title": "Grid · Database",
   "order": 1,
-  "catalog": "asqueel-catalog.json"
+  "catalog": "asqueel-catalog.json",
+  "group": "database-demos"
 }

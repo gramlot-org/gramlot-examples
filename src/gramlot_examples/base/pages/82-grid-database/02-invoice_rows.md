@@ -1,37 +1,38 @@
 <a id="ge-db-grid-03"></a>
-# Database grid · resident invoice rows
+# Grid on a database query
 
-The Base copy comes from `test_invoice_pg_xl`: 60,179 invoices and 410,429 invoice
-rows. This page queries `invc.invoice_row` through the existing Asqueel model.
-The grid shows customer name and state, invoice number and date, product code
-and description, quantity, unit price and total. Customer fields follow the
-invoice relation; product fields follow the product relation. Prices and totals
-are the stored invoice-row values, not the current product price or a recalculation.
-The row ID remains in the data for identity and deterministic server ordering.
+> **What you learn** — Put the result of a server query in Data and show it in a grid: `dataRpc` → `.selection` → grid bound to `.selection.rows`.
 
-Choose 100, 500, 1,000, 2,000, 5,000, 10,000, 20,000, 50,000 or 100,000 records.
-The default is 1,000. Changing the maximum starts a typed JSONL request and replaces the complete
-resident Bag only after successful completion. Requested and loaded counts are displayed
-separately. The table has enough rows to actually load 100,000 records.
-Scrolling virtualizes the DOM only; search and multi-column sort use the full
-resident selection. This is not partial database loading.
+The page reads `invc.invoice_row` from the read-only copy of `test_invoice_pg_xl`
+(60,179 invoices, 410,429 invoice rows) through the existing Asqueel model.
 
-- Query measures query construction, execution, joins and complete fetch.
-- Encode measures server-side TYTX/JSONL record encoding.
-- Ready measures the request through transfer, decoding and client Bag creation,
-  before Data publication and rendering.
+## Three steps
 
-The floating pane retains its title bar. Its FrameGrid, inset by 5px, owns the
-search/limit/reload toolbar and the timing footer. Resizing, variable row heights
-and per-grid sort/filter are provided by the existing shared components.
-The database connection is read-only. A failed reload reports an error and retains
-the last successful selection. Model definitions live in gramlot-py-server;
-`gramlot_examples/base/model.json` specifies the common physical subset.
+1. **`dataRpc`** calls the endpoint `load_rows` when the page starts, when
+   **Max rows** changes (`limit="^.limit"`) and when **Reload** fires `.reload`.
+   The endpoint runs one query and returns a Bag: `rows`, `count` and `requested`.
+2. **`.selection`** receives that Bag (`result_path=".selection"`). The status bar
+   binds to `.selection.requested` and `.selection.count`.
+3. **The grid** is a `frameGrid` with `storepath=".selection.rows"`. Each record is
+   one row whose fields are node attributes (`rowMode="attributes"`).
 
+The columns come from relations of the invoice row: customer name and state follow
+`@invoice_id.@customer_id`, invoice number and date follow `@invoice_id`, product
+code and description follow `@product_id`. Quantity, unit price and total are the
+stored invoice-row values.
 
-Current loading path — owner, 2026-10-30: complete resident selections use typed
-JSONL, sharing the loader/query with the JSONL lesson. Query, Encode and Ready
-replace the previous whole-endpoint timing. Ready excludes final rendering.
-Reload and a changed limit cancel/supersede the previous request; only a complete
-valid selection replaces the visible Bag. The floating layout, row geometry,
-local filtering and sorting are retained.
+## Resident data
+
+All returned rows stay in the browser. Scrolling renders only the visible slice;
+search and multi-column sort work on every loaded row without a new query. Choose
+100 to 100,000 rows (default 1,000) to see how the size of the selection changes
+loading and searching. A failed reload reports the error and keeps the last
+selection.
+
+## Read the code
+
+`main` connects `dataRpc` to `.selection` and the grid to its rows; `searchOn=True`
+puts the search field in the grid toolbar. `status_bar` declares the status,
+**Max rows** and **Reload** below the grid; `columns` declares the columns.
+`load_rows` is the endpoint; `read_records` in `gramlot_examples/base/selection_trial.py`
+holds the query and validates the limit.

@@ -2,5 +2,6 @@
   "key": "pagestore-lessons",
   "title": "PageStore and WebSocket",
   "order": 0,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "server-demos"
 }

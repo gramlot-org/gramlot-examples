@@ -4,6 +4,7 @@
     {
       "key": "chart-reports",
       "title": "Charts · Live reports",
+      "group": "database-demos",
       "folder": "85-chart-reports",
       "examples": [
         {
@@ -57,18 +58,6 @@
             "asqueel"
           ],
           "folder": "australian_geography"
-        },
-        {
-          "key": "chart-reports-04",
-          "title": "Streaming sine waves",
-          "description": "Pause or change the rate of a rolling 600-sample signal.",
-          "tags": [
-            "charts",
-            "sinusoid",
-            "streaming",
-            "uplot"
-          ],
-          "folder": "streaming"
         },
         {
           "key": "chart-reports-05",

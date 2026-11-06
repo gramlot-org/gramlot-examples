@@ -2,5 +2,6 @@
   "key": "asqueel-cached",
   "title": "Grid · Asqueel only",
   "order": 0,
-  "catalog": "cached-trial-catalog.json"
+  "catalog": "cached-trial-catalog.json",
+  "group": "database-demos"
 }

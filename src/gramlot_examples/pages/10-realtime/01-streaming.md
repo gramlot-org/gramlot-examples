@@ -6,4 +6,4 @@ This is the original 600-sample rolling sine-wave example. Choose 2, 10, 30 or 6
 
 The ordinary client `dataController` timer calls the companion `Logic.tick`. It removes the oldest row and appends one new sample in the same Bag. Two phase-shifted curves share the same X positions. Changing the requested rate preserves the last 600 samples. The observed-rate counter measures timer updates, not rendered frames.
 
-The companion `streaming.js` contains the signal-generation methods; chart rendering is the existing shared component. Compare compatible engines in Chart settings. No server sampler, WebSocket or special streaming buffer is introduced.
+The page module `01-streaming.js` also contains the signal-generation `Logic`; chart rendering is the existing shared component. Compare compatible engines in Chart settings. No server sampler, WebSocket or special streaming buffer is introduced.

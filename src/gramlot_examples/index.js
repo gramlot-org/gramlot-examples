@@ -45,6 +45,34 @@ function checkRequires(requires, where) {
 
 const nonEmptyStrings = list => Array.isArray(list) && list.length > 0 && list.every(need => typeof need === 'string' && need.trim());
 
+/** The root groups of the navigation, in order: `key`, `title` and `description` (`groups.json`). */
+export function readGroups() {
+    const groups = JSON.parse(readFileSync(join(PACKAGE, 'groups.json'), 'utf8'));
+    for (const group of groups) {
+        const names = Object.keys(group).sort();
+        if (names.join() !== 'description,key,title' || !names.every(name => typeof group[name] === 'string' && group[name].trim())) {
+            throw new Error(`A group declares a non-empty key, title and description: ${JSON.stringify(group)}`);
+        }
+    }
+    if (new Set(groups.map(group => group.key)).size !== groups.length) throw new Error('Duplicate group key in groups.json');
+    return groups;
+}
+
+/** Each family `group` is declared; families sharing a folder agree; no group key is a family key. */
+function checkGroups(families, groups) {
+    const keys = new Set(groups.map(group => group.key));
+    const byFolder = new Map();
+    for (const family of families) {
+        if (family.group === undefined) continue;
+        if (!keys.has(family.group)) throw new Error(`Family '${family.key}' names an unknown group: '${family.group}'`);
+        if (!byFolder.has(family.folder)) byFolder.set(family.folder, family.group);
+        else if (byFolder.get(family.folder) !== family.group) throw new Error(`Families of folder '${family.folder}' name different groups`);
+    }
+    const clashes = families.map(family => family.key).filter(key => keys.has(key)).sort();
+    if (clashes.length) throw new Error(`Group keys used as family keys: ${clashes.join(', ')}`);
+    return byFolder;
+}
+
 /** Read the `filters.json` beside `catalog`: declared filters, or an empty list when absent. */
 export function readFilters(catalog) {
     const path = join(dirname(catalog), 'filters.json');
@@ -113,6 +141,7 @@ export function buildGallery({catalogs = []} = {}) {
     const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
     for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
     const filters = mergeFilters([join(PACKAGE, 'catalog.json'), ...catalogs.map(([catalog]) => catalog)]);
+    checkGroups(families, readGroups());
     const keys = ['index', ...families.flatMap(family => [family.key, ...family.examples.map(({key}) => key)])];
     const duplicates = [...new Set(keys.filter((key, index) => keys.indexOf(key) !== index))].sort();
     if (duplicates.length) throw new Error(`Duplicate gallery keys: ${duplicates.join(', ')}`);
@@ -207,7 +236,15 @@ export function directoryIndex(folder) {
     return indexes[0];
 }
 
-/** Read one numbered filesystem level, without exposing its own index. */
+/**
+ * Read one numbered filesystem level, without exposing its own index.
+ *
+ * `filter` is the label of a declared filter. With one, only the lessons it matches are listed and
+ * a directory without a matching lesson below it is omitted. `null` lists everything. The root
+ * lists the groups of `groups.json` in order, then the families without `group`; a group lists its
+ * families. No directory holds a single entry: a directory whose listing has one entry is replaced
+ * by that entry, at every level, after the environment and the filter.
+ */
 export function navigationDirectory(directory = '', catalogs = [], filter = null) {
     const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
     for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
@@ -217,11 +254,46 @@ export function navigationDirectory(directory = '', catalogs = [], filter = null
         if (!rule) throw new Error(`Unknown filter: ${filter}`);
         if (!Object.hasOwn(rule, 'any') && !Object.hasOwn(rule, 'requires')) rule = null;
     }
-    return navigationLevel(directory, families, rule);
+    const groups = readGroups();
+    const byFolder = checkGroups(families, groups);
+    const listing = path => path === '' || groups.some(group => group.key === path)
+        ? navigationRoot(path, families, rule, groups, byFolder) : navigationLevel(path, families, rule);
+    const bag = new Bag();
+    for (let node of listing(directory).getNodes()) {
+        while (node.attr.directory !== undefined) {
+            const children = listing(node.attr.directory).getNodes();
+            if (children.length !== 1) break;
+            node = children[0];
+        }
+        bag.setItem(node.label, null, {...node.attr});
+    }
+    return bag;
+}
+
+/** The root level grouped by `groups`, or the families of the group `directory`. */
+function navigationRoot(directory, families, rule, groups, byFolder) {
+    const members = new Map(groups.map(group => [group.key, []]));
+    const ungrouped = [];
+    for (const node of navigationLevel('', families, rule).getNodes()) {
+        const group = byFolder.get(node.attr.directory);
+        (group ? members.get(group) : ungrouped).push(node);
+    }
+    const bag = new Bag();
+    for (const group of groups) {
+        const nodes = members.get(group.key);
+        if (directory) {
+            if (group.key === directory) for (const node of nodes) bag.setItem(node.label, null, {...node.attr});
+        } else if (nodes.length) bag.setItem(group.key, null, {title: group.title, category: true, directory: group.key,
+            url: `groups/${group.key}`, markdown: `# ${group.title}\n\n${group.description}\n`});
+    }
+    if (!directory) for (const node of ungrouped) bag.setItem(node.label, null, {...node.attr});
+    return bag;
 }
 
 function navigationLevel(directory, families, rule) {
-    const groups = new Map(families.map(group => [group.folder, group]));
+    // Families sharing a folder are listed under the key of the first one.
+    const groups = new Map();
+    for (const family of families) if (!groups.has(family.folder)) groups.set(family.folder, family);
     const parts = directory ? directory.split('/') : [];
     if (parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw new Error('Invalid navigation directory');
     const roots = families.filter(family => parts.length && family.folder === parts[0]).map(family => family.path);

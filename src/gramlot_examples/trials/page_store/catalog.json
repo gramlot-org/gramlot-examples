@@ -4,6 +4,7 @@
     {
       "key": "pagestore-lessons",
       "title": "PageStore and WebSocket",
+      "group": "server-demos",
       "folder": "90-page_store",
       "examples": [
         {

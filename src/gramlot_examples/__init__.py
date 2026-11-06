@@ -45,6 +45,37 @@ def check_requires(requires, where):
         raise ValueError(f"requires must be a list of non-empty strings: {where}")
 
 
+def read_groups():
+    """The root groups of the navigation, in order: ``key``, ``title`` and ``description`` (``groups.json``)."""
+    groups = json.loads((PACKAGE / "groups.json").read_text())
+    for group in groups:
+        if set(group) != {"key", "title", "description"} or not all(
+                isinstance(group[name], str) and group[name].strip() for name in group):
+            raise ValueError(f"A group declares a non-empty key, title and description: {group!r}")
+    keys = [group["key"] for group in groups]
+    if len(set(keys)) != len(keys):
+        raise ValueError("Duplicate group key in groups.json")
+    return groups
+
+
+def check_groups(families, groups):
+    """Each family ``group`` is declared; families sharing a folder agree; no group key is a family key."""
+    keys = {group["key"] for group in groups}
+    by_folder = {}
+    for family in families:
+        group = family.get("group")
+        if group is None:
+            continue
+        if group not in keys:
+            raise ValueError(f"Family {family['key']!r} names an unknown group: {group!r}")
+        if by_folder.setdefault(family["folder"], group) != group:
+            raise ValueError(f"Families of folder {family['folder']!r} name different groups")
+    clashes = sorted(keys & {family["key"] for family in families})
+    if clashes:
+        raise ValueError(f"Group keys used as family keys: {', '.join(clashes)}")
+    return by_folder
+
+
 def read_filters(catalog):
     """Read the ``filters.json`` beside ``catalog``: declared filters, or an empty list when absent."""
     path = Path(catalog).with_name("filters.json")
@@ -112,6 +143,7 @@ def build_gallery(catalogs=()):
     for catalog, pages in catalogs:
         families.extend(read_catalog(catalog, pages, common=False))
     filters = merge_filters([PACKAGE / "catalog.json", *(catalog for catalog, _ in catalogs)])
+    check_groups(families, read_groups())
     keys = ["index"] + [key for family in families
                         for key in (family["key"], *(example["key"] for example in family["examples"]))]
     duplicates = sorted({key for key in keys if keys.count(key) > 1})
@@ -178,7 +210,7 @@ def build_gallery(catalogs=()):
     return {"families": families, "routes": routes, "assets": assets, "collections": gallery_collections(), "filters": filters}
 
 
-__all__ = ["build_gallery", "navigation_directory", "available_filters", "filter_matches"]
+__all__ = ["build_gallery", "navigation_directory", "available_filters", "filter_matches", "read_groups"]
 
 def page_title(path):
     """Read gallery metadata first, then the page class or Markdown heading."""
@@ -208,6 +240,9 @@ def navigation_directory(directory="", catalogs=(), filter=None):
 
     ``filter`` is the label of a declared filter. With one, only the lessons it matches are listed
     and a directory without a matching lesson below it is omitted. ``None`` lists everything.
+    The root lists the groups of ``groups.json`` in order, then the families without ``group``; a group
+    lists its families. No directory holds a single entry: a directory whose listing has one entry is
+    replaced by that entry, at every level, after the environment and the filter.
     """
     families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
     for catalog, pages in catalogs:
@@ -220,12 +255,57 @@ def navigation_directory(directory="", catalogs=(), filter=None):
             raise ValueError(f"Unknown filter: {filter}")
         if "any" not in rule and "requires" not in rule:
             rule = None
-    return navigation_level(directory, families, rule)
+    groups = read_groups()
+    by_folder = check_groups(families, groups)
+    keys = {group["key"] for group in groups}
+
+    def listing(path):
+        if path == "" or path in keys:
+            return navigation_root(path, families, rule, groups, by_folder)
+        return navigation_level(path, families, rule)
+
+    from genro_bag import Bag
+    result = Bag()
+    for node in listing(directory).get_nodes():
+        while node.attr.get("directory") is not None:
+            children = listing(node.attr["directory"]).get_nodes()
+            if len(children) != 1:
+                break
+            node = children[0]
+        result.set_item(node.label, None, **node.attr)
+    return result
+
+
+def navigation_root(directory, families, rule, groups, by_folder):
+    """The root level grouped by ``groups``, or the families of the group ``directory``."""
+    from genro_bag import Bag
+    members = {group["key"]: [] for group in groups}
+    ungrouped = []
+    for node in navigation_level("", families, rule).get_nodes():
+        group = by_folder.get(node.attr.get("directory"))
+        (members[group] if group else ungrouped).append(node)
+    result = Bag()
+    for group in groups:
+        nodes = members[group["key"]]
+        if directory:
+            if group["key"] == directory:
+                for node in nodes:
+                    result.set_item(node.label, None, **node.attr)
+        elif nodes:
+            result.set_item(group["key"], None, title=group["title"], category=True, directory=group["key"],
+                            url=f"groups/{group['key']}",
+                            markdown=f"# {group['title']}\n\n{group['description']}\n")
+    if not directory:
+        for node in ungrouped:
+            result.set_item(node.label, None, **node.attr)
+    return result
 
 
 def navigation_level(directory, families, rule):
     from genro_bag import Bag
-    groups = {family["folder"]: family for family in families}
+    groups = {}
+    for family in families:  # Families sharing a folder are listed under the key of the first one.
+        groups.setdefault(family["folder"], family)
     parts = directory.split("/") if directory else []
     if any(not re.fullmatch(r"[A-Za-z0-9_-]+", part) for part in parts):
         raise ValueError("Invalid navigation directory")

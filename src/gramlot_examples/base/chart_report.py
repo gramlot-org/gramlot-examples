@@ -4,7 +4,7 @@ from gramlot import Page as BasePage, ChartPane, endpoint
 
 class ChartReportPage(BasePage):
     report_links = [('index','Live Australian sales'), ('attributes','Attributes fixture'),
-                    ('values','Values fixture'), ('streaming','Streaming sine waves')]
+                    ('values','Values fixture')]
     row_mode = 'attributes'
     title = 'Reusable chart report'
     # The host provides provider.read(year) -> Bag and a plain GeoJSON value.

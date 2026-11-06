@@ -2,5 +2,6 @@
   "key": "binding",
   "title": "Data and bindings",
   "order": 3,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "data-logic-rpc"
 }

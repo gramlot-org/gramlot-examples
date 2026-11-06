@@ -53,8 +53,12 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
         assert.equal(node.attr.url,`pages/${family.folder}/${example.folder}`);
         assert.equal(seen.has(node.label),false); seen.add(node.label);
         if (parts.length > 1) {
-            const parent = navigationDirectory(family.folder).getNode(parts[0]);
-            assert.equal(parent.staticValue,null); assert.ok(gallery.routes[parent.attr.url]);
+            const level = navigationDirectory([family.folder, ...parts.slice(0, -2)].join('/'));
+            const parent = level.getNode(parts.at(-2));
+            if (parent === null) {  // A folder with one lesson shows the lesson in its place.
+                assert.equal(navigationDirectory(directory).length, 1);
+                assert.equal(level.getNode(example.key).attr.url, node.attr.url);
+            } else { assert.equal(parent.staticValue,null); assert.ok(gallery.routes[parent.attr.url]); }
         }
         for (const suffix of ['.py','.js','.md']) assert.ok(gallery.assets[`/pages/${family.folder}/${example.folder}${suffix}`]);
     }
@@ -63,9 +67,11 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
 
 
 test('numbered siblings mix directories and pages, hide indexes and use Markdown headings', () => {
-    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'charts', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
+    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'fields-inputs', 'data-logic-rpc', 'layout-menus', 'grid', 'charts', 'editors-tools', 'composition-reuse', 'realtime']);
+    assert.deepEqual(navigationDirectory('data-logic-rpc').getNodes().map(n => n.label), ['binding', 'controllers', 'rpc']);
     const branch = navigationDirectory('00-html_svg');
-    assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', '02-native_controls', '03-svg']);
+    // 02-native_controls and 03-svg hold one lesson each: the tree shows the lesson, not a folder around it.
+    assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', 'e06', 'e08']);
     assert.equal(branch.getNode('07-markdown_index'), null);
 });
 
@@ -82,7 +88,7 @@ test('host tools share one navigation category with the common playground', asyn
     const catalog = join(root, 'catalog.json');
     writeFileSync(catalog, JSON.stringify({environment:'test', families:[{key:'host_tools', title:'Tools and IDE', folder:'07-tools', examples:[]}]}));
     const catalogs = [[catalog, root]];
-    assert.equal(navigationDirectory('', catalogs).getNodes().filter(n => n.attr.directory === '07-tools').length, 1);
+    assert.equal(navigationDirectory('editors-tools', catalogs).getNodes().filter(n => n.attr.directory === '07-tools').length, 1);
     const tools = navigationDirectory('07-tools', catalogs);
     assert.equal(tools.getNode('e13').attr.url, 'pages/07-tools/01-live_source');
     assert.equal(tools.getNode('index').attr.title, 'Sample IDE');
@@ -102,6 +108,7 @@ test('environment overlay keeps common and host subdirectories inside their own 
     writeFileSync(join(folder, '00-index.md'), '# Inputs and host\n');
     writeFileSync(join(host, '00-index.md'), '# Host tools\n');
     writeFileSync(join(host, '01-sample.js'), 'export class Page { static title = "Host sample"; }');
+    writeFileSync(join(host, '02-other.js'), 'export class Page { static title = "Other host sample"; }');
     const catalog = join(root, 'catalog.json');
     writeFileSync(catalog, JSON.stringify({environment:'test', families:[{key:'host_inputs', title:'Inputs and host', folder:'01-inputs', examples:[]}]}));
     const catalogs = [[catalog, root]];
@@ -139,3 +146,31 @@ test("chart directory titles come from metadata", () => {
     assert.equal(navigationDirectory().getNode("charts").attr.title, "Charts");
     assert.equal(navigationDirectory("05-charts").getNode("chart-bars").attr.title, "Bars and live data");
 });
+
+test('no folder holds a single entry, at every level, after environment and filter', async t => {
+    const {mkdtempSync, mkdirSync, writeFileSync, rmSync} = await import('node:fs');
+    const {tmpdir} = await import('node:os');
+    const {join} = await import('node:path');
+    const root = mkdtempSync(join(tmpdir(), 'gallery-single-'));
+    t.after(() => rmSync(root, {recursive: true, force: true}));
+    const folder = join(root, '95-single');
+    mkdirSync(join(folder, '01-topic'), {recursive: true});
+    writeFileSync(join(folder, '00-index.md'), '# Single\n');
+    writeFileSync(join(folder, '01-topic', '00-index.md'), '# Topic\n');
+    writeFileSync(join(folder, '01-topic', '01-only.js'), 'export class Page { static title = "Only lesson"; }');
+    const catalog = join(root, 'catalog.json');
+    writeFileSync(catalog, JSON.stringify({environment:'single', families:[{key:'single_family', title:'Single', folder:'95-single',
+        group:'database-demos', examples:[{key:'single-01', title:'Only lesson', folder:'01-topic/01-only', description:'d', tags:['t']}]}]}));
+    const catalogs = [[catalog, root]];
+    // Family -> topic folder -> one lesson: the lesson replaces both folders inside its group.
+    const group = navigationDirectory('database-demos', catalogs);
+    assert.deepEqual(group.getNodes().map(node => node.label), ['single-01']);
+    assert.equal(group.getNode('single-01').attr.url, 'pages/95-single/01-topic/01-only');
+    // The group itself holds one entry: the root shows the lesson in its place.
+    const top = navigationDirectory('', catalogs);
+    assert.equal(top.getNode('database-demos'), null);
+    assert.equal(top.getNode('single-01').attr.title, 'Only lesson');
+    // A filter keeps the rule.
+    assert.ok(navigationDirectory('', catalogs, 'Plain').getNodes().some(node => node.label === 'single-01'));
+});
+

@@ -218,8 +218,8 @@ verification remain separate work.
 
 | Feature | Status | Lessons | Exercise |
 | --- | --- | --- | --- |
-| Grid with a resident database selection | **Exercise** | [base-asqueel-02 · Database grid · resident customers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/82-grid-database/01-customers.md) | The Grid consumes an ordinary Bag and does not depend on an ORM. This Python example obtains real customers through an Asqueel service; scroll, search and sort run locally. |
-| Grid typed JSONL loading | **Review** | [base-asqueel-03 · Database grid · resident invoice rows](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/82-grid-database/02-invoice_rows.md), [selection-trial-02 · Selection trial · progressive JSONL / HTTP](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/83-selection-trials/02-jsonl.md) | Local Python/Kajenn experiment: TYTX iterators retain typed values while building an isolated Bag. Only a complete stream replaces the selection; failed, cancelled or superseded loads retain the previous Bag. JSONL is not a general dataRpc transport contract. |
+| Grid with a resident database selection | **Exercise** | [base-asqueel-03 · Grid on a database query](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/82-grid-database/02-invoice_rows.md) | The Grid consumes an ordinary Bag and does not depend on an ORM. This Python example loads invoice rows with related customers and products through dataRpc and an Asqueel service; scroll, search and sort run locally. |
+| Grid typed JSONL loading | **Review** | [selection-trial-02 · Selection trial · progressive JSONL / HTTP](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/base/pages/83-selection-trials/02-jsonl.md) | Local Python/Kajenn experiment: TYTX iterators retain typed values while building an isolated Bag. Only a complete stream replaces the selection; failed, cancelled or superseded loads retain the previous Bag. JSONL is not a general dataRpc transport contract. |
 
 ### Grid · Asqueel only
 
@@ -444,9 +444,9 @@ server-owned; the override is checked against the exposed selector fields.
 <a id="ge-035-chart-streaming"></a>
 ### Shared chart streaming trial — 2026-11-05
 
-The Python page `base/pages/85-chart-reports/streaming.py` uses ChartPane with
-engine=uplot, chartType=line and two numeric signals. Its same-name JavaScript
-Logic generates sine samples in Data through the existing dataController _timing
+The page `pages/10-realtime/01-streaming` (Python and JavaScript, family Real-time;
+moved from `base/pages/85-chart-reports/streaming` on 2026-11-06) uses chartPane with
+engine=uplot, chartType=line and two numeric signals. The `Logic` of its page module generates sine samples in Data through the existing dataController _timing
 contract. The store retains 600 rows, with 2/10/30/60 requested updates per second,
 pause/resume and reset. No DOM application wiring, alternate chart configurator,
 WebSocket transport or business calculations inside charts are introduced.
@@ -454,7 +454,7 @@ The chart drawer can compare ECharts, Plotly, Vega and uPlot on identical data.
 uPlot currently exposes lines only; X must be numeric/date, distinct and ascending.
 The observed-rate counter measures timer updates, not rendering FPS. This is
 local streaming qualification, not a guarantee of high-frequency throughput.
-The chart_reports launcher in gramlot-py-server serves the page at /streaming.
+Every gallery lists it under Real-time.
 
 
 Temporal snapshot trial — 2026-11-05. The Python-first chart reports page time_snapshots.py supplies prepared region/month rows to the shared ChartPane. The core configurator owns date selection, calendar periods, slider and Play/Pause; no animation logic or aggregation lives in this example. uPlot requires Lines with numeric Rank as X. Browser qualification and limitations are tracked in core GC-070 / GC-470.

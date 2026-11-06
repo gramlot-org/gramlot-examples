@@ -20,9 +20,13 @@ class Page(DatabaseSelectors, BasePage):
                         validate_notnull=True, selectedCaption='.caption', selected_state='.customer_state',
                         auxColumns='@state.name', placeholder='Search customers', box_c_width='100%')
         fields.checkbox(value='^.weak', label='Prefer this state (weak condition)', default=False)
+        fields.dbComboBox(value='^.free_name', dbtable='customers', lbl='Free text or customer', id='suggestion',
+                          placeholder='Type a name or choose a suggestion', auxColumns='@state.name',
+                          selected_suburb='.free_suburb', box_c_width='100%')
         details = pane.div(class_='card stack', padding='16px')
         for label, path in [('Chosen state', 'state_name'), ('Customer', 'caption'),
-                            ('Customer state', 'customer_state')]:
+                            ('Customer state', 'customer_state'), ('Free text or customer', 'free_name'),
+                            ('Its locality', 'free_suburb')]:
             line = details.div()
             line.strong(label + ': ')
             line.span('^.' + path)

@@ -1,11 +1,12 @@
 {
   "key": "base-asqueel-03",
-  "title": "Resident invoice rows",
-  "description": "Up to 100,000 real invoice rows from the XL dataset, with related products and server timings.",
+  "title": "Grid on a database query",
+  "description": "Load up to 100,000 invoice rows with related customers and products, then search and sort them in the browser.",
   "tags": [
     "grid",
     "database",
-    "resident",
+    "dataRpc",
+    "selection",
     "invoice",
     "rows"
   ],
@@ -14,5 +15,5 @@
     "db",
     "asqueel"
   ],
-  "order": 1
+  "order": 0
 }

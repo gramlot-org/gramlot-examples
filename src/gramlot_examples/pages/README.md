@@ -20,6 +20,10 @@ learning prerequisites, not the release chronology.
 | [Tools](07-tools/README.md) | Inspect and compose Source; Python adds a sample IDE. |
 | [Grouplets](09-grouplets/README.md) | Remote fragments, separate instances and nested content. |
 | [Composition and reuse](08-composition/README.md) | Reuse small helpers under different datapaths. |
+| [Real-time](10-realtime/README.md) | Streaming samples and microphone analysis in Data and charts (a demo, listed under Real-time, server and AI demos). |
+
+The navigation groups these topics at its root: Fundamentals, Fields and inputs, Data, logic
+and RPC, Layout and menus, Grid, Charts, Editors and tools, Composition, then the demos.
 
 Each lesson says what to observe and provides complete Python and JavaScript
 source. Start with its small example, change one value, then compare the visible

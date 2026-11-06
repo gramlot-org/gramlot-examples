@@ -4,6 +4,7 @@
     {
       "key": "kajenn-db-lessons",
       "title": "Kajenn and Asqueel",
+      "group": "database-demos",
       "folder": "91-kajenn_db",
       "examples": [
         {

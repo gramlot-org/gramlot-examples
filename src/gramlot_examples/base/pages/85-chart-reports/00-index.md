@@ -1,13 +1,12 @@
 # Charts · Live reports
 
-> **What you learn** — Use the existing server reports and streaming example with the shared chart configurator. Both configuration and displayed rows live in Data: changes reach the charts through ordinary bindings.
+> **What you learn** — Use the existing server reports with the shared chart configurator. Both configuration and displayed rows live in Data: changes reach the charts through ordinary bindings.
 
 ## Start here
 
 - **Australian sales:** annual database totals, one grid and two charts observing its filtered view. Compare revenue, distinct customers, per-customer revenue and annual change.
 - **Sales over time:** server-prepared daily or monthly snapshots with stable playback axes. Temporal navigation selects snapshots; it does not aggregate business records in the renderer.
 - **States and suburbs:** click a state, inspect ABS suburb boundaries, then return to Australia. Year, measure and grid search remain selected.
-- **Streaming sine waves:** the original rolling 600-sample example, with pause, reset, requested and observed update rates.
 - **Attribute rows / Value rows:** the same report contract with both Bag row representations, including empty results and failed requests.
 
 ## Engines and reactivity

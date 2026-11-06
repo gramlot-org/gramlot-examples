@@ -65,18 +65,25 @@ class NavigationDirectoryTests(unittest.TestCase):
                 assert node.label not in seen
                 seen.add(node.label)
                 if len(parts) > 1:
-                    parent = navigation_directory(family["folder"]).get_node(parts[0])
-                    assert parent.value is None
-                    assert parent.attr["url"] in gallery["routes"]
+                    level = navigation_directory("/".join([family["folder"], *parts[:-2]]))
+                    parent = level.get_node(parts[-2])
+                    if parent is None:  # A folder with one lesson shows the lesson in its place.
+                        assert len(branch) == 1
+                        assert level.get_node(example["key"]).attr["url"] == node.attr["url"]
+                    else:
+                        assert parent.value is None
+                        assert parent.attr["url"] in gallery["routes"]
                 for suffix in (".py", ".js", ".md"):
                     assert gallery["assets"][f"/pages/{family['folder']}/{example['folder']}{suffix}"]["file"].is_file()
         assert len(seen) == sum(len(family["examples"]) for family in gallery["families"])
 
 
     def test_numbered_siblings_and_markdown_index(self):
-        assert [n.label for n in navigation_directory().nodes] == ["html_svg", "components", "uploader", "binding", "controllers", "rpc", "charts", "layout", "grid", "menus", "editors", "tools", "composition", "grouplets"]
+        assert [n.label for n in navigation_directory().nodes] == ["html_svg", "fields-inputs", "data-logic-rpc", "layout-menus", "grid", "charts", "editors-tools", "composition-reuse", "realtime"]
+        assert [n.label for n in navigation_directory("data-logic-rpc").nodes] == ["binding", "controllers", "rpc"]
         branch = navigation_directory("00-html_svg")
-        assert [n.label for n in branch.nodes] == ["01-html_basics", "02-native_controls", "03-svg"]
+        # 02-native_controls and 03-svg hold one lesson each: the tree shows the lesson, not a folder around it.
+        assert [n.label for n in branch.nodes] == ["01-html_basics", "e06", "e08"]
         assert branch.get_node("07-markdown_index") is None
 
 
@@ -89,6 +96,7 @@ def test_environment_overlay_keeps_common_and_host_subdirectories_within_their_r
     host.mkdir()
     (host / "00-index.md").write_text("# Host tools\n")
     (host / "01-sample.py").write_text('from gramlot import Page as BasePage\nclass Page(BasePage):\n    title = "Host sample"\n')
+    (host / "02-other.py").write_text('from gramlot import Page as BasePage\nclass Page(BasePage):\n    title = "Other host sample"\n')
     catalog = tmp_path / "catalog.json"
     catalog.write_text(json.dumps({"environment": "test", "families": [{
         "key": "host_inputs", "title": "Inputs and host", "folder": "01-inputs", "examples": []}]}))
@@ -131,3 +139,30 @@ def test_search_metadata_in_navigation():
 
 def test_chart_index_metadata_titles():
     assert navigation_directory().get_node("charts").attr["title"] == "Charts"
+
+
+def test_no_folder_holds_a_single_entry(tmp_path):
+    """At every level, after environment and filter, a directory with one entry is replaced by that entry."""
+    import json
+    folder = tmp_path / "95-single"
+    (folder / "01-topic").mkdir(parents=True)
+    (folder / "00-index.md").write_text("# Single\n")
+    (folder / "01-topic" / "00-index.md").write_text("# Topic\n")
+    page = 'from gramlot import Page as BasePage\nclass Page(BasePage):\n    title = "{}"\n'
+    (folder / "01-topic" / "01-only.py").write_text(page.format("Only lesson"))
+    catalog = tmp_path / "catalog.json"
+    catalog.write_text(json.dumps({"environment": "single", "families": [{
+        "key": "single_family", "title": "Single", "folder": "95-single", "group": "database-demos", "examples": [
+            {"key": "single-01", "title": "Only lesson", "folder": "01-topic/01-only", "description": "d", "tags": ["t"]}]}]}))
+    catalogs = [(catalog, tmp_path)]
+    # Family -> topic folder -> one lesson: the lesson replaces both folders inside its group.
+    group = navigation_directory("database-demos", catalogs)
+    assert [node.label for node in group.nodes] == ["single-01"]
+    assert group.get_node("single-01").attr["url"] == "pages/95-single/01-topic/01-only"
+    # The group itself holds one entry: the root shows the lesson in its place.
+    root = navigation_directory("", catalogs)
+    assert root.get_node("database-demos") is None
+    assert root.get_node("single-01").attr["title"] == "Only lesson"
+    # A filter that leaves one family in a group shows that family at the root.
+    assert "single-01" in [node.label for node in navigation_directory("", catalogs, "Plain").nodes]
+

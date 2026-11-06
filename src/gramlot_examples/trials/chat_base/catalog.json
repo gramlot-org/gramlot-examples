@@ -4,6 +4,7 @@
     {
       "key": "chat-lessons",
       "title": "Chat",
+      "group": "server-demos",
       "folder": "92-chat",
       "examples": [
         {

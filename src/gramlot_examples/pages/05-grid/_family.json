@@ -2,5 +2,6 @@
   "key": "grid",
   "title": "Grid",
   "order": 7,
-  "catalog": "catalog.json"
+  "catalog": "catalog.json",
+  "group": "grid-lessons"
 }

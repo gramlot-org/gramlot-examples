@@ -79,8 +79,8 @@ test('navigation lists only the lessons of the selected filter and drops empty d
     assert.deepEqual(labels(navigationDirectory('04-rpc/01-server_calls', [], 'Server')), ['c09', 'c10', 'c11']);
     assert.ok(!labels(navigationDirectory('04-rpc/01-server_calls', [], 'Plain')).includes('c09'));
     assert.deepEqual(labels(navigationDirectory('04-rpc/01-server_calls', [], 'DB')), []);
-    assert.ok(!labels(navigationDirectory('', [], 'Server')).includes('binding'));
-    assert.ok(labels(navigationDirectory('', [], 'Plain')).includes('binding'));
+    assert.ok(!labels(navigationDirectory('data-logic-rpc', [], 'Server')).includes('binding'));
+    assert.ok(labels(navigationDirectory('data-logic-rpc', [], 'Plain')).includes('binding'));
     assert.deepEqual(labels(navigationDirectory('', [], 'All')), labels(navigationDirectory('')));
     assert.deepEqual(navigationDirectory('04-rpc/01-server_calls').getNode('c09').attr.requires, ['endpoint']);
     assert.throws(() => navigationDirectory('', [], 'Missing'), /Unknown filter/);

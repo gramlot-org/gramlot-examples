@@ -118,7 +118,9 @@ class UpdaterTests(unittest.TestCase):
         self.assertFalse(any('API_KEY' in name for name in py['environment']))
         self.assertNotIn('environment',js)
     def test_python_image_carries_no_llm_credentials(self):
-        recipe=(Path(__file__).parent/'Dockerfile.python-mobile').read_text()
+        # The repository name first; the server installs the same recipe as automation/Dockerfile.python.
+        here=Path(__file__).parent
+        recipe=next(path for path in (here/'Dockerfile.python-mobile',here/'Dockerfile.python') if path.is_file()).read_text()
         self.assertIn("'gramlot-examples[chat]'",recipe)
         self.assertIn('GRAMLOT_DOCS_ROOT=/app/gramlot-docs',recipe)
         self.assertNotIn('API_KEY',recipe)

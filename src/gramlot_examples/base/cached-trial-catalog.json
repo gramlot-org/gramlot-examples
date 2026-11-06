@@ -4,6 +4,7 @@
     {
       "key": "asqueel-cached",
       "title": "Grid · Asqueel only",
+      "group": "database-demos",
       "folder": "84-cached-selection",
       "examples": [
         {

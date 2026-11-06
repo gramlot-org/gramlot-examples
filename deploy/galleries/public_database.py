@@ -60,15 +60,29 @@ def configure():
     atexit.register(service.cached_database.close)
 
 
+def public(catalog):
+    """Whether a catalogue is published: a family with ``"public": false`` is a local trial only."""
+    flags = {family.get('public', True) for family in json.loads(Path(catalog).read_text())['families']}
+    if len(flags) != 1:
+        raise ValueError(f'A catalogue mixes public and local families: {catalog}')
+    return flags.pop()
+
+
 def catalogs():
+    """The base catalogues of the public gallery, without the local trials."""
     return [(EXAMPLES / 'base' / name, EXAMPLES / 'base/pages') for name in
-            ('catalog.json', 'asqueel-catalog.json', 'selection-trial-catalog.json', 'cached-trial-catalog.json', 'chart-reports-catalog.json')]
+            ('catalog.json', 'asqueel-catalog.json', 'selection-trial-catalog.json', 'cached-trial-catalog.json',
+             'chart-reports-catalog.json', 'system-monitor-catalog.json')
+            if public(EXAMPLES / 'base' / name)]
 
 
 def wire_pages(root):
+    staged = {family['folder'] for catalog, _ in catalogs() for family in json.loads(catalog.read_text())['families']}
     for path in ('80-database/01-customers', '81-asqueel/01-state_customers', '81-asqueel/02-checkbox_customers',
-                 '82-grid-database/01-customers', '82-grid-database/02-invoice_rows',
+                 '82-grid-database/02-invoice_rows',
                  '83-selection-trials/02-jsonl'):
+        if path.split('/')[0] not in staged:
+            continue  # A local trial (``"public": false``): the public gallery does not stage it.
         with (root / f'pages/{path}.py').open('a') as stream:
             stream.write('\nfrom gramlot_py_server.gallery.base.service import database\nPage.database = database\n')
     with (root / 'pages/84-cached-selection/01-invoice_rows.py').open('a') as stream:

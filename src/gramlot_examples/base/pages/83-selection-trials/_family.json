@@ -2,5 +2,7 @@
   "key": "selection-trials",
   "title": "Grid · Transfer experiments",
   "order": 0,
-  "catalog": "selection-trial-catalog.json"
+  "catalog": "selection-trial-catalog.json",
+  "group": "database-demos",
+  "public": false
 }
