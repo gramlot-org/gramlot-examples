@@ -350,7 +350,7 @@ Run it against Python, JS and Worker galleries after changing their presentation
 The version is the same in `pyproject.toml` and `package.json`; the core version it
 requires is the dependency floor of section 005. `.github/workflows/publish.yml` runs by hand on the version tag on
 `main`: it checks versions and release notes (`.github/release-notes/vX.Y.Z.md`), runs
-`tests.yml`, builds the bundle, the wheel, the sdist and the npm tarball, checks that
+`tests.yml` only when started with `full_tests`, builds the bundle, the wheel, the sdist and the npm tarball, checks that
 the packaged bundle is the fresh build, creates the GitHub release with `SHA256SUMS`,
 and publishes to PyPI and npm with trusted publishing from the environment `release`.
 

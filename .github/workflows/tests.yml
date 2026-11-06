@@ -1,9 +1,7 @@
 name: Tests
 
+# Full suite only on request: run by hand or from Publish release with full_tests.
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
   workflow_dispatch:
   workflow_call:
 

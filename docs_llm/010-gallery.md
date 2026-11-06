@@ -235,7 +235,7 @@ Run it against Python, JS and Worker galleries after changing their presentation
 ## 040 · Release
 
 Same version in `pyproject.toml` and `package.json`. `publish.yml` by hand on the tag
-on `main`: validate, `tests.yml`, build, bundle check, GitHub release with
+on `main`: validate, `tests.yml` (only with `full_tests`), build, bundle check, GitHub release with
 `SHA256SUMS`, PyPI and npm with trusted publishing (environment `release`).
 
 
