@@ -11,5 +11,8 @@
     "remote",
     "fragment"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 0
 }

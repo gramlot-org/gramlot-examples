@@ -8,5 +8,8 @@
     "images",
     "image"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 2
 }

@@ -11,5 +11,8 @@
     "tree",
     "basics"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 24
 }

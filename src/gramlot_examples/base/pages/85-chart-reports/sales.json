@@ -8,5 +8,10 @@
     "database",
     "Australia"
   ],
+  "requires": [
+    "endpoint",
+    "db",
+    "asqueel"
+  ],
   "order": 0
 }

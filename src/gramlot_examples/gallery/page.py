@@ -2,7 +2,7 @@
 from gramlot_examples.gallery.collections import collections
 from gramlot import IndexPage, source, endpoint
 from genro_bag import Bag
-from gramlot_examples import build_gallery, navigation_directory
+from gramlot_examples import available_filters, build_gallery, navigation_directory
 from gramlot_examples.gallery.guided_demo import guided_demo
 from gramlot_examples.gallery.features import feature_index
 from gramlot_examples.gallery.modules import module_bag, registered_modules
@@ -65,8 +65,16 @@ class Page(IndexPage):
             for item in family["examples"]]} for family in gallery["families"]]
 
     @property
+    def filters(self):
+        """The filters that match at least one lesson of this host, the first one being the default."""
+        return available_filters(self.gallery)
+
+    @property
     def navigation(self):
-        navigation = navigation_directory(catalogs=self.catalogs)
+        return self.navigation_root()
+
+    def navigation_root(self, filter=None):
+        navigation = navigation_directory("", self.catalogs, filter)
         navigation.set_item("features", None, {"title": "Features", "key": "features", "category": False})
         return navigation
 
@@ -74,6 +82,12 @@ class Page(IndexPage):
         pane.set_attr({"id": "index-sidebar", "class": "index-sidebar", "nodeId": "galleryNavigation"})
         header = pane.header(class_="gallery-navigation-header")
         header.img(src=self.logo_url, alt=self.title, class_="index-logo")
+        filters = self.filters
+        if len(filters) > 1:
+            choice = header.select(value="^galleryIndex.filter", id="gallery-filter", class_="gallery-navigation-filter",
+                                   aria_label="Filter lessons", title="Filter lessons by what they require")
+            for rule in filters:
+                choice.option(rule["label"], value=rule["label"])
         search = header.menu(presentation="bar", class_="gallery-navigation-search", aria_label="Search navigation")
         field = search.menuline(group=True, flex=1, min_width=0).div(class_="gallery-search-field")
         field.span(class_="gallery-search-icon", aria_hidden="true")
@@ -99,8 +113,10 @@ class Page(IndexPage):
         self.header(pane)
 
     @endpoint
-    def navigation_section(self, directory):
-        return navigation_directory(directory, self.catalogs)
+    def navigation_section(self, directory, filter=None):
+        if directory == "":
+            return self.navigation_root(filter)
+        return navigation_directory(directory, self.catalogs, filter)
 
     def introduction(self, intro):
         intro.h2("Example gallery")
@@ -168,6 +184,12 @@ class Page(IndexPage):
         self.footer(settings.frame.center)
         if self.gallery_modules:
             shell.dataSetter("galleryIndex.modules", module_bag(self.gallery_modules))
+        declared = self.filters
+        filters = Bag()
+        for position, rule in enumerate(declared):
+            filters.set_item(f"f{position}", None, label=rule["label"])
+        shell.dataSetter("galleryIndex.filters", filters)
+        shell.dataSetter("galleryIndex.filter", declared[0]["label"])
         shell.dataController(func="galleryInitialize", _onBuilt=True)
         shell.dataController(func="galleryMount", _onStart=True)
 

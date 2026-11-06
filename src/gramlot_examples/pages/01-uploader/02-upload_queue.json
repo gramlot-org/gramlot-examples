@@ -8,5 +8,8 @@
     "queue",
     "metadata"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 0
 }

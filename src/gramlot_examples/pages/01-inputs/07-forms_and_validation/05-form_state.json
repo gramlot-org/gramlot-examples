@@ -11,5 +11,8 @@
     "forms",
     "validation"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 29
 }

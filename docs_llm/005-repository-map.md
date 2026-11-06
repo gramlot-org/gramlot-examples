@@ -13,6 +13,7 @@ gramlot-examples/
 │   ├── __init__.py · py.typed           build_gallery
 │   ├── index.js                         buildGallery
 │   ├── catalog.json                     Common families
+│   ├── filters.json                     Gallery filters (declared data)
 │   ├── pages/                           README · 00-html_svg (e) · 02-binding (b) · 03-controllers (c)
 │   └── gallery/                         Gallery page
 │       ├── page.py · page.js            Python and JavaScript pages

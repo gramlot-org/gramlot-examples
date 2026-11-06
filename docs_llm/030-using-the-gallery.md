@@ -10,6 +10,13 @@ Open the [Python gallery](https://gallery-py.gramlot.dev/) or the
 its search field. Search includes branches not yet opened; clearing the field
 restores the tree. Choose a result to open its page in a retained tab.
 
+The **Filter lessons** menu above the search field narrows the tree to the lessons that fit your
+environment: **All** lists everything, **Plain** the lessons that need nothing from the server,
+**Server** the lessons that call an endpoint, and so on for the other entries. The menu lists only
+the filters that match at least one lesson of the gallery you opened. Families left empty
+disappear, and search works within the selected filter. The gallery remembers the choice in your
+browser.
+
 Start with Fundamentals: HTML, Data, value and attribute bindings, styles, Labelboxes, SVG and inspection of Data and Source. Then continue with components, advanced bindings and Logic. Continue to RPC,
 containers, menus and composition as needed. The [learning path](../src/gramlot_examples/pages/README.md)
 links every topic; it is generated into the manual with the catalogue lessons.

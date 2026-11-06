@@ -9,5 +9,10 @@
     "drilldown",
     "suburbs"
   ],
+  "requires": [
+    "endpoint",
+    "db",
+    "asqueel"
+  ],
   "order": 2
 }

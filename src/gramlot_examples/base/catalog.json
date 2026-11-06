@@ -17,6 +17,10 @@
             "across",
             "adapters"
           ],
+          "requires": [
+            "endpoint",
+            "db"
+          ],
           "folder": "01-customers"
         }
       ]

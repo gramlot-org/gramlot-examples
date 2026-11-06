@@ -13,6 +13,9 @@
     "inline",
     "hierarchical"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 15,
   "component": "checkBoxText"
 }

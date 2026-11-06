@@ -9,5 +9,8 @@
     "nested",
     "bags"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 6
 }

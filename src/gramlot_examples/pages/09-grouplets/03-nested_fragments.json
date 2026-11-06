@@ -12,5 +12,8 @@
     "nested",
     "fragments"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 2
 }

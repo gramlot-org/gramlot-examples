@@ -17,6 +17,11 @@
             "customer",
             "customers"
           ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
+          ],
           "folder": "01-state_customers"
         },
         {
@@ -30,6 +35,11 @@
             "multiple",
             "popup",
             "condition"
+          ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
           ],
           "folder": "02-checkbox_customers"
         }
@@ -50,6 +60,11 @@
             "resident",
             "customers"
           ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
+          ],
           "folder": "01-customers"
         },
         {
@@ -62,6 +77,11 @@
             "resident",
             "invoice",
             "rows"
+          ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
           ],
           "folder": "02-invoice_rows"
         }

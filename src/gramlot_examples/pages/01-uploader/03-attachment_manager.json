@@ -8,5 +8,8 @@
     "attachment",
     "manager"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 1
 }

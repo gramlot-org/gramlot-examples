@@ -9,5 +9,8 @@
     "tree",
     "checkboxes"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 28
 }

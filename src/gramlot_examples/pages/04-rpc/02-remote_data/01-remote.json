@@ -10,5 +10,8 @@
     "source",
     "fragment"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 4
 }

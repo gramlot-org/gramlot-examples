@@ -198,6 +198,11 @@
   --gallery-toolbar-size:max(var(--gramlot-toolbar-thickness,42px),calc(var(--gallery-control-size) + 6px));
 }
 
+/* Lesson filter: one select above the search field. */
+.gallery-navigation-filter { display:block;width:100%;min-width:0;box-sizing:border-box;margin:0 0 6px;
+  min-height:30px;padding:0 7px;border:1px solid var(--gramlot-border);border-radius:999px;
+  background:var(--gramlot-field-background,var(--gramlot-surface));color:var(--gramlot-ink);font:inherit; }
+
 /* One search field: decorative lens, live input and an internal clear action. */
 .gallery-navigation-search { display:block;margin:0;min-width:0;
   background:var(--gramlot-surface-subtle); }

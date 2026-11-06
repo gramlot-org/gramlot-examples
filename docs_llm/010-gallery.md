@@ -15,7 +15,7 @@ those records describe their stated revision, not current API guarantees.
   Depends only on `gramlot` / `@gramlot/gramlot` 0.3.6 or later. No server code.
 - Pages `src/gramlot_examples/pages/<family>/NN_name.{py,js}` (each registry its
   language; `NN_name.js` exports `Page`, and `Logic` when the page names client methods, in both packages) with `.md`,
-  `.css`; family READMEs; `catalog.json`.
+  `.css`; family READMEs; `catalog.json`; `filters.json`.
 - Gallery page `gallery/page.py` / `gallery/page.js` + `gallery-page.js`,
   `gallery.css`, built bundle `gallery/dist/`. `gallery/browser/` is not published.
 - Theme and logo from the core: wheel `gramlot/resources/{themes,assets/branding}/…`,
@@ -28,6 +28,41 @@ those records describe their stated revision, not current API guarantees.
 `{"environment"?, "families": [{key, folder, title, examples: [{key, title, folder,
 description, tags}]}]}`. Family `folder` is the physical directory; example `folder` is its nested family-relative stem. Keys identify lessons; public URLs preserve physical paths.
 The common catalogue has no `environment`; an environment catalogue has one.
+
+<a id="ge-010-012"></a>
+
+## 012 · Requirements and filters
+
+Sidecar `.json` of a lesson: `requires`, a list of free strings (`"endpoint"`, `"python"`,
+`"psutil"`, `"db"`, `"asqueel"`). No `requires` = runs everywhere. `tags` stay for topics.
+The generator copies it into `catalog.json`; a hand-written catalogue puts it in the example.
+Not a list of non-empty strings = error in `build_gallery` / `buildGallery`.
+A lesson using `@endpoint`, `registerEndpoint`, `@upload`, `registerUpload`, `@source`, `registerSource`, `dataRpc`, `remote(` or `dataRemote` requires
+`"endpoint"`; one test per language enforces it.
+
+Filters are data: `filters.json` beside a `catalog.json`, a list of rules `{"label", "requires": []}`
+or `{"label", "any": [...]}` or `{"label"}`:
+
+- no rule = all lessons; `"requires": []` = lessons with empty/absent `requires` (no other list allowed);
+  `"any": [...]` = lessons whose `requires` intersects the list;
+- `label` required, unique per file; one of `requires` / `any` per rule.
+
+The common catalogue ships `All`, `Plain` (`requires: []`), `Server` (`endpoint`), `Python server`
+(`python`), `DB` (`db`), `Kajenn/Asqueel` (`asqueel`). An environment adds filters with a
+`filters.json` beside its `catalog.json`; the same label in two files must be identical or
+`build_gallery` raises. `build_gallery` / `buildGallery` return `filters`; `available_filters(gallery)` /
+`availableFilters(gallery)` keep the rules matching at least one catalogued lesson;
+`filter_matches(rule, requires)` / `filterMatches(rule, requires)` test one lesson.
+
+`navigation_directory(directory, catalogs, filter)` / `navigationDirectory(...)` list only matching
+lessons and omit directories with none below; leaves carry `requires`; unknown label = error;
+`None`/`null` = everything.
+
+The gallery shows a filter menu above the search field when at least two filters are available.
+`galleryIndex.filter` holds the label. A change replaces the navigation root with
+`navigation_section(directory="", filter)` and gives each directory a resolver passing the filter.
+Kept per viewer in `localStorage`; an unavailable saved label falls back to the first filter.
+A static export whose `navigation_section` ignores `filter` lists everything.
 
 <a id="ge-010-015"></a>
 

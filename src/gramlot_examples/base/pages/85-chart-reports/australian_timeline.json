@@ -8,5 +8,10 @@
     "sales",
     "snapshots"
   ],
+  "requires": [
+    "endpoint",
+    "db",
+    "asqueel"
+  ],
   "order": 1
 }

@@ -13,5 +13,8 @@
     "calls",
     "change"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 2
 }

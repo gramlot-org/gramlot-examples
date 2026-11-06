@@ -18,6 +18,11 @@
             "invoice",
             "rows"
           ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
+          ],
           "folder": "01-invoice_rows"
         }
       ]

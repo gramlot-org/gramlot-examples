@@ -8,5 +8,8 @@
     "fetch",
     "remote"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 6
 }

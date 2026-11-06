@@ -33,22 +33,85 @@ def read_catalog(catalog, pages, common):
         for example in family["examples"]:
             if pattern is not None and not pattern.fullmatch(example["key"]):
                 raise ValueError(f"Example key {example['key']!r} does not match {environment}-NN: {catalog}")
+            check_requires(example.get("requires"), f"{catalog}: {example['key']}")
         families.append({**family, "path": Path(pages) / family["folder"]})
     return families
 
 
+def check_requires(requires, where):
+    """A lesson's ``requires`` is absent or a list of non-empty strings."""
+    if requires is not None and (not isinstance(requires, list)
+                                 or any(not isinstance(need, str) or not need.strip() for need in requires)):
+        raise ValueError(f"requires must be a list of non-empty strings: {where}")
+
+
+def read_filters(catalog):
+    """Read the ``filters.json`` beside ``catalog``: declared filters, or an empty list when absent."""
+    path = Path(catalog).with_name("filters.json")
+    if not path.is_file():
+        return []
+    rules = json.loads(path.read_text())
+    if not isinstance(rules, list):
+        raise ValueError(f"filters.json must be a list: {path}")
+    for rule in rules:
+        if not isinstance(rule, dict) or not isinstance(rule.get("label"), str) or not rule["label"].strip():
+            raise ValueError(f"A filter requires a non-empty label: {path}")
+        if set(rule) - {"label", "requires", "any"} or ("requires" in rule and "any" in rule):
+            raise ValueError(f"Filter {rule['label']!r} declares only label and one of requires or any: {path}")
+        if "requires" in rule and rule["requires"] != []:
+            raise ValueError(f"Filter {rule['label']!r}: requires must be an empty list: {path}")
+        if "any" in rule and (not isinstance(rule["any"], list) or not rule["any"]
+                              or any(not isinstance(need, str) or not need.strip() for need in rule["any"])):
+            raise ValueError(f"Filter {rule['label']!r}: any must be a non-empty list of strings: {path}")
+    labels = [rule["label"] for rule in rules]
+    if len(set(labels)) != len(labels):
+        raise ValueError(f"Duplicate filter label: {path}")
+    return rules
+
+
+def merge_filters(catalogs):
+    """The filters of every catalogue, in order; a label declared twice must be identical."""
+    filters = []
+    for catalog in catalogs:
+        for rule in read_filters(catalog):
+            known = next((item for item in filters if item["label"] == rule["label"]), None)
+            if known is None:
+                filters.append(rule)
+            elif known != rule:
+                raise ValueError(f"Conflicting definitions of filter {rule['label']!r}: {catalog}")
+    return filters
+
+
+def filter_matches(rule, requires):
+    """Whether a lesson with ``requires`` belongs to the filter ``rule``."""
+    requires = requires or []
+    if "any" in rule:
+        return bool(set(rule["any"]) & set(requires))
+    if "requires" in rule:
+        return not requires
+    return True
+
+
+def available_filters(gallery):
+    """The filters of ``gallery`` that match at least one of its catalogued lessons."""
+    lessons = [example.get("requires") for family in gallery["families"] for example in family["examples"]]
+    return [rule for rule in gallery["filters"] if any(filter_matches(rule, requires) for requires in lessons)]
+
+
 def build_gallery(catalogs=()):
-    """Return the families, routes and static assets of the common gallery plus ``catalogs``.
+    """Return the families, routes, static assets and filters of the common gallery plus ``catalogs``.
 
     Each item of ``catalogs`` is a pair ``(catalog.json, pages folder)`` of one environment.
     ``routes`` maps each key to its Python page, its same-name stylesheet and its logic
     module: ``NN_name_aux.js``, else ``NN_name.js``, whose ``Logic`` export the server takes
     (the server raises when both files exist). ``assets`` maps each URL to its file and media
-    type. Nothing is written or served here.
+    type. ``filters`` are the declared lesson filters of the ``filters.json`` files beside the
+    catalogues (see ``available_filters``). Nothing is written or served here.
     """
     families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
     for catalog, pages in catalogs:
         families.extend(read_catalog(catalog, pages, common=False))
+    filters = merge_filters([PACKAGE / "catalog.json", *(catalog for catalog, _ in catalogs)])
     keys = ["index"] + [key for family in families
                         for key in (family["key"], *(example["key"] for example in family["examples"]))]
     duplicates = sorted({key for key in keys if keys.count(key) > 1})
@@ -112,10 +175,10 @@ def build_gallery(catalogs=()):
     for route in routes.values():
         data = route["page"].with_name(route["page"].stem + "_data.tytx")
         route["data"] = data if data.is_file() else None
-    return {"families": families, "routes": routes, "assets": assets, "collections": gallery_collections()}
+    return {"families": families, "routes": routes, "assets": assets, "collections": gallery_collections(), "filters": filters}
 
 
-__all__ = ["build_gallery"]
+__all__ = ["build_gallery", "navigation_directory", "available_filters", "filter_matches"]
 
 def page_title(path):
     """Read gallery metadata first, then the page class or Markdown heading."""
@@ -140,12 +203,28 @@ def directory_index(folder):
     return indexes[0]
 
 
-def navigation_directory(directory="", catalogs=()):
-    """Read one numbered filesystem level, without exposing its own index."""
-    from genro_bag import Bag
+def navigation_directory(directory="", catalogs=(), filter=None):
+    """Read one numbered filesystem level, without exposing its own index.
+
+    ``filter`` is the label of a declared filter. With one, only the lessons it matches are listed
+    and a directory without a matching lesson below it is omitted. ``None`` lists everything.
+    """
     families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
     for catalog, pages in catalogs:
         families.extend(read_catalog(catalog, pages, common=False))
+    rule = None
+    if filter is not None:
+        rules = merge_filters([PACKAGE / "catalog.json", *(catalog for catalog, _ in catalogs)])
+        rule = next((item for item in rules if item["label"] == filter), None)
+        if rule is None:
+            raise ValueError(f"Unknown filter: {filter}")
+        if "any" not in rule and "requires" not in rule:
+            rule = None
+    return navigation_level(directory, families, rule)
+
+
+def navigation_level(directory, families, rule):
+    from genro_bag import Bag
     groups = {family["folder"]: family for family in families}
     parts = directory.split("/") if directory else []
     if any(not re.fullmatch(r"[A-Za-z0-9_-]+", part) for part in parts):
@@ -174,6 +253,8 @@ def navigation_directory(directory="", catalogs=()):
             if index_metadata.is_file() and json.loads(index_metadata.read_text()).get("navigation") is False:
                 continue
             index = directory_index(child)
+            if rule is not None and not len(navigation_level(relative, families, rule)):
+                continue
             attrs = dict(title=page_title(index), category=True, directory=relative,
                          url=f"pages/{relative}/00-index")
             if index.suffix == ".md":
@@ -188,10 +269,15 @@ def navigation_directory(directory="", catalogs=()):
             descriptor = json.loads(metadata.read_text()) if metadata.is_file() else None
             if descriptor and descriptor.get("navigation") is False:
                 continue
+            requires = (example or descriptor or {}).get("requires")
+            if rule is not None and not filter_matches(rule, requires):
+                continue
             title = example["title"] if example else descriptor["title"] if descriptor else page_title(child)
             attrs = dict(title=title, url=f"pages/{'/'.join([*parts, child.stem])}", category=False)
             if descriptor:
                 attrs.update({name: descriptor[name] for name in ("description", "tags", "component") if name in descriptor})
+            if requires:
+                attrs["requires"] = requires
             if example:
                 attrs["key"] = example["key"]
             result.set_item(example["key"] if example else child.stem, None, **attrs)

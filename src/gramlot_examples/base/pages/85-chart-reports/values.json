@@ -7,5 +7,8 @@
     "Bag",
     "values"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 5
 }

@@ -11,5 +11,8 @@
     "endpoint",
     "calls"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 1
 }

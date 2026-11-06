@@ -10,5 +10,8 @@
     "grouplet",
     "cards"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 3
 }

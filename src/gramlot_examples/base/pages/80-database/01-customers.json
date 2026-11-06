@@ -9,5 +9,9 @@
     "across",
     "adapters"
   ],
+  "requires": [
+    "endpoint",
+    "db"
+  ],
   "order": 0
 }

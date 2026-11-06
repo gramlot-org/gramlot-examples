@@ -1,0 +1,8 @@
+[
+  {"label": "All"},
+  {"label": "Plain", "requires": []},
+  {"label": "Server", "any": ["endpoint"]},
+  {"label": "Python server", "any": ["python"]},
+  {"label": "DB", "any": ["db"]},
+  {"label": "Kajenn/Asqueel", "any": ["asqueel"]}
+]

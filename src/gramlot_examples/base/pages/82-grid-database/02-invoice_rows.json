@@ -9,5 +9,10 @@
     "invoice",
     "rows"
   ],
+  "requires": [
+    "endpoint",
+    "db",
+    "asqueel"
+  ],
   "order": 1
 }

@@ -11,7 +11,12 @@
           "folder": "system_analysis",
           "title": "System monitor",
           "description": "Compose movable charts and grids over live Data Bags.",
-          "explanation": "Read main(), follow the request/metrics bindings, then inspect the host sampler. Rates and chart data are prepared outside the renderer."
+          "explanation": "Read main(), follow the request/metrics bindings, then inspect the host sampler. Rates and chart data are prepared outside the renderer.",
+          "requires": [
+            "endpoint",
+            "python",
+            "psutil"
+          ]
         },
         {
           "key": "system-monitor-02",

@@ -7,7 +7,9 @@ import {mountGallerySettings} from './gallery-settings.js';
 import {mountGalleryPresentation} from './gallery-presentation.js';
 import {mountIndexPage} from '@gramlot/gramlot';
 import {mountGalleryContent} from './gallery-content.js';
-import {Bag, NavigationResolver} from '@gramlot/gramlot';
+import {Bag} from '@gramlot/gramlot';
+import {mountGalleryFilter} from './gallery-filter.js';
+export {initializeNavigation} from './gallery-filter.js';
 
 /** Gallery specializations around the reusable FramePage/IndexPage contract. */
 export function mountGallery(renderer, root, inspector) {
@@ -17,6 +19,7 @@ export function mountGallery(renderer, root, inspector) {
     const source=id=>root.builder.wrapSource(renderer.elements.get(byId(id)).node);
     const set=(element,attrs)=>renderer.elements.get(element).node.setAttr(attrs);
     const settings=mountGallerySettings(renderer,root,state);
+    const filter=mountGalleryFilter(renderer,root,state);
     const presentation=mountGalleryPresentation(renderer,root,state);
     const progress = mountFeatureProgress(renderer, root, state);
     const showContent = () => {
@@ -95,24 +98,8 @@ export function mountGallery(renderer, root, inspector) {
         if (selected != null) state.setItem('navigationSelection', selected);
     }});
     renderer.onDispose(root,()=>state.unsubscribe('gallery-multipage', {any:true}));
-    return {dispose(){state.unsubscribe('gallery-multipage', {any:true});progress.dispose();state.unsubscribe('gallery-feature-view', {any:true});guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
+    return {dispose(){filter.dispose();state.unsubscribe('gallery-multipage', {any:true});progress.dispose();state.unsubscribe('gallery-feature-view', {any:true});guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
 }
-
-/** Install directory resolvers during page build, before the tree first renders. */
-export function initializeNavigation(renderer, root) {
-    const state=root.builder.data.getItem('galleryIndex');
-    state.setItem('navigationOpen', true);
-    state.setItem('settingsOpen', false);
-    const navigation=state.getItem('navigation');
-    const resolvers=[];
-    for(const node of navigation.getNodes()) if(node.attr.directory !== undefined && node.resolver === null) {
-        const resolver=new NavigationResolver({gramlot:renderer.binding.gramlot,method:'navigation_section',directory:node.attr.directory,
-            onError:error=>{renderer.elements.get(renderer.destination.ownerDocument.getElementById('gallery-load-status')).node.setValue(`Could not load directory: ${error.message}`);}});
-        navigation.setResolver(node.label,resolver);resolvers.push(resolver);
-    }
-    renderer.onDispose(root,()=>{for(const resolver of resolvers)resolver.abort();});
-}
-
 
 /** Toolbar actions change the same Source drawers as their built-in handles. */
 export function toggleGalleryPanel(builder, nodeId, statePath) {

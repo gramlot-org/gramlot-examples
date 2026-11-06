@@ -20,6 +20,10 @@
             "jsonl",
             "http"
           ],
+          "requires": [
+            "endpoint",
+            "db"
+          ],
           "folder": "02-jsonl"
         }
       ]

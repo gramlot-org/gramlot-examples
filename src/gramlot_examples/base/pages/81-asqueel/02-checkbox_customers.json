@@ -10,5 +10,10 @@
     "popup",
     "condition"
   ],
+  "requires": [
+    "endpoint",
+    "db",
+    "asqueel"
+  ],
   "order": 1
 }

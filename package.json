@@ -26,6 +26,7 @@
   "exports": {
     ".": "./src/gramlot_examples/index.js",
     "./catalog.json": "./src/gramlot_examples/catalog.json",
+    "./filters.json": "./src/gramlot_examples/filters.json",
     "./pages/*": "./src/gramlot_examples/pages/*",
     "./gallery/*": "./src/gramlot_examples/gallery/*"
   },
@@ -34,6 +35,7 @@
     "NOTICE",
     "src/gramlot_examples/index.js",
     "src/gramlot_examples/catalog.json",
+    "src/gramlot_examples/filters.json",
     "src/gramlot_examples/pages/**/*.js",
     "src/gramlot_examples/pages/**/*.md",
     "src/gramlot_examples/pages/**/*.json",

@@ -10,5 +10,8 @@
     "fragments",
     "cached"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 5
 }

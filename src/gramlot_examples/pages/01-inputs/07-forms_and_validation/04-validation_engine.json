@@ -13,5 +13,8 @@
     "forms",
     "engine"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 23
 }

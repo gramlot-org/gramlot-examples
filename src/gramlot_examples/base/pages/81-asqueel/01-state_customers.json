@@ -9,5 +9,10 @@
     "customer",
     "customers"
   ],
+  "requires": [
+    "endpoint",
+    "db",
+    "asqueel"
+  ],
   "order": 0
 }

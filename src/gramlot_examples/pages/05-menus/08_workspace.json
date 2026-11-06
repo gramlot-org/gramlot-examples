@@ -8,5 +8,8 @@
     "document",
     "workspace"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 7
 }

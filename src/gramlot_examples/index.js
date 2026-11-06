@@ -2,7 +2,7 @@ import {collections} from './gallery/collections.js';
 /** Gramlot example pages, the gallery page and its catalogue. */
 import {existsSync, readFileSync, readdirSync, statSync, lstatSync, realpathSync} from 'node:fs';
 import {Bag} from '@gramlot/gramlot';
-import {basename, extname, join, relative, sep, isAbsolute} from 'node:path';
+import {basename, dirname, extname, join, relative, sep, isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 const require = createRequire(import.meta.url);
@@ -30,23 +30,89 @@ function readCatalog(catalog, pages, common) {
             if (pattern && !pattern.test(example.key)) {
                 throw new Error(`Example key '${example.key}' does not match ${environment}-NN: ${catalog}`);
             }
+            checkRequires(example.requires, `${catalog}: ${example.key}`);
         }
         return {...family, path: join(pages, family.folder)};
     });
 }
 
+/** A lesson's `requires` is absent or a list of non-empty strings. */
+function checkRequires(requires, where) {
+    if (requires !== undefined && (!Array.isArray(requires) || requires.some(need => typeof need !== 'string' || !need.trim()))) {
+        throw new Error(`requires must be a list of non-empty strings: ${where}`);
+    }
+}
+
+const nonEmptyStrings = list => Array.isArray(list) && list.length > 0 && list.every(need => typeof need === 'string' && need.trim());
+
+/** Read the `filters.json` beside `catalog`: declared filters, or an empty list when absent. */
+export function readFilters(catalog) {
+    const path = join(dirname(catalog), 'filters.json');
+    if (!existsSync(path)) return [];
+    const rules = JSON.parse(readFileSync(path, 'utf8'));
+    if (!Array.isArray(rules)) throw new Error(`filters.json must be a list: ${path}`);
+    for (const rule of rules) {
+        if (rule === null || typeof rule !== 'object' || Array.isArray(rule) || typeof rule.label !== 'string' || !rule.label.trim()) {
+            throw new Error(`A filter requires a non-empty label: ${path}`);
+        }
+        if (Object.keys(rule).some(name => !['label', 'requires', 'any'].includes(name)) ||
+            (Object.hasOwn(rule, 'requires') && Object.hasOwn(rule, 'any'))) {
+            throw new Error(`Filter '${rule.label}' declares only label and one of requires or any: ${path}`);
+        }
+        if (Object.hasOwn(rule, 'requires') && !(Array.isArray(rule.requires) && rule.requires.length === 0)) {
+            throw new Error(`Filter '${rule.label}': requires must be an empty list: ${path}`);
+        }
+        if (Object.hasOwn(rule, 'any') && !nonEmptyStrings(rule.any)) {
+            throw new Error(`Filter '${rule.label}': any must be a non-empty list of strings: ${path}`);
+        }
+    }
+    if (new Set(rules.map(rule => rule.label)).size !== rules.length) throw new Error(`Duplicate filter label: ${path}`);
+    return rules;
+}
+
+/** The filters of every catalogue, in order; a label declared twice must be identical. */
+export function mergeFilters(catalogs) {
+    const filters = [];
+    for (const catalog of catalogs) {
+        for (const rule of readFilters(catalog)) {
+            const known = filters.find(item => item.label === rule.label);
+            if (!known) filters.push(rule);
+            else if (JSON.stringify(known) !== JSON.stringify(rule)) {
+                throw new Error(`Conflicting definitions of filter '${rule.label}': ${catalog}`);
+            }
+        }
+    }
+    return filters;
+}
+
+/** Whether a lesson with `requires` belongs to the filter `rule`. */
+export function filterMatches(rule, requires) {
+    requires = requires ?? [];
+    if (Object.hasOwn(rule, 'any')) return rule.any.some(need => requires.includes(need));
+    if (Object.hasOwn(rule, 'requires')) return requires.length === 0;
+    return true;
+}
+
+/** The filters of `gallery` that match at least one of its catalogued lessons. */
+export function availableFilters(gallery) {
+    const lessons = gallery.families.flatMap(family => family.examples.map(example => example.requires));
+    return gallery.filters.filter(rule => lessons.some(requires => filterMatches(rule, requires)));
+}
+
 /**
- * Return the families, routes and static assets of the common gallery plus `catalogs`.
+ * Return the families, routes, static assets and filters of the common gallery plus `catalogs`.
  *
  * Each item of `catalogs` is a pair `[catalog.json, pages folder]` of one environment.
  * `routes` maps each key to its JavaScript page, its same-name stylesheet and its logic
  * module: `NN_name_aux.js`, else `NN_name.js`, the page module itself, whose `Logic` export
  * the server takes (the server throws when both hold a `Logic`). `assets` maps each URL to its
- * file and media type. Nothing is written or served here.
+ * file and media type. `filters` are the declared lesson filters of the `filters.json` files beside
+ * the catalogues (see `availableFilters`). Nothing is written or served here.
  */
 export function buildGallery({catalogs = []} = {}) {
     const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
     for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
+    const filters = mergeFilters([join(PACKAGE, 'catalog.json'), ...catalogs.map(([catalog]) => catalog)]);
     const keys = ['index', ...families.flatMap(family => [family.key, ...family.examples.map(({key}) => key)])];
     const duplicates = [...new Set(keys.filter((key, index) => keys.indexOf(key) !== index))].sort();
     if (duplicates.length) throw new Error(`Duplicate gallery keys: ${duplicates.join(', ')}`);
@@ -117,7 +183,7 @@ export function buildGallery({catalogs = []} = {}) {
         const data = route.page.slice(0, -3) + '_data.tytx';
         route.data = existsSync(data) ? data : null;
     }
-    return {families, routes, assets, collections};
+    return {families, routes, assets, collections, filters};
 }
 
 /** Read the title from the actual page class, or the first Markdown H1. */
@@ -142,9 +208,19 @@ export function directoryIndex(folder) {
 }
 
 /** Read one numbered filesystem level, without exposing its own index. */
-export function navigationDirectory(directory = '', catalogs = []) {
+export function navigationDirectory(directory = '', catalogs = [], filter = null) {
     const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
     for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
+    let rule = null;
+    if (filter !== null && filter !== undefined) {
+        rule = mergeFilters([join(PACKAGE, 'catalog.json'), ...catalogs.map(([catalog]) => catalog)]).find(item => item.label === filter);
+        if (!rule) throw new Error(`Unknown filter: ${filter}`);
+        if (!Object.hasOwn(rule, 'any') && !Object.hasOwn(rule, 'requires')) rule = null;
+    }
+    return navigationLevel(directory, families, rule);
+}
+
+function navigationLevel(directory, families, rule) {
     const groups = new Map(families.map(group => [group.folder, group]));
     const parts = directory ? directory.split('/') : [];
     if (parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw new Error('Invalid navigation directory');
@@ -169,6 +245,7 @@ export function navigationDirectory(directory = '', catalogs = []) {
             const descriptor = join(path, '00-index.json');
             if (existsSync(descriptor) && JSON.parse(readFileSync(descriptor,'utf8')).navigation === false) continue;
             const index = directoryIndex(path);
+            if (rule && navigationLevel(childPath, families, rule).length === 0) continue;
             const attrs = {title: pageTitle(index), category: true, directory: childPath, url: `pages/${childPath}/00-index`};
             if (extname(index) === '.md') attrs.markdown = readFileSync(index, 'utf8');
             bag.setItem(!parts.length && groups.has(name) ? groups.get(name).key : name, null, attrs);
@@ -178,9 +255,12 @@ export function navigationDirectory(directory = '', catalogs = []) {
             const metadata = path.slice(0,-3) + '.json';
             const descriptor = existsSync(metadata) ? JSON.parse(readFileSync(metadata,'utf8')) : null;
             if (descriptor?.navigation === false) continue;
+            const requires = (example ?? descriptor)?.requires;
+            if (rule && !filterMatches(rule, requires)) continue;
             const title = example ? example.title : descriptor ? descriptor.title : pageTitle(path);
             const attrs = {title, url: `pages/${[...parts, stem].join('/')}`, category: false};
             for (const name of ['description','tags','component']) if (descriptor && Object.hasOwn(descriptor,name)) attrs[name] = descriptor[name];
+            if (requires?.length) attrs.requires = requires;
             if (example) attrs.key = example.key;
             bag.setItem(example ? example.key : stem, null, attrs);
         }

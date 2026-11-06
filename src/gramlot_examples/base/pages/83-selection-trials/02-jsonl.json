@@ -12,5 +12,9 @@
     "jsonl",
     "http"
   ],
+  "requires": [
+    "endpoint",
+    "db"
+  ],
   "order": 0
 }

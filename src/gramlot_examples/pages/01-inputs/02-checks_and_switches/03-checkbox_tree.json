@@ -11,6 +11,9 @@
     "disabled",
     "checkBoxText"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 31,
   "component": "checkBoxText"
 }

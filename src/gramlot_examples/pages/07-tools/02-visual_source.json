@@ -9,6 +9,9 @@
     "advanced",
     "source"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 1,
   "presentation": "tool"
 }

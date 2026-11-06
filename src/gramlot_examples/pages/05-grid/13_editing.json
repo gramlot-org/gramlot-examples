@@ -9,5 +9,8 @@
     "drafts",
     "validation"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 12
 }

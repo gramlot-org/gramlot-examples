@@ -26,6 +26,7 @@ function validate(item, p) {
     if (typeof item.key !== 'string' || !item.key || typeof item.title !== 'string' || !item.title ||
         typeof item.description !== 'string' || !item.description || !Array.isArray(item.tags) ||
         item.tags.some(tag => typeof tag !== 'string' || !tag.trim()) || !Number.isInteger(item.order) || item.order < 0 ||
+        (Object.hasOwn(item, 'requires') && (!Array.isArray(item.requires) || item.requires.some(need => typeof need !== 'string' || !need.trim()))) ||
         Object.hasOwn(item, 'explanation') || Object.hasOwn(item, 'folder')) throw new Error(`Invalid lesson metadata: ${p}`);
     const stem = p.slice(0, -5);
     for (const ext of ['.py','.md']) if (!existsSync(stem + ext)) throw new Error(`Missing ${ext} for ${p}`);

@@ -16,6 +16,11 @@
             "database",
             "Australia"
           ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
+          ],
           "folder": "sales"
         },
         {
@@ -27,6 +32,11 @@
             "time",
             "sales",
             "snapshots"
+          ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
           ],
           "folder": "australian_timeline"
         },
@@ -40,6 +50,11 @@
             "Australia",
             "drilldown",
             "suburbs"
+          ],
+          "requires": [
+            "endpoint",
+            "db",
+            "asqueel"
           ],
           "folder": "australian_geography"
         },
@@ -64,6 +79,9 @@
             "Bag",
             "attributes"
           ],
+          "requires": [
+            "endpoint"
+          ],
           "folder": "attributes"
         },
         {
@@ -74,6 +92,9 @@
             "charts",
             "Bag",
             "values"
+          ],
+          "requires": [
+            "endpoint"
           ],
           "folder": "values"
         },

@@ -11,5 +11,8 @@
     "scoped",
     "clear"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 4
 }

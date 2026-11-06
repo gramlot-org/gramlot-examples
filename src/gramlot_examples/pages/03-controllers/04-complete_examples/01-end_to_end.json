@@ -14,5 +14,8 @@
     "examples",
     "end"
   ],
+  "requires": [
+    "endpoint"
+  ],
   "order": 7
 }

@@ -18,6 +18,8 @@ export class GalleryPage extends IndexPage {
     static datapath = 'galleryIndex';
     static introductionUrl = 'pages/00-index';
     static css = [...IndexPage.css, '/themes/gramlot-index/theme.css', '/gallery/gallery.css'];
+    /** Declared lesson filters offered by the navigation menu; a host with none shows no menu. */
+    static get filters() { return []; }
     static get groups() {
         return this.families.map(group => ({key: group.key, title: group.title,
             children: group.examples.map(item => ({key: item.key, title: item.title, url: item.frameUrl}))}));
@@ -46,6 +48,12 @@ export class GalleryPage extends IndexPage {
         pane.setAttr({id:'index-sidebar', class:'index-sidebar', nodeId:'galleryNavigation'});
         const header=pane.header({class:'gallery-navigation-header'});
         header.img({src:this.constructor.logoUrl, alt:this.constructor.title, class:'index-logo'});
+        const filters=this.constructor.filters;
+        if(filters.length>1) {
+            const choice=header.select({value:'^galleryIndex.filter', id:'gallery-filter', class:'gallery-navigation-filter',
+                aria_label:'Filter lessons', title:'Filter lessons by what they require'});
+            for(const rule of filters) choice.option(rule.label, {value:rule.label});
+        }
         const search=header.menu({presentation:'bar',class:'gallery-navigation-search',aria_label:'Search navigation'});
         const field=search.menuline({group:true,flex:1,min_width:0}).div({class:'gallery-search-field'});
         field.span({class:'gallery-search-icon',aria_hidden:'true'});
@@ -124,6 +132,11 @@ export class GalleryPage extends IndexPage {
             open:'^galleryIndex.settingsOpen', width:'390px', height:'420px'});
         settings.frame.center.setAttr({padding:'12px', overflow:'auto'});
         this.footer(settings.frame.center);
+        const filters = new Bag();
+        const declared = this.constructor.filters;
+        declared.forEach((rule, position) => filters.setItem(`f${position}`, null, {label:rule.label}));
+        shell.dataSetter({destination_path:'galleryIndex.filters', value:filters});
+        shell.dataSetter({destination_path:'galleryIndex.filter', value:declared[0]?.label ?? null});
         shell.dataController({func:'galleryInitialize', _onBuilt:true});
         shell.dataController({func:'galleryMount', _onStart:true});
     }
