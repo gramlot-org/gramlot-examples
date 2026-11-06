@@ -1,0 +1,20 @@
+{
+  "key": "ai-02",
+  "title": "Visual editor with assistant",
+  "description": "Describe a change in words: the assistant reads the Gramlot manuals and edits the Source of the visual editor one validated step at a time.",
+  "tags": [
+    "ai",
+    "llm",
+    "visual",
+    "editor",
+    "source",
+    "assistant"
+  ],
+  "requires": [
+    "endpoint",
+    "python",
+    "llm"
+  ],
+  "order": 1,
+  "presentation": "tool"
+}

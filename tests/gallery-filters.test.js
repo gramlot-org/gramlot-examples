@@ -10,7 +10,7 @@ const ENDPOINT_USE = /@endpoint|registerEndpoint|@upload|registerUpload|@source|
 const environments = [
     ...['catalog', 'asqueel-catalog', 'cached-trial-catalog', 'selection-trial-catalog', 'chart-reports-catalog', 'system-monitor-catalog']
         .map(name => [join(root, `base/${name}.json`), join(root, 'base/pages')]),
-    ...['page_store', 'chat_base', 'kajenn_db'].map(name => [join(root, `trials/${name}/catalog.json`), join(root, `trials/${name}/pages`)]),
+    ...['page_store', 'chat_base', 'kajenn_db', 'ai'].map(name => [join(root, `trials/${name}/catalog.json`), join(root, `trials/${name}/pages`)]),
 ];
 
 // The environment catalogues of this package hold Python pages only, so they are read, not built.
@@ -100,4 +100,21 @@ test('navigation lists only the lessons of the selected filter and drops empty d
         const found = listed(rule.label);
         assert.deepEqual(found.filter(key => keys(rule).includes(key)).sort(), keys(rule).sort(), rule.label);
     }
+});
+
+test('the ai catalogue declares the AI (LLM) filter and its lessons need Python and an LLM', () => {
+    const catalog = join(root, 'trials/ai/catalog.json');
+    assert.deepEqual(readFilters(catalog), [{label: 'AI (LLM)', any: ['llm']}]);
+    const filters = mergeFilters([join(root, 'catalog.json'), ...environments.map(([path]) => path)]);
+    assert.equal(filters.at(-1).label, 'AI (LLM)');
+    assert.deepEqual(availableFilters({families: allFamilies(), filters}).map(rule => rule.label), filters.map(rule => rule.label));
+    const lessons = JSON.parse(readFileSync(catalog, 'utf8')).families.flatMap(family => family.examples);
+    assert.deepEqual(lessons.map(example => example.key), ['ai-01', 'ai-02']);
+    for (const example of lessons) assert.deepEqual(example.requires, ['endpoint', 'python', 'llm']);
+    const listed = allFamilies().flatMap(family => family.examples).filter(example => filterMatches(filters.at(-1), example.requires));
+    assert.deepEqual(listed.map(example => example.key), ['ai-01', 'ai-02']);
+    // The JavaScript and serverless galleries read only the common catalogue: no AI lesson, no AI filter.
+    const common = buildGallery();
+    assert.ok(!common.families.some(family => family.examples.some(example => (example.requires ?? []).includes('llm'))));
+    assert.ok(!availableFilters(common).some(rule => rule.label === 'AI (LLM)'));
 });

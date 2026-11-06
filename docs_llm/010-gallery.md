@@ -34,7 +34,7 @@ The common catalogue has no `environment`; an environment catalogue has one.
 ## 012 · Requirements and filters
 
 Sidecar `.json` of a lesson: `requires`, a list of free strings (`"endpoint"`, `"python"`,
-`"psutil"`, `"db"`, `"asqueel"`). No `requires` = runs everywhere. `tags` stay for topics.
+`"psutil"`, `"db"`, `"asqueel"`, `"llm"`). No `requires` = runs everywhere. `tags` stay for topics.
 The generator copies it into `catalog.json`; a hand-written catalogue puts it in the example.
 Not a list of non-empty strings = error in `build_gallery` / `buildGallery`.
 A lesson using `@endpoint`, `registerEndpoint`, `@upload`, `registerUpload`, `@source`, `registerSource`, `dataRpc`, `remote(` or `dataRemote` requires
@@ -49,7 +49,7 @@ or `{"label", "any": [...]}` or `{"label"}`:
 
 The common catalogue ships `All`, `Plain` (`requires: []`), `Server` (`endpoint`), `Python server`
 (`python`), `DB` (`db`), `Kajenn/Asqueel` (`asqueel`). An environment adds filters with a
-`filters.json` beside its `catalog.json`; the same label in two files must be identical or
+`filters.json` beside its `catalog.json` (the `ai` catalogue: `AI (LLM)`, `any: ["llm"]`, §955); the same label in two files must be identical or
 `build_gallery` raises. `build_gallery` / `buildGallery` return `filters`; `available_filters(gallery)` /
 `availableFilters(gallery)` keep the rules matching at least one catalogued lesson;
 `filter_matches(rule, requires)` / `filterMatches(rule, requires)` test one lesson.
@@ -1611,6 +1611,30 @@ test confirms existing records are preserved. Examples pass 62 Python tests and
 The optional catalogue is implemented and locally verified, awaiting owner review;
 no package publication or hosted-gallery deployment was performed.
 
+
+<a id="ge-010-955"></a>
+## 955 · AI catalogue (LLM) — 2026-11-06
+
+Optional catalogue `trials/ai/catalog.json` (environment `ai`, family `93-ai`):
+`ai-01` AI chat with images (Anthropic text + OpenAI images, moved from
+`trials/chat/pages/index.py`) and `ai-02` Visual editor with assistant (presentation
+`tool`, GE-040 §030). Both: `"requires": ["endpoint", "python", "llm"]`. Its
+`filters.json` adds `{"label": "AI (LLM)", "any": ["llm"]}`. JavaScript galleries and
+the serverless export read only the common catalogue: no AI lesson, no AI filter.
+SDKs: extra `gramlot-examples[chat]`.
+
+Server environment only (`trials/ai/environment.py`):
+
+- `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` (ai-01), `GRAMLOT_DOCS_ROOT` (ai-02, core
+  `docs_llm`): missing → “AI examples are not configured on this server.”
+- `GRAMLOT_AI_MODELS`: comma-separated Anthropic IDs; selectors list only these
+  (intersected with active models); other models rejected server-side. Absent → all active.
+- `GRAMLOT_AI_MAX_MESSAGES` / `GRAMLOT_AI_MAX_IMAGES`: per page session; default 20 / 5
+  when `GRAMLOT_AI_MODELS` is set, otherwise unlimited. New conversation does not reset them.
+
+Keys never reach Source, Data, HTML or logs. Local run: `GRAMLOT_DOCS_ROOT=… gramlot uvicorn
+gallery --websocket --catalog <trials/ai/catalog.json> <trials/ai/pages>`. Hosted setup:
+`deploy/galleries/README.md`, “AI lessons”.
 
 <a id="ge-010-form-state"></a>
 ## Local form lifecycle trial — 2026-10-29

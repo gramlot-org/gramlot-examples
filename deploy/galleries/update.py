@@ -23,6 +23,8 @@ NPM = {'@gramlot/gramlot': 'gramlot', '@gramlot/gramlot-examples': 'gramlot-exam
        '@gramlot/gramlot-js-server': 'gramlot-js-server', '@gramlot/gramlot-serverless': 'gramlot-js-server'}
 PYPI = {'gramlot': 'gramlot', 'gramlot-examples': 'gramlot-examples', 'gramlot-py-server': 'gramlot-py-server'}
 DOWNLOAD = '/downloads/gramlot-gallery-serverless.zip'
+# Root-owned (mode 600) API keys and limits of the AI lessons, read by Compose for the Python gallery only.
+LLM_ENV = Path('/etc/gramlot-galleries/llm.env')
 RETRY_INTERVAL = 30
 # Publication jobs that do not gate the galleries: JSR is optional, npm is required.
 OPTIONAL_JOBS = {'jsr'}
@@ -120,6 +122,8 @@ def compose_file(slot, py_image, js_image):
         'environment': {'PGHOST': 'gramlot-demo-db', 'PGUSER': 'gramlot_gallery',
                         'PGPASSFILE': '/run/secrets/postgres.pgpass'},
         'volumes': [f'{ROOT}/secrets/postgres.pgpass:/run/secrets/postgres.pgpass:ro'],
+        # Optional: without the file the AI lessons say they are not configured.
+        'env_file': [{'path': str(LLM_ENV), 'required': False}],
     })
     return json.dumps({'name': f'gramlot-galleries-{slot}', 'services': services,
         'networks': {'default': {}, 'database': {'external': True, 'name': 'gramlot-demo-db'}}}, indent=2)

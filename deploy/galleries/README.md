@@ -327,3 +327,102 @@ chart-data/sal/<STATE>.geojson (ABS SAL 2021). These are public geography resour
 not customer data, and are copied into the Python image. The same data and providers
 are used by the local qualified reports. No additional database grants or public
 process-monitor endpoints are enabled. Remote Edit remains disabled.
+
+## AI lessons (2026-11-06)
+
+Owner decisions, 2026-11-06: “per ora mettiamoli e usiamo le mie chiavi. tanto tra
+oggi e domani la provano solo quelli di softwell. poi faremo la registrazione e
+keycloak” and “mettiamo solo sonnet 5.5 e haiku per anthropic”.
+
+The Python host stages the packaged `ai` catalogue (GE-010 section 955): the AI
+chat with images and the visual editor with assistant, under the filter
+**AI (LLM)**. The JavaScript gallery and the offline ZIP do not contain them.
+The image installs `gramlot-examples[chat]` (Anthropic and OpenAI SDKs) and the
+core `docs_llm` manuals of the installed core release, taken from its public
+GitHub tag by `fetch-gramlot-docs.py` (`GRAMLOT_DOCS_ROOT=/app/gramlot-docs`).
+The image contains no key.
+
+`update.py` gives the Python service only:
+
+```json
+"env_file": [{"path": "/etc/gramlot-galleries/llm.env", "required": false}]
+```
+
+Compose reads the file as root when it creates the container. Without the file the
+gallery still deploys and the AI lessons show “AI examples are not configured on
+this server.” The Node service receives nothing. The `required` key needs Docker
+Compose 2.24.0 or later.
+
+| Variable | Hosted value | Effect |
+| --- | --- | --- |
+| `ANTHROPIC_API_KEY` | the owner's key | chat text and editor assistant |
+| `OPENAI_API_KEY` | the owner's key | chat images |
+| `GRAMLOT_AI_MODELS` | `claude-sonnet-5-5,claude-haiku-5-5` | only these Anthropic models are offered and accepted |
+| `GRAMLOT_AI_MAX_MESSAGES` | `20` | requests per page session (default 20 when `GRAMLOT_AI_MODELS` is set) |
+| `GRAMLOT_AI_MAX_IMAGES` | `5` | generated images per page session (default 5 when `GRAMLOT_AI_MODELS` is set) |
+
+A page session is one opened lesson page; a reload starts a new one. The limits
+bound one session, not the total spend: the console caps below bound the total.
+
+### Operator steps (by hand, on the server)
+
+1. Check Compose: `docker compose version` must report 2.24.0 or later.
+2. Create the env file without writing the keys in the shell history:
+
+   ```sh
+   sudo install -d -m 700 -o root -g root /etc/gramlot-galleries
+   sudo install -m 600 -o root -g root /dev/null /etc/gramlot-galleries/llm.env
+   sudoedit /etc/gramlot-galleries/llm.env
+   ```
+
+   Content, one `NAME=value` per line, without quotes:
+
+   ```text
+   ANTHROPIC_API_KEY=<Anthropic key>
+   OPENAI_API_KEY=<OpenAI key>
+   GRAMLOT_AI_MODELS=claude-sonnet-5-5,claude-haiku-5-5
+   GRAMLOT_AI_MAX_MESSAGES=20
+   GRAMLOT_AI_MAX_IMAGES=5
+   ```
+
+   Then `sudo stat -c '%U %a' /etc/gramlot-galleries/llm.env` must print `root 600`.
+3. Set spend limits before the keys go live: a monthly spend limit in the Anthropic
+   Console and a project budget in the OpenAI platform. Use keys dedicated to the
+   gallery, so they can be revoked without touching other work.
+4. Install the changed automation files from the reviewed repository, holding the
+   updater lock. From a checkout of gramlot-examples on the server (`$REPO`):
+
+   ```sh
+   cd /opt/gramlot-galleries
+   sudo flock update.lock sh -c '
+     install -m 644 "$0/deploy/galleries/update.py" automation/update.py &&
+     install -m 644 "$0/deploy/galleries/test_update.py" automation/test_update.py &&
+     install -m 644 "$0/deploy/galleries/serve-mobile.py" automation/serve-mobile.py &&
+     install -m 644 "$0/deploy/galleries/fetch-gramlot-docs.py" automation/fetch-gramlot-docs.py &&
+     install -m 644 "$0/deploy/galleries/Dockerfile.python-mobile" automation/Dockerfile.python' "$REPO"
+   sudo python3 automation/test_update.py
+   ```
+
+   `Dockerfile.python-mobile` is installed as `automation/Dockerfile.python`, as in
+   “Public mobile profile selected for 0.3.17”. The root-owned wrappers
+   `/usr/local/sbin/gramlot-galleries-ci-update` and `gramlot-galleries-ci-ssh` and the
+   systemd unit are unchanged: they run `automation/update.py`, so no reinstall is needed.
+5. The staged `serve-mobile.py` needs a gramlot-examples release that contains
+   `trials/ai`. The updater deploys when a new release set is published: the
+   gramlot-examples release with the `ai` catalogue triggers it through CI. Until then
+   a deployment of an older examples release fails its candidate checks and is not promoted.
+6. Verify on https://gallery-py.gramlot.dev/: the filter menu lists **AI (LLM)**; the
+   two lessons open; the chat model selector lists only Sonnet 5.5 and Haiku 5.5.
+   `docker compose -f <compose of current.json> exec python env | grep -c API_KEY`
+   prints `2`; never print the values.
+
+After a change of the env file, recreate only the Python container of the current
+generation (in-memory page sessions are lost):
+
+```sh
+sudo docker compose -f "$(python3 -c 'import json;print(json.load(open("/opt/gramlot-galleries/current.json"))["compose"])')" up -d --wait --force-recreate python
+```
+
+To switch the AI lessons off, empty or delete the env file and recreate the Python
+container; the lessons then show the not-configured message. Revoke the keys in the
+two consoles when they are no longer used.

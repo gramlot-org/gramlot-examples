@@ -1,0 +1,51 @@
+{
+  "environment": "ai",
+  "families": [
+    {
+      "key": "ai-lessons",
+      "title": "AI assistants",
+      "folder": "93-ai",
+      "examples": [
+        {
+          "key": "ai-01",
+          "title": "AI chat with images",
+          "description": "Talk with an Anthropic model and ask it to draw: the server PageStore calls Anthropic and OpenAI, the page receives text and Source.",
+          "tags": [
+            "ai",
+            "llm",
+            "chat",
+            "anthropic",
+            "openai",
+            "image"
+          ],
+          "requires": [
+            "endpoint",
+            "python",
+            "llm"
+          ],
+          "folder": "01-chat"
+        },
+        {
+          "key": "ai-02",
+          "title": "Visual editor with assistant",
+          "description": "Describe a change in words: the assistant reads the Gramlot manuals and edits the Source of the visual editor one validated step at a time.",
+          "tags": [
+            "ai",
+            "llm",
+            "visual",
+            "editor",
+            "source",
+            "assistant"
+          ],
+          "requires": [
+            "endpoint",
+            "python",
+            "llm"
+          ],
+          "presentation": "tool",
+          "folder": "02-visual_editor"
+        }
+      ]
+    }
+  ]
+}

@@ -27,5 +27,6 @@ if __name__ == '__main__':
     from gramlot_examples.trials.chat.openai_images import get_images
     get_provider()
     get_images()
-    pages = Path(gramlot_examples.__file__).parent / 'trials/chat/pages'
+    pages = Path(gramlot_examples.__file__).parent / 'trials/ai/pages/93-ai'
+    print(f'AI chat: http://127.0.0.1:{args.port}/01-chat', flush=True)
     serve(pages, host='127.0.0.1', port=args.port, websocket=True, collections=collections())

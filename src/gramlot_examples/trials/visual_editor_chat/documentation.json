@@ -81,7 +81,7 @@
       "id": "visual-editor",
       "title": "Visual Source editor",
       "repository": "gramlot-examples",
-      "path": "src/gramlot_examples/pages/07-tools/02-visual_source.md",
+      "path": "pages/07-tools/02-visual_source.md",
       "status": "shared core component; gallery consumer"
     },
     {

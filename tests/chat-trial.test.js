@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
 import {Bag, Gramlot, GramlotBuilder} from '@gramlot/gramlot';
 import chat from '@gramlot/gramlot/components/chat';
-import {Logic} from '../src/gramlot_examples/trials/chat/pages/index.js';
+import {Logic} from '../src/gramlot_examples/trials/ai/pages/93-ai/01-chat.js';
 
 function fixture(t) {
     const {window}=new JSDOM('<main id="gramlot-root"></main>');

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import anthropic
 import base64
 import json
+from gramlot_examples.trials.ai.environment import MODELS, allowed_models, require
 
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max')
 
@@ -26,11 +27,11 @@ IMAGE_TOOL = dict(name='generate_image',
 
 
 class AnthropicChat:
-    def __init__(self, client):
+    def __init__(self, client, allowed=None):
         self.client = client
         self.models = {}
         for model in client.models.list(limit=100):
-            if model.lifecycle != 'active':
+            if model.lifecycle != 'active' or (allowed is not None and model.id not in allowed):
                 continue
             effort = model.capabilities.effort
             self.models[model.id] = dict(
@@ -38,7 +39,8 @@ class AnthropicChat:
                 efforts=tuple(level for level in EFFORTS if effort.supported and getattr(effort, level).supported),
             )
         if not self.models:
-            raise ChatError('No active Anthropic models are available for this key.')
+            raise ChatError('No active Anthropic models are available for this key.' if allowed is None
+                            else f'No model listed in {MODELS} is active for this key.')
 
     def answer(self, text, messages, *, model, effort, system, generate_image, attachments):
         if not isinstance(model, str) or model not in self.models:
@@ -105,7 +107,8 @@ class AnthropicChat:
 @lru_cache(maxsize=1)
 def get_provider():
     """Use only the server process environment; never send credentials to Source."""
-    return AnthropicChat(anthropic.Anthropic(timeout=60, max_retries=0))
+    require('ANTHROPIC_API_KEY')
+    return AnthropicChat(anthropic.Anthropic(timeout=60, max_retries=0), allowed=allowed_models())
 
 
 def user_content(text, attachments):

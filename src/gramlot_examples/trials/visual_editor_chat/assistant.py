@@ -10,6 +10,7 @@ import anthropic
 from genro_bag import Bag
 from genro_tytx import from_tytx
 from gramlot import ChatPageStore
+from gramlot_examples.trials.ai.environment import MODELS, SessionUsage, Unavailable, allowed_models, require
 from .documentation import DocumentationIndex
 
 PATH = r'^pageRoot(?:\.[A-Za-z_][A-Za-z0-9_]*)*$'
@@ -133,11 +134,14 @@ def source_outline(wire):
     return outline(source)
 
 class SourceAssistant:
-    def __init__(self,client,documentation):
+    def __init__(self,client,documentation,allowed=None):
         self.client=client
         self.documentation=documentation
-        self.models={m.id:m.display_name for m in client.models.list(limit=100) if m.lifecycle=='active'}
-        if not self.models: raise ValueError('No active Anthropic model is available')
+        self.models={m.id:m.display_name for m in client.models.list(limit=100)
+                     if m.lifecycle=='active' and (allowed is None or m.id in allowed)}
+        if not self.models:
+            raise ValueError('No active Anthropic model is available' if allowed is None
+                             else f'No model listed in {MODELS} is active for this key')
 
     def start(self,text,context,pending=None):
         return [dict(role='user',content=json.dumps(dict(instruction=text,
@@ -229,20 +233,34 @@ def validate_operation(operation):
 
 @lru_cache(maxsize=1)
 def get_assistant():
+    # The core manuals come from GRAMLOT_DOCS_ROOT; the examples documents from this package.
+    require('ANTHROPIC_API_KEY','GRAMLOT_DOCS_ROOT')
     return SourceAssistant(anthropic.Anthropic(timeout=60,max_retries=0),
-        DocumentationIndex(Path(os.environ['GRAMLOT_DOCS_ROOT']),Path(__file__).resolve().parents[4]/'docs_llm'))
+        DocumentationIndex(Path(os.environ['GRAMLOT_DOCS_ROOT']),Path(__file__).resolve().parents[2]),
+        allowed=allowed_models())
 
 class SourceAssistantStore(ChatPageStore):
     def main(self,root):
         super().main(root)
+        self.usage=SessionUsage()
+        try:
+            models=get_assistant().models
+        except Unavailable:
+            return
         root.dataSetter('editing',Bag(dict(context=Bag(),operations=Bag(),ack=None,active=False,pendingRequest='[]',
-            model=next(iter(get_assistant().models)))))
+            model=next(iter(models)))))
         root.dataSetter('providerContext',Bag())
         root.dataController(func='assistant_ack',ack='^editing.ack')
 
     def process_message(self,text):
+        assistant=get_assistant()
         if self.data.get_item('editing.active'): raise ValueError('An edit is already running')
         if self.request_attachments: raise ValueError('Use text instructions for this Source editing trial')
+        if self.data.get_item('editing.model') not in assistant.models: raise ValueError('Choose an available model')
+        try:
+            self.usage.count_message()
+        except Unavailable as error:
+            return str(error)
         if not len(self.data.get_item('chats.main.messages')):
             self.data.set_item('editing.pendingRequest','[]')
         context=self.data.get_item('editing.context')

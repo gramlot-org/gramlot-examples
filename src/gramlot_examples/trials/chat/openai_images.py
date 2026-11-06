@@ -1,8 +1,8 @@
 """Direct Images API for the chat trial's explicit /image command."""
 import base64
 from functools import lru_cache
-import os
 import openai
+from gramlot_examples.trials.ai.environment import require
 from .anthropic_chat import ChatError
 
 IMAGE_MODELS = {'gpt-image-2.5-sunburst': 'Sunburst 2.5', 'gpt-image-2.5-flare': 'Flare 2.5'}
@@ -44,6 +44,5 @@ class OpenAIImages:
 
 @lru_cache(maxsize=1)
 def get_images():
-    if not os.environ.get('OPENAI_API_KEY'):
-        raise ChatError('Image generation needs OPENAI_API_KEY on the server.')
+    require('OPENAI_API_KEY')
     return OpenAIImages(openai.OpenAI(timeout=120, max_retries=0))

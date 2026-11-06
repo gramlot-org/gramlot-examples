@@ -64,7 +64,7 @@ environment (an adapter or a runtime) declares it.
 ## 012 · Requirements and filters
 
 A lesson says what it needs from the environment in its sidecar `.json`, with `requires`:
-a list of free strings such as `"endpoint"`, `"python"`, `"psutil"`, `"db"` or `"asqueel"`.
+a list of free strings such as `"endpoint"`, `"python"`, `"psutil"`, `"db"`, `"asqueel"` or `"llm"`.
 A lesson without `requires` runs everywhere. `requires` is not `tags`: `tags` name topics
 for search, `requires` name needs for filters. The catalogue generator copies `requires`
 into `catalog.json`; a catalogue written by hand (the system monitor) carries it in the
@@ -93,7 +93,8 @@ Gallery filters are data. The `filters.json` beside a `catalog.json` is a list o
 - `label` is required and unique in a file. A rule declares one of `requires` or `any`.
 
 The common catalogue ships the file above. An environment adds filters the way it adds
-catalogues: a `filters.json` beside its `catalog.json`, read by the same call. A label
+catalogues: a `filters.json` beside its `catalog.json`, read by the same call. The `ai`
+catalogue adds `{"label": "AI (LLM)", "any": ["llm"]}` (section 955). A label
 declared by two files must have the same rule; otherwise `build_gallery` raises an error.
 The result of `build_gallery` / `buildGallery` has `filters`, the declared rules in order
 (the common ones first). `available_filters(gallery)` / `availableFilters(gallery)` keeps
@@ -1747,6 +1748,53 @@ test confirms existing records are preserved. Examples pass 62 Python tests and
 The optional catalogue is implemented and locally verified, awaiting owner review;
 no package publication or hosted-gallery deployment was performed.
 
+
+<a id="ge-010-955"></a>
+## 955 · AI catalogue (LLM) — 2026-11-06
+
+The optional catalogue `src/gramlot_examples/trials/ai/catalog.json` (environment
+`ai`, family `93-ai`) contains two ordinary lessons, each with its `.md` explanation
+and `.json` metadata:
+
+- `ai-01` **AI chat with images**: the Anthropic text chat with OpenAI image
+  generation (`01-chat.py`, `.js`, `.css`). The former local trial page
+  `trials/chat/pages/index.py` moved here; `scripts/serve_chat.py` serves it.
+- `ai-02` **Visual editor with assistant**: the visual editor of the Tools family
+  with the natural-language Source assistant (`02-visual_editor.py`, presentation
+  `tool`). See GE-040 section 030.
+
+Both lessons declare `"requires": ["endpoint", "python", "llm"]`. The `filters.json`
+beside the catalogue declares `{"label": "AI (LLM)", "any": ["llm"]}`; the gallery
+shows it in the filter menu when the host loads the catalogue. The JavaScript
+galleries and the serverless export read only the common catalogue: they never
+list these lessons or the filter. The provider SDKs are the `chat` extra
+(`gramlot-examples[chat]`).
+
+Configuration comes only from the server process environment:
+
+| Variable | Effect | Default |
+| --- | --- | --- |
+| `ANTHROPIC_API_KEY` | Anthropic credential, read by the SDK | none: the lessons show “AI examples are not configured on this server.” |
+| `OPENAI_API_KEY` | OpenAI credential for `ai-01` images | none: `ai-01` shows the same message |
+| `GRAMLOT_DOCS_ROOT` | core `docs_llm` folder read by the `ai-02` assistant | none: `ai-02` shows the same message |
+| `GRAMLOT_AI_MODELS` | comma-separated Anthropic model IDs; the selectors list only these among the account's active models; any other model is rejected by the server | absent: every active model |
+| `GRAMLOT_AI_MAX_MESSAGES` | requests per page session (chat messages, `/image` commands, editor instructions) | 20 when `GRAMLOT_AI_MODELS` is set; otherwise no limit |
+| `GRAMLOT_AI_MAX_IMAGES` | generated images per page session | 5 when `GRAMLOT_AI_MODELS` is set; otherwise no limit |
+
+Keys never appear in Source, Data, HTML or logs. The limits are counted by the
+PageStore of the page: **New conversation** does not reset them; a new page (a
+reload) is a new session. A reached limit is shown in the chat notice (`ai-01`) or
+as the assistant reply (`ai-02`). The page code is in `trials/ai/environment.py`.
+
+Run locally with the keys in the environment and the core manuals:
+
+```sh
+GRAMLOT_DOCS_ROOT=/path/to/gramlot/docs_llm gramlot uvicorn gallery --websocket \
+  --catalog /absolute/path/to/trials/ai/catalog.json /absolute/path/to/trials/ai/pages
+```
+
+The public Python gallery loads the catalogue and reads the variables from a
+root-owned file; see `deploy/galleries/README.md`, section “AI lessons”.
 
 <a id="ge-010-form-state"></a>
 ## Local form lifecycle trial — 2026-10-29

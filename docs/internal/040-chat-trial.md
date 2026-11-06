@@ -466,3 +466,26 @@ Documentation identities/paired anchors and whitespace checks pass. The base
 chat stylesheet now consumes the gallery theme tokens, fixing the low-contrast
 prototype button without changing the original trial. Browser verification uses
 Kajenn; both Kajenn and Uvicorn feedback/cleanup paths pass automated tests.
+
+
+<a id="ge-040-080"></a>
+## 080 · AI lessons on the public gallery — 2026-11-06
+
+Owner decisions, 2026-11-06: “per ora mettiamoli e usiamo le mie chiavi. tanto tra
+oggi e domani la provano solo quelli di softwell. poi faremo la registrazione e
+keycloak” and “mettiamo solo sonnet 5.5 e haiku per anthropic”.
+
+Approved plan: an `ai` catalogue with the AI chat and the visual editor with
+assistant as ordinary lessons (`requires: ["endpoint", "python", "llm"]`) and the
+filter **AI (LLM)**; keys only from the server environment, with a not-configured
+message when absent; Anthropic models restricted by `GRAMLOT_AI_MODELS` (hosted
+value `claude-sonnet-5-5,claude-haiku-5-5`); per-session limits
+`GRAMLOT_AI_MAX_MESSAGES` (20) and `GRAMLOT_AI_MAX_IMAGES` (5); the public Python
+gallery reads them from the root-owned `/etc/gramlot-galleries/llm.env`, passed to
+its container only. Registration and Keycloak are later work; until then the
+owner's keys pay for every request, bounded by the console spend caps and these
+per-session limits. A page reload starts a new session.
+
+The chat page moved from `trials/chat/pages/index.*` to
+`trials/ai/pages/93-ai/01-chat.*`. Implementation: GE-010 section 955, GE-040
+(visual editor) section 030, `deploy/galleries/README.md` “AI lessons”.
