@@ -63,7 +63,7 @@ test('every catalogue lesson is reachable with its title, route and nested sourc
 
 
 test('numbered siblings mix directories and pages, hide indexes and use Markdown headings', () => {
-    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'charts', 'layout', 'grid', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
+    assert.deepEqual(navigationDirectory().getNodes().map(n => n.label), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'charts', 'layout', 'grid', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
     const branch = navigationDirectory('00-html_svg');
     assert.deepEqual(branch.getNodes().map(n => n.label), ['01-html_basics', '02-native_controls', '03-svg']);
     assert.equal(branch.getNode('07-markdown_index'), null);
@@ -96,26 +96,26 @@ test('environment overlay keeps common and host subdirectories inside their own 
     const {join} = await import('node:path');
     const root = mkdtempSync(join(tmpdir(), 'gallery-overlay-'));
     t.after(() => rmSync(root, {recursive: true, force: true}));
-    const folder = join(root, '07-tools');
+    const folder = join(root, '01-inputs');
     const host = join(folder, '03-host');
     mkdirSync(host, {recursive: true});
-    writeFileSync(join(folder, '00-index.md'), '# Tools and IDE\n');
+    writeFileSync(join(folder, '00-index.md'), '# Inputs and host\n');
     writeFileSync(join(host, '00-index.md'), '# Host tools\n');
     writeFileSync(join(host, '01-sample.js'), 'export class Page { static title = "Host sample"; }');
     const catalog = join(root, 'catalog.json');
-    writeFileSync(catalog, JSON.stringify({environment:'test', families:[{key:'host_tools', title:'Tools and IDE', folder:'07-tools', examples:[]}]}));
+    writeFileSync(catalog, JSON.stringify({environment:'test', families:[{key:'host_inputs', title:'Inputs and host', folder:'01-inputs', examples:[]}]}));
     const catalogs = [[catalog, root]];
-    const tools = navigationDirectory('07-tools', catalogs);
-    assert.ok(tools.getNode('02-advanced'));
+    const tools = navigationDirectory('01-inputs', catalogs);
+    assert.ok(tools.getNode('02-checks_and_switches'));
     assert.ok(tools.getNode('03-host'));
-    assert.ok(navigationDirectory('07-tools/02-advanced', catalogs).length > 0);
-    assert.equal(navigationDirectory('07-tools/03-host', catalogs).getNode('01-sample').attr.title, 'Host sample');
+    assert.ok(navigationDirectory('01-inputs/02-checks_and_switches', catalogs).length > 0);
+    assert.equal(navigationDirectory('01-inputs/03-host', catalogs).getNode('01-sample').attr.title, 'Host sample');
     const outside = join(root, 'outside');
     mkdirSync(outside);
     symlinkSync(outside, join(folder, 'escape'), 'dir');
-    assert.equal(navigationDirectory('07-tools', catalogs).getNode('escape'), null);
-    assert.throws(() => navigationDirectory('07-tools/escape', catalogs), /outside its pages root/);
-    assert.throws(() => navigationDirectory('07-tools/absent', catalogs), /does not exist/);
+    assert.equal(navigationDirectory('01-inputs', catalogs).getNode('escape'), null);
+    assert.throws(() => navigationDirectory('01-inputs/escape', catalogs), /outside its pages root/);
+    assert.throws(() => navigationDirectory('01-inputs/absent', catalogs), /does not exist/);
 });
 
 test('first lesson navigation and asset use its generated metadata', () => {
@@ -137,5 +137,5 @@ test('lesson search metadata reaches navigation independently of the displayed t
 
 test("chart directory titles come from metadata", () => {
     assert.equal(navigationDirectory().getNode("charts").attr.title, "Charts");
-    assert.equal(navigationDirectory("05-charts").getNode("01-simple").attr.title, "Simple charts");
+    assert.equal(navigationDirectory("05-charts").getNode("chart-bars").attr.title, "Bars and live data");
 });

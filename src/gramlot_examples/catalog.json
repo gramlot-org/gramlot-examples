@@ -1584,6 +1584,19 @@
             "checkedField"
           ],
           "folder": "12_primary_supplier"
+        },
+        {
+          "key": "grid-10",
+          "title": "Editing · drafts and validation",
+          "description": "Edit 1,000 rows with persistent drafts, errors and asynchronous validation.",
+          "tags": [
+            "editable",
+            "grids",
+            "editing",
+            "drafts",
+            "validation"
+          ],
+          "folder": "13_editing"
         }
       ]
     },
@@ -1604,7 +1617,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "01-simple/01-bars"
+          "folder": "01-bars"
         },
         {
           "key": "chart-trends",
@@ -1618,7 +1631,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "01-simple/02-trends"
+          "folder": "02-trends"
         },
         {
           "key": "chart-shares",
@@ -1632,7 +1645,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "01-simple/03-shares"
+          "folder": "03-shares"
         },
         {
           "key": "chart-points",
@@ -1646,7 +1659,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "01-simple/04-points"
+          "folder": "04-points"
         },
         {
           "key": "grid-charts",
@@ -1663,7 +1676,7 @@
             "animation"
           ],
           "presentation": "content",
-          "folder": "02-time/01-snapshots"
+          "folder": "05-snapshots"
         },
         {
           "key": "chart-bars-3d",
@@ -1677,7 +1690,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "03-3d/01-bars"
+          "folder": "06-bars_3d"
         },
         {
           "key": "chart-surface",
@@ -1691,7 +1704,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "03-3d/02-surface"
+          "folder": "07-surface"
         },
         {
           "key": "chart-territories",
@@ -1705,27 +1718,7 @@
             "reactivity"
           ],
           "presentation": "content",
-          "folder": "04-maps/01-territories"
-        }
-      ]
-    },
-    {
-      "key": "editable_grids",
-      "title": "Editable grids",
-      "folder": "05-grid_editable",
-      "examples": [
-        {
-          "key": "grid-10",
-          "title": "Editing · drafts and validation",
-          "description": "Edit 1,000 rows with persistent drafts, errors and asynchronous validation.",
-          "tags": [
-            "editable",
-            "grids",
-            "editing",
-            "drafts",
-            "validation"
-          ],
-          "folder": "10_editing"
+          "folder": "08-territories"
         }
       ]
     },
@@ -2032,7 +2025,7 @@
             "source"
           ],
           "presentation": "tool",
-          "folder": "02-advanced/01-visual_source"
+          "folder": "02-visual_source"
         }
       ]
     },

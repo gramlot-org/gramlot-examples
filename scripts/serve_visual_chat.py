@@ -39,11 +39,11 @@ if __name__ == '__main__':
     with tempfile.TemporaryDirectory(prefix='gramlot-visual-gallery-') as folder:
         assets=stage(Path(folder), [], '', remote_edit=False,
                      editor_python=args.python_page)
-        editor_page=Path(folder)/"pages/07-tools/02-advanced/01-visual_source.py"
+        editor_page=Path(folder)/"pages/07-tools/02-visual_source.py"
         with editor_page.open("a") as stream:
             stream.write("\nfrom gramlot_examples.trials.visual_editor_chat.assistant import SourceAssistantStore as PageStore\nPage.editor_chat = True\n")
             if args.python_page is not None:
                 stream.write("\nPage.remote_edit = True\n")
-        print(f'Visual editor gallery: http://127.0.0.1:{args.port}/pages/07-tools/02-advanced/01-visual_source', flush=True)
+        print(f'Visual editor gallery: http://127.0.0.1:{args.port}/pages/07-tools/02-visual_source', flush=True)
         serve(folder,host='127.0.0.1',port=args.port,websocket=True,
               assets=assets,collections=collections())

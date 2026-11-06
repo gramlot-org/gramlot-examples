@@ -228,18 +228,18 @@ verification remain separate work.
 
 | Feature | Evidence | Examples | What to try |
 | --- | --- | --- | --- |
-| Grid editing | **Exercise** | [grid-10 · Editing · drafts and validation](../src/gramlot_examples/pages/05-grid_editable/10_editing.md) | Edit rows, scroll away and back, inspect validation and restore the session. |
+| Grid editing | **Exercise** | [grid-10 · Editing · drafts and validation](../src/gramlot_examples/pages/05-grid/13_editing.md) | Edit rows, scroll away and back, inspect validation and restore the session. |
 | Upload queue | **Exercise** | [upload_queue · Upload queue and metadata](../src/gramlot_examples/pages/01-uploader/02-upload_queue.md) | Choose files, edit metadata and start uploads. |
 | Attachments | **Exercise** | [attachment_manager · Attachments](../src/gramlot_examples/pages/01-uploader/03-attachment_manager.md) | Save the record, then upload, preview and remove attachments. |
 | Image editing | **Exercise** | [editable_image · Editable images](../src/gramlot_examples/pages/01-uploader/04-editable_image.md) | Frame an image and confirm its local or application upload result. |
-| Visual Source editor | **Exercise** | [visual_source · Visual editor](../src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.md) | Insert widgets, edit parameters and copy or import Source branches. |
+| Visual Source editor | **Exercise** | [visual_source · Visual editor](../src/gramlot_examples/pages/07-tools/02-visual_source.md) | Insert widgets, edit parameters and copy or import Source branches. |
 
 
 <a id="ge-035-020"></a>
 | Customer sets | [grid-check-sets · Customer sets](../src/gramlot_examples/pages/05-grid/10_check_sets.md) | Create customer sets, intersect John and Fred, and combine their membership with grid search on a complete Bag. |
 | Column filters | [grid-column-filters · Column filters](../src/gramlot_examples/pages/05-grid/11_column_filters.md) | Distinct values, self-excluding counts and multiple selections combined with search and sets. |
 | Single choice | [grid-primary-supplier · Primary supplier](../src/gramlot_examples/pages/05-grid/12_primary_supplier.md) | Choose one supplier with a radio column and keep its scalar ID in the product record, including when filtered or unloaded. |
-| Charts and time | [grid-charts · Charts and time](../src/gramlot_examples/pages/05-charts/02-time/01-snapshots.md) | Shared chart configuration, rendering engines and monthly playback from a Data Bag. |
+| Charts and time | [grid-charts · Charts and time](../src/gramlot_examples/pages/05-charts/05-snapshots.md) | Shared chart configuration, rendering engines and monthly playback from a Data Bag. |
 
 
 
@@ -247,13 +247,13 @@ verification remain separate work.
 
 | Feature | Status | Example |
 | --- | --- | --- |
-| Reactive chart data | Exercise | [chart-bars · Bars and live data](../src/gramlot_examples/pages/05-charts/01-simple/01-bars.md) |
-| Lines and engines | Exercise | [chart-trends · Lines and areas](../src/gramlot_examples/pages/05-charts/01-simple/02-trends.md) |
-| Shares | Exercise | [chart-shares · Pie and donut](../src/gramlot_examples/pages/05-charts/01-simple/03-shares.md) |
-| Scatter | Exercise | [chart-points · Scatter points](../src/gramlot_examples/pages/05-charts/01-simple/04-points.md) |
-| Categorical 3D | Exercise | [chart-bars-3d · 3D bars](../src/gramlot_examples/pages/05-charts/03-3d/01-bars.md) |
-| Numeric 3D | Exercise | [chart-surface · Points and surfaces](../src/gramlot_examples/pages/05-charts/03-3d/02-surface.md) |
-| GeoJSON maps | Exercise | [chart-territories · Territories](../src/gramlot_examples/pages/05-charts/04-maps/01-territories.md) |
+| Reactive chart data | Exercise | [chart-bars · Bars and live data](../src/gramlot_examples/pages/05-charts/01-bars.md) |
+| Lines and engines | Exercise | [chart-trends · Lines and areas](../src/gramlot_examples/pages/05-charts/02-trends.md) |
+| Shares | Exercise | [chart-shares · Pie and donut](../src/gramlot_examples/pages/05-charts/03-shares.md) |
+| Scatter | Exercise | [chart-points · Scatter points](../src/gramlot_examples/pages/05-charts/04-points.md) |
+| Categorical 3D | Exercise | [chart-bars-3d · 3D bars](../src/gramlot_examples/pages/05-charts/06-bars_3d.md) |
+| Numeric 3D | Exercise | [chart-surface · Points and surfaces](../src/gramlot_examples/pages/05-charts/07-surface.md) |
+| GeoJSON maps | Exercise | [chart-territories · Territories](../src/gramlot_examples/pages/05-charts/08-territories.md) |
 
 
 ## 020 · Code clarity is a separate checklist

@@ -6,7 +6,7 @@ import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
 import uploads from '@gramlot/gramlot/components/uploads';
-import {Page, Logic} from '../src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.js';
+import {Page, Logic} from '../src/gramlot_examples/pages/07-tools/02-visual_source.js';
 
 const rootPath = 'main.visual.layout.center.design.pageRoot';
 const tick = () => new Promise(resolve => setTimeout(resolve, 30));

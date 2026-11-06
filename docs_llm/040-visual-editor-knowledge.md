@@ -40,7 +40,7 @@ only when requested through `read_gramlot_doc`.
 | `remote-content` | [Remote content and lazy Data](../../gramlot/docs_llm/public/099-remote-content.md) | reference |
 | `grid` | [Resident grid and frameGrid](../../gramlot/docs_llm/internal/375-frame-grid.md) | bounded development implementation; read-only grid |
 | `chat` | [Shared ChatPane and ChatPageStore](../../gramlot/docs_llm/internal/390-chat-component.md) | development implementation |
-| `visual-editor` | [Visual Source editor](src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.md) | reusable editor; gallery integration trial |
+| `visual-editor` | [Visual Source editor](src/gramlot_examples/pages/07-tools/02-visual_source.md) | reusable editor; gallery integration trial |
 | `editor-chat` | [Natural-language Source editing](trials/visual_editor_chat/README.md) | Source edits and code drafts; no whole-request rollback |
 
 <a id="ge-040-015"></a>

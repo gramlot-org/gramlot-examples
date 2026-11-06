@@ -24,8 +24,8 @@ class BuildGalleryTests(unittest.TestCase):
 
     def test_common_gallery(self):
         gallery = build_gallery()
-        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "uploader", "binding", "controllers", "rpc", "layout", "grid", "charts", "editable_grids", "menus", "editors", "tools", "composition", "grouplets"])
-        self.assertEqual(len(gallery["routes"]), 184)
+        self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "uploader", "binding", "controllers", "rpc", "layout", "grid", "charts", "menus", "editors", "tools", "composition", "grouplets"])
+        self.assertEqual(len(gallery["routes"]), 179)
         self.assertEqual(gallery["routes"]["transform-pane"]["page"].name, "09-transform_pane.py")
         self.assertEqual(gallery["routes"]["tree-row-actions"]["page"].name, "06-row_actions.py")
         self.assertEqual(gallery["routes"]["e01"]["presentation"], "content")

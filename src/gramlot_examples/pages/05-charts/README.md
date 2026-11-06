@@ -10,7 +10,7 @@ A chart has **two inputs in the Data store**: the rows to display and the config
 
 ## Choose a route
 
-- **Simple charts:** edit values, compare trends, show parts of a whole and inspect relationships and compare Australian sales.
+- **Simple:** bars, trends, shares and points, including Australian sales.
 - **Time:** advance through prepared monthly sales snapshots.
 - **3D:** distinguish categorical bars from numeric coordinates and surfaces.
 - **Maps:** start with a fictional map, then continue to the live Australian state/suburb report.

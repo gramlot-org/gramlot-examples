@@ -7,7 +7,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})) {
  try {
   const page=await browser.newPage({viewport:{width:1320,height:1050}}),errors=[];
   page.on('pageerror',error=>errors.push(error.message));
-  await page.goto(origin+'/pages/05-grid_editable/10_editing');
+  await page.goto(origin+'/pages/05-grid/13_editing');
   const grid=page.locator('#grid-editing-demo'),row=grid.locator('tr[data-row=r0]'),cell=row.locator('td[data-field=notes]');
   const content=cell.locator('.cell-content'),viewport=grid.locator('.body-viewport');await content.waitFor();
   const metrics=locator=>locator.evaluate(e=>({height:e.getBoundingClientRect().height,client:e.clientHeight,scroll:e.scrollHeight,top:e.scrollTop,text:e.value??e.textContent}));

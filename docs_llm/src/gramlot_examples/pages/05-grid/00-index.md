@@ -13,10 +13,10 @@ Follow this sequence from the smallest Bag grid to a complete framed component:
 8. [Scroll · 1,000 resident rows](08_virtual_scroll.md): a small viewport, variable row heights and full-collection search.
 9. [Floating grid · resize and scroll](09_floating_scroll.md): resize a floating window around the same resident dataset.
 
-For editing, continue with [Editable grids](../05-grid_editable/README.md).
+For editing, continue with [Editing · drafts and validation](13_editing.md): edit 1,000 rows with persistent drafts, errors and asynchronous validation.
 
 Every lesson uses Python Source, a Data Bag and the shared grid component, with an
-equivalent JavaScript page. Choose themes in the gallery Settings. These lessons are read-only; the Editable grids section introduces local shared editing. Database saves and a
+equivalent JavaScript page. Choose themes in the gallery Settings. These lessons are read-only except the editing lesson, which introduces local shared editing. Database saves and a
 configurator remain outside this lesson.
 
 The pages inherit the browser locale and time zone. No Grid lesson overrides

@@ -1168,7 +1168,7 @@ test('c13: a request in flight is never cancelled, and the change made during th
 });
 
 test('every family folder has a README and every example its Python, JavaScript and README files', () => {
-    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'editable_grids', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
+    assert.deepEqual(families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'menus', 'editors', 'tools', 'composition', 'grouplets']);
     const keys = new Set();
     for (const family of families) {
         assert.ok(existsSync(new URL('README.md', folder(family.key))), `${family.key}/README.md`);

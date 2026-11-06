@@ -10,12 +10,12 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  for(const route of ['01-simple/01-bars','01-simple/02-trends','01-simple/03-shares','01-simple/04-points','02-time/01-snapshots','03-3d/01-bars','03-3d/02-surface','04-maps/01-territories']){
+  for(const route of ['01-bars','02-trends','03-shares','04-points','05-snapshots','06-bars_3d','07-surface','08-territories']){
    errors.length=0;
-   const keys={'01-simple/01-bars':'chart-bars','01-simple/02-trends':'chart-trends',
-    '01-simple/03-shares':'chart-shares','01-simple/04-points':'chart-points',
-    '02-time/01-snapshots':'grid-charts','03-3d/01-bars':'chart-bars-3d',
-    '03-3d/02-surface':'chart-surface','04-maps/01-territories':'chart-territories'};
+   const keys={'01-bars':'chart-bars','02-trends':'chart-trends',
+    '03-shares':'chart-shares','04-points':'chart-points',
+    '05-snapshots':'grid-charts','06-bars_3d':'chart-bars-3d',
+    '07-surface':'chart-surface','08-territories':'chart-territories'};
    await page.goto(base.startsWith('file:') ? base+'/playgrounds/'+keys[route]+'/index.html' : base+'/pages/05-charts/'+route);
    await page.waitForFunction(()=>['started','failed'].includes(window.gramlot?.state));
    assert.equal(await page.evaluate(()=>window.gramlot.state),'started',JSON.stringify(errors));

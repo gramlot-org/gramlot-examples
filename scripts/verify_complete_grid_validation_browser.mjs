@@ -15,7 +15,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})) {
     return create.call(this,tag,...args);
    };
   });
-  await page.goto(origin+'/pages/05-grid_editable/10_editing');
+  await page.goto(origin+'/pages/05-grid/13_editing');
   const grid=page.locator('#grid-editing-demo'),reports=page.locator('#editing-reports');
   await grid.locator('tbody tr').first().waitFor();
   await page.evaluate(()=>window.validationEditorCreations=0);

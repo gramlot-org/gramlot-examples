@@ -6,7 +6,7 @@ import pytest
 from gramlot import GramlotBuilder
 
 
-SOURCE = Path(__file__).resolve().parents[1] / 'src/gramlot_examples/pages/07-tools/02-advanced/01-visual_source.py'
+SOURCE = Path(__file__).resolve().parents[1] / 'src/gramlot_examples/pages/07-tools/02-visual_source.py'
 spec = spec_from_file_location('visual_source_upload', SOURCE)
 module = module_from_spec(spec)
 spec.loader.exec_module(module)

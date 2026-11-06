@@ -74,7 +74,7 @@ class NavigationDirectoryTests(unittest.TestCase):
 
 
     def test_numbered_siblings_and_markdown_index(self):
-        assert [n.label for n in navigation_directory().nodes] == ["html_svg", "components", "uploader", "binding", "controllers", "rpc", "charts", "layout", "grid", "editable_grids", "menus", "editors", "tools", "composition", "grouplets"]
+        assert [n.label for n in navigation_directory().nodes] == ["html_svg", "components", "uploader", "binding", "controllers", "rpc", "charts", "layout", "grid", "menus", "editors", "tools", "composition", "grouplets"]
         branch = navigation_directory("00-html_svg")
         assert [n.label for n in branch.nodes] == ["01-html_basics", "02-native_controls", "03-svg"]
         assert branch.get_node("07-markdown_index") is None
@@ -82,31 +82,31 @@ class NavigationDirectoryTests(unittest.TestCase):
 
 def test_environment_overlay_keeps_common_and_host_subdirectories_within_their_roots(tmp_path):
     import json
-    folder = tmp_path / "07-tools"
+    folder = tmp_path / "01-inputs"
     folder.mkdir()
-    (folder / "00-index.md").write_text("# Tools and IDE\n")
+    (folder / "00-index.md").write_text("# Inputs and host\n")
     host = folder / "03-host"
     host.mkdir()
     (host / "00-index.md").write_text("# Host tools\n")
     (host / "01-sample.py").write_text('from gramlot import Page as BasePage\nclass Page(BasePage):\n    title = "Host sample"\n')
     catalog = tmp_path / "catalog.json"
     catalog.write_text(json.dumps({"environment": "test", "families": [{
-        "key": "host_tools", "title": "Tools and IDE", "folder": "07-tools", "examples": []}]}))
+        "key": "host_inputs", "title": "Inputs and host", "folder": "01-inputs", "examples": []}]}))
     catalogs = [(catalog, tmp_path)]
-    tools = navigation_directory("07-tools", catalogs)
-    assert tools.get_node("02-advanced") is not None
+    tools = navigation_directory("01-inputs", catalogs)
+    assert tools.get_node("02-checks_and_switches") is not None
     assert tools.get_node("03-host") is not None
-    assert len(navigation_directory("07-tools/02-advanced", catalogs)) > 0
-    assert navigation_directory("07-tools/03-host", catalogs).get_node("01-sample").attr["title"] == "Host sample"
+    assert len(navigation_directory("01-inputs/02-checks_and_switches", catalogs)) > 0
+    assert navigation_directory("01-inputs/03-host", catalogs).get_node("01-sample").attr["title"] == "Host sample"
     outside = tmp_path / "outside"
     outside.mkdir()
     (folder / "escape").symlink_to(outside, target_is_directory=True)
-    assert navigation_directory("07-tools", catalogs).get_node("escape") is None
+    assert navigation_directory("01-inputs", catalogs).get_node("escape") is None
     import pytest
     with pytest.raises(ValueError, match="outside its pages root"):
-        navigation_directory("07-tools/escape", catalogs)
+        navigation_directory("01-inputs/escape", catalogs)
     with pytest.raises(ValueError, match="does not exist"):
-        navigation_directory("07-tools/absent", catalogs)
+        navigation_directory("01-inputs/absent", catalogs)
 
 
 def test_first_lesson_uses_generated_metadata():
