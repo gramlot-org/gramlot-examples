@@ -891,7 +891,7 @@ test('tool entries occupy the gallery panel without teaching chrome', () => {
 });
 
 
-test('lesson view follows navigation by default and stays independent when disabled', async t => {
+test('lesson view follows navigation by default and stays independent when disabled', {timeout: galleryFixtureTimeout}, async t => {
     const f = await setup(t);
     assert.equal(f.state.getItem('keepLessonView'), true);
     f.navigation('e01').click(); await settle();
@@ -917,7 +917,7 @@ test('lesson view follows navigation by default and stays independent when disab
 });
 
 
-test('single-page mode reuses the lesson shell and iframe and can return to multipage', async t => {
+test('single-page mode reuses the lesson shell and iframe and can return to multipage', {timeout: galleryFixtureTimeout}, async t => {
     const f = await setup(t);
     f.navigation('e01').click(); await settle();
     f.tab('preview-e01', 'Code').click(); await settle();
@@ -942,7 +942,7 @@ test('single-page mode reuses the lesson shell and iframe and can return to mult
 });
 
 
-test('single-page ignores an old Code response after switching lessons', async t => {
+test('single-page ignores an old Code response after switching lessons', {timeout: galleryFixtureTimeout}, async t => {
     const f = await setup(t);
     f.state.setItem('multipage', false);
     f.navigation('e01').click(); await settle(); await settle();
