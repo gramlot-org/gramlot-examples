@@ -10,16 +10,20 @@ python scripts/serve_chat_base.py --port 8773
 ```
 
 Open http://127.0.0.1:8773/01-echo. Type any text for echo, or click **Source example**
-(`/source`) for a reply built with Gramlot Source: image, table, counter and note.
+(`/source`) for a reply built with Gramlot Source: an order panel with tabs Customer
+(form), Items (editable grid with a `quantity * price` formula, footer total, add and
+delete row) and Summary (bound values, VAT and a Confirm button that sends nothing).
 Add two Source replies, edit one, and check that the other keeps its own values.
+Add and delete rows and watch the total; press Confirm.
 **New conversation** clears messages and their local Data; it preserves an unsent
 draft. Closing the page ends this in-memory conversation.
 
 `pages/92-chat/01-echo.py` shows Python composition and the processing hook. The outer top,
 composer top and composer bottom are authored by the Page. The composer center
 comes from the base component. `pages/92-chat/01-echo.js` delegates eight shared handlers
-to core and implements only the example's counter and example-request actions.
-The SVG image is a static illustration authored in this example, not an LLM call.
+to core and implements only the Confirm and example-request actions.
+The order panel is built server-side by `order_panel` in `PageStore.process_message`
+with a `GramlotBuilder` that loads the standard and gallery collections; no LLM is called.
 
 Messages can use the Page's loaded collections and named browser controllers.
 Relative Data paths belong to the message; absolute paths reach shared Page Data.

@@ -9,7 +9,7 @@ export class Logic {
     chatSend(node) { return chatSend(this.page, node); }
     chatCompleted(node, params) { return chatCompleted(this.page, node, params); }
     chatReset(node) { return chatReset(this.page, node); }
-    increment(node) { node.SET('.count', node.getRelativeData('.count') + 1); }
+    confirmOrder(node) { node.SET('.confirmed', true); }
     sendExample(node) {
         if (node.getRelativeData('.pending')) return;
         node.SET('.draft', '/source');
