@@ -1,7 +1,6 @@
-import {register} from 'node:module';
-register(new URL('../scripts/prepared-collection-loader.mjs', import.meta.url), {
-    data: Object.fromEntries(['layout','tree'].map(name => [`@gramlot/collections/${name}`, import.meta.resolve(`@gramlot/gramlot/components/${name}`)]))
-});
+import {registerCollectionModules} from '../scripts/register-collection-modules.mjs';
+await registerCollectionModules(Object.fromEntries(['layout','tree'].map(name => [
+    `@gramlot/collections/${name}`, import.meta.resolve(`@gramlot/gramlot/components/${name}`)])));
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';

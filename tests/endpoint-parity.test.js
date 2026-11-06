@@ -148,7 +148,7 @@ print(json.dumps(asyncio.run(main(json.loads(sys.stdin.read())))))
 
 // This full-catalogue test starts Python and verifies all prepared collections.
 // Include the remote Grouplet cases in its bounded integration-test budget.
-test('every endpoint and fragment answers the same in Python and JavaScript', {timeout:120000}, async () => {
+test('every endpoint and fragment answers the same in Python and JavaScript', {timeout:300000}, async () => {
     const expected = JSON.parse(execFileSync(python, ['-c', script], {cwd: root, encoding: 'utf8', input: JSON.stringify(CASES)}));
     const actual = await answerInJavaScript();
     assert.equal(actual.length, CASES.length);

@@ -12,7 +12,7 @@ import {readFile, realpath} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import {dirname, extname, join, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {GramlotFileServer, InvalidRequest, PageNotFound, runtimeAsset} from '@gramlot/gramlot/server';
+import {GramlotFileServer, InvalidRequest, PageNotFound, runtimeAsset, standardCollectionAssets} from '@gramlot/gramlot/server';
 
 import {buildGallery} from '../src/gramlot_examples/index.js';
 
@@ -35,6 +35,9 @@ export function servePages(folder, port) {
     const pageRoutes = Object.fromEntries(families.flatMap(family => family.examples
         .map(example => [example.key, `${family.folder}/${example.folder}`])));
     const server = new GramlotFileServer(pages, {collections});
+    const collectionAssets = standardCollectionAssets().map(({url, file}) => ({
+        prefix: url.slice(0, url.lastIndexOf("/") + 1), root: dirname(fileURLToPath(file)),
+    }));
     return createServer(async (request, response) => {
         const reply = (status, body, type) => {
             response.writeHead(status, {'Content-Type': type});
@@ -43,6 +46,11 @@ export function servePages(folder, port) {
         const path = request.url.split('?')[0];
         try {
             if (request.method === 'GET') {
+                const collection = collectionAssets.find(({prefix}) => path.startsWith(prefix));
+                if (collection) {
+                    const file = await servedFile(collection.root, path.slice(collection.prefix.length));
+                    return file ? reply(200, await readFile(file), MEDIA_TYPES[extname(file)]) : reply(404, 'Not found', 'text/plain');
+                }
                 if (assets[path]) return reply(200, await readFile(assets[path].file), assets[path].type);
                 if (path === server.markdownUrl) return reply(200, await readFile(runtimeAsset('gramlot-markdown.js')), MEDIA_TYPES['.js']);
                 if (path === server.runtimeUrl) return reply(200, await readFile(runtimeAsset()), MEDIA_TYPES['.js']);

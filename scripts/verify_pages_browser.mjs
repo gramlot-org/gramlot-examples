@@ -241,9 +241,10 @@ Object.assign(LOGIC, {
     },
     async e03(page) {
         assert.equal(await page.locator('section ul > li').count(), 3);
-        assert.equal(await page.locator('section').evaluate(el => getComputedStyle(el).color), 'rgb(255, 0, 0)');
-        assert.ok((await page.locator('section').textContent()).includes('<tag>'));
-        assert.equal(await page.locator('tag').count(), 0);
+        assert.equal(await page.locator('section').evaluate(el => getComputedStyle(el).padding), '16px');
+        assert.equal(await page.locator('section').evaluate(el => getComputedStyle(el).borderRadius), '8px');
+        assert.equal(await page.locator('section h2').textContent(), 'Learning topics');
+        assert.deepEqual(await page.locator('section li').allTextContents(), ['HTML', 'SVG', 'Data']);
     },
     async e04(page) {
         await page.getByRole('link', {name: 'Notes', exact: true}).click();

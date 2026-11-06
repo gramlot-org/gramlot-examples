@@ -1,3 +1,4 @@
+import {registerCollectionModules} from '../scripts/register-collection-modules.mjs';
 import menuCommands from '../src/gramlot_examples/collections/menu_trial/assets/index.js';
 import {buildGallery} from '../src/gramlot_examples/index.js';
 import assert from 'node:assert/strict';
@@ -14,13 +15,8 @@ const {GramlotFileServer} = await import(pathToFileURL(fromExamples.resolve('@gr
 const {standardCollectionAssets} = await import('@gramlot/gramlot/server');
 const assets = standardCollectionAssets();
 const standard = new GramlotFileServer('.').collections;
-const {register} = await import('node:module');
-register('data:text/javascript,'+encodeURIComponent(`
-let imports;
-export function initialize(data){imports=data;}
-export function resolve(name,context,next){return Object.hasOwn(imports,name)?{url:imports[name],shortCircuit:true}:next(name,context);}
-`), {data:Object.fromEntries(standard.map(({name,module})=>[
-    '@gramlot/collections/'+name, assets.find(item=>item.url===module).file.href]))});
+await registerCollectionModules(Object.fromEntries(standard.map(({name,module}) => [
+    '@gramlot/collections/'+name, assets.find(item => item.url === module).file.href])));
 const browserCollections = await Promise.all(assets.map(async ({file}) => (await import(file.href)).default));
 
 const {families} = JSON.parse(readFileSync(new URL('../src/gramlot_examples/catalog.json', import.meta.url), 'utf8'));
