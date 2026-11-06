@@ -840,6 +840,72 @@
         ]
       },
       {
+        "id": "behavior_grid_toolbar_tools",
+        "title": "Grid toolbar tools",
+        "label": "Toolbar tools",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Search, export the visible rows as CSV, JSON, TYTX, XML or Excel, print them and toggle the line numbers.",
+        "examples": [
+          "grid-toolbar-tools"
+        ]
+      },
+      {
+        "id": "behavior_grid_selection",
+        "title": "Grid selection",
+        "label": "Selection",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Switch selectionMode, select with click, Ctrl/Cmd, Shift and keys, and read the published selected paths.",
+        "examples": [
+          "grid-selection"
+        ]
+      },
+      {
+        "id": "behavior_grid_row_tools",
+        "title": "Grid row tools",
+        "label": "Row tools",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Add a row with defaults, duplicate or delete the selection and watch the editing status.",
+        "examples": [
+          "grid-row-tools"
+        ]
+      },
+      {
+        "id": "behavior_grid_row_formulas",
+        "title": "Grid row formulas",
+        "label": "Row formulas",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Edit a quantity or the page VAT and watch a chain of three Decimal formulas recalculate.",
+        "examples": [
+          "grid-row-formulas"
+        ]
+      },
+      {
+        "id": "behavior_grid_numbering",
+        "title": "Grid numbering and running sums",
+        "label": "Numbering and running sums",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Number rows, accumulate a running sum and see the numbering restart for a sorted or filtered view.",
+        "examples": [
+          "grid-numbering"
+        ]
+      },
+      {
+        "id": "behavior_grid_footer_totals",
+        "title": "Grid footer totals",
+        "label": "Footer totals",
+        "kind": "behavior",
+        "status": "Exercise",
+        "description": "Read the footer sums and the same total in page Data; a search leaves the totals unchanged.",
+        "examples": [
+          "grid-footer-totals"
+        ]
+      },
+      {
         "id": "behavior_grid_virtual_scroll",
         "title": "Grid resident virtualization",
         "label": "Resident virtualization",

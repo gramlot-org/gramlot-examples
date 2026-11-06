@@ -5,12 +5,13 @@ from gramlot import Page as BasePage
 class Page(BasePage):
     def main(self, root):
         main_content = root.main(padding='12px', height='100%', min_height=0)
-        frame = main_content.frameGrid(searchOn=True, datapath='orders', storepath='.rows', rowMode='attributes',
-                              height='calc(100vh - 24px)', id='orders-frame',
-                              border='1px solid var(--gramlot-border)',
-                              border_radius='var(--gramlot-radius-sm)', overflow='hidden')
-        frame.grid.set_attr(id='orders-grid', rowHeaders=True, rowResize=True, selfDragRows=True, selfsubscribe_updateFirst='updateFirst',
-                            selfsubscribe_removeLast='removeLast')
+        frame = main_content.frameGrid(
+            searchOn=True, datapath='orders', storepath='.rows', rowMode='attributes',
+            rowHeaders=True, rowResize=True, selfDragRows=True,
+            height='calc(100vh - 24px)', id='orders-frame', border='1px solid var(--gramlot-border)',
+            border_radius='var(--gramlot-radius-sm)', frame_overflow='hidden',
+            grid_id='orders-grid', grid_selfsubscribe_updateFirst='updateFirst',
+            grid_selfsubscribe_removeLast='removeLast')
         self.columns(frame.grid.struct())
         self.bars(frame)
 

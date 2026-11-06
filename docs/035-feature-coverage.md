@@ -6,7 +6,7 @@ Document ID: **GE-035**.
 ## 005 · What this checklist measures
 
 This checklist describes teaching evidence, not exhaustive feature or test coverage.
-The common catalogue now has **135 lessons**. The Grid review on 2026-10-30 adds
+The common catalogue now has **147 lessons**. The Grid review on 2026-10-30 adds
 resident virtualization, floating layouts and typed search, plus optional Python
 catalogues for database loading and the Asqueel-only cached-selection experiment.
 The index distinguishes generic Grid behavior, experimental loading and Asqueel-only
@@ -205,6 +205,12 @@ verification remain separate work.
 | Multicolumn sort and row drag | **Exercise** | [grid-04 · Multicolumn sort and row drag](../src/gramlot_examples/pages/05-grid/04_ordering.md) | Sort raw Bag values with multiple criteria, then set a manual row order. |
 | Two grids, independent views | **Exercise** | [grid-05 · Two grids, independent views](../src/gramlot_examples/pages/05-grid/05_shared_store.md) | Sort, filter or reorder either grid independently. Both views share the same Bag records and follow data changes. |
 | Grid typed search | **Exercise** | [grid-07 · Search · text, numbers and dates](../src/gramlot_examples/pages/05-grid/07_search.md) | Choose text, numeric or date columns, use typed comparisons, then clear the filter without losing sorting. This is local searchOn over the resident Bag. |
+| Grid toolbar tools | **Exercise** | [grid-toolbar-tools · Toolbar tools · export, print and line numbers](../src/gramlot_examples/pages/05-grid/14_toolbar_tools.md) | Search, export the visible rows as CSV, JSON, TYTX, XML or Excel, print them and toggle the line numbers. |
+| Grid selection | **Exercise** | [grid-selection · Selection · none, single and multi](../src/gramlot_examples/pages/05-grid/15_selection.md) | Switch selectionMode, select with click, Ctrl/Cmd, Shift and keys, and read the published selected paths. |
+| Grid row tools | **Exercise** | [grid-row-tools · Row tools · add, duplicate and delete](../src/gramlot_examples/pages/05-grid/16_row_tools.md) | Add a row with defaults, duplicate or delete the selection and watch the editing status. |
+| Grid row formulas | **Exercise** | [grid-row-formulas · Row formulas · totals, VAT and chains](../src/gramlot_examples/pages/05-grid/17_row_formulas.md) | Edit a quantity or the page VAT and watch a chain of three Decimal formulas recalculate. |
+| Grid numbering and running sums | **Exercise** | [grid-numbering · Numbering and running sums](../src/gramlot_examples/pages/05-grid/18_numbering.md) | Number rows, accumulate a running sum and see the numbering restart for a sorted or filtered view. |
+| Grid footer totals | **Exercise** | [grid-footer-totals · Footer totals](../src/gramlot_examples/pages/05-grid/19_footer_totals.md) | Read the footer sums and the same total in page Data; a search leaves the totals unchanged. |
 | Grid resident virtualization | **Exercise** | [grid-08 · Scroll · 1,000 resident rows](../src/gramlot_examples/pages/05-grid/08_virtual_scroll.md) | Scroll 1,000 loaded records with bounded DOM rows. Resize a row and compare local search and multicolumn sorting. All records remain in browser Data; this is not server paging. |
 | Grid resize in a floating pane | **Exercise** | [grid-09 · Floating grid · resize and scroll](../src/gramlot_examples/pages/05-grid/09_floating_scroll.md) | Resize the floating pane and scroll to the last row. Variable row heights and the row-number gutter belong to the same retained Grid. |
 

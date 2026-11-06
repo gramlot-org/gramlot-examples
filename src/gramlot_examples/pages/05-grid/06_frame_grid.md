@@ -32,10 +32,29 @@ gallery without its own theme selector.
 columns; `frame.top` and `frame.bottom` hold `menu(presentation='bar')`. Groups,
 spacers and command routing are the same mechanisms as the other toolbar lessons.
 
+### Where each keyword goes
+
+`frameGrid` receives the keywords of two elements and routes them by list:
+
+- An unprefixed keyword that the grid declares as a parameter goes to the grid:
+  `storepath`, `rowMode`, `rowHeaders`, `rowResize` and `selfDragRows` here.
+- Every other keyword goes to the frame: `datapath`, `height`, `id`, `border` and
+  the other style attributes.
+- `grid_<name>` forces any attribute onto the grid and `frame_<name>` onto the frame;
+  the prefix is removed. This page uses `grid_id` for the grid id and
+  `grid_selfsubscribe_updateFirst` to subscribe the grid to the two commands;
+  `frame_overflow` sets the frame overflow.
+- Giving the same name twice, for example `rowHeaders` and `grid_rowHeaders`, is an
+  error.
+
+The list follows the grid's declared parameters, so a new grid parameter is routed
+without changing `frameGrid`. The same call sets the grid, the frame and the commands
+without a separate `frame.grid.set_attr(...)`.
+
 The adjacent `_data.tytx` contains twelve sample orders as row attributes.
 `rowMode='attributes'` makes this explicit. The amounts are sample fields; `rowHeaders=True` generates the row numbers
-with the shared header style and keeps them in sequence after removal. The small update handler recalculates its sample amounts;
-this does not introduce a general grid formula engine.
+with the shared header style and keeps them in sequence after removal. The small update handler recalculates its sample amounts
+by hand; the formulas lesson shows how a column computes them.
 
 The struct is ordinary Data: `view_0.rows_0` holds the ordered cell nodes and
 `info.columnsets` holds group definitions. Each cell retains its `columnset`
@@ -46,9 +65,9 @@ array, and changes are visible in the gallery Inspector.
 `rowResize=True` enables these gestures. Manual heights belong to this grid
 instance and reset when the example is reloaded; the shared data is unchanged.
 
-The row values are not directly editable. Selection, frozen columns and a configurator
-are not part of this first version. Reloading the example restores its sample
-Data; the buttons do not save to a database.
+The row values are not directly editable. Selection, formulas and totals have their
+own lessons; frozen columns and a configurator are not part of this example.
+Reloading the example restores its sample Data; the buttons do not save to a database.
 
 
 ## Search the collection

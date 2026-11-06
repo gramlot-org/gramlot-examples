@@ -1,0 +1,15 @@
+{
+  "key": "grid-row-tools",
+  "title": "Row tools · add, duplicate and delete",
+  "description": "Add rows with defaults, duplicate or delete the selection and follow the editing status.",
+  "tags": [
+    "grid",
+    "frame",
+    "addrow",
+    "duprow",
+    "delrow",
+    "gridsemaphore",
+    "editing"
+  ],
+  "order": 5
+}

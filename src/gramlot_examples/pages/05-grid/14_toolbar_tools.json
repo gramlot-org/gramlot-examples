@@ -1,0 +1,14 @@
+{
+  "key": "grid-toolbar-tools",
+  "title": "Toolbar tools · export, print and line numbers",
+  "description": "Switch on the frameGrid export, print and line-number tools, each a toolbar command for the grid.",
+  "tags": [
+    "grid",
+    "frame",
+    "export",
+    "print",
+    "advancedTools",
+    "lineNumbers"
+  ],
+  "order": 2
+}

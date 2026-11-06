@@ -1,0 +1,13 @@
+{
+  "key": "grid-footer-totals",
+  "title": "Footer totals",
+  "description": "Sum columns over every resident row, show them in the footer and read them from page Data.",
+  "tags": [
+    "grid",
+    "footer",
+    "totalize",
+    "footer_format",
+    "totals"
+  ],
+  "order": 8
+}

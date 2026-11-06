@@ -7,7 +7,7 @@ gallery without its own theme selector.
 ## Try it
 
 - Click a column header to sort; Shift-click adds criteria with visible priorities.
-- Drag a row to set manual order. This changes store indices and clears the sort,
+- Drag a row to set manual order. This changes this view’s indices and clears the sort,
   while the physical Bag node order remains unchanged.
 
 - Scroll horizontally through Order details, Delivery and Alternatives. The
@@ -32,10 +32,29 @@ gallery without its own theme selector.
 columns; `frame.top` and `frame.bottom` hold `menu(presentation='bar')`. Groups,
 spacers and command routing are the same mechanisms as the other toolbar lessons.
 
+### Where each keyword goes
+
+`frameGrid` receives the keywords of two elements and routes them by list:
+
+- An unprefixed keyword that the grid declares as a parameter goes to the grid:
+  `storepath`, `rowMode`, `rowHeaders`, `rowResize` and `selfDragRows` here.
+- Every other keyword goes to the frame: `datapath`, `height`, `id`, `border` and
+  the other style attributes.
+- `grid_<name>` forces any attribute onto the grid and `frame_<name>` onto the frame;
+  the prefix is removed. This page uses `grid_id` for the grid id and
+  `grid_selfsubscribe_updateFirst` to subscribe the grid to the two commands;
+  `frame_overflow` sets the frame overflow.
+- Giving the same name twice, for example `rowHeaders` and `grid_rowHeaders`, is an
+  error.
+
+The list follows the grid's declared parameters, so a new grid parameter is routed
+without changing `frameGrid`. The same call sets the grid, the frame and the commands
+without a separate `frame.grid.set_attr(...)`.
+
 The adjacent `_data.tytx` contains twelve sample orders as row attributes.
 `rowMode='attributes'` makes this explicit. The amounts are sample fields; `rowHeaders=True` generates the row numbers
-with the shared header style and keeps them in sequence after removal. The small update handler recalculates its sample amounts;
-this does not introduce a general grid formula engine.
+with the shared header style and keeps them in sequence after removal. The small update handler recalculates its sample amounts
+by hand; the formulas lesson shows how a column computes them.
 
 The struct is ordinary Data: `view_0.rows_0` holds the ordered cell nodes and
 `info.columnsets` holds group definitions. Each cell retains its `columnset`
@@ -46,6 +65,27 @@ array, and changes are visible in the gallery Inspector.
 `rowResize=True` enables these gestures. Manual heights belong to this grid
 instance and reset when the example is reloaded; the shared data is unchanged.
 
-The row values are not directly editable. Selection, frozen columns, filters and a configurator
-are not part of this first version. Reloading the example restores its sample
-Data; the buttons do not save to a database.
+The row values are not directly editable. Selection, formulas and totals have their
+own lessons; frozen columns and a configurator are not part of this example.
+Reloading the example restores its sample Data; the buttons do not save to a database.
+
+
+## Search the collection
+
+`frameGrid(searchOn=True, ...)` adds the shared search control in the top bar.
+Choose **All columns** or one column from its menu. Text searches are
+case-insensitive regular expressions: try `lamp|desk` under Product. For Qty or
+Unit price use a comparison: `> 2`, `<= 100`, `= 4`, `! 0` (also `# 0` and `!= 0`).
+Numeric punctuation follows the browser locale. An incomplete expression shows
+an error and keeps the last accepted result.
+
+Each grid’s collection view owns its filter and ordering. Sort still applies to the full collection;
+clearing the search restores all rows in their current logical order. Row drag
+retains hidden rows and clears the sort criteria, as it does without a filter.
+Changing a matching value in Data can add or remove that row from the visible
+result. Filtering does not delete or copy records or write ordering metadata into the business Bag.
+
+For a restricted menu use `searchOn='Product:product,Quantity:quantity'`; the
+legacy `searchOn='*LRN'` selects numeric columns. Date columns use comparisons
+such as `>= 28/10/2026` in an Italian locale. A full search field can be cleared
+with its clear button or Escape.

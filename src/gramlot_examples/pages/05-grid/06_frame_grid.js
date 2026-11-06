@@ -4,10 +4,13 @@ export class Page extends BasePage {
 
     main(root) {
         const main_content = root.main({padding:'12px', height:'100%', min_height:0});
-        const frame = main_content.frameGrid({searchOn:true, datapath:'orders', storepath:'.rows', rowMode:'attributes',
+        const frame = main_content.frameGrid({
+            searchOn:true, datapath:'orders', storepath:'.rows', rowMode:'attributes',
+            rowHeaders:true, rowResize:true, selfDragRows:true,
             height:'calc(100vh - 24px)', id:'orders-frame', border:'1px solid var(--gramlot-border)',
-            border_radius:'var(--gramlot-radius-sm)', overflow:'hidden'});
-        frame.grid.setAttr({id:'orders-grid', rowHeaders:true, rowResize:true, selfDragRows:true, selfsubscribe_updateFirst:'updateFirst', selfsubscribe_removeLast:'removeLast'});
+            border_radius:'var(--gramlot-radius-sm)', frame_overflow:'hidden',
+            grid_id:'orders-grid', grid_selfsubscribe_updateFirst:'updateFirst',
+            grid_selfsubscribe_removeLast:'removeLast'});
         this.columns(frame.grid.struct());
         this.bars(frame);
     }

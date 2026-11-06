@@ -1467,72 +1467,6 @@
       "folder": "05-grid",
       "examples": [
         {
-          "key": "grid-01",
-          "title": "Basic grid · Bag values",
-          "description": "Start with three columns and a Bag whose row values are Bags.",
-          "tags": [
-            "grid",
-            "basic",
-            "bag",
-            "values"
-          ],
-          "folder": "01_basic"
-        },
-        {
-          "key": "grid-02",
-          "title": "Rows as attributes",
-          "description": "Read the same kind of records from node attributes, with typed numeric and boolean cells.",
-          "tags": [
-            "grid",
-            "rows",
-            "attributes"
-          ],
-          "folder": "02_attributes"
-        },
-        {
-          "key": "grid-03",
-          "title": "Column groups and row heights",
-          "description": "Group columns, display multiline notes and resize individual rows.",
-          "tags": [
-            "grid",
-            "column",
-            "groups",
-            "row",
-            "heights",
-            "colgroups"
-          ],
-          "folder": "03_colgroups"
-        },
-        {
-          "key": "grid-04",
-          "title": "Multicolumn sort and row drag",
-          "description": "Sort raw Bag values with multiple criteria, then set a manual row order.",
-          "tags": [
-            "grid",
-            "multicolumn",
-            "sort",
-            "row",
-            "drag",
-            "ordering"
-          ],
-          "folder": "04_ordering"
-        },
-        {
-          "key": "grid-05",
-          "title": "Two grids, independent views",
-          "description": "Two independently sorted and filtered views share the same Bag records.",
-          "tags": [
-            "grid",
-            "two",
-            "grids",
-            "independent",
-            "views",
-            "shared",
-            "store"
-          ],
-          "folder": "05_shared_store"
-        },
-        {
           "key": "menu-15",
           "title": "FrameGrid · complete example",
           "description": "A read-only Bag grid with shared top and bottom command bars. Choose its theme in the gallery Settings.",
@@ -1556,30 +1490,102 @@
           "folder": "07_search"
         },
         {
-          "key": "grid-08",
-          "title": "Scroll · 1,000 resident rows",
-          "description": "A small viewport over 1,000 fully loaded records, with variable heights and local search.",
+          "key": "grid-toolbar-tools",
+          "title": "Toolbar tools · export, print and line numbers",
+          "description": "Switch on the frameGrid export, print and line-number tools, each a toolbar command for the grid.",
           "tags": [
             "grid",
-            "scroll",
-            "000",
-            "resident",
-            "rows",
-            "virtual"
+            "frame",
+            "export",
+            "print",
+            "advancedTools",
+            "lineNumbers"
           ],
-          "folder": "08_virtual_scroll"
+          "folder": "14_toolbar_tools"
         },
         {
-          "key": "grid-09",
-          "title": "Floating grid · resize and scroll",
-          "description": "A resizable floating window with 1,000 resident records and variable row heights.",
+          "key": "grid-selection",
+          "title": "Selection · none, single and multi",
+          "description": "Switch selectionMode and read the selected row identities the grid publishes to Data.",
           "tags": [
             "grid",
-            "floating",
-            "resize",
-            "scroll"
+            "selection",
+            "selectionMode",
+            "selectedId",
+            "selectedPkeys"
           ],
-          "folder": "09_floating_scroll"
+          "folder": "15_selection"
+        },
+        {
+          "key": "grid-10",
+          "title": "Editing · drafts and validation",
+          "description": "Edit 1,000 rows with persistent drafts, errors and asynchronous validation.",
+          "tags": [
+            "editable",
+            "grids",
+            "editing",
+            "drafts",
+            "validation"
+          ],
+          "requires": [
+            "endpoint"
+          ],
+          "folder": "13_editing"
+        },
+        {
+          "key": "grid-row-tools",
+          "title": "Row tools · add, duplicate and delete",
+          "description": "Add rows with defaults, duplicate or delete the selection and follow the editing status.",
+          "tags": [
+            "grid",
+            "frame",
+            "addrow",
+            "duprow",
+            "delrow",
+            "gridsemaphore",
+            "editing"
+          ],
+          "folder": "16_row_tools"
+        },
+        {
+          "key": "grid-row-formulas",
+          "title": "Row formulas · totals, VAT and chains",
+          "description": "Compute row fields from other fields and from page Data; formulas chain and keep Decimal precision.",
+          "tags": [
+            "grid",
+            "formula",
+            "calculated",
+            "Decimal",
+            "formula_vat"
+          ],
+          "folder": "17_row_formulas"
+        },
+        {
+          "key": "grid-numbering",
+          "title": "Numbering and running sums",
+          "description": "Number the visible rows, accumulate a running sum and show each row's share of the total.",
+          "tags": [
+            "grid",
+            "formula",
+            "numbering",
+            "running sum",
+            "percentage",
+            "filter"
+          ],
+          "folder": "18_numbering"
+        },
+        {
+          "key": "grid-footer-totals",
+          "title": "Footer totals",
+          "description": "Sum columns over every resident row, show them in the footer and read them from page Data.",
+          "tags": [
+            "grid",
+            "footer",
+            "totalize",
+            "footer_format",
+            "totals"
+          ],
+          "folder": "19_footer_totals"
         },
         {
           "key": "grid-check-sets",
@@ -1634,20 +1640,96 @@
           "folder": "12_primary_supplier"
         },
         {
-          "key": "grid-10",
-          "title": "Editing · drafts and validation",
-          "description": "Edit 1,000 rows with persistent drafts, errors and asynchronous validation.",
+          "key": "grid-05",
+          "title": "Two grids, independent views",
+          "description": "Two independently sorted and filtered views share the same Bag records.",
           "tags": [
-            "editable",
+            "grid",
+            "two",
             "grids",
-            "editing",
-            "drafts",
-            "validation"
+            "independent",
+            "views",
+            "shared",
+            "store"
           ],
-          "requires": [
-            "endpoint"
+          "folder": "05_shared_store"
+        },
+        {
+          "key": "grid-08",
+          "title": "Scroll · 1,000 resident rows",
+          "description": "A small viewport over 1,000 fully loaded records, with variable heights and local search.",
+          "tags": [
+            "grid",
+            "scroll",
+            "000",
+            "resident",
+            "rows",
+            "virtual"
           ],
-          "folder": "13_editing"
+          "folder": "08_virtual_scroll"
+        },
+        {
+          "key": "grid-09",
+          "title": "Floating grid · resize and scroll",
+          "description": "A resizable floating window with 1,000 resident records and variable row heights.",
+          "tags": [
+            "grid",
+            "floating",
+            "resize",
+            "scroll"
+          ],
+          "folder": "09_floating_scroll"
+        },
+        {
+          "key": "grid-01",
+          "title": "Basic grid · Bag values",
+          "description": "Start with three columns and a Bag whose row values are Bags.",
+          "tags": [
+            "grid",
+            "basic",
+            "bag",
+            "values"
+          ],
+          "folder": "01_basic"
+        },
+        {
+          "key": "grid-02",
+          "title": "Rows as attributes",
+          "description": "Read the same kind of records from node attributes, with typed numeric and boolean cells.",
+          "tags": [
+            "grid",
+            "rows",
+            "attributes"
+          ],
+          "folder": "02_attributes"
+        },
+        {
+          "key": "grid-03",
+          "title": "Column groups and row heights",
+          "description": "Group columns, display multiline notes and resize individual rows.",
+          "tags": [
+            "grid",
+            "column",
+            "groups",
+            "row",
+            "heights",
+            "colgroups"
+          ],
+          "folder": "03_colgroups"
+        },
+        {
+          "key": "grid-04",
+          "title": "Multicolumn sort and row drag",
+          "description": "Sort raw Bag values with multiple criteria, then set a manual row order.",
+          "tags": [
+            "grid",
+            "multicolumn",
+            "sort",
+            "row",
+            "drag",
+            "ordering"
+          ],
+          "folder": "04_ordering"
         }
       ]
     },

@@ -1,0 +1,13 @@
+{
+  "key": "grid-row-formulas",
+  "title": "Row formulas · totals, VAT and chains",
+  "description": "Compute row fields from other fields and from page Data; formulas chain and keep Decimal precision.",
+  "tags": [
+    "grid",
+    "formula",
+    "calculated",
+    "Decimal",
+    "formula_vat"
+  ],
+  "order": 6
+}

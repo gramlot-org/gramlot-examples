@@ -1,0 +1,14 @@
+{
+  "key": "grid-numbering",
+  "title": "Numbering and running sums",
+  "description": "Number the visible rows, accumulate a running sum and show each row's share of the total.",
+  "tags": [
+    "grid",
+    "formula",
+    "numbering",
+    "running sum",
+    "percentage",
+    "filter"
+  ],
+  "order": 7
+}

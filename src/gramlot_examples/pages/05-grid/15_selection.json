@@ -1,0 +1,13 @@
+{
+  "key": "grid-selection",
+  "title": "Selection · none, single and multi",
+  "description": "Switch selectionMode and read the selected row identities the grid publishes to Data.",
+  "tags": [
+    "grid",
+    "selection",
+    "selectionMode",
+    "selectedId",
+    "selectedPkeys"
+  ],
+  "order": 3
+}

@@ -237,6 +237,44 @@ const CHECKS = {
         await tick();
         assert.ok(chair(second), 'a shared update restores the row to the filtered view');
     },
+    async 'grid-row-formulas'({data, app}) {
+        await tick();
+        const row = label => data('sample.rows').getNode(label).getAttr();
+        // Compared to three decimals: this suite resolves the core through a link, so its decimal.js is not the one of the data.
+        const value = (label, field) => Number(row(label)[field]).toFixed(3);
+        assert.deepEqual(['total', 'tax', 'gross'].map(field => value('r1', field)), ['179.800', '39.556', '219.356']);
+        app.data.setItem('sample.vat', 10); await tick();
+        assert.equal(value('r1', 'gross'), '197.780', 'a change of the page VAT recalculates the chain');
+        data('sample.rows').getNode('r1').setAttr({quantity: 1}); await tick();
+        assert.equal(value('r1', 'total'), '89.900');
+    },
+    async 'grid-footer-totals'({data}) {
+        await tick();
+        assert.equal(Number(data('sample.totalize.total')), 1972.5);
+        assert.equal(Number(data('sample.totalize.quantity')), 31);
+    },
+    async 'grid-numbering'({data, dom}) {
+        await tick();
+        const grid = dom.window.document.querySelector('gramlot-grid');
+        const column = field => [...grid.shadowRoot.querySelectorAll(`tbody td[data-field="${field}"]`)].map(cell => cell.textContent);
+        assert.deepEqual(column('position'), ['1', '2', '3', '4', '5', '6', '7', '8']);
+        assert.equal(column('running').at(-1), '1972.50');
+        assert.equal(Number(data('sample.rows').getNode('r1').getAttr('share')).toFixed(2), '9.12');
+    },
+    async 'grid-selection'({data, app, dom}) {
+        await tick();
+        const grid = dom.window.document.querySelector('gramlot-grid');
+        const click = async (label, options = {}) => {
+            grid.shadowRoot.querySelector(`tr[data-row="${label}"] td`).dispatchEvent(
+                new dom.window.MouseEvent('click', {bubbles: true, composed: true, ...options}));
+            await tick();
+        };
+        await click('r2'); await click('r4', {ctrlKey: true});
+        assert.deepEqual([data('sample.id'), data('sample.keys'), data('sample.names'), data('sample.selectionLength')],
+            ['r4', ['r2', 'r4'], 'Oak desk,Desk lamp', 2]);
+        app.data.setItem('sample.mode', 'none'); await tick();
+        assert.equal(data('sample.selectionLength'), 0);
+    },
     async g06(ctx) {
         const {app, byId, data, click, calls} = ctx;
         await tick(); await tick(); await tick();
