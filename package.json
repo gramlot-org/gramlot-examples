@@ -1,6 +1,6 @@
 {
   "name": "@gramlot/gramlot-examples",
-  "version": "0.3.38",
+  "version": "0.3.39",
   "description": "Gramlot example pages, the gallery page and its catalogue.",
   "license": "Apache-2.0",
   "repository": {
@@ -36,6 +36,7 @@
     "src/gramlot_examples/index.js",
     "src/gramlot_examples/catalog.json",
     "src/gramlot_examples/filters.json",
+    "src/gramlot_examples/groups.json",
     "src/gramlot_examples/pages/**/*.js",
     "src/gramlot_examples/pages/**/*.md",
     "src/gramlot_examples/pages/**/*.json",
