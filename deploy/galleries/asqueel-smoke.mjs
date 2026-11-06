@@ -52,10 +52,10 @@ try {
     await page.locator('#trial-mode').filter({hasText:'cachedFetch'}).waitFor({timeout:60000});
     assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.count')),1000);
     assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.resident')),200);
-    await page.getByLabel('Maximum records').selectOption('100');
+    await page.getByLabel('Max rows', {exact:true}).selectOption('100');
     await page.locator('#trial-mode').filter({hasText:'resident'}).waitFor();
     assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.count')),100);
-    await page.getByLabel('Maximum records').selectOption('1000');
+    await page.getByLabel('Max rows', {exact:true}).selectOption('1000');
     await page.locator('#trial-mode').filter({hasText:'cachedFetch'}).waitFor();
     await page.getByLabel('Server search').fill('zzzz-no-such-public-row');
     await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.count')===0);
@@ -63,7 +63,7 @@ try {
     await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.count')===1000);
     await page.locator('#trial-grid th[data-field=quantity]').click();
     await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.window.sortedBy')==='quantity:a');
-    await page.getByLabel('Maximum records').selectOption('500000');
+    await page.getByLabel('Max rows', {exact:true}).selectOption('500000');
     await page.waitForFunction(()=>gramlot.data.getItem('trial.selection.count')===410429,null,{timeout:120000});
     assert.equal(await page.evaluate(()=>gramlot.data.getItem('trial.selection.resident')),200);
     console.log('PASS full XL selection: 410429 server rows, 200 browser rows');
