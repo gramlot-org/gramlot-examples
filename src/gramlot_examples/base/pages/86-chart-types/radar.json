@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-03",
+  "title": "Radar",
+  "description": "Compare products on five criteria; each criterion is an axis, each row a polygon.",
+  "tags": [
+    "charts",
+    "chartView",
+    "radar",
+    "frameGrid"
+  ],
+  "order": 2
+}

@@ -19,6 +19,66 @@
             "mask"
           ],
           "folder": "gauges"
+        },
+        {
+          "key": "chart-types-02",
+          "title": "Funnel",
+          "description": "Show sales pipeline stages as a funnel; edit a cell and the chart follows.",
+          "tags": [
+            "charts",
+            "chartView",
+            "funnel",
+            "frameGrid"
+          ],
+          "folder": "funnel"
+        },
+        {
+          "key": "chart-types-03",
+          "title": "Radar",
+          "description": "Compare products on five criteria; each criterion is an axis, each row a polygon.",
+          "tags": [
+            "charts",
+            "chartView",
+            "radar",
+            "frameGrid"
+          ],
+          "folder": "radar"
+        },
+        {
+          "key": "chart-types-04",
+          "title": "Parallel coordinates",
+          "description": "Compare cars on five numeric axes; each row is one polyline.",
+          "tags": [
+            "charts",
+            "chartView",
+            "parallel",
+            "frameGrid"
+          ],
+          "folder": "parallel"
+        },
+        {
+          "key": "chart-types-05",
+          "title": "Heatmap",
+          "description": "Show activity by weekday and hour as colored cells; edit a cell and the colors rescale.",
+          "tags": [
+            "charts",
+            "chartView",
+            "heatmap",
+            "frameGrid"
+          ],
+          "folder": "heatmap"
+        },
+        {
+          "key": "chart-types-06",
+          "title": "Sankey",
+          "description": "Show budget flows as links between nodes; a cycle is reported as an error.",
+          "tags": [
+            "charts",
+            "chartView",
+            "sankey",
+            "frameGrid"
+          ],
+          "folder": "sankey"
         }
       ]
     }

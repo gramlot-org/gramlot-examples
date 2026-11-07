@@ -5,9 +5,16 @@
 ## Start here
 
 - **Gauges:** one value on a needle dial, a progress ring or a half-circle arc. Change the value, the range, the thresholds, the mask and the presentation, and watch the same Data drive every gauge.
+- **Funnel:** pipeline stages in one measure, in the order of the rows.
+- **Radar:** one polygon per row, one axis per measure.
+- **Parallel coordinates:** one polyline per row, one vertical axis per measure.
+- **Heatmap:** two categories and one measure as cell color.
+- **Sankey:** links from a source column to a target column, with cycle detection.
 
-## How these elements differ from `chartView`
+The last five are chart types of `chartView` (ECharts engine). Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart.
 
-`chartView` and `chartPane` draw the rows of a store. The elements here draw the Data they point at: the node value is the value, written as a Data pointer such as `^.cpu.load` or `^.cpu.load?percent`. They write nothing back.
+## How the gauge differs from `chartView`
 
-This family is experimental. The elements are in the `charts` collection of the core, which the server provides to every page.
+`chartView` and `chartPane` draw the rows of a store. The gauge draws the Data they point at: the node value is the value, written as a Data pointer such as `^.cpu.load` or `^.cpu.load?percent`. It writes nothing back.
+
+This family is experimental. Everything here is in the `charts` collection of the core, which the server provides to every page.

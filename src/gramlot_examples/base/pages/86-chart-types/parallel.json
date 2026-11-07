@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-04",
+  "title": "Parallel coordinates",
+  "description": "Compare cars on five numeric axes; each row is one polyline.",
+  "tags": [
+    "charts",
+    "chartView",
+    "parallel",
+    "frameGrid"
+  ],
+  "order": 3
+}

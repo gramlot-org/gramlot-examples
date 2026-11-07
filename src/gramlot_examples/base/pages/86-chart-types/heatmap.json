@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-05",
+  "title": "Heatmap",
+  "description": "Show activity by weekday and hour as colored cells; edit a cell and the colors rescale.",
+  "tags": [
+    "charts",
+    "chartView",
+    "heatmap",
+    "frameGrid"
+  ],
+  "order": 4
+}
