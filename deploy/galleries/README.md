@@ -474,11 +474,9 @@ links back to `/gallery/`. Catalogue and pages: GE-010 section 017.
   `/`; it does not match this nginx configuration. The selected Python profile is
   `Dockerfile.python-mobile`.
 
-Known defect: on the Python host the main gallery inside the tab page stops with “Parent does not
-provide the same PageStore endpoint”. The gallery application has the PageStore WebSocket; a
-Gramlot page in an iframe takes the PageStore channel of its Gramlot parent, and the tab page has
-none. `/gallery/` opened directly works; the Node host has no WebSocket and works in both ways.
-`smoke.mjs` reports this failure until the core is changed.
+The main gallery inside the tab page needs gramlot 0.3.33 or later on the Python host: the
+gallery has the PageStore WebSocket and the tab page has none, and since 0.3.33 a PageStore page
+inside such a container opens its own socket.
 
 ### Operator steps (by hand, on the server)
 
