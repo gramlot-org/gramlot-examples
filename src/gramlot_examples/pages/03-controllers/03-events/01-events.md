@@ -11,7 +11,7 @@ Elements declare how they respond to browser events. You learn where an event is
 
 **Goal:** Follow a declared event to the declaring node and its Data write.
 
-**Before this lesson:** [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md).
+**Before this lesson:** [c02 · Controller](../01-logic/02-controller.md), [c06 · Button controller](../02-actions/01-button_controller.md).
 
 ## Read the page
 
@@ -41,7 +41,7 @@ For most field editing, b04’s `value` pointer replaces an authored input-to-Da
 
 Removing a node removes its listeners. Named handlers require a dotted `group.method` from `js_requires`; a root Logic method used by `func` is not a substitute. The common gallery has no resource host; the named-group lesson belongs with genro-kajenn. Inline code needs the permissive CSP profile.
 
-Continue with [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/04-complete_examples/01-end_to_end.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-075) explains the full contract.
+Continue with [c08 · End-to-end story](../04-complete_examples/01-end_to_end.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-075) explains the full contract.
 
 **Sample data:** `01-events_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

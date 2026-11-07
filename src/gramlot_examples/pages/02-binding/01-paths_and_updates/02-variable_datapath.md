@@ -11,7 +11,7 @@ One card can show different records. Change its Data context and watch all its f
 
 **Goal:** Retarget a whole card by changing its Data context.
 
-**Before this lesson:** [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md).
+**Before this lesson:** [b01 · Pointers](01-pointers.md), [b04 · Native editing](../02-editing/01-native_editing.md).
 
 ## Read the page
 
@@ -47,7 +47,7 @@ Compared with b01’s fixed context, one variable `datapath` retargets the same 
 
 The selected value must be a Data path, not a record object. Reload reconstructs the initial records; local edits are not persistence. Empty/null contexts are an advanced reference case, not a new record editor.
 
-Continue with [b03 · Setters and defaults](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/03-setters_and_defaults.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-040) explains the full contract.
+Continue with [b03 · Setters and defaults](03-setters_and_defaults.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-040) explains the full contract.
 
 **Sample data:** `02-variable_datapath_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

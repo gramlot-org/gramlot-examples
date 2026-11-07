@@ -11,7 +11,7 @@ A playground for adding, removing and changing parts of a running page, includin
 
 **Goal:** Separate live Source changes from Data reactivity and let a controller own a timer.
 
-**Before this lesson:** [e10 · Cards with icons](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/01-cards_with_icons.md), [c07 · Events](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/01-events.md). 
+**Before this lesson:** [e10 · Cards with icons](../00-html_svg/04-page_composition/01-cards_with_icons.md), [c07 · Events](../03-controllers/03-events/01-events.md). 
 
 ## Read the page
 
@@ -35,12 +35,12 @@ Change `_timing` of the `animate` controller from 0.05 to 0.1 seconds.
 
 ## The same example across stages
 
-In **0.2.0**, [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md) makes geometry follow Data (`r="^.radius"`), while c02 supplies declarative timing for a controller. This lesson already uses `_timing` for the repeated task: the provider owns the timer and its cleanup, so the page has no timer, setup or cleanup code. The animation still writes Source attributes; it is not a binding.
+In **0.2.0**, [b07 · Bound SVG](../02-binding/03-presentation/02-bound_svg.md) makes geometry follow Data (`r="^.radius"`), while c02 supplies declarative timing for a controller. This lesson already uses `_timing` for the repeated task: the provider owns the timer and its cleanup, so the page has no timer, setup or cleanup code. The animation still writes Source attributes; it is not a binding.
 
 ## Limits and next step
 
 This advanced bridge uses a `_timing` controller and inline actions, so it is not a pure 0.1.x executable snapshot, and the inline actions need the permissive CSP profile. No Data persistence or server synchronization is present.
 
-Continue with [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
+Continue with [b01 · Pointers](../02-binding/01-paths_and_updates/01-pointers.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-055) explains the full contract.
 
 </details>

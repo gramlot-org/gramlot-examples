@@ -13,7 +13,7 @@ After **Endpoint** and **Call on click**, return to the **0.2.14 quote section**
 
 **Goal:** Explain the local page first, then revisit the same inputs to request a server result and handle its failure.
 
-**Before this lesson:** [b03 · Setters and defaults](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/03-setters_and_defaults.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md), [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/04-freeze.md), [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md). These prerequisites support the local stage. Return for the 0.2.14 section only after [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md) and [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md).
+**Before this lesson:** [b03 · Setters and defaults](../../02-binding/01-paths_and_updates/03-setters_and_defaults.md), [b05 · Checkbox and radio](../../02-binding/02-editing/02-checkbox_radio.md), [b07 · Bound SVG](../../02-binding/03-presentation/02-bound_svg.md), [b08 · Freeze](../../02-binding/01-paths_and_updates/04-freeze.md), [c01 · Formula](../01-logic/01-formula.md), [c03 · Named logic](../01-logic/03-named_logic.md), [c06 · Button controller](../02-actions/01-button_controller.md). These prerequisites support the local stage. Return for the 0.2.14 section only after [c09 · Endpoint](../../04-rpc/01-server_calls/01-endpoint.md) and [c11 · Call on click](../../04-rpc/01-server_calls/03-call_on_click.md).
 
 ## Read the page
 
@@ -116,8 +116,8 @@ the host does not require application request plumbing or manual synchronization
 of the result display. The endpoint does not replace a perfectly adequate local
 formula just to make the example shorter.
 
-At **0.2.16**, compare [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/01-remote.md)
-when the host must construct a Source fragment, or [c14 · Data remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/03-data_remote.md)
+At **0.2.16**, compare [c12 · Remote](../../04-rpc/02-remote_data/01-remote.md)
+when the host must construct a Source fragment, or [c14 · Data remote](../../04-rpc/02-remote_data/03-data_remote.md)
 when a Data value should load lazily when read. This explicit quote action needs
 a value now, so it uses `dataRpc`; the page does not combine all three mechanisms.
 
@@ -130,10 +130,10 @@ remote Source or lazy resolver in c08. Inline formulas/callbacks require the sta
 CSP profile. Closing/disposal releases providers/listeners; the lesson does not
 qualify every timing, transport or lifecycle edge case.
 
-On the **first local pass**, continue with [c15 · Lifecycle](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/02-lifecycle.md), then projection and Data exchange before c09–c11.
+On the **first local pass**, continue with [c15 · Lifecycle](../03-events/02-lifecycle.md), then projection and Data exchange before c09–c11.
 After returning for the **0.2.14 extension**, continue with c11's separately
 labelled 0.2.15 Source-auth section, then c12–c14 at 0.2.16. The
-[data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080)
+[data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-080)
 provides the full contract. Do not install old packages to perform these stages.
 
 **Sample data:** `01-end_to_end_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.

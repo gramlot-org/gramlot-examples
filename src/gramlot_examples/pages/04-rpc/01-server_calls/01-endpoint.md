@@ -11,7 +11,7 @@ An endpoint receives parameters and returns a value that appears in the page. Yo
 
 **Goal:** Follow a declarative endpoint call from parameters to Data.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c08 · End-to-end story](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/04-complete_examples/01-end_to_end.md).
+**Before this lesson:** [c01 · Formula](../../03-controllers/01-logic/01-formula.md), [c08 · End-to-end story](../../03-controllers/04-complete_examples/01-end_to_end.md).
 
 ## Read the page
 
@@ -46,7 +46,7 @@ Revisit c01’s computed gross. There the browser owns the formula; here the Pag
 
 This lesson sends one initial call; it has no live price control or persistence. VAT is a percentage, unlike c01’s fractional rate. Do not infer login or database integration from an endpoint.
 
-Continue with [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+Continue with [c10 · Call on change](02-call_on_change.md). The [server calls guide](https://gramlot.readthedocs.io/en/latest/docs/public/098-server-calls.html#gc-095-100) explains the full contract.
 
 **Sample data:** `01-endpoint_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

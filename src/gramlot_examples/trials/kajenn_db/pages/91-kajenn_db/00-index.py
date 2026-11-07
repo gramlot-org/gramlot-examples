@@ -10,5 +10,5 @@ class Page(BasePage):
         pane.h1(self.title)
         pane.p('These examples read and save customers through Kajenn and Asqueel. The host supplies the database model.')
         pane.p('The client changes a key; a PageStore controller loads the record. Save publishes an event. The record, status and error travel through dataBinder.')
-        pane.p('On the public gallery, copy a customer ID from Asqueel selectors. The records belong to the shared test_invoice_pg_xl demonstration database. Try an unknown ID or an empty name: the saved record stays unchanged.')
+        pane.p('Each customer page opens with a customer loaded; choose another name in Customer to load. On the public gallery the records belong to the shared test_invoice_pg_xl demonstration database. Try an unknown ID or an empty name: the saved record stays unchanged.')
         pane.p('The family lesson uses direct and nested frames and connected windows, with one WebSocket owned by the gallery.')

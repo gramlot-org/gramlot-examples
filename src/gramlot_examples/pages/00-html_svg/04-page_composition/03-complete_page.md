@@ -11,7 +11,7 @@ A complete event page that combines the HTML and SVG pieces from this section. Y
 
 **Goal:** Assemble a complete static page from already understood Source sections.
 
-**Before this lesson:** [e04 · Semantic page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/04-semantic_page.md), [e07 · Native disclosure](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/02-native_controls/02-native_disclosure.md), [e09 · SVG composition](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/02-svg_composition.md), [e11 · Static report](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/02-static_report.md). 
+**Before this lesson:** [e04 · Semantic page](../01-html_basics/04-semantic_page.md), [e07 · Native disclosure](../02-native_controls/02-native_disclosure.md), [e09 · SVG composition](../03-svg/02-svg_composition.md), [e11 · Static report](02-static_report.md). 
 
 ## Read the page
 
@@ -32,12 +32,12 @@ Add a fourth session tuple, then change the table caption from “Three short se
 
 ## The same example across stages
 
-Keep this page as the earlier stage. In **0.2.0**, [b11 · Complete page with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/04-complete_page.md) revisits the event page: one Data title drives multiple texts, one speaker flag controls both row and card, and one FAQ flag controls every answer. These shared pointers eliminate separate update code for each destination; the new controls make the later page richer rather than universally shorter.
+Keep this page as the earlier stage. In **0.2.0**, [b11 · Complete page with binding](../../02-binding/04-complete_page.md) revisits the event page: one Data title drives multiple texts, one speaker flag controls both row and card, and one FAQ flag controls every answer. These shared pointers eliminate separate update code for each destination; the new controls make the later page richer rather than universally shorter.
 
 ## Limits and next step
 
 “Complete” means a composed example of the features at this stage, not a booking application or coverage of all Gramlot APIs.
 
-Continue with [e13 · Live Source playground](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/07-tools/01-live_source.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e13 · Live Source playground](../../07-tools/01-live_source.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

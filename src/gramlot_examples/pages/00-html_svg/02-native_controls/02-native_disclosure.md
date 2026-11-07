@@ -11,7 +11,7 @@ Expandable details, a progress bar and a meter. You learn how to declare control
 
 **Goal:** Recognize behavior supplied by native HTML rather than application code.
 
-**Before this lesson:** [e03 · Lists](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/03-lists.md), [e04 · Semantic page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/04-semantic_page.md). 
+**Before this lesson:** [e03 · Lists](../01-html_basics/03-lists.md), [e04 · Semantic page](../01-html_basics/04-semantic_page.md). 
 
 ## Read the page
 
@@ -38,6 +38,6 @@ Later b11 revisits the FAQ with `open="^.faq_open"`: one bound checkbox controls
 
 No live task or background progress is being measured. Native disclosure is not Data binding.
 
-Continue with [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/01-svg_shapes.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e08 · SVG shapes](../03-svg/01-svg_shapes.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

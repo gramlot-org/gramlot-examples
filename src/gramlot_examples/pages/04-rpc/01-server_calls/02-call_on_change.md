@@ -11,7 +11,7 @@ A field requests a result when its value changes. You learn how a delay groups n
 
 **Goal:** Debounce an endpoint call and distinguish pending from received values.
 
-**Before this lesson:** [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md), [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md).
+**Before this lesson:** [c02 · Controller](../../03-controllers/01-logic/02-controller.md), [c09 · Endpoint](01-endpoint.md).
 
 ## Read the page
 
@@ -45,7 +45,7 @@ c02 used `_delay` for a local search-status effect. c10 reuses that declaration 
 
 Debounce is not a guarantee of one request for all typing patterns. `_delay` replaces the call that is scheduled, never the call in flight: one call is in flight at a time, its answer is always written, the first trigger during the flight waits with its arguments and is sent when the answer arrives, and later triggers do nothing while one waits. A result `false` from `_onCalling` makes no call. Callbacks here are inline and need the permitted CSP profile.
 
-Continue with [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md). The [server calls guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/098-server-calls.md#gc-095-100) explains the full contract.
+Continue with [c11 · Call on click](03-call_on_click.md). The [server calls guide](https://gramlot.readthedocs.io/en/latest/docs/public/098-server-calls.html#gc-095-100) explains the full contract.
 
 **Sample data:** `02-call_on_change_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

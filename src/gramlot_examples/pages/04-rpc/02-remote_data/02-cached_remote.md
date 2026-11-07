@@ -11,7 +11,7 @@ Revisit **Remote** with caching. Request the same content again and watch the mo
 
 **Goal:** Reuse the last mounted fragment when the relevant inputs stay the same.
 
-**Before this lesson:** [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/02-variable_datapath.md), [c12 · Remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/01-remote.md).
+**Before this lesson:** [b02 · Variable datapath](../../02-binding/01-paths_and_updates/02-variable_datapath.md), [c12 · Remote](01-remote.md).
 
 ## Read the page
 
@@ -56,7 +56,7 @@ For `_if`, add a boolean Data checkbox and `enabled="^enabled", _if="enabled"` t
 
 `_onRemote` and conditional code require the inline CSP profile. A false `_if` makes no request, cancels nothing and can run `_else`. This lesson keeps the method name fixed: `remote("rules", category="^.category", ...)` varies the category while always calling `rules`. The name can also be a pointer such as `remote("^method", ...)`: the method is then read from Data and a reader of the Source no longer sees which method runs. An empty or null name rejects the request with an error, so write `_if` to make no request while no method is chosen. Live Source-attribute-mutation semantics remain outside this lesson.
 
-Continue with [c14 · Data remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/03-data_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+Continue with [c14 · Data remote](03-data_remote.md). The [remote content guide](https://gramlot.readthedocs.io/en/latest/docs/public/099-remote-content.html#gc-095-105) explains the full contract.
 
 **Sample data:** `02-cached_remote_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

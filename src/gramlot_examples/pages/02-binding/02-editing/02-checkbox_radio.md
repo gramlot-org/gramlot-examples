@@ -11,7 +11,7 @@ Checkboxes and radio buttons control boolean values. You learn how to represent 
 
 **Goal:** Model checkboxes and a radio group as boolean Data.
 
-**Before this lesson:** [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md).
+**Before this lesson:** [b04 · Native editing](01-native_editing.md).
 
 ## Read the page
 
@@ -41,7 +41,7 @@ Add `("pro", "Pro")` to `PLANS` and include `plan.pro` in the displayed key list
 
 A radio’s bound value is not a string enum. Unselected paths need not all have been written false. Use the existing `group` contract rather than assigning a shared native name manually.
 
-Continue with [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/01-style_and_visibility.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b06 · Style and visibility](../03-presentation/01-style_and_visibility.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-070) explains the full contract.
 
 **Sample data:** `02-checkbox_radio_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

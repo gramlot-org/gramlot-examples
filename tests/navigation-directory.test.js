@@ -174,3 +174,23 @@ test('no folder holds a single entry, at every level, after environment and filt
     assert.ok(navigationDirectory('', catalogs, 'Plain').getNodes().some(node => node.label === 'single-01'));
 });
 
+
+test('a page whose metadata says catalogued: false keeps its route but is not listed', async t => {
+    const {mkdtempSync, mkdirSync, writeFileSync, rmSync} = await import('node:fs');
+    const {tmpdir} = await import('node:os');
+    const {join} = await import('node:path');
+    const root = mkdtempSync(join(tmpdir(), 'gallery-hidden-'));
+    t.after(() => rmSync(root, {recursive: true, force: true}));
+    const folder = join(root, '95-hidden');
+    mkdirSync(folder, {recursive: true});
+    writeFileSync(join(folder, '00-index.md'), '# Hidden\n');
+    const pages = [['01-first', 'First lesson'], ['02-second', 'Second lesson'], ['03-support', 'Support page']];
+    for (const [stem, title] of pages) writeFileSync(join(folder, `${stem}.js`), `export class Page { static title = "${title}"; }`);
+    writeFileSync(join(folder, '03-support.json'), JSON.stringify({key:'support', title:'Support page', catalogued:false}));
+    const catalog = join(root, 'catalog.json');
+    writeFileSync(catalog, JSON.stringify({environment:'hidden', families:[{key:'hidden_family', title:'Hidden', folder:'95-hidden',
+        examples:pages.slice(0, 2).map(([stem, title], index) => ({key:`hidden-0${index + 1}`, title, folder:stem, description:'d', tags:['t']}))}]}));
+    const catalogs = [[catalog, root]];
+    assert.deepEqual(navigationDirectory('95-hidden', catalogs).getNodes().map(node => node.label), ['hidden-01', 'hidden-02']);
+    assert.ok(buildGallery({catalogs}).routes['pages/95-hidden/03-support']);
+});

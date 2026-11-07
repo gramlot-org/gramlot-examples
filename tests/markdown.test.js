@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
+import {Bag} from '@genrojs/bag';
 import {renderReadme} from '../src/gramlot_examples/gallery/browser/markdown.js';
 
 function fixture(t, text) {
@@ -23,4 +24,26 @@ test('a deferred render never replaces a newer description or a removed node', a
     assert.equal(node.textContent,'# New');assert.equal(node.querySelector('h1'),null);
     const next=renderReadme(node);node.remove();await next;
     assert.equal(node.textContent,'# New');
+});
+test('relative lesson links become gallery routes; navigation lessons open in the gallery', async t=>{
+    const node=fixture(t,'[Lists](03-lists.md) [Binding](../../02-binding/01-paths_and_updates/01-pointers.md#start) '+
+        '[Hidden](../04-page_composition/03-complete_page.md) [Folder](../README.md) [Guide](https://gramlot.readthedocs.io/x.html) [Top](#top)');
+    const lessons=new Bag();
+    lessons.setItem('e03',null,{family:'html_svg',url:'pages/00-html_svg/01-html_basics/03-lists'});
+    lessons.setItem('b01',null,{family:'binding',url:'pages/02-binding/01-paths_and_updates/01-pointers'});
+    await renderReadme(node,{base:'pages/00-html_svg/01-html_basics/01-hello_world',lessons});
+    const links=[...node.querySelectorAll('a')].map(a=>[a.getAttribute('href'),a.dataset.galleryLesson??null,a.getAttribute('target')]);
+    assert.deepEqual(links,[
+        ['pages/00-html_svg/01-html_basics/03-lists','e03',null],
+        ['pages/02-binding/01-paths_and_updates/01-pointers','b01',null],
+        ['pages/00-html_svg/04-page_composition/03-complete_page',null,'_blank'],
+        ['pages/00-html_svg/00-index',null,'_blank'],
+        ['https://gramlot.readthedocs.io/x.html',null,null],
+        ['#top',null,null],
+    ]);
+});
+test('without a base the links stay as written', async t=>{
+    const node=fixture(t,'[Lists](03-lists.md)');
+    await renderReadme(node);
+    assert.equal(node.querySelector('a').getAttribute('href'),'03-lists.md');
 });

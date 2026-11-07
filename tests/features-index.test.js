@@ -88,6 +88,21 @@ test('feature links resolve the existing navigation Bag and select through Index
 });
 
 
+test('feature links find a family inside a group of groups.json', async () => {
+    const {root, state, mounted} = fixture();
+    const navigation = new Bag();
+    const lessons = new Bag(); lessons.setItem('menu-03', null, {key:'menu-03', category:false, url:'pages/05-menus/02_toolbar'});
+    const families = new Bag();
+    families.setItem('other', new Bag(), {category:true, directory:'05-grid', url:'pages/05-grid/00-index'});
+    families.setItem('menus', lessons, {category:true, directory:'05-menus', url:'pages/05-menus/00-index'});
+    navigation.setItem('layout-menus', families, {category:true, directory:'layout-menus', url:'groups/layout-menus'});
+    navigation.setItem('features', null, {category:false, key:'features'});
+    state.setItem('navigation', navigation);
+    await openFeatureExample(root, 'menu-03');
+    assert.equal(state.getItem('navigationSelection'), 'layout-menus.menus.menu-03');
+    mounted.dispose();
+});
+
 test('feature links wait for lazy NavigationResolvers before selecting nested lessons', async () => {
     const {root, state, mounted} = fixture();
     const navigation = new Bag();

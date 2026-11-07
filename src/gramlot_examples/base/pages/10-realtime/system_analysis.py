@@ -1,6 +1,6 @@
 """Live system dashboard. See system_analysis.md for the guided walkthrough."""
 import asyncio
-from threading import get_ident
+from threading import Thread, get_ident
 from urllib.parse import quote
 from collections import deque
 from datetime import datetime, timezone
@@ -179,6 +179,10 @@ class PageStore(BasePageStore):
     def __init__(self):
         super().__init__()
         self.task = None
+        self.loop = None
+        self.thread = None
+        self.loop_thread = None
+        self.stopping = False
 
     def main(self, root):
         panels = Bag({name: index < 4 for index, (name, _) in enumerate(Page.panels)})
@@ -196,10 +200,30 @@ class PageStore(BasePageStore):
         root.dataController(func='sample', tick='^clock.tick')
 
     def start(self):
-        self.loop = asyncio.get_running_loop()
-        self.thread = get_ident()
+        # Uvicorn starts the store on its event loop. Kajenn starts it in a worker
+        # thread without a loop: the store then runs its own loop in a daemon thread.
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
         super().start()
-        self.task = self.loop.create_task(self.interval())
+        if loop is None:
+            loop = asyncio.new_event_loop()
+            self.loop_thread = Thread(target=self.run_loop, args=(loop,), name='system-monitor', daemon=True)
+            self.loop_thread.start()
+            self.thread = self.loop_thread.ident
+        else:
+            self.thread = get_ident()
+        self.loop = loop
+        self.task = self.on_loop(self.loop.create_task, self.interval())
+
+    @staticmethod
+    def run_loop(loop):
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_forever()
+        finally:
+            loop.close()
 
     async def interval(self):
         while True:
@@ -218,7 +242,12 @@ class PageStore(BasePageStore):
     def on_loop(self, method, *args, **kwargs):
         # Binder callbacks may arrive from a host worker. All page Data stays
         # on the same event loop as the interval, without concurrent Bag writes.
-        if get_ident() == self.thread:
+        if self.stopping:
+            raise RuntimeError('PageStore is closed')
+        return self.call_on_loop(method, *args, **kwargs)
+
+    def call_on_loop(self, method, *args, **kwargs):
+        if self.loop is None or get_ident() == self.thread:
             return method(*args, **kwargs)
         async def invoke():
             return method(*args, **kwargs)
@@ -231,6 +260,8 @@ class PageStore(BasePageStore):
         return self.on_loop(super().subscribe, *args, **kwargs)
 
     def unsubscribe(self, *args, **kwargs):
+        if self.stopping:
+            return None  # close() removes every binder.
         return self.on_loop(super().unsubscribe, *args, **kwargs)
 
     def sample(self, node, tick):
@@ -277,11 +308,29 @@ class PageStore(BasePageStore):
             self.data.set_item('control.running', False)
 
     def close(self):
+        if self.stopping:
+            return
+        self.stopping = True
+        if self.loop is None:
+            # start() failed before the interval existed.
+            super().close()
+            return
+
         def finish():
             if self.task is not None:
                 self.task.cancel()
             super(PageStore, self).close()
-        self.on_loop(finish)
+            if self.loop_thread is not None:
+                if self.task is None or self.task.done():
+                    self.loop.stop()
+                else:
+                    self.task.add_done_callback(lambda task: self.loop.stop())
+        if self.loop_thread is not None and get_ident() != self.thread:
+            # The caller may be the server loop, which this loop can be waiting for
+            # while it delivers a change: do not wait for the store loop here.
+            self.loop.call_soon_threadsafe(finish)
+        else:
+            self.call_on_loop(finish)
 
 
 class PsutilHandler:

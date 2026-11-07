@@ -11,7 +11,7 @@ An SVG scene assembled from smaller parts. You learn how groups and reusable pag
 
 **Goal:** Reuse Source-building methods to compose a scene.
 
-**Before this lesson:** [e03 · Lists](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/03-lists.md), [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/01-svg_shapes.md). 
+**Before this lesson:** [e03 · Lists](../01-html_basics/03-lists.md), [e08 · SVG shapes](01-svg_shapes.md). 
 
 ## Read the page
 
@@ -41,6 +41,6 @@ Change the house positions to `(115, 330, 210)` and reload.
 
 These are ordinary Page helper methods building Source, not a recipe registry or component API. The scene is static.
 
-Continue with [e10 · Cards with icons](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/01-cards_with_icons.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e10 · Cards with icons](../04-page_composition/01-cards_with_icons.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

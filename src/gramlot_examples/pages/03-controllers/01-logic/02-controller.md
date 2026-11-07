@@ -11,7 +11,7 @@ A controller reacts to Data changes and writes other values. You learn when to u
 
 **Goal:** Choose a controller for an effect and identify its trigger.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md).
+**Before this lesson:** [c01 · Formula](01-formula.md).
 
 ## Read the page
 
@@ -56,7 +56,7 @@ Exercise: change `_userChanges=True` to False on an exact watcher, reload and re
 
 `requests` in this page counts fired local events. The advanced `_userChanges` counters are separate from `requests`: they filter exact-path changes, including programmatic writes, not human versus code identity.
 
-Continue with [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
+Continue with [c03 · Named logic](03-named_logic.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-055) explains the full contract.
 
 **Sample data:** `02-controller_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

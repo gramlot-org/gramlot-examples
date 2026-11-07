@@ -26,6 +26,8 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({datapath:'attachmentsDemo', padding:'16px'});
 
+        main_content.dataFormula({result_path:'.uploadNotice', func:'uploadNotice', _init:true});
+        main_content.p('^.uploadNotice', {id:'upload-notice'});
         main_content.dataFormula({result_path:'.ready',formula:'recordId != null',recordId:'^.context.recordId',_init:true});
         main_content.button('Save record',{id:'save-record'}).dataRpc({method:'save_record',result_path:'.context.recordId'});
         main_content.p('^.context.recordId',{id:'record-id'});
@@ -71,3 +73,14 @@ Page.registerUpload('attach_file');
 Page.registerEndpoint('list_attachments');
 Page.registerEndpoint('preview_attachment');
 Page.registerEndpoint('remove_attachment');
+
+export class Logic {
+    /** The bootstrap capabilities of this server decide whether Upload can transfer files. */
+    uploadNotice() {
+        return this.page.capabilities.includes('upload')
+            ? 'This server accepts uploads.'
+            : 'This server does not accept uploads: Upload marks each file "Upload is unavailable in this environment". '
+              + 'Choosing files and the browser queue still work. Run the gallery with gramlot uvicorn gallery, '
+              + 'or open the serverless download, to complete a transfer.';
+    }
+}

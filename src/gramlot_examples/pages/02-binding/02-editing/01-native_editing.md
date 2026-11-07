@@ -11,7 +11,7 @@ A form displays the Data written by each control. Switch **live** on and off: yo
 
 **Goal:** Observe when a control writes Data and which type it writes.
 
-**Before this lesson:** [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/02-native_controls/01-forms.md), [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md).
+**Before this lesson:** [e06 · Forms](../../00-html_svg/02-native_controls/01-forms.md), [b01 · Pointers](../01-paths_and_updates/01-pointers.md).
 
 ## Read the page
 
@@ -45,7 +45,7 @@ In e06 the browser edits native control values only. Here `value="^.text"` plus 
 
 Use `change`/leaving the field for the non-live trial; do not rely on Enter having identical behavior in every native control. Browser validation and picker presentation vary.
 
-Continue with [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b05 · Checkbox and radio](02-checkbox_radio.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-070) explains the full contract.
 
 **Sample data:** `01-native_editing_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

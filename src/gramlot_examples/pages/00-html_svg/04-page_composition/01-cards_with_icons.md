@@ -11,7 +11,7 @@ Three cards, each with an SVG icon. You learn how to combine text and drawings. 
 
 **Goal:** Remove a Source branch and let Gramlot remove the corresponding DOM.
 
-**Before this lesson:** [e09 · SVG composition](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/02-svg_composition.md), [c07 · Events](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/01-events.md). 
+**Before this lesson:** [e09 · SVG composition](../03-svg/02-svg_composition.md), [c07 · Events](../../03-controllers/03-events/01-events.md). 
 
 ## Read the page
 
@@ -40,6 +40,6 @@ At the later binding stage, b08 and c08 wrap related Source operations in named 
 
 Changes are local, not persisted or synchronized to a server. The cards are Source-only; the button declaration is a later inline-behavior layer. The installed companion Logic is empty here.
 
-Continue with [e11 · Static report](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/02-static_report.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e11 · Static report](02-static_report.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

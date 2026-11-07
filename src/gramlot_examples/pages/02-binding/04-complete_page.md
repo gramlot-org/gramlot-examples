@@ -11,7 +11,7 @@ The event page from **A complete page** now follows shared Data. Change one valu
 
 **Goal:** Revisit the event page with shared Data driving several destinations.
 
-**Before this lesson:** [e12 · Complete page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/03-complete_page.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md), [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/01-style_and_visibility.md), [b10 · SVG shapes with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/03-svg_shapes.md).
+**Before this lesson:** [e12 · Complete page](../00-html_svg/04-page_composition/03-complete_page.md), [b05 · Checkbox and radio](02-editing/02-checkbox_radio.md), [b06 · Style and visibility](03-presentation/01-style_and_visibility.md), [b10 · SVG shapes with binding](03-presentation/03-svg_shapes.md).
 
 ## Read the page
 
@@ -50,7 +50,7 @@ In `04-complete_page_data.tytx`, change `event.title` and set `event.show.theo` 
 
 The map has no routing service. Manually toggling a native disclosure is not declared as a write-back to `.faq_open`; the shared checkbox is the state-control demonstration. No server save or booking is performed.
 
-Continue with [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [c01 · Formula](../03-controllers/01-logic/01-formula.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-070) explains the full contract.
 
 **Sample data:** `04-complete_page_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

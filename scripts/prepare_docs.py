@@ -70,6 +70,9 @@ def stage():
                 return f"{{ref}}`{label} <{fragment}>`"
             if path in documents:
                 url = posixpath.relpath(documents[path], posixpath.dirname(target) or ".") + separator + fragment
+            elif "://" not in url and path.endswith(".md") and (ROOT / path).is_file():
+                # A lesson outside the catalogue has no page in this manual: link its source.
+                url = REPOSITORY + path + separator + fragment
             return f"[{label}]({url})"
         text = re.sub(r"\[([^\]\n]+)\]\(([^)\s]+)\)", link, text)
         if source == "README.md":

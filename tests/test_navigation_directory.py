@@ -166,3 +166,33 @@ def test_no_folder_holds_a_single_entry(tmp_path):
     # A filter that leaves one family in a group shows that family at the root.
     assert "single-01" in [node.label for node in navigation_directory("", catalogs, "Plain").nodes]
 
+
+
+def test_uncatalogued_pages_are_not_in_the_tree(tmp_path):
+    """A page whose metadata says ``catalogued: false`` keeps its route but is not listed."""
+    import json
+    folder = tmp_path / "95-hidden"
+    folder.mkdir()
+    (folder / "00-index.md").write_text("# Hidden\n")
+    page = 'from gramlot import Page as BasePage\nclass Page(BasePage):\n    title = "{}"\n'
+    for stem, title in (("01-first", "First lesson"), ("02-second", "Second lesson"), ("03-support", "Support page")):
+        (folder / f"{stem}.py").write_text(page.format(title))
+    (folder / "03-support.json").write_text(json.dumps({"key": "support", "title": "Support page", "catalogued": False}))
+    catalog = tmp_path / "catalog.json"
+    catalog.write_text(json.dumps({"environment": "hidden", "families": [{
+        "key": "hidden_family", "title": "Hidden", "folder": "95-hidden", "examples": [
+            {"key": f"hidden-0{n}", "title": title, "folder": stem, "description": "d", "tags": ["t"]}
+            for n, (stem, title) in enumerate((("01-first", "First lesson"), ("02-second", "Second lesson")), 1)]}]}))
+    catalogs = [(catalog, tmp_path)]
+    assert [node.label for node in navigation_directory("95-hidden", catalogs).nodes] == ["hidden-01", "hidden-02"]
+    assert "pages/95-hidden/03-support" in build_gallery(catalogs)["routes"]
+
+
+def test_trial_support_pages_are_not_in_the_tree():
+    from pathlib import Path
+    import gramlot_examples
+    trials = Path(gramlot_examples.__file__).parent / "trials"
+    for name, folder, hidden in (("page_store", "90-page_store", "04_nested_branch"), ("kajenn_db", "91-kajenn_db", "03_nested")):
+        catalogs = [(trials / name / "catalog.json", trials / name / "pages")]
+        urls = [node.attr["url"] for node in navigation_directory(folder, catalogs).nodes]
+        assert urls and f"pages/{folder}/{hidden}" not in urls

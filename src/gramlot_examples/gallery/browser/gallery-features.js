@@ -97,25 +97,26 @@ export async function openFeatureExample(root, key) {
     const example = state.getItem('featureExamples').getNode(key);
     if (example === null) throw new Error(`Example is not available in this gallery: ${key}`);
     state.setItem('featureRequest', key);
-    const {family, url} = example.attr;
-    const branch = state.getItem('navigation').getNode(family);
-    async function find(node, path) {
-        if (node.attr.key === key) return path;
-        if (!node.attr.category) return null;
-        node.getValue(); // RemoteResolver returns the cached value and starts loading.
-        if (node.resolver !== null) await node.resolver.loading;
-        const children = node.staticValue;
-        if (root.indexContext.disposed) return null;
-        if (children === null) return null;
-        for (const child of children.getNodes()) {
-            if (child.attr.directory !== undefined &&
-                !url.startsWith('pages/' + child.attr.directory + '/')) continue;
-            const found = await find(child, `${path}.${child.label}`);
+    const {url} = example.attr;
+    // Families sit at the root or inside a group of groups.json; a group's directory is not a path.
+    async function find(nodes, prefix) {
+        for (const node of nodes) {
+            const path = prefix ? `${prefix}.${node.label}` : node.label;
+            if (node.attr.key === key) return path;
+            if (!node.attr.category) continue;
+            const group = String(node.attr.url).startsWith('groups/');
+            if (!group && node.attr.directory !== undefined && !url.startsWith('pages/' + node.attr.directory + '/')) continue;
+            node.getValue(); // RemoteResolver returns the cached value and starts loading.
+            if (node.resolver !== null) await node.resolver.loading;
+            if (root.indexContext.disposed) return null;
+            const children = node.staticValue;
+            if (children === null) continue;
+            const found = await find(children.getNodes(), path);
             if (found) return found;
         }
         return null;
     }
-    const path = await find(branch, family);
+    const path = await find(state.getItem('navigation').getNodes(), '');
     if (root.indexContext.disposed || state.getItem('featureRequest') !== key) return;
     if (!path) throw new Error(`Example is not available in navigation: ${key}`);
     state.setItem('featuresOpen', false);

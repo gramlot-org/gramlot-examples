@@ -11,7 +11,7 @@ The six shapes from **SVG shapes** now have editable dimensions and stroke setti
 
 **Goal:** Revisit the six-shape SVG with bound dimensions and shared stroke state.
 
-**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md).
+**Before this lesson:** [e08 · SVG shapes](../../00-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](../02-editing/01-native_editing.md), [b07 · Bound SVG](02-bound_svg.md).
 
 ## Read the page
 
@@ -46,6 +46,6 @@ Compare e08’s `r=38` with this page’s `r="^.radius", default_r=38`. Static s
 
 Not every control is live: the color field uses change. SVG presentation values retain their own types/units. This is a maintained current-API comparison, not an old-package installation exercise.
 
-Continue with [b11 · Complete page with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/04-complete_page.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b11 · Complete page with binding](../04-complete_page.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-070) explains the full contract.
 
 </details>

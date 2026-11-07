@@ -11,7 +11,7 @@ Start and stop a branch, then remove it. You learn when its lifecycle actions ru
 
 **Goal:** Predict when a branch starts and which work ends when it is removed.
 
-**Before this lesson:** [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md), [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/04-freeze.md).
+**Before this lesson:** [c03 · Named logic](../01-logic/03-named_logic.md), [c06 · Button controller](../02-actions/01-button_controller.md), [b08 · Freeze](../../02-binding/01-paths_and_updates/04-freeze.md).
 
 ## Read the page
 
@@ -51,7 +51,7 @@ b08 introduced a frozen visual branch. This lesson revisits it with explicit lif
 
 Freeze defers structural projection and insertion/rebuild work; existing nodes still follow Data. Removing a branch is different from hiding it. This page uses named Logic; no new lifecycle hook or timer implementation is invented. Full page disposal also ends its providers. Late startup and insertion while frozen are advanced contract cases, not extra steps needed for the basic trace.
 
-Continue with [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/03-attribute_projection.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-080) provides the full contract.
+Continue with [c16 · Attribute projection](03-attribute_projection.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-080) provides the full contract.
 
 **Sample data:** `02-lifecycle_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

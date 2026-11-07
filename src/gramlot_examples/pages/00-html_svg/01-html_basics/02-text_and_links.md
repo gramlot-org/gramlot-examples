@@ -11,7 +11,7 @@ Paragraphs, emphasis and links in one page. You learn how to combine text and el
 
 **Goal:** Compose mixed text and links while preserving literal text.
 
-**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/01-hello_world.md). 
+**Before this lesson:** [e01 · Hello World](01-hello_world.md). 
 
 ## Read the page
 
@@ -39,6 +39,6 @@ Add `main_content.h3("More", id="more")` and `main_content.a("Read more", href="
 
 The external link needs a network connection. Local links are native browser navigation, not a Gramlot router or a request for remote Source.
 
-Continue with [e03 · Lists](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/03-lists.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e03 · Lists](03-lists.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

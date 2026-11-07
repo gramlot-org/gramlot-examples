@@ -11,7 +11,7 @@ Fields and text share the same values. Edit a field and see which text follows i
 
 **Goal:** Resolve Data paths and predict which texts follow an edit.
 
-**Before this lesson:** [e01 · Hello World](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/01-hello_world.md), [e06 · Forms](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/02-native_controls/01-forms.md).
+**Before this lesson:** [e01 · Hello World](../../00-html_svg/01-html_basics/01-hello_world.md), [e06 · Forms](../../00-html_svg/02-native_controls/01-forms.md).
 
 ## Read the page
 
@@ -52,7 +52,7 @@ Change `contexts.name` to Outside in `01-pointers_data.tytx` and reload. **Answe
 
 Inputs here use `change`, not live keystrokes. Do not prefix Data paths with the Source `main` path. The advanced section distinguishes `#ANCHOR` from the Data-path segment `.#parent`; do not treat `#parent` as a Source-node identifier.
 
-Continue with [b02 · Variable datapath](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/02-variable_datapath.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-040) explains the full contract.
+Continue with [b02 · Variable datapath](02-variable_datapath.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-040) explains the full contract.
 
 **Sample data:** `01-pointers_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

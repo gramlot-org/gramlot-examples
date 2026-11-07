@@ -20,6 +20,11 @@ The model and pages belong here; host configuration and startup belong to the ad
 
 ## Data flow
 
+At start the `list_customers` controller (`_onStart`) reads the first 20 customers
+by key into `customers.values`, the choices of **Customer to load**, and sets
+`request.pkey` to the first customer by name: the page opens with a record loaded.
+Choosing a name sets `view.request.pkey`.
+
 Changing `view.request.pkey` and leaving the field sends its change through
 `dataBinder` to `request.pkey` in that page's PageStore. Its controller sets
 `customer?status` to `loading`, reads with `self.db().table('app.customer')`,

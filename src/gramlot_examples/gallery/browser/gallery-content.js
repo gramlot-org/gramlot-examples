@@ -16,7 +16,8 @@ export function mountGalleryContent(renderer, root) {
         if (view === 'description') {
             const readme = byId(`readme-${key}`);
             readme.textContent = node(readme).value;
-            await renderReadme(readme);
+            const lessons = root.builder.data.getItem('galleryIndex.featureExamples');
+            await renderReadme(readme, {base: lessons?.getNode(key)?.attr.url ?? null, lessons});
             return;
         }
         const code = byId(`code-${key}`);

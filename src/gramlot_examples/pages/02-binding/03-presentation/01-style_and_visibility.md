@@ -11,7 +11,7 @@ Controls change an element’s appearance and visibility. You learn how Data dri
 
 **Goal:** Predict attribute precedence and distinguish visibility from layout removal.
 
-**Before this lesson:** [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md), [b05 · Checkbox and radio](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/02-checkbox_radio.md).
+**Before this lesson:** [b04 · Native editing](../02-editing/01-native_editing.md), [b05 · Checkbox and radio](../02-editing/02-checkbox_radio.md).
 
 ## From Python to Source to DOM
 
@@ -96,12 +96,12 @@ and **24px** corners. The same box changes appearance; its Source structure stay
 unchanged. Use explicit CSS units for sizes.
 
 For the broader theme and cascade explanation, see
-[Python styles and a reactive example](https://github.com/gramlot-org/gramlot/blob/main/docs/public/096-themes-and-css.md#gc-096-040).
+[Python styles and a reactive example](https://gramlot.readthedocs.io/en/latest/docs/public/096-themes-and-css.html#gc-096-040).
 
 ## Limits and next step
 
 Stay with the agreed string/null contract. This lesson does not teach object coercions or rely on them.
 
-Continue with [b07 · Bound SVG](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/02-bound_svg.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b07 · Bound SVG](02-bound_svg.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-070) explains the full contract.
 
 </details>

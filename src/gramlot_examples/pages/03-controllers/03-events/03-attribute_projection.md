@@ -11,7 +11,7 @@ One name appears in a greeting and a tooltip with different formatting. You lear
 
 **Goal:** Reuse one Data value in text and attributes, then distinguish text from a sandboxed HTML document.
 
-**Before this lesson:** [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md), [b06 · Style and visibility](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/03-presentation/01-style_and_visibility.md), [c04 · Inline expressions](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/04-inline_expressions.md).
+**Before this lesson:** [b01 · Pointers](../../02-binding/01-paths_and_updates/01-pointers.md), [b06 · Style and visibility](../../02-binding/03-presentation/01-style_and_visibility.md), [c04 · Inline expressions](../01-logic/04-inline_expressions.md).
 
 ## Read the page
 
@@ -50,7 +50,7 @@ e02 taught literal text; b01 added a pointer. The 0.2.0 stage now adds presentat
 
 Templates apply to visual attributes, not node text or data-element declarations. A static Python f-string runs on the host once. A mask never interprets HTML. Keep the default empty sandbox for this exercise; do not add script permissions. A literal authored srcdoc has a different contract. JavaScript counterparts use quoted template text here, not JS backtick interpolation.
 
-Continue with [c17 · Data exchange](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/03-data_exchange.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-130) provides the full contract.
+Continue with [c17 · Data exchange](../../04-rpc/03-data_exchange.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-130) provides the full contract.
 
 **Sample data:** `03-attribute_projection_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

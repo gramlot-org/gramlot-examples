@@ -38,6 +38,8 @@ class Page(BasePage):
         main_content.h2("Browser only")
         main_content.imageUploader(id="local-image", value="^.localImage", storepath=".localQueue")
         main_content.h2("Application upload")
+        main_content.dataFormula(".uploadNotice", func="uploadNotice", _init=True)
+        main_content.p("^.uploadNotice", id="upload-notice")
         main_content.imageUploader(id="server-image", value="^.serverImage", storepath=".serverQueue", operation="save_image")
 
     @upload

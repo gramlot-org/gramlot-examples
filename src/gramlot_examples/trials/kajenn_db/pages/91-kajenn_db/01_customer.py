@@ -2,6 +2,8 @@
 from genro_bag import Bag
 from gramlot import Page as BasePage, PageStore as BasePageStore
 
+CHOICES = 20
+
 
 class Page(BasePage):
 
@@ -9,6 +11,10 @@ class Page(BasePage):
         pane = root.div(datapath='view', style='padding:20px;max-width:700px;display:grid;gap:10px')
         pane.dataBinder('.request', 'request')
         pane.dataBinder('.customer', 'customer')
+        pane.dataBinder('.customers', 'customers')
+        pane.filteringSelect(id='customer-choice', value='^.choice', values='^.customers.values', separator=';',
+                             lbl='Customer to load', placeholder='Type part of a name')
+        pane.dataController("this.SET('.request.pkey', choice)", choice='^.choice', _if='choice')
         pane.html_label('Customer ID to load', for_='customer-key')
         pane.input(id='customer-key', value='^.request.pkey')
         pane.button('Reload customer', id='reload-customer',
@@ -32,8 +38,27 @@ class PageStore(BasePageStore):
         self.data.set_item('request', Bag({'pkey': ''}))
         self.data.set_item('customer', Bag({'record': Bag(), 'error': ''}),
                            _attributes={'status': 'unset', 'pkey': None})
+        self.data.set_item('customers', Bag({'values': ''}))
         root.dataController(func='load_customer', pkey='^request.pkey', subscribe_reload_customer=True)
         root.dataController(func='save_customer', subscribe_save_customer=True)
+        root.dataController(func='list_customers', _onStart=True)
+
+    def list_customers(self, node):
+        """Offer the first customers by key and load the first one by name."""
+        db = self.db()
+        try:
+            rows = db.table('app.customer').query(columns='$id,$name', order_by='$id', limit=CHOICES).fetch()
+            db.commit()
+        except Exception as error:
+            db.rollback()
+            self.status('error', str(error))
+            return
+        rows = sorted(rows, key=lambda row: (row['name'] or '', row['id']))
+        # A choice is code:caption; ';' separates the choices.
+        self.data.set_item('customers.values', ';'.join(
+            f"{row['id']}:{(row['name'] or row['id']).replace(';', ',')}" for row in rows))
+        if rows and not self.data.get_item('request.pkey'):
+            self.data.set_item('request.pkey', rows[0]['id'])
 
     def status(self, value, error=''):
         self.data.set_item('customer.error', error)

@@ -11,7 +11,7 @@ Fields start with values supplied by setters and defaults. You learn when those 
 
 **Goal:** Predict initialization order and distinguish an absent value from zero.
 
-**Before this lesson:** [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md).
+**Before this lesson:** [b01 · Pointers](01-pointers.md).
 
 ## Read the page
 
@@ -41,6 +41,6 @@ Remove only the later `.customer` setter and add `pane.dataSetter(".quantity", 0
 
 These are build-time defaults, not record/new-record defaults or automatic refill whenever a user clears a control. Destination paths are bare Data paths, not `^` pointers or `?attr` destinations.
 
-Continue with [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-045) explains the full contract.
+Continue with [b04 · Native editing](../02-editing/01-native_editing.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-045) explains the full contract.
 
 </details>

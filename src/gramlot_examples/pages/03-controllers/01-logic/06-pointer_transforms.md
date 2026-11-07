@@ -19,7 +19,7 @@ A number becomes CSS text with a template after the pointer:
 main_content.div(width="^.width:{}px")
 ```
 
-Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. Ordinary `${...}` text is literal: `width="${pixels}px"` would set that exact string and read nothing. To use another attribute of the same node, write its name in a slot after the `:`, as [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/03-attribute_projection.md) shows.
+Read `.width`, then replace `{}` in the text after `:`. A Data number 38 becomes the CSS string `38px`; Data still contains 38. Ordinary `${...}` text is literal: `width="${pixels}px"` would set that exact string and read nothing. To use another attribute of the same node, write its name in a slot after the `:`, as [c16 · Attribute projection](../03-events/03-attribute_projection.md) shows.
 
 ## An expression keeps its result type
 

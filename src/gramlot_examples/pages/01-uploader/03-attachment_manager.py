@@ -45,6 +45,8 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(datapath="attachmentsDemo", padding="16px")
 
+        main_content.dataFormula(".uploadNotice", func="uploadNotice", _init=True)
+        main_content.p("^.uploadNotice", id="upload-notice")
         main_content.dataFormula(".ready", "recordId != null", recordId="^.context.recordId", _init=True)
         main_content.button("Save record", id="save-record").dataRpc("save_record", result_path=".context.recordId")
         main_content.p("^.context.recordId", id="record-id")

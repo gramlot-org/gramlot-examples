@@ -11,7 +11,7 @@ A page with a header, navigation, main content and footer. You learn how HTML gi
 
 **Goal:** Build semantic regions and connect navigation to their IDs.
 
-**Before this lesson:** [e02 · Text and links](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/02-text_and_links.md), [e03 · Lists](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/03-lists.md). 
+**Before this lesson:** [e02 · Text and links](02-text_and_links.md), [e03 · Lists](03-lists.md). 
 
 ## Read the page
 
@@ -41,6 +41,6 @@ Add `main_content.article(id="references").h2("References")` and a navigation li
 
 Landmark markup does not by itself prove accessibility of an entire application. This lesson has no client router or database.
 
-Continue with [e05 · Tables](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/05-tables.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e05 · Tables](05-tables.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

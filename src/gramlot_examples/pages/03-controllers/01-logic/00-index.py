@@ -22,7 +22,7 @@ class Page(BasePage):
         item.p('Formula and controller bodies in class Logic of 03_named_logic.js.')
         item = lessons.li()
         item.strong('Inline expressions')
-        item.p('== expressions in text and attributes, and inline scripts.')
+        item.p('Text and attribute values that start with two equals signs, and inline scripts.')
         item = lessons.li()
         item.strong('Node methods')
         item.p('SET, GET, PUT, FIRE and FIRE_AFTER from button actions.')

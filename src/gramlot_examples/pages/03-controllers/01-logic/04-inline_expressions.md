@@ -11,7 +11,7 @@ Small expressions calculate what an element displays directly from its inputs. Y
 
 **Goal:** Compute a local display value without storing another derived Data field.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md).
+**Before this lesson:** [c01 · Formula](01-formula.md), [c03 · Named logic](03-named_logic.md).
 
 ## Read the page
 
@@ -45,9 +45,9 @@ For a value used only by one display, compare a `.full_name` dataFormula plus a 
 
 Inline expressions/scripts require the permitted CSP profile and are not code loaded from Data. Do not teach deprecated SET macros. An expression cannot use another `==` attribute as a computed dependency; use a Data formula when several nodes need one result.
 
-For attribute templates, compare [c16 · Attribute projection](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/03-attribute_projection.md): the slot `{name}` after the `:` of a pointer reads a declared sibling attribute, and ordinary `${name}` text stays literal. Neither permits chains of `==` attributes.
+For attribute templates, compare [c16 · Attribute projection](../03-events/03-attribute_projection.md): the slot `{name}` after the `:` of a pointer reads a declared sibling attribute, and ordinary `${name}` text stays literal. Neither permits chains of `==` attributes.
 
-Continue with [c05 · Node methods](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/05-node_methods.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-065) explains the full contract.
+Continue with [c05 · Node methods](05-node_methods.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-065) explains the full contract.
 
 **Sample data:** `04-inline_expressions_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

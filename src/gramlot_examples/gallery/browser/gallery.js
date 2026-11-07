@@ -1,4 +1,4 @@
-import {mountFeatureProgress, markFeatureExampleSeen} from './gallery-features.js';
+import {mountFeatureProgress, markFeatureExampleSeen, openFeatureExample} from './gallery-features.js';
 import {renderReadme} from './markdown.js';
 import {mountGuidedDemo} from './gallery-guide.js';
 import {mountGalleryMobile} from './gallery-mobile.js';
@@ -38,6 +38,15 @@ export function mountGallery(renderer, root, inspector) {
         if (event.node.label === 'featuresOpen') showContent();
     }});
     renderer.onDispose(root, () => state.unsubscribe('gallery-feature-view', {any:true}));
+    // A lesson link rendered by renderReadme opens that lesson in the gallery.
+    const openLesson = event => {
+        const anchor = event.target.closest?.('a[data-gallery-lesson]');
+        if (!anchor || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        openFeatureExample(root, anchor.dataset.galleryLesson).catch(error => console.error(error));
+    };
+    document.addEventListener('click', openLesson);
+    renderer.onDispose(root, () => document.removeEventListener('click', openLesson));
     let guide=null;
     const content=mountGalleryContent(renderer,root);
     const single=mountSinglePage(renderer,root,state,content);
@@ -50,7 +59,7 @@ export function mountGallery(renderer, root, inspector) {
         entry.frame=entry.panel.querySelector('iframe');
         entry.code=byId(`codepane-${entry.key}`);
         const description=entry.panel.querySelector('.gallery-directory-markdown');
-        if(description) { description.textContent=renderer.elements.get(description).node.value; renderReadme(description).catch(error => console.error(error)); }
+        if(description) { description.textContent=renderer.elements.get(description).node.value; renderReadme(description,{base:entry.url,lessons:state.getItem('featureExamples')}).catch(error => console.error(error)); }
         if(entry.frame&&!entry.frame.hasAttribute('src'))set(entry.frame,{src:entry.url});
         if(entry.key==='l04'&&!guide)guide=mountGuidedDemo(renderer,root);
         if(entry.code)content.observe(entry.key);

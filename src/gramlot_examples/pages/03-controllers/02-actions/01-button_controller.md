@@ -11,7 +11,7 @@ A controller inside a button runs when you click it. You learn how the button su
 
 **Goal:** Use one declared button mechanism and inspect its click parameters.
 
-**Before this lesson:** [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md), [c05 · Node methods](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/05-node_methods.md).
+**Before this lesson:** [c02 · Controller](../01-logic/02-controller.md), [c05 · Node methods](../01-logic/05-node_methods.md).
 
 ## Read the page
 
@@ -40,13 +40,13 @@ Add another click to the first button without modifiers.
 
 ## The same example across stages
 
-In the later **0.2.14** [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md), the same nested-button pattern uses `dataRpc` for a server call. The framework supplies dispatch, response/error handling and result placement, so a click controller does not have to coordinate the request itself. Both stages remain explicit; local actions do not suddenly imply server persistence.
+In the later **0.2.14** [c11 · Call on click](../../04-rpc/01-server_calls/03-call_on_click.md), the same nested-button pattern uses `dataRpc` for a server call. The framework supplies dispatch, response/error handling and result placement, so a click controller does not have to coordinate the request itself. Both stages remain explicit; local actions do not suddenly imply server persistence.
 
 ## Limits and next step
 
 The counter belongs to the button and survives a rebuild of that node; a newly created button is not the same identity. Do not add an `action` to the existing nested-controller button.
 
-Continue with [c07 · Events](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/03-events/01-events.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-075) explains the full contract.
+Continue with [c07 · Events](../03-events/01-events.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-075) explains the full contract.
 
 **Sample data:** `01-button_controller_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

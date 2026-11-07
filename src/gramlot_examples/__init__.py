@@ -347,7 +347,7 @@ def navigation_level(directory, families, rule):
             example = next((item for item in examples if item["folder"] == "/".join([*parts[1:], child.stem])), None)
             metadata = child.with_suffix(".json")
             descriptor = json.loads(metadata.read_text()) if metadata.is_file() else None
-            if descriptor and descriptor.get("navigation") is False:
+            if descriptor and (descriptor.get("navigation") is False or descriptor.get("catalogued") is False):
                 continue
             requires = (example or descriptor or {}).get("requires")
             if rule is not None and not filter_matches(rule, requires):

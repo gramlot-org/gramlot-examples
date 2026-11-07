@@ -11,6 +11,8 @@ export class Page extends BasePage {
     main(root) {
         const main_content = root.main({datapath:'uploadDemo', padding:'16px'});
 
+        main_content.dataFormula({result_path:'.uploadNotice', func:'uploadNotice', _init:true});
+        main_content.p('^.uploadNotice', {id:'upload-notice'});
         main_content.uploader({id:'upload-demo', operation:'inspect_file', storepath:'.queue', selectedPath:'^.selected', multiple:true, autoUpload:false, onComplete:'uploadCompleted'});
         main_content.dataFormula({result_path:'.editPath', formula:"selected ? 'uploadDemo.queue.' + selected : 'uploadDemo.empty'", selected:'^.selected', _init:true});
         main_content.p('^.lastCompleted');
@@ -27,5 +29,13 @@ export class Page extends BasePage {
 }
 Page.registerUpload('inspect_file');
 export class Logic {
+    /** The bootstrap capabilities of this server decide whether Upload can transfer files. */
+    uploadNotice() {
+        return this.page.capabilities.includes('upload')
+            ? 'This server accepts uploads.'
+            : 'This server does not accept uploads: Upload marks each file "Upload is unavailable in this environment". '
+              + 'Choosing files and the browser queue still work. Run the gallery with gramlot uvicorn gallery, '
+              + 'or open the serverless download, to complete a transfer.';
+    }
     uploadCompleted(node, {item}) { node.SET('.lastCompleted', `Last completed: ${item.value.getItem('name')}`); }
 }

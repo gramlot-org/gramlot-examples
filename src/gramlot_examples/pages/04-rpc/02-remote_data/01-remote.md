@@ -11,7 +11,7 @@ A choice loads a page fragment built by the host. You learn when to request stru
 
 **Goal:** Choose Source replacement when the server owns the content structure.
 
-**Before this lesson:** [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c11 · Call on click](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/03-call_on_click.md).
+**Before this lesson:** [c09 · Endpoint](../01-server_calls/01-endpoint.md), [c11 · Call on click](../01-server_calls/03-call_on_click.md).
 
 ## Read the page
 
@@ -52,7 +52,7 @@ For nested fragments, the owning method can declare another `.remote(...)` in th
 
 A fragment is typed Source, not an endpoint returning HTML text. One request is in flight for the element and its answer always mounts: the first change during the flight waits with its parameters and is sent when the answer arrives, and later changes do nothing while one waits. A slow answer can therefore leave the content one choice behind the select until the next answer. Removing the owning element cancels its request. A failure retains already mounted content and is reported to the console; remote has no dataRpc-style `_onError` callback.
 
-Continue with [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/02-cached_remote.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+Continue with [c13 · Cached remote](02-cached_remote.md). The [remote content guide](https://gramlot.readthedocs.io/en/latest/docs/public/099-remote-content.html#gc-095-105) explains the full contract.
 
 **Sample data:** `01-remote_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

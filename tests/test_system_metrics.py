@@ -146,6 +146,45 @@ async def test_interval_runs_without_client_and_closes(machine):
 
 
 @pytest.mark.asyncio
+async def test_store_started_in_a_worker_thread_runs_its_own_loop(machine):
+    # Kajenn runs synchronous store code in a worker thread without an event loop.
+    page = PageStore()
+    await asyncio.to_thread(page.start)
+    assert page.loop_thread.is_alive() and page.loop is not asyncio.get_running_loop()
+    await asyncio.sleep(.23)
+    assert page.data['clock.tick'] >= 2
+    assert page.data['metrics.samples'] >= 2
+    messages = []
+    await asyncio.to_thread(page.subscribe, 'controls', 'control', messages.append)
+    assert len(messages) == 1
+    await asyncio.to_thread(page.change, 'controls', dict(path='running', evt='upd_value', value=False, attr={}))
+    count = page.data['metrics.samples']
+    await asyncio.sleep(.15)
+    assert page.data['metrics.samples'] == count
+    # The server loop may close the page: close() does not wait for the store loop.
+    page.close()
+    await asyncio.to_thread(page.loop_thread.join, 2)
+    assert not page.loop_thread.is_alive()
+    assert page.task.cancelled() and page.loop.is_closed()
+    tick = page.data['clock.tick']
+    await asyncio.sleep(.12)
+    assert page.data['clock.tick'] == tick
+    with pytest.raises(RuntimeError, match='closed'):
+        await asyncio.to_thread(page.change, 'controls', dict(path='running', evt='upd_value', value=True, attr={}))
+    assert await asyncio.to_thread(page.unsubscribe, 'controls') is None
+    page.close()
+
+
+def test_close_after_a_failed_start():
+    page = PageStore()
+    with patch.object(module, 'PsutilHandler', side_effect=RuntimeError('no psutil')):
+        with pytest.raises(RuntimeError, match='no psutil'):
+            page.start()
+    assert page.loop is None and page._closed
+    page.close()
+
+
+@pytest.mark.asyncio
 async def test_failure_stops_and_restart_reaches_next_handler(machine):
     page = PageStore(); page.start(); page.task.cancel()
     try:

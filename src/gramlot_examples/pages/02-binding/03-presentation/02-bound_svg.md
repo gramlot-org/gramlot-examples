@@ -11,7 +11,7 @@ Controls and an SVG drawing share the same values. Change a value and watch the 
 
 **Goal:** Use the same Data value for a native control and SVG geometry.
 
-**Before this lesson:** [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md).
+**Before this lesson:** [e08 · SVG shapes](../../00-html_svg/03-svg/01-svg_shapes.md), [b04 · Native editing](../02-editing/01-native_editing.md).
 
 ## Read the page
 
@@ -44,6 +44,6 @@ Earlier e13 explicitly called `setAttr` on a Source node for each animated coord
 
 The range has to remain compatible with the viewBox; a large radius near an edge can be clipped. This lesson changes geometry, not SVG structure.
 
-Continue with [b08 · Freeze](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/04-freeze.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-070) explains the full contract.
+Continue with [b08 · Freeze](../01-paths_and_updates/04-freeze.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-070) explains the full contract.
 
 </details>

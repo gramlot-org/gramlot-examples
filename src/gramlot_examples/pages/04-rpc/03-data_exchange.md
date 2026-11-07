@@ -13,7 +13,7 @@ The record contains text, numbers, a boolean, a null value and a nested address.
 
 **Goal:** Save and restore a typed Data Bag, and distinguish round-trip files from interchange exports.
 
-**Before this lesson:** [b09 · Forms with binding](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/03-forms.md), [c03 · Named logic](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/02-actions/01-button_controller.md).
+**Before this lesson:** [b09 · Forms with binding](../02-binding/02-editing/03-forms.md), [c03 · Named logic](../03-controllers/01-logic/03-named_logic.md), [c06 · Button controller](../03-controllers/02-actions/01-button_controller.md).
 
 ## Read the page
 
@@ -53,7 +53,7 @@ b09 made a form share one Data record with its display. This later release lets 
 
 TYTX Save/Restore preserves supported types. JSON/XML exports are for other programs; the `.json` suffix alone does not make a file restorable. File dialogs require a user gesture. If you cancel a picker, the existing Data remains; start a new Restore action when ready. Browser download settings may prompt or save automatically. Named Logic handles these actions without an inline-code CSP requirement. The catalogue entry is a local file lesson; mail and HTTP environment checks are separately classified.
 
-Continue with [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md#gc-095-095) provides the full contract.
+Continue with [c09 · Endpoint](01-server_calls/01-endpoint.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html#gc-095-095) provides the full contract.
 
 **Sample data:** `03-data_exchange_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

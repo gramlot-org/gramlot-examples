@@ -42,12 +42,15 @@ example's asyncio interval → clock.tick → dataController
 
 The interval belongs only to this example. `start()` creates its asyncio task;
 `close()` cancels it. `asyncio.sleep()` gives the event loop time between ticks.
+Uvicorn calls `start()` on its event loop, and the task runs there. Kajenn calls
+`start()` in a worker thread without an event loop: the store then creates its own
+loop in a daemon thread, runs the task on it, and `close()` stops that loop.
 The ordinary controller runs synchronously when `clock.tick` changes. There is
 no new `_timing` support or timer service in the core or server integration, and
 no browser polling or sample acknowledgement.
 
 The Python host can deliver binder operations from a worker. The example's
-`on_loop()` sends those operations to the same loop as the interval, so page Data
+`on_loop()` sends those operations to the loop of the interval, so page Data
 is never modified concurrently by the timer and a binder. This small adapter is
 local to this example; it adds no framework API.
 
@@ -84,6 +87,5 @@ include loopback. Mount capacities are not summed. Global connections are not re
 ## Run locally
 
 Install `gramlot-examples[system-monitor]` and use the local Python monitor launcher
-with WebSocket enabled. This example requires an asyncio host, as used by the
-Uvicorn preview. It measures the server machine, not the browser. Collection time
+with WebSocket enabled. The page runs on the Uvicorn and Kajenn servers. It measures the server machine, not the browser. Collection time
 excludes transport and rendering. Close the page to cancel its interval.

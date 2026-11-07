@@ -11,7 +11,7 @@ A price calculation and a change counter call methods in a `Logic` class. You le
 
 **Goal:** Reuse browser behavior by naming a Logic method.
 
-**Before this lesson:** [c01 · Formula](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/01-formula.md), [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md).
+**Before this lesson:** [c01 · Formula](01-formula.md), [c02 · Controller](02-controller.md).
 
 ## Read the page
 
@@ -60,7 +60,7 @@ that host. Do not simulate it by loading scripts in the example.
 
 Named Logic works without runtime inline compilation. A root `func` method does not become a named `connect_on` group: dotted event names need a resource group unavailable in the common FileServer gallery. Server-only imports cannot be placed in a module that the browser imports for Logic.
 
-Continue with [c04 · Inline expressions](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/04-inline_expressions.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-060) explains the full contract.
+Continue with [c04 · Inline expressions](04-inline_expressions.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-060) explains the full contract.
 
 **Sample data:** `03-named_logic_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

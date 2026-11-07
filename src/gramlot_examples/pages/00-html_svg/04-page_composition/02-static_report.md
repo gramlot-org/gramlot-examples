@@ -11,7 +11,7 @@ A report with a summary, chart and table, all built from the same data. You lear
 
 **Goal:** Keep a summary, chart and table consistent with one dataset.
 
-**Before this lesson:** [e05 · Tables](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/01-html_basics/05-tables.md), [e08 · SVG shapes](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/01-svg_shapes.md), [e09 · SVG composition](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/03-svg/02-svg_composition.md). 
+**Before this lesson:** [e05 · Tables](../01-html_basics/05-tables.md), [e08 · SVG shapes](../03-svg/01-svg_shapes.md), [e09 · SVG composition](../03-svg/02-svg_composition.md). 
 
 ## Read the page
 
@@ -34,6 +34,6 @@ Change North from 12 to 14. Update the literal SVG title from “North 12” to 
 
 This is a static report. Do not call it a live data service, and do not leave the accessible description stale when changing its dataset.
 
-Continue with [e12 · Complete page](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/00-html_svg/04-page_composition/03-complete_page.md). The [authoring reference](https://github.com/gramlot-org/gramlot/blob/main/docs/public/095-writing-pages.md) explains the full contract.
+Continue with [e12 · Complete page](03-complete_page.md). The [authoring reference](https://gramlot.readthedocs.io/en/latest/docs/public/095-writing-pages.html) explains the full contract.
 
 </details>

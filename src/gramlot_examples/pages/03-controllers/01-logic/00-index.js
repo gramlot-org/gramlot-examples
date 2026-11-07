@@ -13,7 +13,7 @@ export class Page extends BasePage {
         { const item = lessons.li(); item.strong("Formula"); item.p("dataFormula computes a result path from its parameters."); }
         { const item = lessons.li(); item.strong("Controller"); item.p("dataController reacts to Data, to a fired path and to time."); }
         { const item = lessons.li(); item.strong("Named logic"); item.p("Formula and controller bodies in class Logic of 03_named_logic.js."); }
-        { const item = lessons.li(); item.strong("Inline expressions"); item.p("== expressions in text and attributes, and inline scripts."); }
+        { const item = lessons.li(); item.strong("Inline expressions"); item.p("Text and attribute values that start with two equals signs, and inline scripts."); }
         { const item = lessons.li(); item.strong("Node methods"); item.p("SET, GET, PUT, FIRE and FIRE_AFTER from button actions."); }
         { const item = lessons.li(); item.strong("Pointer templates and expressions"); item.p("Core 0.2.20: revisit CSS lengths, boolean state and formatted text with attribute pointer transforms."); }
     }

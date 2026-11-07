@@ -11,7 +11,7 @@ A formula calculates a result from the fields. You learn which inputs trigger a 
 
 **Goal:** Separate calculation dependencies from values read only at execution.
 
-**Before this lesson:** [b01 · Pointers](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/01-pointers.md), [b03 · Setters and defaults](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/01-paths_and_updates/03-setters_and_defaults.md), [b04 · Native editing](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/02-binding/02-editing/01-native_editing.md).
+**Before this lesson:** [b01 · Pointers](../../02-binding/01-paths_and_updates/01-pointers.md), [b03 · Setters and defaults](../../02-binding/01-paths_and_updates/03-setters_and_defaults.md), [b04 · Native editing](../../02-binding/02-editing/01-native_editing.md).
 
 ## Read the page
 
@@ -45,7 +45,7 @@ Earlier e05 computed totals once while building Source. In 0.2.0, `dataFormula` 
 
 A formula is for a derived value; use a controller for effects. VAT here is a fraction (0.2), while c09 later uses a percentage (22); do not copy the number unchanged.
 
-Continue with [c02 · Controller](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/03-controllers/01-logic/02-controller.md). The [data binding guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/097-data-binding.md#gc-095-055) explains the full contract.
+Continue with [c02 · Controller](02-controller.md). The [data binding guide](https://gramlot.readthedocs.io/en/latest/docs/public/097-data-binding.html#gc-095-055) explains the full contract.
 
 **Sample data:** `01-formula_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

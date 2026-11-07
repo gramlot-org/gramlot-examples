@@ -326,7 +326,7 @@ function navigationLevel(directory, families, rule) {
             const example = families.filter(family => family.folder === parts[0]).flatMap(family => family.examples).find(item => item.folder === [...parts.slice(1), stem].join('/'));
             const metadata = path.slice(0,-3) + '.json';
             const descriptor = existsSync(metadata) ? JSON.parse(readFileSync(metadata,'utf8')) : null;
-            if (descriptor?.navigation === false) continue;
+            if (descriptor?.navigation === false || descriptor?.catalogued === false) continue;
             const requires = (example ?? descriptor)?.requires;
             if (rule && !filterMatches(rule, requires)) continue;
             const title = example ? example.title : descriptor ? descriptor.title : pageTitle(path);

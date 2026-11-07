@@ -31,6 +31,8 @@ class Page(BasePage):
     def main(self, root):
         main_content = root.main(datapath="uploadDemo", padding="16px")
 
+        main_content.dataFormula(".uploadNotice", func="uploadNotice", _init=True)
+        main_content.p("^.uploadNotice", id="upload-notice")
         main_content.uploader(id="upload-demo", operation="inspect_file", storepath=".queue",
                       selectedPath="^.selected", multiple=True, autoUpload=False, onComplete="uploadCompleted")
         main_content.dataFormula(".editPath", "selected ? 'uploadDemo.queue.' + selected : 'uploadDemo.empty'",

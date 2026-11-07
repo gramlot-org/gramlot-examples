@@ -11,7 +11,7 @@ A menu loads when its Data path is read. You learn how `dataRemote` supplies val
 
 **Goal:** Distinguish resolver installation, first read, response and later refresh.
 
-**Before this lesson:** [c09 · Endpoint](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/01-endpoint.md), [c10 · Call on change](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/01-server_calls/02-call_on_change.md), [c13 · Cached remote](https://github.com/gramlot-org/gramlot-examples/blob/main/src/gramlot_examples/pages/04-rpc/02-remote_data/02-cached_remote.md).
+**Before this lesson:** [c09 · Endpoint](../01-server_calls/01-endpoint.md), [c10 · Call on change](../01-server_calls/02-call_on_change.md), [c13 · Cached remote](02-cached_remote.md).
 
 ## Read the page
 
@@ -61,7 +61,7 @@ On HTTP a read with an expired cache waits for the fresh answer; with `sync=Fals
 
 `dataRemote` accepts `_onCalling` (a result `false` makes no call, and a later read tries again), but do not copy dataRpc’s `_onResult` or `_onError` onto it, or use `_init`, `_onBuilt`, `_onStart` there. An auth-aware environment is still needed for protected methods. This in-memory menu is not a database service.
 
-Continue with [setup and release sequence](https://github.com/gramlot-org/gramlot/blob/main/docs/public/025-try.md). The [remote content guide](https://github.com/gramlot-org/gramlot/blob/main/docs/public/099-remote-content.md#gc-095-105) explains the full contract.
+Continue with [setup and release sequence](https://gramlot.readthedocs.io/en/latest/docs/public/025-try.html). The [remote content guide](https://gramlot.readthedocs.io/en/latest/docs/public/099-remote-content.html#gc-095-105) explains the full contract.
 
 **Sample data:** `03-data_remote_data.tytx` supplies the initial Bag in Python and JavaScript. Interface defaults initialize UI state; bindings handle later edits.
 

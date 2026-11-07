@@ -22,6 +22,8 @@ export class Page extends BasePage {
         main_content.h2('Browser only');
         main_content.imageUploader({id:'local-image',value:'^.localImage',storepath:'.localQueue'});
         main_content.h2('Application upload');
+        main_content.dataFormula({result_path:'.uploadNotice', func:'uploadNotice', _init:true});
+        main_content.p('^.uploadNotice', {id:'upload-notice'});
         main_content.imageUploader({id:'server-image',value:'^.serverImage',storepath:'.serverQueue',operation:'save_image'});
     }
     save_image(metadata) { return new TemporaryImage(); }
@@ -29,6 +31,14 @@ export class Page extends BasePage {
 Page.registerUpload('save_image');
 
 export class Logic {
+    /** The bootstrap capabilities of this server decide whether Upload can transfer files. */
+    uploadNotice() {
+        return this.page.capabilities.includes('upload')
+            ? 'This server accepts uploads.'
+            : 'This server does not accept uploads: Upload marks each file "Upload is unavailable in this environment". '
+              + 'Choosing files and the browser queue still work. Run the gallery with gramlot uvicorn gallery, '
+              + 'or open the serverless download, to complete a transfer.';
+    }
     attachBrowserCamera() {
         if (!this.page.dvc.provider) this.page.dvc.attach(new BrowserCameraProvider({document:this.page.src.renderer.destination.ownerDocument}));
     }
