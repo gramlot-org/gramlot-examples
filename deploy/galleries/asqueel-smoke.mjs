@@ -99,9 +99,10 @@ try {
     console.log('PASS PageStore binding, validation, direct/nested frames and connected window');
 
     page=await open('/pages/91-kajenn_db/01_customer');
-    await page.locator('#customer-key').fill(customerId);
-    await page.locator('#customer-key').press('Tab');
+    // The lesson opens with the first listed customer loaded.
     await expect(page.locator('#customer-status')).toHaveText('loaded');
+    const customerId=await page.locator('#loaded-key').innerText();
+    assert.ok(customerId);
     const original={name:await page.locator('#customer-name').inputValue(),email:await page.locator('#customer-email').inputValue()};
     assert.ok(original.name && original.email, 'Customer fixture must be restorable through its required fields');
     let changed=false;
@@ -142,12 +143,13 @@ try {
     await page.getByRole('button',{name:'Send',exact:true}).click();
     await expect(page.getByText('Gallery verification',{exact:true})).toHaveCount(2);
     await page.getByRole('button',{name:'Source example',exact:true}).click();
-    await page.getByRole('button',{name:'Increment',exact:true}).click();
-    await expect(page.getByText('A message made of Gramlot Source',{exact:true})).toBeVisible();
+    // The Source reply is an order panel: its Items tab shows the initial rows.
+    await page.locator('.order-panel').getByText('Items',{exact:true}).click();
+    await expect(page.locator('.order-panel').getByText('Notebook',{exact:true})).toBeVisible();
     await page.getByRole('button',{name:'New conversation',exact:true}).click();
     await expect(page.getByText('Gallery verification',{exact:true})).toHaveCount(0);
     await page.close();
-    console.log('PASS Chat echo, interactive Source and reset');
+    console.log('PASS Chat echo, order panel Source reply and reset');
     assert.deepEqual(errors,[]);
     console.log(`PASS ${base}: Asqueel catalogue, dependent selectors, resident grid, JSONL and cached selection/search/sort`);
 } finally {await browser.close();}

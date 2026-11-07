@@ -28,6 +28,8 @@ LLM_ENV = Path('/etc/gramlot-galleries/llm.env')
 RETRY_INTERVAL = 30
 # Seconds for one gallery check. A failed or slow check is reported and never blocks the deploy.
 CHECK_TIMEOUT = 150
+CHECK_IMAGE = 'gramlot-gallery-check:current'
+CHECK_SCRIPTS = ('smoke.mjs', 'asqueel-smoke.mjs')
 # Publication jobs that do not gate the galleries: JSR is optional, npm is required.
 OPTIONAL_JOBS = {'jsr'}
 
@@ -107,6 +109,12 @@ def soft_check(report, name, *args):
     command = [str(arg) for arg in args]
     if command[:2] == ['docker', 'run']:
         command[2:2] = ['--name', container]
+    if CHECK_IMAGE in command:
+        # The installed scripts replace the copies baked into the image, which is built by hand.
+        mounts = [arg for script in CHECK_SCRIPTS
+                  for arg in ('-v', f'{ROOT / "automation" / script}:/checks/{script}:ro')]
+        index = command.index(CHECK_IMAGE)
+        command[index:index] = mounts
     try:
         subprocess.run(command, check=True, text=True, timeout=CHECK_TIMEOUT)
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
@@ -228,18 +236,18 @@ def deploy(snapshot, current, *, fetch=read_json):
                    'python', 'python', '/app/verify-public-database.py')
         run('docker', 'compose', '-f', compose, 'up', '-d', '--wait', '--wait-timeout', '90')
         soft_check(report, 'smoke', 'docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
-                   '-v', f'{offline}:/offline:ro', 'gramlot-gallery-check:current', 'node', 'smoke.mjs',
+                   '-v', f'{offline}:/offline:ro', CHECK_IMAGE, 'node', 'smoke.mjs',
                    f'http://127.0.0.1:{19182+slot*2}', f'http://127.0.0.1:{19183+slot*2}', 'file:///offline/gallery')
         soft_check(report, 'asqueel-smoke', 'docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
-                   'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs', f'http://127.0.0.1:{19182+slot*2}')
+                   CHECK_IMAGE, 'node', 'asqueel-smoke.mjs', f'http://127.0.0.1:{19182+slot*2}')
         if releases(fetch) != snapshot or not ready(snapshot, fetch, verified=snapshot):
             raise ReleasePending('Release set changed during build; retry after publication completes')
         def public_check():
             soft_check(report, 'public-smoke', 'docker', 'run', '--rm', '--network', 'host', '--shm-size=256m',
-                       'gramlot-gallery-check:current', 'node', 'smoke.mjs',
+                       CHECK_IMAGE, 'node', 'smoke.mjs',
                        'https://gallery-py.gramlot.dev', 'https://gallery-js.gramlot.dev')
             soft_check(report, 'public-asqueel-smoke', 'docker', 'run', '--rm', '--network', 'host',
-                       '--shm-size=256m', 'gramlot-gallery-check:current', 'node', 'asqueel-smoke.mjs',
+                       '--shm-size=256m', CHECK_IMAGE, 'node', 'asqueel-smoke.mjs',
                        'https://gallery-py.gramlot.dev')
             for host in ('gallery-py', 'gallery-js'):
                 soft_download(report, host, digest)
