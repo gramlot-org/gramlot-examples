@@ -14,11 +14,12 @@
 - **Boxplot:** one box per row from min, q1, median, q3 and max.
 - **Treemap:** a nested Bag of department, team and cost item as nested rectangles, with drill-down.
 - **Sunburst:** the same nested Bag as concentric rings.
+- **When a chart cannot be drawn:** remove a column a chart needs and read the notice that replaces it, with More info.
 
-The last nine are chart types of `chartView` (ECharts engine). Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart. Treemap and sunburst read a nested Bag with `rowMode='attributes'`.
+The nine chart pages use one element per chart type, such as `chartFunnel` or `chartCandlestick` (ECharts engine). Each element is `chartView` with a fixed `chartType`; its attributes are the columns the type reads, and a missing one is rejected by the Builder. Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart. Treemap and sunburst read a nested Bag with `rowMode='attributes'`.
 
-## How the gauge differs from `chartView`
+## How the gauge differs from the chart elements
 
-`chartView` and `chartPane` draw the rows of a store. The gauge draws the Data they point at: the node value is the value, written as a Data pointer such as `^.cpu.load` or `^.cpu.load?percent`. It writes nothing back.
+The chart elements, `chartView` and `chartPane` draw the rows of a store. The gauge draws the Data they point at: the node value is the value, written as a Data pointer such as `^.cpu.load` or `^.cpu.load?percent`. It writes nothing back.
 
 This family is experimental. Everything here is in the `charts` collection of the core, which the server provides to every page.

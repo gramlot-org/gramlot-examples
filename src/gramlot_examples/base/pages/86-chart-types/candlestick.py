@@ -44,6 +44,6 @@ class Page(BasePage):
             columns.column(code, name=caption, width='18%', dtype='R', edit=True)
 
     def chart(self, parent):
-        parent.chartView(engine='echarts', chartType='candlestick', captionField='day', storepath='.rows',
-                         rowMode='values', seriesOptions='^.options', valueFields='open,high,low,close',
-                         height='100%', min_width=0)
+        parent.chartCandlestick(engine='echarts', captionField='day', open='open', high='high', low='low', close='close',
+                                storepath='.rows', rowMode='values', seriesOptions='^.options',
+                                height='100%', min_width=0)

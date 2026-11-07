@@ -10,8 +10,8 @@ The stages keep the order of the rows. The chart does not sort them.
 
 ## Read the declarations
 
-- `frameGrid(storepath='.rows', rowMode='values')` and `chartView(storepath='.rows', rowMode='values')` read the same Data Bag. A cell edit writes that Bag and both redraw.
-- `chartType='funnel'` takes `captionField` as the stage name and exactly one measure. `valueFields='deals'` names it.
+- `frameGrid(storepath='.rows', rowMode='values')` and `chartFunnel(storepath='.rows', rowMode='values')` read the same Data Bag. A cell edit writes that Bag and both redraw.
+- `chartFunnel` takes `captionField` as the stage name and one measure: `measure='deals'` names it.
 - `seriesOptions='^.options'` holds the caption of the measure (`Deals`) shown in the tooltip.
 - A negative value is an error shown in the chart area.
 - Only the ECharts engine draws a funnel.

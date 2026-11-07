@@ -4,7 +4,7 @@
   "description": "Show budget flows as links between nodes; a cycle is reported as an error.",
   "tags": [
     "charts",
-    "chartView",
+    "chartSankey",
     "sankey",
     "frameGrid"
   ],

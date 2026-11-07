@@ -33,6 +33,6 @@ class Page(BasePage):
         columns.column('events', name='Events', width='33%', dtype='L', edit=True)
 
     def chart(self, parent):
-        parent.chartView(engine='echarts', chartType='heatmap', captionField='day', secondCaptionField='hour',
-                         storepath='.rows', rowMode='values', seriesOptions='^.options', valueFields='events',
-                         height='100%', min_width=0)
+        parent.chartHeatmap(engine='echarts', captionField='day', secondCaptionField='hour', measure='events',
+                            storepath='.rows', rowMode='values', seriesOptions='^.options',
+                            height='100%', min_width=0)

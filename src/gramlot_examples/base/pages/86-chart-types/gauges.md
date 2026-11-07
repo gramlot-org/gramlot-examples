@@ -19,7 +19,7 @@ The lower gauge reads `^.cpu?percent`: the value is the attribute `percent` of t
 - `gauge('^.value', ...)` takes the node value as its first argument, like `span`. The gauge never writes Data.
 - `min`, `max`, `mask`, `thresholds`, `presentation` and `caption` accept `^` bindings. A change redraws the gauge.
 - `^.cpu?percent` points at an attribute of a Data node. `dataSetter('.cpu', None, percent=38)` creates it.
-- Empty Data shows an empty dial with no needle or progress, never a zero.
+- Empty Data shows an information notice, No value, with More info; never a zero.
 - Colors, background and text follow the light or dark theme.
 
 ## What this teaches

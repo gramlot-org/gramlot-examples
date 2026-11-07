@@ -27,6 +27,6 @@ class Page(BasePage):
         columns.column('deals', name='Deals', width='50%', dtype='L', edit=True)
 
     def chart(self, parent):
-        parent.chartView(engine='echarts', chartType='funnel', captionField='stage', storepath='.rows',
-                         rowMode='values', seriesOptions='^.options', valueFields='deals',
-                         height='100%', min_width=0)
+        parent.chartFunnel(engine='echarts', captionField='stage', measure='deals', storepath='.rows',
+                           rowMode='values', seriesOptions='^.options',
+                           height='100%', min_width=0)

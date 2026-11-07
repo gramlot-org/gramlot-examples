@@ -66,6 +66,6 @@ class Page(BasePage):
             columns.column('amount', name='Amount', width='40%', dtype='L', edit=True)
 
     def chart(self, parent):
-        parent.chartView(engine='echarts', chartType='treemap', captionField='name', storepath='.budget',
-                         rowMode='attributes', seriesOptions='^.options', valueFields='amount',
-                         height='100%', min_width=0)
+        parent.chartTreemap(engine='echarts', captionField='name', measure='amount', storepath='.budget',
+                            rowMode='attributes', seriesOptions='^.options',
+                            height='100%', min_width=0)

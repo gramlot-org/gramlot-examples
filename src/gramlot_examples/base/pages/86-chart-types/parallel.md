@@ -11,7 +11,7 @@ Empty a cell: the line has no point on that axis, never a zero.
 ## Read the declarations
 
 - Each row is one polyline. `captionField='car'` is its name in the tooltip.
-- Each measure in `valueFields` is one vertical axis, named by its caption in `seriesOptions`.
+- Each measure in `measures` is one vertical axis, named by its caption in `seriesOptions`.
 - `seriesOptions` may carry `min` and `max` for a measure; otherwise the axis follows the data.
 - The chart and the grid read the same `.rows` Bag.
 - Only the ECharts engine draws parallel coordinates.

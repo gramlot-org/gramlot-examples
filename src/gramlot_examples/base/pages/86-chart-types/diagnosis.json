@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-11",
+  "title": "When a chart cannot be drawn",
+  "description": "Remove a column a chart needs: the chart is replaced by a notice that explains what is missing.",
+  "tags": [
+    "charts",
+    "chartCandlestick",
+    "chartBar",
+    "diagnosis"
+  ],
+  "order": 10
+}

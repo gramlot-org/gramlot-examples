@@ -4,7 +4,7 @@
   "description": "Compare products on five criteria; each criterion is an axis, each row a polygon.",
   "tags": [
     "charts",
-    "chartView",
+    "chartRadar",
     "radar",
     "frameGrid"
   ],
