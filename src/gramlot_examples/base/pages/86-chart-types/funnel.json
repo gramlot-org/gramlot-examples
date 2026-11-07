@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-02",
+  "title": "Funnel",
+  "description": "Show sales pipeline stages as a funnel; edit a cell and the chart follows.",
+  "tags": [
+    "charts",
+    "chartView",
+    "funnel",
+    "frameGrid"
+  ],
+  "order": 1
+}

@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-06",
+  "title": "Sankey",
+  "description": "Show budget flows as links between nodes; a cycle is reported as an error.",
+  "tags": [
+    "charts",
+    "chartView",
+    "sankey",
+    "frameGrid"
+  ],
+  "order": 5
+}

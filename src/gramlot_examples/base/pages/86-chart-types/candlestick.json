@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-07",
+  "title": "Candlestick",
+  "description": "Follow a share over twenty days; open, high, low and close draw one candle per row.",
+  "tags": [
+    "charts",
+    "chartView",
+    "candlestick",
+    "frameGrid"
+  ],
+  "order": 6
+}

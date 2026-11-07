@@ -1,0 +1,134 @@
+{
+  "environment": "chart-types",
+  "families": [
+    {
+      "key": "chart-types",
+      "title": "Charts · Value and chart types",
+      "group": "chart-lessons",
+      "public": false,
+      "folder": "86-chart-types",
+      "examples": [
+        {
+          "key": "chart-types-01",
+          "title": "Gauges",
+          "description": "Show one value as a needle dial, a ring or an arc; change range, thresholds and mask live.",
+          "tags": [
+            "charts",
+            "gauge",
+            "thresholds",
+            "mask"
+          ],
+          "folder": "gauges"
+        },
+        {
+          "key": "chart-types-02",
+          "title": "Funnel",
+          "description": "Show sales pipeline stages as a funnel; edit a cell and the chart follows.",
+          "tags": [
+            "charts",
+            "chartView",
+            "funnel",
+            "frameGrid"
+          ],
+          "folder": "funnel"
+        },
+        {
+          "key": "chart-types-03",
+          "title": "Radar",
+          "description": "Compare products on five criteria; each criterion is an axis, each row a polygon.",
+          "tags": [
+            "charts",
+            "chartView",
+            "radar",
+            "frameGrid"
+          ],
+          "folder": "radar"
+        },
+        {
+          "key": "chart-types-04",
+          "title": "Parallel coordinates",
+          "description": "Compare cars on five numeric axes; each row is one polyline.",
+          "tags": [
+            "charts",
+            "chartView",
+            "parallel",
+            "frameGrid"
+          ],
+          "folder": "parallel"
+        },
+        {
+          "key": "chart-types-05",
+          "title": "Heatmap",
+          "description": "Show activity by weekday and hour as colored cells; edit a cell and the colors rescale.",
+          "tags": [
+            "charts",
+            "chartView",
+            "heatmap",
+            "frameGrid"
+          ],
+          "folder": "heatmap"
+        },
+        {
+          "key": "chart-types-06",
+          "title": "Sankey",
+          "description": "Show budget flows as links between nodes; a cycle is reported as an error.",
+          "tags": [
+            "charts",
+            "chartView",
+            "sankey",
+            "frameGrid"
+          ],
+          "folder": "sankey"
+        },
+        {
+          "key": "chart-types-07",
+          "title": "Candlestick",
+          "description": "Follow a share over twenty days; open, high, low and close draw one candle per row.",
+          "tags": [
+            "charts",
+            "chartView",
+            "candlestick",
+            "frameGrid"
+          ],
+          "folder": "candlestick"
+        },
+        {
+          "key": "chart-types-08",
+          "title": "Boxplot",
+          "description": "Compare score distributions of five teams from min, q1, median, q3 and max.",
+          "tags": [
+            "charts",
+            "chartView",
+            "boxplot",
+            "frameGrid"
+          ],
+          "folder": "boxplot"
+        },
+        {
+          "key": "chart-types-09",
+          "title": "Treemap",
+          "description": "Show a company budget three levels deep as nested rectangles; edit any branch and drill down by click.",
+          "tags": [
+            "charts",
+            "chartView",
+            "treemap",
+            "frameGrid"
+          ],
+          "folder": "treemap"
+        },
+        {
+          "key": "chart-types-10",
+          "title": "Sunburst",
+          "description": "Show a company budget three levels deep as concentric rings; edit any branch and zoom by click.",
+          "tags": [
+            "charts",
+            "chartView",
+            "sunburst",
+            "frameGrid"
+          ],
+          "folder": "sunburst"
+        }
+      ]
+    }
+  ]
+}

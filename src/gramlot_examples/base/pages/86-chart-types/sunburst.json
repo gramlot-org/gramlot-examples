@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-10",
+  "title": "Sunburst",
+  "description": "Show a company budget three levels deep as concentric rings; edit any branch and zoom by click.",
+  "tags": [
+    "charts",
+    "chartView",
+    "sunburst",
+    "frameGrid"
+  ],
+  "order": 9
+}
