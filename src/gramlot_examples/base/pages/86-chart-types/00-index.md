@@ -10,8 +10,10 @@
 - **Parallel coordinates:** one polyline per row, one vertical axis per measure.
 - **Heatmap:** two categories and one measure as cell color.
 - **Sankey:** links from a source column to a target column, with cycle detection.
+- **Candlestick:** one candle per row from open, high, low and close.
+- **Boxplot:** one box per row from min, q1, median, q3 and max.
 
-The last five are chart types of `chartView` (ECharts engine). Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart.
+The last seven are chart types of `chartView` (ECharts engine). Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart.
 
 ## How the gauge differs from `chartView`
 
