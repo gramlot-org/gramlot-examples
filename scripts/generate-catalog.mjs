@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 const pkg = fileURLToPath(new URL('../src/gramlot_examples/', import.meta.url));
 const targets = [
     {catalog:'catalog.json', pages:'pages'},
+    {catalog:'chart_gallery/catalog.json', pages:'chart_gallery/pages'},
     ...['catalog.json', 'asqueel-catalog.json', 'cached-trial-catalog.json', 'selection-trial-catalog.json', 'chart-reports-catalog.json', 'chart-types-catalog.json']
         .map(catalog => ({catalog:`base/${catalog}`, pages:'base/pages'})),
     ...['page_store', 'chat_base', 'kajenn_db', 'ai'].map(name => ({catalog:`trials/${name}/catalog.json`, pages:`trials/${name}/pages`})),
@@ -15,6 +16,8 @@ const environments = new Map([
     ['base/cached-trial-catalog.json','asqueel-only'], ['base/selection-trial-catalog.json','selection-trial'],
     ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'], ['trials/ai/catalog.json','ai'],
 ]);
+// Common catalogues of separate galleries: they replace the package catalogue (galleryCatalogs).
+const commons = new Set(['chart_gallery/catalog.json']);
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
 const groups = new Set(read(resolve(pkg, 'groups.json')).map(group => group.key));
 function walk(dir) {
@@ -59,7 +62,7 @@ for (const {catalog,pages} of targets) {
     unique(families.map(f=>f.order),`Duplicate family order in ${catalog}`);
     families.sort((a,b)=>a.order-b.order);
     unique(families.flatMap(f=>[f.metadata.key,...f.metadata.examples.map(e=>e.key)]),`Duplicate key in ${catalog}`);
-    const environment=environments.get(catalog), data={...(environment ? {environment}:{}),families:families.map(f=>f.metadata)};
+    const environment=environments.get(catalog), data={...(environment ? {environment}:{}),...(commons.has(catalog) ? {common:true}:{}),families:families.map(f=>f.metadata)};
     const dest=resolve(pkg,catalog), generated=JSON.stringify(data,null,2)+'\n';
     if(process.argv.includes('--check')) {
         if(!existsSync(dest) || readFileSync(dest,'utf8')!==generated) throw new Error(`Catalogue out of date: ${catalog}`);

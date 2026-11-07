@@ -7,12 +7,13 @@ RUN pip install --no-cache-dir --upgrade 'gramlot-py-server[kajenn,kajenn-asquee
     && useradd --uid 10001 --create-home gallery
 COPY public-module/ /app/modules/
 COPY chart-data/ /app/chart-data/
-COPY serve-mobile.py public_database.py verify-public-database.py verify-public-proxy.py fetch-gramlot-docs.py /app/
+COPY serve-mobile.py galleries.py public_database.py verify-public-database.py verify-public-proxy.py fetch-gramlot-docs.py /app/
+COPY tab_page/ /app/tab_page/
 # The AI lessons' visual editor assistant reads the core manuals of the installed release.
 # API keys are not part of the image: Compose passes them from /etc/gramlot-galleries/llm.env.
 RUN python /app/fetch-gramlot-docs.py /app/gramlot-docs
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 GRAMLOT_DOCS_ROOT=/app/gramlot-docs
 USER gallery
 EXPOSE 8080
-HEALTHCHECK --interval=10s --timeout=5s --start-period=30s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/mobile-application/catalog.json', timeout=3).read()"
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/gallery/mobile-application/catalog.json', timeout=3).read()"
 CMD ["python", "/app/serve-mobile.py", "--modules", "/app/modules", "--host", "0.0.0.0", "--port", "8080"]

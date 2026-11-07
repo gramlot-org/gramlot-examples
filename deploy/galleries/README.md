@@ -212,10 +212,12 @@ and `serve-mobile.py` in its build context. It intentionally fails when installe
 packages lack the integration; do not bypass that prerequisite. The image itself
 and public deployment remain unqualified until explicitly authorized.
 
-Public verification must cover `/mobile-application/catalog.json`, all eligible
+Public verification must cover `/gallery/mobile-application/catalog.json`, all eligible
 mobile pages/assets, normal gallery examples and
-`/pages/01-inputs/04-colorpicker`. The module landing route is
-`/mobile-application/index`. Remote Edit remains disabled. Production APNs is not
+`/gallery/pages/01-inputs/04-colorpicker`. The module landing route is
+`/gallery/mobile-application/index`. Since 2026-11-07 the module is staged in the gallery
+mounted at `/gallery/` (see “Two galleries and the tab page”); nginx redirects the earlier
+`/mobile-application/` and `/pages/` URLs. Remote Edit remains disabled. Production APNs is not
 configured; push and top-level shortcut entry are omitted. No Mac LAN origin,
 local push service, APNs credentials or signing material belongs in this build.
 Physical iPhone acceptance away from the Mac network and TestFlight upload are
@@ -429,3 +431,74 @@ sudo docker compose -f "$(python3 -c 'import json;print(json.load(open("/opt/gra
 To switch the AI lessons off, empty or delete the env file and recreate the Python
 container; the lessons then show the not-configured message. Revoke the keys in the
 two consoles when they are no longer used.
+
+
+## Two galleries and the tab page (2026-11-07)
+
+Owner decisions, 2026-11-07: `/gallery` is the main gallery and `/chart_gallery` a dedicated
+chart gallery, on both hosts; `/` answers with a Gramlot page with two tabs, **Gallery** and
+**Chart gallery**, each an iframe on `/gallery/` and `/chart_gallery/`; the direct URLs stay
+valid. The Charts folder page of the main gallery links `/chart_gallery/`; the chart gallery
+links back to `/gallery/`. Catalogue and pages: GE-010 section 017.
+
+| URL | Python host (`serve-mobile.py`, Kajenn) | Node host (`serve-node.mjs`) |
+| --- | --- | --- |
+| `/gallery/` | application `gallery`, mount `gallery`: public catalogues, trials, mobile module, PageStore WebSocket | `startGallery` with `mountPath: '/gallery'` |
+| `/chart_gallery/` | application `chart_gallery`, mount `chart_gallery`: chart gallery catalogue and the chart types | `startGallery` with `mountPath: '/chart_gallery'` and the chart gallery catalogue |
+| `/` | application `tab_page`, empty mount: `tab_page/index.py` | `startServer` on `tab_page/` (`index.js`) |
+
+- Python: `galleries.py` stages the chart gallery and declares the three applications of one
+  Kajenn site. Kajenn gives a request to the application whose mount is its first path segment,
+  and every other request to the application at the site root. `gramlot_py_server.gallery.stage`
+  adds the Python tools catalogue to every gallery; `galleries.py` removes it from the catalogues
+  listed by the chart gallery index.
+- Node: `serve-node.mjs` starts the two galleries and the tab page on loopback ports and forwards
+  each request from port 8080 by its first path segment. It imports `startGallery` from the
+  `gallery.mjs` module beside the exported `@gramlot/gramlot-js-server/node`.
+- The chart types family (`base/pages/86-chart-types`) has Python pages only: the Node chart
+  gallery lists Simple charts, 3D charts and Maps.
+- Each gallery serves its assets under its mount (`/gallery/assets/gramlot.js`,
+  `/gallery/gallery/dist/frame.js`, `/chart_gallery/...`). The nginx asset rule matches
+  `/gallery/` and `/chart_gallery/` followed by `assets`, `gallery` or `themes`, and the
+  `assets` and `themes` of the tab page at the root. The WebSocket rule is
+  `location = /gallery/gramlot/store` (Python only). `location /pages/` redirects to
+  `/gallery/pages/` on both hosts and `location /mobile-application/` to
+  `/gallery/mobile-application/` on the Python host.
+- Health checks: `/gallery/mobile-application/catalog.json` (Python),
+  `/gallery/assets/gramlot.js` (Node).
+- `smoke.mjs` and `asqueel-smoke.mjs` still take the site origins: they open the gallery under
+  `/gallery`. `smoke.mjs` also checks that the tab page lists both iframes and that each iframe
+  starts, that `/chart_gallery/` starts and lists its families, and that its introduction links
+  `/gallery/`. The offline argument is the gallery folder, as before.
+- `Dockerfile.python` (the generic `gramlot uvicorn gallery` image) still serves one gallery at
+  `/`; it does not match this nginx configuration. The selected Python profile is
+  `Dockerfile.python-mobile`.
+
+Known defect: on the Python host the main gallery inside the tab page stops with “Parent does not
+provide the same PageStore endpoint”. The gallery application has the PageStore WebSocket; a
+Gramlot page in an iframe takes the PageStore channel of its Gramlot parent, and the tab page has
+none. `/gallery/` opened directly works; the Node host has no WebSocket and works in both ways.
+`smoke.mjs` reports this failure until the core is changed.
+
+### Operator steps (by hand, on the server)
+
+Holding the updater lock, from a checkout of gramlot-examples on the server (`$REPO`):
+
+```sh
+cd /opt/gramlot-galleries
+sudo flock update.lock sh -c '
+  for name in test_update.py serve-mobile.py galleries.py serve-node.mjs nginx.conf \
+              smoke.mjs asqueel-smoke.mjs Dockerfile.node; do
+    install -m 644 "$0/deploy/galleries/$name" "automation/$name" || exit 1
+  done &&
+  install -m 644 "$0/deploy/galleries/Dockerfile.python-mobile" automation/Dockerfile.python &&
+  install -d -m 755 automation/tab_page &&
+  install -m 644 "$0/deploy/galleries/tab_page/index.py" "$0/deploy/galleries/tab_page/index.js" automation/tab_page/' "$REPO"
+sudo python3 automation/test_update.py
+sudo docker build -f automation/Dockerfile.check -t gramlot-gallery-check:current automation
+```
+
+The changed smoke scripts are part of the verifier image: rebuild it as above. The next
+deployment needs a gramlot-examples release that contains `chart_gallery/`. Then verify
+`https://gallery-py.gramlot.dev/`, `/gallery/`, `/chart_gallery/` and the same paths on
+`gallery-js.gramlot.dev`.

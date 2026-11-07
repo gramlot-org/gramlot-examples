@@ -196,3 +196,16 @@ def test_trial_support_pages_are_not_in_the_tree():
         catalogs = [(trials / name / "catalog.json", trials / name / "pages")]
         urls = [node.attr["url"] for node in navigation_directory(folder, catalogs).nodes]
         assert urls and f"pages/{folder}/{hidden}" not in urls
+
+
+def test_chart_gallery_navigation_lists_its_families_and_the_chart_types():
+    from pathlib import Path
+    import gramlot_examples
+    root = Path(gramlot_examples.__file__).parent
+    catalogs = [(root / "chart_gallery" / "catalog.json", root / "chart_gallery" / "pages"),
+                (root / "base" / "chart-types-catalog.json", root / "base" / "pages")]
+    # The group of the chart types holds one family: the tree shows the family.
+    assert [n.label for n in navigation_directory("", catalogs).nodes] == ["chart-types", "charts-simple", "charts-3d", "chart-territories"]
+    assert [n.label for n in navigation_directory("01-simple", catalogs).nodes] == ["chart-shares", "chart-points"]
+    assert [n.label for n in navigation_directory("05-charts").nodes] == ["chart-bars", "chart-trends", "grid-charts"]
+

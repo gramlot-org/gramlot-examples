@@ -1776,34 +1776,6 @@
           "folder": "02-trends"
         },
         {
-          "key": "chart-shares",
-          "title": "Pie and donut",
-          "description": "Show four prepared regional totals as parts of a whole.",
-          "tags": [
-            "charts",
-            "frameGrid",
-            "pie",
-            "echarts",
-            "reactivity"
-          ],
-          "presentation": "content",
-          "folder": "03-shares"
-        },
-        {
-          "key": "chart-points",
-          "title": "Scatter points",
-          "description": "Compare numeric observations without grouping or fitting a model.",
-          "tags": [
-            "charts",
-            "frameGrid",
-            "scatter",
-            "plotly",
-            "reactivity"
-          ],
-          "presentation": "content",
-          "folder": "04-points"
-        },
-        {
           "key": "grid-charts",
           "title": "Temporal snapshots",
           "description": "Configure a chart from one Data Bag, change rendering engines and animate monthly snapshots.",
@@ -1819,48 +1791,6 @@
           ],
           "presentation": "content",
           "folder": "05-snapshots"
-        },
-        {
-          "key": "chart-bars-3d",
-          "title": "3D bars",
-          "description": "Compare revenue by region and quarter using two categorical dimensions.",
-          "tags": [
-            "charts",
-            "frameGrid",
-            "bar3D",
-            "echarts",
-            "reactivity"
-          ],
-          "presentation": "content",
-          "folder": "06-bars_3d"
-        },
-        {
-          "key": "chart-surface",
-          "title": "Points and surfaces",
-          "description": "Compare a numeric lattice as a surface, 3D points or 3D lines.",
-          "tags": [
-            "charts",
-            "frameGrid",
-            "surface",
-            "plotly",
-            "reactivity"
-          ],
-          "presentation": "content",
-          "folder": "07-surface"
-        },
-        {
-          "key": "chart-territories",
-          "title": "Territories",
-          "description": "Match rows to a small fictional GeoJSON map and change the displayed values.",
-          "tags": [
-            "charts",
-            "frameGrid",
-            "map",
-            "echarts",
-            "reactivity"
-          ],
-          "presentation": "content",
-          "folder": "08-territories"
         }
       ]
     },

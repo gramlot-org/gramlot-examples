@@ -25,7 +25,7 @@ class BuildGalleryTests(unittest.TestCase):
     def test_common_gallery(self):
         gallery = build_gallery()
         self.assertEqual([family["key"] for family in gallery["families"]], ["html_svg", "components", "uploader", "binding", "controllers", "rpc", "layout", "grid", "charts", "menus", "editors", "tools", "composition", "grouplets", "realtime"])
-        self.assertEqual(len(gallery["routes"]), 187)
+        self.assertEqual(len(gallery["routes"]), 182)
         self.assertEqual(gallery["routes"]["transform-pane"]["page"].name, "09-transform_pane.py")
         self.assertEqual(gallery["routes"]["tree-row-actions"]["page"].name, "06-row_actions.py")
         self.assertEqual(gallery["routes"]["e01"]["presentation"], "content")
@@ -73,6 +73,21 @@ class BuildGalleryTests(unittest.TestCase):
         gallery = build_gallery([(self.catalog(self.environment([family])), pages)])
         self.assertEqual(gallery["routes"]["test-01"]["logic"], pages / "aux_family" / "01_page_aux.js")
         self.assertEqual(gallery["assets"]["/pages/aux_family/01_page_aux.js"]["type"], "text/plain")
+
+    def test_chart_gallery_common_catalogue_replaces_the_package_catalogue(self):
+        charts = FIXTURE.parents[2] / "src" / "gramlot_examples" / "chart_gallery"
+        gallery = build_gallery([(charts / "catalog.json", charts / "pages")])
+        self.assertEqual([family["key"] for family in gallery["families"]], ["charts-simple", "charts-3d", "charts-maps"])
+        self.assertNotIn("e01", gallery["routes"])
+        self.assertEqual(gallery["routes"]["pages/00-index"]["page"], charts / "pages" / "00-index.py")
+        self.assertEqual(gallery["routes"]["chart-shares"]["url"], "pages/01-simple/01-shares")
+        self.assertEqual(gallery["assets"]["/catalog.json"]["file"], charts / "catalog.json")
+        self.assertNotIn("chart-shares", build_gallery()["routes"])
+
+    def test_two_common_catalogues(self):
+        common = self.catalog({"common": True, "families": []})
+        with self.assertRaisesRegex(ValueError, "one common catalogue"):
+            build_gallery([(common, PAGES), (common, PAGES)])
 
     def test_catalogue_without_environment(self):
         with self.assertRaisesRegex(ValueError, "has no environment"):

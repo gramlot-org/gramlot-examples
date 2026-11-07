@@ -22,7 +22,7 @@ const environment = families => ({environment: 'test', families: families.map(fa
 test('common gallery', () => {
     const gallery = buildGallery();
     assert.deepEqual(gallery.families.map(({key}) => key), ['html_svg', 'components', 'uploader', 'binding', 'controllers', 'rpc', 'layout', 'grid', 'charts', 'menus', 'editors', 'tools', 'composition', 'grouplets', 'realtime']);
-    assert.equal(Object.keys(gallery.routes).length, 187);
+    assert.equal(Object.keys(gallery.routes).length, 182);
     assert.match(gallery.routes['drawing-annotations'].page, /\/06-drawing\.js$/);
     assert.ok(gallery.routes['grid-primary-supplier']);
     assert.ok(gallery.routes['w16']);
@@ -72,6 +72,22 @@ test('logic companion of an environment page', t => {
     const gallery = buildGallery({catalogs: [[catalog(t, environment([family])), pages]]});
     assert.equal(gallery.routes['test-01'].logic, join(pages, 'aux_family', '01_page_aux.js'));
     assert.equal(gallery.assets['/pages/aux_family/01_page_aux.js'].type, 'text/plain');
+});
+
+test('chart gallery: a catalogue declaring common replaces the package catalogue', () => {
+    const CHARTS = fileURLToPath(new URL('../src/gramlot_examples/chart_gallery/', import.meta.url));
+    const gallery = buildGallery({catalogs: [[join(CHARTS, 'catalog.json'), join(CHARTS, 'pages')]]});
+    assert.deepEqual(gallery.families.map(({key}) => key), ['charts-simple', 'charts-3d', 'charts-maps']);
+    assert.equal(gallery.routes.e01, undefined);
+    assert.equal(gallery.routes['pages/00-index'].page, join(CHARTS, 'pages', '00-index.js'));
+    assert.equal(gallery.routes['chart-shares'].url, 'pages/01-simple/01-shares');
+    assert.equal(gallery.assets['/catalog.json'].file, join(CHARTS, 'catalog.json'));
+    assert.equal(buildGallery().routes['chart-shares'], undefined);
+});
+
+test('two common catalogues', t => {
+    const common = catalog(t, {common: true, families: []});
+    assert.throws(() => buildGallery({catalogs: [[common, PAGES], [common, PAGES]]}), /one common catalogue/);
 });
 
 test('catalogue without environment', t => {

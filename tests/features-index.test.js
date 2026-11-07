@@ -7,8 +7,8 @@ import features from '../src/gramlot_examples/gallery/features.json' with {type:
 import catalog from '../src/gramlot_examples/catalog.json' with {type:'json'};
 import {mountFeatureProgress, markFeatureExampleSeen, openFeatureExample} from '../src/gramlot_examples/gallery/browser/gallery-features.js';
 
-const optionalCatalogs = ['asqueel', 'selection-trial', 'cached-trial'].map(name =>
-    JSON.parse(readFileSync(new URL(`../src/gramlot_examples/base/${name}-catalog.json`, import.meta.url))));
+const optionalCatalogs = [...['asqueel', 'selection-trial', 'cached-trial'].map(name => `base/${name}-catalog.json`), 'chart_gallery/catalog.json']
+    .map(name => JSON.parse(readFileSync(new URL(`../src/gramlot_examples/${name}`, import.meta.url))));
 const entries = features.flatMap(group => group.features);
 function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window, catalogs = [catalog]) {
     const state = new Bag();

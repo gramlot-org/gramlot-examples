@@ -5,9 +5,19 @@ Document ID: **GE-030**.
 <a id="ge-030-005"></a>
 ## 005 · Choose one lesson
 
-Open the [Python gallery](https://gallery-py.gramlot.dev/) or the
-[JavaScript gallery](https://gallery-js.gramlot.dev/). Use the navigation tree or
-its search field. Search includes branches not yet opened; clearing the field
+Open the [Python site](https://gallery-py.gramlot.dev/) or the
+[JavaScript site](https://gallery-js.gramlot.dev/). Each site has two galleries:
+
+- `/gallery/` is the main gallery: every lesson family, with the chart lessons that use a grid;
+- `/chart_gallery/` is the chart gallery: the chart types, simple charts, 3D charts and maps.
+
+The site root `/` is a page with two tabs, **Gallery** and **Chart gallery**; each tab shows one
+gallery. The direct URLs of the galleries work as well. The Charts folder page of the main
+gallery links the chart gallery; the introduction of the chart gallery links back. The chart
+types are Python pages: the JavaScript chart gallery does not list them. Earlier lesson URLs
+(`/pages/...`) redirect to the same lesson under `/gallery/`.
+
+Use the navigation tree or its search field. Search includes branches not yet opened; clearing the field
 restores the tree. Choose a result to open its page in a retained tab.
 
 The **Show:** menu at the top of the navigation, above the logo, narrows the tree to the lessons that fit your
@@ -185,8 +195,11 @@ observable result remain available beside the lesson.
 <a id="ge-030-055"></a>
 ## 055 · Charts and their Data
 
-The Charts family separates simple comparisons, temporal snapshots, 3D and maps.
-Read its introduction for the engine capability table and Data/configuration model.
+The Charts family of the main gallery holds the lessons that connect a chart to a grid: bars,
+trends and temporal snapshots. The chart gallery (`/chart_gallery/`) holds the other chart
+lessons, in families: Value and chart types (Python), Simple charts (pie and donut, scatter
+points), 3D charts and Maps. Read the Charts introduction for the engine capability table and
+Data/configuration model.
 Most lessons start with frameGrid: searchOn creates search, chart=True or a type
 creates the Chart command. chart_* initializes configuration in the frame's
 ._chart Data Bag; each chart frame declares its own datapath. Rows come from
@@ -195,8 +208,8 @@ storepath and can be shared. Closing the floating chart retains configuration.
 Try Bars and live data first. Its integer revenue field changes the same row
 shown in the grid and chart. Filter the grid, change the chart type or measure,
 and inspect Data. There is no application redraw call. Sample data is adjacent
-TYTX; maps use a small fictional GeoJSON dataset, so no database or boundary
-service is needed. 3D requires WebGL. Unsupported engine/type pairs are not offered.
+TYTX; the maps of the chart gallery use a small fictional GeoJSON dataset, so no database
+or boundary service is needed. 3D requires WebGL. Unsupported engine/type pairs are not offered.
 
 
 <a id="ge-030-060"></a>

@@ -127,9 +127,20 @@ class UpdaterTests(unittest.TestCase):
         self.assertNotIn('llm.env',(Path(__file__).parent/'Dockerfile.node').read_text())
     def test_websocket_route_is_https_python_only(self):
         config=(Path(__file__).parent/'nginx.conf').read_text()
-        self.assertEqual(config.count('location = /gramlot/store'),1)
-        self.assertLess(config.index('listen 443 ssl'),config.index('location = /gramlot/store'))
-        self.assertLess(config.index('location = /gramlot/store'),config.index('server_name gallery-js.gramlot.dev;',config.index('listen 443 ssl')))
+        self.assertEqual(config.count('location = /gallery/gramlot/store'),1)
+        self.assertLess(config.index('listen 443 ssl'),config.index('location = /gallery/gramlot/store'))
+        self.assertLess(config.index('location = /gallery/gramlot/store'),config.index('server_name gallery-js.gramlot.dev;',config.index('listen 443 ssl')))
+    def test_galleries_are_mounted_and_earlier_links_redirected(self):
+        here=Path(__file__).parent
+        config=(here/'nginx.conf').read_text()
+        assets='location ~ ^/((gallery|chart_gallery)/(assets|gallery|themes)|assets|themes)/'
+        self.assertEqual(config.count(assets),2)
+        self.assertEqual(config.count('location /pages/ { return 301 /gallery$request_uri; }'),2)
+        self.assertEqual(config.count('location /mobile-application/ { return 301 /gallery$request_uri; }'),1)
+        self.assertIn('serve-node.mjs',(here/'Dockerfile.node').read_text())
+        python=(here/'Dockerfile.python-mobile').read_text()
+        for name in ('galleries.py','tab_page/'):
+            self.assertIn(name,python)
     def test_failed_check_is_reported_and_does_not_raise(self):
         report=[]
         with patch('subprocess.run',side_effect=[subprocess.CalledProcessError(1,['docker'])]) as run:

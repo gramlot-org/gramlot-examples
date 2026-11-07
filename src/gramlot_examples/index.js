@@ -36,6 +36,22 @@ function readCatalog(catalog, pages, common) {
     });
 }
 
+/**
+ * Split `catalogs` into the common catalogue and the environment catalogues.
+ *
+ * The common catalogue is the package `catalog.json` with its `pages` folder, unless one item of
+ * `catalogs` declares `"common": true`: that catalogue and its pages folder replace it, as in the
+ * chart gallery. Returns `[[catalog, pages], [[catalog, pages], ...]]`.
+ */
+export function galleryCatalogs(catalogs) {
+    const common = [], environments = [];
+    for (const [catalog, pages] of catalogs) {
+        (JSON.parse(readFileSync(catalog, 'utf8')).common === true ? common : environments).push([catalog, pages]);
+    }
+    if (common.length > 1) throw new Error(`A gallery has one common catalogue: ${common.map(([catalog]) => catalog).join(', ')}`);
+    return [common[0] ?? [join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages')], environments];
+}
+
 /** A lesson's `requires` is absent or a list of non-empty strings. */
 function checkRequires(requires, where) {
     if (requires !== undefined && (!Array.isArray(requires) || requires.some(need => typeof need !== 'string' || !need.trim()))) {
@@ -130,7 +146,8 @@ export function availableFilters(gallery) {
 /**
  * Return the families, routes, static assets and filters of the common gallery plus `catalogs`.
  *
- * Each item of `catalogs` is a pair `[catalog.json, pages folder]` of one environment.
+ * Each item of `catalogs` is a pair `[catalog.json, pages folder]` of one environment, or of the
+ * common catalogue of a separate gallery (`"common": true`, see `galleryCatalogs`).
  * `routes` maps each key to its JavaScript page, its same-name stylesheet and its logic
  * module: `NN_name_aux.js`, else `NN_name.js`, the page module itself, whose `Logic` export
  * the server takes (the server throws when both hold a `Logic`). `assets` maps each URL to its
@@ -138,9 +155,10 @@ export function availableFilters(gallery) {
  * the catalogues (see `availableFilters`). Nothing is written or served here.
  */
 export function buildGallery({catalogs = []} = {}) {
-    const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
-    for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
-    const filters = mergeFilters([join(PACKAGE, 'catalog.json'), ...catalogs.map(([catalog]) => catalog)]);
+    const [[commonCatalog, commonPages], environments] = galleryCatalogs(catalogs);
+    const families = readCatalog(commonCatalog, commonPages, true);
+    for (const [catalog, pages] of environments) families.push(...readCatalog(catalog, pages, false));
+    const filters = mergeFilters([commonCatalog, ...environments.map(([catalog]) => catalog)]);
     checkGroups(families, readGroups());
     const keys = ['index', ...families.flatMap(family => [family.key, ...family.examples.map(({key}) => key)])];
     const duplicates = [...new Set(keys.filter((key, index) => keys.indexOf(key) !== index))].sort();
@@ -150,7 +168,7 @@ export function buildGallery({catalogs = []} = {}) {
     const resolve = specifier => fileURLToPath(import.meta.resolve(specifier));
     const routes = {index: {page: join(gallery, 'page.js'), stylesheet: null, logic: null}};
     const filesByUrl = [
-        ['/catalog.json', join(PACKAGE, 'catalog.json')],
+        ['/catalog.json', commonCatalog],
         ['/themes/gramlot-base/theme.css', resolve('@gramlot/gramlot/themes/gramlot-base/theme.css')],
         ...['gramlot-horizontal-primary', 'gramlot-horizontal-inverse'].map(name =>
             [`/assets/branding/svg/${name}.svg`, resolve(`@gramlot/gramlot/assets/branding/svg/${name}.svg`)]),
@@ -206,8 +224,8 @@ export function buildGallery({catalogs = []} = {}) {
             }
         }
     };
-    visit(join(PACKAGE,'pages'),'pages');
-    for(const family of families)if(!family.path.startsWith(join(PACKAGE,'pages')+sep))visit(family.path,`pages/${family.folder}`);
+    visit(commonPages,'pages');
+    for(const family of families)if(!family.path.startsWith(join(commonPages)+sep))visit(family.path,`pages/${family.folder}`);
     for (const route of Object.values(routes)) {
         const data = route.page.slice(0, -3) + '_data.tytx';
         route.data = existsSync(data) ? data : null;
@@ -246,18 +264,19 @@ export function directoryIndex(folder) {
  * by that entry, at every level, after the environment and the filter.
  */
 export function navigationDirectory(directory = '', catalogs = [], filter = null) {
-    const families = readCatalog(join(PACKAGE, 'catalog.json'), join(PACKAGE, 'pages'), true);
-    for (const [catalog, pages] of catalogs) families.push(...readCatalog(catalog, pages, false));
+    const [[commonCatalog, commonPages], environments] = galleryCatalogs(catalogs);
+    const families = readCatalog(commonCatalog, commonPages, true);
+    for (const [catalog, pages] of environments) families.push(...readCatalog(catalog, pages, false));
     let rule = null;
     if (filter !== null && filter !== undefined) {
-        rule = mergeFilters([join(PACKAGE, 'catalog.json'), ...catalogs.map(([catalog]) => catalog)]).find(item => item.label === filter);
+        rule = mergeFilters([commonCatalog, ...environments.map(([catalog]) => catalog)]).find(item => item.label === filter);
         if (!rule) throw new Error(`Unknown filter: ${filter}`);
         if (!Object.hasOwn(rule, 'any') && !Object.hasOwn(rule, 'requires')) rule = null;
     }
     const groups = readGroups();
     const byFolder = checkGroups(families, groups);
     const listing = path => path === '' || groups.some(group => group.key === path)
-        ? navigationRoot(path, families, rule, groups, byFolder) : navigationLevel(path, families, rule);
+        ? navigationRoot(path, families, rule, groups, byFolder, commonPages) : navigationLevel(path, families, rule, commonPages);
     const bag = new Bag();
     for (let node of listing(directory).getNodes()) {
         while (node.attr.directory !== undefined) {
@@ -271,10 +290,10 @@ export function navigationDirectory(directory = '', catalogs = [], filter = null
 }
 
 /** The root level grouped by `groups`, or the families of the group `directory`. */
-function navigationRoot(directory, families, rule, groups, byFolder) {
+function navigationRoot(directory, families, rule, groups, byFolder, pages) {
     const members = new Map(groups.map(group => [group.key, []]));
     const ungrouped = [];
-    for (const node of navigationLevel('', families, rule).getNodes()) {
+    for (const node of navigationLevel('', families, rule, pages).getNodes()) {
         const group = byFolder.get(node.attr.directory);
         (group ? members.get(group) : ungrouped).push(node);
     }
@@ -290,7 +309,7 @@ function navigationRoot(directory, families, rule, groups, byFolder) {
     return bag;
 }
 
-function navigationLevel(directory, families, rule) {
+function navigationLevel(directory, families, rule, pages) {
     // Families sharing a folder are listed under the key of the first one.
     const groups = new Map();
     for (const family of families) if (!groups.has(family.folder)) groups.set(family.folder, family);
@@ -299,7 +318,7 @@ function navigationLevel(directory, families, rule) {
     const roots = families.filter(family => parts.length && family.folder === parts[0]).map(family => family.path);
     const suffix = roots.length ? parts.slice(1) : parts;
     const folders = [];
-    for (const boundary of roots.length ? roots : [join(PACKAGE, 'pages')]) {
+    for (const boundary of roots.length ? roots : [pages]) {
         const folder = join(boundary, ...suffix);
         if (!existsSync(folder)) continue;
         const rel = relative(realpathSync(boundary), realpathSync(folder));
@@ -317,7 +336,7 @@ function navigationLevel(directory, families, rule) {
             const descriptor = join(path, '00-index.json');
             if (existsSync(descriptor) && JSON.parse(readFileSync(descriptor,'utf8')).navigation === false) continue;
             const index = directoryIndex(path);
-            if (rule && navigationLevel(childPath, families, rule).length === 0) continue;
+            if (rule && navigationLevel(childPath, families, rule, pages).length === 0) continue;
             const attrs = {title: pageTitle(index), category: true, directory: childPath, url: `pages/${childPath}/00-index`};
             if (extname(index) === '.md') attrs.markdown = readFileSync(index, 'utf8');
             bag.setItem(!parts.length && groups.has(name) ? groups.get(name).key : name, null, attrs);

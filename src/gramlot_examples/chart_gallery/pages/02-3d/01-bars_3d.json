@@ -9,6 +9,6 @@
     "echarts",
     "reactivity"
   ],
-  "order": 5,
+  "order": 0,
   "presentation": "content"
 }

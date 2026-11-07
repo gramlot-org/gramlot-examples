@@ -245,11 +245,11 @@ verification remain separate work.
 | --- | --- | --- |
 | Reactive chart data | Exercise | [chart-bars · Bars and live data](../src/gramlot_examples/pages/05-charts/01-bars.md) |
 | Lines and engines | Exercise | [chart-trends · Lines and areas](../src/gramlot_examples/pages/05-charts/02-trends.md) |
-| Shares | Exercise | [chart-shares · Pie and donut](../src/gramlot_examples/pages/05-charts/03-shares.md) |
-| Scatter | Exercise | [chart-points · Scatter points](../src/gramlot_examples/pages/05-charts/04-points.md) |
-| Categorical 3D | Exercise | [chart-bars-3d · 3D bars](../src/gramlot_examples/pages/05-charts/06-bars_3d.md) |
-| Numeric 3D | Exercise | [chart-surface · Points and surfaces](../src/gramlot_examples/pages/05-charts/07-surface.md) |
-| GeoJSON maps | Exercise | [chart-territories · Territories](../src/gramlot_examples/pages/05-charts/08-territories.md) |
+| Shares | Exercise | [chart-shares · Pie and donut](../src/gramlot_examples/chart_gallery/pages/01-simple/01-shares.md) |
+| Scatter | Exercise | [chart-points · Scatter points](../src/gramlot_examples/chart_gallery/pages/01-simple/02-points.md) |
+| Categorical 3D | Exercise | [chart-bars-3d · 3D bars](../src/gramlot_examples/chart_gallery/pages/02-3d/01-bars_3d.md) |
+| Numeric 3D | Exercise | [chart-surface · Points and surfaces](../src/gramlot_examples/chart_gallery/pages/02-3d/02-surface.md) |
+| GeoJSON maps | Exercise | [chart-territories · Territories](../src/gramlot_examples/chart_gallery/pages/03-maps/01-territories.md) |
 
 
 ## 020 · Code clarity is a separate checklist

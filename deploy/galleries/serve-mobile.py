@@ -1,4 +1,5 @@
-"""Serve the gallery with the separately packaged public mobile module.
+"""Serve the hosted Python site: the gallery with the separately packaged public mobile module,
+the chart gallery and the tab page (``galleries.py``).
 
 TLS terminates at the existing site proxy. No push backend or Remote Edit is enabled.
 """
@@ -17,6 +18,7 @@ from kajenn import AsgiServer
 from kajenn.config.templates import DefaultConfiguration
 from kajenn_db.asqueel import AsqueelDbHandler
 from public_database import configure, catalogs, wire_pages, customer_model
+from galleries import GALLERY, declare_applications, stage_chart_gallery
 
 
 def trust_container_proxy():
@@ -37,7 +39,9 @@ def main():
     args = parser.parse_args()
     sys.path.insert(0, str(args.modules.resolve()))
     from mobile_application import ROOT, PAGES, ASSETS, CATALOG
-    mount = '/mobile-application'
+    # The module is staged in the gallery: its URLs carry the gallery mount.
+    module_path = '/mobile-application'
+    mount = f'/{GALLERY}{module_path}'
     registration = dict(catalog=CATALOG, mount=mount,
                         integration=mount + '/device-provider.js', prerequisites=[])
     trust_container_proxy()
@@ -46,21 +50,27 @@ def main():
     page_catalogs = catalogs() + [(trials / name / 'catalog.json', trials / name / 'pages')
                                  for name in ('page_store', 'kajenn_db', 'chat_base', 'ai')]
     with TemporaryDirectory(prefix='gramlot-mobile-gallery-') as temporary:
-        root = Path(temporary)
-        resources = stage(root, page_catalogs, '', serverless_download_url='/downloads/gramlot-gallery-serverless.zip',
+        root = Path(temporary) / GALLERY
+        chart_root = Path(temporary) / 'chart_gallery'
+        root.mkdir()
+        chart_root.mkdir()
+        resources = stage(root, page_catalogs, f'/{GALLERY}',
+                          serverless_download_url='/downloads/gramlot-gallery-serverless.zip',
                           remote_edit=False, modules=[registration])
         module = stage_module(root / 'mobile-application', pages=PAGES, assets=ASSETS,
                               catalog_file=ROOT / 'catalog.json', prefix=mount,
-                              frame_script_url='/gallery/dist/frame.js')
-        resources.update({mount + path: resource for path, resource in module.items()})
+                              frame_script_url=f'/{GALLERY}/gallery/dist/frame.js')
+        # Asset paths are relative to the application mount.
+        resources.update({module_path + path: resource for path, resource in module.items()})
         wire_pages(root)
+        chart_resources = stage_chart_gallery(chart_root)
         class Site(DefaultConfiguration):
             def applications_section(self, cfg):
                 cfg.databases(handler_class=AsqueelDbHandler).database(
                     code='default', source=customer_model())
-                cfg.applications().application(
-                    code='pages', mount='', app_class=SelectionTrialApplication,
-                    pages=root, assets=resources, websocket=True).request(body='raw')
+                declare_applications(cfg, gallery_class=SelectionTrialApplication, gallery_pages=root,
+                                     gallery_assets=resources, chart_pages=chart_root,
+                                     chart_assets=chart_resources)
 
         AsgiServer(config=Site).serve(host=args.host, port=args.port)
 

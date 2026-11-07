@@ -1,7 +1,8 @@
 /** Public database lessons must work before and after gallery promotion. */
 import assert from 'node:assert/strict';
 import {chromium, expect} from '@playwright/test';
-const base=process.argv[2];
+// The argument is the site; the gallery is served under /gallery/.
+const base=`${process.argv[2]}/gallery`;
 const browser=await chromium.launch({headless:true});
 const errors=[];
 async function open(path) {

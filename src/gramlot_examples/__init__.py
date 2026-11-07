@@ -38,6 +38,22 @@ def read_catalog(catalog, pages, common):
     return families
 
 
+def gallery_catalogs(catalogs):
+    """Split ``catalogs`` into the common catalogue and the environment catalogues.
+
+    The common catalogue is the package ``catalog.json`` with its ``pages`` folder, unless one item
+    of ``catalogs`` declares ``"common": true``: that catalogue and its pages folder replace it, as
+    in the chart gallery. Returns ``((catalog, pages), [(catalog, pages), ...])``.
+    """
+    common, environments = [], []
+    for catalog, pages in catalogs:
+        declared = json.loads(Path(catalog).read_text()).get("common") is True
+        (common if declared else environments).append((Path(catalog), Path(pages)))
+    if len(common) > 1:
+        raise ValueError(f"A gallery has one common catalogue: {', '.join(str(catalog) for catalog, _ in common)}")
+    return (common[0] if common else (PACKAGE / "catalog.json", PACKAGE / "pages")), environments
+
+
 def check_requires(requires, where):
     """A lesson's ``requires`` is absent or a list of non-empty strings."""
     if requires is not None and (not isinstance(requires, list)
@@ -132,17 +148,19 @@ def available_filters(gallery):
 def build_gallery(catalogs=()):
     """Return the families, routes, static assets and filters of the common gallery plus ``catalogs``.
 
-    Each item of ``catalogs`` is a pair ``(catalog.json, pages folder)`` of one environment.
+    Each item of ``catalogs`` is a pair ``(catalog.json, pages folder)`` of one environment, or of
+    the common catalogue of a separate gallery (``"common": true``, see ``gallery_catalogs``).
     ``routes`` maps each key to its Python page, its same-name stylesheet and its logic
     module: ``NN_name_aux.js``, else ``NN_name.js``, whose ``Logic`` export the server takes
     (the server raises when both files exist). ``assets`` maps each URL to its file and media
     type. ``filters`` are the declared lesson filters of the ``filters.json`` files beside the
     catalogues (see ``available_filters``). Nothing is written or served here.
     """
-    families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
+    (common_catalog, common_pages), catalogs = gallery_catalogs(catalogs)
+    families = read_catalog(common_catalog, common_pages, common=True)
     for catalog, pages in catalogs:
         families.extend(read_catalog(catalog, pages, common=False))
-    filters = merge_filters([PACKAGE / "catalog.json", *(catalog for catalog, _ in catalogs)])
+    filters = merge_filters([common_catalog, *(catalog for catalog, _ in catalogs)])
     check_groups(families, read_groups())
     keys = ["index"] + [key for family in families
                         for key in (family["key"], *(example["key"] for example in family["examples"]))]
@@ -154,7 +172,7 @@ def build_gallery(catalogs=()):
     resources = Path(files("gramlot")) / "resources"
     routes = {"index": {"page": gallery / "page.py", "stylesheet": None, "logic": None}}
     files_by_url = [
-        ("/catalog.json", PACKAGE / "catalog.json"),
+        ("/catalog.json", common_catalog),
         ("/themes/gramlot-base/theme.css", resources / "themes" / "gramlot-base" / "theme.css"),
         *((f"/assets/branding/svg/{name}.svg", resources / "assets" / "branding" / "svg" / f"{name}.svg")
           for name in ("gramlot-horizontal-primary", "gramlot-horizontal-inverse")),
@@ -191,8 +209,8 @@ def build_gallery(catalogs=()):
                     assets[f"/pages/{family['folder']}/{source.relative_to(folder).as_posix()}"] = {"file": source, "type": media_type(source)}
     # Stage additional filesystem pages, including directory indexes, under their own paths.
     known = {route["page"].resolve() for route in routes.values()}
-    roots = [(PACKAGE / "pages", "pages")]
-    roots.extend((family["path"], f"pages/{family['folder']}") for family in families if not family["path"].resolve().is_relative_to((PACKAGE / "pages").resolve()))
+    roots = [(common_pages, "pages")]
+    roots.extend((family["path"], f"pages/{family['folder']}") for family in families if not family["path"].resolve().is_relative_to(common_pages.resolve()))
     for base, prefix in roots:
         for page in sorted(base.rglob("*.py")):
             if page.is_symlink() or page.resolve() in known or page.name.startswith("_"):
@@ -210,7 +228,7 @@ def build_gallery(catalogs=()):
     return {"families": families, "routes": routes, "assets": assets, "collections": gallery_collections(), "filters": filters}
 
 
-__all__ = ["build_gallery", "navigation_directory", "available_filters", "filter_matches", "read_groups"]
+__all__ = ["build_gallery", "gallery_catalogs", "navigation_directory", "available_filters", "filter_matches", "read_groups"]
 
 def page_title(path):
     """Read gallery metadata first, then the page class or Markdown heading."""
@@ -244,12 +262,13 @@ def navigation_directory(directory="", catalogs=(), filter=None):
     lists its families. No directory holds a single entry: a directory whose listing has one entry is
     replaced by that entry, at every level, after the environment and the filter.
     """
-    families = read_catalog(PACKAGE / "catalog.json", PACKAGE / "pages", common=True)
+    (common_catalog, common_pages), catalogs = gallery_catalogs(catalogs)
+    families = read_catalog(common_catalog, common_pages, common=True)
     for catalog, pages in catalogs:
         families.extend(read_catalog(catalog, pages, common=False))
     rule = None
     if filter is not None:
-        rules = merge_filters([PACKAGE / "catalog.json", *(catalog for catalog, _ in catalogs)])
+        rules = merge_filters([common_catalog, *(catalog for catalog, _ in catalogs)])
         rule = next((item for item in rules if item["label"] == filter), None)
         if rule is None:
             raise ValueError(f"Unknown filter: {filter}")
@@ -261,8 +280,8 @@ def navigation_directory(directory="", catalogs=(), filter=None):
 
     def listing(path):
         if path == "" or path in keys:
-            return navigation_root(path, families, rule, groups, by_folder)
-        return navigation_level(path, families, rule)
+            return navigation_root(path, families, rule, groups, by_folder, common_pages)
+        return navigation_level(path, families, rule, common_pages)
 
     from genro_bag import Bag
     result = Bag()
@@ -276,12 +295,12 @@ def navigation_directory(directory="", catalogs=(), filter=None):
     return result
 
 
-def navigation_root(directory, families, rule, groups, by_folder):
+def navigation_root(directory, families, rule, groups, by_folder, pages):
     """The root level grouped by ``groups``, or the families of the group ``directory``."""
     from genro_bag import Bag
     members = {group["key"]: [] for group in groups}
     ungrouped = []
-    for node in navigation_level("", families, rule).get_nodes():
+    for node in navigation_level("", families, rule, pages).get_nodes():
         group = by_folder.get(node.attr.get("directory"))
         (members[group] if group else ungrouped).append(node)
     result = Bag()
@@ -301,7 +320,7 @@ def navigation_root(directory, families, rule, groups, by_folder):
     return result
 
 
-def navigation_level(directory, families, rule):
+def navigation_level(directory, families, rule, pages):
     from genro_bag import Bag
     groups = {}
     for family in families:  # Families sharing a folder are listed under the key of the first one.
@@ -312,7 +331,7 @@ def navigation_level(directory, families, rule):
     roots = [family["path"] for family in families if parts and family["folder"] == parts[0]]
     suffix = parts[1:] if roots else parts
     folders = []
-    for boundary in roots or [PACKAGE / "pages"]:
+    for boundary in roots or [pages]:
         folder = boundary.joinpath(*suffix)
         if not folder.resolve().is_relative_to(boundary.resolve()):
             raise ValueError("Navigation directory is outside its pages root")
@@ -333,7 +352,7 @@ def navigation_level(directory, families, rule):
             if index_metadata.is_file() and json.loads(index_metadata.read_text()).get("navigation") is False:
                 continue
             index = directory_index(child)
-            if rule is not None and not len(navigation_level(relative, families, rule)):
+            if rule is not None and not len(navigation_level(relative, families, rule, pages)):
                 continue
             attrs = dict(title=page_title(index), category=True, directory=relative,
                          url=f"pages/{relative}/00-index")

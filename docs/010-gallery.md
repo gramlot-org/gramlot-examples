@@ -23,6 +23,7 @@ contains no server code.
 | README, stylesheet | `NN_name.md`, `NN_name.css` | yes | yes |
 | Family README | `pages/<family>/README.md` | yes | yes |
 | Common catalogue | `src/gramlot_examples/catalog.json` | yes | yes |
+| Chart gallery (common catalogue, filters, pages) | `src/gramlot_examples/chart_gallery/` | yes | yes |
 | Gallery filters | `src/gramlot_examples/filters.json` | yes | yes |
 | Gallery page | `gallery/page.py`, `gallery/page.js` with `gallery/gallery-page.js` | `page.py` | `page.js`, `gallery-page.js` |
 | Gallery stylesheet and bundle | `gallery/gallery.css`, `gallery/dist/` (built by `npm run build`) | yes | yes |
@@ -57,7 +58,8 @@ Keys identify lessons; public URLs retain the complete numbered filesystem path.
 ```
 
 The common catalogue of this package has no `environment`. The catalogue of an
-environment (an adapter or a runtime) declares it.
+environment (an adapter or a runtime) declares it. A catalogue that declares `"common": true`
+is the common catalogue of a separate gallery ([017](#ge-010-017)); it has no `environment`.
 
 <a id="ge-010-012"></a>
 
@@ -163,8 +165,39 @@ catalogue. Grid · Transfer experiments (`83-selection-trials`) and Base databas
 - Family keys and example keys are one namespace with `index`, the gallery route.
 
 `build_gallery` raises an error when the common catalogue declares an environment,
-when an environment catalogue has none, when an example key does not match
+when an environment catalogue has none, when `catalogs` holds two catalogues with
+`"common": true`, when an example key does not match
 `<environment>-NN`, when a key is duplicated, and when a page file is missing.
+
+<a id="ge-010-017"></a>
+
+## 017 · Separate galleries: the chart gallery
+
+A gallery is one common catalogue plus environment catalogues. By default the common
+catalogue is `src/gramlot_examples/catalog.json` with the `pages` folder beside it. When one
+item of `catalogs` declares `"common": true`, that catalogue and its pages folder replace it:
+`build_gallery`, `navigation_directory` and their JavaScript counterparts list its families,
+serve it as `/catalog.json`, and take the introduction `pages/00-index` and the filesystem
+pages of the root from its pages folder. `gallery_catalogs(catalogs)` /
+`galleryCatalogs(catalogs)` returns the split. A host passes such a catalogue as any other
+item of `catalogs`; the gallery commands need no option.
+
+The chart gallery is `src/gramlot_examples/chart_gallery/`: `catalog.json` (generated, with
+`"common": true`), `filters.json` (only **All**) and `pages/` with its introduction and three
+families, each a folder with a Markdown folder page:
+
+| Folder | Family | Lessons (keys unchanged) |
+| --- | --- | --- |
+| `01-simple` | Simple charts | Pie and donut (`chart-shares`), Scatter points (`chart-points`) |
+| `02-3d` | 3D charts | 3D bars (`chart-bars-3d`), Points and surfaces (`chart-surface`) |
+| `03-maps` | Maps | Territories (`chart-territories`) |
+
+The hosted chart gallery adds `base/chart-types-catalog.json` (Charts · Value and chart types,
+`base/pages/86-chart-types`). That family is `"public": false`: the main gallery does not stage
+it. Its pages are Python pages only, so the JavaScript chart gallery lists the three families
+above. The Charts family of the main gallery keeps Bars and live data, Lines and areas and
+Temporal snapshots; its folder page links `/chart_gallery/`, and the introduction of the chart
+gallery links `/gallery/`.
 
 <a id="ge-010-020"></a>
 
@@ -183,7 +216,8 @@ const gallery = buildGallery({catalogs: [['bun/catalog.json', 'bun/pages']]});
 ```
 
 Each item of `catalogs` is a pair: the path of an environment `catalog.json` and the
-folder that holds its family folders. The common catalogue always comes first. The
+folder that holds its family folders. The common catalogue always comes first: the package
+catalogue, or the item that declares `"common": true` ([017](#ge-010-017)). The
 result has three parts:
 
 - `families`: the families of all catalogues, each with `path`, its pages folder;
@@ -884,7 +918,7 @@ galleries may serve the same artifact: Python server execution is not embedded i
 the download; the serverless gallery uses the JavaScript equivalents and browser
 Workers. Its named endpoints execute locally, without a Python or Node server.
 
-The public [Python gallery](https://gallery-py.gramlot.dev/) and [Node gallery](https://gallery-js.gramlot.dev/) offer the same offline archive. Successful stable releases of any of the four product repositories start a coordinated rebuild directly from CI after publication completes. Registry propagation is handled by bounded retries; there is no periodic release poll. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
+The public [Python gallery](https://gallery-py.gramlot.dev/gallery/) and [Node gallery](https://gallery-js.gramlot.dev/gallery/) offer the same offline archive. Each host also serves the chart gallery under `/chart_gallery/` and, at `/`, a page with one tab per gallery ([017](#ge-010-017)); the offline archive contains the main gallery. Successful stable releases of any of the four product repositories start a coordinated rebuild directly from CI after publication completes. Registry propagation is handled by bounded retries; there is no periodic release poll. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
 
 
 <a id="ge-010-205"></a>

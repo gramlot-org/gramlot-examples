@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {navigationDirectory, buildGallery, pageTitle} from '../src/gramlot_examples/index.js';
 
 test('filesystem navigation is one level per request, with independent directory index URLs', () => {
@@ -145,6 +147,14 @@ test('lesson search metadata reaches navigation independently of the displayed t
 test("chart directory titles come from metadata", () => {
     assert.equal(navigationDirectory().getNode("charts").attr.title, "Charts");
     assert.equal(navigationDirectory("05-charts").getNode("chart-bars").attr.title, "Bars and live data");
+});
+
+test('chart gallery navigation lists its families; the main Charts folder keeps the grid lessons', () => {
+    const charts = fileURLToPath(new URL('../src/gramlot_examples/chart_gallery/', import.meta.url));
+    const catalogs = [[join(charts, 'catalog.json'), join(charts, 'pages')]];
+    assert.deepEqual(navigationDirectory('', catalogs).getNodes().map(node => node.label), ['charts-simple', 'charts-3d', 'chart-territories']);
+    assert.deepEqual(navigationDirectory('01-simple', catalogs).getNodes().map(node => node.label), ['chart-shares', 'chart-points']);
+    assert.deepEqual(navigationDirectory('05-charts').getNodes().map(node => node.label), ['chart-bars', 'chart-trends', 'grid-charts']);
 });
 
 test('no folder holds a single entry, at every level, after environment and filter', async t => {

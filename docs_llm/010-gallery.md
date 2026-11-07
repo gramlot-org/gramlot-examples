@@ -27,7 +27,8 @@ those records describe their stated revision, not current API guarantees.
 
 `{"environment"?, "families": [{key, folder, title, examples: [{key, title, folder,
 description, tags}]}]}`. Family `folder` is the physical directory; example `folder` is its nested family-relative stem. Keys identify lessons; public URLs preserve physical paths.
-The common catalogue has no `environment`; an environment catalogue has one.
+The common catalogue has no `environment`; an environment catalogue has one. A catalogue
+with `"common": true` replaces the package catalogue and its `pages` folder (§017).
 
 <a id="ge-010-012"></a>
 
@@ -94,7 +95,24 @@ Python gallery (`deploy/galleries/public_database.py`) does not stage it. Local 
   `dataRemote`).
 - Family keys, example keys and `index` share one namespace.
 - Errors: environment in the common catalogue; no environment in an environment
-  catalogue; key outside `<environment>-NN`; duplicate key; missing page file.
+  catalogue; two `"common": true` catalogues; key outside `<environment>-NN`; duplicate key; missing page file.
+
+<a id="ge-010-017"></a>
+
+## 017 · Separate galleries: the chart gallery
+
+- Default common catalogue: `catalog.json` + `pages`. An item of `catalogs` with
+  `"common": true` replaces both in `build_gallery`, `navigation_directory` and the JavaScript
+  counterparts (families, `/catalog.json`, `pages/00-index`, root filesystem pages).
+  `gallery_catalogs` / `galleryCatalogs` returns the split. No gallery-command option.
+- Chart gallery: `chart_gallery/` = `catalog.json` (`"common": true`, generated),
+  `filters.json` (All), `pages/` = introduction + `01-simple` (`chart-shares`,
+  `chart-points`), `02-3d` (`chart-bars-3d`, `chart-surface`), `03-maps`
+  (`chart-territories`), each with a Markdown folder page.
+- Hosted chart gallery adds `base/chart-types-catalog.json` (`"public": false`, so not in the
+  main gallery; Python pages only, so not in the JavaScript chart gallery).
+- Main Charts family keeps `chart-bars`, `chart-trends`, `grid-charts`; its folder page links
+  `/chart_gallery/`, the chart gallery introduction links `/gallery/`.
 
 <a id="ge-010-020"></a>
 
@@ -731,7 +749,7 @@ galleries may serve the same artifact: Python server execution is not embedded i
 the download; the serverless gallery uses the JavaScript equivalents and browser
 Workers. Its named endpoints execute locally, without a Python or Node server.
 
-The public [Python gallery](https://gallery-py.gramlot.dev/) and [Node gallery](https://gallery-js.gramlot.dev/) offer the same offline archive. Successful stable releases of any of the four product repositories start a coordinated rebuild directly from CI after publication completes. Registry propagation is handled by bounded retries; there is no periodic release poll. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
+The public [Python gallery](https://gallery-py.gramlot.dev/gallery/) and [Node gallery](https://gallery-js.gramlot.dev/gallery/) offer the same offline archive. Each host also serves `/chart_gallery/` and, at `/`, a page with one tab per gallery (§017); the archive contains the main gallery. Successful stable releases of any of the four product repositories start a coordinated rebuild directly from CI after publication completes. Registry propagation is handled by bounded retries; there is no periodic release poll. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
 
 
 <a id="ge-010-205"></a>
