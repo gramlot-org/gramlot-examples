@@ -4,7 +4,7 @@
   "description": "Compare score distributions of five teams from min, q1, median, q3 and max.",
   "tags": [
     "charts",
-    "chartView",
+    "chartBoxplot",
     "boxplot",
     "frameGrid"
   ],

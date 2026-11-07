@@ -13,11 +13,11 @@ Empty a cell: the product loses its polygon. A polygon needs a value on every ax
 ## Read the declarations
 
 - Each row is one polygon. `captionField='product'` names it in the legend and the tooltip.
-- Each measure is one axis. `valueFields` lists the criteria; the caption in `seriesOptions` is the axis name.
+- Each measure is one axis. `measures` lists the criteria; the caption in `seriesOptions` is the axis name.
 - `seriesOptions` may carry `min` and `max` for a measure. Without them the axis follows the data.
 - The grid and the chart read the same `.rows` Bag, so an edit reaches both.
 - Only the ECharts engine draws a radar.
 
 ## What this teaches
 
-The measure columns decide the shape of the chart. Adding a numeric column to `valueFields` adds an axis.
+The measure columns decide the shape of the chart. Adding a numeric column to `measures` adds an axis.

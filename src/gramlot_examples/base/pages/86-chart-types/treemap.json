@@ -4,7 +4,7 @@
   "description": "Show a company budget three levels deep as nested rectangles; edit any branch and drill down by click.",
   "tags": [
     "charts",
-    "chartView",
+    "chartTreemap",
     "treemap",
     "frameGrid"
   ],

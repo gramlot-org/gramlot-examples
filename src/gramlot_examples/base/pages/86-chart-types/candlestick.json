@@ -4,7 +4,7 @@
   "description": "Follow a share over twenty days; open, high, low and close draw one candle per row.",
   "tags": [
     "charts",
-    "chartView",
+    "chartCandlestick",
     "candlestick",
     "frameGrid"
   ],

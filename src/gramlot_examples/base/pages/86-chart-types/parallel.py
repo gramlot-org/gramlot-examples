@@ -13,9 +13,9 @@ class Page(BasePage):
     def main(self, root):
         pane = root.main(datapath='parallel', padding='12px 20px')
         self.setup_data(pane)
-        pane.div(height='360px', margin_bottom='12px').chartView(
-            engine='echarts', chartType='parallel', captionField='car', storepath='.rows', rowMode='values',
-            seriesOptions='^.options', valueFields=','.join(code for code, _, _ in AXES), height='100%', min_width=0)
+        pane.div(height='360px', margin_bottom='12px').chartParallel(
+            engine='echarts', captionField='car', storepath='.rows', rowMode='values',
+            seriesOptions='^.options', measures=','.join(code for code, _, _ in AXES), height='100%', min_width=0)
         self.table(pane)
 
     def setup_data(self, pane):

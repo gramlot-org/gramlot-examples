@@ -13,7 +13,7 @@ Empty a cell: the team disappears from the chart.
 ## Read the declarations
 
 - Each row is one box. `captionField='group'` is the category on the horizontal axis.
-- `valueFields='minimum,q1,median,q3,maximum'` lists exactly five measures, in that order. Any other count shows an error that names the order.
+- `chartBoxplot` takes one attribute per statistic: `min`, `q1`, `median`, `q3` and `max`. Here they name the columns `minimum`, `q1`, `median`, `q3` and `maximum`. All five are required.
 - The chart does not compute statistics. Raw data is not accepted: the host supplies the five values per box.
 - The grid and the chart read the same `.rows` Bag, so an edit reaches both.
 - Only the ECharts engine draws a boxplot.

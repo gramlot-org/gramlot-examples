@@ -36,6 +36,6 @@ class Page(BasePage):
             columns.column(code, name=caption, width='15.6%', dtype='L', edit=True)
 
     def chart(self, parent):
-        parent.chartView(engine='echarts', chartType='radar', captionField='product', storepath='.rows',
-                         rowMode='values', seriesOptions='^.options',
-                         valueFields=','.join(code for code, _, _ in CRITERIA), height='100%', min_width=0)
+        parent.chartRadar(engine='echarts', captionField='product', storepath='.rows',
+                          rowMode='values', seriesOptions='^.options',
+                          measures=','.join(code for code, _, _ in CRITERIA), height='100%', min_width=0)

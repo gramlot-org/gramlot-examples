@@ -36,6 +36,6 @@ class Page(BasePage):
             columns.column(code, name=caption, width='15%', dtype='L', edit=True)
 
     def chart(self, parent):
-        parent.chartView(engine='echarts', chartType='boxplot', captionField='group', storepath='.rows',
-                         rowMode='values', seriesOptions='^.options', valueFields='minimum,q1,median,q3,maximum',
-                         height='100%', min_width=0)
+        parent.chartBoxplot(engine='echarts', captionField='group', min='minimum', q1='q1', median='median', q3='q3',
+                            max='maximum', storepath='.rows', rowMode='values', seriesOptions='^.options',
+                            height='100%', min_width=0)

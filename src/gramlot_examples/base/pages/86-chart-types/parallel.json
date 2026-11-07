@@ -4,7 +4,7 @@
   "description": "Compare cars on five numeric axes; each row is one polyline.",
   "tags": [
     "charts",
-    "chartView",
+    "chartParallel",
     "parallel",
     "frameGrid"
   ],

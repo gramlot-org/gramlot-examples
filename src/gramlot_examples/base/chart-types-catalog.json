@@ -26,7 +26,7 @@
           "description": "Show sales pipeline stages as a funnel; edit a cell and the chart follows.",
           "tags": [
             "charts",
-            "chartView",
+            "chartFunnel",
             "funnel",
             "frameGrid"
           ],
@@ -38,7 +38,7 @@
           "description": "Compare products on five criteria; each criterion is an axis, each row a polygon.",
           "tags": [
             "charts",
-            "chartView",
+            "chartRadar",
             "radar",
             "frameGrid"
           ],
@@ -50,7 +50,7 @@
           "description": "Compare cars on five numeric axes; each row is one polyline.",
           "tags": [
             "charts",
-            "chartView",
+            "chartParallel",
             "parallel",
             "frameGrid"
           ],
@@ -62,7 +62,7 @@
           "description": "Show activity by weekday and hour as colored cells; edit a cell and the colors rescale.",
           "tags": [
             "charts",
-            "chartView",
+            "chartHeatmap",
             "heatmap",
             "frameGrid"
           ],
@@ -74,7 +74,7 @@
           "description": "Show budget flows as links between nodes; a cycle is reported as an error.",
           "tags": [
             "charts",
-            "chartView",
+            "chartSankey",
             "sankey",
             "frameGrid"
           ],
@@ -86,7 +86,7 @@
           "description": "Follow a share over twenty days; open, high, low and close draw one candle per row.",
           "tags": [
             "charts",
-            "chartView",
+            "chartCandlestick",
             "candlestick",
             "frameGrid"
           ],
@@ -98,7 +98,7 @@
           "description": "Compare score distributions of five teams from min, q1, median, q3 and max.",
           "tags": [
             "charts",
-            "chartView",
+            "chartBoxplot",
             "boxplot",
             "frameGrid"
           ],
@@ -110,7 +110,7 @@
           "description": "Show a company budget three levels deep as nested rectangles; edit any branch and drill down by click.",
           "tags": [
             "charts",
-            "chartView",
+            "chartTreemap",
             "treemap",
             "frameGrid"
           ],
@@ -122,11 +122,23 @@
           "description": "Show a company budget three levels deep as concentric rings; edit any branch and zoom by click.",
           "tags": [
             "charts",
-            "chartView",
+            "chartSunburst",
             "sunburst",
             "frameGrid"
           ],
           "folder": "sunburst"
+        },
+        {
+          "key": "chart-types-11",
+          "title": "When a chart cannot be drawn",
+          "description": "Remove a column a chart needs: the chart is replaced by a notice that explains what is missing.",
+          "tags": [
+            "charts",
+            "chartCandlestick",
+            "chartBar",
+            "diagnosis"
+          ],
+          "folder": "diagnosis"
         }
       ]
     }

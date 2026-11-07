@@ -4,7 +4,7 @@
   "description": "Show a company budget three levels deep as concentric rings; edit any branch and zoom by click.",
   "tags": [
     "charts",
-    "chartView",
+    "chartSunburst",
     "sunburst",
     "frameGrid"
   ],

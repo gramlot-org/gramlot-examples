@@ -4,7 +4,7 @@
   "description": "Show sales pipeline stages as a funnel; edit a cell and the chart follows.",
   "tags": [
     "charts",
-    "chartView",
+    "chartFunnel",
     "funnel",
     "frameGrid"
   ],
