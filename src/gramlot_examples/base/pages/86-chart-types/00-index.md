@@ -12,8 +12,10 @@
 - **Sankey:** links from a source column to a target column, with cycle detection.
 - **Candlestick:** one candle per row from open, high, low and close.
 - **Boxplot:** one box per row from min, q1, median, q3 and max.
+- **Treemap:** a nested Bag of department, team and cost item as nested rectangles, with drill-down.
+- **Sunburst:** the same nested Bag as concentric rings.
 
-The last seven are chart types of `chartView` (ECharts engine). Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart.
+The last nine are chart types of `chartView` (ECharts engine). Each page puts an editable grid beside the chart on the same Data Bag, so editing a cell updates the chart. Treemap and sunburst read a nested Bag with `rowMode='attributes'`.
 
 ## How the gauge differs from `chartView`
 

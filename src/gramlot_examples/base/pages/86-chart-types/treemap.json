@@ -1,0 +1,12 @@
+{
+  "key": "chart-types-09",
+  "title": "Treemap",
+  "description": "Show a company budget three levels deep as nested rectangles; edit any branch and drill down by click.",
+  "tags": [
+    "charts",
+    "chartView",
+    "treemap",
+    "frameGrid"
+  ],
+  "order": 8
+}

@@ -103,6 +103,30 @@
             "frameGrid"
           ],
           "folder": "boxplot"
+        },
+        {
+          "key": "chart-types-09",
+          "title": "Treemap",
+          "description": "Show a company budget three levels deep as nested rectangles; edit any branch and drill down by click.",
+          "tags": [
+            "charts",
+            "chartView",
+            "treemap",
+            "frameGrid"
+          ],
+          "folder": "treemap"
+        },
+        {
+          "key": "chart-types-10",
+          "title": "Sunburst",
+          "description": "Show a company budget three levels deep as concentric rings; edit any branch and zoom by click.",
+          "tags": [
+            "charts",
+            "chartView",
+            "sunburst",
+            "frameGrid"
+          ],
+          "folder": "sunburst"
         }
       ]
     }
