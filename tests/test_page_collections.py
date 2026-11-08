@@ -26,7 +26,18 @@ def test_examples_do_not_repeat_environment_collection_imports():
     assert {c.name for c in server.page_collections(textbox)} == {c.name for c in (*standard_collections(), *collections())}
     assert {c.name for c in page_collections(GalleryPage)} == {c.name for c in collections()}
     for source in root.rglob('*.py'):
-        assert 'from gramlot.collections.' not in source.read_text(), source
+        for collection in standard_collections():
+            assert f'from gramlot.collections.{collection.name} ' not in source.read_text(), source
+
+
+def test_typst_is_declared_by_its_lesson_only():
+    # typst is outside the standard set (gramlot-org/gramlot#84): the page that uses it declares it.
+    root = Path(__file__).parents[1] / 'src/gramlot_examples/pages'
+    server = GramlotFileServer(root, collections=collections())
+    assert 'typst' not in {c.name for c in server.collections}
+    typst = server.resolve_page('06-editors/05-typst')
+    assert [c.name for c in page_collections(typst)] == ['typst']
+    assert 'typst' in {c.name for c in server.page_collections(typst)}
 
 
 def test_optional_chart_and_system_examples_use_environment_collections():
@@ -47,11 +58,13 @@ def test_optional_chart_and_system_examples_use_environment_collections():
 def test_standard_imports_are_only_declared_in_gallery_environment():
     import ast
     root = Path(__file__).parents[1] / 'src/gramlot_examples'
+    standard = {c.name for c in standard_collections()}
     for source in root.rglob('*.py'):
         if 'dist' in source.relative_to(root).parts:
             continue  # Generated collection packages are not authored pages.
         if source.relative_to(root).as_posix() in {'gallery/collections.py', 'base/selection_trial.py'}:
             continue  # Shared environment and the isolated experimental collection.
         for node in ast.walk(ast.parse(source.read_text())):
-            if isinstance(node, ast.ImportFrom):
-                assert not (node.module or '').startswith('gramlot.collections.'), source
+            if isinstance(node, ast.ImportFrom) and (node.module or '').startswith('gramlot.collections.'):
+                # A page declares only collections outside the standard set (typst).
+                assert node.module.split('.')[2] not in standard, source

@@ -6,7 +6,6 @@ import {fileURLToPath} from 'node:url';
 import {GramlotBuilder} from '@gramlot/gramlot';
 import {Bag} from '@genrojs/bag';
 import editors from '@gramlot/gramlot/components/editors';
-import typst from '@gramlot/gramlot/components/typst';
 import inputs from '@gramlot/gramlot/components/inputs';
 import layout from '@gramlot/gramlot/components/layout';
 import tree from '@gramlot/gramlot/components/tree';
@@ -68,7 +67,7 @@ print(json.dumps(source(b.source)))
 const overviews = catalog.families.flatMap(family => [...new Set(family.examples.filter(e => e.folder.includes('/')).map(e => e.folder.slice(0, e.folder.lastIndexOf('/'))))].map(folder => ({key: `${family.key}/${folder} overview`, family: family.folder, folder: `${folder}/00-index`})));
 for (const example of overviews) {
     test(`${example.key}: Python and JavaScript author equivalent Source`, async () => {
-        const b = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument(), tree.toDocument(), editors.toDocument(), typst.toDocument()]});
+        const b = new GramlotBuilder(null, {collections: [inputs.toDocument(), layout.toDocument(), tree.toDocument(), editors.toDocument()]});
         const path = example.key === 'guide' ? 'guide' : `src/gramlot_examples/pages/${example.family}/${example.folder}.py`;
         if (path === 'guide') guidedDemo(b.root);
         else {

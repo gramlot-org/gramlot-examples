@@ -1,5 +1,7 @@
 import {Page as BasePage} from '@gramlot/gramlot/page';
+import typst from '@gramlot/gramlot/collections/typst';
 export class Page extends BasePage {
+    static gramlots = [typst];
     main(root) {
         const main_content=root.main({datapath:'typstDemo',padding:'24px',class:'example-page stack'});
         const split=main_content.div({class:'grid typst-workbench'});

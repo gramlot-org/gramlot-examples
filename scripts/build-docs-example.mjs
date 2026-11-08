@@ -40,7 +40,8 @@ export class Page extends Example {
     pages[key] = join(folder, 'index.js');
 }
 // Export ordinary lessons together: one shared runtime and collection set.
-// Keep the optional Typst compiler in its own export rather than loading it in every lesson.
+// Keep the optional Typst compiler in its own export rather than loading it in every lesson: a directory export
+// shares one collection set among its routes, and the Typst lesson declares typst in Page.gramlots.
 const indexPage = join(stage, 'index.js');
 await writeFile(indexPage, `import {Page as BasePage} from '@gramlot/gramlot/page';
 export class Page extends BasePage {
@@ -56,7 +57,7 @@ export class Page extends BasePage {
 const {typst_editor: typstPage, visual_source: visualPage, ...ordinaryPages} = pages;
 const output = join(root, 'build/docs-source/_extra/playgrounds');
 await buildDirectory({pages: {index: indexPage, ...ordinaryPages}, output,
-    assets: copied, collections: collections.filter(item => item.grammar.grammar.name !== 'typst')});
+    assets: copied, collections});
 await buildDirectory({pages: {index: typstPage}, output: join(output, 'typst_editor'),
     assets: copied, collections});
 
