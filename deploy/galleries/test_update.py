@@ -138,7 +138,7 @@ class UpdaterTests(unittest.TestCase):
         self.assertEqual(config.count('location /pages/ { return 301 /gallery$request_uri; }'),2)
         self.assertEqual(config.count('location /mobile-application/ { return 301 /gallery$request_uri; }'),1)
         self.assertIn('serve-node.mjs',(here/'Dockerfile.node').read_text())
-        python=(here/'Dockerfile.python-mobile').read_text()
+        python=next(path for path in (here/'Dockerfile.python-mobile',here/'Dockerfile.python') if path.is_file()).read_text()
         for name in ('galleries.py','tab_page/'):
             self.assertIn(name,python)
     def test_failed_check_is_reported_and_does_not_raise(self):

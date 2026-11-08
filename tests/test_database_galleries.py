@@ -60,7 +60,9 @@ def test_asqueel_catalog_is_reachable_from_gallery_navigation():
     catalogs = [(root / 'catalog.json', root / 'pages'),
                 (root / 'asqueel-catalog.json', root / 'pages')]
     tree = navigation_directory(catalogs=catalogs)
-    branch = next(node for node in tree.nodes if node.attr['directory'] == '81-asqueel')
+    assert next(node for node in tree.nodes if node.attr.get('directory') == 'database-demos').attr['url'] == 'groups/database-demos'
+    group = navigation_directory('database-demos', catalogs=catalogs)
+    branch = next(node for node in group.nodes if node.attr.get('directory') == '81-asqueel')
     assert branch.attr['url'] == 'pages/81-asqueel/00-index'
     children = navigation_directory('81-asqueel', catalogs=catalogs)
     assert children.get_node('base-asqueel-01').attr['url'] == 'pages/81-asqueel/01-state_customers'
