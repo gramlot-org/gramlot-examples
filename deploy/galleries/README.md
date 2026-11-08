@@ -1,5 +1,15 @@
 # Automatic hosted galleries
 
+## Current deployment (2026-11-08)
+
+The galleries run in the k3s cluster (genro/hetzner-kube, `apps/gramlot-galleries`).
+A CronJob in the cluster checks the releases of the four repositories every ten
+minutes with `releases()` and `ready()` of `update.py`, builds both images from
+this folder with Kaniko, uploads the serverless ZIP to S3, rolls out the new
+generation and rolls back when the public checks fail. It is a provisional
+updater. The `Update hosted galleries` workflows and the SSH updater of the old
+host are removed; the sections below are the record of that deployment.
+
 Owner authorization, 2026-10-17: “si confermo, dopo ogni release dei quattro repo.
 procedi anche a includere il link di download nei pacchetti ufficiali”.
 This supersedes the initial deployment's manual-update policy.
