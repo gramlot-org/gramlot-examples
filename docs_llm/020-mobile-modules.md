@@ -82,7 +82,7 @@ catalogue, module Python, page companions/CSS, generated provider and two synthe
 scanner images are copied. Mac configuration, APNs material, user media and
 `__pycache__` are excluded. `deploy/galleries/prepare-mobile.py` prepares this
 artifact; `serve-mobile.py` stages and runs the gallery with Remote Edit disabled.
-The optional `Dockerfile.python-mobile` is selected during host installation; the public host now uses this profile (see the deployment record below).
+`Dockerfile.python` in `deploy/galleries/` (formerly `Dockerfile.python-mobile`) is the public Python profile (see the deployment record below).
 It requires public packages that actually contain this integration; it is not an
 instruction to publish or deploy the unaccepted candidate.
 

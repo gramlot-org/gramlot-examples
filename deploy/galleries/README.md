@@ -47,6 +47,18 @@ limit and the CI job 25 minutes. These are bounded retries of a received event, 
 poll. Incomplete/failed publications are never promoted; rerun the failed job
 once publication or infrastructure is repaired.
 
+## Build context (2026-11-08)
+
+The galleries run in the k3s cluster (manifests in genro/hetzner-kube,
+`apps/gramlot-galleries/`). This folder at a release tag is the complete build
+context of the two images: `Dockerfile.python` (the selected public profile,
+formerly `Dockerfile.python-mobile`; the generic single-gallery image is
+removed), `Dockerfile.node`, the mobile public module under `public-module/`
+(copied from the production host, produced by `prepare-mobile.py`) and the
+geography resources under `chart-data/` (see `chart-data/README.md`). The build
+needs no file from a host and no credentials. The old-host sections below are
+the record of the previous deployment.
+
 ## Build and promotion
 
 The Dockerfiles install current official packages without first-party dependency
@@ -207,7 +219,7 @@ Use a fresh output directory. The script copies a public allowlist only. The
 provider imports the same core runtime as its page; use the qualified matching
 runtime, not the older public package. This preview is HTTP on loopback; native
 catalogue/broker activation requires the eventual same-origin HTTPS deployment.
-The optional `Dockerfile.python-mobile` expects this artifact under `public-module/`
+`Dockerfile.python` (formerly `Dockerfile.python-mobile`) expects this artifact under `public-module/`
 and `serve-mobile.py` in its build context. It intentionally fails when installed
 packages lack the integration; do not bypass that prerequisite. The image itself
 and public deployment remain unqualified until explicitly authorized.
@@ -267,8 +279,7 @@ separate public cache schema and dedicated role without business-table writes.
 This extends the former local-only cache preparation to the public demo database.
 Invoice application and TestFlight remain excluded; Remote Edit stays disabled.
 
-The Python deployment uses `Dockerfile.python-mobile`, installed as
-`Dockerfile.python` in the updater context, with `public_database.py` and the
+The Python deployment uses `Dockerfile.python`, with `public_database.py` and the
 mobile entry point. It mounts the packaged Base, Asqueel, database-grid, JSONL
 and cached-selection catalogues alongside the ordinary and native-only mobile
 catalogues. JavaScript and offline galleries retain their own supported catalogues.
@@ -404,11 +415,11 @@ bound one session, not the total spend: the console caps below bound the total.
      install -m 644 "$0/deploy/galleries/test_update.py" automation/test_update.py &&
      install -m 644 "$0/deploy/galleries/serve-mobile.py" automation/serve-mobile.py &&
      install -m 644 "$0/deploy/galleries/fetch-gramlot-docs.py" automation/fetch-gramlot-docs.py &&
-     install -m 644 "$0/deploy/galleries/Dockerfile.python-mobile" automation/Dockerfile.python' "$REPO"
+     install -m 644 "$0/deploy/galleries/Dockerfile.python" automation/Dockerfile.python' "$REPO"
    sudo python3 automation/test_update.py
    ```
 
-   `Dockerfile.python-mobile` is installed as `automation/Dockerfile.python`, as in
+   `Dockerfile.python` is the selected profile, as in
    “Public mobile profile selected for 0.3.17”. The root-owned wrappers
    `/usr/local/sbin/gramlot-galleries-ci-update` and `gramlot-galleries-ci-ssh` and the
    systemd unit are unchanged: they run `automation/update.py`, so no reinstall is needed.
@@ -470,9 +481,6 @@ links back to `/gallery/`. Catalogue and pages: GE-010 section 017.
   `/gallery`. `smoke.mjs` also checks that the tab page lists both iframes and that each iframe
   starts, that `/chart_gallery/` starts and lists its families, and that its introduction links
   `/gallery/`. The offline argument is the gallery folder, as before.
-- `Dockerfile.python` (the generic `gramlot uvicorn gallery` image) still serves one gallery at
-  `/`; it does not match this nginx configuration. The selected Python profile is
-  `Dockerfile.python-mobile`.
 
 The main gallery inside the tab page needs gramlot 0.3.33 or later on the Python host: the
 gallery has the PageStore WebSocket and the tab page has none, and since 0.3.33 a PageStore page
@@ -489,7 +497,7 @@ sudo flock update.lock sh -c '
               smoke.mjs asqueel-smoke.mjs Dockerfile.node; do
     install -m 644 "$0/deploy/galleries/$name" "automation/$name" || exit 1
   done &&
-  install -m 644 "$0/deploy/galleries/Dockerfile.python-mobile" automation/Dockerfile.python &&
+  install -m 644 "$0/deploy/galleries/Dockerfile.python" automation/Dockerfile.python &&
   install -d -m 755 automation/tab_page &&
   install -m 644 "$0/deploy/galleries/tab_page/index.py" "$0/deploy/galleries/tab_page/index.js" automation/tab_page/' "$REPO"
 sudo python3 automation/test_update.py
