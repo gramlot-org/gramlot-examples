@@ -45,7 +45,7 @@ class Output:
         self.data += frame[1:]
 
 
-async def open_session(module, name):
+async def open_session(module, name, host='127.0.0.1:8774'):
     class TerminalServer(GramlotServer):
         def resolve_page(self, path):
             return module.Page
@@ -59,7 +59,7 @@ async def open_session(module, name):
     server = TerminalServer(collections=collections(), websocket_url='/gramlot/store', css_theme=False)
     page_id = (await server.open_page('/', owner='alice')).page_id
     output = Output()
-    session = await server.open_terminal(page_id, name, send=output, owner='alice')
+    session = await server.open_terminal(page_id, name, send=output, owner='alice', host=host)
     return server, session, output
 
 
@@ -116,4 +116,26 @@ def test_with_gramlot_dev_the_shell_runs_commands_at_the_browser_size(monkeypatc
         assert b'31 97' in output.data
         server.close_all()
         await asyncio.sleep(0.1)
+    asyncio.run(run())
+
+
+def test_the_shell_answers_only_a_page_opened_at_localhost(monkeypatch):
+    monkeypatch.setenv('GRAMLOT_DEV', 'YES')
+
+    async def run():
+        server, session, output = await open_session(load_page(), 'shell', host='rebound.example:8774')
+        await asyncio.wait_for(session.wait_closed(), 2)
+        assert b'only a page opened at localhost' in output.data
+        server.close_all()
+    asyncio.run(run())
+
+
+def test_a_shell_that_cannot_start_ends_the_session(monkeypatch):
+    monkeypatch.setenv('GRAMLOT_DEV', 'YES')
+    monkeypatch.setenv('SHELL', '/nonexistent/shell')
+
+    async def run():
+        server, session, output = await open_session(load_page(), 'shell')
+        await asyncio.wait_for(session.wait_closed(), 5)
+        server.close_all()
     asyncio.run(run())
