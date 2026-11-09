@@ -12,7 +12,8 @@ GRAMLOT_DEV=YES gramlot uvicorn gallery --websocket --port 8774 \
             /absolute/path/to/trials/terminal/pages
 ```
 
-The shell uses `pty` and runs only on POSIX systems. It runs with the rights of
+The shell uses a pseudo-terminal and runs only on POSIX systems. It runs with the rights of
 the server process: never set `GRAMLOT_DEV` on a public server. It answers only a
-page opened at `localhost` or `127.0.0.1` (the `Host` header of the socket), so a
-DNS rebinding page cannot reach it.
+connection from this machine (a loopback peer address) for a page opened at
+`localhost` or `127.0.0.1` (the `Host` header of the socket): the first check stops
+other machines, which can send any `Host`; the second stops a DNS rebinding page.

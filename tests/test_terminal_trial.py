@@ -2,6 +2,8 @@
 import asyncio
 import importlib.util
 import json
+import os
+import re
 from pathlib import Path
 
 from gramlot import GramlotBuilder
@@ -45,7 +47,7 @@ class Output:
         self.data += frame[1:]
 
 
-async def open_session(module, name, host='127.0.0.1:8774'):
+async def open_session(module, name, host='127.0.0.1:8774', client='127.0.0.1'):
     class TerminalServer(GramlotServer):
         def resolve_page(self, path):
             return module.Page
@@ -59,7 +61,7 @@ async def open_session(module, name, host='127.0.0.1:8774'):
     server = TerminalServer(collections=collections(), websocket_url='/gramlot/store', css_theme=False)
     page_id = (await server.open_page('/', owner='alice')).page_id
     output = Output()
-    session = await server.open_terminal(page_id, name, send=output, owner='alice', host=host)
+    session = await server.open_terminal(page_id, name, send=output, owner='alice', host=host, client=client)
     return server, session, output
 
 
@@ -127,6 +129,40 @@ def test_the_shell_answers_only_a_page_opened_at_localhost(monkeypatch):
         await asyncio.wait_for(session.wait_closed(), 2)
         assert b'only a page opened at localhost' in output.data
         server.close_all()
+    asyncio.run(run())
+
+
+def test_the_shell_answers_only_a_connection_from_this_machine(monkeypatch):
+    monkeypatch.setenv('GRAMLOT_DEV', 'YES')
+
+    async def run():
+        for client in ('192.168.1.20', None, '/tmp/gramlot.sock'):
+            server, session, output = await open_session(load_page(), 'shell', host='localhost:8774', client=client)
+            await asyncio.wait_for(session.wait_closed(), 2)
+            assert b'only a connection from this machine' in output.data, client
+            server.close_all()
+    asyncio.run(run())
+
+
+def test_closing_the_session_ends_a_shell_that_ignores_sighup(monkeypatch):
+    monkeypatch.setenv('GRAMLOT_DEV', 'YES')
+
+    async def run():
+        server, session, output = await open_session(load_page(), 'shell')
+        session.receive(bytes([INPUT]) + b"trap '' HUP; echo PID-$$-READY\r")
+        # The terminal echoes the typed line first: the answer is the line with digits.
+        async def answered():
+            while not (found := re.search(rb'PID-(\d+)-READY', output.data)):
+                await asyncio.sleep(0.02)
+            return int(found.group(1))
+        pid = await asyncio.wait_for(answered(), 5)
+        server.close_all()
+        await asyncio.sleep(2.5)
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return
+        raise AssertionError(f'shell {pid} is still running')
     asyncio.run(run())
 
 

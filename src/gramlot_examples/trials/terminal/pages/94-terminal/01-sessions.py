@@ -1,10 +1,12 @@
 """A terminal connected to @terminal sessions of the PageStore: echo, and a local shell in development."""
 import asyncio
 import fcntl
+import ipaddress
 import os
-import pty
 import signal
 import struct
+import subprocess
+import sys
 import termios
 from urllib.parse import urlsplit
 
@@ -13,6 +15,34 @@ from gramlot.page import terminal
 from gramlot.server.assets import gramlot_dev
 
 LOCAL_HOSTS = {'localhost', '127.0.0.1', '::1'}
+# Run by a fresh Python in the shell's new session: the pty becomes its controlling terminal (Ctrl-C,
+# job control), then the shell replaces it. The server forks no Python code of its own.
+TAKE_TERMINAL = ('import fcntl, os, sys, termios; fcntl.ioctl(0, termios.TIOCSCTTY, 0); '
+                 'os.execvp(sys.argv[1], sys.argv[1:])')
+
+
+def loopback(address):
+    """True for a loopback IP address; ``None`` or a non-IP peer (a Unix socket) is not one."""
+    try:
+        return ipaddress.ip_address(address).is_loopback
+    except ValueError:
+        return False
+
+
+def stop(process, fd):
+    """End the shell's session: SIGHUP, SIGKILL after 2 s, then close the pty. Runs in a thread, so a
+    cancellation of the session cannot interrupt it."""
+    try:
+        os.killpg(process.pid, signal.SIGHUP)
+        try:
+            process.wait(2)
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGKILL)
+            process.wait()
+    except ProcessLookupError:
+        process.wait()
+    finally:
+        os.close(fd)
 
 
 class Page(BasePage):
@@ -47,18 +77,25 @@ class PageStore(BasePageStore):
         if not gramlot_dev():
             await session.write(b'The local shell is available only on a development server.\r\n')
             return
+        # The peer must be this machine: the Host header alone is the client's word.
+        if not loopback(session.client):
+            await session.write(b'The local shell answers only a connection from this machine.\r\n')
+            return
         # Origin == Host holds under DNS rebinding too: the shell answers only a page opened as localhost.
         if session.host is None or urlsplit('//' + session.host).hostname not in LOCAL_HOSTS:
             await session.write(b'The local shell answers only a page opened at localhost or 127.0.0.1.\r\n')
             return
-        pid, fd = pty.fork()
-        if pid == 0:
-            try:
-                os.environ['TERM'] = 'xterm-256color'
-                shell = os.environ.get('SHELL', '/bin/sh')
-                os.execvp(shell, [shell])
-            finally:
-                os._exit(127)
+        fd, child = os.openpty()
+        shell = os.environ.get('SHELL', '/bin/sh')
+        try:
+            process = subprocess.Popen([sys.executable, '-I', '-c', TAKE_TERMINAL, shell],
+                                       stdin=child, stdout=child, stderr=child, start_new_session=True,
+                                       env={**os.environ, 'TERM': 'xterm-256color'})
+        except BaseException:
+            os.close(fd)
+            raise
+        finally:
+            os.close(child)
         os.set_blocking(fd, False)
         loop = asyncio.get_running_loop()
 
@@ -104,14 +141,4 @@ class PageStore(BasePageStore):
             for task in tasks:
                 task.cancel()
             await asyncio.gather(*tasks, return_exceptions=True)
-            try:
-                os.kill(pid, signal.SIGHUP)
-                for _ in range(20):
-                    if os.waitpid(pid, os.WNOHANG)[0]:
-                        break
-                    await asyncio.sleep(0.1)
-                else:
-                    os.kill(pid, signal.SIGKILL)
-                    os.waitpid(pid, 0)
-            finally:
-                os.close(fd)
+            await asyncio.shield(asyncio.to_thread(stop, process, fd))

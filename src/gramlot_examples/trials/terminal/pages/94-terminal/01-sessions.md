@@ -17,6 +17,8 @@ uses `read`, `write` and `resized`. The bytes travel on a WebSocket of their own
 not yet written, so the shell is not read faster than the browser can draw.
 
 The shell runs with the rights of the server process. It is never offered on a
-server without `GRAMLOT_DEV`, and it answers only a page opened at `localhost` or
-`127.0.0.1`: the socket's origin check compares `Origin` with `Host`, which a DNS
-rebinding attack can make equal, so the method checks `session.host` too.
+server without `GRAMLOT_DEV`. It answers only a connection from this machine
+(`session.client` is a loopback address), because a program on another machine can
+send any `Host` header. It also answers only a page opened at `localhost` or
+`127.0.0.1` (`session.host`): the socket's origin check compares `Origin` with
+`Host`, which a DNS rebinding page in a local browser can make equal.
