@@ -118,6 +118,20 @@ Python gallery (`deploy/galleries/public_database.py`) does not stage it. Local 
 - Main Charts family keeps `chart-bars`, `chart-trends`, `grid-charts`; its folder page links
   `/chart_gallery/`, the chart gallery introduction links `/gallery/`.
 
+<a id="ge-010-018"></a>
+
+## 018 · Documentation gallery and source files
+
+The documentation gallery has a separate common catalogue and a prepared `/documentation_gallery/`
+mount, with deployment pending. The examples manual builds serverless static exports
+of the name, single-triangle and multiple-triangle pages under `documentation/` for
+embedding without a hosted gallery session. A lesson's `sourceFiles` is a non-empty list of distinct `.py`/`.js` paths
+relative to the catalogue directory; paths must resolve inside it. The Code panel
+shows files in the current language as separate read-only tabs; the Page's existing
+editing contract is unchanged. JS helper modules are served for imports. The triangle
+helper is used by two pages. A working gallery does not prove cross-site iframe session
+compatibility.
+
 <a id="ge-010-020"></a>
 
 ## 020 · `build_gallery` and `buildGallery`

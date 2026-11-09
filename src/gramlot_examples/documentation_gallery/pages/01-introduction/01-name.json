@@ -1,0 +1,11 @@
+{
+  "key": "documentation-01-name",
+  "title": "One value",
+  "description": "Connect a field and display to the same value.",
+  "tags": [
+    "bindings",
+    "documentation"
+  ],
+  "order": 1,
+  "presentation": "content"
+}

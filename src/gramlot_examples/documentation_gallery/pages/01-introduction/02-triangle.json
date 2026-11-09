@@ -1,0 +1,11 @@
+{
+  "key": "documentation-02-triangle",
+  "title": "A triangle",
+  "description": "Calculate an area and draw the triangle from its dimensions.",
+  "tags": [
+    "bindings",
+    "documentation"
+  ],
+  "order": 2,
+  "presentation": "content"
+}

@@ -2,7 +2,7 @@
 from gramlot_examples.gallery.collections import collections
 from gramlot import IndexPage, source, endpoint
 from genro_bag import Bag
-from gramlot_examples import available_filters, build_gallery, navigation_directory
+from gramlot_examples import available_filters, build_gallery, navigation_directory, resolve_source_files
 from gramlot_examples.gallery.guided_demo import guided_demo
 from gramlot_examples.gallery.features import feature_index
 from gramlot_examples.gallery.modules import module_bag, registered_modules
@@ -61,7 +61,8 @@ class Page(IndexPage):
         gallery = self.gallery
         return [{**family, "children": [
             {**item, "url": gallery["routes"][item["key"]]["url"], "path": family["path"],
-             "logic": gallery["routes"][item["key"]]["logic"]}
+             "logic": gallery["routes"][item["key"]]["logic"],
+             **({"source_root": family["source_root"]} if "sourceFiles" in item else {})}
             for item in family["examples"]]} for family in gallery["families"]]
 
     @property
@@ -307,3 +308,8 @@ class Page(IndexPage):
         if logic_path is not None:
             parent.contentPane(title="logic.js", pageName="logic", id=f"logic-panel-{key}").pre(
                 tabindex=0).code(logic_path.read_text(), class_="language-javascript", id=f"logic-{key}")
+        if "sourceFiles" in example:
+            for index, path in enumerate(resolve_source_files(example["source_root"], example["sourceFiles"])):
+                if path.suffix == ".py":
+                    parent.contentPane(title=path.name, pageName=f"source{index}").pre(tabindex=0).code(
+                        path.read_text(), class_="language-python")

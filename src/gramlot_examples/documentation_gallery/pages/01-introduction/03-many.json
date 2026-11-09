@@ -1,0 +1,16 @@
+{
+  "key": "documentation-03-many",
+  "title": "Many triangles",
+  "description": "Reuse one triangle in three independent Data contexts.",
+  "tags": [
+    "bindings",
+    "documentation",
+    "composition"
+  ],
+  "order": 3,
+  "presentation": "content",
+  "sourceFiles": [
+    "triangle.py",
+    "triangle.js"
+  ]
+}

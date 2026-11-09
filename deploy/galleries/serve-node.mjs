@@ -31,6 +31,8 @@ const galleries = {
     gallery: await startGallery({mountPath: '/gallery', serverlessDownloadUrl: values['serverless-download'] ?? null}),
     chart_gallery: await startGallery({mountPath: '/chart_gallery',
         catalogs: [[join(examples, 'chart_gallery', 'catalog.json'), join(examples, 'chart_gallery', 'pages')]]}),
+    documentation_gallery: await startGallery({mountPath: '/documentation_gallery',
+        catalogs: [[join(examples, 'documentation_gallery', 'catalog.json'), join(examples, 'documentation_gallery', 'pages')]]}),
 };
 const tabPage = await startServer({pages: TAB_PAGE});
 

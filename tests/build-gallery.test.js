@@ -4,7 +4,8 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import test from 'node:test';
-import {buildGallery} from '../src/gramlot_examples/index.js';
+import {buildGallery, resolveSourceFiles} from '../src/gramlot_examples/index.js';
+import {Page as GalleryPage} from '../src/gramlot_examples/gallery/page.js';
 
 const FIXTURE = fileURLToPath(new URL('./fixtures/environment/', import.meta.url));
 const PAGES = join(FIXTURE, 'pages');
@@ -113,4 +114,33 @@ test('duplicate example across catalogues', t => {
 test('missing page', t => {
     const family = {key: 'test_family', title: 'X', examples: [{key: 'test-02', title: 'X', folder: '02_missing'}]};
     assert.throws(() => buildGallery({catalogs: [[catalog(t, environment([family])), PAGES]]}), /Missing page/);
+});
+
+test('documentation gallery provides its own runnable examples', () => {
+    const docs = fileURLToPath(new URL('../src/gramlot_examples/documentation_gallery/', import.meta.url));
+    const gallery = buildGallery({catalogs: [[join(docs, 'catalog.json'), join(docs, 'pages')]]});
+    assert.deepEqual(gallery.families.map(({key}) => key), ['documentation-introduction']);
+    assert.equal(gallery.routes.e01, undefined);
+    for (const key of ['documentation-01-name', 'documentation-02-triangle']) {
+        assert.ok(existsSync(gallery.routes[key].page));
+        assert.match(gallery.routes[key].url, /^pages\/01-introduction\//);
+    }
+    assert.ok(existsSync(gallery.routes['documentation-02-triangle'].stylesheet));
+});
+
+
+test('sourceFiles resolves safe helpers and the gallery exposes the matching JavaScript source', () => {
+    const docs = fileURLToPath(new URL('../src/gramlot_examples/documentation_gallery/', import.meta.url));
+    const catalogPath = join(docs, 'catalog.json');
+    const pagePath = join(docs, 'pages');
+    const gallery = buildGallery({catalogs: [[catalogPath, pagePath]]});
+    assert.equal(gallery.assets['/triangle.js'].type, 'application/javascript');
+    assert.equal(gallery.assets['/triangle.js'].file, join(docs, 'triangle.js'));
+    class DocumentationGallery extends GalleryPage { static catalogs = [[catalogPath, pagePath]]; }
+    const example = DocumentationGallery.families[0].examples.find(item => item.key === 'documentation-03-many');
+    assert.deepEqual(example.sourceFiles.map(file => file.name), ['triangle.js']);
+    assert.match(example.sourceFiles[0].content, /export function triangle/);
+    for (const invalid of [['../package.json'], ['/etc/passwd'], ['triangle.js', 'triangle.js'], [[]], []]) {
+        assert.throws(() => resolveSourceFiles(docs, invalid));
+    }
 });

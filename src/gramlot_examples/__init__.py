@@ -34,8 +34,30 @@ def read_catalog(catalog, pages, common):
             if pattern is not None and not pattern.fullmatch(example["key"]):
                 raise ValueError(f"Example key {example['key']!r} does not match {environment}-NN: {catalog}")
             check_requires(example.get("requires"), f"{catalog}: {example['key']}")
-        families.append({**family, "path": Path(pages) / family["folder"]})
+        entry = {**family, "path": Path(pages) / family["folder"]}
+        if any("sourceFiles" in example for example in family["examples"]):
+            entry["source_root"] = Path(catalog).parent.resolve()
+            for example in family["examples"]:
+                if "sourceFiles" in example:
+                    resolve_source_files(entry["source_root"], example["sourceFiles"])
+        families.append(entry)
     return families
+
+
+def resolve_source_files(root, names):
+    """Resolve the declared supplementary code files inside the catalogue directory."""
+    if (not isinstance(names, list) or not names or any(not isinstance(name, str) for name in names)
+            or len(set(names)) != len(names)):
+        raise ValueError("sourceFiles must be a non-empty list of distinct paths")
+    result = []
+    for name in names:
+        if not name or "\\" in name or Path(name).is_absolute() or ".." in Path(name).parts:
+            raise ValueError("sourceFiles paths must be relative to the catalogue directory")
+        path = (root / name).resolve(strict=True)
+        if not path.is_relative_to(root) or not path.is_file() or path.suffix not in (".py", ".js"):
+            raise ValueError(f"Invalid sourceFiles path: {name}")
+        result.append(path)
+    return result
 
 
 def gallery_catalogs(catalogs):
@@ -203,6 +225,13 @@ def build_gallery(catalogs=()):
                                       "logic": logic, "url": f"pages/{family['folder']}/{example['folder']}"}
             if "presentation" in example:
                 routes[example["key"]]["presentation"] = example["presentation"]
+            if "sourceFiles" in example:
+                for source in resolve_source_files(family["source_root"], example["sourceFiles"]):
+                    if source.suffix == ".js":
+                        url = "/" + source.relative_to(family["source_root"]).as_posix()
+                        if url in assets and assets[url]["file"] != source:
+                            raise ValueError(f"Duplicate sourceFiles asset: {url}")
+                        assets[url] = {"file": source, "type": media_type(source, True)}
             for suffix in SUFFIXES:
                 source = folder / f"{example['folder']}{suffix}"
                 if source.is_file():

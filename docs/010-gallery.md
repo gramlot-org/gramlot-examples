@@ -199,6 +199,32 @@ above. The Charts family of the main gallery keeps Bars and live data, Lines and
 Temporal snapshots; its folder page links `/chart_gallery/`, and the introduction of the chart
 gallery links `/gallery/`.
 
+<a id="ge-010-018"></a>
+
+## 018 · Documentation gallery and additional source files
+
+The documentation gallery is a separate common catalogue in
+`src/gramlot_examples/documentation_gallery/`. Its pages accompany the core manual;
+its own catalogue and filters keep these lessons separate from the main and chart
+galleries. The prepared hosted mounts use `/documentation_gallery/`; deployment is separate.
+
+The examples manual also builds serverless static exports of the name, single-triangle
+and multiple-triangle pages under `documentation/`. The core manual embeds these
+exports without a hosted gallery session.
+
+A lesson may declare `sourceFiles` as a non-empty list of distinct paths relative
+to its catalogue directory. Paths must remain inside that directory and name existing
+`.py` or `.js` files. The Python Code panel shows the Python Page plus each declared
+Python file in a separate read-only tab; the JavaScript panel shows the JavaScript
+Page and declared JavaScript files. A JavaScript file is also a served module when
+a Page imports it. The original Page source and its existing editing contract are
+unchanged. Both catalogues validate declared source paths before use.
+
+The triangle helper is imported by two separate Page modules; their Code panels show
+it without assembling or injecting application code into the Page source. For an
+embedded page, the chosen host must support the browser's origin and session policy;
+a working standalone gallery does not establish cross-site iframe compatibility.
+
 <a id="ge-010-020"></a>
 
 ## 020 · `build_gallery` and `buildGallery`

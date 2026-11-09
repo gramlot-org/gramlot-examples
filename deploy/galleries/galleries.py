@@ -17,6 +17,7 @@ EXAMPLES = Path(str(files('gramlot_examples')))
 TAB_PAGE = Path(__file__).resolve().parent / 'tab_page'
 GALLERY = 'gallery'
 CHART_GALLERY = 'chart_gallery'
+DOCUMENTATION_GALLERY = 'documentation_gallery'
 
 
 def chart_catalogs():
@@ -39,12 +40,24 @@ def stage_chart_gallery(folder):
     return resources
 
 
-def declare_applications(cfg, *, gallery_class, gallery_pages, gallery_assets, chart_pages, chart_assets):
+def stage_documentation_gallery(folder):
+    """Stage the documentation gallery under its own public mount."""
+    catalogs = [(EXAMPLES / 'documentation_gallery/catalog.json', EXAMPLES / 'documentation_gallery/pages')]
+    resources = stage(folder, catalogs, '/' + DOCUMENTATION_GALLERY, remote_edit=False)
+    with (folder / 'index.py').open('a', encoding='utf-8') as stream:
+        stream.write("\nPage.catalogs = [pair for pair in Page.catalogs"
+                     " if not pair[0].endswith('/.gallery-tools/catalog.json')]\n")
+    return resources
+
+
+def declare_applications(cfg, *, gallery_class, gallery_pages, gallery_assets, chart_pages, chart_assets, documentation_pages, documentation_assets):
     """Declare the three applications in the ``applications`` section of a Kajenn site recipe."""
     applications = cfg.applications()
     applications.application(code=GALLERY, mount=GALLERY, app_class=gallery_class, pages=gallery_pages,
                              assets=gallery_assets, websocket=True).request(body='raw')
     applications.application(code=CHART_GALLERY, mount=CHART_GALLERY, app_class=Application,
                              pages=chart_pages, assets=chart_assets).request(body='raw')
+    applications.application(code=DOCUMENTATION_GALLERY, mount=DOCUMENTATION_GALLERY, app_class=Application,
+                             pages=documentation_pages, assets=documentation_assets).request(body='raw')
     applications.application(code='tab_page', mount='', app_class=Application,
                              pages=TAB_PAGE).request(body='raw')

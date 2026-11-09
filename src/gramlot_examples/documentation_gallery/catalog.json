@@ -1,0 +1,66 @@
+{
+  "common": true,
+  "families": [
+    {
+      "key": "documentation-introduction",
+      "title": "Inside Gramlot",
+      "folder": "01-introduction",
+      "examples": [
+        {
+          "key": "documentation-01-name",
+          "title": "One value",
+          "description": "Connect a field and display to the same value.",
+          "tags": [
+            "bindings",
+            "documentation"
+          ],
+          "presentation": "content",
+          "folder": "01-name"
+        },
+        {
+          "key": "documentation-02-triangle",
+          "title": "A triangle",
+          "description": "Calculate an area and draw the triangle from its dimensions.",
+          "tags": [
+            "bindings",
+            "documentation"
+          ],
+          "presentation": "content",
+          "folder": "02-triangle"
+        },
+        {
+          "key": "documentation-03-many",
+          "title": "Many triangles",
+          "description": "Reuse one triangle in three independent Data contexts.",
+          "tags": [
+            "bindings",
+            "documentation",
+            "composition"
+          ],
+          "presentation": "content",
+          "sourceFiles": [
+            "triangle.py",
+            "triangle.js"
+          ],
+          "folder": "03-many"
+        },
+        {
+          "key": "documentation-04-reuse",
+          "title": "Triangle in another page",
+          "description": "Import the same triangle in another page and Data context.",
+          "tags": [
+            "bindings",
+            "documentation",
+            "composition"
+          ],
+          "presentation": "content",
+          "sourceFiles": [
+            "triangle.py",
+            "triangle.js"
+          ],
+          "folder": "04-reuse"
+        }
+      ]
+    }
+  ]
+}

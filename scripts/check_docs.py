@@ -42,8 +42,9 @@ def main():
             lessons[f"{prefix}/{example['folder']}.html"] = example['key']
             count += 1
     playground = {'playgrounds/index.html', *(f'playgrounds/{key}/index.html' for key in lessons.values())}
+    documentation = {'documentation/index.html', 'documentation/triangle/index.html', 'documentation/many/index.html'}
     actual = {str(p.relative_to(site)) for p in site.rglob('*.html')}
-    assert actual == expected | playground, f'Public page coverage differs: {actual ^ (expected | playground)}'
+    assert actual == expected | playground | documentation, f'Public page coverage differs: {actual ^ (expected | playground | documentation)}'
     parsed = {}
     for relative in actual:
         p = site / relative
