@@ -16,7 +16,7 @@ ENVIRONMENTS = [
       for name in ("catalog", "asqueel-catalog", "cached-trial-catalog", "selection-trial-catalog",
                    "chart-reports-catalog", "system-monitor-catalog")),
     *((PACKAGE / "trials" / name / "catalog.json", PACKAGE / "trials" / name / "pages")
-      for name in ("page_store", "chat_base", "kajenn_db", "ai")),
+      for name in ("page_store", "chat_base", "kajenn_db", "ai", "terminal")),
 ]
 
 

@@ -1,0 +1,7 @@
+{
+  "key": "terminal-lessons",
+  "title": "Terminal",
+  "order": 0,
+  "catalog": "catalog.json",
+  "group": "server-demos"
+}
