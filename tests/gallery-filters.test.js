@@ -10,7 +10,7 @@ const ENDPOINT_USE = /@endpoint|registerEndpoint|@upload|registerUpload|@source|
 const environments = [
     ...['catalog', 'asqueel-catalog', 'cached-trial-catalog', 'selection-trial-catalog', 'chart-reports-catalog', 'system-monitor-catalog']
         .map(name => [join(root, `base/${name}.json`), join(root, 'base/pages')]),
-    ...['page_store', 'chat_base', 'kajenn_db', 'ai'].map(name => [join(root, `trials/${name}/catalog.json`), join(root, `trials/${name}/pages`)]),
+    ...['page_store', 'chat_base', 'kajenn_db', 'ai', 'terminal'].map(name => [join(root, `trials/${name}/catalog.json`), join(root, `trials/${name}/pages`)]),
 ];
 
 // The environment catalogues of this package hold Python pages only, so they are read, not built.

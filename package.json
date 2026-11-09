@@ -15,7 +15,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@gramlot/gramlot": ">=0.3.35"
+    "@gramlot/gramlot": ">=0.3.36"
   },
   "devDependencies": {
     "@genrojs/bag": ">=0.11.0",

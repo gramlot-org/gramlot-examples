@@ -1,0 +1,25 @@
+{
+  "environment": "terminal",
+  "families": [
+    {
+      "key": "terminal-lessons",
+      "title": "Terminal",
+      "group": "server-demos",
+      "folder": "94-terminal",
+      "examples": [
+        {
+          "key": "terminal-01",
+          "title": "Echo and local shell",
+          "description": "A terminal component connected to @terminal sessions of the PageStore: an echo session and, in development, a local shell.",
+          "tags": [
+            "terminal",
+            "xterm",
+            "shell",
+            "socket"
+          ],
+          "folder": "01-sessions"
+        }
+      ]
+    }
+  ]
+}

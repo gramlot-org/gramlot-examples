@@ -22,7 +22,9 @@ test('documentation tools have no extra inspector and retain the full collection
     const fixture = `export function buildGallery() {
         const entries=[{key:'text',title:'Text'},{key:'typst_editor',title:'Typst'},
             {key:'visual_source',title:'Visual editor',presentation:'tool'}];
-        return {families:[{examples:entries}],routes:Object.fromEntries(entries.map(e=>[e.key,
+        // The documentation gallery pages exported for the core manual.
+        const documentation=['documentation-01-name','documentation-02-triangle','documentation-03-many'];
+        return {families:[{examples:entries}],routes:Object.fromEntries([...entries.map(e=>e.key),...documentation].map(key=>[key,
             {page:${JSON.stringify(pageUrl)},logic:${JSON.stringify(logicUrl)}}])), assets:{},
             collections:['layout'].map(name=>({module:'/collections/'+name+'/index.js',grammar:{grammar:{name}}}))};
     }`;

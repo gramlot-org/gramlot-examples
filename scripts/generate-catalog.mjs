@@ -10,12 +10,12 @@ const targets = [
     {catalog:'documentation_gallery/catalog.json', pages:'documentation_gallery/pages'},
     ...['catalog.json', 'asqueel-catalog.json', 'cached-trial-catalog.json', 'selection-trial-catalog.json', 'chart-reports-catalog.json', 'chart-types-catalog.json']
         .map(catalog => ({catalog:`base/${catalog}`, pages:'base/pages'})),
-    ...['page_store', 'chat_base', 'kajenn_db', 'ai'].map(name => ({catalog:`trials/${name}/catalog.json`, pages:`trials/${name}/pages`})),
+    ...['page_store', 'chat_base', 'kajenn_db', 'ai', 'terminal'].map(name => ({catalog:`trials/${name}/catalog.json`, pages:`trials/${name}/pages`})),
 ];
 const environments = new Map([
     ['base/chart-reports-catalog.json','chart-reports'], ['base/chart-types-catalog.json','chart-types'], ['base/catalog.json','base'], ['base/asqueel-catalog.json','base-asqueel'],
     ['base/cached-trial-catalog.json','asqueel-only'], ['base/selection-trial-catalog.json','selection-trial'],
-    ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'], ['trials/ai/catalog.json','ai'],
+    ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'], ['trials/ai/catalog.json','ai'], ['trials/terminal/catalog.json','terminal'],
 ]);
 // Common catalogues of separate galleries: they replace the package catalogue (galleryCatalogs).
 const commons = new Set(['chart_gallery/catalog.json', 'documentation_gallery/catalog.json']);
