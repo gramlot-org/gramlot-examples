@@ -1,12 +1,13 @@
 // Generate gallery catalogues from metadata stored beside lessons and families.
-import {existsSync, readdirSync, readFileSync, writeFileSync} from 'node:fs';
-import {dirname, join, relative, resolve, sep} from 'node:path';
+import {existsSync, readdirSync, readFileSync, realpathSync, statSync, writeFileSync} from 'node:fs';
+import {dirname, extname, isAbsolute, join, relative, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const pkg = fileURLToPath(new URL('../src/gramlot_examples/', import.meta.url));
 const targets = [
     {catalog:'catalog.json', pages:'pages'},
     {catalog:'chart_gallery/catalog.json', pages:'chart_gallery/pages'},
+    {catalog:'documentation_gallery/catalog.json', pages:'documentation_gallery/pages'},
     ...['catalog.json', 'asqueel-catalog.json', 'cached-trial-catalog.json', 'selection-trial-catalog.json', 'chart-reports-catalog.json', 'chart-types-catalog.json']
         .map(catalog => ({catalog:`base/${catalog}`, pages:'base/pages'})),
     ...['page_store', 'chat_base', 'kajenn_db', 'ai'].map(name => ({catalog:`trials/${name}/catalog.json`, pages:`trials/${name}/pages`})),
@@ -17,7 +18,7 @@ const environments = new Map([
     ['trials/page_store/catalog.json','pagestore'], ['trials/chat_base/catalog.json','chat'], ['trials/kajenn_db/catalog.json','kajenn-db'], ['trials/ai/catalog.json','ai'],
 ]);
 // Common catalogues of separate galleries: they replace the package catalogue (galleryCatalogs).
-const commons = new Set(['chart_gallery/catalog.json']);
+const commons = new Set(['chart_gallery/catalog.json', 'documentation_gallery/catalog.json']);
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
 const groups = new Set(read(resolve(pkg, 'groups.json')).map(group => group.key));
 function walk(dir) {
@@ -26,12 +27,25 @@ function walk(dir) {
         return entry.isDirectory() ? walk(p) : entry.isFile() && entry.name.endsWith('.json') && entry.name !== '_family.json' && entry.name !== '00-index.json' ? [p] : [];
     });
 }
-function validate(item, p) {
+function validate(item, p, sourceRoot) {
     if (typeof item.key !== 'string' || !item.key || typeof item.title !== 'string' || !item.title ||
         typeof item.description !== 'string' || !item.description || !Array.isArray(item.tags) ||
         item.tags.some(tag => typeof tag !== 'string' || !tag.trim()) || !Number.isInteger(item.order) || item.order < 0 ||
         (Object.hasOwn(item, 'requires') && (!Array.isArray(item.requires) || item.requires.some(need => typeof need !== 'string' || !need.trim()))) ||
         Object.hasOwn(item, 'explanation') || Object.hasOwn(item, 'folder')) throw new Error(`Invalid lesson metadata: ${p}`);
+    if (Object.hasOwn(item, 'sourceFiles')) {
+        if (!Array.isArray(item.sourceFiles) || !item.sourceFiles.length || item.sourceFiles.some(name => typeof name !== 'string') ||
+            new Set(item.sourceFiles).size !== item.sourceFiles.length) throw new Error(`Invalid sourceFiles: ${p}`);
+        const root = realpathSync(sourceRoot);
+        for (const name of item.sourceFiles) {
+            if (!name || name.includes('\\') || isAbsolute(name) || name.split('/').includes('..')) throw new Error(`Invalid sourceFiles path: ${p}`);
+            const file = realpathSync(join(root, name));
+            const rel = relative(root, file);
+            if (!rel || rel.startsWith(`..${sep}`) || isAbsolute(rel) || !statSync(file).isFile() || !['.py', '.js'].includes(extname(file))) {
+                throw new Error(`Invalid sourceFiles path: ${p}`);
+            }
+        }
+    }
     const stem = p.slice(0, -5);
     for (const ext of ['.py','.md']) if (!existsSync(stem + ext)) throw new Error(`Missing ${ext} for ${p}`);
 }
@@ -47,7 +61,7 @@ for (const {catalog,pages} of targets) {
             (Object.hasOwn(family,'group') && !groups.has(family.group)) ||
             (Object.hasOwn(family,'public') && family.public !== false)) throw new Error(`Invalid family metadata: ${config}`);
         const examples=walk(folder).map(p=>{
-            const item=read(p);validate(item,p);
+            const item=read(p);validate(item,p,dirname(resolve(pkg,catalog)));
             const {order,catalogued,navigation,...metadata}=item;
             return {order, catalogued:catalogued !== false, metadata:{...metadata,folder:relative(folder,p.slice(0,-5)).split(sep).join('/')}};
         });

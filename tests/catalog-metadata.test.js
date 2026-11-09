@@ -7,6 +7,7 @@ const root = 'src/gramlot_examples';
 const targets = [
     ['catalog.json','pages'],
     ['chart_gallery/catalog.json','chart_gallery/pages'],
+    ['documentation_gallery/catalog.json','documentation_gallery/pages'],
     ...['catalog.json','asqueel-catalog.json','cached-trial-catalog.json','selection-trial-catalog.json'].map(name=>[`base/${name}`,'base/pages']),
     ...['page_store','chat_base','kajenn_db','ai'].map(name=>[`trials/${name}/catalog.json`,`trials/${name}/pages`]),
 ];
@@ -39,7 +40,7 @@ test('catalogue generation uses lesson files, detects drift and requires a lesso
     copyFileSync('scripts/generate-catalog.mjs',join(base,'scripts/generate-catalog.mjs'));
     mkdirSync(join(base,'src/gramlot_examples'),{recursive:true});
     copyFileSync('src/gramlot_examples/groups.json',join(base,'src/gramlot_examples/groups.json'));
-    const families=[['pages','catalog.json'],['chart_gallery/pages','catalog.json'],['base/pages','catalog.json'],['base/pages','asqueel-catalog.json'],['base/pages','cached-trial-catalog.json'],['base/pages','selection-trial-catalog.json'],['base/pages','chart-reports-catalog.json'],['base/pages','chart-types-catalog.json'],...['page_store','chat_base','kajenn_db','ai'].map(n=>[`trials/${n}/pages`,'catalog.json'])];
+    const families=[['pages','catalog.json'],['chart_gallery/pages','catalog.json'],['documentation_gallery/pages','catalog.json'],['base/pages','catalog.json'],['base/pages','asqueel-catalog.json'],['base/pages','cached-trial-catalog.json'],['base/pages','selection-trial-catalog.json'],['base/pages','chart-reports-catalog.json'],['base/pages','chart-types-catalog.json'],...['page_store','chat_base','kajenn_db','ai'].map(n=>[`trials/${n}/pages`,'catalog.json'])];
     for(const [i,[pages,catalog]] of families.entries()) {
         const dir=join(base,'src/gramlot_examples',pages,`family-${i}`);mkdirSync(dir,{recursive:true});
         writeFileSync(join(dir,'_family.json'),JSON.stringify({key:`family-${i}`,title:'Family',order:i,catalog}));
@@ -52,6 +53,12 @@ test('catalogue generation uses lesson files, detects drift and requires a lesso
     const changed=read(metadata);changed.title='Changed title';writeFileSync(metadata,JSON.stringify(changed));
     assert.notEqual(run('--check').status,0);assert.equal(run().status,0);
     assert.equal(read(join(base,'src/gramlot_examples/catalog.json')).families[0].examples[0].title,'Changed title');
+    changed.sourceFiles = ['../outside.py']; writeFileSync(metadata, JSON.stringify(changed));
+    assert.notEqual(run().status, 0);
+    changed.sourceFiles = ['triangle.py']; writeFileSync(metadata, JSON.stringify(changed));
+    writeFileSync(join(base, 'src/gramlot_examples/triangle.py'), 'def triangle(): pass');
+    assert.equal(run().status, 0);
+    assert.deepEqual(read(join(base,'src/gramlot_examples/catalog.json')).families[0].examples[0].sourceFiles, ['triangle.py']);
     rmSync(join(base,'src/gramlot_examples/pages/family-0/01-example.md'));
     const missing=run('--check');assert.notEqual(missing.status,0);assert.match(missing.stderr,/Missing \.md/);
 });

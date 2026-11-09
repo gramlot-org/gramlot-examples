@@ -64,4 +64,17 @@ await buildDirectory({pages: {index: typstPage}, output: join(output, 'typst_edi
 await buildDirectory({pages: {index: visualPage}, output: join(output, 'visual_source'),
     assets: copied, collections});
 
+// The core manual embeds these pages across origins. Export the actual Page modules
+// without a gallery wrapper or an HTTP session; their companion CSS travels with them.
+const documentation = join(root, 'src/gramlot_examples/documentation_gallery');
+const documentationGallery = buildGallery({catalogs: [[join(documentation, 'catalog.json'), join(documentation, 'pages')]]});
+await buildDirectory({
+    pages: {
+        index: documentationGallery.routes['documentation-01-name'].page,
+        triangle: documentationGallery.routes['documentation-02-triangle'].page,
+        many: documentationGallery.routes['documentation-03-many'].page,
+    },
+    output: join(root, 'build/docs-source/_extra/documentation'),
+});
+
 console.log(`Built ${families.reduce((count, family) => count + family.examples.length, 0)} manual playgrounds.`);

@@ -18,7 +18,7 @@ from kajenn import AsgiServer
 from kajenn.config.templates import DefaultConfiguration
 from kajenn_db.asqueel import AsqueelDbHandler
 from public_database import configure, catalogs, wire_pages, customer_model
-from galleries import GALLERY, declare_applications, stage_chart_gallery
+from galleries import GALLERY, declare_applications, stage_chart_gallery, stage_documentation_gallery
 
 
 def trust_container_proxy():
@@ -52,8 +52,10 @@ def main():
     with TemporaryDirectory(prefix='gramlot-mobile-gallery-') as temporary:
         root = Path(temporary) / GALLERY
         chart_root = Path(temporary) / 'chart_gallery'
+        documentation_root = Path(temporary) / 'documentation_gallery'
         root.mkdir()
         chart_root.mkdir()
+        documentation_root.mkdir()
         resources = stage(root, page_catalogs, f'/{GALLERY}',
                           serverless_download_url='/downloads/gramlot-gallery-serverless.zip',
                           remote_edit=False, modules=[registration])
@@ -64,13 +66,15 @@ def main():
         resources.update({module_path + path: resource for path, resource in module.items()})
         wire_pages(root)
         chart_resources = stage_chart_gallery(chart_root)
+        documentation_resources = stage_documentation_gallery(documentation_root)
         class Site(DefaultConfiguration):
             def applications_section(self, cfg):
                 cfg.databases(handler_class=AsqueelDbHandler).database(
                     code='default', source=customer_model())
                 declare_applications(cfg, gallery_class=SelectionTrialApplication, gallery_pages=root,
                                      gallery_assets=resources, chart_pages=chart_root,
-                                     chart_assets=chart_resources)
+                                     chart_assets=chart_resources, documentation_pages=documentation_root,
+                                     documentation_assets=documentation_resources)
 
         AsgiServer(config=Site).serve(host=args.host, port=args.port)
 

@@ -1,8 +1,8 @@
 import {collections} from './collections.js';
 /** Node integration: provide original example text to the browser-safe gallery UI. */
 import {readFileSync} from 'node:fs';
-import {join} from 'node:path';
-import {availableFilters, buildGallery, navigationDirectory} from '../index.js';
+import {basename, extname, join} from 'node:path';
+import {availableFilters, buildGallery, navigationDirectory, resolveSourceFiles} from '../index.js';
 import {GalleryPage} from './gallery-page.js';
 
 /** An environment subclass sets `catalogs`, the pairs `[catalog.json, pages folder]` of `buildGallery`. */
@@ -25,18 +25,30 @@ export class Page extends GalleryPage {
 
     static get families() {
         const {families, routes} = buildGallery({catalogs: this.catalogs});
-        return families.map(({key, title, path, examples}) => {
+        return families.map(({key, title, path, examples, sourceRoot}) => {
             const read = name => readFileSync(join(path, name), 'utf8');
             return {
                 key, title, get readme() { return read('README.md'); },
-                examples: examples.map(example => ({
-                    key: example.key, presentation: example.presentation, title: example.title, description: example.description, folder: example.folder, frameUrl: routes[example.key].url,
-                    get readme() { return read(`${example.folder}.md`); },
-                    get source() { return read(`${example.folder}.js`); },
-                    // The page module shows its own Logic; only a companion NN_name_aux.js is shown apart.
-                    get logic() { return routes[example.key].logic === routes[example.key].page
-                        ? null : readFileSync(routes[example.key].logic, 'utf8'); },
-                })),
+                examples: examples.map(example => {
+                    const item = {
+                        key: example.key, presentation: example.presentation, title: example.title,
+                        description: example.description, folder: example.folder, frameUrl: routes[example.key].url,
+                        get readme() { return read(`${example.folder}.md`); },
+                        get source() { return read(`${example.folder}.js`); },
+                        // Only a companion NN_name_aux.js is shown apart from the page module.
+                        get logic() { return routes[example.key].logic === routes[example.key].page
+                            ? null : readFileSync(routes[example.key].logic, 'utf8'); },
+                    };
+                    if (Object.hasOwn(example, 'sourceFiles')) Object.defineProperty(item, 'sourceFiles', {
+                        enumerable: true,
+                        get() {
+                            return resolveSourceFiles(sourceRoot, example.sourceFiles)
+                                .filter(path => extname(path) === '.js')
+                                .map(path => ({name: basename(path), content: readFileSync(path, 'utf8')}));
+                        },
+                    });
+                    return item;
+                }),
             };
         });
     }

@@ -1,0 +1,16 @@
+{
+  "key": "documentation-04-reuse",
+  "title": "Triangle in another page",
+  "description": "Import the same triangle in another page and Data context.",
+  "tags": [
+    "bindings",
+    "documentation",
+    "composition"
+  ],
+  "order": 4,
+  "presentation": "content",
+  "sourceFiles": [
+    "triangle.py",
+    "triangle.js"
+  ]
+}

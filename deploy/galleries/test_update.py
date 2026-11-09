@@ -133,7 +133,7 @@ class UpdaterTests(unittest.TestCase):
     def test_galleries_are_mounted_and_earlier_links_redirected(self):
         here=Path(__file__).parent
         config=(here/'nginx.conf').read_text()
-        assets='location ~ ^/((gallery|chart_gallery)/(assets|gallery|themes)|assets|themes)/'
+        assets='location ~ ^/((gallery|chart_gallery|documentation_gallery)/(assets|gallery|themes)|assets|themes)/'
         self.assertEqual(config.count(assets),2)
         self.assertEqual(config.count('location /pages/ { return 301 /gallery$request_uri; }'),2)
         self.assertEqual(config.count('location /mobile-application/ { return 301 /gallery$request_uri; }'),1)

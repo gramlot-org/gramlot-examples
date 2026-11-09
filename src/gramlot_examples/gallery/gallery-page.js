@@ -204,6 +204,10 @@ export class GalleryPage extends IndexPage {
             codepane.contentPane({title: 'logic.js', pageName: 'logic', id: `logic-panel-${key}`})
                 .pre({tabindex: 0}).code(example.logic, {class: 'language-javascript', id: `logic-${key}`});
         }
+        if (Object.hasOwn(example, 'sourceFiles')) example.sourceFiles.forEach((file, index) => {
+            codepane.contentPane({title: file.name, pageName: `source${index}`})
+                .pre({tabindex: 0}).code(file.content, {class: 'language-javascript'});
+        });
     }
 }
 

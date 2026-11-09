@@ -32,7 +32,32 @@ function readCatalog(catalog, pages, common) {
             }
             checkRequires(example.requires, `${catalog}: ${example.key}`);
         }
-        return {...family, path: join(pages, family.folder)};
+        const entry = {...family, path: join(pages, family.folder)};
+        if (family.examples.some(example => Object.hasOwn(example, 'sourceFiles'))) {
+            entry.sourceRoot = realpathSync(dirname(catalog));
+            for (const example of family.examples) if (Object.hasOwn(example, 'sourceFiles')) {
+                resolveSourceFiles(entry.sourceRoot, example.sourceFiles);
+            }
+        }
+        return entry;
+    });
+}
+
+/** Resolve supplementary code paths inside the catalogue directory. */
+export function resolveSourceFiles(root, names) {
+    if (!Array.isArray(names) || names.length === 0 || names.some(name => typeof name !== 'string') || new Set(names).size !== names.length) {
+        throw new Error('sourceFiles must be a non-empty list of distinct paths');
+    }
+    return names.map(name => {
+        if (!name || name.includes('\\') || isAbsolute(name) || name.split('/').includes('..')) {
+            throw new Error('sourceFiles paths must be relative to the catalogue directory');
+        }
+        const path = realpathSync(join(root, name));
+        const rel = relative(root, path);
+        if (!rel || rel.startsWith(`..${sep}`) || isAbsolute(rel) || !statSync(path).isFile() || !['.py', '.js'].includes(extname(path))) {
+            throw new Error(`Invalid sourceFiles path: ${name}`);
+        }
+        return path;
     });
 }
 
@@ -201,6 +226,14 @@ export function buildGallery({catalogs = []} = {}) {
             const logic = [join(folder, `${example.folder}_aux.js`), page].find(path => existsSync(path));
             routes[example.key] = {page, stylesheet: existsSync(stylesheet) ? stylesheet : null, logic, url: `pages/${family.folder}/${example.folder}`};
             if (Object.hasOwn(example, 'presentation')) routes[example.key].presentation = example.presentation;
+            if (Object.hasOwn(example, 'sourceFiles')) {
+                for (const source of resolveSourceFiles(family.sourceRoot, example.sourceFiles)) {
+                    if (extname(source) !== '.js') continue;
+                    const url = '/' + relative(family.sourceRoot, source).split(sep).join('/');
+                    if (assets[url] && assets[url].file !== source) throw new Error(`Duplicate sourceFiles asset: ${url}`);
+                    assets[url] = {file: source, type: mediaType(source, true)};
+                }
+            }
             for (const suffix of SUFFIXES) {
                 const source = join(folder, `${example.folder}${suffix}`);
                 if (existsSync(source)) assets[`/pages/${family.folder}/${relative(folder,source).split(sep).join('/')}`] = {file: source, type: mediaType(source)};
