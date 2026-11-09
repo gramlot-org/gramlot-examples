@@ -51,8 +51,9 @@ const galleryResult = await build({entryPoints: [fileURLToPath(new URL('browser/
         plugin.onResolve({filter:/^@gramlot\/collections\/(layout|tree)$/},args=>({path:args.path,external:true}));
     }}]});
 Object.assign(result.metafile.inputs,galleryResult.metafile.inputs);
-// Copy prepared browser resources byte-for-byte to preserve their fingerprints.
-const collectionNames = ['inputs','layout','tree','grid','chat','editors','typst','grouplets','uploads','charts','audio','menu-trial'];
+// Copy prepared browser resources byte-for-byte to preserve their fingerprints. typst is outside the standard set
+// (gramlot-org/gramlot#84): its lesson declares it in Page.gramlots and the host serves it from the core.
+const collectionNames = ['inputs','layout','tree','grid','chat','editors','grouplets','uploads','charts','audio','menu-trial'];
 const artifacts = new Map(collectionNames.map(name => [name, name === 'menu-trial'
     ? fileURLToPath(new URL('../src/gramlot_examples/collections/menu_trial/', import.meta.url))
     : join(dirname(require.resolve('@gramlot/gramlot/runtime')), 'components', name)]));

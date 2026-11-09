@@ -1,7 +1,10 @@
 from gramlot import Page as BasePage
+from gramlot.collections.typst import mygramlot as typst
 
 
 class Page(BasePage):
+    gramlots = [typst]
+
     def main(self, root):
         main_content = root.main(datapath="typstDemo", padding="24px", class_="example-page stack")
         split = main_content.div(class_="grid typst-workbench")

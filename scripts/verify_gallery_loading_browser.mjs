@@ -30,7 +30,7 @@ for (const engine of (process.env.ENGINES === "chromium" ? [chromium] : process.
      assert.ok(resources.some(r=>r.url.includes('/inputs/')));
      assert.ok(resources.some(r=>r.url.includes('/layout/')));
      assert.ok(resources.some(r=>r.url.includes('/editors/')));
-     assert.ok(resources.some(r=>r.url.includes('/typst/')));
+     assert.ok(!resources.some(r=>r.url.includes('/typst/')), 'typst loads only on pages that declare it');
      assert.ok(resources.every(r=>!/(?:code-mirror-engine|jodit-engine|prose-mirror-engine|typst-client)-/.test(r.url)), 'ordinary pages do not fetch external engines');
     }
     if(engine===chromium) assert.ok(frames[1].some(r=>r.transfer===0 && r.decoded>0),'collections reused from browser cache');

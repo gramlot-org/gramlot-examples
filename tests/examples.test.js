@@ -12,8 +12,8 @@ import {JSDOM, VirtualConsole} from 'jsdom';
 const fromExamples = createRequire(new URL('../package.json', import.meta.url));
 const {Gramlot} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot')).href);
 const {GramlotFileServer} = await import(pathToFileURL(fromExamples.resolve('@gramlot/gramlot/server')).href);
-const {standardCollectionAssets} = await import('@gramlot/gramlot/server');
-const assets = standardCollectionAssets();
+const {collectionAssets} = await import('@gramlot/gramlot/server');
+const assets = collectionAssets();
 const standard = new GramlotFileServer('.').collections;
 await registerCollectionModules(Object.fromEntries(standard.map(({name,module}) => [
     '@gramlot/collections/'+name, assets.find(item => item.url === module).file.href])));

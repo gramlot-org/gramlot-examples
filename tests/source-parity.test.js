@@ -35,7 +35,7 @@ from datetime import date, time
 from decimal import Decimal
 from gramlot import GramlotBuilder
 from gramlot_examples.gallery.collections import collections
-from gramlot.collection import standard_collections
+from gramlot.collection import collection_graph, page_collections, standard_collections
 from gramlot_examples.gallery.guided_demo import guided_demo
 
 def normalize(v):
@@ -51,11 +51,18 @@ def source(bag):
     return [dict(tag=n.node_tag.lower() if n.node_tag else n.label, attrs=normalize(n.attr),
                  value=source(n.value) if hasattr(n.value, 'nodes') else normalize(n.value)) for n in bag.nodes]
 
-b=GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in (*standard_collections(), *collections())])
+def builder(declared=()):
+    # The standard set, the gallery additions and the collections the page declares in gramlots (typst).
+    selected = collection_graph((*standard_collections(), *collections(), *declared))
+    return GramlotBuilder(collections=[json.loads(c.verify()[c.grammar]) for c in selected])
+
 options = None
-if sys.argv[1] == 'guide': guided_demo(b.root)
+if sys.argv[1] == 'guide':
+    b=builder()
+    guided_demo(b.root)
 else:
     spec=importlib.util.spec_from_file_location('example', sys.argv[1]); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    b=builder(page_collections(mod.Page))
     mod.Page().main(b.root)
     page = mod.Page
     options = dict(title=page.title, devices=list(page.devices), locale=page.locale, timeZone=page.time_zone, css=list(page.css))
@@ -63,12 +70,16 @@ print(json.dumps(dict(source=source(b.source), options=options)))
 `;
 for (const example of [...catalog.families.flatMap(family => family.examples.map(item => ({...item, family: family.folder}))), {key: 'guide'}]) {
     test(`${example.key}: Python and JavaScript author equivalent Source and page options`, async () => {
-        const b = new GramlotBuilder(null, {collections: new GramlotFileServer(root, {collections}).collections.map(item => item.grammar)});
+        const server = new GramlotFileServer(root, {collections});
+        // The standard set, the gallery additions and the collections the page declares in gramlots (typst).
+        const builder = (PageClass = null) => new GramlotBuilder(null, {collections:
+            (PageClass ? server.pageCollections(PageClass) : server.collections).map(item => item.grammar)});
         const path = example.key === 'guide' ? 'guide' : `src/gramlot_examples/pages/${example.family}/${example.folder}.py`;
-        let options = null;
-        if (path === 'guide') guidedDemo(b.root);
+        let options = null, b;
+        if (path === 'guide') { b = builder(); guidedDemo(b.root); }
         else {
             const {Page} = await import(new URL(`../src/gramlot_examples/pages/${example.family}/${example.folder}.js`, import.meta.url));
+            b = builder(Page);
             // The Python main is synchronous; so is the JavaScript main (no dynamic import of a library inside it).
             assert.equal(Page.prototype.main.constructor.name, 'Function', 'main is not async');
             new Page().main(b.root);
