@@ -25,6 +25,11 @@ test('basic pages see all environment components and metadata descriptors',async
  assert.deepEqual(server.pageCollections(basic).map(c=>c.name).sort(),server.collections.map(c=>c.name).sort());
  assert.deepEqual(server.pageCollections(await server.resolvePage('00-index')).map(c=>c.name).sort(),server.collections.map(c=>c.name).sort());
  assert.deepEqual(GalleryPage.gramlots,collections);
+ // typst is outside the standard set (gramlot-org/gramlot#84): only its lesson declares it.
+ assert.ok(!server.collections.some(c=>c.name==='typst'));
+ const typst=await server.resolvePage('06-editors/05-typst');
+ assert.deepEqual(typst.gramlots.map(c=>c.name),['typst']);
+ assert.ok(server.pageCollections(typst).some(c=>c.name==='typst'));
  const gallery=buildGallery();
  for(const collection of gallery.collections)assert.equal(gallery.assets[`/gallery/dist/${collection.name}/descriptor.js`].type,'text/javascript');
 });

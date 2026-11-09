@@ -4,6 +4,9 @@
 
 CodeMirror and `typstPreview` share the same Data string. The optional `typst`
 collection includes a browser Worker, WASM compiler/renderer and local fonts.
+It is outside the standard set, so this page declares it in `gramlots`
+(`gramlot.collections.typst` in Python, `@gramlot/gramlot/collections/typst` in
+JavaScript); pages that do not declare it never load the compiler.
 Source and preview sit side by side on a wide screen and stack on a narrow one.
 SVG and PDF come from the current draft; a syntax error disables download and
 shows the compiler diagnostic. The same page can be exported for serverless use.

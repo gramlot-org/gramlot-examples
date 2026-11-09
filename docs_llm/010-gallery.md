@@ -66,6 +66,10 @@ logo and the search field when at least two filters are available.
 Kept per viewer in `localStorage`; an unavailable saved label falls back to the first filter.
 A static export whose `navigation_section` ignores `filter` lists everything.
 
+<a id="ge-010-013"></a>
+
+## 013 · Groups at the root of the navigation
+
 Root groups: `groups.json` (beside the common `catalog.json`) lists `key`, `title`, `description`
 in order: Fundamentals, Fields and inputs, Data, logic and RPC, Layout and menus, Grid, Charts,
 Editors and tools, Composition (tutorials), Database demos, Real-time, server and AI demos (demos).
@@ -749,7 +753,7 @@ galleries may serve the same artifact: Python server execution is not embedded i
 the download; the serverless gallery uses the JavaScript equivalents and browser
 Workers. Its named endpoints execute locally, without a Python or Node server.
 
-The public [Python gallery](https://gallery-py.gramlot.dev/gallery/) and [Node gallery](https://gallery-js.gramlot.dev/gallery/) offer the same offline archive. Each host also serves `/chart_gallery/` and, at `/`, a page with one tab per gallery (§017); the archive contains the main gallery. Successful stable releases of any of the four product repositories start a coordinated rebuild directly from CI after publication completes. Registry propagation is handled by bounded retries; there is no periodic release poll. Both galleries and the ZIP are verified before promotion; failure keeps the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
+The public [Python gallery](https://gallery-py.gramlot.dev/gallery/) and [Node gallery](https://gallery-js.gramlot.dev/gallery/) offer the same offline archive. Each host also serves `/chart_gallery/` and, at `/`, a page with one tab per gallery (§017); the archive contains the main gallery. A provisional updater in the hosting cluster checks the stable releases of the four product repositories every ten minutes and rebuilds both galleries and the ZIP when a new set of releases is ready. Both galleries are verified before promotion; failure restores the preceding deployment. [Deployment runbook](https://github.com/gramlot-org/gramlot-examples/blob/main/deploy/galleries/README.md).
 
 
 <a id="ge-010-205"></a>

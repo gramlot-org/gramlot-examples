@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PAGES = "src/gramlot_examples/pages"
 GUIDES = ("docs/030-using-the-gallery.md", "docs/035-feature-coverage.md", "docs/005-repository-map.md", "docs/020-mobile-modules.md", "docs/010-gallery.md")
 REPOSITORY = "https://github.com/gramlot-org/gramlot-examples/blob/main/"
+# A lesson link that starts with "/" names a path of the hosted gallery site.
+HOSTED_GALLERY = "https://gallery-py.gramlot.dev"
 
 
 def stage():
@@ -57,6 +59,8 @@ def stage():
         text = re.sub(r'<a id="([^"]+)"></a>', r'(\1)=', text)
         def link(match):
             label, url = match.groups()
+            if url.startswith("/"):
+                return f"[{label}]({HOSTED_GALLERY}{url})"
             path, separator, fragment = url.partition("#")
             if path.startswith(REPOSITORY):
                 path = path[len(REPOSITORY):]

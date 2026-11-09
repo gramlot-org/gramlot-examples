@@ -24,7 +24,7 @@ test('documentation tools have no extra inspector and retain the full collection
             {key:'visual_source',title:'Visual editor',presentation:'tool'}];
         return {families:[{examples:entries}],routes:Object.fromEntries(entries.map(e=>[e.key,
             {page:${JSON.stringify(pageUrl)},logic:${JSON.stringify(logicUrl)}}])), assets:{},
-            collections:['layout','typst'].map(name=>({module:'/collections/'+name+'/index.js',grammar:{grammar:{name}}}))};
+            collections:['layout'].map(name=>({module:'/collections/'+name+'/index.js',grammar:{grammar:{name}}}))};
     }`;
     const bundled = await build({stdin:{contents:script+'\nexport {writes, exports} from "test:capture";',
         resolveDir:fileURLToPath(new URL('../scripts/', import.meta.url)),sourcefile:'docs-export-fixture.mjs'},
@@ -42,7 +42,7 @@ test('documentation tools have no extra inspector and retain the full collection
     assert.ok(visual, 'Visual editor has its own standard exporter invocation');
     assert.equal(ordinary.pages.visual_source, undefined);
     assert.deepEqual(ordinary.collections.map(item=>item.grammar.grammar.name),['layout']);
-    assert.deepEqual(visual.collections.map(item=>item.grammar.grammar.name),['layout','typst']);
+    assert.deepEqual(visual.collections.map(item=>item.grammar.grammar.name),['layout']);
     assert.deepEqual(Object.keys(visual.pages),['index']);
     for (const [pagePath, expected] of [[ordinary.pages.text,['inspector','example','script']],
                                       [visual.pages.index,['example']]]) {
