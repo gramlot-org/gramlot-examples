@@ -1,4 +1,5 @@
 import {Bag, NavigationResolver} from '@gramlot/gramlot';
+import {GalleryState} from './gallery-state.js';
 
 const METHOD = 'navigation_section';
 
@@ -23,8 +24,6 @@ export class FilteredNavigationResolver extends NavigationResolver {
     }
 }
 
-const registries = new WeakMap();
-
 const reportError = (renderer, message) => {
     const status = renderer.destination.ownerDocument.getElementById('gallery-load-status');
     renderer.elements.get(status).node.setValue(message);
@@ -43,12 +42,13 @@ function installResolvers(renderer, navigation, filter) {
 }
 
 /** Install directory resolvers during page build, before the tree first renders. */
+// The resolvers and the request version belong to the gallery Source node (`_internal`), not to the module.
 export function initializeNavigation(renderer, root) {
-    const state = root.builder.data.getItem('galleryIndex');
+    const state = new GalleryState(root.rootBuilder);
     state.setItem('navigationOpen', true);
     state.setItem('settingsOpen', false);
     const registry = {resolvers: installResolvers(renderer, state.getItem('navigation'), null), version: 0};
-    registries.set(root, registry);
+    root._internal.galleryNavigation = registry;
     renderer.onDispose(root, () => { for (const resolver of registry.resolvers) resolver.abort(); });
 }
 
@@ -61,7 +61,7 @@ export function mountGalleryFilter(renderer, root, state) {
     if (labels.length < 2) return {dispose() {}};
     const window = renderer.destination.ownerDocument.defaultView;
     const key = `gramlot.gallery.filter:${window.location.pathname}`;
-    const registry = registries.get(root);
+    const registry = root._internal.galleryNavigation;
     let disposed = false;
     const apply = async label => {
         const version = ++registry.version;
@@ -83,13 +83,12 @@ export function mountGalleryFilter(renderer, root, state) {
     let saved = null;
     try { saved = window.localStorage.getItem(key); }
     catch (error) { if (error.name !== 'SecurityError') throw error; }
-    state.subscribe('gallery-filter', {any: event => {
-        if (event.node !== state.getNode('filter')) return;
+    const registration = state.watch('filter', () => {
         const label = state.getItem('filter');
         try { window.localStorage.setItem(key, label); }
         catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
         void apply(label);
-    }});
+    });
     if (labels.includes(saved) && saved !== state.getItem('filter')) state.setItem('filter', saved);
-    return {dispose() { disposed = true; state.unsubscribe('gallery-filter', {any: true}); }};
+    return {dispose() { disposed = true; registration.close(); }};
 }

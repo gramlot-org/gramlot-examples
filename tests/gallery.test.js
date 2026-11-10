@@ -973,3 +973,35 @@ test('single-page ignores an old Code response after switching lessons', {timeou
     assert.ok(f.get('code-e02'));
     assert.equal(f.get('code-e01'),null);
 });
+
+test('gallery modules reach galleryIndex by address after the branch is replaced', {timeout: galleryFixtureTimeout}, async t => {
+    const f = await setup(t);
+    f.navigation('e01').click(); await settle();
+    const data = f.app.data;
+    const storage = f.document.defaultView.localStorage;
+    // Restore, server reload or an inspector write replace the whole branch with equal content.
+    const replaced = data.getItem('galleryIndex').deepcopy();
+    data.setItem('galleryIndex', replaced);
+    await settle();
+    assert.equal(data.getItem('galleryIndex'), replaced);
+    // UI to Data to module: a settings control writes the new branch and the settings module follows it.
+    change(f, 'gallery-label-position', 'L');
+    assert.equal(replaced.getItem('labelPosition'), 'L');
+    assert.equal(storage.getItem('gramlot.gallery.settings:/py/index'), 'L');
+    change(f, 'index-theme', 'dark');
+    assert.equal(replaced.getItem('theme'), 'dark');
+    assert.equal(f.document.documentElement.getAttribute('data-theme'), 'dark');
+    // Module to Data to UI: a selection makes the modules write the new branch, and the UI follows it.
+    f.navigation('e02').click(); await settle();
+    assert.equal(replaced.getItem('active'), 'e02');
+    assert.equal(replaced.getItem('lessonKey'), 'e02');
+    assert.equal(replaced.getItem('featuresOpen'), false);
+    assert.equal(f.get('index-pages').hidden, false);
+    // Data to module: a Data write in the new branch switches the presentation mode.
+    data.setItem('galleryIndex.multipage', false); await settle(); await settle();
+    assert.equal(storage.getItem('gramlot.gallery.settings:/py/index:multipage'), 'false');
+    assert.ok(f.get('frame-single'));
+    assert.equal(f.get('frame-single').getAttribute('src'), 'e02');
+    assert.equal(f.get('index-pages').hidden, true);
+    assert.equal(f.get('gallery-single').hidden, false);
+});

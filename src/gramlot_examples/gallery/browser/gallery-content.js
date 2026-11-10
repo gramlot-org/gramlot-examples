@@ -1,9 +1,6 @@
 import {highlightCode, logicSource} from './code-highlight.js';
 import {renderReadme} from './markdown.js';
 
-// A rebuilt gallery can observe the same Source while its request is pending.
-const pending = new WeakMap();
-
 /** Load teaching content when its actual panel is visible, retaining it in Source. */
 export function mountGalleryContent(renderer, root) {
     const document = renderer.destination.ownerDocument;
@@ -41,10 +38,12 @@ export function mountGalleryContent(renderer, root) {
             const element = byId(targetId);
             return entries.get(entry.element) === entry && element && renderer.elements.get(element)?.node === target ? element : null;
         };
-        let request = pending.get(target);
+        // A rebuilt gallery can observe the same Source while its request is pending: the request
+        // belongs to the target Source node (`_internal`).
+        let request = target._internal.galleryContentRequest;
         if (!request) {
             request = renderer.binding.gramlot.src.remoteSource(target, 'lesson', {key: entry.key, view: entry.view});
-            pending.set(target, request);
+            target._internal.galleryContentRequest = request;
         }
         try {
             const mounted = await request;
@@ -58,7 +57,7 @@ export function mountGalleryContent(renderer, root) {
             const status = current().querySelector('[role="status"]');
             node(status).setValue('Could not load this content. Close and reopen the panel to retry.');
         } finally {
-            if (pending.get(target) === request) pending.delete(target);
+            if (target._internal.galleryContentRequest === request) delete target._internal.galleryContentRequest;
             entry.loading = false;
         }
     }
@@ -83,7 +82,7 @@ export function mountGalleryContent(renderer, root) {
             for (const [view, id] of [['description', `description-${panelKey}`], ['code', `code-tabs-${panelKey}`]]) {
                 const target = node(byId(id));
                 target.requests.inflight?.cancel();
-                pending.delete(target);
+                delete target._internal.galleryContentRequest;
                 for (const child of target.value.getNodes()) target.value.popNode(child.label);
                 const body = target.builder.wrapSource(target);
                 if (view === 'code') body.contentPane({title:'Code'}).p('Loading code…', {role:'status'});

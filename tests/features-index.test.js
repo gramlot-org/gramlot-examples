@@ -2,29 +2,35 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
-import {Bag, NavigationResolver} from '@gramlot/gramlot';
+import {Bag, Gramlot, GramlotBuilder, NavigationResolver} from '@gramlot/gramlot';
 import features from '../src/gramlot_examples/gallery/features.json' with {type:'json'};
 import catalog from '../src/gramlot_examples/catalog.json' with {type:'json'};
 import {mountFeatureProgress, markFeatureExampleSeen, openFeatureExample} from '../src/gramlot_examples/gallery/browser/gallery-features.js';
+import {GalleryState} from '../src/gramlot_examples/gallery/browser/gallery-state.js';
 
 const optionalCatalogs = [...['asqueel', 'selection-trial', 'cached-trial'].map(name => `base/${name}-catalog.json`), 'chart_gallery/catalog.json']
     .map(name => JSON.parse(readFileSync(new URL(`../src/gramlot_examples/${name}`, import.meta.url))));
 const entries = features.flatMap(group => group.features);
+// A real page: the gallery state is reached by address in its Data. Disposing `mounted` also
+// disposes the page, so a later fixture can reuse the same window and its session storage.
 function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window, catalogs = [catalog]) {
-    const state = new Bag();
+    if (!window.document.getElementById('gramlot-root')) window.document.body.innerHTML = '<main id="gramlot-root"></main>';
+    const builder = new GramlotBuilder(); builder.root.div({id:'gallery'});
+    const app = new Gramlot({document:window.document, transport:false}); app.src.startSource(builder.source);
+    const root = app.src.renderer.elements.get(window.document.getElementById('gallery')).node;
+    root._internal.indexContext = {disposed:false};
     const links = new Bag();
     for (const source of catalogs) for (const family of source.families) for (const item of family.examples) {
         links.setItem(item.key, null, {family:family.key, url:`pages/${family.folder}/${item.folder}`});
     }
-    state.setItem('featureExamples', links);
+    app.data.setItem('galleryIndex.featureExamples', links);
     const progress = new Bag();
     for (const feature of entries) if (feature.examples.some(key => links.getNode(key) !== null)) progress.setItem(feature.id, 'new');
-    state.setItem('featureProgress', progress);
-    const data = new Bag(); data.setItem('galleryIndex', state);
-    const root = {builder:{data}, _internal:{indexContext:{disposed:false}}};
-    const renderer = {destination:window.document.body, onDispose(){}};
-    const mounted = mountFeatureProgress(renderer, root, state);
-    return {window, state, progress, root, mounted};
+    app.data.setItem('galleryIndex.featureProgress', progress);
+    const state = new GalleryState(root.rootBuilder);
+    const owner = mountFeatureProgress(app.src.renderer, root, state);
+    const mounted = {dispose() { owner.dispose(); app.dispose(); }};
+    return {window, app, state, progress: app.data.getItem('galleryIndex.featureProgress'), root, mounted};
 }
 
 test('feature inventory references catalogue keys and keeps quarantined selectors out of the lesson path', () => {
