@@ -7,11 +7,11 @@ class Page(BasePage):
     def main(self, root):
         panel = root.div(class_="single-demo")
         fields = panel.div(class_="single-fields")
-        fields.input(type="number", value="^triangle.base", lbl="Base",
+        fields.input(type="number", value="^triangle.base", lbl="Base", lbl_position="L",
                      default=8, min=0, max=10)
-        fields.input(type="number", value="^triangle.height", lbl="Height",
+        fields.input(type="number", value="^triangle.height", lbl="Height", lbl_position="L",
                      default=6, min=0, max=10)
-        fields.input(type="color", value="^triangle.color", lbl="Color",
+        fields.input(type="color", value="^triangle.color", lbl="Color", lbl_position="L",
                      default="#3366cc")
         fields.dataFormula("triangle.area", "base * height / 2",
                            base="^triangle.base", height="^triangle.height", _init=True)
