@@ -21,7 +21,7 @@ function fixture(window = new JSDOM('', {url:'https://gallery.test/'}).window, c
     for (const feature of entries) if (feature.examples.some(key => links.getNode(key) !== null)) progress.setItem(feature.id, 'new');
     state.setItem('featureProgress', progress);
     const data = new Bag(); data.setItem('galleryIndex', state);
-    const root = {builder:{data}, indexContext:{disposed:false}};
+    const root = {builder:{data}, _internal:{indexContext:{disposed:false}}};
     const renderer = {destination:window.document.body, onDispose(){}};
     const mounted = mountFeatureProgress(renderer, root, state);
     return {window, state, progress, root, mounted};

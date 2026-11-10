@@ -87,10 +87,10 @@ export function mountGallery(renderer, root, inspector) {
         const mounted=await renderer.binding.gramlot.src.remoteSource(entry.pane,'index_panel',{selection});
         if(!mounted)throw new Error('Panel loading was cancelled');
     },onLoad(url,status){
-        if(root.indexContext.disposed)return;
-        if (status === 'ready') markFeatureExampleSeen(state, root.indexContext.entries.get(url).key);
+        if(index.disposed)return;
+        if (status === 'ready') markFeatureExampleSeen(state, index.entries.get(url).key);
         const active=state.getItem('active');
-        const loading=root.indexContext.entries.get(active)?.loading;
+        const loading=index.entries.get(active)?.loading;
         source('gallery-load-status').setValue(loading?'Loading page…':
             status==='error'&&(active===url||active===null)?'Could not load this page. Select it again to retry.':'');
     }});
