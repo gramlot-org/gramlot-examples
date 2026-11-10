@@ -41,6 +41,9 @@ const result = await build({
             export const Gramlot = window.gramlot.constructor;
             export const Bag = window.gramlot.data.constructor;
             export const GramlotBuilder = window.gramlot.src.builder.constructor;
+            // The inspector bridge exchanges Bags as TYTX text; the page's Bag class reads and writes it.
+            export const toTytx = bag => bag.toTytx('json');
+            export const fromTytx = text => Bag.fromTytx(text, 'json');
         `}));
     }}],
 });

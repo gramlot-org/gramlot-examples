@@ -29,7 +29,7 @@ or when you leave the field. Escape discards an unfinished edit.
 
 Unknown or ambiguous descriptions remain a draft on Source, leave Data unchanged,
 and prevent form acceptance. Matching ignores case. Use checkboxes for duplicate
-captions or captions containing commas. `_displayedValue` on the value node holds
+captions or captions containing commas. `_dv_displayedValue` on the value node holds
 the resolved descriptions; it is not the stored selection.
 
 ## Hierarchy

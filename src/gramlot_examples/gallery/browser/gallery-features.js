@@ -94,6 +94,7 @@ export function markFeatureExampleSeen(state, key) {
 /** Reuse the navigation Bag and its resolvers, then select through IndexPage Data. */
 export async function openFeatureExample(root, key) {
     const state = root.builder.data.getItem('galleryIndex');
+    const index = root._internal.indexContext;
     const example = state.getItem('featureExamples').getNode(key);
     if (example === null) throw new Error(`Example is not available in this gallery: ${key}`);
     state.setItem('featureRequest', key);
@@ -108,7 +109,7 @@ export async function openFeatureExample(root, key) {
             if (!group && node.attr.directory !== undefined && !url.startsWith('pages/' + node.attr.directory + '/')) continue;
             node.getValue(); // RemoteResolver returns the cached value and starts loading.
             if (node.resolver !== null) await node.resolver.loading;
-            if (root.indexContext.disposed) return null;
+            if (index.disposed) return null;
             const children = node.staticValue;
             if (children === null) continue;
             const found = await find(children.getNodes(), path);
@@ -117,7 +118,7 @@ export async function openFeatureExample(root, key) {
         return null;
     }
     const path = await find(state.getItem('navigation').getNodes(), '');
-    if (root.indexContext.disposed || state.getItem('featureRequest') !== key) return;
+    if (index.disposed || state.getItem('featureRequest') !== key) return;
     if (!path) throw new Error(`Example is not available in navigation: ${key}`);
     state.setItem('featuresOpen', false);
     state.setItem('navigationSelection', path);

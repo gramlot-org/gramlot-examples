@@ -192,7 +192,7 @@ test('every shared example displays exactly its exported Logic class, never the 
     assert.ok(shown > 0, 'The catalogue must exercise at least one Logic excerpt');
 });
 
-test('built frame agent observes the original Bags and releases its port', async () => {
+test('built frame agent serves live Data copies to a named connection and releases its port', async () => {
     const parent = new JSDOM('<iframe></iframe>', {url:'http://localhost/'});
     const window = parent.window.document.querySelector('iframe').contentWindow;
     parent.window.postMessage=()=>{};
@@ -204,7 +204,14 @@ test('built frame agent observes the original Bags and releases its port', async
     Object.defineProperty(window.document,'currentScript',{value:window.document.getElementById('frame-bootstrap'),configurable:true});
     const port=new window.EventTarget(),messages=[];
     let closed=false;
-    port.postMessage=message=>messages.push(message);port.start=()=>{};port.close=()=>{closed=true;};
+    port.postMessage=message=>messages.push(app.data.constructor.fromTytx(message,'json').asDict());port.start=()=>{};port.close=()=>{closed=true;};
+    // The panel side of the dataBinder protocol: one binder on the `data` branch of the page copies.
+    const send=message=>{
+        const wire=new app.data.constructor();
+        for (const [name,value] of Object.entries(message)) wire.setItem(name,value);
+        port.dispatchEvent(new window.MessageEvent('message',{data:wire.toTytx('json')}));
+    };
+    const binder=op=>messages.filter(m=>m.op===op&&m.binderId==='panel-data');
     try {
         app.data.setItem('name','Ada');
         const bundle=readFileSync(new URL('../src/gramlot_examples/gallery/dist/frame.js',import.meta.url),'utf8');
@@ -214,14 +221,18 @@ test('built frame agent observes the original Bags and releases its port', async
         Object.defineProperty(connect,'ports',{value:[port]});
         window.dispatchEvent(connect);
         await settle();
-        const snapshot=()=>messages.filter(m=>m.type==='snapshot').at(-1).snapshot;
-        assert.match(JSON.stringify(snapshot().data),/Ada/);
-        const id=snapshot().data.find(node=>node.label==='name').id;
+        send({op:'subscribe',binderId:'panel-data',path:'data'});
+        const [snapshot]=binder('snapshot');
+        const copy=snapshot.value.getNode('name');
+        assert.equal(copy.getValue(),'Ada');
+        assert.notEqual(snapshot.value,app.data,'the panel receives a copy, never the page Bag');
+        const id=copy.getAttr('_inspector').id;
         app.data.setItem('name','Grace');await settle();
-        assert.match(JSON.stringify(snapshot().data),/Grace/);
-        assert.equal(snapshot().data.find(node=>node.label==='name').id,id);
+        const change=binder('change').filter(m=>m.path==='name'&&m.evt==='upd_value').at(-1);
+        assert.equal(change.value,'Grace');
+        assert.equal(change.attr._inspector.id,id,'the copy keeps the identity of the observed node');
         assert.equal(window.document.querySelector('gramlot-tools-inspector'),null,'the frame hosts an agent, not a duplicate inspector UI');
-        app.dispose();assert.equal(closed,true);assert.equal(messages.at(-1).type,'closed');
+        app.dispose();assert.equal(closed,true);assert.equal(messages.at(-1).op,'closed');
     } finally {app.dispose();parent.window.close();}
 });
 
@@ -817,7 +828,7 @@ test('load indicator follows the active tab across background replies, closing a
     };
     const indicator = () => f.get('gallery-load-status').textContent;
     const close = key => {
-        const entry = f.root.indexContext.entries.get(key);
+        const entry = f.root._internal.indexContext.entries.get(key);
         entry.pane.parentBag.popNode(entry.pane.label);
     };
     f.navigation('e01').click(); f.navigation('e02').click();
@@ -931,14 +942,14 @@ test('single-page mode reuses the lesson shell and iframe and can return to mult
     assert.equal(f.get('preview-single'), preview);
     assert.equal(frame.getAttribute('src'), 'e02');
     assert.equal(f.get('index-pages').querySelectorAll('iframe').length, 0);
-    assert.equal(f.root.indexContext.entries.size, 1);
+    assert.equal(f.root._internal.indexContext.entries.size, 1);
     f.visible('description-single'); f.visible('codepane-single'); await settle();
     assert.ok(f.calls.some(call => call.name==='lesson' && call.key==='e02'));
     f.state.setItem('multipage', true); await settle(); await settle();
     assert.equal(f.get('frame-single'), null);
     assert.ok(f.get('frame-e02'));
     f.navigation('e01').click(); await settle();
-    assert.equal(f.root.indexContext.entries.size, 2);
+    assert.equal(f.root._internal.indexContext.entries.size, 2);
 });
 
 
