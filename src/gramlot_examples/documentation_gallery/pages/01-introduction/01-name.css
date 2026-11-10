@@ -1,6 +1,7 @@
 /* Keep the documentation examples light regardless of the system appearance. */
 :root {
   color-scheme: light;
+  --gramlot-field-height: 2.25rem;
   --gramlot-ink: #243449;
   --gramlot-background: #f7f8f5;
   --gramlot-surface: #fff;

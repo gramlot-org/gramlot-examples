@@ -1,6 +1,7 @@
 /* Keep the documentation examples light regardless of the system appearance. */
 :root {
   color-scheme: light;
+  --gramlot-field-height: 2.25rem;
   --gramlot-ink: #243449;
   --gramlot-background: #f7f8f5;
   --gramlot-surface: #fff;
@@ -19,3 +20,6 @@
 
 .single-demo{display:grid;grid-template-columns:minmax(130px, 200px) minmax(130px, 260px);align-items:center;gap:22px;max-width:510px;margin:0 auto;padding:18px;border:1px solid #c9d8e8;border-radius:12px;background:#f8fbff}.single-fields{display:grid;gap:8px;min-width:0}.single-fields .gramlot-labelbox[data-position]{gap:2px}.single-fields .label-box{font-size:12px;font-weight:650}.single-fields input[type=number]{width:100%;padding:5px 8px;border:1px solid #a9bfd6;border-radius:5px;font:inherit;color:#123d60}.single-fields input[type=color]{width:60px;max-width:100%;height:30px;padding:2px;border:1px solid #a9bfd6;border-radius:5px;background:#fff}.single-area{text-align:left;font-size:20px;font-weight:700}.single-svg{width:100%;height:auto;display:block;max-height:260px}@media(max-width:360px){.single-demo{grid-template-columns:1fr;gap:12px}.single-svg{max-height:180px}}
 @media(max-width:360px){.single-demo{grid-template-columns:minmax(85px,1fr) minmax(85px,1fr);gap:10px;padding:10px}.single-svg{max-height:180px}}
+
+/* Match the compact height of text fields. */
+input[type=color] { min-block-size: 2.25rem; }
