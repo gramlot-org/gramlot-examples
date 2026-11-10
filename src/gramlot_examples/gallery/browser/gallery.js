@@ -79,7 +79,7 @@ export function mountGallery(renderer, root, inspector) {
         settings.update(entry && !entry.loading && entry.code ? (state.getItem('multipage') ? entry.key : 'single') : null);
         if (entry && !entry.loading) markFeatureExampleSeen(state, entry.key);
         presentation.update(entries,active);inspector.update(entries,active);mobile.update(entries,active);guide?.update(entries,active);
-    },prepare,{state,async createEntry(entry){
+    },prepare,{state:'galleryIndex',async createEntry(entry){
         if (!state.getItem('multipage')) { await single.ensure(); return; }
         const key=entry.node.attr.key??entry.pane.label;
         entry.pane.setAttr({id:`panel-${key}`,class:'gallery-panel'});
