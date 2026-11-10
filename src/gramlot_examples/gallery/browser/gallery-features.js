@@ -1,18 +1,30 @@
 import {Bag} from '@gramlot/gramlot';
 import features from '../features.json' with {type:'json'};
+import {GalleryState} from './gallery-state.js';
 
 const entries = features.flatMap(group => group.features);
 const states = new Set(['new', 'seen', 'tried']);
+
+/** A new navigation Bag of the feature groups; once in Data it is read at its address. */
+function featureTreeBag() {
+    const tree = new Bag();
+    for (const group of features) {
+        const children = new Bag();
+        for (const feature of group.features) {
+            children.setItem(feature.id, null, {caption:feature.label, feature:feature.id});
+        }
+        tree.setItem(group.id, children, {caption:group.title});
+    }
+    return tree;
+}
 
 /** Data owns progress. Session storage only keeps its reload snapshot. */
 export function mountFeatureProgress(renderer, root, state) {
     const window = renderer.destination.ownerDocument.defaultView;
     const storageKey = `gramlot.gallery.features:${window.location.pathname}`;
-    let progress = state.getItem('featureProgress');
-    if (progress === null) {
-        progress = new Bag();
-        state.setItem('featureProgress', progress);
-    }
+    // Progress and the feature tree are Data sub-Bags: they are read at their address on each use.
+    const progress = () => state.getItem('featureProgress');
+    if (progress() === null) state.setItem('featureProgress', new Bag());
     state.setItem('featureStorageNotice', '');
     let saved = {};
     try {
@@ -23,30 +35,23 @@ export function mountFeatureProgress(renderer, root, state) {
         state.setItem('featureStorageNotice', 'Previous progress could not be restored. Current progress remains in page Data.');
     }
     for (const feature of entries) {
-        if (progress.getNode(feature.id) !== null && saved !== null && states.has(saved[feature.id])) progress.setItem(feature.id, saved[feature.id]);
+        if (progress().getNode(feature.id) !== null && saved !== null && states.has(saved[feature.id])) progress().setItem(feature.id, saved[feature.id]);
     }
-    const tree = new Bag();
-    for (const group of features) {
-        const children = new Bag();
-        for (const feature of group.features) {
-            children.setItem(feature.id, null, {caption:feature.label, feature:feature.id});
-        }
-        tree.setItem(group.id, children, {caption:group.title});
-    }
-    state.setItem('featureTree', tree);
+    state.setItem('featureTree', featureTreeBag());
+    const featureTree = () => state.getItem('featureTree');
     state.setItem('featureSelected', 'welcome');
-    state.subscribe('gallery-feature-selection', {any:event => {
-        if (event.node.label !== 'featureSelection') return;
+    const selection = state.watch('featureSelection', () => {
         const path = state.getItem('featureSelection');
-        state.setItem('featureSelected', path ? tree.getNode(path).attr.feature ?? 'welcome' : 'welcome');
-    }});
+        state.setItem('featureSelected', path ? featureTree().getNode(path).attr.feature ?? 'welcome' : 'welcome');
+    });
     const summarize = () => {
         const counts = {new:0, seen:0, tried:0};
-        for (const node of progress.getNodes()) if (states.has(node.value)) counts[node.value]++;
+        const tree = featureTree();
+        for (const node of progress().getNodes()) if (states.has(node.value)) counts[node.value]++;
         for (const group of features) {
             let seen = 0, available = 0;
             for (const feature of group.features) {
-                const value = progress.getItem(feature.id);
+                const value = progress().getItem(feature.id);
                 const known = states.has(value);
                 if (known) available++;
                 if (value === 'seen' || value === 'tried') seen++;
@@ -64,18 +69,18 @@ export function mountFeatureProgress(renderer, root, state) {
     };
     const persist = () => {
         summarize();
-        const snapshot = Object.fromEntries(progress.getNodes().map(node => [node.label, node.value]));
+        const snapshot = Object.fromEntries(progress().getNodes().map(node => [node.label, node.value]));
         try { window.sessionStorage.setItem(storageKey, JSON.stringify(snapshot)); }
         catch (error) {
             if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error;
             state.setItem('featureStorageNotice', 'Progress is kept in page Data, but this browser cannot save it for reload.');
         }
     };
-    progress.subscribe('gallery-feature-progress', {any:persist});
+    const progressChange = state.watch('featureProgress', persist);
     summarize();
     const dispose = () => {
-        progress.unsubscribe('gallery-feature-progress', {any:true});
-        state.unsubscribe('gallery-feature-selection', {any:true});
+        progressChange.close();
+        selection.close();
     };
     renderer.onDispose(root, dispose);
     return {dispose};
@@ -83,17 +88,15 @@ export function mountFeatureProgress(renderer, root, state) {
 
 /** Opening a lesson never claims that its behaviors were actually tried. */
 export function markFeatureExampleSeen(state, key) {
-    const progress = state.getItem('featureProgress');
     for (const feature of entries) {
-        if (feature.examples.includes(key) && progress.getItem(feature.id) === 'new') {
-            progress.setItem(feature.id, 'seen');
-        }
+        const address = `featureProgress.${feature.id}`;
+        if (feature.examples.includes(key) && state.getItem(address) === 'new') state.setItem(address, 'seen');
     }
 }
 
 /** Reuse the navigation Bag and its resolvers, then select through IndexPage Data. */
 export async function openFeatureExample(root, key) {
-    const state = root.builder.data.getItem('galleryIndex');
+    const state = new GalleryState(root.rootBuilder);
     const index = root._internal.indexContext;
     const example = state.getItem('featureExamples').getNode(key);
     if (example === null) throw new Error(`Example is not available in this gallery: ${key}`);

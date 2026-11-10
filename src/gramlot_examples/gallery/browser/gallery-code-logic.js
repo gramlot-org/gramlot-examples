@@ -1,23 +1,24 @@
+import {GalleryState} from './gallery-state.js';
+
 /** Python gallery source editing: drafts belong to Data, requests to the mounted panel. */
 export class GalleryCodeLogic {
     galleryCodeMount(node, {key}) {
         this.galleryCodeDocuments ??= new Map();
-        const doc = node.getRelativeData('.');
-        const entry = {doc, node:node.parentNode, request:null, disposed:false};
+        // The document is a Data sub-Bag: the entry keeps its address, never the Bag.
+        const doc = new GalleryState(this.page.src.builder, node.absDatapath('.'));
+        const entry = {doc, request:null, disposed:false};
         this.galleryCodeDocuments.set(key,entry);
         const update = () => {
             const dirty = doc.getItem('content') !== doc.getItem('saved');
             doc.setItem('saveDisabled',!dirty || doc.getItem('readonly') || doc.getItem('busy'));
             doc.setItem('revertDisabled',!dirty || doc.getItem('busy'));
         };
-        doc.subscribe('gallery-code',{any:event => {
-            if (['content','saved','readonly','busy'].includes(event.node.label)) update();
-        }});
+        const registrations = ['content','saved','readonly','busy'].map(name => doc.watch(name, update));
         update();
-        this.page.src.renderer.onDispose(entry.node,() => {
+        this.page.src.renderer.onDispose(node.parentNode,() => {
             entry.disposed=true;
             entry.request?.abort();
-            doc.unsubscribe('gallery-code',{any:true});
+            for (const registration of registrations) registration.close();
             if (this.galleryCodeDocuments.get(key) === entry) this.galleryCodeDocuments.delete(key);
         });
     }

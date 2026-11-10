@@ -42,32 +42,28 @@ export function mountGallerySettings(renderer, root, state) {
         const frame = frames().find(item => item.contentWindow === event.source);
         if (frame) send(frame);
     };
-    state.subscribe('gallery-label-position', {any: event => {
-        if (event.node.label === 'labelPosition') change();
-        if (event.node === state.getNode('multipage')) {
-            try { window.localStorage.setItem(multipageKey, String(state.getItem('multipage'))); }
-            catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
-        }
-        if (event.node === state.getNode('keepLessonView')) {
-            try { window.localStorage.setItem(viewKey, String(state.getItem('keepLessonView'))); }
-            catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
-        }
-        const lessonKey = state.getItem('lessonKey');
-        if (lessonKey != null && event.node === state.getNode(`lessonViews.${lessonKey}`)) {
-            const view = event.node.value;
+    const remember = (name, storageKey) => state.watch(name, () => {
+        try { window.localStorage.setItem(storageKey, String(state.getItem(name))); }
+        catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
+    });
+    const registrations = [
+        state.watch('labelPosition', change),
+        remember('multipage', multipageKey),
+        remember('keepLessonView', viewKey),
+        // A lesson's own view is a child of lessonViews; only the current lesson drives lessonView.
+        state.watch('lessonViews', event => {
+            const lessonKey = state.getItem('lessonKey');
+            if (lessonKey == null || event.path !== state.address(`lessonViews.${lessonKey}`)) return;
+            const view = state.getItem(`lessonViews.${lessonKey}`);
             if (['example', 'explanation', 'code'].includes(view)) state.setItem('lessonView', view);
-        }
-        if (event.node === state.getNode('showMobileExamples')) {
-            try { window.localStorage.setItem(mobileKey, String(state.getItem('showMobileExamples'))); }
-            catch (error) { if (!['SecurityError', 'QuotaExceededError'].includes(error.name)) throw error; }
-        }
-    }});
+        }),
+        remember('showMobileExamples', mobileKey)];
     window.addEventListener('message', message);
     let disposed = false;
     const dispose = () => {
         if (disposed) return;
         disposed = true;
-        state.unsubscribe('gallery-label-position', {any:true});
+        for (const registration of registrations) registration.close();
         window.removeEventListener('message', message);
     };
     renderer.onDispose(root, dispose);

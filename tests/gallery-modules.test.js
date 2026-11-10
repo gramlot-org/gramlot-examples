@@ -93,7 +93,8 @@ test('browser opt-in does not allow foreign integration origins',async t=>{
 
 test('mobile visibility preference persists with gallery settings across reloads',async t=>{
     const {mountGallerySettings}=await import('../src/gramlot_examples/gallery/browser/gallery-settings.js');
-    const f=fixture(t,false);const state=f.app.data.getItem('galleryIndex');
+    const {GalleryState}=await import('../src/gramlot_examples/gallery/browser/gallery-state.js');
+    const f=fixture(t,false);const state=new GalleryState(f.root.rootBuilder);
     const key='gramlot.gallery.settings:/:showMobileExamples';
     f.window.localStorage.setItem('gramlot.gallery.settings:/','TL');
     const first=mountGallerySettings(f.app.src.renderer,f.root,state);
