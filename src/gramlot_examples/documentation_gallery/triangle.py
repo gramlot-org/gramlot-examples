@@ -9,7 +9,7 @@ def triangle(pane, base, height, color):
         ".area", "base * height / 2",
         base="^.base", height="^.height", _init=True,
     )
-    pane.div("^.area", lbl="Area", lbl_variant="card", class_="result")
+    pane.div("^.area", lbl="Area", lbl_position="L", class_="result")
 
     drawing = pane.svg(viewBox="-1 -1 12 12", role="img",
                        aria_label="Triangle", class_="triangle-svg")
