@@ -1,0 +1,20 @@
+/* Keep the documentation examples light regardless of the system appearance. */
+:root {
+  color-scheme: light;
+  --gramlot-field-height: 2.25rem;
+  --gramlot-ink: #243449;
+  --gramlot-background: #f7f8f5;
+  --gramlot-surface: #fff;
+  --gramlot-header-background: #dbe9f8;
+  --gramlot-header-color: #173b5c;
+  --gramlot-surface-subtle: #edf1f7;
+  --gramlot-text-secondary: #566579;
+  --gramlot-border: #d5dce5;
+  --gramlot-border-control: #7a8798;
+  --gramlot-action: #456bc4;
+  --gramlot-selected: #eaf0fc;
+}
+
+body { margin: 0; padding: 52px 20px 20px; background: #fff; }
+#gramlot-root { max-width: 360px; margin: 0 auto; }
+#gramlot-root > * + * { margin-top: 14px; }

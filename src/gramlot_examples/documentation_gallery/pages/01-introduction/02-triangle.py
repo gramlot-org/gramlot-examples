@@ -15,7 +15,7 @@ class Page(BasePage):
                      default="#3366cc")
         fields.dataFormula("triangle.area", "base * height / 2",
                            base="^triangle.base", height="^triangle.height", _init=True)
-        fields.div("^triangle.area", lbl="Area", lbl_variant="card", class_="single-area")
+        fields.div("^triangle.area", lbl="Area", lbl_position="L", class_="single-area")
         drawing = panel.svg(viewBox="-1 -1 12 12", role="img",
                             aria_label="Triangle", class_="single-svg")
         drawing.polygon(points="^triangle.base:0,0 {},0 0,{height}",
