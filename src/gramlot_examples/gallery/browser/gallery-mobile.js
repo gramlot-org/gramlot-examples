@@ -86,10 +86,8 @@ export function mountGalleryMobile(renderer, root, inspector, state, onExampleVi
             inspector.setPresentation(false,false);
         }
     };
-    state.subscribe('gallery-toolbar-position', {any:event=>{
-        if(event.node.label==='toolbarPosition')resize();
-    }});
-    releases.push(()=>state.unsubscribe('gallery-toolbar-position', {any:true}));
+    const toolbarPosition=state.watch('toolbarPosition',resize);
+    releases.push(()=>toolbarPosition.close());
     listen(window,'resize',resize);resize();
     const update=(entries,next)=>{
         if(active!==next){state.setItem('menu',false);state.setItem('view','example');}

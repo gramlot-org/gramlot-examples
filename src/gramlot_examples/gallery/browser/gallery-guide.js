@@ -136,15 +136,15 @@ export function mountGuidedDemo(renderer, root) {
         refreshTarget();
     };
     window.addEventListener('message', ready);
-    data.subscribe('gallery-guide', {any: event => {
-        if (['galleryGuide.voice', 'galleryGuide.rate'].includes(event.pathlist.join('.'))) player.voiceChanged();
-    }});
+    const router = renderer.binding.router;
+    const voiceChanges = ['galleryGuide.voice', 'galleryGuide.rate'].map(path =>
+        router.register({path, recipient: {receive: () => player.voiceChanged()}}));
     const dispose = () => {
         if (disposed) return;
         disposed = true;
         player.cancel();
         for (const registration of registrations) runtime.unsubscribe(registration);
-        data.unsubscribe('gallery-guide', {any: true});
+        for (const registration of voiceChanges) registration.close();
         frame?.removeEventListener('load', loaded);
         document.removeEventListener('visibilitychange', hidden);
         window.removeEventListener('message', ready);
