@@ -1,3 +1,5 @@
+import {GalleryState} from './gallery-state.js';
+
 /** Catalogue visibility is a preference; the broker independently authorizes each frame. */
 export function nativeApplication(window) {
     return window.Capacitor !== undefined && window.Capacitor.isNativePlatform() &&
@@ -6,26 +8,26 @@ export function nativeApplication(window) {
 
 export async function mountGalleryModules(page, root, {load = url => import(url)} = {}) {
     const window = page.src.renderer.destination.ownerDocument.defaultView;
-    const state = root.builder.data.getItem('galleryIndex');
+    const state = new GalleryState(root.rootBuilder);
     const native = nativeApplication(window);
     state.setItem('nativeApplication', native);
-    const modules = state.getItem('modules');
-    if (!modules) return;
+    if (!state.getItem('modules')) return;
     const visible = () => native || state.getItem('showMobileExamples') === true;
     let disposed = false;
+    let registration = null;
     let pending;
     let revision = 0;
     const hosts = new Map();
-    const navigation = state.getItem('navigation');
     const mounted = new Set();
     const hide = () => {
+        const navigation = state.getItem('navigation');
         for (const key of mounted) navigation.popNode(key);
         mounted.clear();
     };
     const dispose = () => {
         if (disposed) return;
         disposed = true;
-        state.unsubscribe('gallery-modules', {any:true});
+        registration?.close();
         for (const host of hosts.values()) host.dispose();
         hide();
     };
@@ -33,18 +35,21 @@ export async function mountGalleryModules(page, root, {load = url => import(url)
     const reconcile = async () => {
         if (!visible()) { hide(); return; }
         if (native && window.location.protocol !== 'https:') throw new Error('Native gallery modules require HTTPS');
-        for (const node of modules.getNodes()) {
-            const url = new URL(node.attr.integration, window.location.href);
+        // Modules are read by label at each use: the loop crosses awaits.
+        for (const label of state.getItem('modules').getNodes().map(node => node.label)) {
+            const url = new URL(state.getNode(`modules.${label}`).attr.integration, window.location.href);
             if (url.origin !== window.location.origin) throw new Error('Module integration must be same-origin');
             if (!hosts.has(url.href)) {
                 const integration = await load(url.href);
                 if (disposed || page.state === 'disposed' || !visible()) return;
                 hosts.set(url.href, integration.installDeviceFrameHost(page, {origins:[window.location.origin]}));
             }
-            const key = `module_${node.label}`;
+            const key = `module_${label}`;
             if (mounted.has(key)) continue;
+            const navigation = state.getItem('navigation');
             if (navigation.getNode(key)) throw new Error('Module navigation identity collision');
-            navigation.setItem(key, node.value.deepcopy(), {title:node.attr.title}, '<features');
+            const module = state.getNode(`modules.${label}`);
+            navigation.setItem(key, module.value.deepcopy(), {title:module.attr.title}, '<features');
             mounted.add(key);
         }
     };
@@ -61,12 +66,11 @@ export async function mountGalleryModules(page, root, {load = url => import(url)
         })().finally(() => { pending = null; });
         return pending;
     };
-    state.subscribe('gallery-modules', {any:event => {
-        if (event.node !== state.getNode('showMobileExamples')) return;
+    registration = state.watch('showMobileExamples', () => {
         void update().catch(error => {
             if (!disposed) root.builder.nodeById('gallery-load-status').setValue(`Mobile application: ${error.message}`);
         });
-    }});
+    });
     try { await update(); }
     catch (error) { dispose(); throw error; }
     // Hiding the catalogue retains already-open frames and their broker until root disposal.

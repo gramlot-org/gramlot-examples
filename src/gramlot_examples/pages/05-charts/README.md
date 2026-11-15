@@ -28,7 +28,7 @@ parallel coordinates, heatmap, sankey, candlestick, boxplot, treemap and sunburs
 | Vega | Bars, lines and pie charts | Change engine in a simple chart |
 | uPlot | Lines with a numeric or date X field | Trends with numeric sample positions |
 
-These are implemented adapter capabilities, not every feature offered by the external libraries. Engines load when used. The shared settings show compatible choices; unsupported external configuration is reported rather than silently converted. 3D requires browser WebGL support. Vizabi remains experimental and is not part of this learning path.
+These are implemented adapter capabilities, not every feature offered by the external libraries. Engines load when used. The shared settings show compatible choices; unsupported external configuration is reported rather than silently converted. 3D requires browser WebGL support.
 
 ## Read the code
 

@@ -9,11 +9,12 @@ import {mountIndexPage} from '@gramlot/gramlot';
 import {mountGalleryContent} from './gallery-content.js';
 import {Bag} from '@gramlot/gramlot';
 import {mountGalleryFilter} from './gallery-filter.js';
+import {GalleryState} from './gallery-state.js';
 export {initializeNavigation} from './gallery-filter.js';
 
 /** Gallery specializations around the reusable FramePage/IndexPage contract. */
 export function mountGallery(renderer, root, inspector) {
-    const state=root.builder.data.getItem('galleryIndex');
+    const state=new GalleryState(root.rootBuilder);
     const document=renderer.destination.ownerDocument;
     const byId=id=>document.getElementById(id);
     const source=id=>root.builder.wrapSource(renderer.elements.get(byId(id)).node);
@@ -30,14 +31,14 @@ export function mountGallery(renderer, root, inspector) {
         source('index-pages').setAttr({hidden:features || active===null || !state.getItem('multipage')});
         source('gallery-single').setAttr({hidden:features || active===null || state.getItem('multipage')});
     };
-    state.subscribe('gallery-feature-view', {any:event => {
-        if (event.node === state.getNode('navigationSelection')) {
+    const featureView = [
+        state.watch('navigationSelection', () => {
             state.setItem('featureRequest', null);
             state.setItem('featuresOpen', state.getItem('navigationSelection') === 'features');
-        }
-        if (event.node.label === 'featuresOpen') showContent();
-    }});
-    renderer.onDispose(root, () => state.unsubscribe('gallery-feature-view', {any:true}));
+        }),
+        state.watch('featuresOpen', showContent)];
+    const closeFeatureView = () => { for (const registration of featureView) registration.close(); };
+    renderer.onDispose(root, closeFeatureView);
     // A lesson link rendered by renderReadme opens that lesson in the gallery.
     const openLesson = event => {
         const anchor = event.target.closest?.('a[data-gallery-lesson]');
@@ -79,7 +80,7 @@ export function mountGallery(renderer, root, inspector) {
         settings.update(entry && !entry.loading && entry.code ? (state.getItem('multipage') ? entry.key : 'single') : null);
         if (entry && !entry.loading) markFeatureExampleSeen(state, entry.key);
         presentation.update(entries,active);inspector.update(entries,active);mobile.update(entries,active);guide?.update(entries,active);
-    },prepare,{state,async createEntry(entry){
+    },prepare,{state:'galleryIndex',async createEntry(entry){
         if (!state.getItem('multipage')) { await single.ensure(); return; }
         const key=entry.node.attr.key??entry.pane.label;
         entry.pane.setAttr({id:`panel-${key}`,class:'gallery-panel'});
@@ -87,15 +88,14 @@ export function mountGallery(renderer, root, inspector) {
         const mounted=await renderer.binding.gramlot.src.remoteSource(entry.pane,'index_panel',{selection});
         if(!mounted)throw new Error('Panel loading was cancelled');
     },onLoad(url,status){
-        if(root.indexContext.disposed)return;
-        if (status === 'ready') markFeatureExampleSeen(state, root.indexContext.entries.get(url).key);
+        if(index.disposed)return;
+        if (status === 'ready') markFeatureExampleSeen(state, index.entries.get(url).key);
         const active=state.getItem('active');
-        const loading=root.indexContext.entries.get(active)?.loading;
+        const loading=index.entries.get(active)?.loading;
         source('gallery-load-status').setValue(loading?'Loading page…':
             status==='error'&&(active===url||active===null)?'Could not load this page. Select it again to retry.':'');
     }});
-    state.subscribe('gallery-multipage', {any:event => {
-        if (event.node !== state.getNode('multipage')) return;
+    const multipage = state.watch('multipage', () => {
         const selected = state.getItem('navigationSelection');
         root.galleryModeChanging = true;
         try {
@@ -105,9 +105,9 @@ export function mountGallery(renderer, root, inspector) {
         } finally { root.galleryModeChanging = false; }
         showContent();
         if (selected != null) state.setItem('navigationSelection', selected);
-    }});
-    renderer.onDispose(root,()=>state.unsubscribe('gallery-multipage', {any:true}));
-    return {dispose(){filter.dispose();state.unsubscribe('gallery-multipage', {any:true});progress.dispose();state.unsubscribe('gallery-feature-view', {any:true});guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
+    });
+    renderer.onDispose(root,()=>multipage.close());
+    return {dispose(){filter.dispose();multipage.close();progress.dispose();closeFeatureView();guide?.dispose();content.dispose();settings.dispose();presentation.dispose();index.dispose();mobile.dispose();}};
 }
 
 /** Toolbar actions change the same Source drawers as their built-in handles. */
