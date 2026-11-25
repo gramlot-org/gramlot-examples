@@ -26,8 +26,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 npm install --package-lock=false
 npm run build
-python -m pip install -e . "gramlot-py-server[uvicorn]"
-gramlot uvicorn gallery --remote-edit
+python -m pip install -e ".[system-monitor]" "gramlot-py-server[uvicorn]"
+gramlot uvicorn gallery --remote-edit --websocket --catalog src/gramlot_examples/base/system-monitor-catalog.json src/gramlot_examples/base/pages
 ```
 
 On Windows, use `python -m venv .venv` and activate the environment with
@@ -39,6 +39,11 @@ and the preview reloads. `--remote-edit` also permits saving in the IDE's
 temporary sample workspace, which is reset when the gallery stops. Use this
 option only on your own trusted local server; the public gallery is read-only.
 Without the option, example sources remain read-only.
+
+Open **Real-time → System monitor** for live CPU, memory, process, disk and
+network readings from the computer running the gallery. **Stop** pauses
+sampling, **Play** resumes it, and **Add panel** opens more views.
+[System monitor guide](src/gramlot_examples/base/pages/10-realtime/README.md).
 
 Database examples may require additional services and configuration.
 

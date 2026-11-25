@@ -1,13 +1,19 @@
 # System monitor
 
-The system monitor is the Python part of the **Real-time** family: its folder
-joins the common `pages/10-realtime` folder of the gallery. It is a development lesson. It requires connected development checkouts of
-Gramlot, gramlot-examples and gramlot-py-server with the chart collection.
-From the Python server checkout:
+The Python gallery serves live readings from its own host. Install the
+published packages and start the local gallery from any directory:
 
 ```sh
-python -m pip install -e '.[system-monitor]'
+python -m pip install "gramlot-py-server[system-monitor]"
 python -m gramlot_py_server.gallery.base.system_monitor --gallery --port 8905
+```
+
+For a Kajenn gallery, install the adapter and run the following command from
+a built `gramlot-examples` checkout:
+
+```sh
+python -m pip install -e ".[system-monitor]" "gramlot-py-server[kajenn,uvicorn]"
+gramlot kajenn gallery --websocket --catalog src/gramlot_examples/base/system-monitor-catalog.json src/gramlot_examples/base/pages --port 8905
 ```
 
 In the gallery, open **Real-time → System monitor**. The tabs
