@@ -253,3 +253,21 @@ there is no second navigation implementation.
 Owner confirmation (2026-11-05): “aggiungi multipagina true di default […]
 contorno e tab restano, si riusa un solo iframe. Va bene perdere lo stato quando
 cambio esempio.” Multipage is enabled by default; single-page mode is optional.
+
+<a id="ge-030-070"></a>
+
+## 070 · Run the live system monitor locally
+
+Open **Real-time → System monitor** in a Python gallery to see CPU, memory,
+process, disk and network readings from the machine running the server.
+Install the optional host and start it on loopback:
+
+```sh
+python -m pip install "gramlot-py-server[system-monitor]==0.3.32"
+python -m gramlot_py_server.gallery.base.system_monitor --gallery --port 8905
+```
+
+Open `http://127.0.0.1:8905/`. The readings counter advances while sampling;
+**Stop** pauses the sampler, **Play** resumes it, and **Add panel** opens another
+view. **Code** shows the page and its collector. To run the same lesson under
+Kajenn, follow the [hosted monitor guide](../src/gramlot_examples/base/pages/10-realtime/README.md).

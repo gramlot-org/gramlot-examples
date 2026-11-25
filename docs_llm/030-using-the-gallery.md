@@ -253,3 +253,15 @@ there is no second navigation implementation.
 Owner confirmation (2026-11-05): “aggiungi multipagina true di default […]
 contorno e tab restano, si riusa un solo iframe. Va bene perdere lo stato quando
 cambio esempio.” Multipage is enabled by default; single-page mode is optional.
+
+<a id="ge-030-070"></a>
+
+## 070 · Run the live system monitor locally
+
+The hosted lesson `system-monitor-01` requires Python, psutil and a store
+WebSocket. Start `python -m gramlot_py_server.gallery.base.system_monitor --gallery --port 8905`
+with the `gramlot-py-server[system-monitor]` extra installed. In a built source checkout the
+Kajenn gallery also needs `--websocket` and the catalogue
+`src/gramlot_examples/base/system-monitor-catalog.json` with page root
+`src/gramlot_examples/base/pages`. Samples describe the host. Browser-only
+playgrounds cannot collect them.
