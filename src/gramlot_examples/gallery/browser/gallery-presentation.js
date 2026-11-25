@@ -33,10 +33,10 @@ export function mountGalleryPresentation(renderer, root, state) {
         style.setValue(appearanceStyles[state.getItem('appearance')] + '\n' + paletteStyles[state.getItem('palette')]);
         for (const frame of frames()) send(frame);
     };
-    state.subscribe('gallery-presentation', {any: event => {
-        if (['theme','appearance','palette'].includes(event.node.label)) { apply(); save(); }
-    }});
-    releases.push(() => state.unsubscribe('gallery-presentation', {any:true}));
+    for (const name of ['theme','appearance','palette']) {
+        const registration = state.watch(name, () => { apply(); save(); });
+        releases.push(() => registration.close());
+    }
     listen(window,'message',event => { if (event.origin === (window.location.protocol === 'file:' ? 'null' : window.location.origin) && event.data?.type === THEME_READY) {
         const frame = frames().find(frame => frame.contentWindow === event.source);
         if (frame) send(frame);

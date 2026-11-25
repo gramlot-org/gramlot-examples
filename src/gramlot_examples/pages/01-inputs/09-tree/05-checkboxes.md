@@ -17,18 +17,21 @@
 binding: the tree writes comma-separated paths relative to that Bag, and an
 application can change the same Data value to update the checks.
 
-`checkChildren=True` propagates a branch check to its descendants. The default is
-already true; it is explicit here to make the lesson readable. With false, each
-node is independent. Checking a parent does not eagerly fetch its unresolved
-children. Expanding Catalog evaluates its `dataRemote` resolver; the arriving
-children inherit its current check. The cached Bag is reused on reopening.
-Checking an unresolved branch directly can also start its resolver.
+The `checkedPaths` list is the only source of the checks: each draw computes them
+from the text at the address, so editing the text changes the checks and emptying
+it clears every editable check. `checkChildren=True` checks the descendants of a
+checked path. The default is already true; it is explicit here to make the lesson
+readable. With false, each node is independent. Checking a parent does not eagerly
+fetch its unresolved children. Expanding Catalog evaluates its `dataRemote`
+resolver; the arriving children follow the list. The cached Bag is reused on
+reopening. Checking an unresolved branch directly can also start its resolver.
 
-The sample Bag in `05-checkboxes_data.tytx` supplies captions and the node attribute
-`checked`: `disabled:on` and `disabled:off` lock a check in either state. These
-locked states are not included in `checkedPaths`,
-which lists editable checked leaves (or an unresolved checked path until it loads).
-A branch with mixed child states has an indeterminate check.
+The sample Bag in `05-checkboxes_data.tytx` supplies captions. Only the node
+attribute `checked='disabled:on'` or `'disabled:off'` fixes a check that clicks and
+the list do not change; these locked nodes are not included in `checkedPaths`.
+With `checkChildren` the list holds the checked nodes without loaded children, so
+an unresolved branch stands for itself until its loaded descendants replace it.
+A branch with checked and unchecked loaded children has a mixed check.
 
 The Python endpoint only supplies the lazy Bag. The component manages propagation,
 partial checks and binding; the example needs no custom JavaScript behavior.
